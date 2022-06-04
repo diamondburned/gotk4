@@ -199,26 +199,20 @@ func marshalInitable(p uintptr) (interface{}, error) {
 //
 func (initable *Initable) Init(ctx context.Context) error {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(initable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(initable).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(initable)
 	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 

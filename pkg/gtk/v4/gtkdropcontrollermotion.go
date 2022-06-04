@@ -152,8 +152,6 @@ func (self *DropControllerMotion) ConnectMotion(f func(x, y float64)) coreglib.S
 //    - dropControllerMotion: new GtkDropControllerMotion.
 //
 func NewDropControllerMotion() *DropControllerMotion {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "DropControllerMotion").InvokeMethod("new_DropControllerMotion", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -173,12 +171,8 @@ func NewDropControllerMotion() *DropControllerMotion {
 //
 func (self *DropControllerMotion) ContainsPointer() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "DropControllerMotion").InvokeMethod("contains_pointer", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -187,7 +181,7 @@ func (self *DropControllerMotion) ContainsPointer() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -203,12 +197,8 @@ func (self *DropControllerMotion) ContainsPointer() bool {
 //
 func (self *DropControllerMotion) Drop() gdk.Dropper {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "DropControllerMotion").InvokeMethod("get_drop", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -217,7 +207,7 @@ func (self *DropControllerMotion) Drop() gdk.Dropper {
 
 	var _drop gdk.Dropper // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -247,12 +237,8 @@ func (self *DropControllerMotion) Drop() gdk.Dropper {
 //
 func (self *DropControllerMotion) IsPointer() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "DropControllerMotion").InvokeMethod("is_pointer", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -261,7 +247,7 @@ func (self *DropControllerMotion) IsPointer() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

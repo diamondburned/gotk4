@@ -38,13 +38,9 @@ import "C"
 //
 func DBusAddressEscapeValue(str string) string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gio", "dbus_address_escape_value").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -79,26 +75,18 @@ func DBusAddressEscapeValue(str string) string {
 //
 func DBusAddressGetStream(ctx context.Context, address string, callback AsyncReadyCallback) {
 	var _args [4]girepository.Argument
-	var _arg1 *C.void    // out
-	var _arg0 *C.void    // out
-	var _arg2 C.gpointer // out
-	var _arg3 C.gpointer
 
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(address)))
-	defer C.free(unsafe.Pointer(_arg0))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(address)))
+	defer C.free(unsafe.Pointer(_args[0]))
 	if callback != nil {
-		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+		*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[3] = C.gpointer(gbox.AssignOnce(callback))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gio", "dbus_address_get_stream").Invoke(_args[:], nil)
 
@@ -127,14 +115,8 @@ func DBusAddressGetStream(ctx context.Context, address string, callback AsyncRea
 func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
 	_gret := girepository.MustFind("Gio", "dbus_address_get_stream_finish").Invoke(_args[:], _outs[:])
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -144,11 +126,10 @@ func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 	var _outGuid string      // out
 	var _ioStream IOStreamer // out
 	var _goerr error         // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	if _out0 != nil {
-		_outGuid = C.GoString((*C.gchar)(unsafe.Pointer(_out0)))
-		defer C.free(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_outGuid = C.GoString((*C.gchar)(unsafe.Pointer(_outs[0])))
+		defer C.free(unsafe.Pointer(_outs[0]))
 	}
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -167,7 +148,7 @@ func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 		}
 		_ioStream = rv
 	}
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -200,22 +181,14 @@ func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOStreamer, error) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg1 *C.void // out
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(address)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(address)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gio", "dbus_address_get_stream_sync").Invoke(_args[:], _outs[:])
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -226,11 +199,10 @@ func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOSt
 	var _outGuid string      // out
 	var _ioStream IOStreamer // out
 	var _goerr error         // out
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_outGuid = C.GoString((*C.gchar)(unsafe.Pointer(_out0)))
-		defer C.free(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_outGuid = C.GoString((*C.gchar)(unsafe.Pointer(_outs[0])))
+		defer C.free(unsafe.Pointer(_outs[0]))
 	}
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -249,7 +221,7 @@ func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOSt
 		}
 		_ioStream = rv
 	}
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -272,13 +244,9 @@ func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOSt
 //
 func DBusIsAddress(str string) bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gio", "dbus_is_address").Invoke(_args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -287,7 +255,7 @@ func DBusIsAddress(str string) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -305,13 +273,9 @@ func DBusIsAddress(str string) bool {
 //
 func DBusIsSupportedAddress(str string) error {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	girepository.MustFind("Gio", "dbus_is_supported_address").Invoke(_args[:], nil)
 
@@ -319,7 +283,7 @@ func DBusIsSupportedAddress(str string) error {
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 

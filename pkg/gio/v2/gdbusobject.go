@@ -327,16 +327,10 @@ func (object *DBusObject) ConnectInterfaceRemoved(f func(iface DBusInterfacer)) 
 //
 func (object *DBusObject) Interface(interfaceName string) *DBusInterface {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(interfaceName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(interfaceName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -345,7 +339,7 @@ func (object *DBusObject) Interface(interfaceName string) *DBusInterface {
 
 	var _dBusInterface *DBusInterface // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_dBusInterface = wrapDBusInterface(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
@@ -361,12 +355,8 @@ func (object *DBusObject) Interface(interfaceName string) *DBusInterface {
 //
 func (object *DBusObject) Interfaces() []*DBusInterface {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -393,12 +383,8 @@ func (object *DBusObject) Interfaces() []*DBusInterface {
 //
 func (object *DBusObject) ObjectPath() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

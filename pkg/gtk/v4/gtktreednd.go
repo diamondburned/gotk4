@@ -49,15 +49,9 @@ func init() {
 //
 func TreeCreateRowDragContent(treeModel TreeModeller, path *TreePath) *gdk.ContentProvider {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_gret := girepository.MustFind("Gtk", "tree_create_row_drag_content").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -96,14 +90,8 @@ func TreeCreateRowDragContent(treeModel TreeModeller, path *TreePath) *gdk.Conte
 func TreeGetRowDragData(value *coreglib.Value) (*TreeModel, *TreePath, bool) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(value.Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(value.Native()))
 
 	_gret := girepository.MustFind("Gtk", "tree_get_row_drag_data").Invoke(_args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -113,14 +101,12 @@ func TreeGetRowDragData(value *coreglib.Value) (*TreeModel, *TreePath, bool) {
 	var _treeModel *TreeModel // out
 	var _path *TreePath       // out
 	var _ok bool              // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_treeModel = wrapTreeModel(coreglib.Take(unsafe.Pointer(_out0)))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_treeModel = wrapTreeModel(coreglib.Take(unsafe.Pointer(_outs[0])))
 	}
-	if _out1 != nil {
-		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_out1)))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_path)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -128,7 +114,7 @@ func TreeGetRowDragData(value *coreglib.Value) (*TreeModel, *TreePath, bool) {
 			},
 		)
 	}
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -272,18 +258,10 @@ func marshalTreeDragDest(p uintptr) (interface{}, error) {
 //
 func (dragDest *TreeDragDest) DragDataReceived(dest *TreePath, value *coreglib.Value) bool {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragDest).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(dest)))
-	_arg2 = (*C.void)(unsafe.Pointer(value.Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragDest).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(dest)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(value.Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -293,7 +271,7 @@ func (dragDest *TreeDragDest) DragDataReceived(dest *TreePath, value *coreglib.V
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -317,18 +295,10 @@ func (dragDest *TreeDragDest) DragDataReceived(dest *TreePath, value *coreglib.V
 //
 func (dragDest *TreeDragDest) RowDropPossible(destPath *TreePath, value *coreglib.Value) bool {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragDest).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(destPath)))
-	_arg2 = (*C.void)(unsafe.Pointer(value.Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragDest).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(destPath)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(value.Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -338,7 +308,7 @@ func (dragDest *TreeDragDest) RowDropPossible(destPath *TreePath, value *coregli
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -506,15 +476,9 @@ func marshalTreeDragSource(p uintptr) (interface{}, error) {
 //
 func (dragSource *TreeDragSource) DragDataDelete(path *TreePath) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragSource).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragSource).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -523,7 +487,7 @@ func (dragSource *TreeDragSource) DragDataDelete(path *TreePath) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -543,15 +507,9 @@ func (dragSource *TreeDragSource) DragDataDelete(path *TreePath) bool {
 //
 func (dragSource *TreeDragSource) DragDataGet(path *TreePath) *gdk.ContentProvider {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragSource).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragSource).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -560,7 +518,7 @@ func (dragSource *TreeDragSource) DragDataGet(path *TreePath) *gdk.ContentProvid
 
 	var _contentProvider *gdk.ContentProvider // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_contentProvider = &gdk.ContentProvider{
@@ -586,15 +544,9 @@ func (dragSource *TreeDragSource) DragDataGet(path *TreePath) *gdk.ContentProvid
 //
 func (dragSource *TreeDragSource) RowDraggable(path *TreePath) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragSource).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragSource).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -603,7 +555,7 @@ func (dragSource *TreeDragSource) RowDraggable(path *TreePath) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

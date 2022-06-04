@@ -96,18 +96,11 @@ func BaseTLSServerConnection(obj TLSServerConnectioner) *TLSServerConnection {
 //
 func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater) (*TLSServerConnection, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseIoStream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseIoStream).Native()))
 	if certificate != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(certificate).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(certificate).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gio", "new").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -119,7 +112,7 @@ func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater
 	var _goerr error                              // out
 
 	_tlsServerConnection = wrapTLSServerConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 

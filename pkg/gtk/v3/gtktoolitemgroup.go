@@ -133,13 +133,9 @@ func marshalToolItemGroup(p uintptr) (interface{}, error) {
 //
 func NewToolItemGroup(label string) *ToolItemGroup {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("new_ToolItemGroup", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -161,12 +157,8 @@ func NewToolItemGroup(label string) *ToolItemGroup {
 //
 func (group *ToolItemGroup) Collapsed() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("get_collapsed", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -175,7 +167,7 @@ func (group *ToolItemGroup) Collapsed() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -195,18 +187,10 @@ func (group *ToolItemGroup) Collapsed() bool {
 //
 func (group *ToolItemGroup) DropItem(x, y int32) *ToolItem {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _arg2 C.gint  // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
-	_arg1 = C.gint(x)
-	_arg2 = C.gint(y)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(x)
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(y)
 
 	_gret := girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("get_drop_item", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -234,15 +218,9 @@ func (group *ToolItemGroup) DropItem(x, y int32) *ToolItem {
 //
 func (group *ToolItemGroup) ItemPosition(item *ToolItem) int32 {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("get_item_position", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -252,7 +230,7 @@ func (group *ToolItemGroup) ItemPosition(item *ToolItem) int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -267,12 +245,8 @@ func (group *ToolItemGroup) ItemPosition(item *ToolItem) int32 {
 //
 func (group *ToolItemGroup) Label() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("get_label", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -295,12 +269,8 @@ func (group *ToolItemGroup) Label() string {
 //
 func (group *ToolItemGroup) LabelWidget() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("get_label_widget", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -338,12 +308,8 @@ func (group *ToolItemGroup) LabelWidget() Widgetter {
 //
 func (group *ToolItemGroup) NItems() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("get_n_items", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -352,7 +318,7 @@ func (group *ToolItemGroup) NItems() uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -369,15 +335,9 @@ func (group *ToolItemGroup) NItems() uint32 {
 //
 func (group *ToolItemGroup) NthItem(index uint32) *ToolItem {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
-	_arg1 = C.guint(index)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(index)
 
 	_gret := girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("get_nth_item", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -402,17 +362,10 @@ func (group *ToolItemGroup) NthItem(index uint32) *ToolItem {
 //
 func (group *ToolItemGroup) Insert(item *ToolItem, position int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
-	_arg2 = C.gint(position)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(position)
 
 	girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("insert", _args[:], nil)
 
@@ -429,16 +382,11 @@ func (group *ToolItemGroup) Insert(item *ToolItem, position int32) {
 //
 func (group *ToolItemGroup) SetCollapsed(collapsed bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	if collapsed {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("set_collapsed", _args[:], nil)
 
@@ -456,17 +404,10 @@ func (group *ToolItemGroup) SetCollapsed(collapsed bool) {
 //
 func (group *ToolItemGroup) SetItemPosition(item *ToolItem, position int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
-	_arg2 = C.gint(position)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(position)
 
 	girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("set_item_position", _args[:], nil)
 
@@ -484,15 +425,10 @@ func (group *ToolItemGroup) SetItemPosition(item *ToolItem, position int32) {
 //
 func (group *ToolItemGroup) SetLabel(label string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("set_label", _args[:], nil)
 
@@ -509,14 +445,9 @@ func (group *ToolItemGroup) SetLabel(label string) {
 //
 func (group *ToolItemGroup) SetLabelWidget(labelWidget Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(labelWidget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(labelWidget).Native()))
 
 	girepository.MustFind("Gtk", "ToolItemGroup").InvokeMethod("set_label_widget", _args[:], nil)
 

@@ -112,12 +112,8 @@ func (gesture *GestureSwipe) ConnectSwipe(f func(velocityX, velocityY float64)) 
 //
 func NewGestureSwipe(widget Widgetter) *GestureSwipe {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "GestureSwipe").InvokeMethod("new_GestureSwipe", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -141,17 +137,11 @@ func NewGestureSwipe(widget Widgetter) *GestureSwipe {
 //    - velocityY: return value for the velocity in the Y axis, in pixels/sec.
 //    - ok: whether velocity could be calculated.
 //
-func (gesture *GestureSwipe) Velocity() (velocityX float64, velocityY float64, ok bool) {
+func (gesture *GestureSwipe) Velocity() (velocityX, velocityY float64, ok bool) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
 	_gret := girepository.MustFind("Gtk", "GestureSwipe").InvokeMethod("get_velocity", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -161,12 +151,10 @@ func (gesture *GestureSwipe) Velocity() (velocityX float64, velocityY float64, o
 	var _velocityX float64 // out
 	var _velocityY float64 // out
 	var _ok bool           // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_velocityX = *(*float64)(unsafe.Pointer(_out0))
-	_velocityY = *(*float64)(unsafe.Pointer(_out1))
-	if _cret != 0 {
+	_velocityX = *(*float64)(unsafe.Pointer(_outs[0]))
+	_velocityY = *(*float64)(unsafe.Pointer(_outs[1]))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

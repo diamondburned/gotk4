@@ -69,12 +69,12 @@ type SettingsSchema struct {
 
 // settingsSchema is the struct that's finalized.
 type settingsSchema struct {
-	native *C.GSettingsSchema
+	native unsafe.Pointer
 }
 
 func marshalSettingsSchema(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &SettingsSchema{&settingsSchema{(*C.GSettingsSchema)(b)}}, nil
+	return &SettingsSchema{&settingsSchema{(unsafe.Pointer)(b)}}, nil
 }
 
 // ID: get the ID of schema.
@@ -85,12 +85,8 @@ func marshalSettingsSchema(p uintptr) (interface{}, error) {
 //
 func (schema *SettingsSchema) ID() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(schema)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(schema)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -118,16 +114,10 @@ func (schema *SettingsSchema) ID() string {
 //
 func (schema *SettingsSchema) Key(name string) *SettingsSchemaKey {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(schema)))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(schema)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -163,12 +153,8 @@ func (schema *SettingsSchema) Key(name string) *SettingsSchemaKey {
 //
 func (schema *SettingsSchema) Path() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(schema)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(schema)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -176,7 +162,7 @@ func (schema *SettingsSchema) Path() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -195,16 +181,10 @@ func (schema *SettingsSchema) Path() string {
 //
 func (schema *SettingsSchema) HasKey(name string) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(schema)))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(schema)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -213,7 +193,7 @@ func (schema *SettingsSchema) HasKey(name string) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -230,12 +210,8 @@ func (schema *SettingsSchema) HasKey(name string) bool {
 //
 func (schema *SettingsSchema) ListChildren() []string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret **C.gchar // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(schema)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(schema)))
 
 	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
 
@@ -274,12 +250,8 @@ func (schema *SettingsSchema) ListChildren() []string {
 //
 func (schema *SettingsSchema) ListKeys() []string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret **C.gchar // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(schema)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(schema)))
 
 	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
 
@@ -316,12 +288,12 @@ type SettingsSchemaKey struct {
 
 // settingsSchemaKey is the struct that's finalized.
 type settingsSchemaKey struct {
-	native *C.GSettingsSchemaKey
+	native unsafe.Pointer
 }
 
 func marshalSettingsSchemaKey(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &SettingsSchemaKey{&settingsSchemaKey{(*C.GSettingsSchemaKey)(b)}}, nil
+	return &SettingsSchemaKey{&settingsSchemaKey{(unsafe.Pointer)(b)}}, nil
 }
 
 // DefaultValue gets the default value for key.
@@ -335,12 +307,8 @@ func marshalSettingsSchemaKey(p uintptr) (interface{}, error) {
 //
 func (key *SettingsSchemaKey) DefaultValue() *glib.Variant {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -378,12 +346,8 @@ func (key *SettingsSchemaKey) DefaultValue() *glib.Variant {
 //
 func (key *SettingsSchemaKey) Description() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -391,7 +355,7 @@ func (key *SettingsSchemaKey) Description() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -406,12 +370,8 @@ func (key *SettingsSchemaKey) Description() string {
 //
 func (key *SettingsSchemaKey) Name() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -465,12 +425,8 @@ func (key *SettingsSchemaKey) Name() string {
 //
 func (key *SettingsSchemaKey) Range() *glib.Variant {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -507,12 +463,8 @@ func (key *SettingsSchemaKey) Range() *glib.Variant {
 //
 func (key *SettingsSchemaKey) Summary() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -520,7 +472,7 @@ func (key *SettingsSchemaKey) Summary() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -535,12 +487,8 @@ func (key *SettingsSchemaKey) Summary() string {
 //
 func (key *SettingsSchemaKey) ValueType() *glib.VariantType {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -569,15 +517,9 @@ func (key *SettingsSchemaKey) ValueType() *glib.VariantType {
 //
 func (key *SettingsSchemaKey) RangeCheck(value *glib.Variant) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -586,7 +528,7 @@ func (key *SettingsSchemaKey) RangeCheck(value *glib.Variant) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -603,35 +545,26 @@ type SettingsSchemaSource struct {
 
 // settingsSchemaSource is the struct that's finalized.
 type settingsSchemaSource struct {
-	native *C.GSettingsSchemaSource
+	native unsafe.Pointer
 }
 
 func marshalSettingsSchemaSource(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &SettingsSchemaSource{&settingsSchemaSource{(*C.GSettingsSchemaSource)(b)}}, nil
+	return &SettingsSchemaSource{&settingsSchemaSource{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewSettingsSchemaSourceFromDirectory constructs a struct SettingsSchemaSource.
 func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSchemaSource, trusted bool) (*SettingsSchemaSource, error) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.gboolean // out
-	var _cret *C.void    // in
-	var _cerr *C.void    // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(directory)))
-	defer C.free(unsafe.Pointer(_arg0))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(directory)))
+	defer C.free(unsafe.Pointer(_args[0]))
 	if parent != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(parent)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parent)))
 	}
 	if trusted {
-		_arg2 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -649,7 +582,7 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 			C.g_settings_schema_source_unref((*C.GSettingsSchemaSource)(intern.C))
 		},
 	)
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -680,51 +613,42 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable []string, relocatable []string) {
 	var _args [2]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
-	var _out0 **C.gchar  // in
-	var _out1 **C.gchar  // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
 	if recursive {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(recursive)
 
 	var _nonRelocatable []string // out
 	var _relocatable []string    // out
-	_out0 = *(***C.gchar)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(***C.gchar)(unsafe.Pointer(&_outs[1]))
 
-	defer C.free(unsafe.Pointer(_out0))
+	defer C.free(unsafe.Pointer(_outs[0]))
 	{
 		var i int
 		var z *C.void
-		for p := _out0; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := _outs[0]; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(_out0, i)
+		src := unsafe.Slice(_outs[0], i)
 		_nonRelocatable = make([]string, i)
 		for i := range src {
 			_nonRelocatable[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	defer C.free(unsafe.Pointer(_out1))
+	defer C.free(unsafe.Pointer(_outs[1]))
 	{
 		var i int
 		var z *C.void
-		for p := _out1; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := _outs[1]; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(_out1, i)
+		src := unsafe.Slice(_outs[1], i)
 		_relocatable = make([]string, i)
 		for i := range src {
 			_relocatable[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
@@ -757,21 +681,13 @@ func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable 
 //
 func (source *SettingsSchemaSource) Lookup(schemaId string, recursive bool) *SettingsSchema {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.gboolean // out
-	var _cret *C.void    // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(schemaId)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(schemaId)))
+	defer C.free(unsafe.Pointer(_args[1]))
 	if recursive {
-		_arg2 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -781,7 +697,7 @@ func (source *SettingsSchemaSource) Lookup(schemaId string, recursive bool) *Set
 
 	var _settingsSchema *SettingsSchema // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_settingsSchema = (*SettingsSchema)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_settingsSchema)),
@@ -812,14 +728,12 @@ func (source *SettingsSchemaSource) Lookup(schemaId string, recursive bool) *Set
 //    - settingsSchemaSource (optional): default schema source.
 //
 func SettingsSchemaSourceGetDefault() *SettingsSchemaSource {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gio", "get_default").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _settingsSchemaSource *SettingsSchemaSource // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_settingsSchemaSource = (*SettingsSchemaSource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.g_settings_schema_source_ref(_cret)
 		runtime.SetFinalizer(

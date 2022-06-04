@@ -115,8 +115,6 @@ func marshalTearoffMenuItem(p uintptr) (interface{}, error) {
 //    - tearoffMenuItem: new TearoffMenuItem.
 //
 func NewTearoffMenuItem() *TearoffMenuItem {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "TearoffMenuItem").InvokeMethod("new_TearoffMenuItem", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

@@ -22,41 +22,51 @@ type IMContextInfo struct {
 
 // imContextInfo is the struct that's finalized.
 type imContextInfo struct {
-	native *C.GtkIMContextInfo
+	native unsafe.Pointer
 }
 
 // ContextID: unique identification string of the input method.
 func (i *IMContextInfo) ContextID() string {
+	offset := girepository.MustFind("Gtk", "IMContextInfo").StructFieldOffset("context_id")
+	valptr := unsafe.Add(unsafe.Pointer(i), offset)
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(i.native.context_id)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }
 
 // ContextName: human-readable name of the input method.
 func (i *IMContextInfo) ContextName() string {
+	offset := girepository.MustFind("Gtk", "IMContextInfo").StructFieldOffset("context_name")
+	valptr := unsafe.Add(unsafe.Pointer(i), offset)
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(i.native.context_name)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }
 
 // Domain: translation domain to be used with dgettext().
 func (i *IMContextInfo) Domain() string {
+	offset := girepository.MustFind("Gtk", "IMContextInfo").StructFieldOffset("domain")
+	valptr := unsafe.Add(unsafe.Pointer(i), offset)
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(i.native.domain)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }
 
 // DomainDirname: name of locale directory for use with bindtextdomain().
 func (i *IMContextInfo) DomainDirname() string {
+	offset := girepository.MustFind("Gtk", "IMContextInfo").StructFieldOffset("domain_dirname")
+	valptr := unsafe.Add(unsafe.Pointer(i), offset)
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(i.native.domain_dirname)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }
 
 // DefaultLocales: colon-separated list of locales where this input method
 // should be the default. The asterisk “*” sets the default for all locales.
 func (i *IMContextInfo) DefaultLocales() string {
+	offset := girepository.MustFind("Gtk", "IMContextInfo").StructFieldOffset("default_locales")
+	valptr := unsafe.Add(unsafe.Pointer(i), offset)
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(i.native.default_locales)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }

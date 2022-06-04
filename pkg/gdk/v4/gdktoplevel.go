@@ -315,26 +315,13 @@ func marshalToplevel(p uintptr) (interface{}, error) {
 //
 func (toplevel *Toplevel) BeginMove(device Devicer, button int32, x, y float64, timestamp uint32) {
 	var _args [6]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 *C.void   // out
-	var _arg2 C.int     // out
-	var _arg3 C.double  // out
-	var _arg4 C.double  // out
-	var _arg5 C.guint32 // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	_arg2 = C.int(button)
-	_arg3 = C.double(x)
-	_arg4 = C.double(y)
-	_arg5 = C.guint32(timestamp)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.double)(unsafe.Pointer(&_args[4])) = _arg4
-	*(*C.guint32)(unsafe.Pointer(&_args[5])) = _arg5
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(button)
+	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(x)
+	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(y)
+	*(*C.guint32)(unsafe.Pointer(&_args[5])) = C.guint32(timestamp)
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(device)
@@ -355,14 +342,9 @@ func (toplevel *Toplevel) BeginMove(device Devicer, button int32, x, y float64, 
 //
 func (toplevel *Toplevel) Focus(timestamp uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 C.guint32 // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-	_arg1 = C.guint32(timestamp)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint32)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(timestamp)
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(timestamp)
@@ -396,16 +378,11 @@ func (toplevel *Toplevel) Focus(timestamp uint32) {
 //
 func (toplevel *Toplevel) InhibitSystemShortcuts(event Eventer) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 	if event != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(event)
@@ -421,12 +398,8 @@ func (toplevel *Toplevel) InhibitSystemShortcuts(event Eventer) {
 //
 func (toplevel *Toplevel) Lower() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -434,7 +407,7 @@ func (toplevel *Toplevel) Lower() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -451,12 +424,8 @@ func (toplevel *Toplevel) Lower() bool {
 //
 func (toplevel *Toplevel) Minimize() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -464,7 +433,7 @@ func (toplevel *Toplevel) Minimize() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -488,14 +457,9 @@ func (toplevel *Toplevel) Minimize() bool {
 //
 func (toplevel *Toplevel) Present(layout *ToplevelLayout) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(layout)
@@ -507,11 +471,8 @@ func (toplevel *Toplevel) Present(layout *ToplevelLayout) {
 // This undoes the effect of gdk.Toplevel.InhibitSystemShortcuts().
 func (toplevel *Toplevel) RestoreSystemShortcuts() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 
 	runtime.KeepAlive(toplevel)
 }
@@ -528,16 +489,11 @@ func (toplevel *Toplevel) RestoreSystemShortcuts() {
 //
 func (toplevel *Toplevel) SetDecorated(decorated bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 	if decorated {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(decorated)
@@ -554,16 +510,11 @@ func (toplevel *Toplevel) SetDecorated(decorated bool) {
 //
 func (toplevel *Toplevel) SetDeletable(deletable bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 	if deletable {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(deletable)
@@ -584,20 +535,15 @@ func (toplevel *Toplevel) SetDeletable(deletable bool) {
 //
 func (toplevel *Toplevel) SetIconList(surfaces []Texturer) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 	for i := len(surfaces) - 1; i >= 0; i-- {
 		src := surfaces[i]
 		var dst *C.void // out
-		dst = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
-		_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+		*(**C.void)(unsafe.Pointer(&dst)) = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = C.g_list_prepend(*(**C.void)(unsafe.Pointer(&_args[1])), C.gpointer(unsafe.Pointer(dst)))
 	}
-	defer C.g_list_free(_arg1)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	defer C.g_list_free(_args[1])
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(surfaces)
@@ -618,16 +564,11 @@ func (toplevel *Toplevel) SetIconList(surfaces []Texturer) {
 //
 func (toplevel *Toplevel) SetModal(modal bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 	if modal {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(modal)
@@ -644,15 +585,10 @@ func (toplevel *Toplevel) SetModal(modal bool) {
 //
 func (toplevel *Toplevel) SetStartupID(startupId string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(startupId)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(startupId)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(startupId)
@@ -668,15 +604,10 @@ func (toplevel *Toplevel) SetStartupID(startupId string) {
 //
 func (toplevel *Toplevel) SetTitle(title string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(title)
@@ -696,14 +627,9 @@ func (toplevel *Toplevel) SetTitle(title string) {
 //
 func (toplevel *Toplevel) SetTransientFor(parent Surfacer) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(parent)
@@ -726,15 +652,9 @@ func (toplevel *Toplevel) SetTransientFor(parent Surfacer) {
 //
 func (toplevel *Toplevel) ShowWindowMenu(event Eventer) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -743,7 +663,7 @@ func (toplevel *Toplevel) ShowWindowMenu(event Eventer) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -759,12 +679,8 @@ func (toplevel *Toplevel) ShowWindowMenu(event Eventer) bool {
 //
 func (toplevel *Toplevel) SupportsEdgeConstraints() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -772,7 +688,7 @@ func (toplevel *Toplevel) SupportsEdgeConstraints() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

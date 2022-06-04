@@ -125,12 +125,8 @@ func marshalWindowControls(p uintptr) (interface{}, error) {
 //
 func (self *WindowControls) DecorationLayout() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "WindowControls").InvokeMethod("get_decoration_layout", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -139,7 +135,7 @@ func (self *WindowControls) DecorationLayout() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -154,12 +150,8 @@ func (self *WindowControls) DecorationLayout() string {
 //
 func (self *WindowControls) Empty() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "WindowControls").InvokeMethod("get_empty", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -168,7 +160,7 @@ func (self *WindowControls) Empty() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -196,17 +188,12 @@ func (self *WindowControls) Empty() bool {
 //
 func (self *WindowControls) SetDecorationLayout(layout string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if layout != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(layout)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(layout)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "WindowControls").InvokeMethod("set_decoration_layout", _args[:], nil)
 

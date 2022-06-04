@@ -73,8 +73,6 @@ func marshalSimpleActionGroup(p uintptr) (interface{}, error) {
 //    - simpleActionGroup: new ActionGroup.
 //
 func NewSimpleActionGroup() *SimpleActionGroup {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gio", "SimpleActionGroup").InvokeMethod("new_SimpleActionGroup", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -100,14 +98,9 @@ func NewSimpleActionGroup() *SimpleActionGroup {
 //
 func (simple *SimpleActionGroup) Insert(action Actioner) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
 	girepository.MustFind("Gio", "SimpleActionGroup").InvokeMethod("insert", _args[:], nil)
 
@@ -131,16 +124,10 @@ func (simple *SimpleActionGroup) Insert(action Actioner) {
 //
 func (simple *SimpleActionGroup) Lookup(actionName string) *Action {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gio", "SimpleActionGroup").InvokeMethod("lookup", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -167,15 +154,10 @@ func (simple *SimpleActionGroup) Lookup(actionName string) *Action {
 //
 func (simple *SimpleActionGroup) Remove(actionName string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gio", "SimpleActionGroup").InvokeMethod("remove", _args[:], nil)
 

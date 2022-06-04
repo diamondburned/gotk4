@@ -385,12 +385,8 @@ func (link_ *Hyperlink) ConnectLinkActivated(f func()) coreglib.SignalHandle {
 //
 func (link_ *Hyperlink) EndIndex() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
 
 	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("get_end_index", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -399,7 +395,7 @@ func (link_ *Hyperlink) EndIndex() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -412,12 +408,8 @@ func (link_ *Hyperlink) EndIndex() int32 {
 //
 func (link_ *Hyperlink) NAnchors() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
 
 	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("get_n_anchors", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -426,7 +418,7 @@ func (link_ *Hyperlink) NAnchors() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -447,15 +439,9 @@ func (link_ *Hyperlink) NAnchors() int32 {
 //
 func (link_ *Hyperlink) GetObject(i int32) *ObjectClass {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
-	_arg1 = C.gint(i)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
 
 	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("get_object", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -479,12 +465,8 @@ func (link_ *Hyperlink) GetObject(i int32) *ObjectClass {
 //
 func (link_ *Hyperlink) StartIndex() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
 
 	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("get_start_index", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -493,7 +475,7 @@ func (link_ *Hyperlink) StartIndex() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -512,15 +494,9 @@ func (link_ *Hyperlink) StartIndex() int32 {
 //
 func (link_ *Hyperlink) URI(i int32) string {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
-	_arg1 = C.gint(i)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
 
 	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("get_uri", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -546,12 +522,8 @@ func (link_ *Hyperlink) URI(i int32) string {
 //
 func (link_ *Hyperlink) IsInline() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
 
 	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("is_inline", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -560,7 +532,7 @@ func (link_ *Hyperlink) IsInline() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -578,12 +550,8 @@ func (link_ *Hyperlink) IsInline() bool {
 //
 func (link_ *Hyperlink) IsSelectedLink() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
 
 	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("is_selected_link", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -592,7 +560,7 @@ func (link_ *Hyperlink) IsSelectedLink() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -609,12 +577,8 @@ func (link_ *Hyperlink) IsSelectedLink() bool {
 //
 func (link_ *Hyperlink) IsValid() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
 
 	_gret := girepository.MustFind("Atk", "Hyperlink").InvokeMethod("is_valid", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -623,7 +587,7 @@ func (link_ *Hyperlink) IsValid() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

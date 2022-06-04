@@ -74,15 +74,9 @@ func marshalNotebookPageAccessible(p uintptr) (interface{}, error) {
 //
 func NewNotebookPageAccessible(notebook *NotebookAccessible, child Widgetter) *NotebookPageAccessible {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
 	_gret := girepository.MustFind("Gtk", "NotebookPageAccessible").InvokeMethod("new_NotebookPageAccessible", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -99,11 +93,8 @@ func NewNotebookPageAccessible(notebook *NotebookAccessible, child Widgetter) *N
 
 func (page *NotebookPageAccessible) Invalidate() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
 
 	girepository.MustFind("Gtk", "NotebookPageAccessible").InvokeMethod("invalidate", _args[:], nil)
 

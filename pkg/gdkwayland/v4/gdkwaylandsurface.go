@@ -75,19 +75,11 @@ func _gotk4_gdkwayland4_WaylandToplevelExported(arg1 *C.void, arg2 *C.void, arg3
 //
 func (toplevel *WaylandToplevel) ExportHandle(callback WaylandToplevelExported) bool {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gdkwayland4_WaylandToplevelExported)
-	_arg2 = C.gpointer(gbox.Assign(callback))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gdkwayland4_WaylandToplevelExported)
+	_args[2] = C.gpointer(gbox.Assign(callback))
+	_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	_gret := girepository.MustFind("GdkWayland", "WaylandToplevel").InvokeMethod("export_handle", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -96,9 +88,8 @@ func (toplevel *WaylandToplevel) ExportHandle(callback WaylandToplevelExported) 
 	runtime.KeepAlive(callback)
 
 	var _ok bool // out
-	_out2 = *(*C.gboolean)(unsafe.Pointer(&_outs[2]))
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -113,15 +104,10 @@ func (toplevel *WaylandToplevel) ExportHandle(callback WaylandToplevelExported) 
 //
 func (toplevel *WaylandToplevel) SetApplicationID(applicationId string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(applicationId)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(applicationId)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("GdkWayland", "WaylandToplevel").InvokeMethod("set_application_id", _args[:], nil)
 
@@ -149,16 +135,10 @@ func (toplevel *WaylandToplevel) SetApplicationID(applicationId string) {
 //
 func (toplevel *WaylandToplevel) SetTransientForExported(parentHandleStr string) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(parentHandleStr)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(parentHandleStr)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("GdkWayland", "WaylandToplevel").InvokeMethod("set_transient_for_exported", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -168,7 +148,7 @@ func (toplevel *WaylandToplevel) SetTransientForExported(parentHandleStr string)
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -185,11 +165,8 @@ func (toplevel *WaylandToplevel) SetTransientForExported(parentHandleStr string)
 // require changes in the future.
 func (toplevel *WaylandToplevel) UnexportHandle() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 
 	girepository.MustFind("GdkWayland", "WaylandToplevel").InvokeMethod("unexport_handle", _args[:], nil)
 

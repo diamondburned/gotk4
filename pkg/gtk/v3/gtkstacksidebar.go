@@ -93,8 +93,6 @@ func marshalStackSidebar(p uintptr) (interface{}, error) {
 //    - stackSidebar: new StackSidebar.
 //
 func NewStackSidebar() *StackSidebar {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "StackSidebar").InvokeMethod("new_StackSidebar", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -114,12 +112,8 @@ func NewStackSidebar() *StackSidebar {
 //
 func (sidebar *StackSidebar) Stack() *Stack {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sidebar).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sidebar).Native()))
 
 	_gret := girepository.MustFind("Gtk", "StackSidebar").InvokeMethod("get_stack", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -128,7 +122,7 @@ func (sidebar *StackSidebar) Stack() *Stack {
 
 	var _stack *Stack // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_stack = wrapStack(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -146,14 +140,9 @@ func (sidebar *StackSidebar) Stack() *Stack {
 //
 func (sidebar *StackSidebar) SetStack(stack *Stack) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sidebar).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sidebar).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 
 	girepository.MustFind("Gtk", "StackSidebar").InvokeMethod("set_stack", _args[:], nil)
 

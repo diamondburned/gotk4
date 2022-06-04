@@ -84,23 +84,13 @@ func marshalAspectFrame(p uintptr) (interface{}, error) {
 //
 func NewAspectFrame(xalign, yalign, ratio float32, obeyChild bool) *AspectFrame {
 	var _args [4]girepository.Argument
-	var _arg0 C.float    // out
-	var _arg1 C.float    // out
-	var _arg2 C.float    // out
-	var _arg3 C.gboolean // out
-	var _cret *C.void    // in
 
-	_arg0 = C.float(xalign)
-	_arg1 = C.float(yalign)
-	_arg2 = C.float(ratio)
+	*(*C.float)(unsafe.Pointer(&_args[0])) = C.float(xalign)
+	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(yalign)
+	*(*C.float)(unsafe.Pointer(&_args[2])) = C.float(ratio)
 	if obeyChild {
-		_arg3 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
 	}
-
-	*(*C.float)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.float)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gboolean)(unsafe.Pointer(&_args[3])) = _arg3
 
 	_gret := girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("new_AspectFrame", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -125,12 +115,8 @@ func NewAspectFrame(xalign, yalign, ratio float32, obeyChild bool) *AspectFrame 
 //
 func (self *AspectFrame) Child() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("get_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -139,7 +125,7 @@ func (self *AspectFrame) Child() Widgetter {
 
 	var _widget Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -168,12 +154,8 @@ func (self *AspectFrame) Child() Widgetter {
 //
 func (self *AspectFrame) ObeyChild() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("get_obey_child", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -182,7 +164,7 @@ func (self *AspectFrame) ObeyChild() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -197,12 +179,8 @@ func (self *AspectFrame) ObeyChild() bool {
 //
 func (self *AspectFrame) Ratio() float32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.float // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("get_ratio", _args[:], nil)
 	_cret = *(*C.float)(unsafe.Pointer(&_gret))
@@ -211,7 +189,7 @@ func (self *AspectFrame) Ratio() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = float32(_cret)
+	_gfloat = float32(*(*C.float)(unsafe.Pointer(&_cret)))
 
 	return _gfloat
 }
@@ -225,12 +203,8 @@ func (self *AspectFrame) Ratio() float32 {
 //
 func (self *AspectFrame) XAlign() float32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.float // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("get_xalign", _args[:], nil)
 	_cret = *(*C.float)(unsafe.Pointer(&_gret))
@@ -239,7 +213,7 @@ func (self *AspectFrame) XAlign() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = float32(_cret)
+	_gfloat = float32(*(*C.float)(unsafe.Pointer(&_cret)))
 
 	return _gfloat
 }
@@ -253,12 +227,8 @@ func (self *AspectFrame) XAlign() float32 {
 //
 func (self *AspectFrame) YAlign() float32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.float // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("get_yalign", _args[:], nil)
 	_cret = *(*C.float)(unsafe.Pointer(&_gret))
@@ -267,7 +237,7 @@ func (self *AspectFrame) YAlign() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = float32(_cret)
+	_gfloat = float32(*(*C.float)(unsafe.Pointer(&_cret)))
 
 	return _gfloat
 }
@@ -280,16 +250,11 @@ func (self *AspectFrame) YAlign() float32 {
 //
 func (self *AspectFrame) SetChild(child Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if child != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("set_child", _args[:], nil)
 
@@ -307,16 +272,11 @@ func (self *AspectFrame) SetChild(child Widgetter) {
 //
 func (self *AspectFrame) SetObeyChild(obeyChild bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if obeyChild {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("set_obey_child", _args[:], nil)
 
@@ -332,14 +292,9 @@ func (self *AspectFrame) SetObeyChild(obeyChild bool) {
 //
 func (self *AspectFrame) SetRatio(ratio float32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.float // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = C.float(ratio)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(ratio)
 
 	girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("set_ratio", _args[:], nil)
 
@@ -357,14 +312,9 @@ func (self *AspectFrame) SetRatio(ratio float32) {
 //
 func (self *AspectFrame) SetXAlign(xalign float32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.float // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = C.float(xalign)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(xalign)
 
 	girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("set_xalign", _args[:], nil)
 
@@ -382,14 +332,9 @@ func (self *AspectFrame) SetXAlign(xalign float32) {
 //
 func (self *AspectFrame) SetYAlign(yalign float32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.float // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = C.float(yalign)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(yalign)
 
 	girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("set_yalign", _args[:], nil)
 

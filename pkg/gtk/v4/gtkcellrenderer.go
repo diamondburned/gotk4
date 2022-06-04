@@ -164,7 +164,7 @@ type CellRendererOverrider interface {
 	//    - minimumSize (optional): location to store the minimum size, or NULL.
 	//    - naturalSize (optional): location to store the natural size, or NULL.
 	//
-	PreferredHeight(widget Widgetter) (minimumSize int32, naturalSize int32)
+	PreferredHeight(widget Widgetter) (minimumSize, naturalSize int32)
 	// PreferredHeightForWidth retrieves a cell renderers’s minimum and natural
 	// height if it were rendered to widget with the specified width.
 	//
@@ -180,7 +180,7 @@ type CellRendererOverrider interface {
 	//    - naturalHeight (optional): location for storing the preferred size, or
 	//      NULL.
 	//
-	PreferredHeightForWidth(widget Widgetter, width int32) (minimumHeight int32, naturalHeight int32)
+	PreferredHeightForWidth(widget Widgetter, width int32) (minimumHeight, naturalHeight int32)
 	// PreferredWidth retrieves a renderer’s natural size when rendered to
 	// widget.
 	//
@@ -193,7 +193,7 @@ type CellRendererOverrider interface {
 	//    - minimumSize (optional): location to store the minimum size, or NULL.
 	//    - naturalSize (optional): location to store the natural size, or NULL.
 	//
-	PreferredWidth(widget Widgetter) (minimumSize int32, naturalSize int32)
+	PreferredWidth(widget Widgetter) (minimumSize, naturalSize int32)
 	// PreferredWidthForHeight retrieves a cell renderers’s minimum and natural
 	// width if it were rendered to widget with the specified height.
 	//
@@ -209,7 +209,7 @@ type CellRendererOverrider interface {
 	//    - naturalWidth (optional): location for storing the preferred size, or
 	//      NULL.
 	//
-	PreferredWidthForHeight(widget Widgetter, height int32) (minimumWidth int32, naturalWidth int32)
+	PreferredWidthForHeight(widget Widgetter, height int32) (minimumWidth, naturalWidth int32)
 }
 
 // CellRenderer: object for rendering a single cell
@@ -286,25 +286,25 @@ func classInitCellRendererer(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		PreferredHeight(widget Widgetter) (minimumSize int32, naturalSize int32)
+		PreferredHeight(widget Widgetter) (minimumSize, naturalSize int32)
 	}); ok {
 		pclass.get_preferred_height = (*[0]byte)(C._gotk4_gtk4_CellRendererClass_get_preferred_height)
 	}
 
 	if _, ok := goval.(interface {
-		PreferredHeightForWidth(widget Widgetter, width int32) (minimumHeight int32, naturalHeight int32)
+		PreferredHeightForWidth(widget Widgetter, width int32) (minimumHeight, naturalHeight int32)
 	}); ok {
 		pclass.get_preferred_height_for_width = (*[0]byte)(C._gotk4_gtk4_CellRendererClass_get_preferred_height_for_width)
 	}
 
 	if _, ok := goval.(interface {
-		PreferredWidth(widget Widgetter) (minimumSize int32, naturalSize int32)
+		PreferredWidth(widget Widgetter) (minimumSize, naturalSize int32)
 	}); ok {
 		pclass.get_preferred_width = (*[0]byte)(C._gotk4_gtk4_CellRendererClass_get_preferred_width)
 	}
 
 	if _, ok := goval.(interface {
-		PreferredWidthForHeight(widget Widgetter, height int32) (minimumWidth int32, naturalWidth int32)
+		PreferredWidthForHeight(widget Widgetter, height int32) (minimumWidth, naturalWidth int32)
 	}); ok {
 		pclass.get_preferred_width_for_height = (*[0]byte)(C._gotk4_gtk4_CellRendererClass_get_preferred_width_for_height)
 	}
@@ -354,7 +354,7 @@ func _gotk4_gtk4_CellRendererClass_editing_started(arg0 *C.void, arg1 *C.void, a
 func _gotk4_gtk4_CellRendererClass_get_preferred_height(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		PreferredHeight(widget Widgetter) (minimumSize int32, naturalSize int32)
+		PreferredHeight(widget Widgetter) (minimumSize, naturalSize int32)
 	})
 
 	var _widget Widgetter // out
@@ -387,7 +387,7 @@ func _gotk4_gtk4_CellRendererClass_get_preferred_height(arg0 *C.void, arg1 *C.vo
 func _gotk4_gtk4_CellRendererClass_get_preferred_height_for_width(arg0 *C.void, arg1 *C.void, arg2 C.int, arg3 *C.void, arg4 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		PreferredHeightForWidth(widget Widgetter, width int32) (minimumHeight int32, naturalHeight int32)
+		PreferredHeightForWidth(widget Widgetter, width int32) (minimumHeight, naturalHeight int32)
 	})
 
 	var _widget Widgetter // out
@@ -422,7 +422,7 @@ func _gotk4_gtk4_CellRendererClass_get_preferred_height_for_width(arg0 *C.void, 
 func _gotk4_gtk4_CellRendererClass_get_preferred_width(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		PreferredWidth(widget Widgetter) (minimumSize int32, naturalSize int32)
+		PreferredWidth(widget Widgetter) (minimumSize, naturalSize int32)
 	})
 
 	var _widget Widgetter // out
@@ -455,7 +455,7 @@ func _gotk4_gtk4_CellRendererClass_get_preferred_width(arg0 *C.void, arg1 *C.voi
 func _gotk4_gtk4_CellRendererClass_get_preferred_width_for_height(arg0 *C.void, arg1 *C.void, arg2 C.int, arg3 *C.void, arg4 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		PreferredWidthForHeight(widget Widgetter, height int32) (minimumWidth int32, naturalWidth int32)
+		PreferredWidthForHeight(widget Widgetter, height int32) (minimumWidth, naturalWidth int32)
 	})
 
 	var _widget Widgetter // out
@@ -610,16 +610,11 @@ func (cell *CellRenderer) ConnectEditingStarted(f func(editable CellEditabler, p
 //    - yalign (optional): location to fill in with the y alignment of the cell,
 //      or NULL.
 //
-func (cell *CellRenderer) Alignment() (xalign float32, yalign float32) {
+func (cell *CellRenderer) Alignment() (xalign, yalign float32) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
 	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_alignment", _args[:], _outs[:])
 
@@ -627,14 +622,12 @@ func (cell *CellRenderer) Alignment() (xalign float32, yalign float32) {
 
 	var _xalign float32 // out
 	var _yalign float32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_xalign = *(*float32)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_xalign = *(*float32)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_yalign = *(*float32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_yalign = *(*float32)(unsafe.Pointer(_outs[1]))
 	}
 
 	return _xalign, _yalign
@@ -649,16 +642,11 @@ func (cell *CellRenderer) Alignment() (xalign float32, yalign float32) {
 //    - height (optional): location to fill in with the fixed height of the cell,
 //      or NULL.
 //
-func (cell *CellRenderer) FixedSize() (width int32, height int32) {
+func (cell *CellRenderer) FixedSize() (width, height int32) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
 	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_fixed_size", _args[:], _outs[:])
 
@@ -666,14 +654,12 @@ func (cell *CellRenderer) FixedSize() (width int32, height int32) {
 
 	var _width int32  // out
 	var _height int32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_width = *(*int32)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_width = *(*int32)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_height = *(*int32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_height = *(*int32)(unsafe.Pointer(_outs[1]))
 	}
 
 	return _width, _height
@@ -687,12 +673,8 @@ func (cell *CellRenderer) FixedSize() (width int32, height int32) {
 //
 func (cell *CellRenderer) IsExpanded() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
 	_gret := girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_is_expanded", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -701,7 +683,7 @@ func (cell *CellRenderer) IsExpanded() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -716,12 +698,8 @@ func (cell *CellRenderer) IsExpanded() bool {
 //
 func (cell *CellRenderer) IsExpander() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
 	_gret := girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_is_expander", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -730,7 +708,7 @@ func (cell *CellRenderer) IsExpander() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -746,16 +724,11 @@ func (cell *CellRenderer) IsExpander() bool {
 //    - ypad (optional): location to fill in with the y padding of the cell, or
 //      NULL.
 //
-func (cell *CellRenderer) Padding() (xpad int32, ypad int32) {
+func (cell *CellRenderer) Padding() (xpad, ypad int32) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
 	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_padding", _args[:], _outs[:])
 
@@ -763,14 +736,12 @@ func (cell *CellRenderer) Padding() (xpad int32, ypad int32) {
 
 	var _xpad int32 // out
 	var _ypad int32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_xpad = *(*int32)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_xpad = *(*int32)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_ypad = *(*int32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_ypad = *(*int32)(unsafe.Pointer(_outs[1]))
 	}
 
 	return _xpad, _ypad
@@ -787,19 +758,12 @@ func (cell *CellRenderer) Padding() (xpad int32, ypad int32) {
 //    - minimumSize (optional): location to store the minimum size, or NULL.
 //    - naturalSize (optional): location to store the natural size, or NULL.
 //
-func (cell *CellRenderer) PreferredHeight(widget Widgetter) (minimumSize int32, naturalSize int32) {
+func (cell *CellRenderer) PreferredHeight(widget Widgetter) (minimumSize, naturalSize int32) {
 	var _args [2]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_preferred_height", _args[:], _outs[:])
 
@@ -808,14 +772,12 @@ func (cell *CellRenderer) PreferredHeight(widget Widgetter) (minimumSize int32, 
 
 	var _minimumSize int32 // out
 	var _naturalSize int32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_minimumSize = *(*int32)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_minimumSize = *(*int32)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_naturalSize = *(*int32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_naturalSize = *(*int32)(unsafe.Pointer(_outs[1]))
 	}
 
 	return _minimumSize, _naturalSize
@@ -835,22 +797,13 @@ func (cell *CellRenderer) PreferredHeight(widget Widgetter) (minimumSize int32, 
 //    - naturalHeight (optional): location for storing the preferred size, or
 //      NULL.
 //
-func (cell *CellRenderer) PreferredHeightForWidth(widget Widgetter, width int32) (minimumHeight int32, naturalHeight int32) {
+func (cell *CellRenderer) PreferredHeightForWidth(widget Widgetter, width int32) (minimumHeight, naturalHeight int32) {
 	var _args [3]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.int   // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg2 = C.int(width)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(width)
 
 	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_preferred_height_for_width", _args[:], _outs[:])
 
@@ -860,14 +813,12 @@ func (cell *CellRenderer) PreferredHeightForWidth(widget Widgetter, width int32)
 
 	var _minimumHeight int32 // out
 	var _naturalHeight int32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_minimumHeight = *(*int32)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_minimumHeight = *(*int32)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_naturalHeight = *(*int32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_naturalHeight = *(*int32)(unsafe.Pointer(_outs[1]))
 	}
 
 	return _minimumHeight, _naturalHeight
@@ -885,19 +836,12 @@ func (cell *CellRenderer) PreferredHeightForWidth(widget Widgetter, width int32)
 //    - minimumSize (optional): location for storing the minimum size, or NULL.
 //    - naturalSize (optional): location for storing the natural size, or NULL.
 //
-func (cell *CellRenderer) PreferredSize(widget Widgetter) (minimumSize *Requisition, naturalSize *Requisition) {
+func (cell *CellRenderer) PreferredSize(widget Widgetter) (minimumSize, naturalSize *Requisition) {
 	var _args [2]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_preferred_size", _args[:], _outs[:])
 
@@ -906,14 +850,12 @@ func (cell *CellRenderer) PreferredSize(widget Widgetter) (minimumSize *Requisit
 
 	var _minimumSize *Requisition // out
 	var _naturalSize *Requisition // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_minimumSize = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_minimumSize = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 	}
-	if _out1 != nil {
-		_naturalSize = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(_out1)))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_naturalSize = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
 	}
 
 	return _minimumSize, _naturalSize
@@ -930,19 +872,12 @@ func (cell *CellRenderer) PreferredSize(widget Widgetter) (minimumSize *Requisit
 //    - minimumSize (optional): location to store the minimum size, or NULL.
 //    - naturalSize (optional): location to store the natural size, or NULL.
 //
-func (cell *CellRenderer) PreferredWidth(widget Widgetter) (minimumSize int32, naturalSize int32) {
+func (cell *CellRenderer) PreferredWidth(widget Widgetter) (minimumSize, naturalSize int32) {
 	var _args [2]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_preferred_width", _args[:], _outs[:])
 
@@ -951,14 +886,12 @@ func (cell *CellRenderer) PreferredWidth(widget Widgetter) (minimumSize int32, n
 
 	var _minimumSize int32 // out
 	var _naturalSize int32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_minimumSize = *(*int32)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_minimumSize = *(*int32)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_naturalSize = *(*int32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_naturalSize = *(*int32)(unsafe.Pointer(_outs[1]))
 	}
 
 	return _minimumSize, _naturalSize
@@ -978,22 +911,13 @@ func (cell *CellRenderer) PreferredWidth(widget Widgetter) (minimumSize int32, n
 //    - naturalWidth (optional): location for storing the preferred size, or
 //      NULL.
 //
-func (cell *CellRenderer) PreferredWidthForHeight(widget Widgetter, height int32) (minimumWidth int32, naturalWidth int32) {
+func (cell *CellRenderer) PreferredWidthForHeight(widget Widgetter, height int32) (minimumWidth, naturalWidth int32) {
 	var _args [3]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.int   // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg2 = C.int(height)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(height)
 
 	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_preferred_width_for_height", _args[:], _outs[:])
 
@@ -1003,14 +927,12 @@ func (cell *CellRenderer) PreferredWidthForHeight(widget Widgetter, height int32
 
 	var _minimumWidth int32 // out
 	var _naturalWidth int32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_minimumWidth = *(*int32)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_minimumWidth = *(*int32)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_naturalWidth = *(*int32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_naturalWidth = *(*int32)(unsafe.Pointer(_outs[1]))
 	}
 
 	return _minimumWidth, _naturalWidth
@@ -1024,12 +946,8 @@ func (cell *CellRenderer) PreferredWidthForHeight(widget Widgetter, height int32
 //
 func (cell *CellRenderer) Sensitive() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
 	_gret := girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_sensitive", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1038,7 +956,7 @@ func (cell *CellRenderer) Sensitive() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1053,12 +971,8 @@ func (cell *CellRenderer) Sensitive() bool {
 //
 func (cell *CellRenderer) Visible() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
 	_gret := girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_visible", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1067,7 +981,7 @@ func (cell *CellRenderer) Visible() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1083,12 +997,8 @@ func (cell *CellRenderer) Visible() bool {
 //
 func (cell *CellRenderer) IsActivatable() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
 	_gret := girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("is_activatable", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1097,7 +1007,7 @@ func (cell *CellRenderer) IsActivatable() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1113,17 +1023,10 @@ func (cell *CellRenderer) IsActivatable() bool {
 //
 func (cell *CellRenderer) SetAlignment(xalign, yalign float32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.float // out
-	var _arg2 C.float // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	_arg1 = C.float(xalign)
-	_arg2 = C.float(yalign)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.float)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(xalign)
+	*(*C.float)(unsafe.Pointer(&_args[2])) = C.float(yalign)
 
 	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("set_alignment", _args[:], nil)
 
@@ -1142,17 +1045,10 @@ func (cell *CellRenderer) SetAlignment(xalign, yalign float32) {
 //
 func (cell *CellRenderer) SetFixedSize(width, height int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
-	var _arg2 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	_arg1 = C.int(width)
-	_arg2 = C.int(height)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(width)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(height)
 
 	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("set_fixed_size", _args[:], nil)
 
@@ -1169,16 +1065,11 @@ func (cell *CellRenderer) SetFixedSize(width, height int32) {
 //
 func (cell *CellRenderer) SetIsExpanded(isExpanded bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 	if isExpanded {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("set_is_expanded", _args[:], nil)
 
@@ -1194,16 +1085,11 @@ func (cell *CellRenderer) SetIsExpanded(isExpanded bool) {
 //
 func (cell *CellRenderer) SetIsExpander(isExpander bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 	if isExpander {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("set_is_expander", _args[:], nil)
 
@@ -1220,17 +1106,10 @@ func (cell *CellRenderer) SetIsExpander(isExpander bool) {
 //
 func (cell *CellRenderer) SetPadding(xpad, ypad int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
-	var _arg2 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	_arg1 = C.int(xpad)
-	_arg2 = C.int(ypad)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(xpad)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(ypad)
 
 	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("set_padding", _args[:], nil)
 
@@ -1247,16 +1126,11 @@ func (cell *CellRenderer) SetPadding(xpad, ypad int32) {
 //
 func (cell *CellRenderer) SetSensitive(sensitive bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 	if sensitive {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("set_sensitive", _args[:], nil)
 
@@ -1272,16 +1146,11 @@ func (cell *CellRenderer) SetSensitive(sensitive bool) {
 //
 func (cell *CellRenderer) SetVisible(visible bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 	if visible {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("set_visible", _args[:], nil)
 
@@ -1302,16 +1171,11 @@ func (cell *CellRenderer) SetVisible(visible bool) {
 //
 func (cell *CellRenderer) StopEditing(canceled bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 	if canceled {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("stop_editing", _args[:], nil)
 

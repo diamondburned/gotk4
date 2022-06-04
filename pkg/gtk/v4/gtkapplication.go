@@ -344,14 +344,9 @@ func (application *Application) ConnectWindowRemoved(f func(window *Window)) cor
 //
 func (application *Application) AddWindow(window *Window) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
 	girepository.MustFind("Gtk", "Application").InvokeMethod("add_window", _args[:], nil)
 
@@ -373,16 +368,10 @@ func (application *Application) AddWindow(window *Window) {
 //
 func (application *Application) AccelsForAction(detailedActionName string) []string {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 *C.void  // out
-	var _cret **C.char // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(detailedActionName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(detailedActionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_accels_for_action", _args[:], nil)
 	_cret = *(***C.char)(unsafe.Pointer(&_gret))
@@ -439,16 +428,10 @@ func (application *Application) AccelsForAction(detailedActionName string) []str
 //
 func (application *Application) ActionsForAccel(accel string) []string {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 *C.void  // out
-	var _cret **C.char // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(accel)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(accel)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_actions_for_accel", _args[:], nil)
 	_cret = *(***C.char)(unsafe.Pointer(&_gret))
@@ -490,12 +473,8 @@ func (application *Application) ActionsForAccel(accel string) []string {
 //
 func (application *Application) ActiveWindow() *Window {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_active_window", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -504,7 +483,7 @@ func (application *Application) ActiveWindow() *Window {
 
 	var _window *Window // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_window = wrapWindow(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -527,16 +506,10 @@ func (application *Application) ActiveWindow() *Window {
 //
 func (application *Application) MenuByID(id string) *gio.Menu {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(id)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(id)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_menu_by_id", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -546,7 +519,7 @@ func (application *Application) MenuByID(id string) *gio.Menu {
 
 	var _menu *gio.Menu // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			obj := coreglib.Take(unsafe.Pointer(_cret))
 			_menu = &gio.Menu{
@@ -569,12 +542,8 @@ func (application *Application) MenuByID(id string) *gio.Menu {
 //
 func (application *Application) Menubar() gio.MenuModeller {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_menubar", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -583,7 +552,7 @@ func (application *Application) Menubar() gio.MenuModeller {
 
 	var _menuModel gio.MenuModeller // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -618,15 +587,9 @@ func (application *Application) Menubar() gio.MenuModeller {
 //
 func (application *Application) WindowByID(id uint32) *Window {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	_arg1 = C.guint(id)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(id)
 
 	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_window_by_id", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -636,7 +599,7 @@ func (application *Application) WindowByID(id uint32) *Window {
 
 	var _window *Window // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_window = wrapWindow(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -658,12 +621,8 @@ func (application *Application) WindowByID(id uint32) *Window {
 //
 func (application *Application) Windows() []*Window {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_windows", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -694,12 +653,8 @@ func (application *Application) Windows() []*Window {
 //
 func (application *Application) ListActionDescriptions() []string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void  // out
-	var _cret **C.char // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("list_action_descriptions", _args[:], nil)
 	_cret = *(***C.char)(unsafe.Pointer(&_gret))
@@ -741,14 +696,9 @@ func (application *Application) ListActionDescriptions() []string {
 //
 func (application *Application) RemoveWindow(window *Window) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
 	girepository.MustFind("Gtk", "Application").InvokeMethod("remove_window", _args[:], nil)
 
@@ -777,30 +727,23 @@ func (application *Application) RemoveWindow(window *Window) {
 //
 func (application *Application) SetAccelsForAction(detailedActionName string, accels []string) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 *C.void  // out
-	var _arg2 **C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(detailedActionName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(detailedActionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 	{
-		_arg2 = (**C.void)(C.calloc(C.size_t((len(accels) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg2))
+		*(***C.void)(unsafe.Pointer(&_args[2])) = (**C.void)(C.calloc(C.size_t((len(accels) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_args[2]))
 		{
-			out := unsafe.Slice(_arg2, len(accels)+1)
+			out := unsafe.Slice(_args[2], len(accels)+1)
 			var zero *C.void
 			out[len(accels)] = zero
 			for i := range accels {
-				out[i] = (*C.void)(unsafe.Pointer(C.CString(accels[i])))
+				*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(accels[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(***C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "Application").InvokeMethod("set_accels_for_action", _args[:], nil)
 
@@ -833,16 +776,11 @@ func (application *Application) SetAccelsForAction(detailedActionName string, ac
 //
 func (application *Application) SetMenubar(menubar gio.MenuModeller) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	if menubar != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menubar).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menubar).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Application").InvokeMethod("set_menubar", _args[:], nil)
 
@@ -862,14 +800,9 @@ func (application *Application) SetMenubar(menubar gio.MenuModeller) {
 //
 func (application *Application) Uninhibit(cookie uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	_arg1 = C.guint(cookie)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(cookie)
 
 	girepository.MustFind("Gtk", "Application").InvokeMethod("uninhibit", _args[:], nil)
 

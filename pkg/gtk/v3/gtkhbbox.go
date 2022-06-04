@@ -86,8 +86,6 @@ func marshalHButtonBox(p uintptr) (interface{}, error) {
 //    - hButtonBox: new button box Widget.
 //
 func NewHButtonBox() *HButtonBox {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "HButtonBox").InvokeMethod("new_HButtonBox", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

@@ -215,12 +215,8 @@ func BaseTLSConnection(obj TLSConnectioner) *TLSConnection {
 //
 func (conn *TLSConnection) Certificate() TLSCertificater {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
 	_gret := girepository.MustFind("Gio", "TlsConnection").InvokeMethod("get_certificate", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -229,7 +225,7 @@ func (conn *TLSConnection) Certificate() TLSCertificater {
 
 	var _tlsCertificate TLSCertificater // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -258,12 +254,8 @@ func (conn *TLSConnection) Certificate() TLSCertificater {
 //
 func (conn *TLSConnection) Database() TLSDatabaser {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
 	_gret := girepository.MustFind("Gio", "TlsConnection").InvokeMethod("get_database", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -272,7 +264,7 @@ func (conn *TLSConnection) Database() TLSDatabaser {
 
 	var _tlsDatabase TLSDatabaser // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -302,12 +294,8 @@ func (conn *TLSConnection) Database() TLSDatabaser {
 //
 func (conn *TLSConnection) Interaction() *TLSInteraction {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
 	_gret := girepository.MustFind("Gio", "TlsConnection").InvokeMethod("get_interaction", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -316,7 +304,7 @@ func (conn *TLSConnection) Interaction() *TLSInteraction {
 
 	var _tlsInteraction *TLSInteraction // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_tlsInteraction = wrapTLSInteraction(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -337,12 +325,8 @@ func (conn *TLSConnection) Interaction() *TLSInteraction {
 //
 func (conn *TLSConnection) NegotiatedProtocol() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
 	_gret := girepository.MustFind("Gio", "TlsConnection").InvokeMethod("get_negotiated_protocol", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -351,7 +335,7 @@ func (conn *TLSConnection) NegotiatedProtocol() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -368,12 +352,8 @@ func (conn *TLSConnection) NegotiatedProtocol() string {
 //
 func (conn *TLSConnection) PeerCertificate() TLSCertificater {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
 	_gret := girepository.MustFind("Gio", "TlsConnection").InvokeMethod("get_peer_certificate", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -382,7 +362,7 @@ func (conn *TLSConnection) PeerCertificate() TLSCertificater {
 
 	var _tlsCertificate TLSCertificater // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -412,12 +392,8 @@ func (conn *TLSConnection) PeerCertificate() TLSCertificater {
 //
 func (conn *TLSConnection) RequireCloseNotify() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
 	_gret := girepository.MustFind("Gio", "TlsConnection").InvokeMethod("get_require_close_notify", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -426,7 +402,7 @@ func (conn *TLSConnection) RequireCloseNotify() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -444,12 +420,8 @@ func (conn *TLSConnection) RequireCloseNotify() bool {
 //
 func (conn *TLSConnection) UseSystemCertDB() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
 	_gret := girepository.MustFind("Gio", "TlsConnection").InvokeMethod("get_use_system_certdb", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -458,7 +430,7 @@ func (conn *TLSConnection) UseSystemCertDB() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -499,19 +471,13 @@ func (conn *TLSConnection) UseSystemCertDB() bool {
 //
 func (conn *TLSConnection) Handshake(ctx context.Context) error {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("handshake", _args[:], nil)
 
@@ -520,7 +486,7 @@ func (conn *TLSConnection) Handshake(ctx context.Context) error {
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -538,28 +504,18 @@ func (conn *TLSConnection) Handshake(ctx context.Context) error {
 //
 func (conn *TLSConnection) HandshakeAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg2 *C.void    // out
-	var _arg1 C.int      // out
-	var _arg3 C.gpointer // out
-	var _arg4 C.gpointer
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = C.int(ioPriority)
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
 	if callback != nil {
-		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+		*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gpointer)(unsafe.Pointer(&_args[3])) = _arg3
 
 	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("handshake_async", _args[:], nil)
 
@@ -578,15 +534,9 @@ func (conn *TLSConnection) HandshakeAsync(ctx context.Context, ioPriority int32,
 //
 func (conn *TLSConnection) HandshakeFinish(result AsyncResulter) error {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
 	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("handshake_finish", _args[:], nil)
 
@@ -595,7 +545,7 @@ func (conn *TLSConnection) HandshakeFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -621,26 +571,21 @@ func (conn *TLSConnection) HandshakeFinish(result AsyncResulter) error {
 //
 func (conn *TLSConnection) SetAdvertisedProtocols(protocols []string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 **C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	{
-		_arg1 = (**C.void)(C.calloc(C.size_t((len(protocols) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(***C.void)(unsafe.Pointer(&_args[1])) = (**C.void)(C.calloc(C.size_t((len(protocols) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_args[1]))
 		{
-			out := unsafe.Slice(_arg1, len(protocols)+1)
+			out := unsafe.Slice(_args[1], len(protocols)+1)
 			var zero *C.void
 			out[len(protocols)] = zero
 			for i := range protocols {
-				out[i] = (*C.void)(unsafe.Pointer(C.CString(protocols[i])))
+				*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(protocols[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(***C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("set_advertised_protocols", _args[:], nil)
 
@@ -670,14 +615,9 @@ func (conn *TLSConnection) SetAdvertisedProtocols(protocols []string) {
 //
 func (conn *TLSConnection) SetCertificate(certificate TLSCertificater) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(certificate).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(certificate).Native()))
 
 	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("set_certificate", _args[:], nil)
 
@@ -699,16 +639,11 @@ func (conn *TLSConnection) SetCertificate(certificate TLSCertificater) {
 //
 func (conn *TLSConnection) SetDatabase(database TLSDatabaser) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	if database != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(database).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(database).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("set_database", _args[:], nil)
 
@@ -729,16 +664,11 @@ func (conn *TLSConnection) SetDatabase(database TLSDatabaser) {
 //
 func (conn *TLSConnection) SetInteraction(interaction *TLSInteraction) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	if interaction != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interaction).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interaction).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("set_interaction", _args[:], nil)
 
@@ -778,16 +708,11 @@ func (conn *TLSConnection) SetInteraction(interaction *TLSInteraction) {
 //
 func (conn *TLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	if requireCloseNotify {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("set_require_close_notify", _args[:], nil)
 
@@ -810,16 +735,11 @@ func (conn *TLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 //
 func (conn *TLSConnection) SetUseSystemCertDB(useSystemCertdb bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	if useSystemCertdb {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("set_use_system_certdb", _args[:], nil)
 

@@ -78,15 +78,11 @@ func marshalFlattenListModel(p uintptr) (interface{}, error) {
 //
 func NewFlattenListModel(model gio.ListModeller) *FlattenListModel {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
 	if model != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(model).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gtk", "FlattenListModel").InvokeMethod("new_FlattenListModel", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -108,12 +104,8 @@ func NewFlattenListModel(model gio.ListModeller) *FlattenListModel {
 //
 func (self *FlattenListModel) Model() *gio.ListModel {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "FlattenListModel").InvokeMethod("get_model", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -122,7 +114,7 @@ func (self *FlattenListModel) Model() *gio.ListModel {
 
 	var _listModel *gio.ListModel // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			obj := coreglib.Take(unsafe.Pointer(_cret))
 			_listModel = &gio.ListModel{
@@ -146,15 +138,9 @@ func (self *FlattenListModel) Model() *gio.ListModel {
 //
 func (self *FlattenListModel) ModelForItem(position uint32) *gio.ListModel {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = C.guint(position)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
 
 	_gret := girepository.MustFind("Gtk", "FlattenListModel").InvokeMethod("get_model_for_item", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -182,16 +168,11 @@ func (self *FlattenListModel) ModelForItem(position uint32) *gio.ListModel {
 //
 func (self *FlattenListModel) SetModel(model gio.ListModeller) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if model != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "FlattenListModel").InvokeMethod("set_model", _args[:], nil)
 

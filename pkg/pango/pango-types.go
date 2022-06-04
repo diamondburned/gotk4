@@ -7,10 +7,12 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <pango/pango.h>
+// #include <glib.h>
 import "C"
 
 // SCALE: scale between dimensions used for Pango distances and device units.
@@ -50,17 +52,17 @@ type Glyph = uint32
 //    - nearest (optional): rectangle to round to nearest pixels, or NULL.
 //
 func ExtentsToPixels(inclusive, nearest *Rectangle) {
-	var _arg1 *C.PangoRectangle // out
-	var _arg2 *C.PangoRectangle // out
+	var _args [2]girepository.Argument
 
 	if inclusive != nil {
-		_arg1 = (*C.PangoRectangle)(gextras.StructNative(unsafe.Pointer(inclusive)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(inclusive)))
 	}
 	if nearest != nil {
-		_arg2 = (*C.PangoRectangle)(gextras.StructNative(unsafe.Pointer(nearest)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(nearest)))
 	}
 
-	C.pango_extents_to_pixels(_arg1, _arg2)
+	girepository.MustFind("Pango", "extents_to_pixels").Invoke(_args[:], nil)
+
 	runtime.KeepAlive(inclusive)
 	runtime.KeepAlive(nearest)
 }
@@ -79,17 +81,18 @@ func ExtentsToPixels(inclusive, nearest *Rectangle) {
 //    - gint: value in Pango units.
 //
 func UnitsFromDouble(d float64) int32 {
-	var _arg1 C.double // out
-	var _cret C.int    // in
+	var _args [1]girepository.Argument
 
-	_arg1 = C.double(d)
+	*(*C.double)(unsafe.Pointer(&_args[0])) = C.double(d)
 
-	_cret = C.pango_units_from_double(_arg1)
+	_gret := girepository.MustFind("Pango", "units_from_double").Invoke(_args[:], nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(d)
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -107,17 +110,18 @@ func UnitsFromDouble(d float64) int32 {
 //    - gdouble: double value.
 //
 func UnitsToDouble(i int32) float64 {
-	var _arg1 C.int    // out
-	var _cret C.double // in
+	var _args [1]girepository.Argument
 
-	_arg1 = C.int(i)
+	*(*C.int)(unsafe.Pointer(&_args[0])) = C.int(i)
 
-	_cret = C.pango_units_to_double(_arg1)
+	_gret := girepository.MustFind("Pango", "units_to_double").Invoke(_args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(i)
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(_cret)
+	_gdouble = float64(*(*C.double)(unsafe.Pointer(&_cret)))
 
 	return _gdouble
 }
@@ -135,7 +139,7 @@ type Rectangle struct {
 
 // rectangle is the struct that's finalized.
 type rectangle struct {
-	native *C.PangoRectangle
+	native unsafe.Pointer
 }
 
 // NewRectangle creates a new Rectangle instance from the given
@@ -162,28 +166,36 @@ func NewRectangle(x, y, width, height int32) Rectangle {
 
 // X coordinate of the left side of the rectangle.
 func (r *Rectangle) X() int32 {
+	offset := girepository.MustFind("Pango", "Rectangle").StructFieldOffset("x")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v int32 // out
-	v = int32(r.native.x)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Y coordinate of the the top side of the rectangle.
 func (r *Rectangle) Y() int32 {
+	offset := girepository.MustFind("Pango", "Rectangle").StructFieldOffset("y")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v int32 // out
-	v = int32(r.native.y)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Width: width of the rectangle.
 func (r *Rectangle) Width() int32 {
+	offset := girepository.MustFind("Pango", "Rectangle").StructFieldOffset("width")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v int32 // out
-	v = int32(r.native.width)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Height: height of the rectangle.
 func (r *Rectangle) Height() int32 {
+	offset := girepository.MustFind("Pango", "Rectangle").StructFieldOffset("height")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v int32 // out
-	v = int32(r.native.height)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }

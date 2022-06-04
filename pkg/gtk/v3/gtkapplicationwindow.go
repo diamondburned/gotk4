@@ -205,12 +205,8 @@ func marshalApplicationWindow(p uintptr) (interface{}, error) {
 //
 func NewApplicationWindow(application *Application) *ApplicationWindow {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ApplicationWindow").InvokeMethod("new_ApplicationWindow", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -233,12 +229,8 @@ func NewApplicationWindow(application *Application) *ApplicationWindow {
 //
 func (window *ApplicationWindow) HelpOverlay() *ShortcutsWindow {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ApplicationWindow").InvokeMethod("get_help_overlay", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -247,7 +239,7 @@ func (window *ApplicationWindow) HelpOverlay() *ShortcutsWindow {
 
 	var _shortcutsWindow *ShortcutsWindow // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_shortcutsWindow = wrapShortcutsWindow(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -264,12 +256,8 @@ func (window *ApplicationWindow) HelpOverlay() *ShortcutsWindow {
 //
 func (window *ApplicationWindow) ID() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ApplicationWindow").InvokeMethod("get_id", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -278,7 +266,7 @@ func (window *ApplicationWindow) ID() uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -292,12 +280,8 @@ func (window *ApplicationWindow) ID() uint32 {
 //
 func (window *ApplicationWindow) ShowMenubar() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ApplicationWindow").InvokeMethod("get_show_menubar", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -306,7 +290,7 @@ func (window *ApplicationWindow) ShowMenubar() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -324,16 +308,11 @@ func (window *ApplicationWindow) ShowMenubar() bool {
 //
 func (window *ApplicationWindow) SetHelpOverlay(helpOverlay *ShortcutsWindow) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if helpOverlay != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(helpOverlay).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(helpOverlay).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "ApplicationWindow").InvokeMethod("set_help_overlay", _args[:], nil)
 
@@ -350,16 +329,11 @@ func (window *ApplicationWindow) SetHelpOverlay(helpOverlay *ShortcutsWindow) {
 //
 func (window *ApplicationWindow) SetShowMenubar(showMenubar bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if showMenubar {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "ApplicationWindow").InvokeMethod("set_show_menubar", _args[:], nil)
 

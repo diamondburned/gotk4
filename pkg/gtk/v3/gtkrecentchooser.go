@@ -334,14 +334,9 @@ func (chooser *RecentChooser) ConnectSelectionChanged(f func()) coreglib.SignalH
 //
 func (chooser *RecentChooser) AddFilter(filter *RecentFilter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(filter)
@@ -356,12 +351,8 @@ func (chooser *RecentChooser) AddFilter(filter *RecentFilter) {
 //
 func (chooser *RecentChooser) CurrentItem() *RecentInfo {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -388,12 +379,8 @@ func (chooser *RecentChooser) CurrentItem() *RecentInfo {
 //
 func (chooser *RecentChooser) CurrentURI() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -416,12 +403,8 @@ func (chooser *RecentChooser) CurrentURI() string {
 //
 func (chooser *RecentChooser) Filter() *RecentFilter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -447,12 +430,8 @@ func (chooser *RecentChooser) Filter() *RecentFilter {
 //
 func (chooser *RecentChooser) Items() []*RecentInfo {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -486,12 +465,8 @@ func (chooser *RecentChooser) Items() []*RecentInfo {
 //
 func (chooser *RecentChooser) Limit() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -499,7 +474,7 @@ func (chooser *RecentChooser) Limit() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -513,12 +488,8 @@ func (chooser *RecentChooser) Limit() int32 {
 //
 func (chooser *RecentChooser) LocalOnly() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -526,7 +497,7 @@ func (chooser *RecentChooser) LocalOnly() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -541,12 +512,8 @@ func (chooser *RecentChooser) LocalOnly() bool {
 //
 func (chooser *RecentChooser) SelectMultiple() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -554,7 +521,7 @@ func (chooser *RecentChooser) SelectMultiple() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -569,12 +536,8 @@ func (chooser *RecentChooser) SelectMultiple() bool {
 //
 func (chooser *RecentChooser) ShowIcons() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -582,7 +545,7 @@ func (chooser *RecentChooser) ShowIcons() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -599,12 +562,8 @@ func (chooser *RecentChooser) ShowIcons() bool {
 //
 func (chooser *RecentChooser) ShowNotFound() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -612,7 +571,7 @@ func (chooser *RecentChooser) ShowNotFound() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -629,12 +588,8 @@ func (chooser *RecentChooser) ShowNotFound() bool {
 //
 func (chooser *RecentChooser) ShowPrivate() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -642,7 +597,7 @@ func (chooser *RecentChooser) ShowPrivate() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -658,12 +613,8 @@ func (chooser *RecentChooser) ShowPrivate() bool {
 //
 func (chooser *RecentChooser) ShowTips() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -671,7 +622,7 @@ func (chooser *RecentChooser) ShowTips() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -693,26 +644,20 @@ func (chooser *RecentChooser) ShowTips() bool {
 func (chooser *RecentChooser) URIs() []string {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret **C.gchar // in
-	var _out0 *C.void   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
 	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 
 	var _utf8s []string // out
-	_out0 = *(***C.gchar)(unsafe.Pointer(&_outs[0]))
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice((**C.void)(_cret), _out0)
-		_utf8s = make([]string, _out0)
-		for i := 0; i < int(_out0); i++ {
+		src := unsafe.Slice((**C.void)(_cret), _outs[0])
+		_utf8s = make([]string, _outs[0])
+		for i := 0; i < int(_outs[0]); i++ {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
@@ -730,12 +675,8 @@ func (chooser *RecentChooser) URIs() []string {
 //
 func (chooser *RecentChooser) ListFilters() []*RecentFilter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -763,14 +704,9 @@ func (chooser *RecentChooser) ListFilters() []*RecentFilter {
 //
 func (chooser *RecentChooser) RemoveFilter(filter *RecentFilter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(filter)
@@ -780,11 +716,8 @@ func (chooser *RecentChooser) RemoveFilter(filter *RecentFilter) {
 // multiple selection.
 func (chooser *RecentChooser) SelectAll() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
 	runtime.KeepAlive(chooser)
 }
@@ -797,23 +730,17 @@ func (chooser *RecentChooser) SelectAll() {
 //
 func (chooser *RecentChooser) SelectURI(uri string) error {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(uri)
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -828,23 +755,17 @@ func (chooser *RecentChooser) SelectURI(uri string) error {
 //
 func (chooser *RecentChooser) SetCurrentURI(uri string) error {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(uri)
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -860,16 +781,11 @@ func (chooser *RecentChooser) SetCurrentURI(uri string) error {
 //
 func (chooser *RecentChooser) SetFilter(filter *RecentFilter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	if filter != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(filter)
@@ -884,14 +800,9 @@ func (chooser *RecentChooser) SetFilter(filter *RecentFilter) {
 //
 func (chooser *RecentChooser) SetLimit(limit int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	_arg1 = C.gint(limit)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(limit)
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(limit)
@@ -908,16 +819,11 @@ func (chooser *RecentChooser) SetLimit(limit int32) {
 //
 func (chooser *RecentChooser) SetLocalOnly(localOnly bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	if localOnly {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(localOnly)
@@ -931,16 +837,11 @@ func (chooser *RecentChooser) SetLocalOnly(localOnly bool) {
 //
 func (chooser *RecentChooser) SetSelectMultiple(selectMultiple bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	if selectMultiple {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(selectMultiple)
@@ -955,16 +856,11 @@ func (chooser *RecentChooser) SetSelectMultiple(selectMultiple bool) {
 //
 func (chooser *RecentChooser) SetShowIcons(showIcons bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	if showIcons {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(showIcons)
@@ -979,16 +875,11 @@ func (chooser *RecentChooser) SetShowIcons(showIcons bool) {
 //
 func (chooser *RecentChooser) SetShowNotFound(showNotFound bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	if showNotFound {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(showNotFound)
@@ -1003,16 +894,11 @@ func (chooser *RecentChooser) SetShowNotFound(showNotFound bool) {
 //
 func (chooser *RecentChooser) SetShowPrivate(showPrivate bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	if showPrivate {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(showPrivate)
@@ -1027,16 +913,11 @@ func (chooser *RecentChooser) SetShowPrivate(showPrivate bool) {
 //
 func (chooser *RecentChooser) SetShowTips(showTips bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	if showTips {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(showTips)
@@ -1057,18 +938,11 @@ func (chooser *RecentChooser) SetShowTips(showTips bool) {
 //
 func (chooser *RecentChooser) SetSortFunc(sortFunc RecentSortFunc) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_RecentSortFunc)
-	_arg2 = C.gpointer(gbox.Assign(sortFunc))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk3_RecentSortFunc)
+	_args[2] = C.gpointer(gbox.Assign(sortFunc))
+	_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(sortFunc)
@@ -1077,11 +951,8 @@ func (chooser *RecentChooser) SetSortFunc(sortFunc RecentSortFunc) {
 // UnselectAll unselects all the items inside chooser.
 func (chooser *RecentChooser) UnselectAll() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
 	runtime.KeepAlive(chooser)
 }
@@ -1094,15 +965,10 @@ func (chooser *RecentChooser) UnselectAll() {
 //
 func (chooser *RecentChooser) UnselectURI(uri string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(uri)

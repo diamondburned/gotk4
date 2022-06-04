@@ -150,8 +150,6 @@ func (v *EmojiChooser) ConnectEmojiPicked(f func(text string)) coreglib.SignalHa
 //    - emojiChooser: new GtkEmojiChooser.
 //
 func NewEmojiChooser() *EmojiChooser {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "EmojiChooser").InvokeMethod("new_EmojiChooser", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

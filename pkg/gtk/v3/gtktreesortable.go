@@ -186,14 +186,8 @@ func (sortable *TreeSortable) ConnectSortColumnChanged(f func()) coreglib.Signal
 func (sortable *TreeSortable) SortColumnID() (int32, SortType, bool) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -202,12 +196,10 @@ func (sortable *TreeSortable) SortColumnID() (int32, SortType, bool) {
 	var _sortColumnId int32 // out
 	var _order SortType     // out
 	var _ok bool            // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_sortColumnId = *(*int32)(unsafe.Pointer(_out0))
-	_order = *(*SortType)(unsafe.Pointer(_out1))
-	if _cret != 0 {
+	_sortColumnId = *(*int32)(unsafe.Pointer(_outs[0]))
+	_order = *(*SortType)(unsafe.Pointer(_outs[1]))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -224,12 +216,8 @@ func (sortable *TreeSortable) SortColumnID() (int32, SortType, bool) {
 //
 func (sortable *TreeSortable) HasDefaultSortFunc() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -237,7 +225,7 @@ func (sortable *TreeSortable) HasDefaultSortFunc() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -260,18 +248,11 @@ func (sortable *TreeSortable) HasDefaultSortFunc() bool {
 //
 func (sortable *TreeSortable) SetDefaultSortFunc(sortFunc TreeIterCompareFunc) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_TreeIterCompareFunc)
-	_arg2 = C.gpointer(gbox.Assign(sortFunc))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk3_TreeIterCompareFunc)
+	_args[2] = C.gpointer(gbox.Assign(sortFunc))
+	_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	runtime.KeepAlive(sortable)
 	runtime.KeepAlive(sortFunc)
@@ -288,21 +269,12 @@ func (sortable *TreeSortable) SetDefaultSortFunc(sortFunc TreeIterCompareFunc) {
 //
 func (sortable *TreeSortable) SetSortFunc(sortColumnId int32, sortFunc TreeIterCompareFunc) {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _arg2 C.gpointer // out
-	var _arg3 C.gpointer
-	var _arg4 C.GDestroyNotify
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
-	_arg1 = C.gint(sortColumnId)
-	_arg2 = (*[0]byte)(C._gotk4_gtk3_TreeIterCompareFunc)
-	_arg3 = C.gpointer(gbox.Assign(sortFunc))
-	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(sortColumnId)
+	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gtk3_TreeIterCompareFunc)
+	_args[3] = C.gpointer(gbox.Assign(sortFunc))
+	_args[4] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	runtime.KeepAlive(sortable)
 	runtime.KeepAlive(sortColumnId)
@@ -313,11 +285,8 @@ func (sortable *TreeSortable) SetSortFunc(sortColumnId int32, sortFunc TreeIterC
 // sortable.
 func (sortable *TreeSortable) SortColumnChanged() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
 
 	runtime.KeepAlive(sortable)
 }

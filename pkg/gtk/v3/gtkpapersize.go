@@ -67,26 +67,22 @@ type PaperSize struct {
 
 // paperSize is the struct that's finalized.
 type paperSize struct {
-	native *C.GtkPaperSize
+	native unsafe.Pointer
 }
 
 func marshalPaperSize(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &PaperSize{&paperSize{(*C.GtkPaperSize)(b)}}, nil
+	return &PaperSize{&paperSize{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewPaperSize constructs a struct PaperSize.
 func NewPaperSize(name string) *PaperSize {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
 	if name != "" {
-		_arg0 = (*C.void)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(_arg0))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_args[0]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -108,12 +104,8 @@ func NewPaperSize(name string) *PaperSize {
 // NewPaperSizeFromGVariant constructs a struct PaperSize.
 func NewPaperSizeFromGVariant(variant *glib.Variant) *PaperSize {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(variant)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(variant)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -135,19 +127,11 @@ func NewPaperSizeFromGVariant(variant *glib.Variant) *PaperSize {
 // NewPaperSizeFromIPP constructs a struct PaperSize.
 func NewPaperSizeFromIPP(ippName string, width float64, height float64) *PaperSize {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 C.gdouble // out
-	var _arg2 C.gdouble // out
-	var _cret *C.void   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(ippName)))
-	defer C.free(unsafe.Pointer(_arg0))
-	_arg1 = C.gdouble(width)
-	_arg2 = C.gdouble(height)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(ippName)))
+	defer C.free(unsafe.Pointer(_args[0]))
+	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(width)
+	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(height)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -171,19 +155,12 @@ func NewPaperSizeFromIPP(ippName string, width float64, height float64) *PaperSi
 // NewPaperSizeFromKeyFile constructs a struct PaperSize.
 func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PaperSize, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(keyFile)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	if groupName != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(groupName)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(groupName)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -200,7 +177,7 @@ func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PaperSiz
 			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
 		},
 	)
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -210,23 +187,13 @@ func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PaperSiz
 // NewPaperSizeFromPPD constructs a struct PaperSize.
 func NewPaperSizeFromPPD(ppdName string, ppdDisplayName string, width float64, height float64) *PaperSize {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 *C.void   // out
-	var _arg2 C.gdouble // out
-	var _arg3 C.gdouble // out
-	var _cret *C.void   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(ppdName)))
-	defer C.free(unsafe.Pointer(_arg0))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(ppdDisplayName)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gdouble(width)
-	_arg3 = C.gdouble(height)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gdouble)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(ppdName)))
+	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(ppdDisplayName)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(width)
+	*(*C.gdouble)(unsafe.Pointer(&_args[3])) = C.gdouble(height)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -256,12 +223,8 @@ func NewPaperSizeFromPPD(ppdName string, ppdDisplayName string, width float64, h
 //
 func (other *PaperSize) Copy() *PaperSize {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -288,12 +251,8 @@ func (other *PaperSize) Copy() *PaperSize {
 //
 func (size *PaperSize) DisplayName() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -314,12 +273,8 @@ func (size *PaperSize) DisplayName() string {
 //
 func (size *PaperSize) Name() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -340,12 +295,8 @@ func (size *PaperSize) Name() string {
 //
 func (size *PaperSize) PPDName() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -366,12 +317,8 @@ func (size *PaperSize) PPDName() string {
 //
 func (size *PaperSize) IsCustom() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -379,7 +326,7 @@ func (size *PaperSize) IsCustom() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -398,15 +345,9 @@ func (size *PaperSize) IsCustom() bool {
 //
 func (size1 *PaperSize) IsEqual(size2 *PaperSize) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(size1)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(size2)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size1)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size2)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -415,7 +356,7 @@ func (size1 *PaperSize) IsEqual(size2 *PaperSize) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -430,12 +371,8 @@ func (size1 *PaperSize) IsEqual(size2 *PaperSize) bool {
 //
 func (size *PaperSize) IsIPP() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -443,7 +380,7 @@ func (size *PaperSize) IsIPP() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -458,12 +395,8 @@ func (size *PaperSize) IsIPP() bool {
 //
 func (paperSize *PaperSize) ToGVariant() *glib.Variant {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(paperSize)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(paperSize)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -492,18 +425,11 @@ func (paperSize *PaperSize) ToGVariant() *glib.Variant {
 //
 func (size *PaperSize) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(keyFile)))
-	_arg2 = (*C.void)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(keyFile)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(groupName)))
+	defer C.free(unsafe.Pointer(_args[2]))
 
 	runtime.KeepAlive(size)
 	runtime.KeepAlive(keyFile)
@@ -519,8 +445,6 @@ func (size *PaperSize) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 //      should not be modified.
 //
 func PaperSizeGetDefault() string {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "get_default").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -544,14 +468,10 @@ func PaperSizeGetDefault() string {
 //
 func PaperSizeGetPaperSizes(includeCustom bool) []*PaperSize {
 	var _args [1]girepository.Argument
-	var _arg0 C.gboolean // out
-	var _cret *C.void    // in
 
 	if includeCustom {
-		_arg0 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[0])) = C.TRUE
 	}
-
-	*(*C.gboolean)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gtk", "get_paper_sizes").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

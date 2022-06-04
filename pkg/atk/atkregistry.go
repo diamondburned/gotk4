@@ -35,8 +35,6 @@ func init() {
 //    - registry: default implementation of the ObjectFactory/type registry.
 //
 func GetDefaultRegistry() *Registry {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Atk", "get_default_registry").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

@@ -157,8 +157,6 @@ func (accel *CellRendererAccel) ConnectAccelCleared(f func(pathString string)) c
 //    - cellRendererAccel: new cell renderer.
 //
 func NewCellRendererAccel() *CellRendererAccel {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "CellRendererAccel").InvokeMethod("new_CellRendererAccel", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

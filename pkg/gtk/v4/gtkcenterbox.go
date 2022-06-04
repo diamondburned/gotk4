@@ -118,8 +118,6 @@ func marshalCenterBox(p uintptr) (interface{}, error) {
 //    - centerBox: new GtkCenterBox.
 //
 func NewCenterBox() *CenterBox {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "CenterBox").InvokeMethod("new_CenterBox", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -138,12 +136,8 @@ func NewCenterBox() *CenterBox {
 //
 func (self *CenterBox) CenterWidget() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "CenterBox").InvokeMethod("get_center_widget", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -152,7 +146,7 @@ func (self *CenterBox) CenterWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -180,12 +174,8 @@ func (self *CenterBox) CenterWidget() Widgetter {
 //
 func (self *CenterBox) EndWidget() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "CenterBox").InvokeMethod("get_end_widget", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -194,7 +184,7 @@ func (self *CenterBox) EndWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -222,12 +212,8 @@ func (self *CenterBox) EndWidget() Widgetter {
 //
 func (self *CenterBox) StartWidget() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "CenterBox").InvokeMethod("get_start_widget", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -236,7 +222,7 @@ func (self *CenterBox) StartWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -266,16 +252,11 @@ func (self *CenterBox) StartWidget() Widgetter {
 //
 func (self *CenterBox) SetCenterWidget(child Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if child != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "CenterBox").InvokeMethod("set_center_widget", _args[:], nil)
 
@@ -293,16 +274,11 @@ func (self *CenterBox) SetCenterWidget(child Widgetter) {
 //
 func (self *CenterBox) SetEndWidget(child Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if child != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "CenterBox").InvokeMethod("set_end_widget", _args[:], nil)
 
@@ -320,16 +296,11 @@ func (self *CenterBox) SetEndWidget(child Widgetter) {
 //
 func (self *CenterBox) SetStartWidget(child Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if child != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "CenterBox").InvokeMethod("set_start_widget", _args[:], nil)
 

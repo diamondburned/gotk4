@@ -138,22 +138,14 @@ func (monitor *NetworkMonitor) ConnectNetworkChanged(f func(networkAvailable boo
 //
 func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketConnectabler) error {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg2 *C.void // out
-	var _arg1 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
 
 	runtime.KeepAlive(monitor)
 	runtime.KeepAlive(ctx)
@@ -161,7 +153,7 @@ func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketC
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -185,28 +177,18 @@ func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketC
 //
 func (monitor *NetworkMonitor) CanReachAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback) {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg2 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg3 C.gpointer // out
-	var _arg4 C.gpointer
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
 	if callback != nil {
-		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+		*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gpointer)(unsafe.Pointer(&_args[3])) = _arg3
 
 	runtime.KeepAlive(monitor)
 	runtime.KeepAlive(ctx)
@@ -223,22 +205,16 @@ func (monitor *NetworkMonitor) CanReachAsync(ctx context.Context, connectable So
 //
 func (monitor *NetworkMonitor) CanReachFinish(result AsyncResulter) error {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
 	runtime.KeepAlive(monitor)
 	runtime.KeepAlive(result)
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -256,12 +232,8 @@ func (monitor *NetworkMonitor) CanReachFinish(result AsyncResulter) error {
 //
 func (monitor *NetworkMonitor) NetworkAvailable() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -269,7 +241,7 @@ func (monitor *NetworkMonitor) NetworkAvailable() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -285,12 +257,8 @@ func (monitor *NetworkMonitor) NetworkAvailable() bool {
 //
 func (monitor *NetworkMonitor) NetworkMetered() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -298,7 +266,7 @@ func (monitor *NetworkMonitor) NetworkMetered() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -313,8 +281,6 @@ func (monitor *NetworkMonitor) NetworkMetered() bool {
 //      available.
 //
 func NetworkMonitorGetDefault() *NetworkMonitor {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gio", "get_default").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

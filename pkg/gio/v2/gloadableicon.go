@@ -87,24 +87,14 @@ func marshalLoadableIcon(p uintptr) (interface{}, error) {
 func (icon *LoadableIcon) Load(ctx context.Context, size int32) (string, InputStreamer, error) {
 	var _args [3]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg2 *C.void // out
-	var _arg1 C.int   // out
-	var _out0 *C.void // in
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = C.int(size)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(size)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -115,11 +105,10 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int32) (string, InputSt
 	var _typ string                // out
 	var _inputStream InputStreamer // out
 	var _goerr error               // out
-	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
 
-	if _out0 != nil {
-		_typ = C.GoString((*C.gchar)(unsafe.Pointer(_out0)))
-		defer C.free(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_typ = C.GoString((*C.gchar)(unsafe.Pointer(_outs[0])))
+		defer C.free(unsafe.Pointer(_outs[0]))
 	}
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -138,7 +127,7 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int32) (string, InputSt
 		}
 		_inputStream = rv
 	}
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -157,28 +146,18 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int32) (string, InputSt
 //
 func (icon *LoadableIcon) LoadAsync(ctx context.Context, size int32, callback AsyncReadyCallback) {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg2 *C.void    // out
-	var _arg1 C.int      // out
-	var _arg3 C.gpointer // out
-	var _arg4 C.gpointer
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = C.int(size)
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(size)
 	if callback != nil {
-		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+		*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gpointer)(unsafe.Pointer(&_args[3])) = _arg3
 
 	runtime.KeepAlive(icon)
 	runtime.KeepAlive(ctx)
@@ -202,17 +181,9 @@ func (icon *LoadableIcon) LoadAsync(ctx context.Context, size int32, callback As
 func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, error) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _out0 *C.void // in
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -222,11 +193,10 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 	var _typ string                // out
 	var _inputStream InputStreamer // out
 	var _goerr error               // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	if _out0 != nil {
-		_typ = C.GoString((*C.gchar)(unsafe.Pointer(_out0)))
-		defer C.free(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_typ = C.GoString((*C.gchar)(unsafe.Pointer(_outs[0])))
+		defer C.free(unsafe.Pointer(_outs[0]))
 	}
 	{
 		objptr := unsafe.Pointer(_cret)
@@ -245,7 +215,7 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 		}
 		_inputStream = rv
 	}
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 

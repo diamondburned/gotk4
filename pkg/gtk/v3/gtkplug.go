@@ -139,12 +139,8 @@ func (plug *Plug) ConnectEmbedded(f func()) coreglib.SignalHandle {
 //
 func (plug *Plug) Embedded() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Plug").InvokeMethod("get_embedded", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -153,7 +149,7 @@ func (plug *Plug) Embedded() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -168,12 +164,8 @@ func (plug *Plug) Embedded() bool {
 //
 func (plug *Plug) SocketWindow() gdk.Windower {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Plug").InvokeMethod("get_socket_window", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -182,7 +174,7 @@ func (plug *Plug) SocketWindow() gdk.Windower {
 
 	var _window gdk.Windower // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 

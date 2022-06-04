@@ -220,12 +220,8 @@ func (list *ListModel) ConnectItemsChanged(f func(position, removed, added uint3
 //
 func (list *ListModel) NItems() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(list).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(list).Native()))
 
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
@@ -233,7 +229,7 @@ func (list *ListModel) NItems() uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -254,15 +250,9 @@ func (list *ListModel) NItems() uint32 {
 //
 func (list *ListModel) Item(position uint32) *coreglib.Object {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(list).Native()))
-	_arg1 = C.guint(position)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(list).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -271,7 +261,7 @@ func (list *ListModel) Item(position uint32) *coreglib.Object {
 
 	var _object *coreglib.Object // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_object = coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 	}
 
@@ -305,20 +295,11 @@ func (list *ListModel) Item(position uint32) *coreglib.Object {
 //
 func (list *ListModel) ItemsChanged(position, removed, added uint32) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
-	var _arg2 C.guint // out
-	var _arg3 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(list).Native()))
-	_arg1 = C.guint(position)
-	_arg2 = C.guint(removed)
-	_arg3 = C.guint(added)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.guint)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(list).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(removed)
+	*(*C.guint)(unsafe.Pointer(&_args[3])) = C.guint(added)
 
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(position)

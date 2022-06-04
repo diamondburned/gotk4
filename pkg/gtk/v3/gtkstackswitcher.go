@@ -103,8 +103,6 @@ func marshalStackSwitcher(p uintptr) (interface{}, error) {
 //    - stackSwitcher: new StackSwitcher.
 //
 func NewStackSwitcher() *StackSwitcher {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "StackSwitcher").InvokeMethod("new_StackSwitcher", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -123,12 +121,8 @@ func NewStackSwitcher() *StackSwitcher {
 //
 func (switcher *StackSwitcher) Stack() *Stack {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(switcher).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(switcher).Native()))
 
 	_gret := girepository.MustFind("Gtk", "StackSwitcher").InvokeMethod("get_stack", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -137,7 +131,7 @@ func (switcher *StackSwitcher) Stack() *Stack {
 
 	var _stack *Stack // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_stack = wrapStack(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -152,16 +146,11 @@ func (switcher *StackSwitcher) Stack() *Stack {
 //
 func (switcher *StackSwitcher) SetStack(stack *Stack) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(switcher).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(switcher).Native()))
 	if stack != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "StackSwitcher").InvokeMethod("set_stack", _args[:], nil)
 

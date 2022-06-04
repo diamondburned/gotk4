@@ -113,8 +113,6 @@ func marshalFixed(p uintptr) (interface{}, error) {
 //    - fixed: new GtkFixed.
 //
 func NewFixed() *Fixed {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "Fixed").InvokeMethod("new_Fixed", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -139,19 +137,12 @@ func NewFixed() *Fixed {
 //    - x: horizontal position of the widget.
 //    - y: vertical position of the widget.
 //
-func (fixed *Fixed) ChildPosition(widget Widgetter) (x float64, y float64) {
+func (fixed *Fixed) ChildPosition(widget Widgetter) (x, y float64) {
 	var _args [2]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fixed).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fixed).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Fixed").InvokeMethod("get_child_position", _args[:], _outs[:])
 
@@ -160,11 +151,9 @@ func (fixed *Fixed) ChildPosition(widget Widgetter) (x float64, y float64) {
 
 	var _x float64 // out
 	var _y float64 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_x = *(*float64)(unsafe.Pointer(_out0))
-	_y = *(*float64)(unsafe.Pointer(_out1))
+	_x = *(*float64)(unsafe.Pointer(_outs[0]))
+	_y = *(*float64)(unsafe.Pointer(_outs[1]))
 
 	return _x, _y
 }
@@ -183,15 +172,9 @@ func (fixed *Fixed) ChildPosition(widget Widgetter) (x float64, y float64) {
 //
 func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fixed).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fixed).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Fixed").InvokeMethod("get_child_transform", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -201,7 +184,7 @@ func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
 
 	var _transform *gsk.Transform // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_transform = (*gsk.Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.gsk_transform_ref(_cret)
 		runtime.SetFinalizer(
@@ -226,20 +209,11 @@ func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
 //
 func (fixed *Fixed) Move(widget Widgetter, x, y float64) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 *C.void  // out
-	var _arg2 C.double // out
-	var _arg3 C.double // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fixed).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg2 = C.double(x)
-	_arg3 = C.double(y)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fixed).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(x)
+	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(y)
 
 	girepository.MustFind("Gtk", "Fixed").InvokeMethod("move", _args[:], nil)
 
@@ -259,20 +233,11 @@ func (fixed *Fixed) Move(widget Widgetter, x, y float64) {
 //
 func (fixed *Fixed) Put(widget Widgetter, x, y float64) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 *C.void  // out
-	var _arg2 C.double // out
-	var _arg3 C.double // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fixed).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg2 = C.double(x)
-	_arg3 = C.double(y)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fixed).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(x)
+	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(y)
 
 	girepository.MustFind("Gtk", "Fixed").InvokeMethod("put", _args[:], nil)
 
@@ -290,14 +255,9 @@ func (fixed *Fixed) Put(widget Widgetter, x, y float64) {
 //
 func (fixed *Fixed) Remove(widget Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fixed).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fixed).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Fixed").InvokeMethod("remove", _args[:], nil)
 
@@ -318,19 +278,12 @@ func (fixed *Fixed) Remove(widget Widgetter) {
 //
 func (fixed *Fixed) SetChildTransform(widget Widgetter, transform *gsk.Transform) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fixed).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fixed).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if transform != nil {
-		_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(transform)))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(transform)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "Fixed").InvokeMethod("set_child_transform", _args[:], nil)
 

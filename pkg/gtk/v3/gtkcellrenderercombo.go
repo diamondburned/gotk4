@@ -123,8 +123,6 @@ func (v *CellRendererCombo) ConnectChanged(f func(pathString string, newIter *Tr
 //    - cellRendererCombo: new cell renderer.
 //
 func NewCellRendererCombo() *CellRendererCombo {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "CellRendererCombo").InvokeMethod("new_CellRendererCombo", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

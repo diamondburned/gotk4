@@ -81,8 +81,6 @@ func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
 //    - cellRendererPixbuf: new cell renderer.
 //
 func NewCellRendererPixbuf() *CellRendererPixbuf {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "CellRendererPixbuf").InvokeMethod("new_CellRendererPixbuf", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

@@ -77,16 +77,10 @@ func marshalDBusObjectProxy(p uintptr) (interface{}, error) {
 //
 func NewDBusObjectProxy(connection *DBusConnection, objectPath string) *DBusObjectProxy {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gio", "DBusObjectProxy").InvokeMethod("new_DBusObjectProxy", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -109,12 +103,8 @@ func NewDBusObjectProxy(connection *DBusConnection, objectPath string) *DBusObje
 //
 func (proxy *DBusObjectProxy) Connection() *DBusConnection {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusObjectProxy").InvokeMethod("get_connection", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

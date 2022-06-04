@@ -239,17 +239,10 @@ func marshalEditableText(p uintptr) (interface{}, error) {
 //
 func (text *EditableText) CopyText(startPos, endPos int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _arg2 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	_arg1 = C.gint(startPos)
-	_arg2 = C.gint(endPos)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(startPos)
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(endPos)
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(startPos)
@@ -266,17 +259,10 @@ func (text *EditableText) CopyText(startPos, endPos int32) {
 //
 func (text *EditableText) CutText(startPos, endPos int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _arg2 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	_arg1 = C.gint(startPos)
-	_arg2 = C.gint(endPos)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(startPos)
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(endPos)
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(startPos)
@@ -292,17 +278,10 @@ func (text *EditableText) CutText(startPos, endPos int32) {
 //
 func (text *EditableText) DeleteText(startPos, endPos int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _arg2 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	_arg1 = C.gint(startPos)
-	_arg2 = C.gint(endPos)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(startPos)
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(endPos)
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(startPos)
@@ -321,21 +300,12 @@ func (text *EditableText) DeleteText(startPos, endPos int32) {
 //
 func (text *EditableText) InsertText(str string, length int32, position *int32) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.gint  // out
-	var _arg3 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(length)
-	_arg3 = (*C.void)(unsafe.Pointer(position))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(length)
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(position))
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(str)
@@ -351,14 +321,9 @@ func (text *EditableText) InsertText(str string, length int32, position *int32) 
 //
 func (text *EditableText) PasteText(position int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	_arg1 = C.gint(position)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(position)
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(position)
@@ -372,15 +337,10 @@ func (text *EditableText) PasteText(position int32) {
 //
 func (text *EditableText) SetTextContents(str string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(str)

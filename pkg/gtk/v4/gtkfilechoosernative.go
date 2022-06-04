@@ -221,12 +221,8 @@ func marshalFileChooserNative(p uintptr) (interface{}, error) {
 //
 func (self *FileChooserNative) AcceptLabel() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "FileChooserNative").InvokeMethod("get_accept_label", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -235,7 +231,7 @@ func (self *FileChooserNative) AcceptLabel() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -251,12 +247,8 @@ func (self *FileChooserNative) AcceptLabel() string {
 //
 func (self *FileChooserNative) CancelLabel() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "FileChooserNative").InvokeMethod("get_cancel_label", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -265,7 +257,7 @@ func (self *FileChooserNative) CancelLabel() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -287,17 +279,12 @@ func (self *FileChooserNative) CancelLabel() string {
 //
 func (self *FileChooserNative) SetAcceptLabel(acceptLabel string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if acceptLabel != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(acceptLabel)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(acceptLabel)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "FileChooserNative").InvokeMethod("set_accept_label", _args[:], nil)
 
@@ -320,17 +307,12 @@ func (self *FileChooserNative) SetAcceptLabel(acceptLabel string) {
 //
 func (self *FileChooserNative) SetCancelLabel(cancelLabel string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if cancelLabel != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(cancelLabel)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(cancelLabel)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "FileChooserNative").InvokeMethod("set_cancel_label", _args[:], nil)
 

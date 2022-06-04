@@ -35,21 +35,13 @@ import "C"
 //
 func ShowURI(screen *gdk.Screen, uri string, timestamp uint32) error {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 *C.void   // out
-	var _arg2 C.guint32 // out
-	var _cerr *C.void   // in
 
 	if screen != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint32(timestamp)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.guint32)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(timestamp)
 
 	girepository.MustFind("Gtk", "show_uri").Invoke(_args[:], nil)
 
@@ -59,7 +51,7 @@ func ShowURI(screen *gdk.Screen, uri string, timestamp uint32) error {
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -92,21 +84,13 @@ func ShowURI(screen *gdk.Screen, uri string, timestamp uint32) error {
 //
 func ShowURIOnWindow(parent *Window, uri string, timestamp uint32) error {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 *C.void   // out
-	var _arg2 C.guint32 // out
-	var _cerr *C.void   // in
 
 	if parent != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint32(timestamp)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.guint32)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(timestamp)
 
 	girepository.MustFind("Gtk", "show_uri_on_window").Invoke(_args[:], nil)
 
@@ -116,7 +100,7 @@ func ShowURIOnWindow(parent *Window, uri string, timestamp uint32) error {
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 

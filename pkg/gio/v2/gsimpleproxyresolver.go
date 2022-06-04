@@ -80,15 +80,10 @@ func marshalSimpleProxyResolver(p uintptr) (interface{}, error) {
 //
 func (resolver *SimpleProxyResolver) SetDefaultProxy(defaultProxy string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(defaultProxy)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(defaultProxy)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gio", "SimpleProxyResolver").InvokeMethod("set_default_proxy", _args[:], nil)
 
@@ -111,19 +106,12 @@ func (resolver *SimpleProxyResolver) SetDefaultProxy(defaultProxy string) {
 //
 func (resolver *SimpleProxyResolver) SetURIProxy(uriScheme, proxy string) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uriScheme)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.void)(unsafe.Pointer(C.CString(proxy)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uriScheme)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(proxy)))
+	defer C.free(unsafe.Pointer(_args[2]))
 
 	girepository.MustFind("Gio", "SimpleProxyResolver").InvokeMethod("set_uri_proxy", _args[:], nil)
 

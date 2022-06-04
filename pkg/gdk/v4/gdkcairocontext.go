@@ -88,12 +88,8 @@ func BaseCairoContext(obj CairoContexter) *CairoContext {
 //
 func (self *CairoContext) CairoCreate() *cairo.Context {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gdk", "CairoContext").InvokeMethod("cairo_create", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -102,7 +98,7 @@ func (self *CairoContext) CairoCreate() *cairo.Context {
 
 	var _context *cairo.Context // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_context = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(_context, func(v *cairo.Context) {
 			C.cairo_destroy((*C.void)(unsafe.Pointer(v.Native())))

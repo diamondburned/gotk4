@@ -95,15 +95,9 @@ func marshalObjectFactory(p uintptr) (interface{}, error) {
 //
 func (factory *ObjectFactory) CreateAccessible(obj *coreglib.Object) *ObjectClass {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(obj.Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(obj.Native()))
 
 	_gret := girepository.MustFind("Atk", "ObjectFactory").InvokeMethod("create_accessible", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -124,11 +118,8 @@ func (factory *ObjectFactory) CreateAccessible(obj *coreglib.Object) *ObjectClas
 // runtime replacement of ObjectFactorys in object registries.
 func (factory *ObjectFactory) Invalidate() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
 
 	girepository.MustFind("Atk", "ObjectFactory").InvokeMethod("invalidate", _args[:], nil)
 

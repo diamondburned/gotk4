@@ -184,12 +184,8 @@ func (gesture *GestureStylus) ConnectUp(f func(object, p0 float64)) coreglib.Sig
 //
 func NewGestureStylus(widget Widgetter) *GestureStylus {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "GestureStylus").InvokeMethod("new_GestureStylus", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -214,12 +210,8 @@ func NewGestureStylus(widget Widgetter) *GestureStylus {
 //
 func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
 	_gret := girepository.MustFind("Gtk", "GestureStylus").InvokeMethod("get_device_tool", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -228,7 +220,7 @@ func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
 
 	var _deviceTool *gdk.DeviceTool // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			obj := coreglib.Take(unsafe.Pointer(_cret))
 			_deviceTool = &gdk.DeviceTool{

@@ -117,17 +117,11 @@ func marshalVBox(p uintptr) (interface{}, error) {
 //
 func NewVBox(homogeneous bool, spacing int32) *VBox {
 	var _args [2]girepository.Argument
-	var _arg0 C.gboolean // out
-	var _arg1 C.gint     // out
-	var _cret *C.void    // in
 
 	if homogeneous {
-		_arg0 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[0])) = C.TRUE
 	}
-	_arg1 = C.gint(spacing)
-
-	*(*C.gboolean)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(spacing)
 
 	_gret := girepository.MustFind("Gtk", "VBox").InvokeMethod("new_VBox", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

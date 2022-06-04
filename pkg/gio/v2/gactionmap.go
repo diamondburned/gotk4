@@ -185,14 +185,9 @@ func marshalActionMap(p uintptr) (interface{}, error) {
 //
 func (actionMap *ActionMap) AddAction(action Actioner) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionMap).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionMap).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
 	runtime.KeepAlive(actionMap)
 	runtime.KeepAlive(action)
@@ -212,16 +207,10 @@ func (actionMap *ActionMap) AddAction(action Actioner) {
 //
 func (actionMap *ActionMap) LookupAction(actionName string) *Action {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionMap).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionMap).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -230,7 +219,7 @@ func (actionMap *ActionMap) LookupAction(actionName string) *Action {
 
 	var _action *Action // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_action = wrapAction(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -247,15 +236,10 @@ func (actionMap *ActionMap) LookupAction(actionName string) *Action {
 //
 func (actionMap *ActionMap) RemoveAction(actionName string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionMap).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionMap).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	runtime.KeepAlive(actionMap)
 	runtime.KeepAlive(actionName)
@@ -278,13 +262,15 @@ type ActionEntry struct {
 
 // actionEntry is the struct that's finalized.
 type actionEntry struct {
-	native *C.GActionEntry
+	native unsafe.Pointer
 }
 
 // Name: name of the action.
 func (a *ActionEntry) Name() string {
+	offset := girepository.MustFind("Gio", "ActionEntry").StructFieldOffset("name")
+	valptr := unsafe.Add(unsafe.Pointer(a), offset)
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.name)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }
 
@@ -292,8 +278,10 @@ func (a *ActionEntry) Name() string {
 // function for this action, given as a single GVariant type string (or NULL for
 // no parameter).
 func (a *ActionEntry) ParameterType() string {
+	offset := girepository.MustFind("Gio", "ActionEntry").StructFieldOffset("parameter_type")
+	valptr := unsafe.Add(unsafe.Pointer(a), offset)
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.parameter_type)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }
 
@@ -302,7 +290,9 @@ func (a *ActionEntry) ParameterType() string {
 // so type tags must be added to the string if they are necessary. Stateless
 // actions should give NULL here.
 func (a *ActionEntry) State() string {
+	offset := girepository.MustFind("Gio", "ActionEntry").StructFieldOffset("state")
+	valptr := unsafe.Add(unsafe.Pointer(a), offset)
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.state)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }

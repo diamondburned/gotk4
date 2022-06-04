@@ -209,8 +209,6 @@ func (toggleButton *ToggleButton) ConnectToggled(f func()) coreglib.SignalHandle
 //    - toggleButton: new toggle button.
 //
 func NewToggleButton() *ToggleButton {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "ToggleButton").InvokeMethod("new_ToggleButton", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -233,13 +231,9 @@ func NewToggleButton() *ToggleButton {
 //
 func NewToggleButtonWithLabel(label string) *ToggleButton {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "ToggleButton").InvokeMethod("new_ToggleButton_with_label", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -269,13 +263,9 @@ func NewToggleButtonWithLabel(label string) *ToggleButton {
 //
 func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "ToggleButton").InvokeMethod("new_ToggleButton_with_mnemonic", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -299,12 +289,8 @@ func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 //
 func (toggleButton *ToggleButton) Active() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toggleButton).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toggleButton).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ToggleButton").InvokeMethod("get_active", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -313,7 +299,7 @@ func (toggleButton *ToggleButton) Active() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -334,16 +320,11 @@ func (toggleButton *ToggleButton) Active() bool {
 //
 func (toggleButton *ToggleButton) SetActive(isActive bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toggleButton).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toggleButton).Native()))
 	if isActive {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "ToggleButton").InvokeMethod("set_active", _args[:], nil)
 
@@ -368,16 +349,11 @@ func (toggleButton *ToggleButton) SetActive(isActive bool) {
 //
 func (toggleButton *ToggleButton) SetGroup(group *ToggleButton) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toggleButton).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toggleButton).Native()))
 	if group != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "ToggleButton").InvokeMethod("set_group", _args[:], nil)
 
@@ -390,11 +366,8 @@ func (toggleButton *ToggleButton) SetGroup(group *ToggleButton) {
 // There is no good reason for an application ever to call this function.
 func (toggleButton *ToggleButton) Toggled() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toggleButton).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toggleButton).Native()))
 
 	girepository.MustFind("Gtk", "ToggleButton").InvokeMethod("toggled", _args[:], nil)
 

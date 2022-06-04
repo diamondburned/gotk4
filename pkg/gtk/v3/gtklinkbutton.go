@@ -187,13 +187,9 @@ func (linkButton *LinkButton) ConnectActivateLink(f func() (ok bool)) coreglib.S
 //
 func NewLinkButton(uri string) *LinkButton {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "LinkButton").InvokeMethod("new_LinkButton", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -220,19 +216,13 @@ func NewLinkButton(uri string) *LinkButton {
 //
 func NewLinkButtonWithLabel(uri, label string) *LinkButton {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg0))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_args[0]))
 	if label != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gtk", "LinkButton").InvokeMethod("new_LinkButton_with_label", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -256,12 +246,8 @@ func NewLinkButtonWithLabel(uri, label string) *LinkButton {
 //
 func (linkButton *LinkButton) URI() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(linkButton).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(linkButton).Native()))
 
 	_gret := girepository.MustFind("Gtk", "LinkButton").InvokeMethod("get_uri", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -287,12 +273,8 @@ func (linkButton *LinkButton) URI() string {
 //
 func (linkButton *LinkButton) Visited() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(linkButton).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(linkButton).Native()))
 
 	_gret := girepository.MustFind("Gtk", "LinkButton").InvokeMethod("get_visited", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -301,7 +283,7 @@ func (linkButton *LinkButton) Visited() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -317,15 +299,10 @@ func (linkButton *LinkButton) Visited() bool {
 //
 func (linkButton *LinkButton) SetURI(uri string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(linkButton).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(linkButton).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "LinkButton").InvokeMethod("set_uri", _args[:], nil)
 
@@ -342,16 +319,11 @@ func (linkButton *LinkButton) SetURI(uri string) {
 //
 func (linkButton *LinkButton) SetVisited(visited bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(linkButton).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(linkButton).Native()))
 	if visited {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "LinkButton").InvokeMethod("set_visited", _args[:], nil)
 

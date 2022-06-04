@@ -42,13 +42,13 @@ var recordTmpl = gotmpl.NewGoTemplate(`
 
 	// {{ $impl }} is the struct that's finalized.
 	type {{ $impl }} struct {
-		native *C.{{.CType}}
+		native {{ .CGoPtrType }}
 	}
 
 	{{ if .Marshaler }}
 	func marshal{{ .GoName }}(p uintptr) (interface{}, error) {
 		b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-		return &{{ .GoName }}{&{{ $impl }}{(*C.{{.CType}})(b)}}, nil
+		return &{{ .GoName }}{&{{ $impl }}{({{ .CGoPtrType }})(b)}}, nil
 	}
 	{{ end }}
 
@@ -312,6 +312,7 @@ func (rg *RecordGenerator) getters() {
 
 	recv := strcases.FirstLetter(rg.GoName)
 	values := make([]typeconv.ConversionValue, 0, len(rg.Fields))
+	fields := make([]string, 0, len(rg.Fields))
 
 	// Do a constructor when the record has none.
 	willDoConstructor := len(rg.Fields) > 0 && len(rg.Record.Constructors) == 0
@@ -339,12 +340,7 @@ func (rg *RecordGenerator) getters() {
 			}
 		}
 
-		goField := strcases.CGoField(field.Name)
-
-		value := typeconv.NewFieldValue(
-			fmt.Sprintf("%s.native.%s", recv, goField),
-			"v", field,
-		)
+		value := typeconv.NewFieldValue("valptr", "v", field)
 
 		// Double-check if we have a method with the existing name.
 		if fieldCollides(value.Name) {
@@ -353,18 +349,18 @@ func (rg *RecordGenerator) getters() {
 		}
 
 		values = append(values, value)
+		fields = append(fields, field.Name)
 
 		// Generate a SetX if no methods collide with the name.
 		if field.Writable && !fieldCollides("set_"+value.Name) {
-			values = append(values, typeconv.NewFieldSetValue(
-				strcases.SnakeToGo(false, field.Name),
-				fmt.Sprintf("%s.native.%s", recv, goField),
-				field,
-			))
+			in := strcases.SnakeToGo(false, field.Name)
+			values = append(values, typeconv.NewFieldSetValue(in, "_valptr", field))
+			fields = append(fields, field.Name)
 		}
 	}
 
 	converter := typeconv.NewConverter(rg.gen, &rg.typ, values)
+	converter.MustCast = rg.gen.LinkMode() == types.RuntimeLinkMode
 	converter.UseLogger(rg)
 
 	for i := range values {
@@ -385,7 +381,16 @@ func (rg *RecordGenerator) getters() {
 
 		switch converted.Direction {
 		case typeconv.ConvertCToGo: // getter
+			rg.hdr.ImportCore("girepository")
+
 			b := pen.NewBlock()
+
+			// Runtime-link mode assumes a hard-coded valptr name.
+			if rg.gen.LinkMode() == types.RuntimeLinkMode {
+				b.Linef("offset := girepository.MustFind(%q, %q).StructFieldOffset(%q)", rg.typ.Namespace.Name, rg.typ.Name(), fields[i])
+				b.Linef("valptr := unsafe.Add(unsafe.Pointer(%s), offset)", recv)
+			}
+
 			b.Linef(converted.Out.Declare)
 			b.Linef(converted.Conversion)
 			b.Linef("return v")
@@ -481,7 +486,18 @@ func (rg *RecordGenerator) genManualConstructor() {
 	}
 }
 
+func (rg *RecordGenerator) CGoPtrType() string {
+	switch rg.gen.LinkMode() {
+	case types.DynamicLinkMode:
+		return "*C." + rg.Record.CType
+	case types.RuntimeLinkMode:
+		return "unsafe.Pointer"
+	default:
+		panic("unreachable")
+	}
+}
+
 func (rg *RecordGenerator) Logln(lvl logger.Level, v ...interface{}) {
-	p := fmt.Sprintf("record %s (C.%s):", rg.GoName, rg.CType)
+	p := fmt.Sprintf("record %s (C.%s):", rg.GoName, rg.Record.CType)
 	rg.gen.Logln(lvl, logger.Prefix(v, p)...)
 }

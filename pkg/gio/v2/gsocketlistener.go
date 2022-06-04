@@ -98,8 +98,6 @@ func marshalSocketListener(p uintptr) (interface{}, error) {
 //    - socketListener: new Listener.
 //
 func NewSocketListener() *SocketListener {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gio", "SocketListener").InvokeMethod("new_SocketListener", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -133,21 +131,13 @@ func NewSocketListener() *SocketListener {
 func (listener *SocketListener) Accept(ctx context.Context) (*coreglib.Object, *SocketConnection, error) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _out0 *C.void // in
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gio", "SocketListener").InvokeMethod("accept", _args[:], _outs[:])
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -158,13 +148,12 @@ func (listener *SocketListener) Accept(ctx context.Context) (*coreglib.Object, *
 	var _sourceObject *coreglib.Object      // out
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_sourceObject = coreglib.Take(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_sourceObject = coreglib.Take(unsafe.Pointer(_outs[0]))
 	}
 	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -183,25 +172,17 @@ func (listener *SocketListener) Accept(ctx context.Context) (*coreglib.Object, *
 //
 func (listener *SocketListener) AcceptAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.gpointer // out
-	var _arg3 C.gpointer
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 	if callback != nil {
-		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+		*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[3] = C.gpointer(gbox.AssignOnce(callback))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gio", "SocketListener").InvokeMethod("accept_async", _args[:], nil)
 
@@ -225,17 +206,9 @@ func (listener *SocketListener) AcceptAsync(ctx context.Context, callback AsyncR
 func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*coreglib.Object, *SocketConnection, error) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _out0 *C.void // in
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
 	_gret := girepository.MustFind("Gio", "SocketListener").InvokeMethod("accept_finish", _args[:], _outs[:])
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -246,13 +219,12 @@ func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*coreglib.Ob
 	var _sourceObject *coreglib.Object      // out
 	var _socketConnection *SocketConnection // out
 	var _goerr error                        // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	if _out0 != nil {
-		_sourceObject = coreglib.Take(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_sourceObject = coreglib.Take(unsafe.Pointer(_outs[0]))
 	}
 	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -285,21 +257,13 @@ func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*coreglib.Ob
 func (listener *SocketListener) AcceptSocket(ctx context.Context) (*coreglib.Object, *Socket, error) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _out0 *C.void // in
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gio", "SocketListener").InvokeMethod("accept_socket", _args[:], _outs[:])
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -310,13 +274,12 @@ func (listener *SocketListener) AcceptSocket(ctx context.Context) (*coreglib.Obj
 	var _sourceObject *coreglib.Object // out
 	var _socket *Socket                // out
 	var _goerr error                   // out
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_sourceObject = coreglib.Take(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_sourceObject = coreglib.Take(unsafe.Pointer(_outs[0]))
 	}
 	_socket = wrapSocket(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -336,25 +299,17 @@ func (listener *SocketListener) AcceptSocket(ctx context.Context) (*coreglib.Obj
 //
 func (listener *SocketListener) AcceptSocketAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.gpointer // out
-	var _arg3 C.gpointer
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 	if callback != nil {
-		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+		*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[3] = C.gpointer(gbox.AssignOnce(callback))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gio", "SocketListener").InvokeMethod("accept_socket_async", _args[:], nil)
 
@@ -378,17 +333,9 @@ func (listener *SocketListener) AcceptSocketAsync(ctx context.Context, callback 
 func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*coreglib.Object, *Socket, error) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _out0 *C.void // in
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
 	_gret := girepository.MustFind("Gio", "SocketListener").InvokeMethod("accept_socket_finish", _args[:], _outs[:])
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -399,13 +346,12 @@ func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*coreg
 	var _sourceObject *coreglib.Object // out
 	var _socket *Socket                // out
 	var _goerr error                   // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	if _out0 != nil {
-		_sourceObject = coreglib.Take(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_sourceObject = coreglib.Take(unsafe.Pointer(_outs[0]))
 	}
 	_socket = wrapSocket(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -432,18 +378,11 @@ func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*coreg
 //
 func (listener *SocketListener) AddAnyInetPort(sourceObject *coreglib.Object) (uint16, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 *C.void   // out
-	var _cret C.guint16 // in
-	var _cerr *C.void   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
 	if sourceObject != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(sourceObject.Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(sourceObject.Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gio", "SocketListener").InvokeMethod("add_any_inet_port", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -454,8 +393,8 @@ func (listener *SocketListener) AddAnyInetPort(sourceObject *coreglib.Object) (u
 	var _guint16 uint16 // out
 	var _goerr error    // out
 
-	_guint16 = uint16(_cret)
-	if _cerr != nil {
+	_guint16 = uint16(*(*C.guint16)(unsafe.Pointer(&_cret)))
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -481,20 +420,12 @@ func (listener *SocketListener) AddAnyInetPort(sourceObject *coreglib.Object) (u
 //
 func (listener *SocketListener) AddInetPort(port uint16, sourceObject *coreglib.Object) error {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 C.guint16 // out
-	var _arg2 *C.void   // out
-	var _cerr *C.void   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
-	_arg1 = C.guint16(port)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
+	*(*C.guint16)(unsafe.Pointer(&_args[1])) = C.guint16(port)
 	if sourceObject != nil {
-		_arg2 = (*C.void)(unsafe.Pointer(sourceObject.Native()))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(sourceObject.Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint16)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gio", "SocketListener").InvokeMethod("add_inet_port", _args[:], nil)
 
@@ -504,7 +435,7 @@ func (listener *SocketListener) AddInetPort(port uint16, sourceObject *coreglib.
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -530,20 +461,12 @@ func (listener *SocketListener) AddInetPort(port uint16, sourceObject *coreglib.
 //
 func (listener *SocketListener) AddSocket(socket *Socket, sourceObject *coreglib.Object) error {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	if sourceObject != nil {
-		_arg2 = (*C.void)(unsafe.Pointer(sourceObject.Native()))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(sourceObject.Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gio", "SocketListener").InvokeMethod("add_socket", _args[:], nil)
 
@@ -553,7 +476,7 @@ func (listener *SocketListener) AddSocket(socket *Socket, sourceObject *coreglib
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -563,11 +486,8 @@ func (listener *SocketListener) AddSocket(socket *Socket, sourceObject *coreglib
 // Close closes all the sockets in the listener.
 func (listener *SocketListener) Close() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
 
 	girepository.MustFind("Gio", "SocketListener").InvokeMethod("close", _args[:], nil)
 
@@ -586,14 +506,9 @@ func (listener *SocketListener) Close() {
 //
 func (listener *SocketListener) SetBacklog(listenBacklog int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
-	_arg1 = C.int(listenBacklog)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(listenBacklog)
 
 	girepository.MustFind("Gio", "SocketListener").InvokeMethod("set_backlog", _args[:], nil)
 

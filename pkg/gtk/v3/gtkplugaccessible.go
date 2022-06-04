@@ -78,12 +78,8 @@ func marshalPlugAccessible(p uintptr) (interface{}, error) {
 //
 func (plug *PlugAccessible) ID() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
 
 	_gret := girepository.MustFind("Gtk", "PlugAccessible").InvokeMethod("get_id", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

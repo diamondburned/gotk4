@@ -974,14 +974,10 @@ func (buffer *TextBuffer) ConnectUndo(f func()) coreglib.SignalHandle {
 //
 func NewTextBuffer(table *TextTagTable) *TextBuffer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
 	if table != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("new_TextBuffer", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1010,17 +1006,10 @@ func NewTextBuffer(table *TextTagTable) *TextBuffer {
 //
 func (buffer *TextBuffer) AddMark(mark *TextMark, where *TextIter) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(where)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(where)))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("add_mark", _args[:], nil)
 
@@ -1041,14 +1030,9 @@ func (buffer *TextBuffer) AddMark(mark *TextMark, where *TextIter) {
 //
 func (buffer *TextBuffer) AddSelectionClipboard(clipboard *gdk.Clipboard) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("add_selection_clipboard", _args[:], nil)
 
@@ -1069,20 +1053,11 @@ func (buffer *TextBuffer) AddSelectionClipboard(clipboard *gdk.Clipboard) {
 //
 func (buffer *TextBuffer) ApplyTag(tag *TextTag, start, end *TextIter) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
-	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("apply_tag", _args[:], nil)
 
@@ -1105,21 +1080,12 @@ func (buffer *TextBuffer) ApplyTag(tag *TextTag, start, end *TextIter) {
 //
 func (buffer *TextBuffer) ApplyTagByName(name string, start, end *TextIter) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
-	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("apply_tag_by_name", _args[:], nil)
 
@@ -1153,25 +1119,15 @@ func (buffer *TextBuffer) ApplyTagByName(name string, start, end *TextIter) {
 //
 func (buffer *TextBuffer) Backspace(iter *TextIter, interactive, defaultEditable bool) bool {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.gboolean // out
-	var _arg3 C.gboolean // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	if interactive {
-		_arg2 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 	if defaultEditable {
-		_arg3 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gboolean)(unsafe.Pointer(&_args[3])) = _arg3
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("backspace", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1183,7 +1139,7 @@ func (buffer *TextBuffer) Backspace(iter *TextIter, interactive, defaultEditable
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1202,11 +1158,8 @@ func (buffer *TextBuffer) Backspace(iter *TextIter, interactive, defaultEditable
 // gtk_text_buffer_end_irreversible_action() pairs.
 func (buffer *TextBuffer) BeginIrreversibleAction() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("begin_irreversible_action", _args[:], nil)
 
@@ -1232,11 +1185,8 @@ func (buffer *TextBuffer) BeginIrreversibleAction() {
 // functions.
 func (buffer *TextBuffer) BeginUserAction() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("begin_user_action", _args[:], nil)
 
@@ -1251,14 +1201,9 @@ func (buffer *TextBuffer) BeginUserAction() {
 //
 func (buffer *TextBuffer) CopyClipboard(clipboard *gdk.Clipboard) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("copy_clipboard", _args[:], nil)
 
@@ -1285,15 +1230,9 @@ func (buffer *TextBuffer) CopyClipboard(clipboard *gdk.Clipboard) {
 //
 func (buffer *TextBuffer) CreateChildAnchor(iter *TextIter) *TextChildAnchor {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("create_child_anchor", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1337,26 +1276,16 @@ func (buffer *TextBuffer) CreateChildAnchor(iter *TextIter) *TextChildAnchor {
 //
 func (buffer *TextBuffer) CreateMark(markName string, where *TextIter, leftGravity bool) *TextMark {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 *C.void    // out
-	var _arg3 C.gboolean // out
-	var _cret *C.void    // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 	if markName != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(markName)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(markName)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(where)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(where)))
 	if leftGravity {
-		_arg3 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gboolean)(unsafe.Pointer(&_args[3])) = _arg3
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("create_mark", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1383,19 +1312,12 @@ func (buffer *TextBuffer) CreateMark(markName string, where *TextIter, leftGravi
 //
 func (buffer *TextBuffer) CutClipboard(clipboard *gdk.Clipboard, defaultEditable bool) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 	if defaultEditable {
-		_arg2 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("cut_clipboard", _args[:], nil)
 
@@ -1422,17 +1344,10 @@ func (buffer *TextBuffer) CutClipboard(clipboard *gdk.Clipboard, defaultEditable
 //
 func (buffer *TextBuffer) Delete(start, end *TextIter) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("delete", _args[:], nil)
 
@@ -1459,23 +1374,13 @@ func (buffer *TextBuffer) Delete(start, end *TextIter) {
 //
 func (buffer *TextBuffer) DeleteInteractive(startIter, endIter *TextIter, defaultEditable bool) bool {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 *C.void    // out
-	var _arg3 C.gboolean // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(startIter)))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(endIter)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(startIter)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(endIter)))
 	if defaultEditable {
-		_arg3 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gboolean)(unsafe.Pointer(&_args[3])) = _arg3
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("delete_interactive", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1487,7 +1392,7 @@ func (buffer *TextBuffer) DeleteInteractive(startIter, endIter *TextIter, defaul
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1512,14 +1417,9 @@ func (buffer *TextBuffer) DeleteInteractive(startIter, endIter *TextIter, defaul
 //
 func (buffer *TextBuffer) DeleteMark(mark *TextMark) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("delete_mark", _args[:], nil)
 
@@ -1537,15 +1437,10 @@ func (buffer *TextBuffer) DeleteMark(mark *TextMark) {
 //
 func (buffer *TextBuffer) DeleteMarkByName(name string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("delete_mark_by_name", _args[:], nil)
 
@@ -1570,22 +1465,14 @@ func (buffer *TextBuffer) DeleteMarkByName(name string) {
 //
 func (buffer *TextBuffer) DeleteSelection(interactive, defaultEditable bool) bool {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
-	var _arg2 C.gboolean // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 	if interactive {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 	if defaultEditable {
-		_arg2 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("delete_selection", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1596,7 +1483,7 @@ func (buffer *TextBuffer) DeleteSelection(interactive, defaultEditable bool) boo
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1614,11 +1501,8 @@ func (buffer *TextBuffer) DeleteSelection(interactive, defaultEditable bool) boo
 // gtk_text_buffer_end_irreversible_action() pairs.
 func (buffer *TextBuffer) EndIrreversibleAction() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("end_irreversible_action", _args[:], nil)
 
@@ -1631,11 +1515,8 @@ func (buffer *TextBuffer) EndIrreversibleAction() {
 // function for a full explanation.
 func (buffer *TextBuffer) EndUserAction() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("end_user_action", _args[:], nil)
 
@@ -1650,16 +1531,11 @@ func (buffer *TextBuffer) EndUserAction() {
 //    - start: iterator to initialize with first position in the buffer.
 //    - end: iterator to initialize with the end iterator.
 //
-func (buffer *TextBuffer) Bounds() (start *TextIter, end *TextIter) {
+func (buffer *TextBuffer) Bounds() (start, end *TextIter) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_bounds", _args[:], _outs[:])
 
@@ -1667,11 +1543,9 @@ func (buffer *TextBuffer) Bounds() (start *TextIter, end *TextIter) {
 
 	var _start *TextIter // out
 	var _end *TextIter   // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_out1)))
+	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
 
 	return _start, _end
 }
@@ -1684,12 +1558,8 @@ func (buffer *TextBuffer) Bounds() (start *TextIter, end *TextIter) {
 //
 func (buffer *TextBuffer) CanRedo() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_can_redo", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1698,7 +1568,7 @@ func (buffer *TextBuffer) CanRedo() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1713,12 +1583,8 @@ func (buffer *TextBuffer) CanRedo() bool {
 //
 func (buffer *TextBuffer) CanUndo() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_can_undo", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1727,7 +1593,7 @@ func (buffer *TextBuffer) CanUndo() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1747,12 +1613,8 @@ func (buffer *TextBuffer) CanUndo() bool {
 //
 func (buffer *TextBuffer) CharCount() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_char_count", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -1761,7 +1623,7 @@ func (buffer *TextBuffer) CharCount() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1777,12 +1639,8 @@ func (buffer *TextBuffer) CharCount() int32 {
 //
 func (buffer *TextBuffer) EnableUndo() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_enable_undo", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1791,7 +1649,7 @@ func (buffer *TextBuffer) EnableUndo() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1813,21 +1671,16 @@ func (buffer *TextBuffer) EnableUndo() bool {
 func (buffer *TextBuffer) EndIter() *TextIter {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_end_iter", _args[:], _outs[:])
 
 	runtime.KeepAlive(buffer)
 
 	var _iter *TextIter // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _iter
 }
@@ -1840,12 +1693,8 @@ func (buffer *TextBuffer) EndIter() *TextIter {
 //
 func (buffer *TextBuffer) HasSelection() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_has_selection", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1854,7 +1703,7 @@ func (buffer *TextBuffer) HasSelection() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1872,12 +1721,8 @@ func (buffer *TextBuffer) HasSelection() bool {
 //
 func (buffer *TextBuffer) GetInsert() *TextMark {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_insert", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1904,15 +1749,9 @@ func (buffer *TextBuffer) GetInsert() *TextMark {
 func (buffer *TextBuffer) IterAtChildAnchor(anchor *TextChildAnchor) *TextIter {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_iter_at_child_anchor", _args[:], _outs[:])
 
@@ -1920,9 +1759,8 @@ func (buffer *TextBuffer) IterAtChildAnchor(anchor *TextChildAnchor) *TextIter {
 	runtime.KeepAlive(anchor)
 
 	var _iter *TextIter // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _iter
 }
@@ -1944,16 +1782,9 @@ func (buffer *TextBuffer) IterAtChildAnchor(anchor *TextChildAnchor) *TextIter {
 func (buffer *TextBuffer) IterAtLine(lineNumber int32) (*TextIter, bool) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _arg1 C.int      // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = C.int(lineNumber)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(lineNumber)
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_iter_at_line", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1963,10 +1794,9 @@ func (buffer *TextBuffer) IterAtLine(lineNumber int32) (*TextIter, bool) {
 
 	var _iter *TextIter // out
 	var _ok bool        // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	if _cret != 0 {
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1996,19 +1826,10 @@ func (buffer *TextBuffer) IterAtLine(lineNumber int32) (*TextIter, bool) {
 func (buffer *TextBuffer) IterAtLineIndex(lineNumber, byteIndex int32) (*TextIter, bool) {
 	var _args [3]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _arg1 C.int      // out
-	var _arg2 C.int      // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = C.int(lineNumber)
-	_arg2 = C.int(byteIndex)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(lineNumber)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(byteIndex)
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_iter_at_line_index", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -2019,10 +1840,9 @@ func (buffer *TextBuffer) IterAtLineIndex(lineNumber, byteIndex int32) (*TextIte
 
 	var _iter *TextIter // out
 	var _ok bool        // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	if _cret != 0 {
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2051,19 +1871,10 @@ func (buffer *TextBuffer) IterAtLineIndex(lineNumber, byteIndex int32) (*TextIte
 func (buffer *TextBuffer) IterAtLineOffset(lineNumber, charOffset int32) (*TextIter, bool) {
 	var _args [3]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _arg1 C.int      // out
-	var _arg2 C.int      // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = C.int(lineNumber)
-	_arg2 = C.int(charOffset)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(lineNumber)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(charOffset)
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_iter_at_line_offset", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -2074,10 +1885,9 @@ func (buffer *TextBuffer) IterAtLineOffset(lineNumber, charOffset int32) (*TextI
 
 	var _iter *TextIter // out
 	var _ok bool        // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	if _cret != 0 {
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2097,15 +1907,9 @@ func (buffer *TextBuffer) IterAtLineOffset(lineNumber, charOffset int32) (*TextI
 func (buffer *TextBuffer) IterAtMark(mark *TextMark) *TextIter {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_iter_at_mark", _args[:], _outs[:])
 
@@ -2113,9 +1917,8 @@ func (buffer *TextBuffer) IterAtMark(mark *TextMark) *TextIter {
 	runtime.KeepAlive(mark)
 
 	var _iter *TextIter // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _iter
 }
@@ -2138,15 +1941,9 @@ func (buffer *TextBuffer) IterAtMark(mark *TextMark) *TextIter {
 func (buffer *TextBuffer) IterAtOffset(charOffset int32) *TextIter {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _arg1 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = C.int(charOffset)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(charOffset)
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_iter_at_offset", _args[:], _outs[:])
 
@@ -2154,9 +1951,8 @@ func (buffer *TextBuffer) IterAtOffset(charOffset int32) *TextIter {
 	runtime.KeepAlive(charOffset)
 
 	var _iter *TextIter // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _iter
 }
@@ -2171,12 +1967,8 @@ func (buffer *TextBuffer) IterAtOffset(charOffset int32) *TextIter {
 //
 func (buffer *TextBuffer) LineCount() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_line_count", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -2185,7 +1977,7 @@ func (buffer *TextBuffer) LineCount() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -2203,16 +1995,10 @@ func (buffer *TextBuffer) LineCount() int32 {
 //
 func (buffer *TextBuffer) Mark(name string) *TextMark {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_mark", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -2222,7 +2008,7 @@ func (buffer *TextBuffer) Mark(name string) *TextMark {
 
 	var _textMark *TextMark // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_textMark = wrapTextMark(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -2239,12 +2025,8 @@ func (buffer *TextBuffer) Mark(name string) *TextMark {
 //
 func (buffer *TextBuffer) MaxUndoLevels() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_max_undo_levels", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -2253,7 +2035,7 @@ func (buffer *TextBuffer) MaxUndoLevels() uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -2269,12 +2051,8 @@ func (buffer *TextBuffer) MaxUndoLevels() uint32 {
 //
 func (buffer *TextBuffer) Modified() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_modified", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -2283,7 +2061,7 @@ func (buffer *TextBuffer) Modified() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2309,12 +2087,8 @@ func (buffer *TextBuffer) Modified() bool {
 //
 func (buffer *TextBuffer) SelectionBound() *TextMark {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_selection_bound", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -2342,17 +2116,11 @@ func (buffer *TextBuffer) SelectionBound() *TextMark {
 //    - end: iterator to initialize with selection end.
 //    - ok: whether the selection has nonzero length.
 //
-func (buffer *TextBuffer) SelectionBounds() (start *TextIter, end *TextIter, ok bool) {
+func (buffer *TextBuffer) SelectionBounds() (start, end *TextIter, ok bool) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_selection_bounds", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -2362,12 +2130,10 @@ func (buffer *TextBuffer) SelectionBounds() (start *TextIter, end *TextIter, ok 
 	var _start *TextIter // out
 	var _end *TextIter   // out
 	var _ok bool         // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_out1)))
-	if _cret != 0 {
+	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2385,12 +2151,8 @@ func (buffer *TextBuffer) SelectionBounds() (start *TextIter, end *TextIter, ok 
 //
 func (buffer *TextBuffer) SelectionContent() *gdk.ContentProvider {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_selection_content", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -2431,23 +2193,13 @@ func (buffer *TextBuffer) SelectionContent() *gdk.ContentProvider {
 //
 func (buffer *TextBuffer) Slice(start, end *TextIter, includeHiddenChars bool) string {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 *C.void    // out
-	var _arg3 C.gboolean // out
-	var _cret *C.void    // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 	if includeHiddenChars {
-		_arg3 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gboolean)(unsafe.Pointer(&_args[3])) = _arg3
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_slice", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -2477,21 +2229,16 @@ func (buffer *TextBuffer) Slice(start, end *TextIter, includeHiddenChars bool) s
 func (buffer *TextBuffer) StartIter() *TextIter {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_start_iter", _args[:], _outs[:])
 
 	runtime.KeepAlive(buffer)
 
 	var _iter *TextIter // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _iter
 }
@@ -2504,12 +2251,8 @@ func (buffer *TextBuffer) StartIter() *TextIter {
 //
 func (buffer *TextBuffer) TagTable() *TextTagTable {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_tag_table", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -2543,23 +2286,13 @@ func (buffer *TextBuffer) TagTable() *TextTagTable {
 //
 func (buffer *TextBuffer) Text(start, end *TextIter, includeHiddenChars bool) string {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 *C.void    // out
-	var _arg3 C.gboolean // out
-	var _cret *C.void    // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 	if includeHiddenChars {
-		_arg3 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gboolean)(unsafe.Pointer(&_args[3])) = _arg3
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("get_text", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -2592,21 +2325,13 @@ func (buffer *TextBuffer) Text(start, end *TextIter, includeHiddenChars bool) st
 //
 func (buffer *TextBuffer) Insert(iter *TextIter, text string) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 C.int
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg3 = (C.int)(len(text))
-	_arg2 = (*C.void)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
-	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), len(text)), text)
-	defer C.free(unsafe.Pointer(_arg2))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.int)(unsafe.Pointer(&_args[3])) = (C.int)(len(text))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[2])))), len(text)), text)
+	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[2]))))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("insert", _args[:], nil)
 
@@ -2626,18 +2351,12 @@ func (buffer *TextBuffer) Insert(iter *TextIter, text string) {
 //
 func (buffer *TextBuffer) InsertAtCursor(text string) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.int
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg2 = (C.int)(len(text))
-	_arg1 = (*C.void)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
-	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(text)), text)
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[2])) = (C.int)(len(text))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[1])))), len(text)), text)
+	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[1]))))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("insert_at_cursor", _args[:], nil)
 
@@ -2665,17 +2384,10 @@ func (buffer *TextBuffer) InsertAtCursor(text string) {
 //
 func (buffer *TextBuffer) InsertChildAnchor(iter *TextIter, anchor *TextChildAnchor) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("insert_child_anchor", _args[:], nil)
 
@@ -2707,27 +2419,16 @@ func (buffer *TextBuffer) InsertChildAnchor(iter *TextIter, anchor *TextChildAnc
 //
 func (buffer *TextBuffer) InsertInteractive(iter *TextIter, text string, defaultEditable bool) bool {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 C.int
-	var _arg4 C.gboolean // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg3 = (C.int)(len(text))
-	_arg2 = (*C.void)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
-	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), len(text)), text)
-	defer C.free(unsafe.Pointer(_arg2))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.int)(unsafe.Pointer(&_args[3])) = (C.int)(len(text))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[2])))), len(text)), text)
+	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[2]))))
 	if defaultEditable {
-		_arg4 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[4])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gboolean)(unsafe.Pointer(&_args[3])) = _arg3
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("insert_interactive", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -2738,9 +2439,8 @@ func (buffer *TextBuffer) InsertInteractive(iter *TextIter, text string, default
 	runtime.KeepAlive(defaultEditable)
 
 	var _ok bool // out
-	_out4 = *(*C.gboolean)(unsafe.Pointer(&_outs[4]))
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2766,24 +2466,15 @@ func (buffer *TextBuffer) InsertInteractive(iter *TextIter, text string, default
 //
 func (buffer *TextBuffer) InsertInteractiveAtCursor(text string, defaultEditable bool) bool {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.int
-	var _arg3 C.gboolean // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg2 = (C.int)(len(text))
-	_arg1 = (*C.void)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
-	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(text)), text)
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[2])) = (C.int)(len(text))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[1])))), len(text)), text)
+	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[1]))))
 	if defaultEditable {
-		_arg3 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("insert_interactive_at_cursor", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -2793,9 +2484,8 @@ func (buffer *TextBuffer) InsertInteractiveAtCursor(text string, defaultEditable
 	runtime.KeepAlive(defaultEditable)
 
 	var _ok bool // out
-	_out3 = *(*C.gboolean)(unsafe.Pointer(&_outs[3]))
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2816,21 +2506,13 @@ func (buffer *TextBuffer) InsertInteractiveAtCursor(text string, defaultEditable
 //
 func (buffer *TextBuffer) InsertMarkup(iter *TextIter, markup string) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 C.int
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg3 = (C.int)(len(markup))
-	_arg2 = (*C.void)(C.calloc(C.size_t((len(markup) + 1)), C.size_t(C.sizeof_char)))
-	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), len(markup)), markup)
-	defer C.free(unsafe.Pointer(_arg2))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.int)(unsafe.Pointer(&_args[3])) = (C.int)(len(markup))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(C.calloc(C.size_t((len(markup) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[2])))), len(markup)), markup)
+	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[2]))))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("insert_markup", _args[:], nil)
 
@@ -2855,17 +2537,10 @@ func (buffer *TextBuffer) InsertMarkup(iter *TextIter, markup string) {
 //
 func (buffer *TextBuffer) InsertPaintable(iter *TextIter, paintable gdk.Paintabler) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("insert_paintable", _args[:], nil)
 
@@ -2894,20 +2569,11 @@ func (buffer *TextBuffer) InsertPaintable(iter *TextIter, paintable gdk.Paintabl
 //
 func (buffer *TextBuffer) InsertRange(iter, start, end *TextIter) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
-	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("insert_range", _args[:], nil)
 
@@ -2938,26 +2604,14 @@ func (buffer *TextBuffer) InsertRange(iter, start, end *TextIter) {
 //
 func (buffer *TextBuffer) InsertRangeInteractive(iter, start, end *TextIter, defaultEditable bool) bool {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 *C.void    // out
-	var _arg3 *C.void    // out
-	var _arg4 C.gboolean // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
-	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 	if defaultEditable {
-		_arg4 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[4])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.gboolean)(unsafe.Pointer(&_args[4])) = _arg4
 
 	_gret := girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("insert_range_interactive", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -2970,7 +2624,7 @@ func (buffer *TextBuffer) InsertRangeInteractive(iter, start, end *TextIter, def
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2988,17 +2642,10 @@ func (buffer *TextBuffer) InsertRangeInteractive(iter, start, end *TextIter, def
 //
 func (buffer *TextBuffer) MoveMark(mark *TextMark, where *TextIter) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(where)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(where)))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("move_mark", _args[:], nil)
 
@@ -3019,18 +2666,11 @@ func (buffer *TextBuffer) MoveMark(mark *TextMark, where *TextIter) {
 //
 func (buffer *TextBuffer) MoveMarkByName(name string, where *TextIter) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(where)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(where)))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("move_mark_by_name", _args[:], nil)
 
@@ -3057,24 +2697,15 @@ func (buffer *TextBuffer) MoveMarkByName(name string, where *TextIter) {
 //
 func (buffer *TextBuffer) PasteClipboard(clipboard *gdk.Clipboard, overrideLocation *TextIter, defaultEditable bool) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 *C.void    // out
-	var _arg3 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 	if overrideLocation != nil {
-		_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(overrideLocation)))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(overrideLocation)))
 	}
 	if defaultEditable {
-		_arg3 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gboolean)(unsafe.Pointer(&_args[3])) = _arg3
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("paste_clipboard", _args[:], nil)
 
@@ -3099,14 +2730,9 @@ func (buffer *TextBuffer) PasteClipboard(clipboard *gdk.Clipboard, overrideLocat
 //
 func (buffer *TextBuffer) PlaceCursor(where *TextIter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(where)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(where)))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("place_cursor", _args[:], nil)
 
@@ -3117,11 +2743,8 @@ func (buffer *TextBuffer) PlaceCursor(where *TextIter) {
 // Redo redoes the next redoable action on the buffer, if there is one.
 func (buffer *TextBuffer) Redo() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("redo", _args[:], nil)
 
@@ -3142,17 +2765,10 @@ func (buffer *TextBuffer) Redo() {
 //
 func (buffer *TextBuffer) RemoveAllTags(start, end *TextIter) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("remove_all_tags", _args[:], nil)
 
@@ -3171,14 +2787,9 @@ func (buffer *TextBuffer) RemoveAllTags(start, end *TextIter) {
 //
 func (buffer *TextBuffer) RemoveSelectionClipboard(clipboard *gdk.Clipboard) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("remove_selection_clipboard", _args[:], nil)
 
@@ -3199,20 +2810,11 @@ func (buffer *TextBuffer) RemoveSelectionClipboard(clipboard *gdk.Clipboard) {
 //
 func (buffer *TextBuffer) RemoveTag(tag *TextTag, start, end *TextIter) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
-	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("remove_tag", _args[:], nil)
 
@@ -3235,21 +2837,12 @@ func (buffer *TextBuffer) RemoveTag(tag *TextTag, start, end *TextIter) {
 //
 func (buffer *TextBuffer) RemoveTagByName(name string, start, end *TextIter) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
-	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("remove_tag_by_name", _args[:], nil)
 
@@ -3275,17 +2868,10 @@ func (buffer *TextBuffer) RemoveTagByName(name string, start, end *TextIter) {
 //
 func (buffer *TextBuffer) SelectRange(ins, bound *TextIter) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(ins)))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(bound)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(ins)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bound)))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("select_range", _args[:], nil)
 
@@ -3310,16 +2896,11 @@ func (buffer *TextBuffer) SelectRange(ins, bound *TextIter) {
 //
 func (buffer *TextBuffer) SetEnableUndo(enableUndo bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 	if enableUndo {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("set_enable_undo", _args[:], nil)
 
@@ -3339,14 +2920,9 @@ func (buffer *TextBuffer) SetEnableUndo(enableUndo bool) {
 //
 func (buffer *TextBuffer) SetMaxUndoLevels(maxUndoLevels uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = C.guint(maxUndoLevels)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(maxUndoLevels)
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("set_max_undo_levels", _args[:], nil)
 
@@ -3368,16 +2944,11 @@ func (buffer *TextBuffer) SetMaxUndoLevels(maxUndoLevels uint32) {
 //
 func (buffer *TextBuffer) SetModified(setting bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 	if setting {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("set_modified", _args[:], nil)
 
@@ -3395,18 +2966,12 @@ func (buffer *TextBuffer) SetModified(setting bool) {
 //
 func (buffer *TextBuffer) SetText(text string) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.int
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg2 = (C.int)(len(text))
-	_arg1 = (*C.void)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
-	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(text)), text)
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[2])) = (C.int)(len(text))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[1])))), len(text)), text)
+	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[1]))))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("set_text", _args[:], nil)
 
@@ -3417,11 +2982,8 @@ func (buffer *TextBuffer) SetText(text string) {
 // Undo undoes the last undoable action on the buffer, if there is one.
 func (buffer *TextBuffer) Undo() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	girepository.MustFind("Gtk", "TextBuffer").InvokeMethod("undo", _args[:], nil)
 

@@ -78,8 +78,6 @@ func marshalWindowGroup(p uintptr) (interface{}, error) {
 //    - windowGroup: new WindowGroup.
 //
 func NewWindowGroup() *WindowGroup {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "WindowGroup").InvokeMethod("new_WindowGroup", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -98,14 +96,9 @@ func NewWindowGroup() *WindowGroup {
 //
 func (windowGroup *WindowGroup) AddWindow(window *Window) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(windowGroup).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(windowGroup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
 	girepository.MustFind("Gtk", "WindowGroup").InvokeMethod("add_window", _args[:], nil)
 
@@ -126,15 +119,9 @@ func (windowGroup *WindowGroup) AddWindow(window *Window) {
 //
 func (windowGroup *WindowGroup) CurrentDeviceGrab(device gdk.Devicer) Widgetter {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(windowGroup).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(windowGroup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	_gret := girepository.MustFind("Gtk", "WindowGroup").InvokeMethod("get_current_device_grab", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -144,7 +131,7 @@ func (windowGroup *WindowGroup) CurrentDeviceGrab(device gdk.Devicer) Widgetter 
 
 	var _widget Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -173,12 +160,8 @@ func (windowGroup *WindowGroup) CurrentDeviceGrab(device gdk.Devicer) Widgetter 
 //
 func (windowGroup *WindowGroup) CurrentGrab() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(windowGroup).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(windowGroup).Native()))
 
 	_gret := girepository.MustFind("Gtk", "WindowGroup").InvokeMethod("get_current_grab", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -216,12 +199,8 @@ func (windowGroup *WindowGroup) CurrentGrab() Widgetter {
 //
 func (windowGroup *WindowGroup) ListWindows() []*Window {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(windowGroup).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(windowGroup).Native()))
 
 	_gret := girepository.MustFind("Gtk", "WindowGroup").InvokeMethod("list_windows", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -249,14 +228,9 @@ func (windowGroup *WindowGroup) ListWindows() []*Window {
 //
 func (windowGroup *WindowGroup) RemoveWindow(window *Window) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(windowGroup).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(windowGroup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
 	girepository.MustFind("Gtk", "WindowGroup").InvokeMethod("remove_window", _args[:], nil)
 

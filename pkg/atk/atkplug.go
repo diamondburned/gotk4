@@ -97,8 +97,6 @@ func marshalPlug(p uintptr) (interface{}, error) {
 //    - plug: newly created Plug.
 //
 func NewPlug() *Plug {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Atk", "Plug").InvokeMethod("new_Plug", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -123,12 +121,8 @@ func NewPlug() *Plug {
 //
 func (plug *Plug) ID() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
 
 	_gret := girepository.MustFind("Atk", "Plug").InvokeMethod("get_id", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -159,14 +153,9 @@ func (plug *Plug) ID() string {
 //
 func (plug *Plug) SetChild(child *ObjectClass) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
 	girepository.MustFind("Atk", "Plug").InvokeMethod("set_child", _args[:], nil)
 

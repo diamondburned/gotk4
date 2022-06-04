@@ -140,34 +140,22 @@ func (action *RadioAction) ConnectChanged(f func(current *RadioAction)) coreglib
 //
 func NewRadioAction(name, label, tooltip, stockId string, value int32) *RadioAction {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 *C.void // out
-	var _arg4 C.gint  // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg0))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[0]))
 	if label != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
 	if tooltip != "" {
-		_arg2 = (*C.void)(unsafe.Pointer(C.CString(tooltip)))
-		defer C.free(unsafe.Pointer(_arg2))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(tooltip)))
+		defer C.free(unsafe.Pointer(_args[2]))
 	}
 	if stockId != "" {
-		_arg3 = (*C.void)(unsafe.Pointer(C.CString(stockId)))
-		defer C.free(unsafe.Pointer(_arg3))
+		*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
+		defer C.free(unsafe.Pointer(_args[3]))
 	}
-	_arg4 = C.gint(value)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.gint)(unsafe.Pointer(&_args[4])) = _arg4
+	*(*C.gint)(unsafe.Pointer(&_args[4])) = C.gint(value)
 
 	_gret := girepository.MustFind("Gtk", "RadioAction").InvokeMethod("new_RadioAction", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -196,12 +184,8 @@ func NewRadioAction(name, label, tooltip, stockId string, value int32) *RadioAct
 //
 func (action *RadioAction) CurrentValue() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
 	_gret := girepository.MustFind("Gtk", "RadioAction").InvokeMethod("get_current_value", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -210,7 +194,7 @@ func (action *RadioAction) CurrentValue() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -239,12 +223,8 @@ func (action *RadioAction) CurrentValue() int32 {
 //
 func (action *RadioAction) Group() []*RadioAction {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
 	_gret := girepository.MustFind("Gtk", "RadioAction").InvokeMethod("get_group", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -292,16 +272,11 @@ func (action *RadioAction) Group() []*RadioAction {
 //
 func (action *RadioAction) JoinGroup(groupSource *RadioAction) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	if groupSource != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(groupSource).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(groupSource).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "RadioAction").InvokeMethod("join_group", _args[:], nil)
 
@@ -320,14 +295,9 @@ func (action *RadioAction) JoinGroup(groupSource *RadioAction) {
 //
 func (action *RadioAction) SetCurrentValue(currentValue int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-	_arg1 = C.gint(currentValue)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(currentValue)
 
 	girepository.MustFind("Gtk", "RadioAction").InvokeMethod("set_current_value", _args[:], nil)
 
@@ -345,22 +315,17 @@ func (action *RadioAction) SetCurrentValue(currentValue int32) {
 //
 func (action *RadioAction) SetGroup(group []*RadioAction) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	if group != nil {
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
 			var dst *C.void // out
-			dst = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
-			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+			*(**C.void)(unsafe.Pointer(&dst)) = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+			*(**C.void)(unsafe.Pointer(&_args[1])) = C.g_slist_prepend(*(**C.void)(unsafe.Pointer(&_args[1])), C.gpointer(unsafe.Pointer(dst)))
 		}
-		defer C.g_slist_free(_arg1)
+		defer C.g_slist_free(_args[1])
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "RadioAction").InvokeMethod("set_group", _args[:], nil)
 

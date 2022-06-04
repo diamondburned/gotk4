@@ -83,14 +83,10 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 //
 func NewMountOperation(parent *Window) *MountOperation {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
 	if parent != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gtk", "MountOperation").InvokeMethod("new_MountOperation", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -113,12 +109,8 @@ func NewMountOperation(parent *Window) *MountOperation {
 //
 func (op *MountOperation) Display() *gdk.Display {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
 	_gret := girepository.MustFind("Gtk", "MountOperation").InvokeMethod("get_display", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -145,12 +137,8 @@ func (op *MountOperation) Display() *gdk.Display {
 //
 func (op *MountOperation) Parent() *Window {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
 	_gret := girepository.MustFind("Gtk", "MountOperation").InvokeMethod("get_parent", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -173,12 +161,8 @@ func (op *MountOperation) Parent() *Window {
 //
 func (op *MountOperation) IsShowing() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
 	_gret := girepository.MustFind("Gtk", "MountOperation").InvokeMethod("is_showing", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -187,7 +171,7 @@ func (op *MountOperation) IsShowing() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -202,14 +186,9 @@ func (op *MountOperation) IsShowing() bool {
 //
 func (op *MountOperation) SetDisplay(display *gdk.Display) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	girepository.MustFind("Gtk", "MountOperation").InvokeMethod("set_display", _args[:], nil)
 
@@ -226,16 +205,11 @@ func (op *MountOperation) SetDisplay(display *gdk.Display) {
 //
 func (op *MountOperation) SetParent(parent *Window) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	if parent != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "MountOperation").InvokeMethod("set_parent", _args[:], nil)
 

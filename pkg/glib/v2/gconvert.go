@@ -315,7 +315,7 @@ func FilenameDisplayName(filename string) string {
 //    - filename: newly-allocated string holding the resulting filename, or NULL
 //      on an error.
 //
-func FilenameFromURI(uri string) (hostname string, filename string, goerr error) {
+func FilenameFromURI(uri string) (hostname, filename string, goerr error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // in
 	var _cret *C.gchar  // in
@@ -372,7 +372,7 @@ func FilenameFromURI(uri string) (hostname string, filename string, goerr error)
 //      including the terminating nul).
 //    - filename: The converted string, or NULL on an error.
 //
-func FilenameFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten uint, filename string, goerr error) {
+func FilenameFromUTF8(utf8String string, len int) (bytesRead, bytesWritten uint, filename string, goerr error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 C.gssize  // out
 	var _arg3 C.gsize   // in
@@ -478,7 +478,7 @@ func FilenameToURI(filename, hostname string) (string, error) {
 //      including the terminating nul).
 //    - utf8: converted string, or NULL on an error.
 //
-func FilenameToUTF8(opsysstring string, len int) (bytesRead uint, bytesWritten uint, utf8 string, goerr error) {
+func FilenameToUTF8(opsysstring string, len int) (bytesRead, bytesWritten uint, utf8 string, goerr error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 C.gssize  // out
 	var _arg3 C.gsize   // in
@@ -653,7 +653,7 @@ func LocaleFromUTF8(utf8String string, len int) (uint, []byte, error) {
 //      including the terminating nul).
 //    - utf8: converted string, or NULL on an error.
 //
-func LocaleToUTF8(opsysstring string) (bytesRead uint, bytesWritten uint, utf8 string, goerr error) {
+func LocaleToUTF8(opsysstring string) (bytesRead, bytesWritten uint, utf8 string, goerr error) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize
 	var _arg3 C.gsize   // in

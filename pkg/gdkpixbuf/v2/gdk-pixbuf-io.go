@@ -191,7 +191,7 @@ func _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc(arg1 *C.GdkPixbuf, arg2 C.int, ar
 //    - pixbufFormat (optional): GdkPixbufFormat describing the image format of
 //      the file.
 //
-func PixbufGetFileInfo(filename string) (width int32, height int32, pixbufFormat *PixbufFormat) {
+func PixbufGetFileInfo(filename string) (width, height int32, pixbufFormat *PixbufFormat) {
 	var _arg1 *C.gchar           // out
 	var _arg2 C.gint             // in
 	var _arg3 C.gint             // in
@@ -271,7 +271,7 @@ func PixbufGetFileInfoAsync(ctx context.Context, filename string, callback gio.A
 //    - pixbufFormat (optional): GdkPixbufFormat describing the image format of
 //      the file.
 //
-func PixbufGetFileInfoFinish(asyncResult gio.AsyncResulter) (width int32, height int32, pixbufFormat *PixbufFormat, goerr error) {
+func PixbufGetFileInfoFinish(asyncResult gio.AsyncResulter) (width, height int32, pixbufFormat *PixbufFormat, goerr error) {
 	var _arg1 *C.GAsyncResult    // out
 	var _arg2 C.gint             // in
 	var _arg3 C.gint             // in

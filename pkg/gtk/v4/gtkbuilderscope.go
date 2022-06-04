@@ -203,8 +203,6 @@ func marshalBuilderCScope(p uintptr) (interface{}, error) {
 //    - builderCScope: new GtkBuilderCScope.
 //
 func NewBuilderCScope() *BuilderCScope {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "BuilderCScope").InvokeMethod("new_BuilderCScope", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

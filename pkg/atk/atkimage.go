@@ -60,7 +60,7 @@ type ImageOverrider interface {
 	//    - height (optional): filled with the image height, or -1 if the value
 	//      cannot be obtained.
 	//
-	ImageSize() (width int32, height int32)
+	ImageSize() (width, height int32)
 	// SetImageDescription sets the textual description for this image.
 	//
 	// The function takes the following parameters:
@@ -106,7 +106,7 @@ type Imager interface {
 	// ImageLocale retrieves the locale identifier associated to the Image.
 	ImageLocale() string
 	// ImageSize: get the width and height in pixels for the specified image.
-	ImageSize() (width int32, height int32)
+	ImageSize() (width, height int32)
 	// SetImageDescription sets the textual description for this image.
 	SetImageDescription(description string) bool
 }
@@ -196,12 +196,8 @@ func marshalImage(p uintptr) (interface{}, error) {
 //
 func (image *Image) ImageDescription() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -224,12 +220,8 @@ func (image *Image) ImageDescription() string {
 //
 func (image *Image) ImageLocale() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -237,7 +229,7 @@ func (image *Image) ImageLocale() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -258,29 +250,22 @@ func (image *Image) ImageLocale() string {
 //    - height (optional): filled with the image height, or -1 if the value
 //      cannot be obtained.
 //
-func (image *Image) ImageSize() (width int32, height int32) {
+func (image *Image) ImageSize() (width, height int32) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 
 	runtime.KeepAlive(image)
 
 	var _width int32  // out
 	var _height int32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_width = *(*int32)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_width = *(*int32)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_height = *(*int32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_height = *(*int32)(unsafe.Pointer(_outs[1]))
 	}
 
 	return _width, _height
@@ -298,16 +283,10 @@ func (image *Image) ImageSize() (width int32, height int32) {
 //
 func (image *Image) SetImageDescription(description string) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(description)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -316,7 +295,7 @@ func (image *Image) SetImageDescription(description string) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

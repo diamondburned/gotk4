@@ -114,18 +114,12 @@ func marshalCursor(p uintptr) (interface{}, error) {
 //
 func NewCursorFromName(name string, fallback *Cursor) *Cursor {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg0))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[0]))
 	if fallback != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fallback).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fallback).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("new_Cursor_from_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -135,7 +129,7 @@ func NewCursorFromName(name string, fallback *Cursor) *Cursor {
 
 	var _cursor *Cursor // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_cursor = wrapCursor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
@@ -158,23 +152,13 @@ func NewCursorFromName(name string, fallback *Cursor) *Cursor {
 //
 func NewCursorFromTexture(texture Texturer, hotspotX, hotspotY int32, fallback *Cursor) *Cursor {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
-	var _arg2 C.int   // out
-	var _arg3 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
-	_arg1 = C.int(hotspotX)
-	_arg2 = C.int(hotspotY)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(hotspotX)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(hotspotY)
 	if fallback != nil {
-		_arg3 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fallback).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fallback).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
 
 	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("new_Cursor_from_texture", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -206,12 +190,8 @@ func NewCursorFromTexture(texture Texturer, hotspotX, hotspotY int32, fallback *
 //
 func (cursor *Cursor) Fallback() *Cursor {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_fallback", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -220,7 +200,7 @@ func (cursor *Cursor) Fallback() *Cursor {
 
 	var _ret *Cursor // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_ret = wrapCursor(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -241,12 +221,8 @@ func (cursor *Cursor) Fallback() *Cursor {
 //
 func (cursor *Cursor) HotspotX() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_hotspot_x", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -255,7 +231,7 @@ func (cursor *Cursor) HotspotX() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -274,12 +250,8 @@ func (cursor *Cursor) HotspotX() int32 {
 //
 func (cursor *Cursor) HotspotY() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_hotspot_y", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -288,7 +260,7 @@ func (cursor *Cursor) HotspotY() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -303,12 +275,8 @@ func (cursor *Cursor) HotspotY() int32 {
 //
 func (cursor *Cursor) Name() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -317,7 +285,7 @@ func (cursor *Cursor) Name() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -334,12 +302,8 @@ func (cursor *Cursor) Name() string {
 //
 func (cursor *Cursor) Texture() Texturer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_texture", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -348,7 +312,7 @@ func (cursor *Cursor) Texture() Texturer {
 
 	var _texture Texturer // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 

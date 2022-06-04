@@ -140,13 +140,8 @@ func marshalScrollable(p uintptr) (interface{}, error) {
 func (scrollable *Scrollable) Border() (*Border, bool) {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -154,10 +149,9 @@ func (scrollable *Scrollable) Border() (*Border, bool) {
 
 	var _border *Border // out
 	var _ok bool        // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	if _cret != 0 {
+	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -172,12 +166,8 @@ func (scrollable *Scrollable) Border() (*Border, bool) {
 //
 func (scrollable *Scrollable) HAdjustment() *Adjustment {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -198,12 +188,8 @@ func (scrollable *Scrollable) HAdjustment() *Adjustment {
 //
 func (scrollable *Scrollable) VAdjustment() *Adjustment {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -224,16 +210,11 @@ func (scrollable *Scrollable) VAdjustment() *Adjustment {
 //
 func (scrollable *Scrollable) SetHAdjustment(hadjustment *Adjustment) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
 	if hadjustment != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hadjustment).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hadjustment).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(scrollable)
 	runtime.KeepAlive(hadjustment)
@@ -247,16 +228,11 @@ func (scrollable *Scrollable) SetHAdjustment(hadjustment *Adjustment) {
 //
 func (scrollable *Scrollable) SetVAdjustment(vadjustment *Adjustment) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
 	if vadjustment != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(vadjustment).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(vadjustment).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(scrollable)
 	runtime.KeepAlive(vadjustment)

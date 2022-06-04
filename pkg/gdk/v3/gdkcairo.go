@@ -46,12 +46,8 @@ import "C"
 //
 func CairoCreate(window Windower) *cairo.Context {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
 	_gret := girepository.MustFind("Gdk", "cairo_create").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -98,35 +94,16 @@ func CairoCreate(window Windower) *cairo.Context {
 //
 func CairoDrawFromGL(cr *cairo.Context, window Windower, source, sourceType, bufferScale, x, y, width, height int32) {
 	var _args [9]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.int   // out
-	var _arg3 C.int   // out
-	var _arg4 C.int   // out
-	var _arg5 C.int   // out
-	var _arg6 C.int   // out
-	var _arg7 C.int   // out
-	var _arg8 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(cr.Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	_arg2 = C.int(source)
-	_arg3 = C.int(sourceType)
-	_arg4 = C.int(bufferScale)
-	_arg5 = C.int(x)
-	_arg6 = C.int(y)
-	_arg7 = C.int(width)
-	_arg8 = C.int(height)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.int)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.int)(unsafe.Pointer(&_args[4])) = _arg4
-	*(*C.int)(unsafe.Pointer(&_args[5])) = _arg5
-	*(*C.int)(unsafe.Pointer(&_args[6])) = _arg6
-	*(*C.int)(unsafe.Pointer(&_args[7])) = _arg7
-	*(*C.int)(unsafe.Pointer(&_args[8])) = _arg8
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(source)
+	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(sourceType)
+	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(bufferScale)
+	*(*C.int)(unsafe.Pointer(&_args[5])) = C.int(x)
+	*(*C.int)(unsafe.Pointer(&_args[6])) = C.int(y)
+	*(*C.int)(unsafe.Pointer(&_args[7])) = C.int(width)
+	*(*C.int)(unsafe.Pointer(&_args[8])) = C.int(height)
 
 	girepository.MustFind("Gdk", "cairo_draw_from_gl").Invoke(_args[:], nil)
 
@@ -158,13 +135,8 @@ func CairoDrawFromGL(cr *cairo.Context, window Windower, source, sourceType, buf
 func CairoGetClipRectangle(cr *cairo.Context) (*Rectangle, bool) {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(cr.Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
 
 	_gret := girepository.MustFind("Gdk", "cairo_get_clip_rectangle").Invoke(_args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -173,12 +145,11 @@ func CairoGetClipRectangle(cr *cairo.Context) (*Rectangle, bool) {
 
 	var _rect *Rectangle // out
 	var _ok bool         // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	if _out0 != nil {
-		_rect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_rect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 	}
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -198,12 +169,8 @@ func CairoGetClipRectangle(cr *cairo.Context) (*Rectangle, bool) {
 //
 func CairoGetDrawingContext(cr *cairo.Context) *DrawingContext {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(cr.Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
 
 	_gret := girepository.MustFind("Gdk", "cairo_get_drawing_context").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -212,7 +179,7 @@ func CairoGetDrawingContext(cr *cairo.Context) *DrawingContext {
 
 	var _drawingContext *DrawingContext // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_drawingContext = wrapDrawingContext(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -228,14 +195,9 @@ func CairoGetDrawingContext(cr *cairo.Context) *DrawingContext {
 //
 func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(cr.Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rectangle)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rectangle)))
 
 	girepository.MustFind("Gdk", "cairo_rectangle").Invoke(_args[:], nil)
 
@@ -252,14 +214,9 @@ func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 //
 func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(cr.Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(region.Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(region.Native()))
 
 	girepository.MustFind("Gdk", "cairo_region").Invoke(_args[:], nil)
 
@@ -283,12 +240,8 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 //
 func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(surface.Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(surface.Native()))
 
 	_gret := girepository.MustFind("Gdk", "cairo_region_create_from_surface").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -319,14 +272,9 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 //
 func CairoSetSourceColor(cr *cairo.Context, color *Color) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(cr.Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 
 	girepository.MustFind("Gdk", "cairo_set_source_color").Invoke(_args[:], nil)
 
@@ -348,20 +296,11 @@ func CairoSetSourceColor(cr *cairo.Context, color *Color) {
 //
 func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX, pixbufY float64) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 *C.void   // out
-	var _arg2 C.gdouble // out
-	var _arg3 C.gdouble // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(cr.Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
-	_arg2 = C.gdouble(pixbufX)
-	_arg3 = C.gdouble(pixbufY)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gdouble)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(pixbufX)
+	*(*C.gdouble)(unsafe.Pointer(&_args[3])) = C.gdouble(pixbufY)
 
 	girepository.MustFind("Gdk", "cairo_set_source_pixbuf").Invoke(_args[:], nil)
 
@@ -380,14 +319,9 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX, 
 //
 func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(cr.Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	girepository.MustFind("Gdk", "cairo_set_source_rgba").Invoke(_args[:], nil)
 
@@ -413,20 +347,11 @@ func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 //
 func CairoSetSourceWindow(cr *cairo.Context, window Windower, x, y float64) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 *C.void   // out
-	var _arg2 C.gdouble // out
-	var _arg3 C.gdouble // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(cr.Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	_arg2 = C.gdouble(x)
-	_arg3 = C.gdouble(y)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gdouble)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(x)
+	*(*C.gdouble)(unsafe.Pointer(&_args[3])) = C.gdouble(y)
 
 	girepository.MustFind("Gdk", "cairo_set_source_window").Invoke(_args[:], nil)
 
@@ -451,20 +376,12 @@ func CairoSetSourceWindow(cr *cairo.Context, window Windower, x, y float64) {
 //
 func CairoSurfaceCreateFromPixbuf(pixbuf *gdkpixbuf.Pixbuf, scale int32, forWindow Windower) *cairo.Surface {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
-	var _arg2 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
-	_arg1 = C.int(scale)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(scale)
 	if forWindow != nil {
-		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(forWindow).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(forWindow).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gdk", "cairo_surface_create_from_pixbuf").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

@@ -253,11 +253,8 @@ func (display *Display) ConnectSeatRemoved(f func(seat Seater)) coreglib.SignalH
 // Beep emits a short beep on display.
 func (display *Display) Beep() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	girepository.MustFind("Gdk", "Display").InvokeMethod("beep", _args[:], nil)
 
@@ -268,11 +265,8 @@ func (display *Display) Beep() {
 // and cleans up associated resources.
 func (display *Display) Close() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	girepository.MustFind("Gdk", "Display").InvokeMethod("close", _args[:], nil)
 
@@ -292,15 +286,9 @@ func (display *Display) Close() {
 //
 func (display *Display) DeviceIsGrabbed(device Devicer) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("device_is_grabbed", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -310,7 +298,7 @@ func (display *Display) DeviceIsGrabbed(device Devicer) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -328,11 +316,8 @@ func (display *Display) DeviceIsGrabbed(device Devicer) bool {
 // synchronously, this function will do nothing.
 func (display *Display) Flush() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	girepository.MustFind("Gdk", "Display").InvokeMethod("flush", _args[:], nil)
 
@@ -349,12 +334,8 @@ func (display *Display) Flush() {
 //
 func (display *Display) AppLaunchContext() *AppLaunchContext {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("get_app_launch_context", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -376,12 +357,8 @@ func (display *Display) AppLaunchContext() *AppLaunchContext {
 //
 func (display *Display) DefaultCursorSize() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("get_default_cursor_size", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -390,7 +367,7 @@ func (display *Display) DefaultCursorSize() uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -405,12 +382,8 @@ func (display *Display) DefaultCursorSize() uint32 {
 //
 func (display *Display) DefaultGroup() Windower {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("get_default_group", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -448,12 +421,8 @@ func (display *Display) DefaultGroup() Windower {
 //
 func (display *Display) DefaultScreen() *Screen {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("get_default_screen", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -475,12 +444,8 @@ func (display *Display) DefaultScreen() *Screen {
 //
 func (display *Display) DefaultSeat() Seater {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("get_default_seat", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -521,12 +486,8 @@ func (display *Display) DefaultSeat() Seater {
 //
 func (display *Display) DeviceManager() DeviceManagerer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("get_device_manager", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -535,7 +496,7 @@ func (display *Display) DeviceManager() DeviceManagerer {
 
 	var _deviceManager DeviceManagerer // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -565,12 +526,8 @@ func (display *Display) DeviceManager() DeviceManagerer {
 //
 func (display *Display) Event() *Event {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("get_event", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -579,7 +536,7 @@ func (display *Display) Event() *Event {
 
 	var _event *Event // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			v := (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 			_event = v
@@ -596,16 +553,11 @@ func (display *Display) Event() *Event {
 //    - width: return location for the maximal cursor width.
 //    - height: return location for the maximal cursor height.
 //
-func (display *Display) MaximalCursorSize() (width uint32, height uint32) {
+func (display *Display) MaximalCursorSize() (width, height uint32) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	girepository.MustFind("Gdk", "Display").InvokeMethod("get_maximal_cursor_size", _args[:], _outs[:])
 
@@ -613,11 +565,9 @@ func (display *Display) MaximalCursorSize() (width uint32, height uint32) {
 
 	var _width uint32  // out
 	var _height uint32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_width = *(*uint32)(unsafe.Pointer(_out0))
-	_height = *(*uint32)(unsafe.Pointer(_out1))
+	_width = *(*uint32)(unsafe.Pointer(_outs[0]))
+	_height = *(*uint32)(unsafe.Pointer(_outs[1]))
 
 	return _width, _height
 }
@@ -634,15 +584,9 @@ func (display *Display) MaximalCursorSize() (width uint32, height uint32) {
 //
 func (display *Display) Monitor(monitorNum int32) *Monitor {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	_arg1 = C.int(monitorNum)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(monitorNum)
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("get_monitor", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -652,7 +596,7 @@ func (display *Display) Monitor(monitorNum int32) *Monitor {
 
 	var _monitor *Monitor // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_monitor = wrapMonitor(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -673,18 +617,10 @@ func (display *Display) Monitor(monitorNum int32) *Monitor {
 //
 func (display *Display) MonitorAtPoint(x, y int32) *Monitor {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
-	var _arg2 C.int   // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	_arg1 = C.int(x)
-	_arg2 = C.int(y)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(x)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(y)
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("get_monitor_at_point", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -713,15 +649,9 @@ func (display *Display) MonitorAtPoint(x, y int32) *Monitor {
 //
 func (display *Display) MonitorAtWindow(window Windower) *Monitor {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("get_monitor_at_window", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -747,12 +677,8 @@ func (display *Display) MonitorAtWindow(window Windower) *Monitor {
 //
 func (display *Display) NMonitors() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("get_n_monitors", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -761,7 +687,7 @@ func (display *Display) NMonitors() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -776,12 +702,8 @@ func (display *Display) NMonitors() int32 {
 //
 func (display *Display) NScreens() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("get_n_screens", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -790,7 +712,7 @@ func (display *Display) NScreens() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -804,12 +726,8 @@ func (display *Display) NScreens() int32 {
 //
 func (display *Display) Name() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("get_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -838,18 +756,11 @@ func (display *Display) Name() string {
 //      NULL.
 //    - mask (optional): location to store current modifier mask, or NULL.
 //
-func (display *Display) Pointer() (screen *Screen, x int32, y int32, mask ModifierType) {
+func (display *Display) Pointer() (screen *Screen, x, y int32, mask ModifierType) {
 	var _args [1]girepository.Argument
 	var _outs [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
-	var _out2 *C.void // in
-	var _out3 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	girepository.MustFind("Gdk", "Display").InvokeMethod("get_pointer", _args[:], _outs[:])
 
@@ -859,22 +770,18 @@ func (display *Display) Pointer() (screen *Screen, x int32, y int32, mask Modifi
 	var _x int32           // out
 	var _y int32           // out
 	var _mask ModifierType // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
-	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
-	_out3 = *(**C.void)(unsafe.Pointer(&_outs[3]))
 
-	if _out0 != nil {
-		_screen = wrapScreen(coreglib.Take(unsafe.Pointer(_out0)))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_screen = wrapScreen(coreglib.Take(unsafe.Pointer(_outs[0])))
 	}
-	if _out1 != nil {
-		_x = *(*int32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_x = *(*int32)(unsafe.Pointer(_outs[1]))
 	}
-	if _out2 != nil {
-		_y = *(*int32)(unsafe.Pointer(_out2))
+	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
+		_y = *(*int32)(unsafe.Pointer(_outs[2]))
 	}
-	if _out3 != nil {
-		_mask = *(*ModifierType)(unsafe.Pointer(_out3))
+	if *(**C.void)(unsafe.Pointer(&_outs[3])) != nil {
+		_mask = *(*ModifierType)(unsafe.Pointer(_outs[3]))
 	}
 
 	return _screen, _x, _y, _mask
@@ -894,12 +801,8 @@ func (display *Display) Pointer() (screen *Screen, x int32, y int32, mask Modifi
 //
 func (display *Display) PrimaryMonitor() *Monitor {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("get_primary_monitor", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -908,7 +811,7 @@ func (display *Display) PrimaryMonitor() *Monitor {
 
 	var _monitor *Monitor // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_monitor = wrapMonitor(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -930,15 +833,9 @@ func (display *Display) PrimaryMonitor() *Monitor {
 //
 func (display *Display) Screen(screenNum int32) *Screen {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	_arg1 = C.gint(screenNum)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(screenNum)
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("get_screen", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -968,17 +865,11 @@ func (display *Display) Screen(screenNum int32) *Screen {
 //      relative & to the window origin, or NULL.
 //    - window (optional) under the mouse pointer, or NULL.
 //
-func (display *Display) WindowAtPointer() (winX int32, winY int32, window Windower) {
+func (display *Display) WindowAtPointer() (winX, winY int32, window Windower) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("get_window_at_pointer", _args[:], _outs[:])
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -988,16 +879,14 @@ func (display *Display) WindowAtPointer() (winX int32, winY int32, window Window
 	var _winX int32      // out
 	var _winY int32      // out
 	var _window Windower // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_winX = *(*int32)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_winX = *(*int32)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_winY = *(*int32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_winY = *(*int32)(unsafe.Pointer(_outs[1]))
 	}
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -1026,12 +915,8 @@ func (display *Display) WindowAtPointer() (winX int32, winY int32, window Window
 //
 func (display *Display) HasPending() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("has_pending", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1040,7 +925,7 @@ func (display *Display) HasPending() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1055,12 +940,8 @@ func (display *Display) HasPending() bool {
 //
 func (display *Display) IsClosed() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("is_closed", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1069,7 +950,7 @@ func (display *Display) IsClosed() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1086,14 +967,9 @@ func (display *Display) IsClosed() bool {
 //
 func (display *Display) KeyboardUngrab(time_ uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 C.guint32 // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	_arg1 = C.guint32(time_)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint32)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(time_)
 
 	girepository.MustFind("Gdk", "Display").InvokeMethod("keyboard_ungrab", _args[:], nil)
 
@@ -1112,12 +988,8 @@ func (display *Display) KeyboardUngrab(time_ uint32) {
 //
 func (display *Display) ListDevices() []Devicer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("list_devices", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1161,12 +1033,8 @@ func (display *Display) ListDevices() []Devicer {
 //
 func (display *Display) ListSeats() []Seater {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("list_seats", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1216,15 +1084,10 @@ func (display *Display) ListSeats() []Seater {
 //
 func (display *Display) NotifyStartupComplete(startupId string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(startupId)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(startupId)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gdk", "Display").InvokeMethod("notify_startup_complete", _args[:], nil)
 
@@ -1245,12 +1108,8 @@ func (display *Display) NotifyStartupComplete(startupId string) {
 //
 func (display *Display) PeekEvent() *Event {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("peek_event", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1259,7 +1118,7 @@ func (display *Display) PeekEvent() *Event {
 
 	var _event *Event // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			v := (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 			_event = v
@@ -1279,12 +1138,8 @@ func (display *Display) PeekEvent() *Event {
 //
 func (display *Display) PointerIsGrabbed() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("pointer_is_grabbed", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1293,7 +1148,7 @@ func (display *Display) PointerIsGrabbed() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1310,14 +1165,9 @@ func (display *Display) PointerIsGrabbed() bool {
 //
 func (display *Display) PointerUngrab(time_ uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 C.guint32 // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	_arg1 = C.guint32(time_)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint32)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(time_)
 
 	girepository.MustFind("Gdk", "Display").InvokeMethod("pointer_ungrab", _args[:], nil)
 
@@ -1334,14 +1184,9 @@ func (display *Display) PointerUngrab(time_ uint32) {
 //
 func (display *Display) PutEvent(event *Event) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
 
 	girepository.MustFind("Gdk", "Display").InvokeMethod("put_event", _args[:], nil)
 
@@ -1360,14 +1205,9 @@ func (display *Display) PutEvent(event *Event) {
 //
 func (display *Display) SetDoubleClickDistance(distance uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	_arg1 = C.guint(distance)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(distance)
 
 	girepository.MustFind("Gdk", "Display").InvokeMethod("set_double_click_distance", _args[:], nil)
 
@@ -1385,14 +1225,9 @@ func (display *Display) SetDoubleClickDistance(distance uint32) {
 //
 func (display *Display) SetDoubleClickTime(msec uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	_arg1 = C.guint(msec)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(msec)
 
 	girepository.MustFind("Gdk", "Display").InvokeMethod("set_double_click_time", _args[:], nil)
 
@@ -1411,12 +1246,8 @@ func (display *Display) SetDoubleClickTime(msec uint32) {
 //
 func (display *Display) SupportsClipboardPersistence() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("supports_clipboard_persistence", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1425,7 +1256,7 @@ func (display *Display) SupportsClipboardPersistence() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1447,12 +1278,8 @@ func (display *Display) SupportsClipboardPersistence() bool {
 //
 func (display *Display) SupportsComposite() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("supports_composite", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1461,7 +1288,7 @@ func (display *Display) SupportsComposite() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1477,12 +1304,8 @@ func (display *Display) SupportsComposite() bool {
 //
 func (display *Display) SupportsCursorAlpha() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("supports_cursor_alpha", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1491,7 +1314,7 @@ func (display *Display) SupportsCursorAlpha() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1507,12 +1330,8 @@ func (display *Display) SupportsCursorAlpha() bool {
 //
 func (display *Display) SupportsCursorColor() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("supports_cursor_color", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1521,7 +1340,7 @@ func (display *Display) SupportsCursorColor() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1537,12 +1356,8 @@ func (display *Display) SupportsCursorColor() bool {
 //
 func (display *Display) SupportsInputShapes() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("supports_input_shapes", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1551,7 +1366,7 @@ func (display *Display) SupportsInputShapes() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1567,12 +1382,8 @@ func (display *Display) SupportsInputShapes() bool {
 //
 func (display *Display) SupportsSelectionNotification() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("supports_selection_notification", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1581,7 +1392,7 @@ func (display *Display) SupportsSelectionNotification() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1597,12 +1408,8 @@ func (display *Display) SupportsSelectionNotification() bool {
 //
 func (display *Display) SupportsShapes() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Display").InvokeMethod("supports_shapes", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1611,7 +1418,7 @@ func (display *Display) SupportsShapes() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1628,11 +1435,8 @@ func (display *Display) SupportsShapes() bool {
 // synchronously, this function will do nothing.
 func (display *Display) Sync() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	girepository.MustFind("Gdk", "Display").InvokeMethod("sync", _args[:], nil)
 
@@ -1658,20 +1462,11 @@ func (display *Display) Sync() {
 //
 func (display *Display) WarpPointer(screen *Screen, x, y int32) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.gint  // out
-	var _arg3 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	_arg2 = C.gint(x)
-	_arg3 = C.gint(y)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gint)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(x)
+	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(y)
 
 	girepository.MustFind("Gdk", "Display").InvokeMethod("warp_pointer", _args[:], nil)
 
@@ -1689,14 +1484,12 @@ func (display *Display) WarpPointer(screen *Screen, x, y int32) {
 //    - display (optional) or NULL if there is no default display.
 //
 func DisplayGetDefault() *Display {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gdk", "get_default").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _display *Display // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -1715,13 +1508,9 @@ func DisplayGetDefault() *Display {
 //
 func DisplayOpen(displayName string) *Display {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(displayName)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(displayName)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gdk", "open").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1730,7 +1519,7 @@ func DisplayOpen(displayName string) *Display {
 
 	var _display *Display // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -1751,14 +1540,12 @@ func DisplayOpen(displayName string) *Display {
 //      NULL.
 //
 func DisplayOpenDefaultLibgtkOnly() *Display {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gdk", "open_default_libgtk_only").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _display *Display // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 

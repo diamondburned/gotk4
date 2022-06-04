@@ -576,8 +576,6 @@ func (statusIcon *StatusIcon) ConnectSizeChanged(f func(size int32) (ok bool)) c
 //    - statusIcon: new StatusIcon.
 //
 func NewStatusIcon() *StatusIcon {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("new_StatusIcon", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -606,13 +604,9 @@ func NewStatusIcon() *StatusIcon {
 //
 func NewStatusIconFromFile(filename string) *StatusIcon {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("new_StatusIcon_from_file", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -642,12 +636,8 @@ func NewStatusIconFromFile(filename string) *StatusIcon {
 //
 func NewStatusIconFromGIcon(icon gio.Iconner) *StatusIcon {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 
 	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("new_StatusIcon_from_gicon", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -678,13 +668,9 @@ func NewStatusIconFromGIcon(icon gio.Iconner) *StatusIcon {
 //
 func NewStatusIconFromIconName(iconName string) *StatusIcon {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("new_StatusIcon_from_icon_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -716,12 +702,8 @@ func NewStatusIconFromIconName(iconName string) *StatusIcon {
 //
 func NewStatusIconFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *StatusIcon {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 
 	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("new_StatusIcon_from_pixbuf", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -753,13 +735,9 @@ func NewStatusIconFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *StatusIcon {
 //
 func NewStatusIconFromStock(stockId string) *StatusIcon {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("new_StatusIcon_from_stock", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -804,15 +782,8 @@ func NewStatusIconFromStock(stockId string) *StatusIcon {
 func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, *gdk.Rectangle, Orientation, bool) {
 	var _args [1]girepository.Argument
 	var _outs [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _out2 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
 	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_geometry", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -823,25 +794,22 @@ func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, *gdk.Rectangle, Orientati
 	var _area *gdk.Rectangle     // out
 	var _orientation Orientation // out
 	var _ok bool                 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
-	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
 
-	if _out0 != nil {
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_out0))
+			obj := coreglib.Take(unsafe.Pointer(_outs[0]))
 			_screen = &gdk.Screen{
 				Object: obj,
 			}
 		}
 	}
-	if _out1 != nil {
-		_area = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_out1)))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_area = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
 	}
-	if _out2 != nil {
-		_orientation = *(*Orientation)(unsafe.Pointer(_out2))
+	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
+		_orientation = *(*Orientation)(unsafe.Pointer(_outs[2]))
 	}
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -864,12 +832,8 @@ func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, *gdk.Rectangle, Orientati
 //
 func (statusIcon *StatusIcon) GIcon() *gio.Icon {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
 	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_gicon", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -878,7 +842,7 @@ func (statusIcon *StatusIcon) GIcon() *gio.Icon {
 
 	var _icon *gio.Icon // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			obj := coreglib.Take(unsafe.Pointer(_cret))
 			_icon = &gio.Icon{
@@ -902,12 +866,8 @@ func (statusIcon *StatusIcon) GIcon() *gio.Icon {
 //
 func (statusIcon *StatusIcon) HasTooltip() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
 	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_has_tooltip", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -916,7 +876,7 @@ func (statusIcon *StatusIcon) HasTooltip() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -938,12 +898,8 @@ func (statusIcon *StatusIcon) HasTooltip() bool {
 //
 func (statusIcon *StatusIcon) IconName() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
 	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_icon_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -952,7 +908,7 @@ func (statusIcon *StatusIcon) IconName() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -973,12 +929,8 @@ func (statusIcon *StatusIcon) IconName() string {
 //
 func (statusIcon *StatusIcon) Pixbuf() *gdkpixbuf.Pixbuf {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
 	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_pixbuf", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -987,7 +939,7 @@ func (statusIcon *StatusIcon) Pixbuf() *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			obj := coreglib.Take(unsafe.Pointer(_cret))
 			_pixbuf = &gdkpixbuf.Pixbuf{
@@ -1016,12 +968,8 @@ func (statusIcon *StatusIcon) Pixbuf() *gdkpixbuf.Pixbuf {
 //
 func (statusIcon *StatusIcon) Screen() *gdk.Screen {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
 	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_screen", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1058,12 +1006,8 @@ func (statusIcon *StatusIcon) Screen() *gdk.Screen {
 //
 func (statusIcon *StatusIcon) Size() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
 	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_size", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -1072,7 +1016,7 @@ func (statusIcon *StatusIcon) Size() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1091,12 +1035,8 @@ func (statusIcon *StatusIcon) Size() int32 {
 //
 func (statusIcon *StatusIcon) Stock() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
 	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_stock", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1105,7 +1045,7 @@ func (statusIcon *StatusIcon) Stock() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -1123,12 +1063,8 @@ func (statusIcon *StatusIcon) Stock() string {
 //
 func (statusIcon *StatusIcon) Title() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
 	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_title", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1154,12 +1090,8 @@ func (statusIcon *StatusIcon) Title() string {
 //
 func (statusIcon *StatusIcon) TooltipMarkup() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
 	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_tooltip_markup", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1168,7 +1100,7 @@ func (statusIcon *StatusIcon) TooltipMarkup() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 		defer C.free(unsafe.Pointer(_cret))
 	}
@@ -1188,12 +1120,8 @@ func (statusIcon *StatusIcon) TooltipMarkup() string {
 //
 func (statusIcon *StatusIcon) TooltipText() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
 	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_tooltip_text", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1202,7 +1130,7 @@ func (statusIcon *StatusIcon) TooltipText() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 		defer C.free(unsafe.Pointer(_cret))
 	}
@@ -1223,12 +1151,8 @@ func (statusIcon *StatusIcon) TooltipText() string {
 //
 func (statusIcon *StatusIcon) Visible() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
 	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_visible", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1237,7 +1161,7 @@ func (statusIcon *StatusIcon) Visible() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1266,12 +1190,8 @@ func (statusIcon *StatusIcon) Visible() bool {
 //
 func (statusIcon *StatusIcon) X11WindowID() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.guint32 // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
 	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_x11_window_id", _args[:], nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
@@ -1280,7 +1200,7 @@ func (statusIcon *StatusIcon) X11WindowID() uint32 {
 
 	var _guint32 uint32 // out
 
-	_guint32 = uint32(_cret)
+	_guint32 = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
 
 	return _guint32
 }
@@ -1297,12 +1217,8 @@ func (statusIcon *StatusIcon) X11WindowID() uint32 {
 //
 func (statusIcon *StatusIcon) IsEmbedded() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
 	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("is_embedded", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1311,7 +1227,7 @@ func (statusIcon *StatusIcon) IsEmbedded() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1331,15 +1247,10 @@ func (statusIcon *StatusIcon) IsEmbedded() bool {
 //
 func (statusIcon *StatusIcon) SetFromFile(filename string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_from_file", _args[:], nil)
 
@@ -1360,14 +1271,9 @@ func (statusIcon *StatusIcon) SetFromFile(filename string) {
 //
 func (statusIcon *StatusIcon) SetFromGIcon(icon gio.Iconner) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 
 	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_from_gicon", _args[:], nil)
 
@@ -1388,15 +1294,10 @@ func (statusIcon *StatusIcon) SetFromGIcon(icon gio.Iconner) {
 //
 func (statusIcon *StatusIcon) SetFromIconName(iconName string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_from_icon_name", _args[:], nil)
 
@@ -1417,16 +1318,11 @@ func (statusIcon *StatusIcon) SetFromIconName(iconName string) {
 //
 func (statusIcon *StatusIcon) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 	if pixbuf != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_from_pixbuf", _args[:], nil)
 
@@ -1445,15 +1341,10 @@ func (statusIcon *StatusIcon) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 //
 func (statusIcon *StatusIcon) SetFromStock(stockId string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_from_stock", _args[:], nil)
 
@@ -1475,16 +1366,11 @@ func (statusIcon *StatusIcon) SetFromStock(stockId string) {
 //
 func (statusIcon *StatusIcon) SetHasTooltip(hasTooltip bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 	if hasTooltip {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_has_tooltip", _args[:], nil)
 
@@ -1507,15 +1393,10 @@ func (statusIcon *StatusIcon) SetHasTooltip(hasTooltip bool) {
 //
 func (statusIcon *StatusIcon) SetName(name string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_name", _args[:], nil)
 
@@ -1536,14 +1417,9 @@ func (statusIcon *StatusIcon) SetName(name string) {
 //
 func (statusIcon *StatusIcon) SetScreen(screen *gdk.Screen) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
 	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_screen", _args[:], nil)
 
@@ -1565,15 +1441,10 @@ func (statusIcon *StatusIcon) SetScreen(screen *gdk.Screen) {
 //
 func (statusIcon *StatusIcon) SetTitle(title string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_title", _args[:], nil)
 
@@ -1598,17 +1469,12 @@ func (statusIcon *StatusIcon) SetTitle(title string) {
 //
 func (statusIcon *StatusIcon) SetTooltipMarkup(markup string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 	if markup != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(markup)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(markup)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_tooltip_markup", _args[:], nil)
 
@@ -1632,15 +1498,10 @@ func (statusIcon *StatusIcon) SetTooltipMarkup(markup string) {
 //
 func (statusIcon *StatusIcon) SetTooltipText(text string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_tooltip_text", _args[:], nil)
 
@@ -1660,16 +1521,11 @@ func (statusIcon *StatusIcon) SetTooltipText(text string) {
 //
 func (statusIcon *StatusIcon) SetVisible(visible bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 	if visible {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_visible", _args[:], nil)
 

@@ -112,12 +112,8 @@ func (self *ATContext) ConnectStateChange(f func()) coreglib.SignalHandle {
 //
 func (self *ATContext) Accessible() *Accessible {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ATContext").InvokeMethod("get_accessible", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

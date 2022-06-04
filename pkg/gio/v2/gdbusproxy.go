@@ -260,13 +260,8 @@ func (proxy *DBusProxy) ConnectGSignal(f func(senderName, signalName string, par
 //
 func NewDBusProxyFinish(res AsyncResulter) (*DBusProxy, error) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusProxy").InvokeMethod("new_DBusProxy_finish", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -277,7 +272,7 @@ func NewDBusProxyFinish(res AsyncResulter) (*DBusProxy, error) {
 	var _goerr error          // out
 
 	_dBusProxy = wrapDBusProxy(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -297,13 +292,8 @@ func NewDBusProxyFinish(res AsyncResulter) (*DBusProxy, error) {
 //
 func NewDBusProxyForBusFinish(res AsyncResulter) (*DBusProxy, error) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusProxy").InvokeMethod("new_DBusProxy_for_bus_finish", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -314,7 +304,7 @@ func NewDBusProxyForBusFinish(res AsyncResulter) (*DBusProxy, error) {
 	var _goerr error          // out
 
 	_dBusProxy = wrapDBusProxy(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -334,16 +324,9 @@ func NewDBusProxyForBusFinish(res AsyncResulter) (*DBusProxy, error) {
 //
 func (proxy *DBusProxy) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusProxy").InvokeMethod("call_finish", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -361,7 +344,7 @@ func (proxy *DBusProxy) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -387,16 +370,10 @@ func (proxy *DBusProxy) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 //
 func (proxy *DBusProxy) CachedProperty(propertyName string) *glib.Variant {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gio", "DBusProxy").InvokeMethod("get_cached_property", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -406,7 +383,7 @@ func (proxy *DBusProxy) CachedProperty(propertyName string) *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
@@ -428,12 +405,8 @@ func (proxy *DBusProxy) CachedProperty(propertyName string) *glib.Variant {
 //
 func (proxy *DBusProxy) CachedPropertyNames() []string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret **C.gchar // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusProxy").InvokeMethod("get_cached_property_names", _args[:], nil)
 	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
@@ -442,7 +415,7 @@ func (proxy *DBusProxy) CachedPropertyNames() []string {
 
 	var _utf8s []string // out
 
-	if _cret != nil {
+	if *(***C.void)(unsafe.Pointer(&_cret)) != nil {
 		defer C.free(unsafe.Pointer(_cret))
 		{
 			var i int
@@ -471,12 +444,8 @@ func (proxy *DBusProxy) CachedPropertyNames() []string {
 //
 func (proxy *DBusProxy) Connection() *DBusConnection {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusProxy").InvokeMethod("get_connection", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -502,12 +471,8 @@ func (proxy *DBusProxy) Connection() *DBusConnection {
 //
 func (proxy *DBusProxy) DefaultTimeout() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusProxy").InvokeMethod("get_default_timeout", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -516,7 +481,7 @@ func (proxy *DBusProxy) DefaultTimeout() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -532,12 +497,8 @@ func (proxy *DBusProxy) DefaultTimeout() int32 {
 //
 func (proxy *DBusProxy) InterfaceInfo() *DBusInterfaceInfo {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusProxy").InvokeMethod("get_interface_info", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -546,7 +507,7 @@ func (proxy *DBusProxy) InterfaceInfo() *DBusInterfaceInfo {
 
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_dBusInterfaceInfo = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.g_dbus_interface_info_ref(_cret)
 		runtime.SetFinalizer(
@@ -568,12 +529,8 @@ func (proxy *DBusProxy) InterfaceInfo() *DBusInterfaceInfo {
 //
 func (proxy *DBusProxy) InterfaceName() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusProxy").InvokeMethod("get_interface_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -595,12 +552,8 @@ func (proxy *DBusProxy) InterfaceName() string {
 //
 func (proxy *DBusProxy) Name() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusProxy").InvokeMethod("get_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -625,12 +578,8 @@ func (proxy *DBusProxy) Name() string {
 //
 func (proxy *DBusProxy) NameOwner() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusProxy").InvokeMethod("get_name_owner", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -639,7 +588,7 @@ func (proxy *DBusProxy) NameOwner() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 		defer C.free(unsafe.Pointer(_cret))
 	}
@@ -655,12 +604,8 @@ func (proxy *DBusProxy) NameOwner() string {
 //
 func (proxy *DBusProxy) ObjectPath() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusProxy").InvokeMethod("get_object_path", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -713,20 +658,13 @@ func (proxy *DBusProxy) ObjectPath() string {
 //
 func (proxy *DBusProxy) SetCachedProperty(propertyName string, value *glib.Variant) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 	if value != nil {
-		_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gio", "DBusProxy").InvokeMethod("set_cached_property", _args[:], nil)
 
@@ -747,14 +685,9 @@ func (proxy *DBusProxy) SetCachedProperty(propertyName string, value *glib.Varia
 //
 func (proxy *DBusProxy) SetDefaultTimeout(timeoutMsec int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
-	_arg1 = C.gint(timeoutMsec)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(timeoutMsec)
 
 	girepository.MustFind("Gio", "DBusProxy").InvokeMethod("set_default_timeout", _args[:], nil)
 
@@ -772,16 +705,11 @@ func (proxy *DBusProxy) SetDefaultTimeout(timeoutMsec int32) {
 //
 func (proxy *DBusProxy) SetInterfaceInfo(info *DBusInterfaceInfo) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 	if info != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gio", "DBusProxy").InvokeMethod("set_interface_info", _args[:], nil)
 

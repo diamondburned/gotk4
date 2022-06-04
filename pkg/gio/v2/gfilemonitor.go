@@ -125,12 +125,8 @@ func BaseFileMonitor(obj FileMonitorrer) *FileMonitor {
 //
 func (monitor *FileMonitor) Cancel() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
 	_gret := girepository.MustFind("Gio", "FileMonitor").InvokeMethod("cancel", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -139,7 +135,7 @@ func (monitor *FileMonitor) Cancel() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -154,12 +150,8 @@ func (monitor *FileMonitor) Cancel() bool {
 //
 func (monitor *FileMonitor) IsCancelled() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
 	_gret := girepository.MustFind("Gio", "FileMonitor").InvokeMethod("is_cancelled", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -168,7 +160,7 @@ func (monitor *FileMonitor) IsCancelled() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -185,14 +177,9 @@ func (monitor *FileMonitor) IsCancelled() bool {
 //
 func (monitor *FileMonitor) SetRateLimit(limitMsecs int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
-	_arg1 = C.gint(limitMsecs)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(limitMsecs)
 
 	girepository.MustFind("Gio", "FileMonitor").InvokeMethod("set_rate_limit", _args[:], nil)
 

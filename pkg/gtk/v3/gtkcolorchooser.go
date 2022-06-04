@@ -178,19 +178,14 @@ func (chooser *ColorChooser) ConnectColorActivated(f func(color *gdk.RGBA)) core
 func (chooser *ColorChooser) RGBA() *gdk.RGBA {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
 	runtime.KeepAlive(chooser)
 
 	var _color *gdk.RGBA // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _color
 }
@@ -203,12 +198,8 @@ func (chooser *ColorChooser) RGBA() *gdk.RGBA {
 //
 func (chooser *ColorChooser) UseAlpha() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -216,7 +207,7 @@ func (chooser *ColorChooser) UseAlpha() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -231,14 +222,9 @@ func (chooser *ColorChooser) UseAlpha() bool {
 //
 func (chooser *ColorChooser) SetRGBA(color *gdk.RGBA) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(color)
@@ -253,16 +239,11 @@ func (chooser *ColorChooser) SetRGBA(color *gdk.RGBA) {
 //
 func (chooser *ColorChooser) SetUseAlpha(useAlpha bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	if useAlpha {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(useAlpha)

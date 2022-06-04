@@ -107,12 +107,12 @@ type CSSSection struct {
 
 // cssSection is the struct that's finalized.
 type cssSection struct {
-	native *C.GtkCssSection
+	native unsafe.Pointer
 }
 
 func marshalCSSSection(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &CSSSection{&cssSection{(*C.GtkCssSection)(b)}}, nil
+	return &CSSSection{&cssSection{(unsafe.Pointer)(b)}}, nil
 }
 
 // EndLine returns the line in the CSS document where this section end. The line
@@ -129,12 +129,8 @@ func marshalCSSSection(p uintptr) (interface{}, error) {
 //
 func (section *CSSSection) EndLine() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
@@ -142,7 +138,7 @@ func (section *CSSSection) EndLine() uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -160,12 +156,8 @@ func (section *CSSSection) EndLine() uint32 {
 //
 func (section *CSSSection) EndPosition() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
@@ -173,7 +165,7 @@ func (section *CSSSection) EndPosition() uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -189,12 +181,8 @@ func (section *CSSSection) EndPosition() uint32 {
 //
 func (section *CSSSection) File() *gio.File {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -225,12 +213,8 @@ func (section *CSSSection) File() *gio.File {
 //
 func (section *CSSSection) Parent() *CSSSection {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -238,7 +222,7 @@ func (section *CSSSection) Parent() *CSSSection {
 
 	var _cssSection *CSSSection // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.gtk_css_section_ref(_cret)
 		runtime.SetFinalizer(
@@ -261,12 +245,8 @@ func (section *CSSSection) Parent() *CSSSection {
 //
 func (section *CSSSection) StartLine() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
@@ -274,7 +254,7 @@ func (section *CSSSection) StartLine() uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -288,12 +268,8 @@ func (section *CSSSection) StartLine() uint32 {
 //
 func (section *CSSSection) StartPosition() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
@@ -301,7 +277,7 @@ func (section *CSSSection) StartPosition() uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }

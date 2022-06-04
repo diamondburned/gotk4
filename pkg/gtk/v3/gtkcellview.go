@@ -106,8 +106,6 @@ func marshalCellView(p uintptr) (interface{}, error) {
 //    - cellView: newly created CellView widget.
 //
 func NewCellView() *CellView {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("new_CellView", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -136,15 +134,9 @@ func NewCellView() *CellView {
 //
 func NewCellViewWithContext(area CellAreaer, context *CellAreaContext) *CellView {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("new_CellView_with_context", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -173,13 +165,9 @@ func NewCellViewWithContext(area CellAreaer, context *CellAreaContext) *CellView
 //
 func NewCellViewWithMarkup(markup string) *CellView {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(markup)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(markup)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("new_CellView_with_markup", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -206,12 +194,8 @@ func NewCellViewWithMarkup(markup string) *CellView {
 //
 func NewCellViewWithPixbuf(pixbuf *gdkpixbuf.Pixbuf) *CellView {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 
 	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("new_CellView_with_pixbuf", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -238,13 +222,9 @@ func NewCellViewWithPixbuf(pixbuf *gdkpixbuf.Pixbuf) *CellView {
 //
 func NewCellViewWithText(text string) *CellView {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("new_CellView_with_text", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -267,12 +247,8 @@ func NewCellViewWithText(text string) *CellView {
 //
 func (cellView *CellView) DisplayedRow() *TreePath {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
 
 	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("get_displayed_row", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -281,7 +257,7 @@ func (cellView *CellView) DisplayedRow() *TreePath {
 
 	var _treePath *TreePath // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_treePath)),
@@ -303,12 +279,8 @@ func (cellView *CellView) DisplayedRow() *TreePath {
 //
 func (cellView *CellView) DrawSensitive() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
 
 	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("get_draw_sensitive", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -317,7 +289,7 @@ func (cellView *CellView) DrawSensitive() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -333,12 +305,8 @@ func (cellView *CellView) DrawSensitive() bool {
 //
 func (cellView *CellView) FitModel() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
 
 	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("get_fit_model", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -347,7 +315,7 @@ func (cellView *CellView) FitModel() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -362,12 +330,8 @@ func (cellView *CellView) FitModel() bool {
 //
 func (cellView *CellView) Model() *TreeModel {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
 
 	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("get_model", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -376,7 +340,7 @@ func (cellView *CellView) Model() *TreeModel {
 
 	var _treeModel *TreeModel // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_treeModel = wrapTreeModel(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -403,16 +367,9 @@ func (cellView *CellView) Model() *TreeModel {
 func (cellView *CellView) SizeOfRow(path *TreePath) (*Requisition, bool) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _out0 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_gret := girepository.MustFind("Gtk", "CellView").InvokeMethod("get_size_of_row", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -422,10 +379,9 @@ func (cellView *CellView) SizeOfRow(path *TreePath) (*Requisition, bool) {
 
 	var _requisition *Requisition // out
 	var _ok bool                  // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_requisition = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	if _cret != 0 {
+	_requisition = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -442,14 +398,9 @@ func (cellView *CellView) SizeOfRow(path *TreePath) (*Requisition, bool) {
 //
 func (cellView *CellView) SetBackgroundColor(color *gdk.Color) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 
 	girepository.MustFind("Gtk", "CellView").InvokeMethod("set_background_color", _args[:], nil)
 
@@ -465,14 +416,9 @@ func (cellView *CellView) SetBackgroundColor(color *gdk.Color) {
 //
 func (cellView *CellView) SetBackgroundRGBA(rgba *gdk.RGBA) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	girepository.MustFind("Gtk", "CellView").InvokeMethod("set_background_rgba", _args[:], nil)
 
@@ -492,16 +438,11 @@ func (cellView *CellView) SetBackgroundRGBA(rgba *gdk.RGBA) {
 //
 func (cellView *CellView) SetDisplayedRow(path *TreePath) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
 	if path != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "CellView").InvokeMethod("set_displayed_row", _args[:], nil)
 
@@ -520,16 +461,11 @@ func (cellView *CellView) SetDisplayedRow(path *TreePath) {
 //
 func (cellView *CellView) SetDrawSensitive(drawSensitive bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
 	if drawSensitive {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "CellView").InvokeMethod("set_draw_sensitive", _args[:], nil)
 
@@ -550,16 +486,11 @@ func (cellView *CellView) SetDrawSensitive(drawSensitive bool) {
 //
 func (cellView *CellView) SetFitModel(fitModel bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
 	if fitModel {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "CellView").InvokeMethod("set_fit_model", _args[:], nil)
 
@@ -577,16 +508,11 @@ func (cellView *CellView) SetFitModel(fitModel bool) {
 //
 func (cellView *CellView) SetModel(model TreeModeller) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellView).Native()))
 	if model != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "CellView").InvokeMethod("set_model", _args[:], nil)
 

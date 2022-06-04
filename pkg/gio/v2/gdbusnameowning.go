@@ -101,11 +101,8 @@ func _gotk4_gio2_BusNameLostCallback(arg1 *C.void, arg2 *C.void, arg3 C.gpointer
 //
 func BusUnownName(ownerId uint32) {
 	var _args [1]girepository.Argument
-	var _arg0 C.guint // out
 
-	_arg0 = C.guint(ownerId)
-
-	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(ownerId)
 
 	girepository.MustFind("Gio", "bus_unown_name").Invoke(_args[:], nil)
 

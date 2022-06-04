@@ -4,7 +4,6 @@ package gio
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -174,15 +173,9 @@ func BaseSocketAddress(obj SocketAddresser) *SocketAddress {
 //
 func NewSocketAddressFromNative(native unsafe.Pointer, len uint) *SocketAddress {
 	var _args [2]girepository.Argument
-	var _arg0 C.gpointer // out
-	var _arg1 C.gsize    // out
-	var _cret *C.void    // in
 
-	_arg0 = (C.gpointer)(unsafe.Pointer(native))
-	_arg1 = C.gsize(len)
-
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gsize)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = (C.gpointer)(unsafe.Pointer(native))
+	*(*C.gsize)(unsafe.Pointer(&_args[1])) = C.gsize(len)
 
 	_gret := girepository.MustFind("Gio", "SocketAddress").InvokeMethod("new_SocketAddress_from_native", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -206,12 +199,8 @@ func NewSocketAddressFromNative(native unsafe.Pointer, len uint) *SocketAddress 
 //
 func (address *SocketAddress) NativeSize() int {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void  // out
-	var _cret C.gssize // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
 	_gret := girepository.MustFind("Gio", "SocketAddress").InvokeMethod("get_native_size", _args[:], nil)
 	_cret = *(*C.gssize)(unsafe.Pointer(&_gret))
@@ -220,7 +209,7 @@ func (address *SocketAddress) NativeSize() int {
 
 	var _gssize int // out
 
-	_gssize = int(_cret)
+	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
 
 	return _gssize
 }
@@ -241,18 +230,10 @@ func (address *SocketAddress) NativeSize() int {
 //
 func (address *SocketAddress) ToNative(dest unsafe.Pointer, destlen uint) error {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gsize    // out
-	var _cerr *C.void    // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(dest))
-	_arg2 = C.gsize(destlen)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gsize)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (C.gpointer)(unsafe.Pointer(dest))
+	*(*C.gsize)(unsafe.Pointer(&_args[2])) = C.gsize(destlen)
 
 	girepository.MustFind("Gio", "SocketAddress").InvokeMethod("to_native", _args[:], nil)
 
@@ -262,7 +243,7 @@ func (address *SocketAddress) ToNative(dest unsafe.Pointer, destlen uint) error 
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 

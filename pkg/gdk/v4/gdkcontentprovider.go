@@ -303,11 +303,8 @@ func (provider *ContentProvider) ConnectContentChanged(f func()) coreglib.Signal
 // ContentChanged emits the ::content-changed signal.
 func (provider *ContentProvider) ContentChanged() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
 
 	girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("content_changed", _args[:], nil)
 
@@ -328,15 +325,9 @@ func (provider *ContentProvider) ContentChanged() {
 //
 func (provider *ContentProvider) Value(value *coreglib.Value) error {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(value.Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(value.Native()))
 
 	girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("get_value", _args[:], nil)
 
@@ -345,7 +336,7 @@ func (provider *ContentProvider) Value(value *coreglib.Value) error {
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -361,12 +352,8 @@ func (provider *ContentProvider) Value(value *coreglib.Value) error {
 //
 func (provider *ContentProvider) RefFormats() *ContentFormats {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
 
 	_gret := girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("ref_formats", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -399,12 +386,8 @@ func (provider *ContentProvider) RefFormats() *ContentFormats {
 //
 func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
 
 	_gret := girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("ref_storable_formats", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -446,35 +429,21 @@ func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 //
 func (provider *ContentProvider) WriteMIMETypeAsync(ctx context.Context, mimeType string, stream gio.OutputStreamer, ioPriority int32, callback gio.AsyncReadyCallback) {
 	var _args [7]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg4 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 *C.void    // out
-	var _arg3 C.int      // out
-	var _arg5 C.gpointer // out
-	var _arg6 C.gpointer
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg4 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[4] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	_arg3 = C.int(ioPriority)
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(ioPriority)
 	if callback != nil {
-		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+		*(*C.gpointer)(unsafe.Pointer(&_args[5])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[6] = C.gpointer(gbox.AssignOnce(callback))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.int)(unsafe.Pointer(&_args[4])) = _arg4
-	*(*C.gpointer)(unsafe.Pointer(&_args[5])) = _arg5
 
 	girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("write_mime_type_async", _args[:], nil)
 
@@ -496,15 +465,9 @@ func (provider *ContentProvider) WriteMIMETypeAsync(ctx context.Context, mimeTyp
 //
 func (provider *ContentProvider) WriteMIMETypeFinish(result gio.AsyncResulter) error {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
 	girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("write_mime_type_finish", _args[:], nil)
 
@@ -513,7 +476,7 @@ func (provider *ContentProvider) WriteMIMETypeFinish(result gio.AsyncResulter) e
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 

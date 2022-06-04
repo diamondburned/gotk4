@@ -113,12 +113,8 @@ func (manager *DisplayManager) ConnectDisplayOpened(f func(display *Display)) co
 //
 func (manager *DisplayManager) DefaultDisplay() *Display {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
 	_gret := girepository.MustFind("Gdk", "DisplayManager").InvokeMethod("get_default_display", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -127,7 +123,7 @@ func (manager *DisplayManager) DefaultDisplay() *Display {
 
 	var _display *Display // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -143,12 +139,8 @@ func (manager *DisplayManager) DefaultDisplay() *Display {
 //
 func (manager *DisplayManager) ListDisplays() []*Display {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
 	_gret := girepository.MustFind("Gdk", "DisplayManager").InvokeMethod("list_displays", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -180,16 +172,10 @@ func (manager *DisplayManager) ListDisplays() []*Display {
 //
 func (manager *DisplayManager) OpenDisplay(name string) *Display {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gdk", "DisplayManager").InvokeMethod("open_display", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -199,7 +185,7 @@ func (manager *DisplayManager) OpenDisplay(name string) *Display {
 
 	var _display *Display // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -214,14 +200,9 @@ func (manager *DisplayManager) OpenDisplay(name string) *Display {
 //
 func (manager *DisplayManager) SetDefaultDisplay(display *Display) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	girepository.MustFind("Gdk", "DisplayManager").InvokeMethod("set_default_display", _args[:], nil)
 
@@ -242,8 +223,6 @@ func (manager *DisplayManager) SetDefaultDisplay(display *Display) {
 //      gdk_init(), or gdk_init_check() must have been called first.
 //
 func DisplayManagerGet() *DisplayManager {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gdk", "get").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

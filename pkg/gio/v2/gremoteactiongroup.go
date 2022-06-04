@@ -203,23 +203,14 @@ func marshalRemoteActionGroup(p uintptr) (interface{}, error) {
 //
 func (remote *RemoteActionGroup) ActivateActionFull(actionName string, parameter, platformData *glib.Variant) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(remote).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(remote).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 	if parameter != nil {
-		_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(parameter)))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parameter)))
 	}
-	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(platformData)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(platformData)))
 
 	runtime.KeepAlive(remote)
 	runtime.KeepAlive(actionName)
@@ -245,21 +236,12 @@ func (remote *RemoteActionGroup) ActivateActionFull(actionName string, parameter
 //
 func (remote *RemoteActionGroup) ChangeActionStateFull(actionName string, value, platformData *glib.Variant) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(remote).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
-	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(platformData)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(remote).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(platformData)))
 
 	runtime.KeepAlive(remote)
 	runtime.KeepAlive(actionName)

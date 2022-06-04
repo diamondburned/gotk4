@@ -41,14 +41,12 @@ func init() {
 // The function returns the following values:
 //
 func GLErrorQuark() glib.Quark {
-	var _cret C.guint32 // in
-
 	_gret := girepository.MustFind("Gdk", "quark").Invoke(nil, nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
 
 	return _quark
 }

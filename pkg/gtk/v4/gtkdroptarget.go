@@ -224,12 +224,8 @@ func (self *DropTarget) ConnectLeave(f func()) coreglib.SignalHandle {
 //
 func (self *DropTarget) Drop() gdk.Dropper {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "DropTarget").InvokeMethod("get_drop", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -238,7 +234,7 @@ func (self *DropTarget) Drop() gdk.Dropper {
 
 	var _drop gdk.Dropper // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -268,12 +264,8 @@ func (self *DropTarget) Drop() gdk.Dropper {
 //
 func (self *DropTarget) Formats() *gdk.ContentFormats {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "DropTarget").InvokeMethod("get_formats", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -282,7 +274,7 @@ func (self *DropTarget) Formats() *gdk.ContentFormats {
 
 	var _contentFormats *gdk.ContentFormats // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_contentFormats = (*gdk.ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_contentFormats)),
@@ -303,12 +295,8 @@ func (self *DropTarget) Formats() *gdk.ContentFormats {
 //
 func (self *DropTarget) Preload() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "DropTarget").InvokeMethod("get_preload", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -317,7 +305,7 @@ func (self *DropTarget) Preload() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -332,12 +320,8 @@ func (self *DropTarget) Preload() bool {
 //
 func (self *DropTarget) Value() *coreglib.Value {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "DropTarget").InvokeMethod("get_value", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -346,7 +330,7 @@ func (self *DropTarget) Value() *coreglib.Value {
 
 	var _value *coreglib.Value // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_value = coreglib.ValueFromNative(unsafe.Pointer(_cret))
 	}
 
@@ -362,11 +346,8 @@ func (self *DropTarget) Value() *coreglib.Value {
 // a drag or not until after reading the data.
 func (self *DropTarget) Reject() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	girepository.MustFind("Gtk", "DropTarget").InvokeMethod("reject", _args[:], nil)
 
@@ -381,16 +362,11 @@ func (self *DropTarget) Reject() {
 //
 func (self *DropTarget) SetPreload(preload bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if preload {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "DropTarget").InvokeMethod("set_preload", _args[:], nil)
 

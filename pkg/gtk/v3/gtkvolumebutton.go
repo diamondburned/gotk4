@@ -108,8 +108,6 @@ func marshalVolumeButton(p uintptr) (interface{}, error) {
 //    - volumeButton: new VolumeButton.
 //
 func NewVolumeButton() *VolumeButton {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "VolumeButton").InvokeMethod("new_VolumeButton", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

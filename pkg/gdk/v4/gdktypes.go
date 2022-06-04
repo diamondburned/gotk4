@@ -534,40 +534,34 @@ type ContentFormats struct {
 
 // contentFormats is the struct that's finalized.
 type contentFormats struct {
-	native *C.GdkContentFormats
+	native unsafe.Pointer
 }
 
 func marshalContentFormats(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &ContentFormats{&contentFormats{(*C.GdkContentFormats)(b)}}, nil
+	return &ContentFormats{&contentFormats{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewContentFormats constructs a struct ContentFormats.
 func NewContentFormats(mimeTypes []string) *ContentFormats {
 	var _args [2]girepository.Argument
-	var _arg0 **C.void // out
-	var _arg1 C.guint
-	var _cret *C.void // in
 
-	_arg1 = (C.guint)(len(mimeTypes))
-	_arg0 = (**C.void)(C.calloc(C.size_t(len(mimeTypes)), C.size_t(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg0))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = (C.guint)(len(mimeTypes))
+	*(***C.void)(unsafe.Pointer(&_args[0])) = (**C.void)(C.calloc(C.size_t(len(mimeTypes)), C.size_t(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_args[0]))
 	{
-		out := unsafe.Slice((**C.void)(_arg0), len(mimeTypes))
+		out := unsafe.Slice((**C.void)(*(***C.void)(unsafe.Pointer(&_args[0]))), len(mimeTypes))
 		for i := range mimeTypes {
-			out[i] = (*C.void)(unsafe.Pointer(C.CString(mimeTypes[i])))
+			*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(mimeTypes[i])))
 			defer C.free(unsafe.Pointer(out[i]))
 		}
 	}
-
-	*(***C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mimeTypes)
 
 	var _contentFormats *ContentFormats // out
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
@@ -592,16 +586,10 @@ func NewContentFormats(mimeTypes []string) *ContentFormats {
 //
 func (formats *ContentFormats) ContainMIMEType(mimeType string) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -610,7 +598,7 @@ func (formats *ContentFormats) ContainMIMEType(mimeType string) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -630,26 +618,20 @@ func (formats *ContentFormats) ContainMIMEType(mimeType string) bool {
 func (formats *ContentFormats) MIMETypes() []string {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void  // out
-	var _cret **C.char // in
-	var _out0 *C.void  // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
 
 	_cret = *(***C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(formats)
 
 	var _utf8s []string // out
-	_out0 = *(***C.char)(unsafe.Pointer(&_outs[0]))
 
-	if _cret != nil {
+	if *(***C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			src := unsafe.Slice((**C.void)(_cret), _out0)
-			_utf8s = make([]string, _out0)
-			for i := 0; i < int(_out0); i++ {
+			src := unsafe.Slice((**C.void)(_cret), _outs[0])
+			_utf8s = make([]string, _outs[0])
+			for i := 0; i < int(_outs[0]); i++ {
 				_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			}
 		}
@@ -670,15 +652,9 @@ func (formats *ContentFormats) MIMETypes() []string {
 //
 func (first *ContentFormats) Match(second *ContentFormats) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(first)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(second)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(first)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(second)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -687,7 +663,7 @@ func (first *ContentFormats) Match(second *ContentFormats) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -709,15 +685,9 @@ func (first *ContentFormats) Match(second *ContentFormats) bool {
 //
 func (first *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(first)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(second)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(first)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(second)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -726,7 +696,7 @@ func (first *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -744,12 +714,8 @@ func (first *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 //
 func (formats *ContentFormats) String() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -776,15 +742,9 @@ func (formats *ContentFormats) String() string {
 //
 func (first *ContentFormats) Union(second *ContentFormats) *ContentFormats {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(first)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(second)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(first)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(second)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -813,12 +773,8 @@ func (first *ContentFormats) Union(second *ContentFormats) *ContentFormats {
 //
 func (formats *ContentFormats) UnionDeserializeGTypes() *ContentFormats {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -846,12 +802,8 @@ func (formats *ContentFormats) UnionDeserializeGTypes() *ContentFormats {
 //
 func (formats *ContentFormats) UnionDeserializeMIMETypes() *ContentFormats {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -879,12 +831,8 @@ func (formats *ContentFormats) UnionDeserializeMIMETypes() *ContentFormats {
 //
 func (formats *ContentFormats) UnionSerializeGTypes() *ContentFormats {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -912,12 +860,8 @@ func (formats *ContentFormats) UnionSerializeGTypes() *ContentFormats {
 //
 func (formats *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -945,7 +889,7 @@ type KeymapKey struct {
 
 // keymapKey is the struct that's finalized.
 type keymapKey struct {
-	native *C.GdkKeymapKey
+	native unsafe.Pointer
 }
 
 // NewKeymapKey creates a new KeymapKey instance from the given
@@ -969,8 +913,10 @@ func NewKeymapKey(keycode uint32, group, level int32) KeymapKey {
 
 // Keycode: hardware keycode. This is an identifying number for a physical key.
 func (k *KeymapKey) Keycode() uint32 {
+	offset := girepository.MustFind("Gdk", "KeymapKey").StructFieldOffset("keycode")
+	valptr := unsafe.Add(unsafe.Pointer(k), offset)
 	var v uint32 // out
-	v = uint32(k.native.keycode)
+	v = uint32(*(*C.guint)(unsafe.Pointer(&valptr)))
 	return v
 }
 
@@ -979,8 +925,10 @@ func (k *KeymapKey) Keycode() uint32 {
 // characters, and in group 1 it might have two Hebrew characters. The Hebrew
 // characters will be printed on the key next to the English characters.
 func (k *KeymapKey) Group() int32 {
+	offset := girepository.MustFind("Gdk", "KeymapKey").StructFieldOffset("group")
+	valptr := unsafe.Add(unsafe.Pointer(k), offset)
 	var v int32 // out
-	v = int32(k.native.group)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
@@ -991,8 +939,10 @@ func (k *KeymapKey) Group() int32 {
 // have a lowercase letter at level 0, and an uppercase letter at level 1,
 // though only the uppercase letter is printed.
 func (k *KeymapKey) Level() int32 {
+	offset := girepository.MustFind("Gdk", "KeymapKey").StructFieldOffset("level")
+	valptr := unsafe.Add(unsafe.Pointer(k), offset)
 	var v int32 // out
-	v = int32(k.native.level)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
@@ -1019,12 +969,12 @@ type Rectangle struct {
 
 // rectangle is the struct that's finalized.
 type rectangle struct {
-	native *C.GdkRectangle
+	native unsafe.Pointer
 }
 
 func marshalRectangle(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &Rectangle{&rectangle{(*C.GdkRectangle)(b)}}, nil
+	return &Rectangle{&rectangle{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewRectangle creates a new Rectangle instance from the given
@@ -1051,29 +1001,37 @@ func NewRectangle(x, y, width, height int32) Rectangle {
 
 // X: x coordinate of the top left corner.
 func (r *Rectangle) X() int32 {
+	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("x")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v int32 // out
-	v = int32(r.native.x)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Y: y coordinate of the top left corner.
 func (r *Rectangle) Y() int32 {
+	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("y")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v int32 // out
-	v = int32(r.native.y)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Width: width of the rectangle.
 func (r *Rectangle) Width() int32 {
+	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("width")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v int32 // out
-	v = int32(r.native.width)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Height: height of the rectangle.
 func (r *Rectangle) Height() int32 {
+	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("height")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v int32 // out
-	v = int32(r.native.height)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
@@ -1090,18 +1048,10 @@ func (r *Rectangle) Height() int32 {
 //
 func (rect *Rectangle) ContainsPoint(x int32, y int32) bool {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.int      // out
-	var _arg2 C.int      // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
-	_arg1 = C.int(x)
-	_arg2 = C.int(y)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(x)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(y)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1111,7 +1061,7 @@ func (rect *Rectangle) ContainsPoint(x int32, y int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1130,15 +1080,9 @@ func (rect *Rectangle) ContainsPoint(x int32, y int32) bool {
 //
 func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(rect1)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rect2)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rect1)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rect2)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1147,7 +1091,7 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1175,16 +1119,9 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _out0 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(src1)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(src2)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src1)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src2)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1193,12 +1130,11 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
 
 	var _dest *Rectangle // out
 	var _ok bool         // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	if _out0 != nil {
-		_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 	}
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1225,23 +1161,16 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
 func (src1 *Rectangle) Union(src2 *Rectangle) *Rectangle {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(src1)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(src2)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src1)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src2)))
 
 	runtime.KeepAlive(src1)
 	runtime.KeepAlive(src2)
 
 	var _dest *Rectangle // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _dest
 }

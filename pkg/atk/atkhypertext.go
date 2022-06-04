@@ -217,15 +217,9 @@ func (hypertext *Hypertext) ConnectLinkSelected(f func(arg1 int32)) coreglib.Sig
 //
 func (hypertext *Hypertext) Link(linkIndex int32) *Hyperlink {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
-	_arg1 = C.gint(linkIndex)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(linkIndex)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -253,15 +247,9 @@ func (hypertext *Hypertext) Link(linkIndex int32) *Hyperlink {
 //
 func (hypertext *Hypertext) LinkIndex(charIndex int32) int32 {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
-	_arg1 = C.gint(charIndex)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(charIndex)
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -270,7 +258,7 @@ func (hypertext *Hypertext) LinkIndex(charIndex int32) int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -283,12 +271,8 @@ func (hypertext *Hypertext) LinkIndex(charIndex int32) int32 {
 //
 func (hypertext *Hypertext) NLinks() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -296,7 +280,7 @@ func (hypertext *Hypertext) NLinks() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }

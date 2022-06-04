@@ -22,8 +22,6 @@ import "C"
 //    - dBusAuthObserver Free with g_object_unref().
 //
 func NewDBusAuthObserver() *DBusAuthObserver {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gio", "DBusAuthObserver").InvokeMethod("new_DBusAuthObserver", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -47,16 +45,10 @@ func NewDBusAuthObserver() *DBusAuthObserver {
 //
 func (observer *DBusAuthObserver) AllowMechanism(mechanism string) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(observer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(mechanism)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(observer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(mechanism)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gio", "DBusAuthObserver").InvokeMethod("allow_mechanism", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -66,7 +58,7 @@ func (observer *DBusAuthObserver) AllowMechanism(mechanism string) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -87,20 +79,12 @@ func (observer *DBusAuthObserver) AllowMechanism(mechanism string) bool {
 //
 func (observer *DBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStreamer, credentials *Credentials) bool {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(observer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(observer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	if credentials != nil {
-		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(credentials).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(credentials).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gio", "DBusAuthObserver").InvokeMethod("authorize_authenticated_peer", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -111,7 +95,7 @@ func (observer *DBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStreamer, 
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

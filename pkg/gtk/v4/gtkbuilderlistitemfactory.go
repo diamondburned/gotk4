@@ -95,17 +95,11 @@ func marshalBuilderListItemFactory(p uintptr) (interface{}, error) {
 //
 func NewBuilderListItemFactoryFromBytes(scope BuilderScoper, bytes *glib.Bytes) *BuilderListItemFactory {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
 	if scope != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scope).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scope).Native()))
 	}
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(bytes)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bytes)))
 
 	_gret := girepository.MustFind("Gtk", "BuilderListItemFactory").InvokeMethod("new_BuilderListItemFactory_from_bytes", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -135,18 +129,12 @@ func NewBuilderListItemFactoryFromBytes(scope BuilderScoper, bytes *glib.Bytes) 
 //
 func NewBuilderListItemFactoryFromResource(scope BuilderScoper, resourcePath string) *BuilderListItemFactory {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
 	if scope != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scope).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scope).Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "BuilderListItemFactory").InvokeMethod("new_BuilderListItemFactory_from_resource", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -170,12 +158,8 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScoper, resourcePath str
 //
 func (self *BuilderListItemFactory) Bytes() *glib.Bytes {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "BuilderListItemFactory").InvokeMethod("get_bytes", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -204,12 +188,8 @@ func (self *BuilderListItemFactory) Bytes() *glib.Bytes {
 //
 func (self *BuilderListItemFactory) Resource() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "BuilderListItemFactory").InvokeMethod("get_resource", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -218,7 +198,7 @@ func (self *BuilderListItemFactory) Resource() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -233,12 +213,8 @@ func (self *BuilderListItemFactory) Resource() string {
 //
 func (self *BuilderListItemFactory) Scope() *BuilderScope {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "BuilderListItemFactory").InvokeMethod("get_scope", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -247,7 +223,7 @@ func (self *BuilderListItemFactory) Scope() *BuilderScope {
 
 	var _builderScope *BuilderScope // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_builderScope = wrapBuilderScope(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 

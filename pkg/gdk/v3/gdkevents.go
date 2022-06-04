@@ -844,16 +844,9 @@ func _gotk4_gdk3_EventFunc(arg1 *C.void, arg2 C.gpointer) {
 func EventsGetAngle(event1, event2 *Event) (float64, bool) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _out0 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(event1)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(event2)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event1)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event2)))
 
 	_gret := girepository.MustFind("Gdk", "events_get_angle").Invoke(_args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -863,10 +856,9 @@ func EventsGetAngle(event1, event2 *Event) (float64, bool) {
 
 	var _angle float64 // out
 	var _ok bool       // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_angle = *(*float64)(unsafe.Pointer(_out0))
-	if _cret != 0 {
+	_angle = *(*float64)(unsafe.Pointer(_outs[0]))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -887,20 +879,12 @@ func EventsGetAngle(event1, event2 *Event) (float64, bool) {
 //    - y: return location for the Y coordinate of the center.
 //    - ok: TRUE if the center could be calculated.
 //
-func EventsGetCenter(event1, event2 *Event) (x float64, y float64, ok bool) {
+func EventsGetCenter(event1, event2 *Event) (x, y float64, ok bool) {
 	var _args [2]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(event1)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(event2)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event1)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event2)))
 
 	_gret := girepository.MustFind("Gdk", "events_get_center").Invoke(_args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -911,12 +895,10 @@ func EventsGetCenter(event1, event2 *Event) (x float64, y float64, ok bool) {
 	var _x float64 // out
 	var _y float64 // out
 	var _ok bool   // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_x = *(*float64)(unsafe.Pointer(_out0))
-	_y = *(*float64)(unsafe.Pointer(_out1))
-	if _cret != 0 {
+	_x = *(*float64)(unsafe.Pointer(_outs[0]))
+	_y = *(*float64)(unsafe.Pointer(_outs[1]))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -940,16 +922,9 @@ func EventsGetCenter(event1, event2 *Event) (x float64, y float64, ok bool) {
 func EventsGetDistance(event1, event2 *Event) (float64, bool) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _out0 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(event1)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(event2)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event1)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event2)))
 
 	_gret := girepository.MustFind("Gdk", "events_get_distance").Invoke(_args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -959,10 +934,9 @@ func EventsGetDistance(event1, event2 *Event) (float64, bool) {
 
 	var _distance float64 // out
 	var _ok bool          // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_distance = *(*float64)(unsafe.Pointer(_out0))
-	if _cret != 0 {
+	_distance = *(*float64)(unsafe.Pointer(_outs[0]))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -976,14 +950,12 @@ func EventsGetDistance(event1, event2 *Event) (float64, bool) {
 //    - ok: TRUE if any events are pending.
 //
 func EventsPending() bool {
-	var _cret C.gboolean // in
-
 	_gret := girepository.MustFind("Gdk", "events_pending").Invoke(nil, nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -997,14 +969,12 @@ func EventsPending() bool {
 //    - ok: TRUE if event debugging output is enabled.
 //
 func GetShowEvents() bool {
-	var _cret C.gboolean // in
-
 	_gret := girepository.MustFind("Gdk", "get_show_events").Invoke(nil, nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1021,13 +991,10 @@ func GetShowEvents() bool {
 //
 func SetShowEvents(showEvents bool) {
 	var _args [1]girepository.Argument
-	var _arg0 C.gboolean // out
 
 	if showEvents {
-		_arg0 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[0])) = C.TRUE
 	}
-
-	*(*C.gboolean)(unsafe.Pointer(&_args[0])) = _arg0
 
 	girepository.MustFind("Gdk", "set_show_events").Invoke(_args[:], nil)
 
@@ -1049,16 +1016,10 @@ func SetShowEvents(showEvents bool) {
 //
 func SettingGet(name string, value *coreglib.Value) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg0))
-	_arg1 = (*C.void)(unsafe.Pointer(value.Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(value.Native()))
 
 	_gret := girepository.MustFind("Gdk", "setting_get").Invoke(_args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1068,7 +1029,7 @@ func SettingGet(name string, value *coreglib.Value) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1085,7 +1046,7 @@ type EventAny struct {
 
 // eventAny is the struct that's finalized.
 type eventAny struct {
-	native *C.GdkEventAny
+	native unsafe.Pointer
 }
 
 // EventButton: used for button press and button release events. The type field
@@ -1140,7 +1101,7 @@ type EventButton struct {
 
 // eventButton is the struct that's finalized.
 type eventButton struct {
-	native *C.GdkEventButton
+	native unsafe.Pointer
 }
 
 // EventConfigure: generated when a window size or position has changed.
@@ -1152,7 +1113,7 @@ type EventConfigure struct {
 
 // eventConfigure is the struct that's finalized.
 type eventConfigure struct {
-	native *C.GdkEventConfigure
+	native unsafe.Pointer
 }
 
 // EventCrossing: generated when the pointer enters or leaves a window.
@@ -1164,7 +1125,7 @@ type EventCrossing struct {
 
 // eventCrossing is the struct that's finalized.
 type eventCrossing struct {
-	native *C.GdkEventCrossing
+	native unsafe.Pointer
 }
 
 // EventDND: generated during DND operations.
@@ -1176,7 +1137,7 @@ type EventDND struct {
 
 // eventDND is the struct that's finalized.
 type eventDND struct {
-	native *C.GdkEventDND
+	native unsafe.Pointer
 }
 
 // EventExpose: generated when all or part of a window becomes visible and needs
@@ -1189,7 +1150,7 @@ type EventExpose struct {
 
 // eventExpose is the struct that's finalized.
 type eventExpose struct {
-	native *C.GdkEventExpose
+	native unsafe.Pointer
 }
 
 // EventFocus describes a change of keyboard focus.
@@ -1201,7 +1162,7 @@ type EventFocus struct {
 
 // eventFocus is the struct that's finalized.
 type eventFocus struct {
-	native *C.GdkEventFocus
+	native unsafe.Pointer
 }
 
 // EventGrabBroken: generated when a pointer or keyboard grab is broken. On X11,
@@ -1217,7 +1178,7 @@ type EventGrabBroken struct {
 
 // eventGrabBroken is the struct that's finalized.
 type eventGrabBroken struct {
-	native *C.GdkEventGrabBroken
+	native unsafe.Pointer
 }
 
 // EventKey describes a key press or key release event.
@@ -1229,7 +1190,7 @@ type EventKey struct {
 
 // eventKey is the struct that's finalized.
 type eventKey struct {
-	native *C.GdkEventKey
+	native unsafe.Pointer
 }
 
 // EventMotion: generated when the pointer moves.
@@ -1241,7 +1202,7 @@ type EventMotion struct {
 
 // eventMotion is the struct that's finalized.
 type eventMotion struct {
-	native *C.GdkEventMotion
+	native unsafe.Pointer
 }
 
 // EventOwnerChange: generated when the owner of a selection changes. On X11,
@@ -1255,7 +1216,7 @@ type EventOwnerChange struct {
 
 // eventOwnerChange is the struct that's finalized.
 type eventOwnerChange struct {
-	native *C.GdkEventOwnerChange
+	native unsafe.Pointer
 }
 
 // EventPadAxis: generated during GDK_SOURCE_TABLET_PAD interaction with tactile
@@ -1268,7 +1229,7 @@ type EventPadAxis struct {
 
 // eventPadAxis is the struct that's finalized.
 type eventPadAxis struct {
-	native *C.GdkEventPadAxis
+	native unsafe.Pointer
 }
 
 // EventPadButton: generated during GDK_SOURCE_TABLET_PAD button presses and
@@ -1281,7 +1242,7 @@ type EventPadButton struct {
 
 // eventPadButton is the struct that's finalized.
 type eventPadButton struct {
-	native *C.GdkEventPadButton
+	native unsafe.Pointer
 }
 
 // EventPadGroupMode: generated during GDK_SOURCE_TABLET_PAD mode switches in a
@@ -1294,7 +1255,7 @@ type EventPadGroupMode struct {
 
 // eventPadGroupMode is the struct that's finalized.
 type eventPadGroupMode struct {
-	native *C.GdkEventPadGroupMode
+	native unsafe.Pointer
 }
 
 // EventProperty describes a property change on a window.
@@ -1306,7 +1267,7 @@ type EventProperty struct {
 
 // eventProperty is the struct that's finalized.
 type eventProperty struct {
-	native *C.GdkEventProperty
+	native unsafe.Pointer
 }
 
 // EventProximity: proximity events are generated when using GDK’s wrapper for
@@ -1326,7 +1287,7 @@ type EventProximity struct {
 
 // eventProximity is the struct that's finalized.
 type eventProximity struct {
-	native *C.GdkEventProximity
+	native unsafe.Pointer
 }
 
 // EventScroll: generated from button presses for the buttons 4 to 7. Wheel mice
@@ -1344,7 +1305,7 @@ type EventScroll struct {
 
 // eventScroll is the struct that's finalized.
 type eventScroll struct {
-	native *C.GdkEventScroll
+	native unsafe.Pointer
 }
 
 // EventSelection: generated when a selection is requested or ownership of a
@@ -1357,7 +1318,7 @@ type EventSelection struct {
 
 // eventSelection is the struct that's finalized.
 type eventSelection struct {
-	native *C.GdkEventSelection
+	native unsafe.Pointer
 }
 
 // EventSequence: instance of this type is always passed by reference.
@@ -1367,12 +1328,12 @@ type EventSequence struct {
 
 // eventSequence is the struct that's finalized.
 type eventSequence struct {
-	native *C.GdkEventSequence
+	native unsafe.Pointer
 }
 
 func marshalEventSequence(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &EventSequence{&eventSequence{(*C.GdkEventSequence)(b)}}, nil
+	return &EventSequence{&eventSequence{(unsafe.Pointer)(b)}}, nil
 }
 
 // EventSetting: generated when a setting is modified.
@@ -1384,7 +1345,7 @@ type EventSetting struct {
 
 // eventSetting is the struct that's finalized.
 type eventSetting struct {
-	native *C.GdkEventSetting
+	native unsafe.Pointer
 }
 
 // EventTouch: used for touch events. type field will be one of GDK_TOUCH_BEGIN,
@@ -1404,7 +1365,7 @@ type EventTouch struct {
 
 // eventTouch is the struct that's finalized.
 type eventTouch struct {
-	native *C.GdkEventTouch
+	native unsafe.Pointer
 }
 
 // EventTouchpadPinch: generated during touchpad swipe gestures.
@@ -1416,7 +1377,7 @@ type EventTouchpadPinch struct {
 
 // eventTouchpadPinch is the struct that's finalized.
 type eventTouchpadPinch struct {
-	native *C.GdkEventTouchpadPinch
+	native unsafe.Pointer
 }
 
 // EventTouchpadSwipe: generated during touchpad swipe gestures.
@@ -1428,7 +1389,7 @@ type EventTouchpadSwipe struct {
 
 // eventTouchpadSwipe is the struct that's finalized.
 type eventTouchpadSwipe struct {
-	native *C.GdkEventTouchpadSwipe
+	native unsafe.Pointer
 }
 
 // EventVisibility: generated when the window visibility status has changed.
@@ -1444,7 +1405,7 @@ type EventVisibility struct {
 
 // eventVisibility is the struct that's finalized.
 type eventVisibility struct {
-	native *C.GdkEventVisibility
+	native unsafe.Pointer
 }
 
 // EventWindowState: generated when the state of a toplevel window changes.
@@ -1456,7 +1417,7 @@ type EventWindowState struct {
 
 // eventWindowState is the struct that's finalized.
 type eventWindowState struct {
-	native *C.GdkEventWindowState
+	native unsafe.Pointer
 }
 
 // Event contains a union of all of the event types, and allows access to the
@@ -2086,14 +2047,12 @@ func (e *Event) AsPadGroupMode() *EventPadGroupMode {
 //      pending. The returned Event should be freed with gdk_event_free().
 //
 func EventGet() *Event {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gdk", "get").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _event *Event // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			v := (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 			_event = v
@@ -2115,15 +2074,10 @@ func EventGet() *Event {
 //
 func EventHandlerSet(fn EventFunc) {
 	var _args [3]girepository.Argument
-	var _arg0 C.gpointer // out
-	var _arg1 C.gpointer
-	var _arg2 C.GDestroyNotify
 
-	_arg0 = (*[0]byte)(C._gotk4_gdk3_EventFunc)
-	_arg1 = C.gpointer(gbox.Assign(fn))
-	_arg2 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = (*[0]byte)(C._gotk4_gdk3_EventFunc)
+	_args[1] = C.gpointer(gbox.Assign(fn))
+	_args[2] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	girepository.MustFind("Gdk", "handler_set").Invoke(_args[:], nil)
 
@@ -2140,14 +2094,12 @@ func EventHandlerSet(fn EventFunc) {
 //      gdk_event_free().
 //
 func EventPeek() *Event {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gdk", "peek").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _event *Event // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			v := (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 			_event = v
@@ -2180,11 +2132,8 @@ func EventPeek() *Event {
 //
 func EventRequestMotions(event *EventMotion) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
 
 	girepository.MustFind("Gdk", "request_motions").Invoke(_args[:], nil)
 

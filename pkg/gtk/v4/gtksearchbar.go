@@ -111,8 +111,6 @@ func marshalSearchBar(p uintptr) (interface{}, error) {
 //    - searchBar: new GtkSearchBar.
 //
 func NewSearchBar() *SearchBar {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "SearchBar").InvokeMethod("new_SearchBar", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -136,14 +134,9 @@ func NewSearchBar() *SearchBar {
 //
 func (bar *SearchBar) ConnectEntry(entry Editabler) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
 	girepository.MustFind("Gtk", "SearchBar").InvokeMethod("connect_entry", _args[:], nil)
 
@@ -159,12 +152,8 @@ func (bar *SearchBar) ConnectEntry(entry Editabler) {
 //
 func (bar *SearchBar) Child() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 
 	_gret := girepository.MustFind("Gtk", "SearchBar").InvokeMethod("get_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -173,7 +162,7 @@ func (bar *SearchBar) Child() Widgetter {
 
 	var _widget Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -201,12 +190,8 @@ func (bar *SearchBar) Child() Widgetter {
 //
 func (bar *SearchBar) KeyCaptureWidget() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 
 	_gret := girepository.MustFind("Gtk", "SearchBar").InvokeMethod("get_key_capture_widget", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -244,12 +229,8 @@ func (bar *SearchBar) KeyCaptureWidget() Widgetter {
 //
 func (bar *SearchBar) SearchMode() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 
 	_gret := girepository.MustFind("Gtk", "SearchBar").InvokeMethod("get_search_mode", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -258,7 +239,7 @@ func (bar *SearchBar) SearchMode() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -273,12 +254,8 @@ func (bar *SearchBar) SearchMode() bool {
 //
 func (bar *SearchBar) ShowCloseButton() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 
 	_gret := girepository.MustFind("Gtk", "SearchBar").InvokeMethod("get_show_close_button", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -287,7 +264,7 @@ func (bar *SearchBar) ShowCloseButton() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -302,16 +279,11 @@ func (bar *SearchBar) ShowCloseButton() bool {
 //
 func (bar *SearchBar) SetChild(child Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 	if child != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "SearchBar").InvokeMethod("set_child", _args[:], nil)
 
@@ -337,16 +309,11 @@ func (bar *SearchBar) SetChild(child Widgetter) {
 //
 func (bar *SearchBar) SetKeyCaptureWidget(widget Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 	if widget != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "SearchBar").InvokeMethod("set_key_capture_widget", _args[:], nil)
 
@@ -362,16 +329,11 @@ func (bar *SearchBar) SetKeyCaptureWidget(widget Widgetter) {
 //
 func (bar *SearchBar) SetSearchMode(searchMode bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 	if searchMode {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "SearchBar").InvokeMethod("set_search_mode", _args[:], nil)
 
@@ -391,16 +353,11 @@ func (bar *SearchBar) SetSearchMode(searchMode bool) {
 //
 func (bar *SearchBar) SetShowCloseButton(visible bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bar).Native()))
 	if visible {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "SearchBar").InvokeMethod("set_show_close_button", _args[:], nil)
 

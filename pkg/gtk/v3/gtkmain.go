@@ -105,18 +105,10 @@ func _gotk4_gtk3_KeySnoopFunc(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) (cret
 //
 func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint32) string {
 	var _args [3]girepository.Argument
-	var _arg0 C.guint // out
-	var _arg1 C.guint // out
-	var _arg2 C.guint // out
-	var _cret *C.void // in
 
-	_arg0 = C.guint(requiredMajor)
-	_arg1 = C.guint(requiredMinor)
-	_arg2 = C.guint(requiredMicro)
-
-	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(requiredMajor)
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(requiredMinor)
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(requiredMicro)
 
 	_gret := girepository.MustFind("Gtk", "check_version").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -127,7 +119,7 @@ func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint32) string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -147,19 +139,12 @@ func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint32) string {
 //
 func DeviceGrabAdd(widget Widgetter, device gdk.Devicer, blockOthers bool) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 	if blockOthers {
-		_arg2 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "device_grab_add").Invoke(_args[:], nil)
 
@@ -179,14 +164,9 @@ func DeviceGrabAdd(widget Widgetter, device gdk.Devicer, blockOthers bool) {
 //
 func DeviceGrabRemove(widget Widgetter, device gdk.Devicer) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	girepository.MustFind("Gtk", "device_grab_remove").Invoke(_args[:], nil)
 
@@ -202,7 +182,6 @@ func DeviceGrabRemove(widget Widgetter, device gdk.Devicer) {
 //
 // Most programs should not need to call this function.
 func DisableSetlocale() {
-
 	girepository.MustFind("Gtk", "disable_setlocale").Invoke(nil, nil)
 }
 
@@ -225,14 +204,12 @@ func DisableSetlocale() {
 //    - ok: TRUE if any events are pending, FALSE otherwise.
 //
 func EventsPending() bool {
-	var _cret C.gboolean // in
-
 	_gret := girepository.MustFind("Gtk", "events_pending").Invoke(nil, nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -247,14 +224,12 @@ func EventsPending() bool {
 //    - ok: FALSE.
 //
 func False() bool {
-	var _cret C.gboolean // in
-
 	_gret := girepository.MustFind("Gtk", "false").Invoke(nil, nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -270,14 +245,12 @@ func False() bool {
 //    - guint: binary age of the GTK+ library.
 //
 func GetBinaryAge() uint32 {
-	var _cret C.guint // in
-
 	_gret := girepository.MustFind("Gtk", "get_binary_age").Invoke(nil, nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -294,14 +267,12 @@ func GetBinaryAge() uint32 {
 //      current event. The returned event must be freed with gdk_event_free().
 //
 func GetCurrentEvent() *gdk.Event {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "get_current_event").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _event *gdk.Event // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			v := (*gdk.Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 			_event = v
@@ -319,14 +290,12 @@ func GetCurrentEvent() *gdk.Event {
 //    - device (optional) or NULL.
 //
 func GetCurrentEventDevice() gdk.Devicer {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "get_current_event_device").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _device gdk.Devicer // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -356,18 +325,15 @@ func GetCurrentEventDevice() gdk.Devicer {
 //
 func GetCurrentEventState() (gdk.ModifierType, bool) {
 	var _outs [1]girepository.Argument
-	var _out0 *C.void    // in
-	var _cret C.gboolean // in
 
 	_gret := girepository.MustFind("Gtk", "get_current_event_state").Invoke(nil, _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	var _state gdk.ModifierType // out
 	var _ok bool                // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_state = *(*gdk.ModifierType)(unsafe.Pointer(_out0))
-	if _cret != 0 {
+	_state = *(*gdk.ModifierType)(unsafe.Pointer(_outs[0]))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -382,14 +348,12 @@ func GetCurrentEventState() (gdk.ModifierType, bool) {
 //    - guint32: timestamp from the current event, or GDK_CURRENT_TIME.
 //
 func GetCurrentEventTime() uint32 {
-	var _cret C.guint32 // in
-
 	_gret := girepository.MustFind("Gtk", "get_current_event_time").Invoke(nil, nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _guint32 uint32 // out
 
-	_guint32 = uint32(_cret)
+	_guint32 = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
 
 	return _guint32
 }
@@ -407,8 +371,6 @@ func GetCurrentEventTime() uint32 {
 //    - language: default language as a Language, must not be freed.
 //
 func GetDefaultLanguage() *pango.Language {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "get_default_language").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -433,12 +395,8 @@ func GetDefaultLanguage() *pango.Language {
 //
 func GetEventWidget(event *gdk.Event) Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
 
 	_gret := girepository.MustFind("Gtk", "get_event_widget").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -447,7 +405,7 @@ func GetEventWidget(event *gdk.Event) Widgetter {
 
 	var _widget Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -476,14 +434,12 @@ func GetEventWidget(event *gdk.Event) Widgetter {
 //    - guint: interface age of the GTK+ library.
 //
 func GetInterfaceAge() uint32 {
-	var _cret C.guint // in
-
 	_gret := girepository.MustFind("Gtk", "get_interface_age").Invoke(nil, nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -501,14 +457,12 @@ func GetInterfaceAge() uint32 {
 //    - guint: major version number of the GTK+ library.
 //
 func GetMajorVersion() uint32 {
-	var _cret C.guint // in
-
 	_gret := girepository.MustFind("Gtk", "get_major_version").Invoke(nil, nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -526,14 +480,12 @@ func GetMajorVersion() uint32 {
 //    - guint: micro version number of the GTK+ library.
 //
 func GetMicroVersion() uint32 {
-	var _cret C.guint // in
-
 	_gret := girepository.MustFind("Gtk", "get_micro_version").Invoke(nil, nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -551,14 +503,12 @@ func GetMicroVersion() uint32 {
 //    - guint: minor version number of the GTK+ library.
 //
 func GetMinorVersion() uint32 {
-	var _cret C.guint // in
-
 	_gret := girepository.MustFind("Gtk", "get_minor_version").Invoke(nil, nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -581,14 +531,10 @@ func GetMinorVersion() uint32 {
 //
 func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
 	var _args [1]girepository.Argument
-	var _arg0 C.gboolean // out
-	var _cret *C.void    // in
 
 	if openDefaultDisplay {
-		_arg0 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[0])) = C.TRUE
 	}
-
-	*(*C.gboolean)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gtk", "get_option_group").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -616,14 +562,12 @@ func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
 //      active.
 //
 func GrabGetCurrent() Widgetter {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "grab_get_current").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _widget Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -654,11 +598,8 @@ func GrabGetCurrent() Widgetter {
 //
 func KeySnooperRemove(snooperHandlerId uint32) {
 	var _args [1]girepository.Argument
-	var _arg0 C.guint // out
 
-	_arg0 = C.guint(snooperHandlerId)
-
-	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(snooperHandlerId)
 
 	girepository.MustFind("Gtk", "key_snooper_remove").Invoke(_args[:], nil)
 
@@ -670,7 +611,6 @@ func KeySnooperRemove(snooperHandlerId uint32) {
 // You can nest calls to gtk_main(). In that case gtk_main_quit() will make the
 // innermost invocation of the main loop return.
 func Main() {
-
 	girepository.MustFind("Gtk", "main").Invoke(nil, nil)
 }
 
@@ -714,11 +654,8 @@ func Main() {
 //
 func MainDoEvent(event *gdk.Event) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
 
 	girepository.MustFind("Gtk", "main_do_event").Invoke(_args[:], nil)
 
@@ -736,14 +673,12 @@ func MainDoEvent(event *gdk.Event) {
 //    - ok: TRUE if gtk_main_quit() has been called for the innermost mainloop.
 //
 func MainIteration() bool {
-	var _cret C.gboolean // in
-
 	_gret := girepository.MustFind("Gtk", "main_iteration").Invoke(nil, nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -763,14 +698,10 @@ func MainIteration() bool {
 //
 func MainIterationDo(blocking bool) bool {
 	var _args [1]girepository.Argument
-	var _arg0 C.gboolean // out
-	var _cret C.gboolean // in
 
 	if blocking {
-		_arg0 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[0])) = C.TRUE
 	}
-
-	*(*C.gboolean)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gtk", "main_iteration_do").Invoke(_args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -779,7 +710,7 @@ func MainIterationDo(blocking bool) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -793,14 +724,12 @@ func MainIterationDo(blocking bool) bool {
 //    - guint: nesting level of the current invocation of the main loop.
 //
 func MainLevel() uint32 {
-	var _cret C.guint // in
-
 	_gret := girepository.MustFind("Gtk", "main_level").Invoke(nil, nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -808,7 +737,6 @@ func MainLevel() uint32 {
 // MainQuit makes the innermost invocation of the main loop return when it
 // regains control.
 func MainQuit() {
-
 	girepository.MustFind("Gtk", "main_quit").Invoke(nil, nil)
 }
 
@@ -837,14 +765,9 @@ func MainQuit() {
 //
 func PropagateEvent(widget Widgetter, event *gdk.Event) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
 
 	girepository.MustFind("Gtk", "propagate_event").Invoke(_args[:], nil)
 
@@ -897,14 +820,12 @@ func PropagateEvent(widget Widgetter, event *gdk.Event) {
 //    - ok: TRUE.
 //
 func True() bool {
-	var _cret C.gboolean // in
-
 	_gret := girepository.MustFind("Gtk", "true").Invoke(nil, nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -920,11 +841,8 @@ func True() bool {
 // this function does nothing.
 func (widget *Widget) GrabAdd() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("grab_add", _args[:], nil)
 
@@ -938,11 +856,8 @@ func (widget *Widget) GrabAdd() {
 // If widget does not have the grab, this function does nothing.
 func (widget *Widget) GrabRemove() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("grab_remove", _args[:], nil)
 

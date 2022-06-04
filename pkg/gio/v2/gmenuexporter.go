@@ -39,20 +39,11 @@ import "C"
 //
 func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuModeller) (uint32, error) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _cret C.guint // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("export_menu_model", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -64,8 +55,8 @@ func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuMo
 	var _guint uint32 // out
 	var _goerr error  // out
 
-	_guint = uint32(_cret)
-	if _cerr != nil {
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -85,14 +76,9 @@ func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuMo
 //
 func (connection *DBusConnection) UnexportMenuModel(exportId uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	_arg1 = C.guint(exportId)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(exportId)
 
 	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("unexport_menu_model", _args[:], nil)
 

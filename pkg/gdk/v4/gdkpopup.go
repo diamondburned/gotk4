@@ -88,12 +88,8 @@ func marshalPopup(p uintptr) (interface{}, error) {
 //
 func (popup *Popup) Autohide() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -101,7 +97,7 @@ func (popup *Popup) Autohide() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -116,12 +112,8 @@ func (popup *Popup) Autohide() bool {
 //
 func (popup *Popup) Parent() Surfacer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -158,12 +150,8 @@ func (popup *Popup) Parent() Surfacer {
 //
 func (popup *Popup) PositionX() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
 
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
@@ -171,7 +159,7 @@ func (popup *Popup) PositionX() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -184,12 +172,8 @@ func (popup *Popup) PositionX() int32 {
 //
 func (popup *Popup) PositionY() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
 
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
@@ -197,7 +181,7 @@ func (popup *Popup) PositionY() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -230,21 +214,11 @@ func (popup *Popup) PositionY() int32 {
 //
 func (popup *Popup) Present(width, height int32, layout *PopupLayout) bool {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.int      // out
-	var _arg2 C.int      // out
-	var _arg3 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
-	_arg1 = C.int(width)
-	_arg2 = C.int(height)
-	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(width)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(height)
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -255,7 +229,7 @@ func (popup *Popup) Present(width, height int32, layout *PopupLayout) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

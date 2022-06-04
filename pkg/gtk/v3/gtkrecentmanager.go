@@ -214,8 +214,6 @@ func (manager *RecentManager) ConnectChanged(f func()) coreglib.SignalHandle {
 //    - recentManager: newly created RecentManager object.
 //
 func NewRecentManager() *RecentManager {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "RecentManager").InvokeMethod("new_RecentManager", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -255,19 +253,11 @@ func NewRecentManager() *RecentManager {
 //
 func (manager *RecentManager) AddFull(uri string, recentData *RecentData) bool {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(recentData)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(recentData)))
 
 	_gret := girepository.MustFind("Gtk", "RecentManager").InvokeMethod("add_full", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -278,7 +268,7 @@ func (manager *RecentManager) AddFull(uri string, recentData *RecentData) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -306,16 +296,10 @@ func (manager *RecentManager) AddFull(uri string, recentData *RecentData) bool {
 //
 func (manager *RecentManager) AddItem(uri string) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "RecentManager").InvokeMethod("add_item", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -325,7 +309,7 @@ func (manager *RecentManager) AddItem(uri string) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -342,12 +326,8 @@ func (manager *RecentManager) AddItem(uri string) bool {
 //
 func (manager *RecentManager) Items() []*RecentInfo {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
 	_gret := girepository.MustFind("Gtk", "RecentManager").InvokeMethod("get_items", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -386,16 +366,10 @@ func (manager *RecentManager) Items() []*RecentInfo {
 //
 func (manager *RecentManager) HasItem(uri string) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "RecentManager").InvokeMethod("has_item", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -405,7 +379,7 @@ func (manager *RecentManager) HasItem(uri string) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -428,17 +402,10 @@ func (manager *RecentManager) HasItem(uri string) bool {
 //
 func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "RecentManager").InvokeMethod("lookup_item", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -449,7 +416,7 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 	var _recentInfo *RecentInfo // out
 	var _goerr error            // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_recentInfo = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_recentInfo)),
@@ -458,7 +425,7 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 			},
 		)
 	}
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -479,22 +446,14 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 //
 func (manager *RecentManager) MoveItem(uri, newUri string) error {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_args[1]))
 	if newUri != "" {
-		_arg2 = (*C.void)(unsafe.Pointer(C.CString(newUri)))
-		defer C.free(unsafe.Pointer(_arg2))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(newUri)))
+		defer C.free(unsafe.Pointer(_args[2]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "RecentManager").InvokeMethod("move_item", _args[:], nil)
 
@@ -504,7 +463,7 @@ func (manager *RecentManager) MoveItem(uri, newUri string) error {
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -520,13 +479,8 @@ func (manager *RecentManager) MoveItem(uri, newUri string) error {
 //
 func (manager *RecentManager) PurgeItems() (int32, error) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
 	_gret := girepository.MustFind("Gtk", "RecentManager").InvokeMethod("purge_items", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -536,8 +490,8 @@ func (manager *RecentManager) PurgeItems() (int32, error) {
 	var _gint int32  // out
 	var _goerr error // out
 
-	_gint = int32(_cret)
-	if _cerr != nil {
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -553,16 +507,10 @@ func (manager *RecentManager) PurgeItems() (int32, error) {
 //
 func (manager *RecentManager) RemoveItem(uri string) error {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "RecentManager").InvokeMethod("remove_item", _args[:], nil)
 
@@ -571,7 +519,7 @@ func (manager *RecentManager) RemoveItem(uri string) error {
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -586,8 +534,6 @@ func (manager *RecentManager) RemoveItem(uri string) error {
 //    - recentManager: unique RecentManager. Do not ref or unref it.
 //
 func RecentManagerGetDefault() *RecentManager {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "get_default").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -608,37 +554,45 @@ type RecentData struct {
 
 // recentData is the struct that's finalized.
 type recentData struct {
-	native *C.GtkRecentData
+	native unsafe.Pointer
 }
 
 // DisplayName: UTF-8 encoded string, containing the name of the recently used
 // resource to be displayed, or NULL;.
 func (r *RecentData) DisplayName() string {
+	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("display_name")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.display_name)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }
 
 // Description: UTF-8 encoded string, containing a short description of the
 // resource, or NULL;.
 func (r *RecentData) Description() string {
+	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("description")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.description)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }
 
 // MIMEType: MIME type of the resource;.
 func (r *RecentData) MIMEType() string {
+	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("mime_type")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.mime_type)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }
 
 // AppName: name of the application that is registering this recently used
 // resource;.
 func (r *RecentData) AppName() string {
+	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("app_name")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.app_name)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }
 
@@ -646,22 +600,26 @@ func (r *RecentData) AppName() string {
 // “\u” escape characters which will be expanded to the resource file path and
 // URI respectively when the command line is retrieved;.
 func (r *RecentData) AppExec() string {
+	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("app_exec")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(r.native.app_exec)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }
 
 // Groups: vector of strings containing groups names;.
 func (r *RecentData) Groups() []string {
+	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("groups")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v []string // out
 	{
 		var i int
 		var z *C.void
-		for p := r.native.groups; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(r.native.groups, i)
+		src := unsafe.Slice(valptr, i)
 		v = make([]string, i)
 		for i := range src {
 			v[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
@@ -673,8 +631,10 @@ func (r *RecentData) Groups() []string {
 // IsPrivate: whether this resource should be displayed only by the applications
 // that have registered it or not.
 func (r *RecentData) IsPrivate() bool {
+	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("is_private")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v bool // out
-	if r.native.is_private != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&valptr)) != 0 {
 		v = true
 	}
 	return v
@@ -693,12 +653,12 @@ type RecentInfo struct {
 
 // recentInfo is the struct that's finalized.
 type recentInfo struct {
-	native *C.GtkRecentInfo
+	native unsafe.Pointer
 }
 
 func marshalRecentInfo(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &RecentInfo{&recentInfo{(*C.GtkRecentInfo)(b)}}, nil
+	return &RecentInfo{&recentInfo{(unsafe.Pointer)(b)}}, nil
 }
 
 // CreateAppInfo creates a Info for the specified RecentInfo.
@@ -716,19 +676,12 @@ func marshalRecentInfo(p uintptr) (interface{}, error) {
 //
 func (info *RecentInfo) CreateAppInfo(appName string) (*gio.AppInfo, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
 	if appName != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(appName)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(appName)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -738,7 +691,7 @@ func (info *RecentInfo) CreateAppInfo(appName string) (*gio.AppInfo, error) {
 	var _appInfo *gio.AppInfo // out
 	var _goerr error          // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_appInfo = &gio.AppInfo{
@@ -746,7 +699,7 @@ func (info *RecentInfo) CreateAppInfo(appName string) (*gio.AppInfo, error) {
 			}
 		}
 	}
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -762,12 +715,8 @@ func (info *RecentInfo) CreateAppInfo(appName string) (*gio.AppInfo, error) {
 //
 func (info *RecentInfo) Exists() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -775,7 +724,7 @@ func (info *RecentInfo) Exists() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -792,12 +741,8 @@ func (info *RecentInfo) Exists() bool {
 //
 func (info *RecentInfo) Age() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -805,7 +750,7 @@ func (info *RecentInfo) Age() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -833,19 +778,10 @@ func (info *RecentInfo) Age() int32 {
 func (info *RecentInfo) ApplicationInfo(appName string) (string, uint32, int32, bool) {
 	var _args [2]girepository.Argument
 	var _outs [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _out2 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(appName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(appName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -856,14 +792,11 @@ func (info *RecentInfo) ApplicationInfo(appName string) (string, uint32, int32, 
 	var _count uint32   // out
 	var _time_ int32    // out
 	var _ok bool        // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
-	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
 
-	_appExec = C.GoString((*C.gchar)(unsafe.Pointer(_out0)))
-	_count = *(*uint32)(unsafe.Pointer(_out1))
-	_time_ = *(*int32)(unsafe.Pointer(_out2))
-	if _cret != 0 {
+	_appExec = C.GoString((*C.gchar)(unsafe.Pointer(_outs[0])))
+	_count = *(*uint32)(unsafe.Pointer(_outs[1]))
+	_time_ = *(*int32)(unsafe.Pointer(_outs[2]))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -881,26 +814,20 @@ func (info *RecentInfo) ApplicationInfo(appName string) (string, uint32, int32, 
 func (info *RecentInfo) Applications() []string {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret **C.gchar // in
-	var _out0 *C.void   // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(info)
 
 	var _utf8s []string // out
-	_out0 = *(***C.gchar)(unsafe.Pointer(&_outs[0]))
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice((**C.void)(_cret), _out0)
-		_utf8s = make([]string, _out0)
-		for i := 0; i < int(_out0); i++ {
+		src := unsafe.Slice((**C.void)(_cret), _outs[0])
+		_utf8s = make([]string, _outs[0])
+		for i := 0; i < int(_outs[0]); i++ {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
@@ -918,12 +845,8 @@ func (info *RecentInfo) Applications() []string {
 //
 func (info *RecentInfo) Description() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -946,12 +869,8 @@ func (info *RecentInfo) Description() string {
 //
 func (info *RecentInfo) DisplayName() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -973,12 +892,8 @@ func (info *RecentInfo) DisplayName() string {
 //
 func (info *RecentInfo) GIcon() *gio.Icon {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -986,7 +901,7 @@ func (info *RecentInfo) GIcon() *gio.Icon {
 
 	var _icon *gio.Icon // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_icon = &gio.Icon{
@@ -1010,26 +925,20 @@ func (info *RecentInfo) GIcon() *gio.Icon {
 func (info *RecentInfo) Groups() []string {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret **C.gchar // in
-	var _out0 *C.void   // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(info)
 
 	var _utf8s []string // out
-	_out0 = *(***C.gchar)(unsafe.Pointer(&_outs[0]))
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice((**C.void)(_cret), _out0)
-		_utf8s = make([]string, _out0)
-		for i := 0; i < int(_out0); i++ {
+		src := unsafe.Slice((**C.void)(_cret), _outs[0])
+		_utf8s = make([]string, _outs[0])
+		for i := 0; i < int(_outs[0]); i++ {
 			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
 			defer C.free(unsafe.Pointer(src[i]))
 		}
@@ -1051,15 +960,9 @@ func (info *RecentInfo) Groups() []string {
 //
 func (info *RecentInfo) Icon(size int32) *gdkpixbuf.Pixbuf {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-	_arg1 = C.gint(size)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(size)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1068,7 +971,7 @@ func (info *RecentInfo) Icon(size int32) *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_pixbuf = &gdkpixbuf.Pixbuf{
@@ -1094,12 +997,8 @@ func (info *RecentInfo) Icon(size int32) *gdkpixbuf.Pixbuf {
 //
 func (info *RecentInfo) MIMEType() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1122,12 +1021,8 @@ func (info *RecentInfo) MIMEType() string {
 //
 func (info *RecentInfo) PrivateHint() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1135,7 +1030,7 @@ func (info *RecentInfo) PrivateHint() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1152,12 +1047,8 @@ func (info *RecentInfo) PrivateHint() bool {
 //
 func (info *RecentInfo) ShortName() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1180,12 +1071,8 @@ func (info *RecentInfo) ShortName() string {
 //
 func (info *RecentInfo) URI() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1209,12 +1096,8 @@ func (info *RecentInfo) URI() string {
 //
 func (info *RecentInfo) URIDisplay() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1222,7 +1105,7 @@ func (info *RecentInfo) URIDisplay() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 		defer C.free(unsafe.Pointer(_cret))
 	}
@@ -1243,16 +1126,10 @@ func (info *RecentInfo) URIDisplay() string {
 //
 func (info *RecentInfo) HasApplication(appName string) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(appName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(appName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1261,7 +1138,7 @@ func (info *RecentInfo) HasApplication(appName string) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1281,16 +1158,10 @@ func (info *RecentInfo) HasApplication(appName string) bool {
 //
 func (info *RecentInfo) HasGroup(groupName string) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(groupName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(groupName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1299,7 +1170,7 @@ func (info *RecentInfo) HasGroup(groupName string) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1315,12 +1186,8 @@ func (info *RecentInfo) HasGroup(groupName string) bool {
 //
 func (info *RecentInfo) IsLocal() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1328,7 +1195,7 @@ func (info *RecentInfo) IsLocal() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1344,12 +1211,8 @@ func (info *RecentInfo) IsLocal() bool {
 //
 func (info *RecentInfo) LastApplication() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1376,15 +1239,9 @@ func (info *RecentInfo) LastApplication() string {
 //
 func (infoA *RecentInfo) Match(infoB *RecentInfo) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(infoA)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(infoB)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(infoA)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(infoB)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1393,7 +1250,7 @@ func (infoA *RecentInfo) Match(infoB *RecentInfo) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

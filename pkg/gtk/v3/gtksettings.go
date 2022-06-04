@@ -102,15 +102,10 @@ func marshalSettings(p uintptr) (interface{}, error) {
 //
 func (settings *Settings) ResetProperty(name string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "Settings").InvokeMethod("reset_property", _args[:], nil)
 
@@ -128,22 +123,13 @@ func (settings *Settings) ResetProperty(name string) {
 //
 func (settings *Settings) SetDoubleProperty(name string, vDouble float64, origin string) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 *C.void   // out
-	var _arg2 C.gdouble // out
-	var _arg3 *C.void   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gdouble(vDouble)
-	_arg3 = (*C.void)(unsafe.Pointer(C.CString(origin)))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(vDouble)
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(C.CString(origin)))
+	defer C.free(unsafe.Pointer(_args[3]))
 
 	girepository.MustFind("Gtk", "Settings").InvokeMethod("set_double_property", _args[:], nil)
 
@@ -163,22 +149,13 @@ func (settings *Settings) SetDoubleProperty(name string, vDouble float64, origin
 //
 func (settings *Settings) SetLongProperty(name string, vLong int32, origin string) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.glong // out
-	var _arg3 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.glong(vLong)
-	_arg3 = (*C.void)(unsafe.Pointer(C.CString(origin)))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.glong)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(*C.glong)(unsafe.Pointer(&_args[2])) = C.glong(vLong)
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(C.CString(origin)))
+	defer C.free(unsafe.Pointer(_args[3]))
 
 	girepository.MustFind("Gtk", "Settings").InvokeMethod("set_long_property", _args[:], nil)
 
@@ -197,18 +174,11 @@ func (settings *Settings) SetLongProperty(name string, vLong int32, origin strin
 //
 func (settings *Settings) SetPropertyValue(name string, svalue *SettingsValue) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(svalue)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(svalue)))
 
 	girepository.MustFind("Gtk", "Settings").InvokeMethod("set_property_value", _args[:], nil)
 
@@ -227,23 +197,14 @@ func (settings *Settings) SetPropertyValue(name string, svalue *SettingsValue) {
 //
 func (settings *Settings) SetStringProperty(name, vString, origin string) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.void)(unsafe.Pointer(C.CString(vString)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.void)(unsafe.Pointer(C.CString(origin)))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(vString)))
+	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(C.CString(origin)))
+	defer C.free(unsafe.Pointer(_args[3]))
 
 	girepository.MustFind("Gtk", "Settings").InvokeMethod("set_string_property", _args[:], nil)
 
@@ -262,14 +223,12 @@ func (settings *Settings) SetStringProperty(name, vString, origin string) {
 //      NULL.
 //
 func SettingsGetDefault() *Settings {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "get_default").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _settings *Settings // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_settings = wrapSettings(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -289,12 +248,8 @@ func SettingsGetDefault() *Settings {
 //
 func SettingsGetForScreen(screen *gdk.Screen) *Settings {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
 	_gret := girepository.MustFind("Gtk", "get_for_screen").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -315,13 +270,15 @@ type SettingsValue struct {
 
 // settingsValue is the struct that's finalized.
 type settingsValue struct {
-	native *C.GtkSettingsValue
+	native unsafe.Pointer
 }
 
 // Origin should be something like “filename:linenumber” for rc files, or e.g.
 // “XProperty” for other sources.
 func (s *SettingsValue) Origin() string {
+	offset := girepository.MustFind("Gtk", "SettingsValue").StructFieldOffset("origin")
+	valptr := unsafe.Add(unsafe.Pointer(s), offset)
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(s.native.origin)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }

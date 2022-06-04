@@ -93,12 +93,8 @@ func marshalProxyResolver(p uintptr) (interface{}, error) {
 //
 func (resolver *ProxyResolver) IsSupported() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -106,7 +102,7 @@ func (resolver *ProxyResolver) IsSupported() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -138,24 +134,15 @@ func (resolver *ProxyResolver) IsSupported() bool {
 //
 func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string, error) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg2 *C.void   // out
-	var _arg1 *C.void   // out
-	var _cret **C.gchar // in
-	var _cerr *C.void   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -181,7 +168,7 @@ func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -199,29 +186,19 @@ func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string
 //
 func (resolver *ProxyResolver) LookupAsync(ctx context.Context, uri string, callback AsyncReadyCallback) {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg2 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg3 C.gpointer // out
-	var _arg4 C.gpointer
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_args[1]))
 	if callback != nil {
-		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+		*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gpointer)(unsafe.Pointer(&_args[3])) = _arg3
 
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(ctx)
@@ -244,16 +221,9 @@ func (resolver *ProxyResolver) LookupAsync(ctx context.Context, uri string, call
 //
 func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 *C.void   // out
-	var _cret **C.gchar // in
-	var _cerr *C.void   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -278,7 +248,7 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 			defer C.free(unsafe.Pointer(src[i]))
 		}
 	}
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -293,8 +263,6 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 //      resolver is available.
 //
 func ProxyResolverGetDefault() *ProxyResolver {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gio", "get_default").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

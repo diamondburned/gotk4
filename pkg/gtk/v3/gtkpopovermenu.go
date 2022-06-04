@@ -148,8 +148,6 @@ func marshalPopoverMenu(p uintptr) (interface{}, error) {
 //    - popoverMenu: new PopoverMenu.
 //
 func NewPopoverMenu() *PopoverMenu {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "PopoverMenu").InvokeMethod("new_PopoverMenu", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -174,15 +172,10 @@ func NewPopoverMenu() *PopoverMenu {
 //
 func (popover *PopoverMenu) OpenSubmenu(name string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "PopoverMenu").InvokeMethod("open_submenu", _args[:], nil)
 

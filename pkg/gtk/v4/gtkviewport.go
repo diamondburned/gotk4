@@ -98,19 +98,13 @@ func marshalViewport(p uintptr) (interface{}, error) {
 //
 func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
 	if hadjustment != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hadjustment).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hadjustment).Native()))
 	}
 	if vadjustment != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(vadjustment).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(vadjustment).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gtk", "Viewport").InvokeMethod("new_Viewport", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -133,12 +127,8 @@ func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
 //
 func (viewport *Viewport) Child() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Viewport").InvokeMethod("get_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -147,7 +137,7 @@ func (viewport *Viewport) Child() Widgetter {
 
 	var _widget Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -176,12 +166,8 @@ func (viewport *Viewport) Child() Widgetter {
 //
 func (viewport *Viewport) ScrollToFocus() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Viewport").InvokeMethod("get_scroll_to_focus", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -190,7 +176,7 @@ func (viewport *Viewport) ScrollToFocus() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -205,16 +191,11 @@ func (viewport *Viewport) ScrollToFocus() bool {
 //
 func (viewport *Viewport) SetChild(child Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
 	if child != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Viewport").InvokeMethod("set_child", _args[:], nil)
 
@@ -231,16 +212,11 @@ func (viewport *Viewport) SetChild(child Widgetter) {
 //
 func (viewport *Viewport) SetScrollToFocus(scrollToFocus bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
 	if scrollToFocus {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Viewport").InvokeMethod("set_scroll_to_focus", _args[:], nil)
 

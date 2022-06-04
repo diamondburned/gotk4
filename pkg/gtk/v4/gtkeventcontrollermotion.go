@@ -151,8 +151,6 @@ func (self *EventControllerMotion) ConnectMotion(f func(x, y float64)) coreglib.
 //    - eventControllerMotion: new GtkEventControllerMotion.
 //
 func NewEventControllerMotion() *EventControllerMotion {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "EventControllerMotion").InvokeMethod("new_EventControllerMotion", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -171,12 +169,8 @@ func NewEventControllerMotion() *EventControllerMotion {
 //
 func (self *EventControllerMotion) ContainsPointer() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "EventControllerMotion").InvokeMethod("contains_pointer", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -185,7 +179,7 @@ func (self *EventControllerMotion) ContainsPointer() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -200,12 +194,8 @@ func (self *EventControllerMotion) ContainsPointer() bool {
 //
 func (self *EventControllerMotion) IsPointer() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "EventControllerMotion").InvokeMethod("is_pointer", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -214,7 +204,7 @@ func (self *EventControllerMotion) IsPointer() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

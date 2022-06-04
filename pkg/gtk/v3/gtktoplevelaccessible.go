@@ -65,12 +65,8 @@ func marshalToplevelAccessible(p uintptr) (interface{}, error) {
 //
 func (accessible *ToplevelAccessible) Children() []*Window {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ToplevelAccessible").InvokeMethod("get_children", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

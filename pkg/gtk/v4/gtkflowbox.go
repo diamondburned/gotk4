@@ -399,8 +399,6 @@ func (box *FlowBox) ConnectUnselectAll(f func()) coreglib.SignalHandle {
 //    - flowBox: new GtkFlowBox.
 //
 func NewFlowBox() *FlowBox {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "FlowBox").InvokeMethod("new_FlowBox", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -433,23 +431,14 @@ func NewFlowBox() *FlowBox {
 //
 func (box *FlowBox) BindModel(model gio.ListModeller, createWidgetFunc FlowBoxCreateWidgetFunc) {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.gpointer // out
-	var _arg3 C.gpointer
-	var _arg4 C.GDestroyNotify
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	if model != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
-	_arg2 = (*[0]byte)(C._gotk4_gtk4_FlowBoxCreateWidgetFunc)
-	_arg3 = C.gpointer(gbox.Assign(createWidgetFunc))
-	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gtk4_FlowBoxCreateWidgetFunc)
+	_args[3] = C.gpointer(gbox.Assign(createWidgetFunc))
+	_args[4] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	girepository.MustFind("Gtk", "FlowBox").InvokeMethod("bind_model", _args[:], nil)
 
@@ -466,12 +455,8 @@ func (box *FlowBox) BindModel(model gio.ListModeller, createWidgetFunc FlowBoxCr
 //
 func (box *FlowBox) ActivateOnSingleClick() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
 	_gret := girepository.MustFind("Gtk", "FlowBox").InvokeMethod("get_activate_on_single_click", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -480,7 +465,7 @@ func (box *FlowBox) ActivateOnSingleClick() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -501,15 +486,9 @@ func (box *FlowBox) ActivateOnSingleClick() bool {
 //
 func (box *FlowBox) ChildAtIndex(idx int32) *FlowBoxChild {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	_arg1 = C.int(idx)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(idx)
 
 	_gret := girepository.MustFind("Gtk", "FlowBox").InvokeMethod("get_child_at_index", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -519,7 +498,7 @@ func (box *FlowBox) ChildAtIndex(idx int32) *FlowBoxChild {
 
 	var _flowBoxChild *FlowBoxChild // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_flowBoxChild = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -543,18 +522,10 @@ func (box *FlowBox) ChildAtIndex(idx int32) *FlowBoxChild {
 //
 func (box *FlowBox) ChildAtPos(x, y int32) *FlowBoxChild {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
-	var _arg2 C.int   // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	_arg1 = C.int(x)
-	_arg2 = C.int(y)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(x)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(y)
 
 	_gret := girepository.MustFind("Gtk", "FlowBox").InvokeMethod("get_child_at_pos", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -565,7 +536,7 @@ func (box *FlowBox) ChildAtPos(x, y int32) *FlowBoxChild {
 
 	var _flowBoxChild *FlowBoxChild // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_flowBoxChild = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -580,12 +551,8 @@ func (box *FlowBox) ChildAtPos(x, y int32) *FlowBoxChild {
 //
 func (box *FlowBox) ColumnSpacing() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
 	_gret := girepository.MustFind("Gtk", "FlowBox").InvokeMethod("get_column_spacing", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -594,7 +561,7 @@ func (box *FlowBox) ColumnSpacing() uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -607,12 +574,8 @@ func (box *FlowBox) ColumnSpacing() uint32 {
 //
 func (box *FlowBox) Homogeneous() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
 	_gret := girepository.MustFind("Gtk", "FlowBox").InvokeMethod("get_homogeneous", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -621,7 +584,7 @@ func (box *FlowBox) Homogeneous() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -636,12 +599,8 @@ func (box *FlowBox) Homogeneous() bool {
 //
 func (box *FlowBox) MaxChildrenPerLine() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
 	_gret := girepository.MustFind("Gtk", "FlowBox").InvokeMethod("get_max_children_per_line", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -650,7 +609,7 @@ func (box *FlowBox) MaxChildrenPerLine() uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -663,12 +622,8 @@ func (box *FlowBox) MaxChildrenPerLine() uint32 {
 //
 func (box *FlowBox) MinChildrenPerLine() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
 	_gret := girepository.MustFind("Gtk", "FlowBox").InvokeMethod("get_min_children_per_line", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -677,7 +632,7 @@ func (box *FlowBox) MinChildrenPerLine() uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -690,12 +645,8 @@ func (box *FlowBox) MinChildrenPerLine() uint32 {
 //
 func (box *FlowBox) RowSpacing() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
 	_gret := girepository.MustFind("Gtk", "FlowBox").InvokeMethod("get_row_spacing", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -704,7 +655,7 @@ func (box *FlowBox) RowSpacing() uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -718,12 +669,8 @@ func (box *FlowBox) RowSpacing() uint32 {
 //
 func (box *FlowBox) SelectedChildren() []*FlowBoxChild {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
 	_gret := girepository.MustFind("Gtk", "FlowBox").InvokeMethod("get_selected_children", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -758,17 +705,10 @@ func (box *FlowBox) SelectedChildren() []*FlowBoxChild {
 //
 func (box *FlowBox) Insert(widget Widgetter, position int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg2 = C.int(position)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(position)
 
 	girepository.MustFind("Gtk", "FlowBox").InvokeMethod("insert", _args[:], nil)
 
@@ -785,11 +725,8 @@ func (box *FlowBox) Insert(widget Widgetter, position int32) {
 // the string has changed.
 func (box *FlowBox) InvalidateFilter() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
 	girepository.MustFind("Gtk", "FlowBox").InvokeMethod("invalidate_filter", _args[:], nil)
 
@@ -802,11 +739,8 @@ func (box *FlowBox) InvalidateFilter() {
 // external factor.
 func (box *FlowBox) InvalidateSort() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
 	girepository.MustFind("Gtk", "FlowBox").InvokeMethod("invalidate_sort", _args[:], nil)
 
@@ -821,14 +755,9 @@ func (box *FlowBox) InvalidateSort() {
 //
 func (box *FlowBox) Remove(widget Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "FlowBox").InvokeMethod("remove", _args[:], nil)
 
@@ -839,11 +768,8 @@ func (box *FlowBox) Remove(widget Widgetter) {
 // SelectAll: select all children of box, if the selection mode allows it.
 func (box *FlowBox) SelectAll() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
 	girepository.MustFind("Gtk", "FlowBox").InvokeMethod("select_all", _args[:], nil)
 
@@ -858,14 +784,9 @@ func (box *FlowBox) SelectAll() {
 //
 func (box *FlowBox) SelectChild(child *FlowBoxChild) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
 	girepository.MustFind("Gtk", "FlowBox").InvokeMethod("select_child", _args[:], nil)
 
@@ -883,17 +804,11 @@ func (box *FlowBox) SelectChild(child *FlowBoxChild) {
 //
 func (box *FlowBox) SelectedForEach(fn FlowBoxForEachFunc) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk4_FlowBoxForEachFunc)
-	_arg2 = C.gpointer(gbox.Assign(fn))
-	defer gbox.Delete(uintptr(_arg2))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk4_FlowBoxForEachFunc)
+	_args[2] = C.gpointer(gbox.Assign(fn))
+	defer gbox.Delete(uintptr(_args[2]))
 
 	girepository.MustFind("Gtk", "FlowBox").InvokeMethod("selected_foreach", _args[:], nil)
 
@@ -910,16 +825,11 @@ func (box *FlowBox) SelectedForEach(fn FlowBoxForEachFunc) {
 //
 func (box *FlowBox) SetActivateOnSingleClick(single bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	if single {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "FlowBox").InvokeMethod("set_activate_on_single_click", _args[:], nil)
 
@@ -935,14 +845,9 @@ func (box *FlowBox) SetActivateOnSingleClick(single bool) {
 //
 func (box *FlowBox) SetColumnSpacing(spacing uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	_arg1 = C.guint(spacing)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(spacing)
 
 	girepository.MustFind("Gtk", "FlowBox").InvokeMethod("set_column_spacing", _args[:], nil)
 
@@ -970,20 +875,13 @@ func (box *FlowBox) SetColumnSpacing(spacing uint32) {
 //
 func (box *FlowBox) SetFilterFunc(filterFunc FlowBoxFilterFunc) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	if filterFunc != nil {
-		_arg1 = (*[0]byte)(C._gotk4_gtk4_FlowBoxFilterFunc)
-		_arg2 = C.gpointer(gbox.Assign(filterFunc))
-		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk4_FlowBoxFilterFunc)
+		_args[2] = C.gpointer(gbox.Assign(filterFunc))
+		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "FlowBox").InvokeMethod("set_filter_func", _args[:], nil)
 
@@ -1008,14 +906,9 @@ func (box *FlowBox) SetFilterFunc(filterFunc FlowBoxFilterFunc) {
 //
 func (box *FlowBox) SetHAdjustment(adjustment *Adjustment) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 
 	girepository.MustFind("Gtk", "FlowBox").InvokeMethod("set_hadjustment", _args[:], nil)
 
@@ -1033,16 +926,11 @@ func (box *FlowBox) SetHAdjustment(adjustment *Adjustment) {
 //
 func (box *FlowBox) SetHomogeneous(homogeneous bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	if homogeneous {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "FlowBox").InvokeMethod("set_homogeneous", _args[:], nil)
 
@@ -1063,14 +951,9 @@ func (box *FlowBox) SetHomogeneous(homogeneous bool) {
 //
 func (box *FlowBox) SetMaxChildrenPerLine(nChildren uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	_arg1 = C.guint(nChildren)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(nChildren)
 
 	girepository.MustFind("Gtk", "FlowBox").InvokeMethod("set_max_children_per_line", _args[:], nil)
 
@@ -1087,14 +970,9 @@ func (box *FlowBox) SetMaxChildrenPerLine(nChildren uint32) {
 //
 func (box *FlowBox) SetMinChildrenPerLine(nChildren uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	_arg1 = C.guint(nChildren)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(nChildren)
 
 	girepository.MustFind("Gtk", "FlowBox").InvokeMethod("set_min_children_per_line", _args[:], nil)
 
@@ -1110,14 +988,9 @@ func (box *FlowBox) SetMinChildrenPerLine(nChildren uint32) {
 //
 func (box *FlowBox) SetRowSpacing(spacing uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	_arg1 = C.guint(spacing)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(spacing)
 
 	girepository.MustFind("Gtk", "FlowBox").InvokeMethod("set_row_spacing", _args[:], nil)
 
@@ -1141,20 +1014,13 @@ func (box *FlowBox) SetRowSpacing(spacing uint32) {
 //
 func (box *FlowBox) SetSortFunc(sortFunc FlowBoxSortFunc) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	if sortFunc != nil {
-		_arg1 = (*[0]byte)(C._gotk4_gtk4_FlowBoxSortFunc)
-		_arg2 = C.gpointer(gbox.Assign(sortFunc))
-		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk4_FlowBoxSortFunc)
+		_args[2] = C.gpointer(gbox.Assign(sortFunc))
+		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "FlowBox").InvokeMethod("set_sort_func", _args[:], nil)
 
@@ -1179,14 +1045,9 @@ func (box *FlowBox) SetSortFunc(sortFunc FlowBoxSortFunc) {
 //
 func (box *FlowBox) SetVAdjustment(adjustment *Adjustment) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 
 	girepository.MustFind("Gtk", "FlowBox").InvokeMethod("set_vadjustment", _args[:], nil)
 
@@ -1197,11 +1058,8 @@ func (box *FlowBox) SetVAdjustment(adjustment *Adjustment) {
 // UnselectAll: unselect all children of box, if the selection mode allows it.
 func (box *FlowBox) UnselectAll() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
 	girepository.MustFind("Gtk", "FlowBox").InvokeMethod("unselect_all", _args[:], nil)
 
@@ -1217,14 +1075,9 @@ func (box *FlowBox) UnselectAll() {
 //
 func (box *FlowBox) UnselectChild(child *FlowBoxChild) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
 	girepository.MustFind("Gtk", "FlowBox").InvokeMethod("unselect_child", _args[:], nil)
 
@@ -1335,8 +1188,6 @@ func (child *FlowBoxChild) ConnectActivate(f func()) coreglib.SignalHandle {
 //    - flowBoxChild: new GtkFlowBoxChild.
 //
 func NewFlowBoxChild() *FlowBoxChild {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "FlowBoxChild").InvokeMethod("new_FlowBoxChild", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1367,11 +1218,8 @@ func NewFlowBoxChild() *FlowBoxChild {
 // change, but that is more expensive.
 func (child *FlowBoxChild) Changed() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
 	girepository.MustFind("Gtk", "FlowBoxChild").InvokeMethod("changed", _args[:], nil)
 
@@ -1386,12 +1234,8 @@ func (child *FlowBoxChild) Changed() {
 //
 func (self *FlowBoxChild) Child() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "FlowBoxChild").InvokeMethod("get_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1400,7 +1244,7 @@ func (self *FlowBoxChild) Child() Widgetter {
 
 	var _widget Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -1428,12 +1272,8 @@ func (self *FlowBoxChild) Child() Widgetter {
 //
 func (child *FlowBoxChild) Index() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
 	_gret := girepository.MustFind("Gtk", "FlowBoxChild").InvokeMethod("get_index", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -1442,7 +1282,7 @@ func (child *FlowBoxChild) Index() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1456,12 +1296,8 @@ func (child *FlowBoxChild) Index() int32 {
 //
 func (child *FlowBoxChild) IsSelected() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
 	_gret := girepository.MustFind("Gtk", "FlowBoxChild").InvokeMethod("is_selected", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1470,7 +1306,7 @@ func (child *FlowBoxChild) IsSelected() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1485,16 +1321,11 @@ func (child *FlowBoxChild) IsSelected() bool {
 //
 func (self *FlowBoxChild) SetChild(child Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if child != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "FlowBoxChild").InvokeMethod("set_child", _args[:], nil)
 

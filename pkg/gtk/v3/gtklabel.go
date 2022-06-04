@@ -283,15 +283,11 @@ func (label *Label) ConnectPopulatePopup(f func(menu *Menu)) coreglib.SignalHand
 //
 func NewLabel(str string) *Label {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
 	if str != "" {
-		_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
-		defer C.free(unsafe.Pointer(_arg0))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+		defer C.free(unsafe.Pointer(_args[0]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("new_Label", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -330,15 +326,11 @@ func NewLabel(str string) *Label {
 //
 func NewLabelWithMnemonic(str string) *Label {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
 	if str != "" {
-		_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
-		defer C.free(unsafe.Pointer(_arg0))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+		defer C.free(unsafe.Pointer(_args[0]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("new_Label_with_mnemonic", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -360,12 +352,8 @@ func NewLabelWithMnemonic(str string) *Label {
 //
 func (label *Label) Angle() float64 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.gdouble // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_angle", _args[:], nil)
 	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
@@ -374,7 +362,7 @@ func (label *Label) Angle() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(_cret)
+	_gdouble = float64(*(*C.gdouble)(unsafe.Pointer(&_cret)))
 
 	return _gdouble
 }
@@ -391,12 +379,8 @@ func (label *Label) Angle() float64 {
 //
 func (label *Label) Attributes() *pango.AttrList {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_attributes", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -405,7 +389,7 @@ func (label *Label) Attributes() *pango.AttrList {
 
 	var _attrList *pango.AttrList // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.pango_attr_list_ref(_cret)
 		runtime.SetFinalizer(
@@ -433,12 +417,8 @@ func (label *Label) Attributes() *pango.AttrList {
 //
 func (label *Label) CurrentURI() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_current_uri", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -462,12 +442,8 @@ func (label *Label) CurrentURI() string {
 //
 func (label *Label) Label() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_label", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -493,12 +469,8 @@ func (label *Label) Label() string {
 //
 func (label *Label) Layout() *pango.Layout {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_layout", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -531,16 +503,11 @@ func (label *Label) Layout() *pango.Layout {
 //    - x (optional): location to store X offset of layout, or NULL.
 //    - y (optional): location to store Y offset of layout, or NULL.
 //
-func (label *Label) LayoutOffsets() (x int32, y int32) {
+func (label *Label) LayoutOffsets() (x, y int32) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("get_layout_offsets", _args[:], _outs[:])
 
@@ -548,14 +515,12 @@ func (label *Label) LayoutOffsets() (x int32, y int32) {
 
 	var _x int32 // out
 	var _y int32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_x = *(*int32)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_x = *(*int32)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_y = *(*int32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_y = *(*int32)(unsafe.Pointer(_outs[1]))
 	}
 
 	return _x, _y
@@ -570,12 +535,8 @@ func (label *Label) LayoutOffsets() (x int32, y int32) {
 //
 func (label *Label) LineWrap() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_line_wrap", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -584,7 +545,7 @@ func (label *Label) LineWrap() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -600,12 +561,8 @@ func (label *Label) LineWrap() bool {
 //
 func (label *Label) Lines() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_lines", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -614,7 +571,7 @@ func (label *Label) Lines() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -628,12 +585,8 @@ func (label *Label) Lines() int32 {
 //
 func (label *Label) MaxWidthChars() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_max_width_chars", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -642,7 +595,7 @@ func (label *Label) MaxWidthChars() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -657,12 +610,8 @@ func (label *Label) MaxWidthChars() int32 {
 //
 func (label *Label) MnemonicKeyval() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_mnemonic_keyval", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -671,7 +620,7 @@ func (label *Label) MnemonicKeyval() uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -686,12 +635,8 @@ func (label *Label) MnemonicKeyval() uint32 {
 //
 func (label *Label) MnemonicWidget() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_mnemonic_widget", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -700,7 +645,7 @@ func (label *Label) MnemonicWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -728,12 +673,8 @@ func (label *Label) MnemonicWidget() Widgetter {
 //
 func (label *Label) Selectable() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_selectable", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -742,7 +683,7 @@ func (label *Label) Selectable() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -758,17 +699,11 @@ func (label *Label) Selectable() bool {
 //    - end: return location for end of selection, as a character offset.
 //    - ok: TRUE if selection is non-empty.
 //
-func (label *Label) SelectionBounds() (start int32, end int32, ok bool) {
+func (label *Label) SelectionBounds() (start, end int32, ok bool) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_selection_bounds", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -778,12 +713,10 @@ func (label *Label) SelectionBounds() (start int32, end int32, ok bool) {
 	var _start int32 // out
 	var _end int32   // out
 	var _ok bool     // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_start = *(*int32)(unsafe.Pointer(_out0))
-	_end = *(*int32)(unsafe.Pointer(_out1))
-	if _cret != 0 {
+	_start = *(*int32)(unsafe.Pointer(_outs[0]))
+	_end = *(*int32)(unsafe.Pointer(_outs[1]))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -798,12 +731,8 @@ func (label *Label) SelectionBounds() (start int32, end int32, ok bool) {
 //
 func (label *Label) SingleLineMode() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_single_line_mode", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -812,7 +741,7 @@ func (label *Label) SingleLineMode() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -830,12 +759,8 @@ func (label *Label) SingleLineMode() bool {
 //
 func (label *Label) Text() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_text", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -858,12 +783,8 @@ func (label *Label) Text() string {
 //
 func (label *Label) TrackVisitedLinks() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_track_visited_links", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -872,7 +793,7 @@ func (label *Label) TrackVisitedLinks() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -889,12 +810,8 @@ func (label *Label) TrackVisitedLinks() bool {
 //
 func (label *Label) UseMarkup() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_use_markup", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -903,7 +820,7 @@ func (label *Label) UseMarkup() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -920,12 +837,8 @@ func (label *Label) UseMarkup() bool {
 //
 func (label *Label) UseUnderline() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_use_underline", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -934,7 +847,7 @@ func (label *Label) UseUnderline() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -950,12 +863,8 @@ func (label *Label) UseUnderline() bool {
 //
 func (label *Label) WidthChars() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_width_chars", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -964,7 +873,7 @@ func (label *Label) WidthChars() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -977,12 +886,8 @@ func (label *Label) WidthChars() int32 {
 //
 func (label *Label) XAlign() float32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void  // out
-	var _cret C.gfloat // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_xalign", _args[:], nil)
 	_cret = *(*C.gfloat)(unsafe.Pointer(&_gret))
@@ -991,7 +896,7 @@ func (label *Label) XAlign() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = float32(_cret)
+	_gfloat = float32(*(*C.gfloat)(unsafe.Pointer(&_cret)))
 
 	return _gfloat
 }
@@ -1004,12 +909,8 @@ func (label *Label) XAlign() float32 {
 //
 func (label *Label) YAlign() float32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void  // out
-	var _cret C.gfloat // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Label").InvokeMethod("get_yalign", _args[:], nil)
 	_cret = *(*C.gfloat)(unsafe.Pointer(&_gret))
@@ -1018,7 +919,7 @@ func (label *Label) YAlign() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = float32(_cret)
+	_gfloat = float32(*(*C.gfloat)(unsafe.Pointer(&_cret)))
 
 	return _gfloat
 }
@@ -1035,17 +936,10 @@ func (label *Label) YAlign() float32 {
 //
 func (label *Label) SelectRegion(startOffset, endOffset int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _arg2 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	_arg1 = C.gint(startOffset)
-	_arg2 = C.gint(endOffset)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(startOffset)
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(endOffset)
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("select_region", _args[:], nil)
 
@@ -1065,14 +959,9 @@ func (label *Label) SelectRegion(startOffset, endOffset int32) {
 //
 func (label *Label) SetAngle(angle float64) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 C.gdouble // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	_arg1 = C.gdouble(angle)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
+	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(angle)
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("set_angle", _args[:], nil)
 
@@ -1095,16 +984,11 @@ func (label *Label) SetAngle(angle float64) {
 //
 func (label *Label) SetAttributes(attrs *pango.AttrList) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 	if attrs != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(attrs)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(attrs)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("set_attributes", _args[:], nil)
 
@@ -1122,15 +1006,10 @@ func (label *Label) SetAttributes(attrs *pango.AttrList) {
 //
 func (label *Label) SetLabel(str string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("set_label", _args[:], nil)
 
@@ -1154,16 +1033,11 @@ func (label *Label) SetLabel(str string) {
 //
 func (label *Label) SetLineWrap(wrap bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 	if wrap {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("set_line_wrap", _args[:], nil)
 
@@ -1181,14 +1055,9 @@ func (label *Label) SetLineWrap(wrap bool) {
 //
 func (label *Label) SetLines(lines int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	_arg1 = C.gint(lines)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(lines)
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("set_lines", _args[:], nil)
 
@@ -1226,15 +1095,10 @@ func (label *Label) SetLines(lines int32) {
 //
 func (label *Label) SetMarkup(str string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("set_markup", _args[:], nil)
 
@@ -1257,15 +1121,10 @@ func (label *Label) SetMarkup(str string) {
 //
 func (label *Label) SetMarkupWithMnemonic(str string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("set_markup_with_mnemonic", _args[:], nil)
 
@@ -1282,14 +1141,9 @@ func (label *Label) SetMarkupWithMnemonic(str string) {
 //
 func (label *Label) SetMaxWidthChars(nChars int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	_arg1 = C.gint(nChars)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(nChars)
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("set_max_width_chars", _args[:], nil)
 
@@ -1317,16 +1171,11 @@ func (label *Label) SetMaxWidthChars(nChars int32) {
 //
 func (label *Label) SetMnemonicWidget(widget Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 	if widget != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("set_mnemonic_widget", _args[:], nil)
 
@@ -1344,15 +1193,10 @@ func (label *Label) SetMnemonicWidget(widget Widgetter) {
 //
 func (label *Label) SetPattern(pattern string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(pattern)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(pattern)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("set_pattern", _args[:], nil)
 
@@ -1369,16 +1213,11 @@ func (label *Label) SetPattern(pattern string) {
 //
 func (label *Label) SetSelectable(setting bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 	if setting {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("set_selectable", _args[:], nil)
 
@@ -1394,16 +1233,11 @@ func (label *Label) SetSelectable(setting bool) {
 //
 func (label *Label) SetSingleLineMode(singleLineMode bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 	if singleLineMode {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("set_single_line_mode", _args[:], nil)
 
@@ -1428,15 +1262,10 @@ func (label *Label) SetSingleLineMode(singleLineMode bool) {
 //
 func (label *Label) SetText(str string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("set_text", _args[:], nil)
 
@@ -1456,15 +1285,10 @@ func (label *Label) SetText(str string) {
 //
 func (label *Label) SetTextWithMnemonic(str string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("set_text_with_mnemonic", _args[:], nil)
 
@@ -1481,16 +1305,11 @@ func (label *Label) SetTextWithMnemonic(str string) {
 //
 func (label *Label) SetTrackVisitedLinks(trackLinks bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 	if trackLinks {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("set_track_visited_links", _args[:], nil)
 
@@ -1507,16 +1326,11 @@ func (label *Label) SetTrackVisitedLinks(trackLinks bool) {
 //
 func (label *Label) SetUseMarkup(setting bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 	if setting {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("set_use_markup", _args[:], nil)
 
@@ -1533,16 +1347,11 @@ func (label *Label) SetUseMarkup(setting bool) {
 //
 func (label *Label) SetUseUnderline(setting bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 	if setting {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("set_use_underline", _args[:], nil)
 
@@ -1558,14 +1367,9 @@ func (label *Label) SetUseUnderline(setting bool) {
 //
 func (label *Label) SetWidthChars(nChars int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	_arg1 = C.gint(nChars)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(nChars)
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("set_width_chars", _args[:], nil)
 
@@ -1581,14 +1385,9 @@ func (label *Label) SetWidthChars(nChars int32) {
 //
 func (label *Label) SetXAlign(xalign float32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 C.gfloat // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	_arg1 = C.gfloat(xalign)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gfloat)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
+	*(*C.gfloat)(unsafe.Pointer(&_args[1])) = C.gfloat(xalign)
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("set_xalign", _args[:], nil)
 
@@ -1604,14 +1403,9 @@ func (label *Label) SetXAlign(xalign float32) {
 //
 func (label *Label) SetYAlign(yalign float32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 C.gfloat // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-	_arg1 = C.gfloat(yalign)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gfloat)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
+	*(*C.gfloat)(unsafe.Pointer(&_args[1])) = C.gfloat(yalign)
 
 	girepository.MustFind("Gtk", "Label").InvokeMethod("set_yalign", _args[:], nil)
 

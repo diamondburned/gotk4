@@ -75,14 +75,12 @@ func init() {
 //    - quark: #GQuark.
 //
 func ResolverErrorQuark() glib.Quark {
-	var _cret C.guint32 // in
-
 	_gret := girepository.MustFind("Gio", "quark").Invoke(nil, nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
 
 	return _quark
 }
@@ -94,14 +92,12 @@ func ResolverErrorQuark() glib.Quark {
 //    - quark: #GQuark.
 //
 func ResourceErrorQuark() glib.Quark {
-	var _cret C.guint32 // in
-
 	_gret := girepository.MustFind("Gio", "quark").Invoke(nil, nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
 
 	return _quark
 }
@@ -113,14 +109,12 @@ func ResourceErrorQuark() glib.Quark {
 //    - quark: #GQuark.
 //
 func TLSChannelBindingErrorQuark() glib.Quark {
-	var _cret C.guint32 // in
-
 	_gret := girepository.MustFind("Gio", "quark").Invoke(nil, nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
 
 	return _quark
 }
@@ -132,14 +126,12 @@ func TLSChannelBindingErrorQuark() glib.Quark {
 //    - quark: #GQuark.
 //
 func TLSErrorQuark() glib.Quark {
-	var _cret C.guint32 // in
-
 	_gret := girepository.MustFind("Gio", "quark").Invoke(nil, nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
 
 	return _quark
 }
@@ -151,14 +143,12 @@ func TLSErrorQuark() glib.Quark {
 //    - quark: #GQuark.
 //
 func IOErrorQuark() glib.Quark {
-	var _cret C.guint32 // in
-
 	_gret := girepository.MustFind("Gio", "io_error_quark").Invoke(nil, nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
 
 	return _quark
 }

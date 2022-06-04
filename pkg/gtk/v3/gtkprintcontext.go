@@ -118,12 +118,8 @@ func marshalPrintContext(p uintptr) (interface{}, error) {
 //
 func (context *PrintContext) CreatePangoContext() *pango.Context {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("create_pango_context", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -151,12 +147,8 @@ func (context *PrintContext) CreatePangoContext() *pango.Context {
 //
 func (context *PrintContext) CreatePangoLayout() *pango.Layout {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("create_pango_layout", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -184,12 +176,8 @@ func (context *PrintContext) CreatePangoLayout() *pango.Layout {
 //
 func (context *PrintContext) CairoContext() *cairo.Context {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_cairo_context", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -215,12 +203,8 @@ func (context *PrintContext) CairoContext() *cairo.Context {
 //
 func (context *PrintContext) DPIX() float64 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.gdouble // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_dpi_x", _args[:], nil)
 	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
@@ -229,7 +213,7 @@ func (context *PrintContext) DPIX() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(_cret)
+	_gdouble = float64(*(*C.gdouble)(unsafe.Pointer(&_cret)))
 
 	return _gdouble
 }
@@ -242,12 +226,8 @@ func (context *PrintContext) DPIX() float64 {
 //
 func (context *PrintContext) DPIY() float64 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.gdouble // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_dpi_y", _args[:], nil)
 	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
@@ -256,7 +236,7 @@ func (context *PrintContext) DPIY() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(_cret)
+	_gdouble = float64(*(*C.gdouble)(unsafe.Pointer(&_cret)))
 
 	return _gdouble
 }
@@ -272,19 +252,11 @@ func (context *PrintContext) DPIY() float64 {
 //    - right hardware printer margin.
 //    - ok: TRUE if the hard margins were retrieved.
 //
-func (context *PrintContext) HardMargins() (top float64, bottom float64, left float64, right float64, ok bool) {
+func (context *PrintContext) HardMargins() (top, bottom, left, right float64, ok bool) {
 	var _args [1]girepository.Argument
 	var _outs [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _out2 *C.void    // in
-	var _out3 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_hard_margins", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -296,16 +268,12 @@ func (context *PrintContext) HardMargins() (top float64, bottom float64, left fl
 	var _left float64   // out
 	var _right float64  // out
 	var _ok bool        // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
-	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
-	_out3 = *(**C.void)(unsafe.Pointer(&_outs[3]))
 
-	_top = *(*float64)(unsafe.Pointer(_out0))
-	_bottom = *(*float64)(unsafe.Pointer(_out1))
-	_left = *(*float64)(unsafe.Pointer(_out2))
-	_right = *(*float64)(unsafe.Pointer(_out3))
-	if _cret != 0 {
+	_top = *(*float64)(unsafe.Pointer(_outs[0]))
+	_bottom = *(*float64)(unsafe.Pointer(_outs[1]))
+	_left = *(*float64)(unsafe.Pointer(_outs[2]))
+	_right = *(*float64)(unsafe.Pointer(_outs[3]))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -320,12 +288,8 @@ func (context *PrintContext) HardMargins() (top float64, bottom float64, left fl
 //
 func (context *PrintContext) Height() float64 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.gdouble // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_height", _args[:], nil)
 	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
@@ -334,7 +298,7 @@ func (context *PrintContext) Height() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(_cret)
+	_gdouble = float64(*(*C.gdouble)(unsafe.Pointer(&_cret)))
 
 	return _gdouble
 }
@@ -348,12 +312,8 @@ func (context *PrintContext) Height() float64 {
 //
 func (context *PrintContext) PageSetup() *PageSetup {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_page_setup", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -376,12 +336,8 @@ func (context *PrintContext) PageSetup() *PageSetup {
 //
 func (context *PrintContext) PangoFontmap() pango.FontMapper {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_pango_fontmap", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -419,12 +375,8 @@ func (context *PrintContext) PangoFontmap() pango.FontMapper {
 //
 func (context *PrintContext) Width() float64 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.gdouble // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_width", _args[:], nil)
 	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
@@ -433,7 +385,7 @@ func (context *PrintContext) Width() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(_cret)
+	_gdouble = float64(*(*C.gdouble)(unsafe.Pointer(&_cret)))
 
 	return _gdouble
 }
@@ -452,20 +404,11 @@ func (context *PrintContext) Width() float64 {
 //
 func (context *PrintContext) SetCairoContext(cr *cairo.Context, dpiX, dpiY float64) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 *C.void  // out
-	var _arg2 C.double // out
-	var _arg3 C.double // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(cr.Native()))
-	_arg2 = C.double(dpiX)
-	_arg3 = C.double(dpiY)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(cr.Native()))
+	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(dpiX)
+	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(dpiY)
 
 	girepository.MustFind("Gtk", "PrintContext").InvokeMethod("set_cairo_context", _args[:], nil)
 

@@ -127,8 +127,6 @@ func (colorsel *ColorSelection) ConnectColorChanged(f func()) coreglib.SignalHan
 //    - colorSelection: new ColorSelection.
 //
 func NewColorSelection() *ColorSelection {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("new_ColorSelection", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -147,12 +145,8 @@ func NewColorSelection() *ColorSelection {
 //
 func (colorsel *ColorSelection) CurrentAlpha() uint16 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.guint16 // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("get_current_alpha", _args[:], nil)
 	_cret = *(*C.guint16)(unsafe.Pointer(&_gret))
@@ -161,7 +155,7 @@ func (colorsel *ColorSelection) CurrentAlpha() uint16 {
 
 	var _guint16 uint16 // out
 
-	_guint16 = uint16(_cret)
+	_guint16 = uint16(*(*C.guint16)(unsafe.Pointer(&_cret)))
 
 	return _guint16
 }
@@ -178,21 +172,16 @@ func (colorsel *ColorSelection) CurrentAlpha() uint16 {
 func (colorsel *ColorSelection) CurrentColor() *gdk.Color {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
 
 	girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("get_current_color", _args[:], _outs[:])
 
 	runtime.KeepAlive(colorsel)
 
 	var _color *gdk.Color // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _color
 }
@@ -207,21 +196,16 @@ func (colorsel *ColorSelection) CurrentColor() *gdk.Color {
 func (colorsel *ColorSelection) CurrentRGBA() *gdk.RGBA {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
 
 	girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("get_current_rgba", _args[:], _outs[:])
 
 	runtime.KeepAlive(colorsel)
 
 	var _rgba *gdk.RGBA // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_rgba = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_rgba = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _rgba
 }
@@ -234,12 +218,8 @@ func (colorsel *ColorSelection) CurrentRGBA() *gdk.RGBA {
 //
 func (colorsel *ColorSelection) HasOpacityControl() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("get_has_opacity_control", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -248,7 +228,7 @@ func (colorsel *ColorSelection) HasOpacityControl() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -263,12 +243,8 @@ func (colorsel *ColorSelection) HasOpacityControl() bool {
 //
 func (colorsel *ColorSelection) HasPalette() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("get_has_palette", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -277,7 +253,7 @@ func (colorsel *ColorSelection) HasPalette() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -292,12 +268,8 @@ func (colorsel *ColorSelection) HasPalette() bool {
 //
 func (colorsel *ColorSelection) PreviousAlpha() uint16 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.guint16 // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("get_previous_alpha", _args[:], nil)
 	_cret = *(*C.guint16)(unsafe.Pointer(&_gret))
@@ -306,7 +278,7 @@ func (colorsel *ColorSelection) PreviousAlpha() uint16 {
 
 	var _guint16 uint16 // out
 
-	_guint16 = uint16(_cret)
+	_guint16 = uint16(*(*C.guint16)(unsafe.Pointer(&_cret)))
 
 	return _guint16
 }
@@ -322,21 +294,16 @@ func (colorsel *ColorSelection) PreviousAlpha() uint16 {
 func (colorsel *ColorSelection) PreviousColor() *gdk.Color {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
 
 	girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("get_previous_color", _args[:], _outs[:])
 
 	runtime.KeepAlive(colorsel)
 
 	var _color *gdk.Color // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _color
 }
@@ -350,21 +317,16 @@ func (colorsel *ColorSelection) PreviousColor() *gdk.Color {
 func (colorsel *ColorSelection) PreviousRGBA() *gdk.RGBA {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
 
 	girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("get_previous_rgba", _args[:], _outs[:])
 
 	runtime.KeepAlive(colorsel)
 
 	var _rgba *gdk.RGBA // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_rgba = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_rgba = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _rgba
 }
@@ -378,12 +340,8 @@ func (colorsel *ColorSelection) PreviousRGBA() *gdk.RGBA {
 //
 func (colorsel *ColorSelection) IsAdjusting() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("is_adjusting", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -392,7 +350,7 @@ func (colorsel *ColorSelection) IsAdjusting() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -410,14 +368,9 @@ func (colorsel *ColorSelection) IsAdjusting() bool {
 //
 func (colorsel *ColorSelection) SetCurrentAlpha(alpha uint16) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 C.guint16 // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
-	_arg1 = C.guint16(alpha)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint16)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+	*(*C.guint16)(unsafe.Pointer(&_args[1])) = C.guint16(alpha)
 
 	girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("set_current_alpha", _args[:], nil)
 
@@ -438,14 +391,9 @@ func (colorsel *ColorSelection) SetCurrentAlpha(alpha uint16) {
 //
 func (colorsel *ColorSelection) SetCurrentColor(color *gdk.Color) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 
 	girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("set_current_color", _args[:], nil)
 
@@ -464,14 +412,9 @@ func (colorsel *ColorSelection) SetCurrentColor(color *gdk.Color) {
 //
 func (colorsel *ColorSelection) SetCurrentRGBA(rgba *gdk.RGBA) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("set_current_rgba", _args[:], nil)
 
@@ -487,16 +430,11 @@ func (colorsel *ColorSelection) SetCurrentRGBA(rgba *gdk.RGBA) {
 //
 func (colorsel *ColorSelection) SetHasOpacityControl(hasOpacity bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
 	if hasOpacity {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("set_has_opacity_control", _args[:], nil)
 
@@ -513,16 +451,11 @@ func (colorsel *ColorSelection) SetHasOpacityControl(hasOpacity bool) {
 //
 func (colorsel *ColorSelection) SetHasPalette(hasPalette bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
 	if hasPalette {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("set_has_palette", _args[:], nil)
 
@@ -541,14 +474,9 @@ func (colorsel *ColorSelection) SetHasPalette(hasPalette bool) {
 //
 func (colorsel *ColorSelection) SetPreviousAlpha(alpha uint16) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 C.guint16 // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
-	_arg1 = C.guint16(alpha)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint16)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+	*(*C.guint16)(unsafe.Pointer(&_args[1])) = C.guint16(alpha)
 
 	girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("set_previous_alpha", _args[:], nil)
 
@@ -571,14 +499,9 @@ func (colorsel *ColorSelection) SetPreviousAlpha(alpha uint16) {
 //
 func (colorsel *ColorSelection) SetPreviousColor(color *gdk.Color) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 
 	girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("set_previous_color", _args[:], nil)
 
@@ -599,14 +522,9 @@ func (colorsel *ColorSelection) SetPreviousColor(color *gdk.Color) {
 //
 func (colorsel *ColorSelection) SetPreviousRGBA(rgba *gdk.RGBA) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	girepository.MustFind("Gtk", "ColorSelection").InvokeMethod("set_previous_rgba", _args[:], nil)
 
@@ -629,15 +547,9 @@ func (colorsel *ColorSelection) SetPreviousRGBA(rgba *gdk.RGBA) {
 func ColorSelectionPaletteFromString(str string) ([]gdk.Color, bool) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void     // out
-	var _out0 *C.GdkColor // in
-	var _out1 *C.void     // in
-	var _cret C.gboolean  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "palette_from_string").Invoke(_args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -646,14 +558,12 @@ func ColorSelectionPaletteFromString(str string) ([]gdk.Color, bool) {
 
 	var _colors []gdk.Color // out
 	var _ok bool            // out
-	_out0 = *(**C.GdkColor)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(*C.gboolean)(unsafe.Pointer(&_outs[1]))
 
-	defer C.free(unsafe.Pointer(_out0))
+	defer C.free(unsafe.Pointer(_outs[0]))
 	{
-		src := unsafe.Slice((**C.void)(_out0), _out1)
-		_colors = make([]gdk.Color, _out1)
-		for i := 0; i < int(_out1); i++ {
+		src := unsafe.Slice((**C.void)(_outs[0]), _outs[1])
+		_colors = make([]gdk.Color, _outs[1])
+		for i := 0; i < int(_outs[1]); i++ {
 			_colors[i] = *(*gdk.Color)(gextras.NewStructNative(unsafe.Pointer(src[i])))
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(&_colors[i])),
@@ -663,7 +573,7 @@ func ColorSelectionPaletteFromString(str string) ([]gdk.Color, bool) {
 			)
 		}
 	}
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

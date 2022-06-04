@@ -25,11 +25,8 @@ import "C"
 //
 func X11FreeCompoundText(ctext *byte) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(ctext))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(ctext))
 
 	girepository.MustFind("GdkX11", "x11_free_compound_text").Invoke(_args[:], nil)
 
@@ -54,20 +51,10 @@ func X11FreeCompoundText(ctext *byte) {
 func (display *X11Display) StringToCompoundText(str string) (encoding string, format int32, ctext []byte, gint int32) {
 	var _args [2]girepository.Argument
 	var _outs [4]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 *C.void   // out
-	var _out0 *C.void   // in
-	var _out1 *C.void   // in
-	var _out2 *C.guchar // in
-	var _out3 *C.void   // in
-	var _cret C.int     // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("GdkX11", "X11Display").InvokeMethod("string_to_compound_text", _args[:], _outs[:])
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -79,17 +66,13 @@ func (display *X11Display) StringToCompoundText(str string) (encoding string, fo
 	var _format int32    // out
 	var _ctext []byte    // out
 	var _gint int32      // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
-	_out2 = *(**C.guchar)(unsafe.Pointer(&_outs[2]))
-	_out3 = *(*C.int)(unsafe.Pointer(&_outs[3]))
 
-	_encoding = C.GoString((*C.gchar)(unsafe.Pointer(_out0)))
-	_format = *(*int32)(unsafe.Pointer(_out1))
-	defer C.free(unsafe.Pointer(_out2))
-	_ctext = make([]byte, _out3)
-	copy(_ctext, unsafe.Slice((*byte)(unsafe.Pointer(_out2)), _out3))
-	_gint = int32(_cret)
+	_encoding = C.GoString((*C.gchar)(unsafe.Pointer(_outs[0])))
+	_format = *(*int32)(unsafe.Pointer(_outs[1]))
+	defer C.free(unsafe.Pointer(_outs[2]))
+	_ctext = make([]byte, _outs[3])
+	copy(_ctext, unsafe.Slice((*byte)(unsafe.Pointer(_outs[2])), _outs[3]))
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _encoding, _format, _ctext, _gint
 }
@@ -110,20 +93,10 @@ func (display *X11Display) StringToCompoundText(str string) (encoding string, fo
 func (display *X11Display) UTF8ToCompoundText(str string) (string, int32, []byte, bool) {
 	var _args [2]girepository.Argument
 	var _outs [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _out2 *C.guchar  // in
-	var _out3 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("GdkX11", "X11Display").InvokeMethod("utf8_to_compound_text", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -135,17 +108,13 @@ func (display *X11Display) UTF8ToCompoundText(str string) (string, int32, []byte
 	var _format int32    // out
 	var _ctext []byte    // out
 	var _ok bool         // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
-	_out2 = *(**C.guchar)(unsafe.Pointer(&_outs[2]))
-	_out3 = *(*C.gboolean)(unsafe.Pointer(&_outs[3]))
 
-	_encoding = C.GoString((*C.gchar)(unsafe.Pointer(_out0)))
-	_format = *(*int32)(unsafe.Pointer(_out1))
-	defer C.free(unsafe.Pointer(_out2))
-	_ctext = make([]byte, _out3)
-	copy(_ctext, unsafe.Slice((*byte)(unsafe.Pointer(_out2)), _out3))
-	if _cret != 0 {
+	_encoding = C.GoString((*C.gchar)(unsafe.Pointer(_outs[0])))
+	_format = *(*int32)(unsafe.Pointer(_outs[1]))
+	defer C.free(unsafe.Pointer(_outs[2]))
+	_ctext = make([]byte, _outs[3])
+	copy(_ctext, unsafe.Slice((*byte)(unsafe.Pointer(_outs[2])), _outs[3]))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

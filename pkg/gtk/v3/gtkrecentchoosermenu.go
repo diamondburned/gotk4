@@ -120,8 +120,6 @@ func marshalRecentChooserMenu(p uintptr) (interface{}, error) {
 //    - recentChooserMenu: new RecentChooserMenu.
 //
 func NewRecentChooserMenu() *RecentChooserMenu {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "RecentChooserMenu").InvokeMethod("new_RecentChooserMenu", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -149,12 +147,8 @@ func NewRecentChooserMenu() *RecentChooserMenu {
 //
 func NewRecentChooserMenuForManager(manager *RecentManager) *RecentChooserMenu {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
 	_gret := girepository.MustFind("Gtk", "RecentChooserMenu").InvokeMethod("new_RecentChooserMenu_for_manager", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -177,12 +171,8 @@ func NewRecentChooserMenuForManager(manager *RecentManager) *RecentChooserMenu {
 //
 func (menu *RecentChooserMenu) ShowNumbers() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 
 	_gret := girepository.MustFind("Gtk", "RecentChooserMenu").InvokeMethod("get_show_numbers", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -191,7 +181,7 @@ func (menu *RecentChooserMenu) ShowNumbers() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -209,16 +199,11 @@ func (menu *RecentChooserMenu) ShowNumbers() bool {
 //
 func (menu *RecentChooserMenu) SetShowNumbers(showNumbers bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	if showNumbers {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "RecentChooserMenu").InvokeMethod("set_show_numbers", _args[:], nil)
 

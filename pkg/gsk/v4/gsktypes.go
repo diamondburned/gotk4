@@ -43,18 +43,16 @@ type Transform struct {
 
 // transform is the struct that's finalized.
 type transform struct {
-	native *C.GskTransform
+	native unsafe.Pointer
 }
 
 func marshalTransform(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &Transform{&transform{(*C.GskTransform)(b)}}, nil
+	return &Transform{&transform{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewTransform constructs a struct Transform.
 func NewTransform() *Transform {
-	var _cret *C.void // in
-
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _transform *Transform // out
@@ -82,19 +80,13 @@ func NewTransform() *Transform {
 //
 func (first *Transform) Equal(second *Transform) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
 	if first != nil {
-		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(first)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(first)))
 	}
 	if second != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(second)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(second)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -103,7 +95,7 @@ func (first *Transform) Equal(second *Transform) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -124,14 +116,10 @@ func (first *Transform) Equal(second *Transform) bool {
 //
 func (self *Transform) Invert() *Transform {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
 	if self != nil {
-		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -139,7 +127,7 @@ func (self *Transform) Invert() *Transform {
 
 	var _transform *Transform // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_transform)),
@@ -164,17 +152,11 @@ func (self *Transform) Invert() *Transform {
 //
 func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
 	if next != nil {
-		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
 	}
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -211,17 +193,11 @@ func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 //
 func (next *Transform) Perspective(depth float32) *Transform {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.float // out
-	var _cret *C.void // in
 
 	if next != nil {
-		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
 	}
-	_arg1 = C.float(depth)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(depth)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -253,17 +229,11 @@ func (next *Transform) Perspective(depth float32) *Transform {
 //
 func (next *Transform) Rotate(angle float32) *Transform {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.float // out
-	var _cret *C.void // in
 
 	if next != nil {
-		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
 	}
-	_arg1 = C.float(angle)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(angle)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -298,20 +268,12 @@ func (next *Transform) Rotate(angle float32) *Transform {
 //
 func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.float // out
-	var _arg2 *C.void // out
-	var _cret *C.void // in
 
 	if next != nil {
-		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
 	}
-	_arg1 = C.float(angle)
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(axis)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(angle)
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(axis)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -347,20 +309,12 @@ func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 //
 func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.float // out
-	var _arg2 C.float // out
-	var _cret *C.void // in
 
 	if next != nil {
-		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
 	}
-	_arg1 = C.float(factorX)
-	_arg2 = C.float(factorY)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.float)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(factorX)
+	*(*C.float)(unsafe.Pointer(&_args[2])) = C.float(factorY)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -395,23 +349,13 @@ func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 //
 func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32) *Transform {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.float // out
-	var _arg2 C.float // out
-	var _arg3 C.float // out
-	var _cret *C.void // in
 
 	if next != nil {
-		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
 	}
-	_arg1 = C.float(factorX)
-	_arg2 = C.float(factorY)
-	_arg3 = C.float(factorZ)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.float)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.float)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(factorX)
+	*(*C.float)(unsafe.Pointer(&_args[2])) = C.float(factorY)
+	*(*C.float)(unsafe.Pointer(&_args[3])) = C.float(factorZ)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -460,17 +404,8 @@ func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32
 func (self *Transform) To2D() (outXx float32, outYx float32, outXy float32, outYy float32, outDx float32, outDy float32) {
 	var _args [1]girepository.Argument
 	var _outs [6]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
-	var _out2 *C.void // in
-	var _out3 *C.void // in
-	var _out4 *C.void // in
-	var _out5 *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 
 	runtime.KeepAlive(self)
 
@@ -480,19 +415,13 @@ func (self *Transform) To2D() (outXx float32, outYx float32, outXy float32, outY
 	var _outYy float32 // out
 	var _outDx float32 // out
 	var _outDy float32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
-	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
-	_out3 = *(**C.void)(unsafe.Pointer(&_outs[3]))
-	_out4 = *(**C.void)(unsafe.Pointer(&_outs[4]))
-	_out5 = *(**C.void)(unsafe.Pointer(&_outs[5]))
 
-	_outXx = *(*float32)(unsafe.Pointer(_out0))
-	_outYx = *(*float32)(unsafe.Pointer(_out1))
-	_outXy = *(*float32)(unsafe.Pointer(_out2))
-	_outYy = *(*float32)(unsafe.Pointer(_out3))
-	_outDx = *(*float32)(unsafe.Pointer(_out4))
-	_outDy = *(*float32)(unsafe.Pointer(_out5))
+	_outXx = *(*float32)(unsafe.Pointer(_outs[0]))
+	_outYx = *(*float32)(unsafe.Pointer(_outs[1]))
+	_outXy = *(*float32)(unsafe.Pointer(_outs[2]))
+	_outYy = *(*float32)(unsafe.Pointer(_outs[3]))
+	_outDx = *(*float32)(unsafe.Pointer(_outs[4]))
+	_outDy = *(*float32)(unsafe.Pointer(_outs[5]))
 
 	return _outXx, _outYx, _outXy, _outYy, _outDx, _outDy
 }
@@ -512,15 +441,8 @@ func (self *Transform) To2D() (outXx float32, outYx float32, outXy float32, outY
 func (self *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx float32, outDy float32) {
 	var _args [1]girepository.Argument
 	var _outs [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
-	var _out2 *C.void // in
-	var _out3 *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 
 	runtime.KeepAlive(self)
 
@@ -528,15 +450,11 @@ func (self *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx f
 	var _outScaleY float32 // out
 	var _outDx float32     // out
 	var _outDy float32     // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
-	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
-	_out3 = *(**C.void)(unsafe.Pointer(&_outs[3]))
 
-	_outScaleX = *(*float32)(unsafe.Pointer(_out0))
-	_outScaleY = *(*float32)(unsafe.Pointer(_out1))
-	_outDx = *(*float32)(unsafe.Pointer(_out2))
-	_outDy = *(*float32)(unsafe.Pointer(_out3))
+	_outScaleX = *(*float32)(unsafe.Pointer(_outs[0]))
+	_outScaleY = *(*float32)(unsafe.Pointer(_outs[1]))
+	_outDx = *(*float32)(unsafe.Pointer(_outs[2]))
+	_outDy = *(*float32)(unsafe.Pointer(_outs[3]))
 
 	return _outScaleX, _outScaleY, _outDx, _outDy
 }
@@ -552,21 +470,16 @@ func (self *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx f
 func (self *Transform) ToMatrix() *graphene.Matrix {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
 
 	if self != nil {
-		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	runtime.KeepAlive(self)
 
 	var _outMatrix *graphene.Matrix // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_outMatrix = (*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_outMatrix = (*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _outMatrix
 }
@@ -583,14 +496,10 @@ func (self *Transform) ToMatrix() *graphene.Matrix {
 //
 func (self *Transform) String() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
 	if self != nil {
-		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -617,23 +526,16 @@ func (self *Transform) String() string {
 func (self *Transform) ToTranslate() (outDx float32, outDy float32) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 
 	runtime.KeepAlive(self)
 
 	var _outDx float32 // out
 	var _outDy float32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_outDx = *(*float32)(unsafe.Pointer(_out0))
-	_outDy = *(*float32)(unsafe.Pointer(_out1))
+	_outDx = *(*float32)(unsafe.Pointer(_outs[0]))
+	_outDy = *(*float32)(unsafe.Pointer(_outs[1]))
 
 	return _outDx, _outDy
 }
@@ -650,19 +552,13 @@ func (self *Transform) ToTranslate() (outDx float32, outDy float32) {
 //
 func (next *Transform) Transform(other *Transform) *Transform {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
 	if next != nil {
-		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
 	}
 	if other != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -697,23 +593,16 @@ func (next *Transform) Transform(other *Transform) *Transform {
 func (self *Transform) TransformBounds(rect *graphene.Rect) *graphene.Rect {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(rect)
 
 	var _outRect *graphene.Rect // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_outRect = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_outRect = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _outRect
 }
@@ -731,23 +620,16 @@ func (self *Transform) TransformBounds(rect *graphene.Rect) *graphene.Rect {
 func (self *Transform) TransformPoint(point *graphene.Point) *graphene.Point {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(point)
 
 	var _outPoint *graphene.Point // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_outPoint = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_outPoint = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _outPoint
 }
@@ -764,17 +646,11 @@ func (self *Transform) TransformPoint(point *graphene.Point) *graphene.Point {
 //
 func (next *Transform) Translate(point *graphene.Point) *Transform {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
 	if next != nil {
-		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
 	}
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -806,17 +682,11 @@ func (next *Transform) Translate(point *graphene.Point) *Transform {
 //
 func (next *Transform) Translate3D(point *graphene.Point3D) *Transform {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
 	if next != nil {
-		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
 	}
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

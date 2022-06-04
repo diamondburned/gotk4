@@ -104,20 +104,14 @@ func marshalFontChooserDialog(p uintptr) (interface{}, error) {
 //
 func NewFontChooserDialog(title string, parent *Window) *FontChooserDialog {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
 	if title != "" {
-		_arg0 = (*C.void)(unsafe.Pointer(C.CString(title)))
-		defer C.free(unsafe.Pointer(_arg0))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(title)))
+		defer C.free(unsafe.Pointer(_args[0]))
 	}
 	if parent != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gtk", "FontChooserDialog").InvokeMethod("new_FontChooserDialog", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

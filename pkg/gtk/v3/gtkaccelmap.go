@@ -126,12 +126,9 @@ func marshalAccelMap(p uintptr) (interface{}, error) {
 //
 func AccelMapAddFilter(filterPattern string) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(filterPattern)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(filterPattern)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	girepository.MustFind("Gtk", "add_filter").Invoke(_args[:], nil)
 
@@ -147,8 +144,6 @@ func AccelMapAddFilter(filterPattern string) {
 //    - accelMap: global AccelMap object.
 //
 func AccelMapGet() *AccelMap {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "get").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -169,12 +164,9 @@ func AccelMapGet() *AccelMap {
 //
 func AccelMapLoad(fileName string) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(fileName)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(fileName)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	girepository.MustFind("Gtk", "load").Invoke(_args[:], nil)
 
@@ -191,11 +183,8 @@ func AccelMapLoad(fileName string) {
 //
 func AccelMapLoadFd(fd int32) {
 	var _args [1]girepository.Argument
-	var _arg0 C.gint // out
 
-	_arg0 = C.gint(fd)
-
-	*(*C.gint)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[0])) = C.gint(fd)
 
 	girepository.MustFind("Gtk", "load_fd").Invoke(_args[:], nil)
 
@@ -210,11 +199,8 @@ func AccelMapLoadFd(fd int32) {
 //
 func AccelMapLoadScanner(scanner *glib.Scanner) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(scanner)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	girepository.MustFind("Gtk", "load_scanner").Invoke(_args[:], nil)
 
@@ -242,12 +228,9 @@ func AccelMapLoadScanner(scanner *glib.Scanner) {
 //
 func AccelMapLockPath(accelPath string) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(accelPath)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(accelPath)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	girepository.MustFind("Gtk", "lock_path").Invoke(_args[:], nil)
 
@@ -269,14 +252,9 @@ func AccelMapLockPath(accelPath string) {
 func AccelMapLookupEntry(accelPath string) (*AccelKey, bool) {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(accelPath)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(accelPath)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "lookup_entry").Invoke(_args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -285,12 +263,11 @@ func AccelMapLookupEntry(accelPath string) (*AccelKey, bool) {
 
 	var _key *AccelKey // out
 	var _ok bool       // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	if _out0 != nil {
-		_key = (*AccelKey)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_key = (*AccelKey)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 	}
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -308,12 +285,9 @@ func AccelMapLookupEntry(accelPath string) (*AccelKey, bool) {
 //
 func AccelMapSave(fileName string) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(fileName)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(fileName)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	girepository.MustFind("Gtk", "save").Invoke(_args[:], nil)
 
@@ -330,11 +304,8 @@ func AccelMapSave(fileName string) {
 //
 func AccelMapSaveFd(fd int32) {
 	var _args [1]girepository.Argument
-	var _arg0 C.gint // out
 
-	_arg0 = C.gint(fd)
-
-	*(*C.gint)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[0])) = C.gint(fd)
 
 	girepository.MustFind("Gtk", "save_fd").Invoke(_args[:], nil)
 
@@ -351,12 +322,9 @@ func AccelMapSaveFd(fd int32) {
 //
 func AccelMapUnlockPath(accelPath string) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(accelPath)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(accelPath)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	girepository.MustFind("Gtk", "unlock_path").Invoke(_args[:], nil)
 

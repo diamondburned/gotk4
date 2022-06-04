@@ -75,8 +75,6 @@ func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
 //    - cellRendererSpinner: new CellRenderer.
 //
 func NewCellRendererSpinner() *CellRendererSpinner {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "CellRendererSpinner").InvokeMethod("new_CellRendererSpinner", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

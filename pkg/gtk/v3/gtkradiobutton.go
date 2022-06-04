@@ -217,20 +217,16 @@ func (radioButton *RadioButton) ConnectGroupChanged(f func()) coreglib.SignalHan
 //
 func NewRadioButton(group []*RadioButton) *RadioButton {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
 	if group != nil {
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
 			var dst *C.void // out
-			dst = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
-			_arg0 = C.g_slist_prepend(_arg0, C.gpointer(unsafe.Pointer(dst)))
+			*(**C.void)(unsafe.Pointer(&dst)) = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+			*(**C.void)(unsafe.Pointer(&_args[0])) = C.g_slist_prepend(*(**C.void)(unsafe.Pointer(&_args[0])), C.gpointer(unsafe.Pointer(dst)))
 		}
-		defer C.g_slist_free(_arg0)
+		defer C.g_slist_free(_args[0])
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gtk", "RadioButton").InvokeMethod("new_RadioButton", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -258,14 +254,10 @@ func NewRadioButton(group []*RadioButton) *RadioButton {
 //
 func NewRadioButtonFromWidget(radioGroupMember *RadioButton) *RadioButton {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
 	if radioGroupMember != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(radioGroupMember).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(radioGroupMember).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gtk", "RadioButton").InvokeMethod("new_RadioButton_from_widget", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -293,24 +285,18 @@ func NewRadioButtonFromWidget(radioGroupMember *RadioButton) *RadioButton {
 //
 func NewRadioButtonWithLabel(group []*RadioButton, label string) *RadioButton {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
 	if group != nil {
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
 			var dst *C.void // out
-			dst = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
-			_arg0 = C.g_slist_prepend(_arg0, C.gpointer(unsafe.Pointer(dst)))
+			*(**C.void)(unsafe.Pointer(&dst)) = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+			*(**C.void)(unsafe.Pointer(&_args[0])) = C.g_slist_prepend(*(**C.void)(unsafe.Pointer(&_args[0])), C.gpointer(unsafe.Pointer(dst)))
 		}
-		defer C.g_slist_free(_arg0)
+		defer C.g_slist_free(_args[0])
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "RadioButton").InvokeMethod("new_RadioButton_with_label", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -339,18 +325,12 @@ func NewRadioButtonWithLabel(group []*RadioButton, label string) *RadioButton {
 //
 func NewRadioButtonWithLabelFromWidget(radioGroupMember *RadioButton, label string) *RadioButton {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
 	if radioGroupMember != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(radioGroupMember).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(radioGroupMember).Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "RadioButton").InvokeMethod("new_RadioButton_with_label_from_widget", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -382,24 +362,18 @@ func NewRadioButtonWithLabelFromWidget(radioGroupMember *RadioButton, label stri
 //
 func NewRadioButtonWithMnemonic(group []*RadioButton, label string) *RadioButton {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
 	if group != nil {
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
 			var dst *C.void // out
-			dst = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
-			_arg0 = C.g_slist_prepend(_arg0, C.gpointer(unsafe.Pointer(dst)))
+			*(**C.void)(unsafe.Pointer(&dst)) = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+			*(**C.void)(unsafe.Pointer(&_args[0])) = C.g_slist_prepend(*(**C.void)(unsafe.Pointer(&_args[0])), C.gpointer(unsafe.Pointer(dst)))
 		}
-		defer C.g_slist_free(_arg0)
+		defer C.g_slist_free(_args[0])
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "RadioButton").InvokeMethod("new_RadioButton_with_mnemonic", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -430,18 +404,12 @@ func NewRadioButtonWithMnemonic(group []*RadioButton, label string) *RadioButton
 //
 func NewRadioButtonWithMnemonicFromWidget(radioGroupMember *RadioButton, label string) *RadioButton {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
 	if radioGroupMember != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(radioGroupMember).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(radioGroupMember).Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "RadioButton").InvokeMethod("new_RadioButton_with_mnemonic_from_widget", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -466,12 +434,8 @@ func NewRadioButtonWithMnemonicFromWidget(radioGroupMember *RadioButton, label s
 //
 func (radioButton *RadioButton) Group() []*RadioButton {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(radioButton).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(radioButton).Native()))
 
 	_gret := girepository.MustFind("Gtk", "RadioButton").InvokeMethod("get_group", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -517,16 +481,11 @@ func (radioButton *RadioButton) Group() []*RadioButton {
 //
 func (radioButton *RadioButton) JoinGroup(groupSource *RadioButton) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(radioButton).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(radioButton).Native()))
 	if groupSource != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(groupSource).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(groupSource).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "RadioButton").InvokeMethod("join_group", _args[:], nil)
 
@@ -546,22 +505,17 @@ func (radioButton *RadioButton) JoinGroup(groupSource *RadioButton) {
 //
 func (radioButton *RadioButton) SetGroup(group []*RadioButton) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(radioButton).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(radioButton).Native()))
 	if group != nil {
 		for i := len(group) - 1; i >= 0; i-- {
 			src := group[i]
 			var dst *C.void // out
-			dst = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
-			_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+			*(**C.void)(unsafe.Pointer(&dst)) = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+			*(**C.void)(unsafe.Pointer(&_args[1])) = C.g_slist_prepend(*(**C.void)(unsafe.Pointer(&_args[1])), C.gpointer(unsafe.Pointer(dst)))
 		}
-		defer C.g_slist_free(_arg1)
+		defer C.g_slist_free(_args[1])
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "RadioButton").InvokeMethod("set_group", _args[:], nil)
 

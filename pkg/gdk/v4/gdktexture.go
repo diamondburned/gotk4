@@ -108,12 +108,8 @@ func BaseTexture(obj Texturer) *Texture {
 //
 func NewTextureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Texture {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Texture").InvokeMethod("new_Texture_for_pixbuf", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -144,13 +140,8 @@ func NewTextureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Texture {
 //
 func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Texture").InvokeMethod("new_Texture_from_file", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -161,7 +152,7 @@ func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 	var _goerr error      // out
 
 	_texture = wrapTexture(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -188,13 +179,9 @@ func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 //
 func NewTextureFromResource(resourcePath string) *Texture {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gdk", "Texture").InvokeMethod("new_Texture_from_resource", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -216,12 +203,8 @@ func NewTextureFromResource(resourcePath string) *Texture {
 //
 func (texture *Texture) Height() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Texture").InvokeMethod("get_height", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -230,7 +213,7 @@ func (texture *Texture) Height() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -243,12 +226,8 @@ func (texture *Texture) Height() int32 {
 //
 func (texture *Texture) Width() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Texture").InvokeMethod("get_width", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -257,7 +236,7 @@ func (texture *Texture) Width() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -278,16 +257,10 @@ func (texture *Texture) Width() int32 {
 //
 func (texture *Texture) SaveToPNG(filename string) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gdk", "Texture").InvokeMethod("save_to_png", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -297,7 +270,7 @@ func (texture *Texture) SaveToPNG(filename string) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

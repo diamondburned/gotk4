@@ -128,12 +128,8 @@ func marshalThreadedSocketService(p uintptr) (interface{}, error) {
 //
 func NewThreadedSocketService(maxThreads int32) *ThreadedSocketService {
 	var _args [1]girepository.Argument
-	var _arg0 C.int   // out
-	var _cret *C.void // in
 
-	_arg0 = C.int(maxThreads)
-
-	*(*C.int)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.int)(unsafe.Pointer(&_args[0])) = C.int(maxThreads)
 
 	_gret := girepository.MustFind("Gio", "ThreadedSocketService").InvokeMethod("new_ThreadedSocketService", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

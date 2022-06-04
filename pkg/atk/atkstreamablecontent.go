@@ -226,15 +226,9 @@ func marshalStreamableContent(p uintptr) (interface{}, error) {
 //
 func (streamable *StreamableContent) MIMEType(i int32) string {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
-	_arg1 = C.gint(i)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -256,12 +250,8 @@ func (streamable *StreamableContent) MIMEType(i int32) string {
 //
 func (streamable *StreamableContent) NMIMETypes() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -269,7 +259,7 @@ func (streamable *StreamableContent) NMIMETypes() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -286,16 +276,10 @@ func (streamable *StreamableContent) NMIMETypes() int32 {
 //
 func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -335,16 +319,10 @@ func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
 //
 func (streamable *StreamableContent) URI(mimeType string) string {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -353,7 +331,7 @@ func (streamable *StreamableContent) URI(mimeType string) string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 

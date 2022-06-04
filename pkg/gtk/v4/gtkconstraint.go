@@ -132,12 +132,8 @@ func marshalConstraint(p uintptr) (interface{}, error) {
 //
 func (constraint *Constraint) Constant() float64 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void  // out
-	var _cret C.double // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_constant", _args[:], nil)
 	_cret = *(*C.double)(unsafe.Pointer(&_gret))
@@ -146,7 +142,7 @@ func (constraint *Constraint) Constant() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(_cret)
+	_gdouble = float64(*(*C.double)(unsafe.Pointer(&_cret)))
 
 	return _gdouble
 }
@@ -160,12 +156,8 @@ func (constraint *Constraint) Constant() float64 {
 //
 func (constraint *Constraint) Multiplier() float64 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void  // out
-	var _cret C.double // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_multiplier", _args[:], nil)
 	_cret = *(*C.double)(unsafe.Pointer(&_gret))
@@ -174,7 +166,7 @@ func (constraint *Constraint) Multiplier() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(_cret)
+	_gdouble = float64(*(*C.double)(unsafe.Pointer(&_cret)))
 
 	return _gdouble
 }
@@ -191,12 +183,8 @@ func (constraint *Constraint) Multiplier() float64 {
 //
 func (constraint *Constraint) Source() *ConstraintTarget {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_source", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -205,7 +193,7 @@ func (constraint *Constraint) Source() *ConstraintTarget {
 
 	var _constraintTarget *ConstraintTarget // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_constraintTarget = wrapConstraintTarget(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -220,12 +208,8 @@ func (constraint *Constraint) Source() *ConstraintTarget {
 //
 func (constraint *Constraint) Strength() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_strength", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -234,7 +218,7 @@ func (constraint *Constraint) Strength() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -251,12 +235,8 @@ func (constraint *Constraint) Strength() int32 {
 //
 func (constraint *Constraint) Target() *ConstraintTarget {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_target", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -265,7 +245,7 @@ func (constraint *Constraint) Target() *ConstraintTarget {
 
 	var _constraintTarget *ConstraintTarget // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_constraintTarget = wrapConstraintTarget(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -281,12 +261,8 @@ func (constraint *Constraint) Target() *ConstraintTarget {
 //
 func (constraint *Constraint) IsAttached() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("is_attached", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -295,7 +271,7 @@ func (constraint *Constraint) IsAttached() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -311,12 +287,8 @@ func (constraint *Constraint) IsAttached() bool {
 //
 func (constraint *Constraint) IsConstant() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("is_constant", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -325,7 +297,7 @@ func (constraint *Constraint) IsConstant() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -341,12 +313,8 @@ func (constraint *Constraint) IsConstant() bool {
 //
 func (constraint *Constraint) IsRequired() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("is_required", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -355,7 +323,7 @@ func (constraint *Constraint) IsRequired() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

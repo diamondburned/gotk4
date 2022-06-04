@@ -320,12 +320,8 @@ func (deviceManager *DeviceManager) ConnectDeviceRemoved(f func(device Devicer))
 //
 func (deviceManager *DeviceManager) ClientPointer() Devicer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(deviceManager).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(deviceManager).Native()))
 
 	_gret := girepository.MustFind("Gdk", "DeviceManager").InvokeMethod("get_client_pointer", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -364,12 +360,8 @@ func (deviceManager *DeviceManager) ClientPointer() Devicer {
 //
 func (deviceManager *DeviceManager) Display() *Display {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(deviceManager).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(deviceManager).Native()))
 
 	_gret := girepository.MustFind("Gdk", "DeviceManager").InvokeMethod("get_display", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -378,7 +370,7 @@ func (deviceManager *DeviceManager) Display() *Display {
 
 	var _display *Display // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 

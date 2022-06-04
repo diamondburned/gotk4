@@ -150,15 +150,11 @@ func (expander *Expander) ConnectActivate(f func()) coreglib.SignalHandle {
 //
 func NewExpander(label string) *Expander {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
 	if label != "" {
-		_arg0 = (*C.void)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_arg0))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_args[0]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gtk", "Expander").InvokeMethod("new_Expander", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -190,15 +186,11 @@ func NewExpander(label string) *Expander {
 //
 func NewExpanderWithMnemonic(label string) *Expander {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
 	if label != "" {
-		_arg0 = (*C.void)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_arg0))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_args[0]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gtk", "Expander").InvokeMethod("new_Expander_with_mnemonic", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -223,12 +215,8 @@ func NewExpanderWithMnemonic(label string) *Expander {
 //
 func (expander *Expander) Expanded() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Expander").InvokeMethod("get_expanded", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -237,7 +225,7 @@ func (expander *Expander) Expanded() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -262,12 +250,8 @@ func (expander *Expander) Expanded() bool {
 //
 func (expander *Expander) Label() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Expander").InvokeMethod("get_label", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -276,7 +260,7 @@ func (expander *Expander) Label() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -292,12 +276,8 @@ func (expander *Expander) Label() string {
 //
 func (expander *Expander) LabelFill() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Expander").InvokeMethod("get_label_fill", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -306,7 +286,7 @@ func (expander *Expander) LabelFill() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -322,12 +302,8 @@ func (expander *Expander) LabelFill() bool {
 //
 func (expander *Expander) LabelWidget() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Expander").InvokeMethod("get_label_widget", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -336,7 +312,7 @@ func (expander *Expander) LabelWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -365,12 +341,8 @@ func (expander *Expander) LabelWidget() Widgetter {
 //
 func (expander *Expander) ResizeToplevel() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Expander").InvokeMethod("get_resize_toplevel", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -379,7 +351,7 @@ func (expander *Expander) ResizeToplevel() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -396,12 +368,8 @@ func (expander *Expander) ResizeToplevel() bool {
 //
 func (expander *Expander) Spacing() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Expander").InvokeMethod("get_spacing", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -410,7 +378,7 @@ func (expander *Expander) Spacing() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -425,12 +393,8 @@ func (expander *Expander) Spacing() int32 {
 //
 func (expander *Expander) UseMarkup() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Expander").InvokeMethod("get_use_markup", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -439,7 +403,7 @@ func (expander *Expander) UseMarkup() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -456,12 +420,8 @@ func (expander *Expander) UseMarkup() bool {
 //
 func (expander *Expander) UseUnderline() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Expander").InvokeMethod("get_use_underline", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -470,7 +430,7 @@ func (expander *Expander) UseUnderline() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -487,16 +447,11 @@ func (expander *Expander) UseUnderline() bool {
 //
 func (expander *Expander) SetExpanded(expanded bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 	if expanded {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Expander").InvokeMethod("set_expanded", _args[:], nil)
 
@@ -514,17 +469,12 @@ func (expander *Expander) SetExpanded(expanded bool) {
 //
 func (expander *Expander) SetLabel(label string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 	if label != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Expander").InvokeMethod("set_label", _args[:], nil)
 
@@ -544,16 +494,11 @@ func (expander *Expander) SetLabel(label string) {
 //
 func (expander *Expander) SetLabelFill(labelFill bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 	if labelFill {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Expander").InvokeMethod("set_label_fill", _args[:], nil)
 
@@ -570,16 +515,11 @@ func (expander *Expander) SetLabelFill(labelFill bool) {
 //
 func (expander *Expander) SetLabelWidget(labelWidget Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 	if labelWidget != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(labelWidget).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(labelWidget).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Expander").InvokeMethod("set_label_widget", _args[:], nil)
 
@@ -596,16 +536,11 @@ func (expander *Expander) SetLabelWidget(labelWidget Widgetter) {
 //
 func (expander *Expander) SetResizeToplevel(resizeToplevel bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 	if resizeToplevel {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Expander").InvokeMethod("set_resize_toplevel", _args[:], nil)
 
@@ -624,14 +559,9 @@ func (expander *Expander) SetResizeToplevel(resizeToplevel bool) {
 //
 func (expander *Expander) SetSpacing(spacing int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
-	_arg1 = C.gint(spacing)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(spacing)
 
 	girepository.MustFind("Gtk", "Expander").InvokeMethod("set_spacing", _args[:], nil)
 
@@ -648,16 +578,11 @@ func (expander *Expander) SetSpacing(spacing int32) {
 //
 func (expander *Expander) SetUseMarkup(useMarkup bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 	if useMarkup {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Expander").InvokeMethod("set_use_markup", _args[:], nil)
 
@@ -674,16 +599,11 @@ func (expander *Expander) SetUseMarkup(useMarkup bool) {
 //
 func (expander *Expander) SetUseUnderline(useUnderline bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 	if useUnderline {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Expander").InvokeMethod("set_use_underline", _args[:], nil)
 

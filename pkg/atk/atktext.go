@@ -426,7 +426,7 @@ type TextOverrider interface {
 	//    - utf8: newly allocated string containing the selected text. Use
 	//      g_free() to free the returned string.
 	//
-	Selection(selectionNum int32) (startOffset int32, endOffset int32, utf8 string)
+	Selection(selectionNum int32) (startOffset, endOffset int32, utf8 string)
 	// Text gets the specified text.
 	//
 	// The function takes the following parameters:
@@ -560,7 +560,7 @@ type Texter interface {
 	// NSelections gets the number of selected regions.
 	NSelections() int32
 	// Selection gets the text from the specified selection.
-	Selection(selectionNum int32) (startOffset int32, endOffset int32, utf8 string)
+	Selection(selectionNum int32) (startOffset, endOffset int32, utf8 string)
 	// Text gets the specified text.
 	Text(startOffset, endOffset int32) string
 	// RemoveSelection removes the specified selection.
@@ -1005,18 +1005,10 @@ func (text *Text) ConnectTextSelectionChanged(f func()) coreglib.SignalHandle {
 //
 func (text *Text) AddSelection(startOffset, endOffset int32) bool {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _arg2 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	_arg1 = C.gint(startOffset)
-	_arg2 = C.gint(endOffset)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(startOffset)
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(endOffset)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1026,7 +1018,7 @@ func (text *Text) AddSelection(startOffset, endOffset int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1042,12 +1034,8 @@ func (text *Text) AddSelection(startOffset, endOffset int32) bool {
 //
 func (text *Text) CaretOffset() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1055,7 +1043,7 @@ func (text *Text) CaretOffset() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1072,15 +1060,9 @@ func (text *Text) CaretOffset() int32 {
 //
 func (text *Text) CharacterAtOffset(offset int32) uint32 {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gunichar // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	_arg1 = C.gint(offset)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(offset)
 
 	_cret = *(*C.gunichar)(unsafe.Pointer(&_gret))
 
@@ -1089,7 +1071,7 @@ func (text *Text) CharacterAtOffset(offset int32) uint32 {
 
 	var _gunichar uint32 // out
 
-	_gunichar = uint32(_cret)
+	_gunichar = uint32(*(*C.gunichar)(unsafe.Pointer(&_cret)))
 
 	return _gunichar
 }
@@ -1102,12 +1084,8 @@ func (text *Text) CharacterAtOffset(offset int32) uint32 {
 //
 func (text *Text) CharacterCount() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1115,7 +1093,7 @@ func (text *Text) CharacterCount() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1128,12 +1106,8 @@ func (text *Text) CharacterCount() int32 {
 //
 func (text *Text) NSelections() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1141,7 +1115,7 @@ func (text *Text) NSelections() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1165,20 +1139,12 @@ func (text *Text) NSelections() int32 {
 //    - utf8: newly allocated string containing the selected text. Use g_free()
 //      to free the returned string.
 //
-func (text *Text) Selection(selectionNum int32) (startOffset int32, endOffset int32, utf8 string) {
+func (text *Text) Selection(selectionNum int32) (startOffset, endOffset int32, utf8 string) {
 	var _args [2]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	_arg1 = C.gint(selectionNum)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(selectionNum)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1188,11 +1154,9 @@ func (text *Text) Selection(selectionNum int32) (startOffset int32, endOffset in
 	var _startOffset int32 // out
 	var _endOffset int32   // out
 	var _utf8 string       // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_startOffset = *(*int32)(unsafe.Pointer(_out0))
-	_endOffset = *(*int32)(unsafe.Pointer(_out1))
+	_startOffset = *(*int32)(unsafe.Pointer(_outs[0]))
+	_endOffset = *(*int32)(unsafe.Pointer(_outs[1]))
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
@@ -1214,18 +1178,10 @@ func (text *Text) Selection(selectionNum int32) (startOffset int32, endOffset in
 //
 func (text *Text) Text(startOffset, endOffset int32) string {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _arg2 C.gint  // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	_arg1 = C.gint(startOffset)
-	_arg2 = C.gint(endOffset)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(startOffset)
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(endOffset)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1257,15 +1213,9 @@ func (text *Text) Text(startOffset, endOffset int32) string {
 //
 func (text *Text) RemoveSelection(selectionNum int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	_arg1 = C.gint(selectionNum)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(selectionNum)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1274,7 +1224,7 @@ func (text *Text) RemoveSelection(selectionNum int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1309,15 +1259,9 @@ func (text *Text) RemoveSelection(selectionNum int32) bool {
 //
 func (text *Text) SetCaretOffset(offset int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	_arg1 = C.gint(offset)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(offset)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1326,7 +1270,7 @@ func (text *Text) SetCaretOffset(offset int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1352,21 +1296,11 @@ func (text *Text) SetCaretOffset(offset int32) bool {
 //
 func (text *Text) SetSelection(selectionNum, startOffset, endOffset int32) bool {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _arg2 C.gint     // out
-	var _arg3 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	_arg1 = C.gint(selectionNum)
-	_arg2 = C.gint(startOffset)
-	_arg3 = C.gint(endOffset)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gint)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(selectionNum)
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(startOffset)
+	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(endOffset)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1377,7 +1311,7 @@ func (text *Text) SetSelection(selectionNum, startOffset, endOffset int32) bool 
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1393,12 +1327,12 @@ type TextRange struct {
 
 // textRange is the struct that's finalized.
 type textRange struct {
-	native *C.AtkTextRange
+	native unsafe.Pointer
 }
 
 func marshalTextRange(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &TextRange{&textRange{(*C.AtkTextRange)(b)}}, nil
+	return &TextRange{&textRange{(unsafe.Pointer)(b)}}, nil
 }
 
 // TextRectangle: structure used to store a rectangle used by AtkText.
@@ -1410,7 +1344,7 @@ type TextRectangle struct {
 
 // textRectangle is the struct that's finalized.
 type textRectangle struct {
-	native *C.AtkTextRectangle
+	native unsafe.Pointer
 }
 
 // NewTextRectangle creates a new TextRectangle instance from the given
@@ -1437,28 +1371,36 @@ func NewTextRectangle(x, y, width, height int32) TextRectangle {
 
 // X: horizontal coordinate of a rectangle.
 func (t *TextRectangle) X() int32 {
+	offset := girepository.MustFind("Atk", "TextRectangle").StructFieldOffset("x")
+	valptr := unsafe.Add(unsafe.Pointer(t), offset)
 	var v int32 // out
-	v = int32(t.native.x)
+	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Y: vertical coordinate of a rectangle.
 func (t *TextRectangle) Y() int32 {
+	offset := girepository.MustFind("Atk", "TextRectangle").StructFieldOffset("y")
+	valptr := unsafe.Add(unsafe.Pointer(t), offset)
 	var v int32 // out
-	v = int32(t.native.y)
+	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Width: width of a rectangle.
 func (t *TextRectangle) Width() int32 {
+	offset := girepository.MustFind("Atk", "TextRectangle").StructFieldOffset("width")
+	valptr := unsafe.Add(unsafe.Pointer(t), offset)
 	var v int32 // out
-	v = int32(t.native.width)
+	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Height: height of a rectangle.
 func (t *TextRectangle) Height() int32 {
+	offset := girepository.MustFind("Atk", "TextRectangle").StructFieldOffset("height")
+	valptr := unsafe.Add(unsafe.Pointer(t), offset)
 	var v int32 // out
-	v = int32(t.native.height)
+	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
 	return v
 }

@@ -292,12 +292,8 @@ func (fontchooser *FontChooser) ConnectFontActivated(f func(fontname string)) co
 //
 func (fontchooser *FontChooser) Font() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -305,7 +301,7 @@ func (fontchooser *FontChooser) Font() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 		defer C.free(unsafe.Pointer(_cret))
 	}
@@ -330,12 +326,8 @@ func (fontchooser *FontChooser) Font() string {
 //
 func (fontchooser *FontChooser) FontDesc() *pango.FontDescription {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -343,7 +335,7 @@ func (fontchooser *FontChooser) FontDesc() *pango.FontDescription {
 
 	var _fontDescription *pango.FontDescription // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_fontDescription = (*pango.FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_fontDescription)),
@@ -369,12 +361,8 @@ func (fontchooser *FontChooser) FontDesc() *pango.FontDescription {
 //
 func (fontchooser *FontChooser) FontFace() pango.FontFacer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -382,7 +370,7 @@ func (fontchooser *FontChooser) FontFace() pango.FontFacer {
 
 	var _fontFace pango.FontFacer // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -416,12 +404,8 @@ func (fontchooser *FontChooser) FontFace() pango.FontFacer {
 //
 func (fontchooser *FontChooser) FontFamily() pango.FontFamilier {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -429,7 +413,7 @@ func (fontchooser *FontChooser) FontFamily() pango.FontFamilier {
 
 	var _fontFamily pango.FontFamilier // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -457,12 +441,8 @@ func (fontchooser *FontChooser) FontFamily() pango.FontFamilier {
 //
 func (fontchooser *FontChooser) FontFeatures() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -485,12 +465,8 @@ func (fontchooser *FontChooser) FontFeatures() string {
 //
 func (fontchooser *FontChooser) FontMap() pango.FontMapper {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -498,7 +474,7 @@ func (fontchooser *FontChooser) FontMap() pango.FontMapper {
 
 	var _fontMap pango.FontMapper // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -527,12 +503,8 @@ func (fontchooser *FontChooser) FontMap() pango.FontMapper {
 //
 func (fontchooser *FontChooser) FontSize() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
 
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
@@ -540,7 +512,7 @@ func (fontchooser *FontChooser) FontSize() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -553,12 +525,8 @@ func (fontchooser *FontChooser) FontSize() int32 {
 //
 func (fontchooser *FontChooser) Language() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -580,12 +548,8 @@ func (fontchooser *FontChooser) Language() string {
 //
 func (fontchooser *FontChooser) PreviewText() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -607,12 +571,8 @@ func (fontchooser *FontChooser) PreviewText() string {
 //
 func (fontchooser *FontChooser) ShowPreviewEntry() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -620,7 +580,7 @@ func (fontchooser *FontChooser) ShowPreviewEntry() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -636,20 +596,13 @@ func (fontchooser *FontChooser) ShowPreviewEntry() bool {
 //
 func (fontchooser *FontChooser) SetFilterFunc(filter FontFilterFunc) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
 	if filter != nil {
-		_arg1 = (*[0]byte)(C._gotk4_gtk4_FontFilterFunc)
-		_arg2 = C.gpointer(gbox.Assign(filter))
-		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk4_FontFilterFunc)
+		_args[2] = C.gpointer(gbox.Assign(filter))
+		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(fontchooser)
 	runtime.KeepAlive(filter)
@@ -663,15 +616,10 @@ func (fontchooser *FontChooser) SetFilterFunc(filter FontFilterFunc) {
 //
 func (fontchooser *FontChooser) SetFont(fontname string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(fontname)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(fontname)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	runtime.KeepAlive(fontchooser)
 	runtime.KeepAlive(fontname)
@@ -685,14 +633,9 @@ func (fontchooser *FontChooser) SetFont(fontname string) {
 //
 func (fontchooser *FontChooser) SetFontDesc(fontDesc *pango.FontDescription) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(fontDesc)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(fontDesc)))
 
 	runtime.KeepAlive(fontchooser)
 	runtime.KeepAlive(fontDesc)
@@ -727,16 +670,11 @@ func (fontchooser *FontChooser) SetFontDesc(fontDesc *pango.FontDescription) {
 //
 func (fontchooser *FontChooser) SetFontMap(fontmap pango.FontMapper) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
 	if fontmap != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(fontchooser)
 	runtime.KeepAlive(fontmap)
@@ -750,15 +688,10 @@ func (fontchooser *FontChooser) SetFontMap(fontmap pango.FontMapper) {
 //
 func (fontchooser *FontChooser) SetLanguage(language string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(language)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(language)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	runtime.KeepAlive(fontchooser)
 	runtime.KeepAlive(language)
@@ -774,15 +707,10 @@ func (fontchooser *FontChooser) SetLanguage(language string) {
 //
 func (fontchooser *FontChooser) SetPreviewText(text string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	runtime.KeepAlive(fontchooser)
 	runtime.KeepAlive(text)
@@ -796,16 +724,11 @@ func (fontchooser *FontChooser) SetPreviewText(text string) {
 //
 func (fontchooser *FontChooser) SetShowPreviewEntry(showPreviewEntry bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
 	if showPreviewEntry {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(fontchooser)
 	runtime.KeepAlive(showPreviewEntry)

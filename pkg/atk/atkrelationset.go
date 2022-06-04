@@ -68,8 +68,6 @@ func marshalRelationSet(p uintptr) (interface{}, error) {
 //    - relationSet: new RelationSet.
 //
 func NewRelationSet() *RelationSet {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Atk", "RelationSet").InvokeMethod("new_RelationSet", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -91,14 +89,9 @@ func NewRelationSet() *RelationSet {
 //
 func (set *RelationSet) Add(relation *Relation) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
 
 	girepository.MustFind("Atk", "RelationSet").InvokeMethod("add", _args[:], nil)
 
@@ -114,12 +107,8 @@ func (set *RelationSet) Add(relation *Relation) {
 //
 func (set *RelationSet) NRelations() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
 
 	_gret := girepository.MustFind("Atk", "RelationSet").InvokeMethod("get_n_relations", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -128,7 +117,7 @@ func (set *RelationSet) NRelations() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -146,15 +135,9 @@ func (set *RelationSet) NRelations() int32 {
 //
 func (set *RelationSet) Relation(i int32) *Relation {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
-	_arg1 = C.gint(i)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
 
 	_gret := girepository.MustFind("Atk", "RelationSet").InvokeMethod("get_relation", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -178,14 +161,9 @@ func (set *RelationSet) Relation(i int32) *Relation {
 //
 func (set *RelationSet) Remove(relation *Relation) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
 
 	girepository.MustFind("Atk", "RelationSet").InvokeMethod("remove", _args[:], nil)
 

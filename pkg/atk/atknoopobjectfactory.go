@@ -67,8 +67,6 @@ func marshalNoOpObjectFactory(p uintptr) (interface{}, error) {
 //    - noOpObjectFactory: instance of an ObjectFactory.
 //
 func NewNoOpObjectFactory() *NoOpObjectFactory {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Atk", "NoOpObjectFactory").InvokeMethod("new_NoOpObjectFactory", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

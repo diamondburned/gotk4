@@ -172,12 +172,8 @@ func (gesture *GestureMultiPress) ConnectStopped(f func()) coreglib.SignalHandle
 //
 func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "GestureMultiPress").InvokeMethod("new_GestureMultiPress", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -204,13 +200,8 @@ func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
 func (gesture *GestureMultiPress) Area() (*gdk.Rectangle, bool) {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
 	_gret := girepository.MustFind("Gtk", "GestureMultiPress").InvokeMethod("get_area", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -219,10 +210,9 @@ func (gesture *GestureMultiPress) Area() (*gdk.Rectangle, bool) {
 
 	var _rect *gdk.Rectangle // out
 	var _ok bool             // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	if _cret != 0 {
+	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -243,16 +233,11 @@ func (gesture *GestureMultiPress) Area() (*gdk.Rectangle, bool) {
 //
 func (gesture *GestureMultiPress) SetArea(rect *gdk.Rectangle) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 	if rect != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "GestureMultiPress").InvokeMethod("set_area", _args[:], nil)
 

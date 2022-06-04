@@ -70,12 +70,8 @@ func marshalTCPConnection(p uintptr) (interface{}, error) {
 //
 func (connection *TCPConnection) GracefulDisconnect() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
 	_gret := girepository.MustFind("Gio", "TcpConnection").InvokeMethod("get_graceful_disconnect", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -84,7 +80,7 @@ func (connection *TCPConnection) GracefulDisconnect() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -108,16 +104,11 @@ func (connection *TCPConnection) GracefulDisconnect() bool {
 //
 func (connection *TCPConnection) SetGracefulDisconnect(gracefulDisconnect bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	if gracefulDisconnect {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gio", "TcpConnection").InvokeMethod("set_graceful_disconnect", _args[:], nil)
 

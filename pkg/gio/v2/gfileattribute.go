@@ -34,7 +34,7 @@ type FileAttributeInfo struct {
 
 // fileAttributeInfo is the struct that's finalized.
 type fileAttributeInfo struct {
-	native *C.GFileAttributeInfo
+	native unsafe.Pointer
 }
 
 // FileAttributeInfoList acts as a lightweight registry for possible valid file
@@ -47,18 +47,16 @@ type FileAttributeInfoList struct {
 
 // fileAttributeInfoList is the struct that's finalized.
 type fileAttributeInfoList struct {
-	native *C.GFileAttributeInfoList
+	native unsafe.Pointer
 }
 
 func marshalFileAttributeInfoList(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &FileAttributeInfoList{&fileAttributeInfoList{(*C.GFileAttributeInfoList)(b)}}, nil
+	return &FileAttributeInfoList{&fileAttributeInfoList{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewFileAttributeInfoList constructs a struct FileAttributeInfoList.
 func NewFileAttributeInfoList() *FileAttributeInfoList {
-	var _cret *C.void // in
-
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _fileAttributeInfoList *FileAttributeInfoList // out
@@ -76,15 +74,19 @@ func NewFileAttributeInfoList() *FileAttributeInfoList {
 
 // Infos: array of AttributeInfos.
 func (f *FileAttributeInfoList) Infos() *FileAttributeInfo {
+	offset := girepository.MustFind("Gio", "FileAttributeInfoList").StructFieldOffset("infos")
+	valptr := unsafe.Add(unsafe.Pointer(f), offset)
 	var v *FileAttributeInfo // out
-	v = (*FileAttributeInfo)(gextras.NewStructNative(unsafe.Pointer(f.native.infos)))
+	v = (*FileAttributeInfo)(gextras.NewStructNative(unsafe.Pointer(valptr)))
 	return v
 }
 
 // NInfos: number of values in the array.
 func (f *FileAttributeInfoList) NInfos() int32 {
+	offset := girepository.MustFind("Gio", "FileAttributeInfoList").StructFieldOffset("n_infos")
+	valptr := unsafe.Add(unsafe.Pointer(f), offset)
 	var v int32 // out
-	v = int32(f.native.n_infos)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
@@ -96,12 +98,8 @@ func (f *FileAttributeInfoList) NInfos() int32 {
 //
 func (list *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -132,16 +130,10 @@ func (list *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 //
 func (list *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

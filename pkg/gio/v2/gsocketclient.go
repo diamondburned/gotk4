@@ -79,8 +79,6 @@ func marshalSocketClient(p uintptr) (interface{}, error) {
 //    - socketClient: Client. Free the returned object with g_object_unref().
 //
 func NewSocketClient() *SocketClient {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("new_SocketClient", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -115,15 +113,10 @@ func NewSocketClient() *SocketClient {
 //
 func (client *SocketClient) AddApplicationProxy(protocol string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(protocol)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(protocol)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gio", "SocketClient").InvokeMethod("add_application_proxy", _args[:], nil)
 
@@ -162,23 +155,14 @@ func (client *SocketClient) AddApplicationProxy(protocol string) {
 //
 func (client *SocketClient) ConnectSocketClient(ctx context.Context, connectable SocketConnectabler) (*SocketConnection, error) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg2 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
 
 	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -191,7 +175,7 @@ func (client *SocketClient) ConnectSocketClient(ctx context.Context, connectable
 	var _goerr error                        // out
 
 	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -219,28 +203,18 @@ func (client *SocketClient) ConnectSocketClient(ctx context.Context, connectable
 //
 func (client *SocketClient) ConnectAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback) {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg2 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg3 C.gpointer // out
-	var _arg4 C.gpointer
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
 	if callback != nil {
-		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+		*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gpointer)(unsafe.Pointer(&_args[3])) = _arg3
 
 	girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect_async", _args[:], nil)
 
@@ -263,16 +237,9 @@ func (client *SocketClient) ConnectAsync(ctx context.Context, connectable Socket
 //
 func (client *SocketClient) ConnectFinish(result AsyncResulter) (*SocketConnection, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
 	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect_finish", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -284,7 +251,7 @@ func (client *SocketClient) ConnectFinish(result AsyncResulter) (*SocketConnecti
 	var _goerr error                        // out
 
 	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -333,27 +300,16 @@ func (client *SocketClient) ConnectFinish(result AsyncResulter) (*SocketConnecti
 //
 func (client *SocketClient) ConnectToHost(ctx context.Context, hostAndPort string, defaultPort uint16) (*SocketConnection, error) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg3 *C.void   // out
-	var _arg1 *C.void   // out
-	var _arg2 C.guint16 // out
-	var _cret *C.void   // in
-	var _cerr *C.void   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(hostAndPort)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint16(defaultPort)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.guint16)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(hostAndPort)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(*C.guint16)(unsafe.Pointer(&_args[2])) = C.guint16(defaultPort)
 
 	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect_to_host", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -367,7 +323,7 @@ func (client *SocketClient) ConnectToHost(ctx context.Context, hostAndPort strin
 	var _goerr error                        // out
 
 	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -389,32 +345,20 @@ func (client *SocketClient) ConnectToHost(ctx context.Context, hostAndPort strin
 //
 func (client *SocketClient) ConnectToHostAsync(ctx context.Context, hostAndPort string, defaultPort uint16, callback AsyncReadyCallback) {
 	var _args [6]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg3 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.guint16  // out
-	var _arg4 C.gpointer // out
-	var _arg5 C.gpointer
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(hostAndPort)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint16(defaultPort)
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(hostAndPort)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(*C.guint16)(unsafe.Pointer(&_args[2])) = C.guint16(defaultPort)
 	if callback != nil {
-		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[5] = C.gpointer(gbox.AssignOnce(callback))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.guint16)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.gpointer)(unsafe.Pointer(&_args[4])) = _arg4
 
 	girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect_to_host_async", _args[:], nil)
 
@@ -438,16 +382,9 @@ func (client *SocketClient) ConnectToHostAsync(ctx context.Context, hostAndPort 
 //
 func (client *SocketClient) ConnectToHostFinish(result AsyncResulter) (*SocketConnection, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
 	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect_to_host_finish", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -459,7 +396,7 @@ func (client *SocketClient) ConnectToHostFinish(result AsyncResulter) (*SocketCo
 	var _goerr error                        // out
 
 	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -492,28 +429,17 @@ func (client *SocketClient) ConnectToHostFinish(result AsyncResulter) (*SocketCo
 //
 func (client *SocketClient) ConnectToService(ctx context.Context, domain, service string) (*SocketConnection, error) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg3 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(domain)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.void)(unsafe.Pointer(C.CString(service)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(domain)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(service)))
+	defer C.free(unsafe.Pointer(_args[2]))
 
 	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect_to_service", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -527,7 +453,7 @@ func (client *SocketClient) ConnectToService(ctx context.Context, domain, servic
 	var _goerr error                        // out
 
 	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -546,33 +472,21 @@ func (client *SocketClient) ConnectToService(ctx context.Context, domain, servic
 //
 func (client *SocketClient) ConnectToServiceAsync(ctx context.Context, domain, service string, callback AsyncReadyCallback) {
 	var _args [6]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg3 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 *C.void    // out
-	var _arg4 C.gpointer // out
-	var _arg5 C.gpointer
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(domain)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.void)(unsafe.Pointer(C.CString(service)))
-	defer C.free(unsafe.Pointer(_arg2))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(domain)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(service)))
+	defer C.free(unsafe.Pointer(_args[2]))
 	if callback != nil {
-		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[5] = C.gpointer(gbox.AssignOnce(callback))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.gpointer)(unsafe.Pointer(&_args[4])) = _arg4
 
 	girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect_to_service_async", _args[:], nil)
 
@@ -596,16 +510,9 @@ func (client *SocketClient) ConnectToServiceAsync(ctx context.Context, domain, s
 //
 func (client *SocketClient) ConnectToServiceFinish(result AsyncResulter) (*SocketConnection, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
 	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect_to_service_finish", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -617,7 +524,7 @@ func (client *SocketClient) ConnectToServiceFinish(result AsyncResulter) (*Socke
 	var _goerr error                        // out
 
 	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -656,27 +563,16 @@ func (client *SocketClient) ConnectToServiceFinish(result AsyncResulter) (*Socke
 //
 func (client *SocketClient) ConnectToURI(ctx context.Context, uri string, defaultPort uint16) (*SocketConnection, error) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg3 *C.void   // out
-	var _arg1 *C.void   // out
-	var _arg2 C.guint16 // out
-	var _cret *C.void   // in
-	var _cerr *C.void   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint16(defaultPort)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.guint16)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(*C.guint16)(unsafe.Pointer(&_args[2])) = C.guint16(defaultPort)
 
 	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect_to_uri", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -690,7 +586,7 @@ func (client *SocketClient) ConnectToURI(ctx context.Context, uri string, defaul
 	var _goerr error                        // out
 
 	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -712,32 +608,20 @@ func (client *SocketClient) ConnectToURI(ctx context.Context, uri string, defaul
 //
 func (client *SocketClient) ConnectToURIAsync(ctx context.Context, uri string, defaultPort uint16, callback AsyncReadyCallback) {
 	var _args [6]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg3 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.guint16  // out
-	var _arg4 C.gpointer // out
-	var _arg5 C.gpointer
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint16(defaultPort)
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(*C.guint16)(unsafe.Pointer(&_args[2])) = C.guint16(defaultPort)
 	if callback != nil {
-		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[5] = C.gpointer(gbox.AssignOnce(callback))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.guint16)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.gpointer)(unsafe.Pointer(&_args[4])) = _arg4
 
 	girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect_to_uri_async", _args[:], nil)
 
@@ -761,16 +645,9 @@ func (client *SocketClient) ConnectToURIAsync(ctx context.Context, uri string, d
 //
 func (client *SocketClient) ConnectToURIFinish(result AsyncResulter) (*SocketConnection, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
 	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect_to_uri_finish", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -782,7 +659,7 @@ func (client *SocketClient) ConnectToURIFinish(result AsyncResulter) (*SocketCon
 	var _goerr error                        // out
 
 	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -798,12 +675,8 @@ func (client *SocketClient) ConnectToURIFinish(result AsyncResulter) (*SocketCon
 //
 func (client *SocketClient) EnableProxy() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 
 	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("get_enable_proxy", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -812,7 +685,7 @@ func (client *SocketClient) EnableProxy() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -829,12 +702,8 @@ func (client *SocketClient) EnableProxy() bool {
 //
 func (client *SocketClient) LocalAddress() SocketAddresser {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 
 	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("get_local_address", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -843,7 +712,7 @@ func (client *SocketClient) LocalAddress() SocketAddresser {
 
 	var _socketAddress SocketAddresser // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -873,12 +742,8 @@ func (client *SocketClient) LocalAddress() SocketAddresser {
 //
 func (client *SocketClient) ProxyResolver() *ProxyResolver {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 
 	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("get_proxy_resolver", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -902,12 +767,8 @@ func (client *SocketClient) ProxyResolver() *ProxyResolver {
 //
 func (client *SocketClient) Timeout() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 
 	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("get_timeout", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -916,7 +777,7 @@ func (client *SocketClient) Timeout() uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -930,12 +791,8 @@ func (client *SocketClient) Timeout() uint32 {
 //
 func (client *SocketClient) TLS() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 
 	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("get_tls", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -944,7 +801,7 @@ func (client *SocketClient) TLS() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -964,16 +821,11 @@ func (client *SocketClient) TLS() bool {
 //
 func (client *SocketClient) SetEnableProxy(enable bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	if enable {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gio", "SocketClient").InvokeMethod("set_enable_proxy", _args[:], nil)
 
@@ -994,16 +846,11 @@ func (client *SocketClient) SetEnableProxy(enable bool) {
 //
 func (client *SocketClient) SetLocalAddress(address SocketAddresser) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	if address != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gio", "SocketClient").InvokeMethod("set_local_address", _args[:], nil)
 
@@ -1025,16 +872,11 @@ func (client *SocketClient) SetLocalAddress(address SocketAddresser) {
 //
 func (client *SocketClient) SetProxyResolver(proxyResolver ProxyResolverer) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	if proxyResolver != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxyResolver).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxyResolver).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gio", "SocketClient").InvokeMethod("set_proxy_resolver", _args[:], nil)
 
@@ -1055,14 +897,9 @@ func (client *SocketClient) SetProxyResolver(proxyResolver ProxyResolverer) {
 //
 func (client *SocketClient) SetTimeout(timeout uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
-	_arg1 = C.guint(timeout)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(timeout)
 
 	girepository.MustFind("Gio", "SocketClient").InvokeMethod("set_timeout", _args[:], nil)
 
@@ -1093,16 +930,11 @@ func (client *SocketClient) SetTimeout(timeout uint32) {
 //
 func (client *SocketClient) SetTLS(tls bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	if tls {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gio", "SocketClient").InvokeMethod("set_tls", _args[:], nil)
 

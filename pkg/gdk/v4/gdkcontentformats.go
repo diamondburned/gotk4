@@ -41,13 +41,9 @@ func init() {
 //
 func InternMIMEType(str string) string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gdk", "intern_mime_type").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -71,18 +67,16 @@ type ContentFormatsBuilder struct {
 
 // contentFormatsBuilder is the struct that's finalized.
 type contentFormatsBuilder struct {
-	native *C.GdkContentFormatsBuilder
+	native unsafe.Pointer
 }
 
 func marshalContentFormatsBuilder(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &ContentFormatsBuilder{&contentFormatsBuilder{(*C.GdkContentFormatsBuilder)(b)}}, nil
+	return &ContentFormatsBuilder{&contentFormatsBuilder{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewContentFormatsBuilder constructs a struct ContentFormatsBuilder.
 func NewContentFormatsBuilder() *ContentFormatsBuilder {
-	var _cret *C.void // in
-
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _contentFormatsBuilder *ContentFormatsBuilder // out
@@ -107,14 +101,9 @@ func NewContentFormatsBuilder() *ContentFormatsBuilder {
 //
 func (builder *ContentFormatsBuilder) AddFormats(formats *ContentFormats) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(formats)
@@ -128,15 +117,10 @@ func (builder *ContentFormatsBuilder) AddFormats(formats *ContentFormats) {
 //
 func (builder *ContentFormatsBuilder) AddMIMEType(mimeType string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(mimeType)
@@ -157,12 +141,8 @@ func (builder *ContentFormatsBuilder) AddMIMEType(mimeType string) {
 //
 func (builder *ContentFormatsBuilder) ToFormats() *ContentFormats {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

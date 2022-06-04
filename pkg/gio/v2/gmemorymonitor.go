@@ -133,8 +133,6 @@ func BaseMemoryMonitor(obj MemoryMonitorrer) *MemoryMonitor {
 //    - memoryMonitor: new reference to the default Monitor.
 //
 func MemoryMonitorDupDefault() *MemoryMonitor {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gio", "dup_default").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

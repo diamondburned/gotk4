@@ -289,8 +289,6 @@ func (about *AboutDialog) ConnectActivateLink(f func(uri string) (ok bool)) core
 //    - aboutDialog: newly created AboutDialog.
 //
 func NewAboutDialog() *AboutDialog {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("new_AboutDialog", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -310,30 +308,23 @@ func NewAboutDialog() *AboutDialog {
 //
 func (about *AboutDialog) AddCreditSection(sectionName string, people []string) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 *C.void  // out
-	var _arg2 **C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(sectionName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(sectionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 	{
-		_arg2 = (**C.void)(C.calloc(C.size_t((len(people) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg2))
+		*(***C.void)(unsafe.Pointer(&_args[2])) = (**C.void)(C.calloc(C.size_t((len(people) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_args[2]))
 		{
-			out := unsafe.Slice(_arg2, len(people)+1)
+			out := unsafe.Slice(_args[2], len(people)+1)
 			var zero *C.void
 			out[len(people)] = zero
 			for i := range people {
-				out[i] = (*C.void)(unsafe.Pointer(C.CString(people[i])))
+				*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(people[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(***C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("add_credit_section", _args[:], nil)
 
@@ -352,12 +343,8 @@ func (about *AboutDialog) AddCreditSection(sectionName string, people []string) 
 //
 func (about *AboutDialog) Artists() []string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret **C.gchar // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
 	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_artists", _args[:], nil)
 	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
@@ -393,12 +380,8 @@ func (about *AboutDialog) Artists() []string {
 //
 func (about *AboutDialog) Authors() []string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret **C.gchar // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
 	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_authors", _args[:], nil)
 	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
@@ -433,12 +416,8 @@ func (about *AboutDialog) Authors() []string {
 //
 func (about *AboutDialog) Comments() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
 	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_comments", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -461,12 +440,8 @@ func (about *AboutDialog) Comments() string {
 //
 func (about *AboutDialog) Copyright() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
 	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_copyright", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -490,12 +465,8 @@ func (about *AboutDialog) Copyright() string {
 //
 func (about *AboutDialog) Documenters() []string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret **C.gchar // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
 	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_documenters", _args[:], nil)
 	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
@@ -530,12 +501,8 @@ func (about *AboutDialog) Documenters() []string {
 //
 func (about *AboutDialog) License() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
 	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_license", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -558,12 +525,8 @@ func (about *AboutDialog) License() string {
 //
 func (about *AboutDialog) Logo() *gdkpixbuf.Pixbuf {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
 	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_logo", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -596,12 +559,8 @@ func (about *AboutDialog) Logo() *gdkpixbuf.Pixbuf {
 //
 func (about *AboutDialog) LogoIconName() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
 	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_logo_icon_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -624,12 +583,8 @@ func (about *AboutDialog) LogoIconName() string {
 //
 func (about *AboutDialog) ProgramName() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
 	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_program_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -653,12 +608,8 @@ func (about *AboutDialog) ProgramName() string {
 //
 func (about *AboutDialog) TranslatorCredits() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
 	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_translator_credits", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -681,12 +632,8 @@ func (about *AboutDialog) TranslatorCredits() string {
 //
 func (about *AboutDialog) Version() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
 	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_version", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -709,12 +656,8 @@ func (about *AboutDialog) Version() string {
 //
 func (about *AboutDialog) Website() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
 	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_website", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -737,12 +680,8 @@ func (about *AboutDialog) Website() string {
 //
 func (about *AboutDialog) WebsiteLabel() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
 	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_website_label", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -765,12 +704,8 @@ func (about *AboutDialog) WebsiteLabel() string {
 //
 func (about *AboutDialog) WrapLicense() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
 	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_wrap_license", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -779,7 +714,7 @@ func (about *AboutDialog) WrapLicense() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -795,26 +730,21 @@ func (about *AboutDialog) WrapLicense() bool {
 //
 func (about *AboutDialog) SetArtists(artists []string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 **C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	{
-		_arg1 = (**C.void)(C.calloc(C.size_t((len(artists) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(***C.void)(unsafe.Pointer(&_args[1])) = (**C.void)(C.calloc(C.size_t((len(artists) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_args[1]))
 		{
-			out := unsafe.Slice(_arg1, len(artists)+1)
+			out := unsafe.Slice(_args[1], len(artists)+1)
 			var zero *C.void
 			out[len(artists)] = zero
 			for i := range artists {
-				out[i] = (*C.void)(unsafe.Pointer(C.CString(artists[i])))
+				*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(artists[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(***C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_artists", _args[:], nil)
 
@@ -831,26 +761,21 @@ func (about *AboutDialog) SetArtists(artists []string) {
 //
 func (about *AboutDialog) SetAuthors(authors []string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 **C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	{
-		_arg1 = (**C.void)(C.calloc(C.size_t((len(authors) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(***C.void)(unsafe.Pointer(&_args[1])) = (**C.void)(C.calloc(C.size_t((len(authors) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_args[1]))
 		{
-			out := unsafe.Slice(_arg1, len(authors)+1)
+			out := unsafe.Slice(_args[1], len(authors)+1)
 			var zero *C.void
 			out[len(authors)] = zero
 			for i := range authors {
-				out[i] = (*C.void)(unsafe.Pointer(C.CString(authors[i])))
+				*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(authors[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(***C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_authors", _args[:], nil)
 
@@ -867,17 +792,12 @@ func (about *AboutDialog) SetAuthors(authors []string) {
 //
 func (about *AboutDialog) SetComments(comments string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	if comments != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(comments)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(comments)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_comments", _args[:], nil)
 
@@ -894,17 +814,12 @@ func (about *AboutDialog) SetComments(comments string) {
 //
 func (about *AboutDialog) SetCopyright(copyright string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	if copyright != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(copyright)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(copyright)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_copyright", _args[:], nil)
 
@@ -921,26 +836,21 @@ func (about *AboutDialog) SetCopyright(copyright string) {
 //
 func (about *AboutDialog) SetDocumenters(documenters []string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 **C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	{
-		_arg1 = (**C.void)(C.calloc(C.size_t((len(documenters) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(***C.void)(unsafe.Pointer(&_args[1])) = (**C.void)(C.calloc(C.size_t((len(documenters) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_args[1]))
 		{
-			out := unsafe.Slice(_arg1, len(documenters)+1)
+			out := unsafe.Slice(_args[1], len(documenters)+1)
 			var zero *C.void
 			out[len(documenters)] = zero
 			for i := range documenters {
-				out[i] = (*C.void)(unsafe.Pointer(C.CString(documenters[i])))
+				*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(documenters[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(***C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_documenters", _args[:], nil)
 
@@ -957,17 +867,12 @@ func (about *AboutDialog) SetDocumenters(documenters []string) {
 //
 func (about *AboutDialog) SetLicense(license string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	if license != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(license)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(license)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_license", _args[:], nil)
 
@@ -985,16 +890,11 @@ func (about *AboutDialog) SetLicense(license string) {
 //
 func (about *AboutDialog) SetLogo(logo *gdkpixbuf.Pixbuf) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	if logo != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(logo).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(logo).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_logo", _args[:], nil)
 
@@ -1012,17 +912,12 @@ func (about *AboutDialog) SetLogo(logo *gdkpixbuf.Pixbuf) {
 //
 func (about *AboutDialog) SetLogoIconName(iconName string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	if iconName != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(iconName)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_logo_icon_name", _args[:], nil)
 
@@ -1039,15 +934,10 @@ func (about *AboutDialog) SetLogoIconName(iconName string) {
 //
 func (about *AboutDialog) SetProgramName(name string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_program_name", _args[:], nil)
 
@@ -1077,17 +967,12 @@ func (about *AboutDialog) SetProgramName(name string) {
 //
 func (about *AboutDialog) SetTranslatorCredits(translatorCredits string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	if translatorCredits != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(translatorCredits)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(translatorCredits)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_translator_credits", _args[:], nil)
 
@@ -1103,17 +988,12 @@ func (about *AboutDialog) SetTranslatorCredits(translatorCredits string) {
 //
 func (about *AboutDialog) SetVersion(version string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	if version != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(version)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(version)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_version", _args[:], nil)
 
@@ -1129,17 +1009,12 @@ func (about *AboutDialog) SetVersion(version string) {
 //
 func (about *AboutDialog) SetWebsite(website string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	if website != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(website)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(website)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_website", _args[:], nil)
 
@@ -1155,15 +1030,10 @@ func (about *AboutDialog) SetWebsite(website string) {
 //
 func (about *AboutDialog) SetWebsiteLabel(websiteLabel string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(websiteLabel)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(websiteLabel)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_website_label", _args[:], nil)
 
@@ -1180,16 +1050,11 @@ func (about *AboutDialog) SetWebsiteLabel(websiteLabel string) {
 //
 func (about *AboutDialog) SetWrapLicense(wrapLicense bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	if wrapLicense {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_wrap_license", _args[:], nil)
 

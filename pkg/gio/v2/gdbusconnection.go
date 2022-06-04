@@ -5,7 +5,6 @@ package gio
 import (
 	"context"
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -452,13 +451,8 @@ func _gotk4_gio2_DBusSubtreeIntrospectFunc(arg1 *C.void, arg2 *C.void, arg3 *C.v
 //
 func BusGetFinish(res AsyncResulter) (*DBusConnection, error) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
 	_gret := girepository.MustFind("Gio", "bus_get_finish").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -469,7 +463,7 @@ func BusGetFinish(res AsyncResulter) (*DBusConnection, error) {
 	var _goerr error                    // out
 
 	_dBusConnection = wrapDBusConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -489,13 +483,8 @@ func BusGetFinish(res AsyncResulter) (*DBusConnection, error) {
 //
 func NewDBusConnectionFinish(res AsyncResulter) (*DBusConnection, error) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("new_DBusConnection_finish", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -506,7 +495,7 @@ func NewDBusConnectionFinish(res AsyncResulter) (*DBusConnection, error) {
 	var _goerr error                    // out
 
 	_dBusConnection = wrapDBusConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -526,13 +515,8 @@ func NewDBusConnectionFinish(res AsyncResulter) (*DBusConnection, error) {
 //
 func NewDBusConnectionForAddressFinish(res AsyncResulter) (*DBusConnection, error) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("new_DBusConnection_for_address_finish", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -543,7 +527,7 @@ func NewDBusConnectionForAddressFinish(res AsyncResulter) (*DBusConnection, erro
 	var _goerr error                    // out
 
 	_dBusConnection = wrapDBusConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -587,19 +571,11 @@ func NewDBusConnectionForAddressFinish(res AsyncResulter) (*DBusConnection, erro
 //
 func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunction) uint32 {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gio2_DBusMessageFilterFunction)
-	_arg2 = C.gpointer(gbox.Assign(filterFunction))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gio2_DBusMessageFilterFunction)
+	_args[2] = C.gpointer(gbox.Assign(filterFunction))
+	_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("add_filter", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -608,9 +584,8 @@ func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunc
 	runtime.KeepAlive(filterFunction)
 
 	var _guint uint32 // out
-	_out2 = *(*C.guint)(unsafe.Pointer(&_outs[2]))
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -628,16 +603,9 @@ func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunc
 //
 func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("call_finish", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -655,7 +623,7 @@ func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, 
 			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -692,25 +660,17 @@ func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, 
 //
 func (connection *DBusConnection) Close(ctx context.Context, callback AsyncReadyCallback) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.gpointer // out
-	var _arg3 C.gpointer
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 	if callback != nil {
-		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+		*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[3] = C.gpointer(gbox.AssignOnce(callback))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("close", _args[:], nil)
 
@@ -727,15 +687,9 @@ func (connection *DBusConnection) Close(ctx context.Context, callback AsyncReady
 //
 func (connection *DBusConnection) CloseFinish(res AsyncResulter) error {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
 	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("close_finish", _args[:], nil)
 
@@ -744,7 +698,7 @@ func (connection *DBusConnection) CloseFinish(res AsyncResulter) error {
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -761,19 +715,13 @@ func (connection *DBusConnection) CloseFinish(res AsyncResulter) error {
 //
 func (connection *DBusConnection) CloseSync(ctx context.Context) error {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("close_sync", _args[:], nil)
 
@@ -782,7 +730,7 @@ func (connection *DBusConnection) CloseSync(ctx context.Context) error {
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -809,35 +757,21 @@ func (connection *DBusConnection) CloseSync(ctx context.Context) error {
 //
 func (connection *DBusConnection) EmitSignal(destinationBusName, objectPath, interfaceName, signalName string, parameters *glib.Variant) error {
 	var _args [6]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 *C.void // out
-	var _arg4 *C.void // out
-	var _arg5 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	if destinationBusName != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(destinationBusName)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(destinationBusName)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-	_arg2 = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.void)(unsafe.Pointer(C.CString(interfaceName)))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.void)(unsafe.Pointer(C.CString(signalName)))
-	defer C.free(unsafe.Pointer(_arg4))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(C.CString(interfaceName)))
+	defer C.free(unsafe.Pointer(_args[3]))
+	*(**C.void)(unsafe.Pointer(&_args[4])) = (*C.void)(unsafe.Pointer(C.CString(signalName)))
+	defer C.free(unsafe.Pointer(_args[4]))
 	if parameters != nil {
-		_arg5 = (*C.void)(gextras.StructNative(unsafe.Pointer(parameters)))
+		*(**C.void)(unsafe.Pointer(&_args[5])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parameters)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
-	*(**C.void)(unsafe.Pointer(&_args[4])) = _arg4
-	*(**C.void)(unsafe.Pointer(&_args[5])) = _arg5
 
 	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("emit_signal", _args[:], nil)
 
@@ -850,7 +784,7 @@ func (connection *DBusConnection) EmitSignal(destinationBusName, objectPath, int
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -879,25 +813,17 @@ func (connection *DBusConnection) EmitSignal(destinationBusName, objectPath, int
 //
 func (connection *DBusConnection) Flush(ctx context.Context, callback AsyncReadyCallback) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.gpointer // out
-	var _arg3 C.gpointer
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 	if callback != nil {
-		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+		*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[3] = C.gpointer(gbox.AssignOnce(callback))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("flush", _args[:], nil)
 
@@ -914,15 +840,9 @@ func (connection *DBusConnection) Flush(ctx context.Context, callback AsyncReady
 //
 func (connection *DBusConnection) FlushFinish(res AsyncResulter) error {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
 	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("flush_finish", _args[:], nil)
 
@@ -931,7 +851,7 @@ func (connection *DBusConnection) FlushFinish(res AsyncResulter) error {
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -948,19 +868,13 @@ func (connection *DBusConnection) FlushFinish(res AsyncResulter) error {
 //
 func (connection *DBusConnection) FlushSync(ctx context.Context) error {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("flush_sync", _args[:], nil)
 
@@ -969,7 +883,7 @@ func (connection *DBusConnection) FlushSync(ctx context.Context) error {
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -986,12 +900,8 @@ func (connection *DBusConnection) FlushSync(ctx context.Context) error {
 //
 func (connection *DBusConnection) ExitOnClose() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("get_exit_on_close", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1000,7 +910,7 @@ func (connection *DBusConnection) ExitOnClose() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1016,12 +926,8 @@ func (connection *DBusConnection) ExitOnClose() bool {
 //
 func (connection *DBusConnection) GUID() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("get_guid", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1048,12 +954,8 @@ func (connection *DBusConnection) GUID() string {
 //
 func (connection *DBusConnection) LastSerial() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.guint32 // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("get_last_serial", _args[:], nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
@@ -1062,7 +964,7 @@ func (connection *DBusConnection) LastSerial() uint32 {
 
 	var _guint32 uint32 // out
 
-	_guint32 = uint32(_cret)
+	_guint32 = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
 
 	return _guint32
 }
@@ -1083,12 +985,8 @@ func (connection *DBusConnection) LastSerial() uint32 {
 //
 func (connection *DBusConnection) PeerCredentials() *Credentials {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("get_peer_credentials", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1097,7 +995,7 @@ func (connection *DBusConnection) PeerCredentials() *Credentials {
 
 	var _credentials *Credentials // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_credentials = wrapCredentials(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -1115,12 +1013,8 @@ func (connection *DBusConnection) PeerCredentials() *Credentials {
 //
 func (connection *DBusConnection) Stream() IOStreamer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("get_stream", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1161,12 +1055,8 @@ func (connection *DBusConnection) Stream() IOStreamer {
 //
 func (connection *DBusConnection) UniqueName() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("get_unique_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1175,7 +1065,7 @@ func (connection *DBusConnection) UniqueName() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -1190,12 +1080,8 @@ func (connection *DBusConnection) UniqueName() string {
 //
 func (connection *DBusConnection) IsClosed() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("is_closed", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1204,7 +1090,7 @@ func (connection *DBusConnection) IsClosed() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1229,29 +1115,14 @@ func (connection *DBusConnection) IsClosed() bool {
 //
 func (connection *DBusConnection) RegisterObject(objectPath string, interfaceInfo *DBusInterfaceInfo, methodCallClosure, getPropertyClosure, setPropertyClosure coreglib.AnyClosure) (uint32, error) {
 	var _args [6]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 *C.void // out
-	var _arg4 *C.void // out
-	var _arg5 *C.void // out
-	var _cret C.guint // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(interfaceInfo)))
-	_arg3 = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(connection), methodCallClosure))
-	_arg4 = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(connection), getPropertyClosure))
-	_arg5 = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(connection), setPropertyClosure))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
-	*(**C.void)(unsafe.Pointer(&_args[4])) = _arg4
-	*(**C.void)(unsafe.Pointer(&_args[5])) = _arg5
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(interfaceInfo)))
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(connection), methodCallClosure))
+	*(**C.void)(unsafe.Pointer(&_args[4])) = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(connection), getPropertyClosure))
+	*(**C.void)(unsafe.Pointer(&_args[5])) = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(connection), setPropertyClosure))
 
 	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("register_object_with_closures", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1266,8 +1137,8 @@ func (connection *DBusConnection) RegisterObject(objectPath string, interfaceInf
 	var _guint uint32 // out
 	var _goerr error  // out
 
-	_guint = uint32(_cret)
-	if _cerr != nil {
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -1289,14 +1160,9 @@ func (connection *DBusConnection) RegisterObject(objectPath string, interfaceInf
 //
 func (connection *DBusConnection) RemoveFilter(filterId uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	_arg1 = C.guint(filterId)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(filterId)
 
 	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("remove_filter", _args[:], nil)
 
@@ -1327,16 +1193,9 @@ func (connection *DBusConnection) RemoveFilter(filterId uint32) {
 //
 func (connection *DBusConnection) SendMessageWithReplyFinish(res AsyncResulter) (*DBusMessage, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("send_message_with_reply_finish", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1348,7 +1207,7 @@ func (connection *DBusConnection) SendMessageWithReplyFinish(res AsyncResulter) 
 	var _goerr error              // out
 
 	_dBusMessage = wrapDBusMessage(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -1372,16 +1231,11 @@ func (connection *DBusConnection) SendMessageWithReplyFinish(res AsyncResulter) 
 //
 func (connection *DBusConnection) SetExitOnClose(exitOnClose bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	if exitOnClose {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("set_exit_on_close", _args[:], nil)
 
@@ -1405,14 +1259,9 @@ func (connection *DBusConnection) SetExitOnClose(exitOnClose bool) {
 //
 func (connection *DBusConnection) SignalUnsubscribe(subscriptionId uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	_arg1 = C.guint(subscriptionId)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(subscriptionId)
 
 	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("signal_unsubscribe", _args[:], nil)
 
@@ -1426,11 +1275,8 @@ func (connection *DBusConnection) SignalUnsubscribe(subscriptionId uint32) {
 // flag or if the method has already been called.
 func (connection *DBusConnection) StartMessageProcessing() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
 	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("start_message_processing", _args[:], nil)
 
@@ -1450,15 +1296,9 @@ func (connection *DBusConnection) StartMessageProcessing() {
 //
 func (connection *DBusConnection) UnregisterObject(registrationId uint32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.guint    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	_arg1 = C.guint(registrationId)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(registrationId)
 
 	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("unregister_object", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1468,7 +1308,7 @@ func (connection *DBusConnection) UnregisterObject(registrationId uint32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1488,15 +1328,9 @@ func (connection *DBusConnection) UnregisterObject(registrationId uint32) bool {
 //
 func (connection *DBusConnection) UnregisterSubtree(registrationId uint32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.guint    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	_arg1 = C.guint(registrationId)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(registrationId)
 
 	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("unregister_subtree", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1506,7 +1340,7 @@ func (connection *DBusConnection) UnregisterSubtree(registrationId uint32) bool 
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1558,7 +1392,7 @@ type DBusInterfaceVTable struct {
 
 // dBusInterfaceVTable is the struct that's finalized.
 type dBusInterfaceVTable struct {
-	native *C.GDBusInterfaceVTable
+	native unsafe.Pointer
 }
 
 // DBusSubtreeVTable: virtual table for handling subtrees registered with
@@ -1571,5 +1405,5 @@ type DBusSubtreeVTable struct {
 
 // dBusSubtreeVTable is the struct that's finalized.
 type dBusSubtreeVTable struct {
-	native *C.GDBusSubtreeVTable
+	native unsafe.Pointer
 }

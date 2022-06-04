@@ -162,6 +162,23 @@ func (i *Info) String() string {
 	return fmt.Sprintf("%s %s", C.GoString(infoType), i.keys.String())
 }
 
+// StructFieldOffset gets the offset of the field for the record that is i.
+func (i *Info) StructFieldOffset(name string) uintptr {
+	k := i.keys
+	k[2] = name
+
+	field := findInfo(k, func(ckey infoCKey) unsafe.Pointer {
+		return unsafe.Pointer(C.g_struct_info_find_field((*C.GIStructInfo)(i.info), ckey[2]))
+	})
+
+	offset := C.g_field_info_get_offset((*C.GIFieldInfo)(field.info))
+	if offset < 0 {
+		panic("ERROR: girepository: field_info_get_offset returned negative")
+	}
+
+	return uintptr(offset)
+}
+
 // InvokeFunction invokes this BaseInfo as a FunctionInfo.
 func (i *Info) InvokeFunction(in, out []Argument) Argument {
 	return invokeFunc(i, in, out)

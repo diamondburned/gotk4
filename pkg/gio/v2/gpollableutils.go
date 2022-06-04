@@ -35,12 +35,8 @@ import "C"
 //
 func NewPollableSource(pollableStream *coreglib.Object) *glib.Source {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(pollableStream.Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(pollableStream.Native()))
 
 	_gret := girepository.MustFind("Gio", "pollable_source_new").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -77,24 +73,16 @@ func NewPollableSource(pollableStream *coreglib.Object) *glib.Source {
 //
 func PollableSourceNewFull(ctx context.Context, pollableStream *coreglib.Object, childSource *glib.Source) *glib.Source {
 	var _args [3]girepository.Argument
-	var _arg2 *C.void    // out
-	var _arg0 C.gpointer // out
-	var _arg1 *C.void    // out
-	var _cret *C.void    // in
 
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg0 = C.gpointer(unsafe.Pointer(pollableStream.Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = C.gpointer(unsafe.Pointer(pollableStream.Native()))
 	if childSource != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(childSource)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(childSource)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gio", "pollable_source_new_full").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

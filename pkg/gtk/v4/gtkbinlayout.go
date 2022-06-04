@@ -70,8 +70,6 @@ func marshalBinLayout(p uintptr) (interface{}, error) {
 //    - binLayout: newly created GtkBinLayout.
 //
 func NewBinLayout() *BinLayout {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "BinLayout").InvokeMethod("new_BinLayout", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

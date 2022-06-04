@@ -304,8 +304,6 @@ func (toolbar *Toolbar) ConnectPopupContextMenu(f func(x, y, button int32) (ok b
 //    - toolbar: newly-created toolbar.
 //
 func NewToolbar() *Toolbar {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "Toolbar").InvokeMethod("new_Toolbar", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -333,18 +331,10 @@ func NewToolbar() *Toolbar {
 //
 func (toolbar *Toolbar) DropIndex(x, y int32) int32 {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _arg2 C.gint  // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
-	_arg1 = C.gint(x)
-	_arg2 = C.gint(y)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(x)
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(y)
 
 	_gret := girepository.MustFind("Gtk", "Toolbar").InvokeMethod("get_drop_index", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -355,7 +345,7 @@ func (toolbar *Toolbar) DropIndex(x, y int32) int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -373,15 +363,9 @@ func (toolbar *Toolbar) DropIndex(x, y int32) int32 {
 //
 func (toolbar *Toolbar) ItemIndex(item *ToolItem) int32 {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Toolbar").InvokeMethod("get_item_index", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -391,7 +375,7 @@ func (toolbar *Toolbar) ItemIndex(item *ToolItem) int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -404,12 +388,8 @@ func (toolbar *Toolbar) ItemIndex(item *ToolItem) int32 {
 //
 func (toolbar *Toolbar) NItems() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Toolbar").InvokeMethod("get_n_items", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -418,7 +398,7 @@ func (toolbar *Toolbar) NItems() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -437,15 +417,9 @@ func (toolbar *Toolbar) NItems() int32 {
 //
 func (toolbar *Toolbar) NthItem(n int32) *ToolItem {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
-	_arg1 = C.gint(n)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(n)
 
 	_gret := girepository.MustFind("Gtk", "Toolbar").InvokeMethod("get_nth_item", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -455,7 +429,7 @@ func (toolbar *Toolbar) NthItem(n int32) *ToolItem {
 
 	var _toolItem *ToolItem // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_toolItem = wrapToolItem(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -471,12 +445,8 @@ func (toolbar *Toolbar) NthItem(n int32) *ToolItem {
 //
 func (toolbar *Toolbar) ShowArrow() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Toolbar").InvokeMethod("get_show_arrow", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -485,7 +455,7 @@ func (toolbar *Toolbar) ShowArrow() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -503,17 +473,10 @@ func (toolbar *Toolbar) ShowArrow() bool {
 //
 func (toolbar *Toolbar) Insert(item *ToolItem, pos int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
-	_arg2 = C.gint(pos)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(pos)
 
 	girepository.MustFind("Gtk", "Toolbar").InvokeMethod("insert", _args[:], nil)
 
@@ -537,19 +500,12 @@ func (toolbar *Toolbar) Insert(item *ToolItem, pos int32) {
 //
 func (toolbar *Toolbar) SetDropHighlightItem(toolItem *ToolItem, index_ int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
 	if toolItem != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
 	}
-	_arg2 = C.gint(index_)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(index_)
 
 	girepository.MustFind("Gtk", "Toolbar").InvokeMethod("set_drop_highlight_item", _args[:], nil)
 
@@ -572,16 +528,11 @@ func (toolbar *Toolbar) SetDropHighlightItem(toolItem *ToolItem, index_ int32) {
 //
 func (toolbar *Toolbar) SetShowArrow(showArrow bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
 	if showArrow {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Toolbar").InvokeMethod("set_show_arrow", _args[:], nil)
 
@@ -593,11 +544,8 @@ func (toolbar *Toolbar) SetShowArrow(showArrow bool) {
 // so that user preferences will be used to determine the icon size.
 func (toolbar *Toolbar) UnsetIconSize() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
 
 	girepository.MustFind("Gtk", "Toolbar").InvokeMethod("unset_icon_size", _args[:], nil)
 
@@ -608,11 +556,8 @@ func (toolbar *Toolbar) UnsetIconSize() {
 // user preferences will be used to determine the toolbar style.
 func (toolbar *Toolbar) UnsetStyle() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
 
 	girepository.MustFind("Gtk", "Toolbar").InvokeMethod("unset_style", _args[:], nil)
 

@@ -83,12 +83,8 @@ func marshalRendererCellAccessible(p uintptr) (interface{}, error) {
 //
 func NewRendererCellAccessible(renderer CellRendererer) *RendererCellAccessible {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
 	_gret := girepository.MustFind("Gtk", "RendererCellAccessible").InvokeMethod("new_RendererCellAccessible", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

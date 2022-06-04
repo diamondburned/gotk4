@@ -7,12 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <pango/pango.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for pango-language.go.
@@ -36,12 +37,12 @@ type Language struct {
 
 // language is the struct that's finalized.
 type language struct {
-	native *C.PangoLanguage
+	native unsafe.Pointer
 }
 
 func marshalLanguage(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &Language{&language{(*C.PangoLanguage)(b)}}, nil
+	return &Language{&language{(unsafe.Pointer)(b)}}, nil
 }
 
 // SampleString: get a string that is representative of the characters needed to
@@ -68,14 +69,14 @@ func marshalLanguage(p uintptr) (interface{}, error) {
 //      freed.
 //
 func (language *Language) SampleString() string {
-	var _arg0 *C.PangoLanguage // out
-	var _cret *C.char          // in
+	var _args [1]girepository.Argument
 
 	if language != nil {
-		_arg0 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(language)))
 	}
 
-	_cret = C.pango_language_get_sample_string(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(language)
 
 	var _utf8 string // out
@@ -83,101 +84,6 @@ func (language *Language) SampleString() string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
-}
-
-// Scripts determines the scripts used to to write language.
-//
-// If nothing is known about the language tag language, or if language is NULL,
-// then NULL is returned. The list of scripts returned starts with the script
-// that the language uses most and continues to the one it uses least.
-//
-// The value num_script points at will be set to the number of scripts in the
-// returned array (or zero if NULL is returned).
-//
-// Most languages use only one script for writing, but there are some that use
-// two (Latin and Cyrillic for example), and a few use three (Japanese for
-// example). Applications should not make any assumptions on the maximum number
-// of scripts returned though, except that it is positive if the return value is
-// not NULL, and it is a small number.
-//
-// The pango.Language.IncludesScript() function uses this function internally.
-//
-// Note: while the return value is declared as PangoScript, the returned values
-// are from the GUnicodeScript enumeration, which may have more values. Callers
-// need to handle unknown values.
-//
-// The function returns the following values:
-//
-//    - scripts (optional): array of PangoScript values, with the number of
-//      entries in the array stored in num_scripts, or NULL if Pango does not
-//      have any information about this particular language tag (also the case if
-//      language is NULL). The returned array is owned by Pango and should not be
-//      modified or freed.
-//
-func (language *Language) Scripts() []Script {
-	var _arg0 *C.PangoLanguage // out
-	var _cret *C.PangoScript   // in
-	var _arg1 C.int            // in
-
-	if language != nil {
-		_arg0 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
-	}
-
-	_cret = C.pango_language_get_scripts(_arg0, &_arg1)
-	runtime.KeepAlive(language)
-
-	var _scripts []Script // out
-
-	if _cret != nil {
-		_scripts = make([]Script, _arg1)
-		copy(_scripts, unsafe.Slice((*Script)(unsafe.Pointer(_cret)), _arg1))
-	}
-
-	return _scripts
-}
-
-// IncludesScript determines if script is one of the scripts used to write
-// language. The returned value is conservative; if nothing is known about the
-// language tag language, TRUE will be returned, since, as far as Pango knows,
-// script might be used to write language.
-//
-// This routine is used in Pango's itemization process when determining if a
-// supplied language tag is relevant to a particular section of text. It
-// probably is not useful for applications in most circumstances.
-//
-// This function uses pango.Language.GetScripts() internally.
-//
-// The function takes the following parameters:
-//
-//    - script: PangoScript.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if script is one of the scripts used to write language or if
-//      nothing is known about language (including the case that language is
-//      NULL), FALSE otherwise.
-//
-func (language *Language) IncludesScript(script Script) bool {
-	var _arg0 *C.PangoLanguage // out
-	var _arg1 C.PangoScript    // out
-	var _cret C.gboolean       // in
-
-	if language != nil {
-		_arg0 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
-	}
-	_arg1 = C.PangoScript(script)
-
-	_cret = C.pango_language_includes_script(_arg0, _arg1)
-	runtime.KeepAlive(language)
-	runtime.KeepAlive(script)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // Matches checks if a language tag matches one of the elements in a list of
@@ -198,23 +104,22 @@ func (language *Language) IncludesScript(script Script) bool {
 //    - ok: TRUE if a match was found.
 //
 func (language *Language) Matches(rangeList string) bool {
-	var _arg0 *C.PangoLanguage // out
-	var _arg1 *C.char          // out
-	var _cret C.gboolean       // in
+	var _args [2]girepository.Argument
 
 	if language != nil {
-		_arg0 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(language)))
 	}
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(rangeList)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(rangeList)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = C.pango_language_matches(_arg0, _arg1)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(language)
 	runtime.KeepAlive(rangeList)
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -229,12 +134,12 @@ func (language *Language) Matches(rangeList string) bool {
 //      should not be freed.
 //
 func (language *Language) String() string {
-	var _arg0 *C.PangoLanguage // out
-	var _cret *C.char          // in
+	var _args [1]girepository.Argument
 
-	_arg0 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(language)))
 
-	_cret = C.pango_language_to_string(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(language)
 
 	var _utf8 string // out
@@ -267,20 +172,21 @@ func (language *Language) String() string {
 //      should not be freed.
 //
 func LanguageFromString(language string) *Language {
-	var _arg1 *C.char          // out
-	var _cret *C.PangoLanguage // in
+	var _args [1]girepository.Argument
 
 	if language != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(language)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(language)))
+		defer C.free(unsafe.Pointer(_args[0]))
 	}
 
-	_cret = C.pango_language_from_string(_arg1)
+	_gret := girepository.MustFind("Pango", "from_string").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(language)
 
 	var _ret *Language // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_ret = (*Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	}
 
@@ -317,9 +223,8 @@ func LanguageFromString(language string) *Language {
 //    - language: default language as a PangoLanguage, must not be freed.
 //
 func LanguageGetDefault() *Language {
-	var _cret *C.PangoLanguage // in
-
-	_cret = C.pango_language_get_default()
+	_gret := girepository.MustFind("Pango", "get_default").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _language *Language // out
 
@@ -343,13 +248,12 @@ func LanguageGetDefault() *Language {
 //    - language (optional): NULL-terminated array of PangoLanguage*.
 //
 func LanguageGetPreferred() *Language {
-	var _cret **C.PangoLanguage // in
-
-	_cret = C.pango_language_get_preferred()
+	_gret := girepository.MustFind("Pango", "get_preferred").Invoke(nil, nil)
+	_cret = *(***C.void)(unsafe.Pointer(&_gret))
 
 	var _language *Language // out
 
-	if _cret != nil {
+	if *(***C.void)(unsafe.Pointer(&_cret)) != nil {
 		_language = (*Language)(gextras.NewStructNative(unsafe.Pointer((*_cret))))
 	}
 

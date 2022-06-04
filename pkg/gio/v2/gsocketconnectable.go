@@ -208,12 +208,8 @@ func marshalSocketConnectable(p uintptr) (interface{}, error) {
 //
 func (connectable *SocketConnectable) Enumerate() SocketAddressEnumeratorrer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -254,12 +250,8 @@ func (connectable *SocketConnectable) Enumerate() SocketAddressEnumeratorrer {
 //
 func (connectable *SocketConnectable) ProxyEnumerate() SocketAddressEnumeratorrer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -302,12 +294,8 @@ func (connectable *SocketConnectable) ProxyEnumerate() SocketAddressEnumeratorre
 //
 func (connectable *SocketConnectable) String() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

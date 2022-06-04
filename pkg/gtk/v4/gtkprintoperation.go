@@ -100,14 +100,12 @@ func (p PrintError) String() string {
 //    - quark: error quark used for GtkPrintOperation errors.
 //
 func PrintErrorQuark() glib.Quark {
-	var _cret C.guint32 // in
-
 	_gret := girepository.MustFind("Gtk", "quark").Invoke(nil, nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
 
 	return _quark
 }
@@ -294,22 +292,14 @@ func _gotk4_gtk4_PageSetupDoneFunc(arg1 *C.void, arg2 C.gpointer) {
 //
 func PrintRunPageSetupDialog(parent *Window, pageSetup *PageSetup, settings *PrintSettings) *PageSetup {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _cret *C.void // in
 
 	if parent != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
 	if pageSetup != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pageSetup).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pageSetup).Native()))
 	}
-	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 
 	_gret := girepository.MustFind("Gtk", "print_run_page_setup_dialog").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -341,26 +331,16 @@ func PrintRunPageSetupDialog(parent *Window, pageSetup *PageSetup, settings *Pri
 //
 func PrintRunPageSetupDialogAsync(parent *Window, pageSetup *PageSetup, settings *PrintSettings, doneCb PageSetupDoneFunc) {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 *C.void    // out
-	var _arg3 C.gpointer // out
-	var _arg4 C.gpointer
 
 	if parent != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
 	if pageSetup != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pageSetup).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pageSetup).Native()))
 	}
-	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg3 = (*[0]byte)(C._gotk4_gtk4_PageSetupDoneFunc)
-	_arg4 = C.gpointer(gbox.AssignOnce(doneCb))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gpointer)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gtk4_PageSetupDoneFunc)
+	_args[4] = C.gpointer(gbox.AssignOnce(doneCb))
 
 	girepository.MustFind("Gtk", "print_run_page_setup_dialog_async").Invoke(_args[:], nil)
 
@@ -1148,8 +1128,6 @@ func (op *PrintOperation) ConnectUpdateCustomWidget(f func(widget Widgetter, set
 //    - printOperation: new GtkPrintOperation.
 //
 func NewPrintOperation() *PrintOperation {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("new_PrintOperation", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1167,11 +1145,8 @@ func NewPrintOperation() *PrintOperation {
 // to stop the currently running print operation.
 func (op *PrintOperation) Cancel() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
 	girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("cancel", _args[:], nil)
 
@@ -1186,11 +1161,8 @@ func (op *PrintOperation) Cancel() {
 // itself.
 func (op *PrintOperation) DrawPageFinish() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
 	girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("draw_page_finish", _args[:], nil)
 
@@ -1205,12 +1177,8 @@ func (op *PrintOperation) DrawPageFinish() {
 //
 func (op *PrintOperation) DefaultPageSetup() *PageSetup {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
 	_gret := girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("get_default_page_setup", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1232,12 +1200,8 @@ func (op *PrintOperation) DefaultPageSetup() *PageSetup {
 //
 func (op *PrintOperation) EmbedPageSetup() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
 	_gret := girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("get_embed_page_setup", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1246,7 +1210,7 @@ func (op *PrintOperation) EmbedPageSetup() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1262,12 +1226,8 @@ func (op *PrintOperation) EmbedPageSetup() bool {
 // The returned GError will contain more details on what went wrong.
 func (op *PrintOperation) Error() error {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
 	girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("get_error", _args[:], nil)
 
@@ -1275,7 +1235,7 @@ func (op *PrintOperation) Error() error {
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -1290,12 +1250,8 @@ func (op *PrintOperation) Error() error {
 //
 func (op *PrintOperation) HasSelection() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
 	_gret := girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("get_has_selection", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1304,7 +1260,7 @@ func (op *PrintOperation) HasSelection() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1328,12 +1284,8 @@ func (op *PrintOperation) HasSelection() bool {
 //
 func (op *PrintOperation) NPagesToPrint() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
 	_gret := girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("get_n_pages_to_print", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -1342,7 +1294,7 @@ func (op *PrintOperation) NPagesToPrint() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1359,12 +1311,8 @@ func (op *PrintOperation) NPagesToPrint() int32 {
 //
 func (op *PrintOperation) PrintSettings() *PrintSettings {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
 	_gret := girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("get_print_settings", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1393,12 +1341,8 @@ func (op *PrintOperation) PrintSettings() *PrintSettings {
 //
 func (op *PrintOperation) StatusString() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
 	_gret := girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("get_status_string", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1420,12 +1364,8 @@ func (op *PrintOperation) StatusString() string {
 //
 func (op *PrintOperation) SupportSelection() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
 	_gret := girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("get_support_selection", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1434,7 +1374,7 @@ func (op *PrintOperation) SupportSelection() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1457,12 +1397,8 @@ func (op *PrintOperation) SupportSelection() bool {
 //
 func (op *PrintOperation) IsFinished() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
 	_gret := girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("is_finished", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1471,7 +1407,7 @@ func (op *PrintOperation) IsFinished() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1489,16 +1425,11 @@ func (op *PrintOperation) IsFinished() bool {
 //
 func (op *PrintOperation) SetAllowAsync(allowAsync bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	if allowAsync {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("set_allow_async", _args[:], nil)
 
@@ -1519,14 +1450,9 @@ func (op *PrintOperation) SetAllowAsync(allowAsync bool) {
 //
 func (op *PrintOperation) SetCurrentPage(currentPage int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-	_arg1 = C.int(currentPage)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(currentPage)
 
 	girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("set_current_page", _args[:], nil)
 
@@ -1542,17 +1468,12 @@ func (op *PrintOperation) SetCurrentPage(currentPage int32) {
 //
 func (op *PrintOperation) SetCustomTabLabel(label string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	if label != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("set_custom_tab_label", _args[:], nil)
 
@@ -1572,16 +1493,11 @@ func (op *PrintOperation) SetCustomTabLabel(label string) {
 //
 func (op *PrintOperation) SetDefaultPageSetup(defaultPageSetup *PageSetup) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	if defaultPageSetup != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(defaultPageSetup).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(defaultPageSetup).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("set_default_page_setup", _args[:], nil)
 
@@ -1598,11 +1514,8 @@ func (op *PrintOperation) SetDefaultPageSetup(defaultPageSetup *PageSetup) {
 // gtk.PrintOperation::draw-page signal.
 func (op *PrintOperation) SetDeferDrawing() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
 	girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("set_defer_drawing", _args[:], nil)
 
@@ -1620,16 +1533,11 @@ func (op *PrintOperation) SetDeferDrawing() {
 //
 func (op *PrintOperation) SetEmbedPageSetup(embed bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	if embed {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("set_embed_page_setup", _args[:], nil)
 
@@ -1652,15 +1560,10 @@ func (op *PrintOperation) SetEmbedPageSetup(embed bool) {
 //
 func (op *PrintOperation) SetExportFilename(filename string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("set_export_filename", _args[:], nil)
 
@@ -1680,16 +1583,11 @@ func (op *PrintOperation) SetExportFilename(filename string) {
 //
 func (op *PrintOperation) SetHasSelection(hasSelection bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	if hasSelection {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("set_has_selection", _args[:], nil)
 
@@ -1711,15 +1609,10 @@ func (op *PrintOperation) SetHasSelection(hasSelection bool) {
 //
 func (op *PrintOperation) SetJobName(jobName string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(jobName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(jobName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("set_job_name", _args[:], nil)
 
@@ -1743,14 +1636,9 @@ func (op *PrintOperation) SetJobName(jobName string) {
 //
 func (op *PrintOperation) SetNPages(nPages int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-	_arg1 = C.int(nPages)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(nPages)
 
 	girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("set_n_pages", _args[:], nil)
 
@@ -1769,16 +1657,11 @@ func (op *PrintOperation) SetNPages(nPages int32) {
 //
 func (op *PrintOperation) SetPrintSettings(printSettings *PrintSettings) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	if printSettings != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(printSettings).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(printSettings).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("set_print_settings", _args[:], nil)
 
@@ -1795,16 +1678,11 @@ func (op *PrintOperation) SetPrintSettings(printSettings *PrintSettings) {
 //
 func (op *PrintOperation) SetShowProgress(showProgress bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	if showProgress {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("set_show_progress", _args[:], nil)
 
@@ -1820,16 +1698,11 @@ func (op *PrintOperation) SetShowProgress(showProgress bool) {
 //
 func (op *PrintOperation) SetSupportSelection(supportSelection bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	if supportSelection {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("set_support_selection", _args[:], nil)
 
@@ -1853,16 +1726,11 @@ func (op *PrintOperation) SetSupportSelection(supportSelection bool) {
 //
 func (op *PrintOperation) SetTrackPrintStatus(trackStatus bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	if trackStatus {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("set_track_print_status", _args[:], nil)
 
@@ -1884,16 +1752,11 @@ func (op *PrintOperation) SetTrackPrintStatus(trackStatus bool) {
 //
 func (op *PrintOperation) SetUseFullPage(fullPage bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	if fullPage {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "PrintOperation").InvokeMethod("set_use_full_page", _args[:], nil)
 

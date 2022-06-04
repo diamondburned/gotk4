@@ -266,21 +266,12 @@ func marshalCellLayout(p uintptr) (interface{}, error) {
 //
 func (cellLayout *CellLayout) AddAttribute(cell CellRendererer, attribute string, column int32) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	_arg2 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = C.int(column)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.int)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_args[2]))
+	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(column)
 
 	runtime.KeepAlive(cellLayout)
 	runtime.KeepAlive(cell)
@@ -292,11 +283,8 @@ func (cellLayout *CellLayout) AddAttribute(cell CellRendererer, attribute string
 // renderers from cell_layout.
 func (cellLayout *CellLayout) Clear() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
 
 	runtime.KeepAlive(cellLayout)
 }
@@ -310,14 +298,9 @@ func (cellLayout *CellLayout) Clear() {
 //
 func (cellLayout *CellLayout) ClearAttributes(cell CellRendererer) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
 	runtime.KeepAlive(cellLayout)
 	runtime.KeepAlive(cell)
@@ -333,12 +316,8 @@ func (cellLayout *CellLayout) ClearAttributes(cell CellRendererer) {
 //
 func (cellLayout *CellLayout) Area() CellAreaer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -346,7 +325,7 @@ func (cellLayout *CellLayout) Area() CellAreaer {
 
 	var _cellArea CellAreaer // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -376,12 +355,8 @@ func (cellLayout *CellLayout) Area() CellAreaer {
 //
 func (cellLayout *CellLayout) Cells() []CellRendererer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -429,19 +404,12 @@ func (cellLayout *CellLayout) Cells() []CellRendererer {
 //
 func (cellLayout *CellLayout) PackEnd(cell CellRendererer, expand bool) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 	if expand {
-		_arg2 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(cellLayout)
 	runtime.KeepAlive(cell)
@@ -461,19 +429,12 @@ func (cellLayout *CellLayout) PackEnd(cell CellRendererer, expand bool) {
 //
 func (cellLayout *CellLayout) PackStart(cell CellRendererer, expand bool) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 	if expand {
-		_arg2 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(cellLayout)
 	runtime.KeepAlive(cell)
@@ -492,17 +453,10 @@ func (cellLayout *CellLayout) PackStart(cell CellRendererer, expand bool) {
 //
 func (cellLayout *CellLayout) Reorder(cell CellRendererer, position int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	_arg2 = C.int(position)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(position)
 
 	runtime.KeepAlive(cellLayout)
 	runtime.KeepAlive(cell)
@@ -524,23 +478,14 @@ func (cellLayout *CellLayout) Reorder(cell CellRendererer, position int32) {
 //
 func (cellLayout *CellLayout) SetCellDataFunc(cell CellRendererer, fn CellLayoutDataFunc) {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.gpointer // out
-	var _arg3 C.gpointer
-	var _arg4 C.GDestroyNotify
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 	if fn != nil {
-		_arg2 = (*[0]byte)(C._gotk4_gtk4_CellLayoutDataFunc)
-		_arg3 = C.gpointer(gbox.Assign(fn))
-		_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gtk4_CellLayoutDataFunc)
+		_args[3] = C.gpointer(gbox.Assign(fn))
+		_args[4] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(cellLayout)
 	runtime.KeepAlive(cell)

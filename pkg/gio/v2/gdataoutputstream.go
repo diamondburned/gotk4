@@ -81,12 +81,8 @@ func marshalDataOutputStream(p uintptr) (interface{}, error) {
 //
 func NewDataOutputStream(baseStream OutputStreamer) *DataOutputStream {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseStream).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseStream).Native()))
 
 	_gret := girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("new_DataOutputStream", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -109,22 +105,14 @@ func NewDataOutputStream(baseStream OutputStreamer) *DataOutputStream {
 //
 func (stream *DataOutputStream) PutByte(ctx context.Context, data byte) error {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg2 *C.void  // out
-	var _arg1 C.guchar // out
-	var _cerr *C.void  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = C.guchar(data)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.guchar)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.guchar)(unsafe.Pointer(&_args[1])) = C.guchar(data)
 
 	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_byte", _args[:], nil)
 
@@ -134,7 +122,7 @@ func (stream *DataOutputStream) PutByte(ctx context.Context, data byte) error {
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -150,22 +138,14 @@ func (stream *DataOutputStream) PutByte(ctx context.Context, data byte) error {
 //
 func (stream *DataOutputStream) PutInt16(ctx context.Context, data int16) error {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg2 *C.void  // out
-	var _arg1 C.gint16 // out
-	var _cerr *C.void  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = C.gint16(data)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint16)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint16)(unsafe.Pointer(&_args[1])) = C.gint16(data)
 
 	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_int16", _args[:], nil)
 
@@ -175,7 +155,7 @@ func (stream *DataOutputStream) PutInt16(ctx context.Context, data int16) error 
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -191,22 +171,14 @@ func (stream *DataOutputStream) PutInt16(ctx context.Context, data int16) error 
 //
 func (stream *DataOutputStream) PutInt32(ctx context.Context, data int32) error {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg2 *C.void  // out
-	var _arg1 C.gint32 // out
-	var _cerr *C.void  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = C.gint32(data)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint32)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint32)(unsafe.Pointer(&_args[1])) = C.gint32(data)
 
 	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_int32", _args[:], nil)
 
@@ -216,7 +188,7 @@ func (stream *DataOutputStream) PutInt32(ctx context.Context, data int32) error 
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -232,22 +204,14 @@ func (stream *DataOutputStream) PutInt32(ctx context.Context, data int32) error 
 //
 func (stream *DataOutputStream) PutInt64(ctx context.Context, data int64) error {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg2 *C.void  // out
-	var _arg1 C.gint64 // out
-	var _cerr *C.void  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = C.gint64(data)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint64)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint64)(unsafe.Pointer(&_args[1])) = C.gint64(data)
 
 	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_int64", _args[:], nil)
 
@@ -257,7 +221,7 @@ func (stream *DataOutputStream) PutInt64(ctx context.Context, data int64) error 
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -273,23 +237,15 @@ func (stream *DataOutputStream) PutInt64(ctx context.Context, data int64) error 
 //
 func (stream *DataOutputStream) PutString(ctx context.Context, str string) error {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg2 *C.void // out
-	var _arg1 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_string", _args[:], nil)
 
@@ -299,7 +255,7 @@ func (stream *DataOutputStream) PutString(ctx context.Context, str string) error
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -315,22 +271,14 @@ func (stream *DataOutputStream) PutString(ctx context.Context, str string) error
 //
 func (stream *DataOutputStream) PutUint16(ctx context.Context, data uint16) error {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg2 *C.void   // out
-	var _arg1 C.guint16 // out
-	var _cerr *C.void   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = C.guint16(data)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.guint16)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.guint16)(unsafe.Pointer(&_args[1])) = C.guint16(data)
 
 	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_uint16", _args[:], nil)
 
@@ -340,7 +288,7 @@ func (stream *DataOutputStream) PutUint16(ctx context.Context, data uint16) erro
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -356,22 +304,14 @@ func (stream *DataOutputStream) PutUint16(ctx context.Context, data uint16) erro
 //
 func (stream *DataOutputStream) PutUint32(ctx context.Context, data uint32) error {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg2 *C.void   // out
-	var _arg1 C.guint32 // out
-	var _cerr *C.void   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = C.guint32(data)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.guint32)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(data)
 
 	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_uint32", _args[:], nil)
 
@@ -381,7 +321,7 @@ func (stream *DataOutputStream) PutUint32(ctx context.Context, data uint32) erro
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -397,22 +337,14 @@ func (stream *DataOutputStream) PutUint32(ctx context.Context, data uint32) erro
 //
 func (stream *DataOutputStream) PutUint64(ctx context.Context, data uint64) error {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg2 *C.void   // out
-	var _arg1 C.guint64 // out
-	var _cerr *C.void   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = C.guint64(data)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.guint64)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.guint64)(unsafe.Pointer(&_args[1])) = C.guint64(data)
 
 	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_uint64", _args[:], nil)
 
@@ -422,7 +354,7 @@ func (stream *DataOutputStream) PutUint64(ctx context.Context, data uint64) erro
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 

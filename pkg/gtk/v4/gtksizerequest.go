@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
@@ -25,26 +24,32 @@ type RequestedSize struct {
 
 // requestedSize is the struct that's finalized.
 type requestedSize struct {
-	native *C.GtkRequestedSize
+	native unsafe.Pointer
 }
 
 // Data: client pointer.
 func (r *RequestedSize) Data() unsafe.Pointer {
+	offset := girepository.MustFind("Gtk", "RequestedSize").StructFieldOffset("data")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(r.native.data))
+	v = (unsafe.Pointer)(unsafe.Pointer(valptr))
 	return v
 }
 
 // MinimumSize: minimum size needed for allocation in a given orientation.
 func (r *RequestedSize) MinimumSize() int32 {
+	offset := girepository.MustFind("Gtk", "RequestedSize").StructFieldOffset("minimum_size")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v int32 // out
-	v = int32(r.native.minimum_size)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // NaturalSize: natural size for allocation in a given orientation.
 func (r *RequestedSize) NaturalSize() int32 {
+	offset := girepository.MustFind("Gtk", "RequestedSize").StructFieldOffset("natural_size")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v int32 // out
-	v = int32(r.native.natural_size)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }

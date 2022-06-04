@@ -38,14 +38,10 @@ import "C"
 //
 func DBusErrorEncodeGError(err error) string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
 	if err != nil {
-		_arg0 = (*C.void)(gerror.New(err))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gerror.New(err))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gio", "encode_gerror").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -78,14 +74,10 @@ func DBusErrorEncodeGError(err error) string {
 //
 func DBusErrorGetRemoteError(err error) string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
 	if err != nil {
-		_arg0 = (*C.void)(gerror.New(err))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gerror.New(err))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gio", "get_remote_error").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -94,7 +86,7 @@ func DBusErrorGetRemoteError(err error) string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 		defer C.free(unsafe.Pointer(_cret))
 	}
@@ -117,14 +109,10 @@ func DBusErrorGetRemoteError(err error) string {
 //
 func DBusErrorIsRemoteError(err error) bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
 	if err != nil {
-		_arg0 = (*C.void)(gerror.New(err))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gerror.New(err))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gio", "is_remote_error").Invoke(_args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -133,7 +121,7 @@ func DBusErrorIsRemoteError(err error) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -177,17 +165,11 @@ func DBusErrorIsRemoteError(err error) bool {
 //
 func NewDBusErrorForDBusError(dbusErrorName, dbusErrorMessage string) error {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(dbusErrorName)))
-	defer C.free(unsafe.Pointer(_arg0))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(dbusErrorMessage)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(dbusErrorName)))
+	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(dbusErrorMessage)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gio", "new_for_dbus_error").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -220,19 +202,11 @@ func NewDBusErrorForDBusError(dbusErrorName, dbusErrorMessage string) error {
 //
 func DBusErrorRegisterError(errorDomain glib.Quark, errorCode int32, dbusErrorName string) bool {
 	var _args [3]girepository.Argument
-	var _arg0 C.guint32  // out
-	var _arg1 C.gint     // out
-	var _arg2 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = C.guint32(errorDomain)
-	_arg1 = C.gint(errorCode)
-	_arg2 = (*C.void)(unsafe.Pointer(C.CString(dbusErrorName)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	*(*C.guint32)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.guint32)(unsafe.Pointer(&_args[0])) = C.guint32(errorDomain)
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(errorCode)
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(dbusErrorName)))
+	defer C.free(unsafe.Pointer(_args[2]))
 
 	_gret := girepository.MustFind("Gio", "register_error").Invoke(_args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -243,7 +217,7 @@ func DBusErrorRegisterError(errorDomain glib.Quark, errorCode int32, dbusErrorNa
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -267,14 +241,10 @@ func DBusErrorRegisterError(errorDomain glib.Quark, errorCode int32, dbusErrorNa
 //
 func DBusErrorStripRemoteError(err error) bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
 	if err != nil {
-		_arg0 = (*C.void)(gerror.New(err))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gerror.New(err))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gio", "strip_remote_error").Invoke(_args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -283,7 +253,7 @@ func DBusErrorStripRemoteError(err error) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -305,19 +275,11 @@ func DBusErrorStripRemoteError(err error) bool {
 //
 func DBusErrorUnregisterError(errorDomain glib.Quark, errorCode int32, dbusErrorName string) bool {
 	var _args [3]girepository.Argument
-	var _arg0 C.guint32  // out
-	var _arg1 C.gint     // out
-	var _arg2 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = C.guint32(errorDomain)
-	_arg1 = C.gint(errorCode)
-	_arg2 = (*C.void)(unsafe.Pointer(C.CString(dbusErrorName)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	*(*C.guint32)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.guint32)(unsafe.Pointer(&_args[0])) = C.guint32(errorDomain)
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(errorCode)
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(dbusErrorName)))
+	defer C.free(unsafe.Pointer(_args[2]))
 
 	_gret := girepository.MustFind("Gio", "unregister_error").Invoke(_args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -328,7 +290,7 @@ func DBusErrorUnregisterError(errorDomain glib.Quark, errorCode int32, dbusError
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -344,19 +306,23 @@ type DBusErrorEntry struct {
 
 // dBusErrorEntry is the struct that's finalized.
 type dBusErrorEntry struct {
-	native *C.GDBusErrorEntry
+	native unsafe.Pointer
 }
 
 // ErrorCode: error code.
 func (d *DBusErrorEntry) ErrorCode() int32 {
+	offset := girepository.MustFind("Gio", "DBusErrorEntry").StructFieldOffset("error_code")
+	valptr := unsafe.Add(unsafe.Pointer(d), offset)
 	var v int32 // out
-	v = int32(d.native.error_code)
+	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // DBusErrorName d-Bus error name to associate with error_code.
 func (d *DBusErrorEntry) DBusErrorName() string {
+	offset := girepository.MustFind("Gio", "DBusErrorEntry").StructFieldOffset("dbus_error_name")
+	valptr := unsafe.Add(unsafe.Pointer(d), offset)
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(d.native.dbus_error_name)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }

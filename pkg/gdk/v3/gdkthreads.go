@@ -4,6 +4,7 @@ package gdk
 
 import (
 	"runtime"
+	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
@@ -69,19 +70,11 @@ import "C"
 //
 func ThreadsAddIdle(priority int32, function glib.SourceFunc) uint32 {
 	var _args [4]girepository.Argument
-	var _arg0 C.gint     // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
-	var _cret C.guint // in
 
-	_arg0 = C.gint(priority)
-	_arg1 = (*[0]byte)(C._gotk4_glib2_SourceFunc)
-	_arg2 = C.gpointer(gbox.Assign(function))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	*(*C.gint)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gint)(unsafe.Pointer(&_args[0])) = C.gint(priority)
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_glib2_SourceFunc)
+	_args[2] = C.gpointer(gbox.Assign(function))
+	_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	_gret := girepository.MustFind("Gdk", "threads_add_idle_full").Invoke(_args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -90,9 +83,8 @@ func ThreadsAddIdle(priority int32, function glib.SourceFunc) uint32 {
 	runtime.KeepAlive(function)
 
 	var _guint uint32 // out
-	_out2 = *(*C.guint)(unsafe.Pointer(&_outs[2]))
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -153,22 +145,12 @@ func ThreadsAddIdle(priority int32, function glib.SourceFunc) uint32 {
 //
 func ThreadsAddTimeout(priority int32, interval uint32, function glib.SourceFunc) uint32 {
 	var _args [5]girepository.Argument
-	var _arg0 C.gint     // out
-	var _arg1 C.guint    // out
-	var _arg2 C.gpointer // out
-	var _arg3 C.gpointer
-	var _arg4 C.GDestroyNotify
-	var _cret C.guint // in
 
-	_arg0 = C.gint(priority)
-	_arg1 = C.guint(interval)
-	_arg2 = (*[0]byte)(C._gotk4_glib2_SourceFunc)
-	_arg3 = C.gpointer(gbox.Assign(function))
-	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	*(*C.gint)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint)(unsafe.Pointer(&_args[0])) = C.gint(priority)
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(interval)
+	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_glib2_SourceFunc)
+	_args[3] = C.gpointer(gbox.Assign(function))
+	_args[4] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	_gret := girepository.MustFind("Gdk", "threads_add_timeout_full").Invoke(_args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -178,9 +160,8 @@ func ThreadsAddTimeout(priority int32, interval uint32, function glib.SourceFunc
 	runtime.KeepAlive(function)
 
 	var _guint uint32 // out
-	_out3 = *(*C.guint)(unsafe.Pointer(&_outs[3]))
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -202,22 +183,12 @@ func ThreadsAddTimeout(priority int32, interval uint32, function glib.SourceFunc
 //
 func ThreadsAddTimeoutSeconds(priority int32, interval uint32, function glib.SourceFunc) uint32 {
 	var _args [5]girepository.Argument
-	var _arg0 C.gint     // out
-	var _arg1 C.guint    // out
-	var _arg2 C.gpointer // out
-	var _arg3 C.gpointer
-	var _arg4 C.GDestroyNotify
-	var _cret C.guint // in
 
-	_arg0 = C.gint(priority)
-	_arg1 = C.guint(interval)
-	_arg2 = (*[0]byte)(C._gotk4_glib2_SourceFunc)
-	_arg3 = C.gpointer(gbox.Assign(function))
-	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	*(*C.gint)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint)(unsafe.Pointer(&_args[0])) = C.gint(priority)
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(interval)
+	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_glib2_SourceFunc)
+	_args[3] = C.gpointer(gbox.Assign(function))
+	_args[4] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	_gret := girepository.MustFind("Gdk", "threads_add_timeout_seconds_full").Invoke(_args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -227,9 +198,8 @@ func ThreadsAddTimeoutSeconds(priority int32, interval uint32, function glib.Sou
 	runtime.KeepAlive(function)
 
 	var _guint uint32 // out
-	_out3 = *(*C.guint)(unsafe.Pointer(&_outs[3]))
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -240,7 +210,6 @@ func ThreadsAddTimeoutSeconds(priority int32, interval uint32, function glib.Sou
 //
 // Deprecated: All GDK and GTK+ calls should be made from the main thread.
 func ThreadsEnter() {
-
 	girepository.MustFind("Gdk", "threads_enter").Invoke(nil, nil)
 }
 
@@ -252,7 +221,6 @@ func ThreadsEnter() {
 //
 // Deprecated: All GDK and GTK+ calls should be made from the main thread.
 func ThreadsInit() {
-
 	girepository.MustFind("Gdk", "threads_init").Invoke(nil, nil)
 }
 
@@ -260,6 +228,5 @@ func ThreadsInit() {
 //
 // Deprecated: All GDK and GTK+ calls should be made from the main thread.
 func ThreadsLeave() {
-
 	girepository.MustFind("Gdk", "threads_leave").Invoke(nil, nil)
 }

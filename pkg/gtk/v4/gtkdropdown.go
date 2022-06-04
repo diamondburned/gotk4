@@ -115,21 +115,15 @@ func marshalDropDown(p uintptr) (interface{}, error) {
 //
 func NewDropDown(model gio.ListModeller, expression Expressioner) *DropDown {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
 	if model != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(model).Native()))
 	}
 	if expression != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(expression).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gtk", "DropDown").InvokeMethod("new_DropDown", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -157,24 +151,20 @@ func NewDropDown(model gio.ListModeller, expression Expressioner) *DropDown {
 //
 func NewDropDownFromStrings(strings []string) *DropDown {
 	var _args [1]girepository.Argument
-	var _arg0 **C.void // out
-	var _cret *C.void  // in
 
 	{
-		_arg0 = (**C.void)(C.calloc(C.size_t((len(strings) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg0))
+		*(***C.void)(unsafe.Pointer(&_args[0])) = (**C.void)(C.calloc(C.size_t((len(strings) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_args[0]))
 		{
-			out := unsafe.Slice(_arg0, len(strings)+1)
+			out := unsafe.Slice(_args[0], len(strings)+1)
 			var zero *C.void
 			out[len(strings)] = zero
 			for i := range strings {
-				out[i] = (*C.void)(unsafe.Pointer(C.CString(strings[i])))
+				*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(strings[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
-
-	*(***C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gtk", "DropDown").InvokeMethod("new_DropDown_from_strings", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -196,12 +186,8 @@ func NewDropDownFromStrings(strings []string) *DropDown {
 //
 func (self *DropDown) EnableSearch() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "DropDown").InvokeMethod("get_enable_search", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -210,7 +196,7 @@ func (self *DropDown) EnableSearch() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -227,12 +213,8 @@ func (self *DropDown) EnableSearch() bool {
 //
 func (self *DropDown) Expression() Expressioner {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "DropDown").InvokeMethod("get_expression", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -241,7 +223,7 @@ func (self *DropDown) Expression() Expressioner {
 
 	var _expression Expressioner // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -273,12 +255,8 @@ func (self *DropDown) Expression() Expressioner {
 //
 func (self *DropDown) Factory() *ListItemFactory {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "DropDown").InvokeMethod("get_factory", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -287,7 +265,7 @@ func (self *DropDown) Factory() *ListItemFactory {
 
 	var _listItemFactory *ListItemFactory // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_listItemFactory = wrapListItemFactory(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -303,12 +281,8 @@ func (self *DropDown) Factory() *ListItemFactory {
 //
 func (self *DropDown) ListFactory() *ListItemFactory {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "DropDown").InvokeMethod("get_list_factory", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -317,7 +291,7 @@ func (self *DropDown) ListFactory() *ListItemFactory {
 
 	var _listItemFactory *ListItemFactory // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_listItemFactory = wrapListItemFactory(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -332,12 +306,8 @@ func (self *DropDown) ListFactory() *ListItemFactory {
 //
 func (self *DropDown) Model() *gio.ListModel {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "DropDown").InvokeMethod("get_model", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -346,7 +316,7 @@ func (self *DropDown) Model() *gio.ListModel {
 
 	var _listModel *gio.ListModel // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			obj := coreglib.Take(unsafe.Pointer(_cret))
 			_listModel = &gio.ListModel{
@@ -367,12 +337,8 @@ func (self *DropDown) Model() *gio.ListModel {
 //
 func (self *DropDown) Selected() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "DropDown").InvokeMethod("get_selected", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -381,7 +347,7 @@ func (self *DropDown) Selected() uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -395,12 +361,8 @@ func (self *DropDown) Selected() uint32 {
 //
 func (self *DropDown) SelectedItem() *coreglib.Object {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gpointer // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "DropDown").InvokeMethod("get_selected_item", _args[:], nil)
 	_cret = *(*C.gpointer)(unsafe.Pointer(&_gret))
@@ -425,16 +387,11 @@ func (self *DropDown) SelectedItem() *coreglib.Object {
 //
 func (self *DropDown) SetEnableSearch(enableSearch bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if enableSearch {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "DropDown").InvokeMethod("set_enable_search", _args[:], nil)
 
@@ -454,16 +411,11 @@ func (self *DropDown) SetEnableSearch(enableSearch bool) {
 //
 func (self *DropDown) SetExpression(expression Expressioner) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if expression != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "DropDown").InvokeMethod("set_expression", _args[:], nil)
 
@@ -479,16 +431,11 @@ func (self *DropDown) SetExpression(expression Expressioner) {
 //
 func (self *DropDown) SetFactory(factory *ListItemFactory) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if factory != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "DropDown").InvokeMethod("set_factory", _args[:], nil)
 
@@ -505,16 +452,11 @@ func (self *DropDown) SetFactory(factory *ListItemFactory) {
 //
 func (self *DropDown) SetListFactory(factory *ListItemFactory) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if factory != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "DropDown").InvokeMethod("set_list_factory", _args[:], nil)
 
@@ -530,16 +472,11 @@ func (self *DropDown) SetListFactory(factory *ListItemFactory) {
 //
 func (self *DropDown) SetModel(model gio.ListModeller) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if model != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "DropDown").InvokeMethod("set_model", _args[:], nil)
 
@@ -555,14 +492,9 @@ func (self *DropDown) SetModel(model gio.ListModeller) {
 //
 func (self *DropDown) SetSelected(position uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = C.guint(position)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
 
 	girepository.MustFind("Gtk", "DropDown").InvokeMethod("set_selected", _args[:], nil)
 

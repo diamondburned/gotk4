@@ -4,7 +4,6 @@ package gio
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -206,12 +205,8 @@ func BaseSocketControlMessage(obj SocketControlMessager) *SocketControlMessage {
 //
 func (message *SocketControlMessage) Level() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
 
 	_gret := girepository.MustFind("Gio", "SocketControlMessage").InvokeMethod("get_level", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -220,7 +215,7 @@ func (message *SocketControlMessage) Level() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -234,12 +229,8 @@ func (message *SocketControlMessage) Level() int32 {
 //
 func (message *SocketControlMessage) MsgType() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
 
 	_gret := girepository.MustFind("Gio", "SocketControlMessage").InvokeMethod("get_msg_type", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -248,7 +239,7 @@ func (message *SocketControlMessage) MsgType() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -262,12 +253,8 @@ func (message *SocketControlMessage) MsgType() int32 {
 //
 func (message *SocketControlMessage) Size() uint {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gsize // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
 
 	_gret := girepository.MustFind("Gio", "SocketControlMessage").InvokeMethod("get_size", _args[:], nil)
 	_cret = *(*C.gsize)(unsafe.Pointer(&_gret))
@@ -276,7 +263,7 @@ func (message *SocketControlMessage) Size() uint {
 
 	var _gsize uint // out
 
-	_gsize = uint(_cret)
+	_gsize = uint(*(*C.gsize)(unsafe.Pointer(&_cret)))
 
 	return _gsize
 }
@@ -292,14 +279,9 @@ func (message *SocketControlMessage) Size() uint {
 //
 func (message *SocketControlMessage) Serialize(data unsafe.Pointer) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(data))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (C.gpointer)(unsafe.Pointer(data))
 
 	girepository.MustFind("Gio", "SocketControlMessage").InvokeMethod("serialize", _args[:], nil)
 
@@ -327,22 +309,13 @@ func (message *SocketControlMessage) Serialize(data unsafe.Pointer) {
 //
 func SocketControlMessageDeserialize(level, typ int32, data []byte) SocketControlMessager {
 	var _args [4]girepository.Argument
-	var _arg0 C.int    // out
-	var _arg1 C.int    // out
-	var _arg3 C.guint8 // out
-	var _arg2 C.gsize
-	var _cret *C.void // in
 
-	_arg0 = C.int(level)
-	_arg1 = C.int(typ)
-	_arg2 = (C.gsize)(len(data))
+	*(*C.int)(unsafe.Pointer(&_args[0])) = C.int(level)
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(typ)
+	*(*C.gsize)(unsafe.Pointer(&_args[2])) = (C.gsize)(len(data))
 	if len(data) > 0 {
-		_arg3 = (C.guint8)(unsafe.Pointer(&data[0]))
+		*(*C.guint8)(unsafe.Pointer(&_args[3])) = (C.guint8)(unsafe.Pointer(&data[0]))
 	}
-
-	*(*C.int)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.guint8)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gio", "deserialize").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -352,7 +325,6 @@ func SocketControlMessageDeserialize(level, typ int32, data []byte) SocketContro
 	runtime.KeepAlive(data)
 
 	var _socketControlMessage SocketControlMessager // out
-	_out3 = *(**C.void)(unsafe.Pointer(&_outs[3]))
 
 	{
 		objptr := unsafe.Pointer(_cret)

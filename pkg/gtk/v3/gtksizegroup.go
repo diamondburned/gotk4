@@ -139,14 +139,9 @@ func marshalSizeGroup(p uintptr) (interface{}, error) {
 //
 func (sizeGroup *SizeGroup) AddWidget(widget Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sizeGroup).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sizeGroup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "SizeGroup").InvokeMethod("add_widget", _args[:], nil)
 
@@ -169,12 +164,8 @@ func (sizeGroup *SizeGroup) AddWidget(widget Widgetter) {
 //
 func (sizeGroup *SizeGroup) IgnoreHidden() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sizeGroup).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sizeGroup).Native()))
 
 	_gret := girepository.MustFind("Gtk", "SizeGroup").InvokeMethod("get_ignore_hidden", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -183,7 +174,7 @@ func (sizeGroup *SizeGroup) IgnoreHidden() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -198,12 +189,8 @@ func (sizeGroup *SizeGroup) IgnoreHidden() bool {
 //
 func (sizeGroup *SizeGroup) Widgets() []Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sizeGroup).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sizeGroup).Native()))
 
 	_gret := girepository.MustFind("Gtk", "SizeGroup").InvokeMethod("get_widgets", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -247,14 +234,9 @@ func (sizeGroup *SizeGroup) Widgets() []Widgetter {
 //
 func (sizeGroup *SizeGroup) RemoveWidget(widget Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sizeGroup).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sizeGroup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "SizeGroup").InvokeMethod("remove_widget", _args[:], nil)
 
@@ -278,16 +260,11 @@ func (sizeGroup *SizeGroup) RemoveWidget(widget Widgetter) {
 //
 func (sizeGroup *SizeGroup) SetIgnoreHidden(ignoreHidden bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sizeGroup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sizeGroup).Native()))
 	if ignoreHidden {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "SizeGroup").InvokeMethod("set_ignore_hidden", _args[:], nil)
 

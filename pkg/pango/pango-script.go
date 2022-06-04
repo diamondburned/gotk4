@@ -8,12 +8,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <pango/pango.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for pango-script.go.
@@ -529,101 +530,6 @@ func (s Script) String() string {
 	}
 }
 
-// ScriptForUnichar looks up the script for a particular character.
-//
-// The script of a character is defined by Unicode Standard Annex \#24. No check
-// is made for ch being a valid Unicode character; if you pass in invalid
-// character, the result is undefined.
-//
-// Note that while the return type of this function is declared as PangoScript,
-// as of Pango 1.18, this function simply returns the return value of
-// g_unichar_get_script(). Callers must be prepared to handle unknown values.
-//
-// Deprecated: Use g_unichar_get_script().
-//
-// The function takes the following parameters:
-//
-//    - ch: unicode character.
-//
-// The function returns the following values:
-//
-//    - script: PangoScript for the character.
-//
-func ScriptForUnichar(ch uint32) Script {
-	var _arg1 C.gunichar    // out
-	var _cret C.PangoScript // in
-
-	_arg1 = C.gunichar(ch)
-
-	_cret = C.pango_script_for_unichar(_arg1)
-	runtime.KeepAlive(ch)
-
-	var _script Script // out
-
-	_script = Script(_cret)
-
-	return _script
-}
-
-// ScriptGetSampleLanguage finds a language tag that is reasonably
-// representative of script.
-//
-// The language will usually be the most widely spoken or used language written
-// in that script: for instance, the sample language for PANGO_SCRIPT_CYRILLIC
-// is ru (Russian), the sample language for PANGO_SCRIPT_ARABIC is ar.
-//
-// For some scripts, no sample language will be returned because there is no
-// language that is sufficiently representative. The best example of this is
-// PANGO_SCRIPT_HAN, where various different variants of written Chinese,
-// Japanese, and Korean all use significantly different sets of Han characters
-// and forms of shared characters. No sample language can be provided for many
-// historical scripts as well.
-//
-// As of 1.18, this function checks the environment variables PANGO_LANGUAGE and
-// LANGUAGE (checked in that order) first. If one of them is set, it is parsed
-// as a list of language tags separated by colons or other separators. This
-// function will return the first language in the parsed list that Pango
-// believes may use script for writing. This last predicate is tested using
-// pango.Language.IncludesScript(). This can be used to control Pango's font
-// selection for non-primary languages. For example, a PANGO_LANGUAGE enviroment
-// variable set to "en:fa" makes Pango choose fonts suitable for Persian (fa)
-// instead of Arabic (ar) when a segment of Arabic text is found in an otherwise
-// non-Arabic text. The same trick can be used to choose a default language for
-// PANGO_SCRIPT_HAN when setting context language is not feasible.
-//
-// The function takes the following parameters:
-//
-//    - script: PangoScript.
-//
-// The function returns the following values:
-//
-//    - language (optional): PangoLanguage that is representative of the script,
-//      or NULL if no such language exists.
-//
-func ScriptGetSampleLanguage(script Script) *Language {
-	var _arg1 C.PangoScript    // out
-	var _cret *C.PangoLanguage // in
-
-	_arg1 = C.PangoScript(script)
-
-	_cret = C.pango_script_get_sample_language(_arg1)
-	runtime.KeepAlive(script)
-
-	var _language *Language // out
-
-	if _cret != nil {
-		_language = (*Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_language)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
-			},
-		)
-	}
-
-	return _language
-}
-
 // ScriptIter: PangoScriptIter is used to iterate through a string and identify
 // ranges in different scripts.
 //
@@ -634,25 +540,24 @@ type ScriptIter struct {
 
 // scriptIter is the struct that's finalized.
 type scriptIter struct {
-	native *C.PangoScriptIter
+	native unsafe.Pointer
 }
 
 func marshalScriptIter(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &ScriptIter{&scriptIter{(*C.PangoScriptIter)(b)}}, nil
+	return &ScriptIter{&scriptIter{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewScriptIter constructs a struct ScriptIter.
 func NewScriptIter(text string, length int32) *ScriptIter {
-	var _arg1 *C.char            // out
-	var _arg2 C.int              // out
-	var _cret *C.PangoScriptIter // in
+	var _args [2]girepository.Argument
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(length)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_args[0]))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(length)
 
-	_cret = C.pango_script_iter_new(_arg1, _arg2)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(length)
 
@@ -684,29 +589,28 @@ func NewScriptIter(text string, length int32) *ScriptIter {
 //    - script (optional): location to store script for range, or NULL.
 //
 func (iter *ScriptIter) Range() (start string, end string, script Script) {
-	var _arg0 *C.PangoScriptIter // out
-	var _arg1 *C.char            // in
-	var _arg2 *C.char            // in
-	var _arg3 C.PangoScript      // in
+	var _args [1]girepository.Argument
+	var _outs [3]girepository.Argument
 
-	_arg0 = (*C.PangoScriptIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	C.pango_script_iter_get_range(_arg0, &_arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(iter)
 
 	var _start string  // out
 	var _end string    // out
 	var _script Script // out
 
-	if _arg1 != nil {
-		_start = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
-		defer C.free(unsafe.Pointer(_arg1))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_start = C.GoString((*C.gchar)(unsafe.Pointer(_outs[0])))
+		defer C.free(unsafe.Pointer(_outs[0]))
 	}
-	if _arg2 != nil {
-		_end = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-		defer C.free(unsafe.Pointer(_arg2))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_end = C.GoString((*C.gchar)(unsafe.Pointer(_outs[1])))
+		defer C.free(unsafe.Pointer(_outs[1]))
 	}
-	_script = Script(_arg3)
+	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
+		_script = *(*Script)(unsafe.Pointer(_outs[2]))
+	}
 
 	return _start, _end, _script
 }
@@ -719,17 +623,17 @@ func (iter *ScriptIter) Range() (start string, end string, script Script) {
 //    - ok: TRUE if iter was successfully advanced.
 //
 func (iter *ScriptIter) Next() bool {
-	var _arg0 *C.PangoScriptIter // out
-	var _cret C.gboolean         // in
+	var _args [1]girepository.Argument
 
-	_arg0 = (*C.PangoScriptIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = C.pango_script_iter_next(_arg0)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

@@ -4,7 +4,6 @@ package gio
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
@@ -75,15 +74,9 @@ func marshalNativeSocketAddress(p uintptr) (interface{}, error) {
 //
 func NewNativeSocketAddress(native unsafe.Pointer, len uint) *NativeSocketAddress {
 	var _args [2]girepository.Argument
-	var _arg0 C.gpointer // out
-	var _arg1 C.gsize    // out
-	var _cret *C.void    // in
 
-	_arg0 = (C.gpointer)(unsafe.Pointer(native))
-	_arg1 = C.gsize(len)
-
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gsize)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = (C.gpointer)(unsafe.Pointer(native))
+	*(*C.gsize)(unsafe.Pointer(&_args[1])) = C.gsize(len)
 
 	_gret := girepository.MustFind("Gio", "NativeSocketAddress").InvokeMethod("new_NativeSocketAddress", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

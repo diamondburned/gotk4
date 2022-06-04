@@ -4,6 +4,7 @@ package callable
 import (
 	"fmt"
 	"log"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -260,12 +261,12 @@ func (g *Generator) renderDynamicLinkedBlock() bool {
 			switch types.GuessParameterOutput(&param) {
 			case "in":
 				in = strcases.SnakeToGo(false, param.Name)
-				out = fmt.Sprintf("_arg%d", i+1)
-				dir = typeconv.ConvertGoToC
 				if contextParamIx == i {
 					// Idiomatic context naming.
 					in = "ctx"
 				}
+				out = fmt.Sprintf("_arg%d", i+1)
+				dir = typeconv.ConvertGoToC
 			case "out":
 				in = fmt.Sprintf("_arg%d", i+1)
 				out = "_" + strcases.SnakeToGo(false, param.Name)
@@ -458,11 +459,10 @@ func (g *Generator) renderRuntimeLinkedBlock() bool {
 
 			callableValues = append(callableValues, typeconv.NewReceiverValue(
 				strcases.SnakeToGo(false, g.Parameters.InstanceParameter.Name),
-				"_arg0",
+				"_args[0]",
 				typeconv.ConvertGoToC,
 				g.Parameters.InstanceParameter,
 			))
-
 			nIn++
 		}
 
@@ -471,28 +471,21 @@ func (g *Generator) renderRuntimeLinkedBlock() bool {
 			var out string
 			var dir typeconv.ConversionDirection
 
-			// TODO: figure out a more suitable way to generate names. Since we
-			// need the type name to do the unsafe casting, we might want to
-			// make Name a func() string instead.
-			//
-			// Either that, or we make a custom attribute in typeconv that
-			// forces it to generate unsafe casts for everything.
-
 			switch types.GuessParameterOutput(&param) {
 			case "in":
 				in = strcases.SnakeToGo(false, param.Name)
-				out = fmt.Sprintf("_arg%d", nIn)
-				dir = typeconv.ConvertGoToC
 				if contextParamIx == i {
 					// Idiomatic context naming.
 					in = "ctx"
 				}
+				out = fmt.Sprintf("_args[%d]", nIn)
+				dir = typeconv.ConvertGoToC
 
 				argumentIndices[len(callableValues)] = nIn
 				nIn++
 
 			case "out":
-				in = fmt.Sprintf("_out%d", nOut)
+				in = fmt.Sprintf("_outs[%d]", nOut)
 				out = "_" + strcases.SnakeToGo(false, param.Name)
 				dir = typeconv.ConvertCToGo
 
@@ -544,12 +537,14 @@ func (g *Generator) renderRuntimeLinkedBlock() bool {
 	}
 
 	g.Conv = typeconv.NewConverter(g.gen, g.typ, callableValues)
-	g.Conv.UseLogger(g)
-
 	if g.Conv == nil {
 		g.Logln(logger.Debug, "converter failed", cFunctionHeader(g.CallableAttrs))
 		return false
 	}
+
+	g.Conv.UseLogger(g)
+	// Force unsafe.Pointer casting from girepository.Argument.
+	g.Conv.MustCast = true
 
 	g.Results = g.Conv.ConvertAll()
 	if g.Results == nil {
@@ -583,7 +578,7 @@ func (g *Generator) renderRuntimeLinkedBlock() bool {
 
 			// Go inputs are declared in the parameters, so no In.Declare.
 			// C outputs have to be declared (input means C function input).
-			g.pen.Line(secInputDecl, converted.Out.Declare)
+			// g.pen.Line(secInputDecl, converted.Out.Declare)
 			// Conversions follow right after declaring all outputs.
 			g.pen.Line(secInputConv, converted.Conversion)
 
@@ -596,32 +591,11 @@ func (g *Generator) renderRuntimeLinkedBlock() bool {
 
 			goReturns.Add(converted.OutName)
 
-			g.pen.Line(secInputDecl, converted.In.Declare)
+			// g.pen.Line(secInputDecl, converted.In.Declare)
 			// Go outputs should be redeclared.
 			g.pen.Line(secOutputDecl, converted.Out.Declare)
 			// Conversions follow right after declaring all outputs.
 			g.pen.Line(secOutputConv, converted.Conversion)
-		}
-	}
-
-	g.pen.EmptyLine(secInputConv)
-	for i, converted := range g.Results {
-		argIx, ok := argumentIndices[i]
-		if !ok {
-			continue
-		}
-
-		switch converted.Direction {
-		case typeconv.ConvertGoToC:
-			g.pen.Linef(secInputConv,
-				"*(*%[2]s)(unsafe.Pointer(&_args[%[1]d])) = _arg%[1]d",
-				argIx, converted.Out.Type,
-			)
-		case typeconv.ConvertCToGo:
-			g.pen.Linef(secOutputDecl,
-				"_out%[1]d = *(*%[2]s)(unsafe.Pointer(&_outs[%[1]d]))",
-				argIx, converted.In.Type,
-			)
 		}
 	}
 
@@ -711,42 +685,52 @@ func (g *Generator) CoalesceTail() {
 	g.Tail = CoalesceTail(g.Tail)
 }
 
+var partsRegex = regexp.MustCompile(`\(.*?\)`)
+
 // CoalesceTail coalesces certain parameters with the same type to be shorter.
 func CoalesceTail(tail string) string {
-	if !strings.HasPrefix(tail, "(") {
-		return tail
-	}
+	return partsRegex.ReplaceAllStringFunc(tail, func(whole string) string {
+		part := whole
+		part = strings.TrimPrefix(part, "(")
+		part = strings.TrimSuffix(part, ")")
 
-	paramIx := strings.Index(tail, ")")
-	params := strings.Split(tail[1:paramIx], ",")
-
-	newParams := strings.Builder{}
-	newParams.Grow(len(tail))
-	newParams.WriteByte('(')
-
-	for i, param := range params {
-		if i == len(params)-1 {
-			newParams.WriteString(param)
-			break
+		params := strings.Split(part, ",")
+		if !strings.Contains(params[0], " ") {
+			// Probably a return; this should skip the whole loop.
+			return whole
 		}
 
-		n, t1 := splitParam(param)
-		_, t2 := splitParam(params[i+1])
+		newParams := strings.Builder{}
+		newParams.Grow(len(part))
+		newParams.WriteByte('(')
 
-		if t1 == t2 {
-			// Same type; write the name only.
-			newParams.WriteString(n)
-		} else {
-			newParams.WriteString(param)
+		for i, param := range params {
+			if !strings.Contains(param, " ") {
+				// Probably a return; this should skip the whole loop.
+				continue
+			}
+
+			if i == len(params)-1 {
+				newParams.WriteString(param)
+				break
+			}
+
+			n, t1 := splitParam(param)
+			_, t2 := splitParam(params[i+1])
+
+			if t1 == t2 {
+				// Same type; write the name only.
+				newParams.WriteString(n)
+			} else {
+				newParams.WriteString(param)
+			}
+
+			newParams.WriteString(", ")
 		}
 
-		newParams.WriteString(", ")
-	}
-
-	newParams.WriteByte(')')
-	newParams.WriteString(tail[paramIx+1:])
-
-	return newParams.String()
+		newParams.WriteByte(')')
+		return newParams.String()
+	})
 }
 
 func splitParam(param string) (name, typ string) {

@@ -37,12 +37,12 @@ type Color struct {
 
 // color is the struct that's finalized.
 type color struct {
-	native *C.GdkColor
+	native unsafe.Pointer
 }
 
 func marshalColor(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &Color{&color{(*C.GdkColor)(b)}}, nil
+	return &Color{&color{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewColor creates a new Color instance from the given
@@ -70,30 +70,38 @@ func NewColor(pixel uint32, red, green, blue uint16) Color {
 // Pixel: for allocated colors, the pixel value used to draw this color on the
 // screen. Not used anymore.
 func (c *Color) Pixel() uint32 {
+	offset := girepository.MustFind("Gdk", "Color").StructFieldOffset("pixel")
+	valptr := unsafe.Add(unsafe.Pointer(c), offset)
 	var v uint32 // out
-	v = uint32(c.native.pixel)
+	v = uint32(*(*C.guint32)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Red: red component of the color. This is a value between 0 and 65535, with
 // 65535 indicating full intensity.
 func (c *Color) Red() uint16 {
+	offset := girepository.MustFind("Gdk", "Color").StructFieldOffset("red")
+	valptr := unsafe.Add(unsafe.Pointer(c), offset)
 	var v uint16 // out
-	v = uint16(c.native.red)
+	v = uint16(*(*C.guint16)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Green: green component of the color.
 func (c *Color) Green() uint16 {
+	offset := girepository.MustFind("Gdk", "Color").StructFieldOffset("green")
+	valptr := unsafe.Add(unsafe.Pointer(c), offset)
 	var v uint16 // out
-	v = uint16(c.native.green)
+	v = uint16(*(*C.guint16)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Blue: blue component of the color.
 func (c *Color) Blue() uint16 {
+	offset := girepository.MustFind("Gdk", "Color").StructFieldOffset("blue")
+	valptr := unsafe.Add(unsafe.Pointer(c), offset)
 	var v uint16 // out
-	v = uint16(c.native.blue)
+	v = uint16(*(*C.guint16)(unsafe.Pointer(&valptr)))
 	return v
 }
 
@@ -109,12 +117,8 @@ func (c *Color) Blue() uint16 {
 //
 func (color *Color) Copy() *Color {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -147,15 +151,9 @@ func (color *Color) Copy() *Color {
 //
 func (colora *Color) Equal(colorb *Color) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(colora)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(colorb)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(colora)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(colorb)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -164,7 +162,7 @@ func (colora *Color) Equal(colorb *Color) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -181,12 +179,8 @@ func (colora *Color) Equal(colorb *Color) bool {
 //
 func (color *Color) Hash() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
@@ -194,7 +188,7 @@ func (color *Color) Hash() uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -213,12 +207,8 @@ func (color *Color) Hash() uint32 {
 //
 func (color *Color) String() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -256,14 +246,9 @@ func (color *Color) String() string {
 func ColorParse(spec string) (*Color, bool) {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(spec)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(spec)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gdk", "parse").Invoke(_args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -272,10 +257,9 @@ func ColorParse(spec string) (*Color, bool) {
 
 	var _color *Color // out
 	var _ok bool      // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_color = (*Color)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	if _cret != 0 {
+	_color = (*Color)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

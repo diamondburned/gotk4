@@ -36,20 +36,12 @@ import "C"
 //
 func NewPropertyAction(name string, object *coreglib.Object, propertyName string) *PropertyAction {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _arg2 *C.void    // out
-	var _cret *C.void    // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg0))
-	_arg1 = C.gpointer(unsafe.Pointer(object.Native()))
-	_arg2 = (*C.void)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[0]))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = C.gpointer(unsafe.Pointer(object.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(_args[2]))
 
 	_gret := girepository.MustFind("Gio", "PropertyAction").InvokeMethod("new_PropertyAction", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

@@ -72,15 +72,9 @@ func marshalX11Keymap(p uintptr) (interface{}, error) {
 //
 func (keymap *X11Keymap) GroupForState(state uint32) int32 {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
-	_arg1 = C.guint(state)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(state)
 
 	_gret := girepository.MustFind("GdkX11", "X11Keymap").InvokeMethod("get_group_for_state", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -90,7 +84,7 @@ func (keymap *X11Keymap) GroupForState(state uint32) int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -111,15 +105,9 @@ func (keymap *X11Keymap) GroupForState(state uint32) int32 {
 //
 func (keymap *X11Keymap) KeyIsModifier(keycode uint32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.guint    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
-	_arg1 = C.guint(keycode)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(keycode)
 
 	_gret := girepository.MustFind("GdkX11", "X11Keymap").InvokeMethod("key_is_modifier", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -129,7 +117,7 @@ func (keymap *X11Keymap) KeyIsModifier(keycode uint32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

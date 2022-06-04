@@ -113,12 +113,8 @@ func marshalScrollbar(p uintptr) (interface{}, error) {
 //
 func (self *Scrollbar) Adjustment() *Adjustment {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Scrollbar").InvokeMethod("get_adjustment", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -140,16 +136,11 @@ func (self *Scrollbar) Adjustment() *Adjustment {
 //
 func (self *Scrollbar) SetAdjustment(adjustment *Adjustment) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if adjustment != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Scrollbar").InvokeMethod("set_adjustment", _args[:], nil)
 

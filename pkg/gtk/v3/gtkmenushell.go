@@ -511,19 +511,12 @@ func (menuShell *MenuShell) ConnectSelectionDone(f func()) coreglib.SignalHandle
 //
 func (menuShell *MenuShell) ActivateItem(menuItem Widgetter, forceDeactivate bool) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 	if forceDeactivate {
-		_arg2 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "MenuShell").InvokeMethod("activate_item", _args[:], nil)
 
@@ -540,14 +533,9 @@ func (menuShell *MenuShell) ActivateItem(menuItem Widgetter, forceDeactivate boo
 //
 func (menuShell *MenuShell) Append(child *MenuItem) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
 	girepository.MustFind("Gtk", "MenuShell").InvokeMethod("append", _args[:], nil)
 
@@ -593,27 +581,18 @@ func (menuShell *MenuShell) Append(child *MenuItem) {
 //
 func (menuShell *MenuShell) BindModel(model gio.MenuModeller, actionNamespace string, withSeparators bool) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 *C.void    // out
-	var _arg3 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 	if model != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
 	if actionNamespace != "" {
-		_arg2 = (*C.void)(unsafe.Pointer(C.CString(actionNamespace)))
-		defer C.free(unsafe.Pointer(_arg2))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(actionNamespace)))
+		defer C.free(unsafe.Pointer(_args[2]))
 	}
 	if withSeparators {
-		_arg3 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gboolean)(unsafe.Pointer(&_args[3])) = _arg3
 
 	girepository.MustFind("Gtk", "MenuShell").InvokeMethod("bind_model", _args[:], nil)
 
@@ -626,11 +605,8 @@ func (menuShell *MenuShell) BindModel(model gio.MenuModeller, actionNamespace st
 // Cancel cancels the selection within the menu shell.
 func (menuShell *MenuShell) Cancel() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 
 	girepository.MustFind("Gtk", "MenuShell").InvokeMethod("cancel", _args[:], nil)
 
@@ -642,11 +618,8 @@ func (menuShell *MenuShell) Cancel() {
 // Typically this results in the menu shell being erased from the screen.
 func (menuShell *MenuShell) Deactivate() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 
 	girepository.MustFind("Gtk", "MenuShell").InvokeMethod("deactivate", _args[:], nil)
 
@@ -656,11 +629,8 @@ func (menuShell *MenuShell) Deactivate() {
 // Deselect deselects the currently selected item from the menu shell, if any.
 func (menuShell *MenuShell) Deselect() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 
 	girepository.MustFind("Gtk", "MenuShell").InvokeMethod("deselect", _args[:], nil)
 
@@ -678,12 +648,8 @@ func (menuShell *MenuShell) Deselect() {
 //
 func (menuShell *MenuShell) ParentShell() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 
 	_gret := girepository.MustFind("Gtk", "MenuShell").InvokeMethod("get_parent_shell", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -721,12 +687,8 @@ func (menuShell *MenuShell) ParentShell() Widgetter {
 //
 func (menuShell *MenuShell) SelectedItem() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 
 	_gret := girepository.MustFind("Gtk", "MenuShell").InvokeMethod("get_selected_item", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -765,12 +727,8 @@ func (menuShell *MenuShell) SelectedItem() Widgetter {
 //
 func (menuShell *MenuShell) TakeFocus() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 
 	_gret := girepository.MustFind("Gtk", "MenuShell").InvokeMethod("get_take_focus", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -779,7 +737,7 @@ func (menuShell *MenuShell) TakeFocus() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -797,17 +755,10 @@ func (menuShell *MenuShell) TakeFocus() bool {
 //
 func (menuShell *MenuShell) Insert(child Widgetter, position int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	_arg2 = C.gint(position)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(position)
 
 	girepository.MustFind("Gtk", "MenuShell").InvokeMethod("insert", _args[:], nil)
 
@@ -824,14 +775,9 @@ func (menuShell *MenuShell) Insert(child Widgetter, position int32) {
 //
 func (menuShell *MenuShell) Prepend(child Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
 	girepository.MustFind("Gtk", "MenuShell").InvokeMethod("prepend", _args[:], nil)
 
@@ -850,16 +796,11 @@ func (menuShell *MenuShell) Prepend(child Widgetter) {
 //
 func (menuShell *MenuShell) SelectFirst(searchSensitive bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 	if searchSensitive {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "MenuShell").InvokeMethod("select_first", _args[:], nil)
 
@@ -875,14 +816,9 @@ func (menuShell *MenuShell) SelectFirst(searchSensitive bool) {
 //
 func (menuShell *MenuShell) SelectItem(menuItem Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 
 	girepository.MustFind("Gtk", "MenuShell").InvokeMethod("select_item", _args[:], nil)
 
@@ -922,16 +858,11 @@ func (menuShell *MenuShell) SelectItem(menuItem Widgetter) {
 //
 func (menuShell *MenuShell) SetTakeFocus(takeFocus bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 	if takeFocus {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "MenuShell").InvokeMethod("set_take_focus", _args[:], nil)
 

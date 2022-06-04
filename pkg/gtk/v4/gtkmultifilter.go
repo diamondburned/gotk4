@@ -90,8 +90,6 @@ func marshalAnyFilter(p uintptr) (interface{}, error) {
 //    - anyFilter: new GtkAnyFilter.
 //
 func NewAnyFilter() *AnyFilter {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "AnyFilter").InvokeMethod("new_AnyFilter", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -160,8 +158,6 @@ func marshalEveryFilter(p uintptr) (interface{}, error) {
 //    - everyFilter: new GtkEveryFilter.
 //
 func NewEveryFilter() *EveryFilter {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "EveryFilter").InvokeMethod("new_EveryFilter", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -246,15 +242,10 @@ func BaseMultiFilter(obj MultiFilterer) *MultiFilter {
 //
 func (self *MultiFilter) Append(filter *Filter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(filter).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "MultiFilter").InvokeMethod("append", _args[:], nil)
 
@@ -274,14 +265,9 @@ func (self *MultiFilter) Append(filter *Filter) {
 //
 func (self *MultiFilter) Remove(position uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = C.guint(position)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
 
 	girepository.MustFind("Gtk", "MultiFilter").InvokeMethod("remove", _args[:], nil)
 

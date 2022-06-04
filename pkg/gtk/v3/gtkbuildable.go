@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -424,23 +423,14 @@ func marshalBuildable(p uintptr) (interface{}, error) {
 //
 func (buildable *Buildable) AddChild(builder *Builder, child *coreglib.Object, typ string) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	_arg2 = (*C.void)(unsafe.Pointer(child.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(child.Native()))
 	if typ != "" {
-		_arg3 = (*C.void)(unsafe.Pointer(C.CString(typ)))
-		defer C.free(unsafe.Pointer(_arg3))
+		*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(C.CString(typ)))
+		defer C.free(unsafe.Pointer(_args[3]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
 
 	runtime.KeepAlive(buildable)
 	runtime.KeepAlive(builder)
@@ -464,19 +454,11 @@ func (buildable *Buildable) AddChild(builder *Builder, child *coreglib.Object, t
 //
 func (buildable *Buildable) ConstructChild(builder *Builder, name string) *coreglib.Object {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	_arg2 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[2]))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -503,26 +485,15 @@ func (buildable *Buildable) ConstructChild(builder *Builder, name string) *coreg
 //
 func (buildable *Buildable) CustomFinished(builder *Builder, child *coreglib.Object, tagname string, data unsafe.Pointer) {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 *C.void    // out
-	var _arg3 *C.void    // out
-	var _arg4 C.gpointer // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
 	if child != nil {
-		_arg2 = (*C.void)(unsafe.Pointer(child.Native()))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(child.Native()))
 	}
-	_arg3 = (*C.void)(unsafe.Pointer(C.CString(tagname)))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (C.gpointer)(unsafe.Pointer(data))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.gpointer)(unsafe.Pointer(&_args[4])) = _arg4
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(C.CString(tagname)))
+	defer C.free(unsafe.Pointer(_args[3]))
+	*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (C.gpointer)(unsafe.Pointer(data))
 
 	runtime.KeepAlive(buildable)
 	runtime.KeepAlive(builder)
@@ -543,28 +514,17 @@ func (buildable *Buildable) CustomFinished(builder *Builder, child *coreglib.Obj
 //
 func (buildable *Buildable) CustomTagEnd(builder *Builder, child *coreglib.Object, tagname string, data *unsafe.Pointer) {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 *C.void // out
-	var _arg4 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
 	if child != nil {
-		_arg2 = (*C.void)(unsafe.Pointer(child.Native()))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(child.Native()))
 	}
-	_arg3 = (*C.void)(unsafe.Pointer(C.CString(tagname)))
-	defer C.free(unsafe.Pointer(_arg3))
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(C.CString(tagname)))
+	defer C.free(unsafe.Pointer(_args[3]))
 	if data != nil {
-		_arg4 = (*C.void)(unsafe.Pointer(data))
+		*(**C.void)(unsafe.Pointer(&_args[4])) = (*C.void)(unsafe.Pointer(data))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
-	*(**C.void)(unsafe.Pointer(&_args[4])) = _arg4
 
 	runtime.KeepAlive(buildable)
 	runtime.KeepAlive(builder)
@@ -591,26 +551,14 @@ func (buildable *Buildable) CustomTagEnd(builder *Builder, child *coreglib.Objec
 func (buildable *Buildable) CustomTagStart(builder *Builder, child *coreglib.Object, tagname string) (*glib.MarkupParser, unsafe.Pointer, bool) {
 	var _args [4]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 *C.void    // out
-	var _arg3 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
 	if child != nil {
-		_arg2 = (*C.void)(unsafe.Pointer(child.Native()))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(child.Native()))
 	}
-	_arg3 = (*C.void)(unsafe.Pointer(C.CString(tagname)))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(C.CString(tagname)))
+	defer C.free(unsafe.Pointer(_args[3]))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -622,14 +570,12 @@ func (buildable *Buildable) CustomTagStart(builder *Builder, child *coreglib.Obj
 	var _parser *glib.MarkupParser // out
 	var _data unsafe.Pointer       // out
 	var _ok bool                   // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_parser = (*glib.MarkupParser)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	if _out1 != nil {
-		_data = (unsafe.Pointer)(unsafe.Pointer(_out1))
+	_parser = (*glib.MarkupParser)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_data = (unsafe.Pointer)(unsafe.Pointer(_outs[1]))
 	}
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -650,19 +596,11 @@ func (buildable *Buildable) CustomTagStart(builder *Builder, child *coreglib.Obj
 //
 func (buildable *Buildable) InternalChild(builder *Builder, childname string) *coreglib.Object {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	_arg2 = (*C.void)(unsafe.Pointer(C.CString(childname)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(childname)))
+	defer C.free(unsafe.Pointer(_args[2]))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -688,12 +626,8 @@ func (buildable *Buildable) InternalChild(builder *Builder, childname string) *c
 //
 func (buildable *Buildable) Name() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -717,14 +651,9 @@ func (buildable *Buildable) Name() string {
 //
 func (buildable *Buildable) ParserFinished(builder *Builder) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
 
 	runtime.KeepAlive(buildable)
 	runtime.KeepAlive(builder)
@@ -741,21 +670,12 @@ func (buildable *Buildable) ParserFinished(builder *Builder) {
 //
 func (buildable *Buildable) SetBuildableProperty(builder *Builder, name string, value *coreglib.Value) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	_arg2 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.void)(unsafe.Pointer(value.Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(value.Native()))
 
 	runtime.KeepAlive(buildable)
 	runtime.KeepAlive(builder)
@@ -771,15 +691,10 @@ func (buildable *Buildable) SetBuildableProperty(builder *Builder, name string, 
 //
 func (buildable *Buildable) SetName(name string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	runtime.KeepAlive(buildable)
 	runtime.KeepAlive(name)

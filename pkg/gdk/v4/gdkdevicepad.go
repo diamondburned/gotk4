@@ -131,15 +131,9 @@ func marshalDevicePad(p uintptr) (interface{}, error) {
 //
 func (pad *DevicePad) GroupNModes(groupIdx int32) int32 {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pad).Native()))
-	_arg1 = C.int(groupIdx)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pad).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(groupIdx)
 
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
@@ -148,7 +142,7 @@ func (pad *DevicePad) GroupNModes(groupIdx int32) int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -164,12 +158,8 @@ func (pad *DevicePad) GroupNModes(groupIdx int32) int32 {
 //
 func (pad *DevicePad) NGroups() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pad).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pad).Native()))
 
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
@@ -177,7 +167,7 @@ func (pad *DevicePad) NGroups() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }

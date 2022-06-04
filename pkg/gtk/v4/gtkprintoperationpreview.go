@@ -263,11 +263,8 @@ func (preview *PrintOperationPreview) ConnectReady(f func(context *PrintContext)
 // This function must be called to finish a custom print preview.
 func (preview *PrintOperationPreview) EndPreview() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(preview).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(preview).Native()))
 
 	runtime.KeepAlive(preview)
 }
@@ -285,15 +282,9 @@ func (preview *PrintOperationPreview) EndPreview() {
 //
 func (preview *PrintOperationPreview) IsSelected(pageNr int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.int      // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(preview).Native()))
-	_arg1 = C.int(pageNr)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(preview).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(pageNr)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -302,7 +293,7 @@ func (preview *PrintOperationPreview) IsSelected(pageNr int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -326,14 +317,9 @@ func (preview *PrintOperationPreview) IsSelected(pageNr int32) bool {
 //
 func (preview *PrintOperationPreview) RenderPage(pageNr int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(preview).Native()))
-	_arg1 = C.int(pageNr)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(preview).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(pageNr)
 
 	runtime.KeepAlive(preview)
 	runtime.KeepAlive(pageNr)

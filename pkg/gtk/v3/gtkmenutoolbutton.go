@@ -176,20 +176,14 @@ func (button *MenuToolButton) ConnectShowMenu(f func()) coreglib.SignalHandle {
 //
 func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
 	if iconWidget != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconWidget).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconWidget).Native()))
 	}
 	if label != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("new_MenuToolButton", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -220,13 +214,9 @@ func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
 //
 func NewMenuToolButtonFromStock(stockId string) *MenuToolButton {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("new_MenuToolButton_from_stock", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -248,12 +238,8 @@ func NewMenuToolButtonFromStock(stockId string) *MenuToolButton {
 //
 func (button *MenuToolButton) Menu() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
 	_gret := girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("get_menu", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -293,15 +279,10 @@ func (button *MenuToolButton) Menu() Widgetter {
 //
 func (button *MenuToolButton) SetArrowTooltipMarkup(markup string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(markup)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(markup)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("set_arrow_tooltip_markup", _args[:], nil)
 
@@ -319,15 +300,10 @@ func (button *MenuToolButton) SetArrowTooltipMarkup(markup string) {
 //
 func (button *MenuToolButton) SetArrowTooltipText(text string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("set_arrow_tooltip_text", _args[:], nil)
 
@@ -344,14 +320,9 @@ func (button *MenuToolButton) SetArrowTooltipText(text string) {
 //
 func (button *MenuToolButton) SetMenu(menu Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 
 	girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("set_menu", _args[:], nil)
 

@@ -101,11 +101,8 @@ func (d DestDefaults) Has(other DestDefaults) bool {
 // gtk_drag_dest_set_target_list().
 func (widget *Widget) DragDestAddImageTargets() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_dest_add_image_targets", _args[:], nil)
 
@@ -118,11 +115,8 @@ func (widget *Widget) DragDestAddImageTargets() {
 // gtk_drag_dest_set_target_list().
 func (widget *Widget) DragDestAddTextTargets() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_dest_add_text_targets", _args[:], nil)
 
@@ -135,11 +129,8 @@ func (widget *Widget) DragDestAddTextTargets() {
 // gtk_drag_dest_set_target_list().
 func (widget *Widget) DragDestAddURITargets() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_dest_add_uri_targets", _args[:], nil)
 
@@ -155,12 +146,8 @@ func (widget *Widget) DragDestAddURITargets() {
 //
 func (widget *Widget) DragDestGetTargetList() *TargetList {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_dest_get_target_list", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -169,7 +156,7 @@ func (widget *Widget) DragDestGetTargetList() *TargetList {
 
 	var _targetList *TargetList // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.gtk_target_list_ref(_cret)
 		runtime.SetFinalizer(
@@ -192,12 +179,8 @@ func (widget *Widget) DragDestGetTargetList() *TargetList {
 //
 func (widget *Widget) DragDestGetTrackMotion() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_dest_get_track_motion", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -206,7 +189,7 @@ func (widget *Widget) DragDestGetTrackMotion() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -223,16 +206,11 @@ func (widget *Widget) DragDestGetTrackMotion() bool {
 //
 func (widget *Widget) DragDestSetTargetList(targetList *TargetList) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if targetList != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(targetList)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(targetList)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_dest_set_target_list", _args[:], nil)
 
@@ -253,16 +231,11 @@ func (widget *Widget) DragDestSetTargetList(targetList *TargetList) {
 //
 func (widget *Widget) DragDestSetTrackMotion(trackMotion bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if trackMotion {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_dest_set_track_motion", _args[:], nil)
 
@@ -274,11 +247,8 @@ func (widget *Widget) DragDestSetTrackMotion(trackMotion bool) {
 // gtk_drag_dest_set(). The widget will no longer receive notification of drags.
 func (widget *Widget) DragDestUnset() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_dest_unset", _args[:], nil)
 

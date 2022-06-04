@@ -99,8 +99,6 @@ func marshalFixedLayout(p uintptr) (interface{}, error) {
 //    - fixedLayout: newly created GtkFixedLayout.
 //
 func NewFixedLayout() *FixedLayout {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "FixedLayout").InvokeMethod("new_FixedLayout", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -153,12 +151,8 @@ func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
 //
 func (child *FixedLayoutChild) Transform() *gsk.Transform {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
 	_gret := girepository.MustFind("Gtk", "FixedLayoutChild").InvokeMethod("get_transform", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -167,7 +161,7 @@ func (child *FixedLayoutChild) Transform() *gsk.Transform {
 
 	var _transform *gsk.Transform // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_transform = (*gsk.Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.gsk_transform_ref(_cret)
 		runtime.SetFinalizer(
@@ -189,14 +183,9 @@ func (child *FixedLayoutChild) Transform() *gsk.Transform {
 //
 func (child *FixedLayoutChild) SetTransform(transform *gsk.Transform) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(transform)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(transform)))
 
 	girepository.MustFind("Gtk", "FixedLayoutChild").InvokeMethod("set_transform", _args[:], nil)
 

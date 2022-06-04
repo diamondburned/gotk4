@@ -561,19 +561,14 @@ func (obj *Value) ConnectValueChanged(f func(value float64, text string)) coregl
 func (obj *Value) CurrentValue() coreglib.Value {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 
 	runtime.KeepAlive(obj)
 
 	var _value coreglib.Value // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(_out0))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer(_outs[0]))
 
 	return _value
 }
@@ -589,12 +584,8 @@ func (obj *Value) CurrentValue() coreglib.Value {
 //
 func (obj *Value) Increment() float64 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.gdouble // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 
 	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
 
@@ -602,7 +593,7 @@ func (obj *Value) Increment() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(_cret)
+	_gdouble = float64(*(*C.gdouble)(unsafe.Pointer(&_cret)))
 
 	return _gdouble
 }
@@ -618,19 +609,14 @@ func (obj *Value) Increment() float64 {
 func (obj *Value) MaximumValue() coreglib.Value {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 
 	runtime.KeepAlive(obj)
 
 	var _value coreglib.Value // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(_out0))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer(_outs[0]))
 
 	return _value
 }
@@ -649,19 +635,14 @@ func (obj *Value) MaximumValue() coreglib.Value {
 func (obj *Value) MinimumIncrement() coreglib.Value {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 
 	runtime.KeepAlive(obj)
 
 	var _value coreglib.Value // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(_out0))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer(_outs[0]))
 
 	return _value
 }
@@ -677,19 +658,14 @@ func (obj *Value) MinimumIncrement() coreglib.Value {
 func (obj *Value) MinimumValue() coreglib.Value {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 
 	runtime.KeepAlive(obj)
 
 	var _value coreglib.Value // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(_out0))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer(_outs[0]))
 
 	return _value
 }
@@ -704,12 +680,8 @@ func (obj *Value) MinimumValue() coreglib.Value {
 //
 func (obj *Value) Range() *Range {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -717,7 +689,7 @@ func (obj *Value) Range() *Range {
 
 	var __range *Range // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(__range)),
@@ -740,12 +712,8 @@ func (obj *Value) Range() *Range {
 //
 func (obj *Value) SubRanges() []*Range {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -783,25 +751,18 @@ func (obj *Value) SubRanges() []*Range {
 func (obj *Value) ValueAndText() (float64, string) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 
 	runtime.KeepAlive(obj)
 
 	var _value float64 // out
 	var _text string   // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_value = *(*float64)(unsafe.Pointer(_out0))
-	if _out1 != nil {
-		_text = C.GoString((*C.gchar)(unsafe.Pointer(_out1)))
-		defer C.free(unsafe.Pointer(_out1))
+	_value = *(*float64)(unsafe.Pointer(_outs[0]))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_text = C.GoString((*C.gchar)(unsafe.Pointer(_outs[1])))
+		defer C.free(unsafe.Pointer(_outs[1]))
 	}
 
 	return _value, _text
@@ -821,15 +782,9 @@ func (obj *Value) ValueAndText() (float64, string) {
 //
 func (obj *Value) SetCurrentValue(value *coreglib.Value) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(value.Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(value.Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -838,7 +793,7 @@ func (obj *Value) SetCurrentValue(value *coreglib.Value) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -864,14 +819,9 @@ func (obj *Value) SetCurrentValue(value *coreglib.Value) bool {
 //
 func (obj *Value) SetValue(newValue float64) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 C.gdouble // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
-	_arg1 = C.gdouble(newValue)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(newValue)
 
 	runtime.KeepAlive(obj)
 	runtime.KeepAlive(newValue)

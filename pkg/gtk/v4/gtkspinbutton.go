@@ -428,20 +428,12 @@ func (spinButton *SpinButton) ConnectWrapped(f func()) coreglib.SignalHandle {
 //
 func NewSpinButton(adjustment *Adjustment, climbRate float64, digits uint32) *SpinButton {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 C.double // out
-	var _arg2 C.guint  // out
-	var _cret *C.void  // in
 
 	if adjustment != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
-	_arg1 = C.double(climbRate)
-	_arg2 = C.guint(digits)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.double)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(climbRate)
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(digits)
 
 	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("new_SpinButton", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -480,18 +472,10 @@ func NewSpinButton(adjustment *Adjustment, climbRate float64, digits uint32) *Sp
 //
 func NewSpinButtonWithRange(min, max, step float64) *SpinButton {
 	var _args [3]girepository.Argument
-	var _arg0 C.double // out
-	var _arg1 C.double // out
-	var _arg2 C.double // out
-	var _cret *C.void  // in
 
-	_arg0 = C.double(min)
-	_arg1 = C.double(max)
-	_arg2 = C.double(step)
-
-	*(*C.double)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.double)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.double)(unsafe.Pointer(&_args[0])) = C.double(min)
+	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(max)
+	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(step)
 
 	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("new_SpinButton_with_range", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -521,22 +505,13 @@ func NewSpinButtonWithRange(min, max, step float64) *SpinButton {
 //
 func (spinButton *SpinButton) Configure(adjustment *Adjustment, climbRate float64, digits uint32) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 *C.void  // out
-	var _arg2 C.double // out
-	var _arg3 C.guint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 	if adjustment != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
-	_arg2 = C.double(climbRate)
-	_arg3 = C.guint(digits)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.guint)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(climbRate)
+	*(*C.guint)(unsafe.Pointer(&_args[3])) = C.guint(digits)
 
 	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("configure", _args[:], nil)
 
@@ -554,12 +529,8 @@ func (spinButton *SpinButton) Configure(adjustment *Adjustment, climbRate float6
 //
 func (spinButton *SpinButton) Adjustment() *Adjustment {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 
 	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("get_adjustment", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -581,12 +552,8 @@ func (spinButton *SpinButton) Adjustment() *Adjustment {
 //
 func (spinButton *SpinButton) ClimbRate() float64 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void  // out
-	var _cret C.double // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 
 	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("get_climb_rate", _args[:], nil)
 	_cret = *(*C.double)(unsafe.Pointer(&_gret))
@@ -595,7 +562,7 @@ func (spinButton *SpinButton) ClimbRate() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(_cret)
+	_gdouble = float64(*(*C.double)(unsafe.Pointer(&_cret)))
 
 	return _gdouble
 }
@@ -608,12 +575,8 @@ func (spinButton *SpinButton) ClimbRate() float64 {
 //
 func (spinButton *SpinButton) Digits() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 
 	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("get_digits", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -622,7 +585,7 @@ func (spinButton *SpinButton) Digits() uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -636,16 +599,11 @@ func (spinButton *SpinButton) Digits() uint32 {
 //    - step (optional): location to store step increment, or NULL.
 //    - page (optional): location to store page increment, or NULL.
 //
-func (spinButton *SpinButton) Increments() (step float64, page float64) {
+func (spinButton *SpinButton) Increments() (step, page float64) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 
 	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("get_increments", _args[:], _outs[:])
 
@@ -653,14 +611,12 @@ func (spinButton *SpinButton) Increments() (step float64, page float64) {
 
 	var _step float64 // out
 	var _page float64 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_step = *(*float64)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_step = *(*float64)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_page = *(*float64)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_page = *(*float64)(unsafe.Pointer(_outs[1]))
 	}
 
 	return _step, _page
@@ -674,12 +630,8 @@ func (spinButton *SpinButton) Increments() (step float64, page float64) {
 //
 func (spinButton *SpinButton) Numeric() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 
 	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("get_numeric", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -688,7 +640,7 @@ func (spinButton *SpinButton) Numeric() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -704,16 +656,11 @@ func (spinButton *SpinButton) Numeric() bool {
 //    - min (optional): location to store minimum allowed value, or NULL.
 //    - max (optional): location to store maximum allowed value, or NULL.
 //
-func (spinButton *SpinButton) Range() (min float64, max float64) {
+func (spinButton *SpinButton) Range() (min, max float64) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 
 	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("get_range", _args[:], _outs[:])
 
@@ -721,14 +668,12 @@ func (spinButton *SpinButton) Range() (min float64, max float64) {
 
 	var _min float64 // out
 	var _max float64 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_min = *(*float64)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_min = *(*float64)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_max = *(*float64)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_max = *(*float64)(unsafe.Pointer(_outs[1]))
 	}
 
 	return _min, _max
@@ -742,12 +687,8 @@ func (spinButton *SpinButton) Range() (min float64, max float64) {
 //
 func (spinButton *SpinButton) SnapToTicks() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 
 	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("get_snap_to_ticks", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -756,7 +697,7 @@ func (spinButton *SpinButton) SnapToTicks() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -771,12 +712,8 @@ func (spinButton *SpinButton) SnapToTicks() bool {
 //
 func (spinButton *SpinButton) Value() float64 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void  // out
-	var _cret C.double // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 
 	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("get_value", _args[:], nil)
 	_cret = *(*C.double)(unsafe.Pointer(&_gret))
@@ -785,7 +722,7 @@ func (spinButton *SpinButton) Value() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(_cret)
+	_gdouble = float64(*(*C.double)(unsafe.Pointer(&_cret)))
 
 	return _gdouble
 }
@@ -798,12 +735,8 @@ func (spinButton *SpinButton) Value() float64 {
 //
 func (spinButton *SpinButton) ValueAsInt() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 
 	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("get_value_as_int", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -812,7 +745,7 @@ func (spinButton *SpinButton) ValueAsInt() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -826,12 +759,8 @@ func (spinButton *SpinButton) ValueAsInt() int32 {
 //
 func (spinButton *SpinButton) Wrap() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 
 	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("get_wrap", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -840,7 +769,7 @@ func (spinButton *SpinButton) Wrap() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -855,14 +784,9 @@ func (spinButton *SpinButton) Wrap() bool {
 //
 func (spinButton *SpinButton) SetAdjustment(adjustment *Adjustment) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 
 	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("set_adjustment", _args[:], nil)
 
@@ -879,14 +803,9 @@ func (spinButton *SpinButton) SetAdjustment(adjustment *Adjustment) {
 //
 func (spinButton *SpinButton) SetClimbRate(climbRate float64) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 C.double // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
-	_arg1 = C.double(climbRate)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.double)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(climbRate)
 
 	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("set_climb_rate", _args[:], nil)
 
@@ -905,14 +824,9 @@ func (spinButton *SpinButton) SetClimbRate(climbRate float64) {
 //
 func (spinButton *SpinButton) SetDigits(digits uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
-	_arg1 = C.guint(digits)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(digits)
 
 	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("set_digits", _args[:], nil)
 
@@ -932,17 +846,10 @@ func (spinButton *SpinButton) SetDigits(digits uint32) {
 //
 func (spinButton *SpinButton) SetIncrements(step, page float64) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 C.double // out
-	var _arg2 C.double // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
-	_arg1 = C.double(step)
-	_arg2 = C.double(page)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.double)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(step)
+	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(page)
 
 	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("set_increments", _args[:], nil)
 
@@ -960,16 +867,11 @@ func (spinButton *SpinButton) SetIncrements(step, page float64) {
 //
 func (spinButton *SpinButton) SetNumeric(numeric bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 	if numeric {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("set_numeric", _args[:], nil)
 
@@ -989,17 +891,10 @@ func (spinButton *SpinButton) SetNumeric(numeric bool) {
 //
 func (spinButton *SpinButton) SetRange(min, max float64) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 C.double // out
-	var _arg2 C.double // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
-	_arg1 = C.double(min)
-	_arg2 = C.double(max)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.double)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(min)
+	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(max)
 
 	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("set_range", _args[:], nil)
 
@@ -1018,16 +913,11 @@ func (spinButton *SpinButton) SetRange(min, max float64) {
 //
 func (spinButton *SpinButton) SetSnapToTicks(snapToTicks bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 	if snapToTicks {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("set_snap_to_ticks", _args[:], nil)
 
@@ -1043,14 +933,9 @@ func (spinButton *SpinButton) SetSnapToTicks(snapToTicks bool) {
 //
 func (spinButton *SpinButton) SetValue(value float64) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 C.double // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
-	_arg1 = C.double(value)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.double)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(value)
 
 	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("set_value", _args[:], nil)
 
@@ -1067,16 +952,11 @@ func (spinButton *SpinButton) SetValue(value float64) {
 //
 func (spinButton *SpinButton) SetWrap(wrap bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 	if wrap {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("set_wrap", _args[:], nil)
 
@@ -1087,11 +967,8 @@ func (spinButton *SpinButton) SetWrap(wrap bool) {
 // Update: manually force an update of the spin button.
 func (spinButton *SpinButton) Update() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 
 	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("update", _args[:], nil)
 

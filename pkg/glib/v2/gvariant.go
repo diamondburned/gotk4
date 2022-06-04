@@ -5,7 +5,6 @@ package glib
 import (
 	"fmt"
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"

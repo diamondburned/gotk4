@@ -33,20 +33,13 @@ import "C"
 //
 func ShowURI(parent *Window, uri string, timestamp uint32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 *C.void   // out
-	var _arg2 C.guint32 // out
 
 	if parent != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint32(timestamp)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.guint32)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(timestamp)
 
 	girepository.MustFind("Gtk", "show_uri").Invoke(_args[:], nil)
 
@@ -74,34 +67,22 @@ func ShowURI(parent *Window, uri string, timestamp uint32) {
 //
 func ShowURIFull(ctx context.Context, parent *Window, uri string, timestamp uint32, callback gio.AsyncReadyCallback) {
 	var _args [6]girepository.Argument
-	var _arg3 *C.void    // out
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.guint32  // out
-	var _arg4 C.gpointer // out
-	var _arg5 C.gpointer
 
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 	if parent != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint32(timestamp)
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(timestamp)
 	if callback != nil {
-		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[5] = C.gpointer(gbox.AssignOnce(callback))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.guint32)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.gpointer)(unsafe.Pointer(&_args[4])) = _arg4
 
 	girepository.MustFind("Gtk", "show_uri_full").Invoke(_args[:], nil)
 
@@ -122,15 +103,9 @@ func ShowURIFull(ctx context.Context, parent *Window, uri string, timestamp uint
 //
 func ShowURIFullFinish(parent *Window, result gio.AsyncResulter) error {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
 	girepository.MustFind("Gtk", "show_uri_full_finish").Invoke(_args[:], nil)
 
@@ -139,7 +114,7 @@ func ShowURIFullFinish(parent *Window, result gio.AsyncResulter) error {
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 

@@ -192,8 +192,6 @@ func marshalActivateAction(p uintptr) (interface{}, error) {
 //    - activateAction: activate action.
 //
 func ActivateActionGet() *ActivateAction {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "get").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -251,18 +249,12 @@ func marshalCallbackAction(p uintptr) (interface{}, error) {
 //
 func NewCallbackAction(callback ShortcutFunc) *CallbackAction {
 	var _args [3]girepository.Argument
-	var _arg0 C.gpointer // out
-	var _arg1 C.gpointer
-	var _arg2 C.GDestroyNotify
-	var _cret *C.void // in
 
 	if callback != nil {
-		_arg0 = (*[0]byte)(C._gotk4_gtk4_ShortcutFunc)
-		_arg1 = C.gpointer(gbox.Assign(callback))
-		_arg2 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		*(*C.gpointer)(unsafe.Pointer(&_args[0])) = (*[0]byte)(C._gotk4_gtk4_ShortcutFunc)
+		_args[1] = C.gpointer(gbox.Assign(callback))
+		_args[2] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
-
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gtk", "CallbackAction").InvokeMethod("new_CallbackAction", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -270,7 +262,6 @@ func NewCallbackAction(callback ShortcutFunc) *CallbackAction {
 	runtime.KeepAlive(callback)
 
 	var _callbackAction *CallbackAction // out
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
 	_callbackAction = wrapCallbackAction(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
@@ -321,8 +312,6 @@ func marshalMnemonicAction(p uintptr) (interface{}, error) {
 //    - mnemonicAction: mnemonic action.
 //
 func MnemonicActionGet() *MnemonicAction {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "get").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -384,13 +373,9 @@ func marshalNamedAction(p uintptr) (interface{}, error) {
 //
 func NewNamedAction(name string) *NamedAction {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "NamedAction").InvokeMethod("new_NamedAction", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -412,12 +397,8 @@ func NewNamedAction(name string) *NamedAction {
 //
 func (self *NamedAction) ActionName() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "NamedAction").InvokeMethod("get_action_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -474,8 +455,6 @@ func marshalNothingAction(p uintptr) (interface{}, error) {
 //    - nothingAction: nothing action.
 //
 func NothingActionGet() *NothingAction {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "get").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -591,13 +570,9 @@ func BaseShortcutAction(obj ShortcutActioner) *ShortcutAction {
 //
 func NewShortcutActionParseString(str string) *ShortcutAction {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "ShortcutAction").InvokeMethod("new_ShortcutAction_parse_string", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -606,7 +581,7 @@ func NewShortcutActionParseString(str string) *ShortcutAction {
 
 	var _shortcutAction *ShortcutAction // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_shortcutAction = wrapShortcutAction(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
@@ -624,12 +599,8 @@ func NewShortcutActionParseString(str string) *ShortcutAction {
 //
 func (self *ShortcutAction) String() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ShortcutAction").InvokeMethod("to_string", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -696,13 +667,9 @@ func marshalSignalAction(p uintptr) (interface{}, error) {
 //
 func NewSignalAction(signalName string) *SignalAction {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(signalName)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(signalName)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "SignalAction").InvokeMethod("new_SignalAction", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -724,12 +691,8 @@ func NewSignalAction(signalName string) *SignalAction {
 //
 func (self *SignalAction) SignalName() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "SignalAction").InvokeMethod("get_signal_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

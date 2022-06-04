@@ -111,21 +111,11 @@ func marshalAlignment(p uintptr) (interface{}, error) {
 //
 func NewAlignment(xalign, yalign, xscale, yscale float32) *Alignment {
 	var _args [4]girepository.Argument
-	var _arg0 C.gfloat // out
-	var _arg1 C.gfloat // out
-	var _arg2 C.gfloat // out
-	var _arg3 C.gfloat // out
-	var _cret *C.void  // in
 
-	_arg0 = C.gfloat(xalign)
-	_arg1 = C.gfloat(yalign)
-	_arg2 = C.gfloat(xscale)
-	_arg3 = C.gfloat(yscale)
-
-	*(*C.gfloat)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gfloat)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gfloat)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gfloat)(unsafe.Pointer(&_args[3])) = _arg3
+	*(*C.gfloat)(unsafe.Pointer(&_args[0])) = C.gfloat(xalign)
+	*(*C.gfloat)(unsafe.Pointer(&_args[1])) = C.gfloat(yalign)
+	*(*C.gfloat)(unsafe.Pointer(&_args[2])) = C.gfloat(xscale)
+	*(*C.gfloat)(unsafe.Pointer(&_args[3])) = C.gfloat(yscale)
 
 	_gret := girepository.MustFind("Gtk", "Alignment").InvokeMethod("new_Alignment", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -158,18 +148,11 @@ func NewAlignment(xalign, yalign, xscale, yscale float32) *Alignment {
 //    - paddingRight (optional): location to store the padding for the right of
 //      the widget, or NULL.
 //
-func (alignment *Alignment) Padding() (paddingTop uint32, paddingBottom uint32, paddingLeft uint32, paddingRight uint32) {
+func (alignment *Alignment) Padding() (paddingTop, paddingBottom, paddingLeft, paddingRight uint32) {
 	var _args [1]girepository.Argument
 	var _outs [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
-	var _out2 *C.void // in
-	var _out3 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(alignment).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(alignment).Native()))
 
 	girepository.MustFind("Gtk", "Alignment").InvokeMethod("get_padding", _args[:], _outs[:])
 
@@ -179,22 +162,18 @@ func (alignment *Alignment) Padding() (paddingTop uint32, paddingBottom uint32, 
 	var _paddingBottom uint32 // out
 	var _paddingLeft uint32   // out
 	var _paddingRight uint32  // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
-	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
-	_out3 = *(**C.void)(unsafe.Pointer(&_outs[3]))
 
-	if _out0 != nil {
-		_paddingTop = *(*uint32)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_paddingTop = *(*uint32)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_paddingBottom = *(*uint32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_paddingBottom = *(*uint32)(unsafe.Pointer(_outs[1]))
 	}
-	if _out2 != nil {
-		_paddingLeft = *(*uint32)(unsafe.Pointer(_out2))
+	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
+		_paddingLeft = *(*uint32)(unsafe.Pointer(_outs[2]))
 	}
-	if _out3 != nil {
-		_paddingRight = *(*uint32)(unsafe.Pointer(_out3))
+	if *(**C.void)(unsafe.Pointer(&_outs[3])) != nil {
+		_paddingRight = *(*uint32)(unsafe.Pointer(_outs[3]))
 	}
 
 	return _paddingTop, _paddingBottom, _paddingLeft, _paddingRight
@@ -219,23 +198,12 @@ func (alignment *Alignment) Padding() (paddingTop uint32, paddingBottom uint32, 
 //
 func (alignment *Alignment) Set(xalign, yalign, xscale, yscale float32) {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 C.gfloat // out
-	var _arg2 C.gfloat // out
-	var _arg3 C.gfloat // out
-	var _arg4 C.gfloat // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(alignment).Native()))
-	_arg1 = C.gfloat(xalign)
-	_arg2 = C.gfloat(yalign)
-	_arg3 = C.gfloat(xscale)
-	_arg4 = C.gfloat(yscale)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gfloat)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gfloat)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gfloat)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.gfloat)(unsafe.Pointer(&_args[4])) = _arg4
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(alignment).Native()))
+	*(*C.gfloat)(unsafe.Pointer(&_args[1])) = C.gfloat(xalign)
+	*(*C.gfloat)(unsafe.Pointer(&_args[2])) = C.gfloat(yalign)
+	*(*C.gfloat)(unsafe.Pointer(&_args[3])) = C.gfloat(xscale)
+	*(*C.gfloat)(unsafe.Pointer(&_args[4])) = C.gfloat(yscale)
 
 	girepository.MustFind("Gtk", "Alignment").InvokeMethod("set", _args[:], nil)
 
@@ -261,23 +229,12 @@ func (alignment *Alignment) Set(xalign, yalign, xscale, yscale float32) {
 //
 func (alignment *Alignment) SetPadding(paddingTop, paddingBottom, paddingLeft, paddingRight uint32) {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
-	var _arg2 C.guint // out
-	var _arg3 C.guint // out
-	var _arg4 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(alignment).Native()))
-	_arg1 = C.guint(paddingTop)
-	_arg2 = C.guint(paddingBottom)
-	_arg3 = C.guint(paddingLeft)
-	_arg4 = C.guint(paddingRight)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.guint)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.guint)(unsafe.Pointer(&_args[4])) = _arg4
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(alignment).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(paddingTop)
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(paddingBottom)
+	*(*C.guint)(unsafe.Pointer(&_args[3])) = C.guint(paddingLeft)
+	*(*C.guint)(unsafe.Pointer(&_args[4])) = C.guint(paddingRight)
 
 	girepository.MustFind("Gtk", "Alignment").InvokeMethod("set_padding", _args[:], nil)
 

@@ -31,16 +31,10 @@ import "C"
 //
 func NewContentProviderForBytes(mimeType string, bytes *glib.Bytes) *ContentProvider {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_arg0))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(bytes)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bytes)))
 
 	_gret := girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("new_ContentProvider_for_bytes", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -68,12 +62,8 @@ func NewContentProviderForBytes(mimeType string, bytes *glib.Bytes) *ContentProv
 //
 func NewContentProviderForValue(value *coreglib.Value) *ContentProvider {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(value.Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(value.Native()))
 
 	_gret := girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("new_ContentProvider_for_value", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -113,23 +103,18 @@ func NewContentProviderForValue(value *coreglib.Value) *ContentProvider {
 //
 func NewContentProviderUnion(providers []*ContentProvider) *ContentProvider {
 	var _args [2]girepository.Argument
-	var _arg0 **C.void // out
-	var _arg1 C.gsize
-	var _cret *C.void // in
 
 	if providers != nil {
-		_arg1 = (C.gsize)(len(providers))
-		_arg0 = (**C.void)(C.calloc(C.size_t(len(providers)), C.size_t(unsafe.Sizeof(uint(0)))))
+		*(*C.gsize)(unsafe.Pointer(&_args[1])) = (C.gsize)(len(providers))
+		*(***C.void)(unsafe.Pointer(&_args[0])) = (**C.void)(C.calloc(C.size_t(len(providers)), C.size_t(unsafe.Sizeof(uint(0)))))
 		{
-			out := unsafe.Slice((**C.void)(_arg0), len(providers))
+			out := unsafe.Slice((**C.void)(*(***C.void)(unsafe.Pointer(&_args[0]))), len(providers))
 			for i := range providers {
-				out[i] = (*C.void)(unsafe.Pointer(coreglib.InternObject(providers[i]).Native()))
+				*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(providers[i]).Native()))
 				C.g_object_ref(C.gpointer(coreglib.InternObject(providers[i]).Native()))
 			}
 		}
 	}
-
-	*(***C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("new_ContentProvider_union", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -137,7 +122,6 @@ func NewContentProviderUnion(providers []*ContentProvider) *ContentProvider {
 	runtime.KeepAlive(providers)
 
 	var _contentProvider *ContentProvider // out
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
 	_contentProvider = wrapContentProvider(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 

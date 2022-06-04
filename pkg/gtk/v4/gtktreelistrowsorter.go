@@ -84,15 +84,11 @@ func marshalTreeListRowSorter(p uintptr) (interface{}, error) {
 //
 func NewTreeListRowSorter(sorter *Sorter) *TreeListRowSorter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
 	if sorter != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sorter).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sorter).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(sorter).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gtk", "TreeListRowSorter").InvokeMethod("new_TreeListRowSorter", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -114,12 +110,8 @@ func NewTreeListRowSorter(sorter *Sorter) *TreeListRowSorter {
 //
 func (self *TreeListRowSorter) GetSorter() *Sorter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TreeListRowSorter").InvokeMethod("get_sorter", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -128,7 +120,7 @@ func (self *TreeListRowSorter) GetSorter() *Sorter {
 
 	var _sorter *Sorter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_sorter = wrapSorter(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -146,16 +138,11 @@ func (self *TreeListRowSorter) GetSorter() *Sorter {
 //
 func (self *TreeListRowSorter) SetSorter(sorter *Sorter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if sorter != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(sorter).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sorter).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "TreeListRowSorter").InvokeMethod("set_sorter", _args[:], nil)
 

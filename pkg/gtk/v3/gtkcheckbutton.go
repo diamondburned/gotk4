@@ -147,8 +147,6 @@ func marshalCheckButton(p uintptr) (interface{}, error) {
 //    - checkButton: Widget.
 //
 func NewCheckButton() *CheckButton {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "CheckButton").InvokeMethod("new_CheckButton", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -172,13 +170,9 @@ func NewCheckButton() *CheckButton {
 //
 func NewCheckButtonWithLabel(label string) *CheckButton {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "CheckButton").InvokeMethod("new_CheckButton_with_label", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -207,13 +201,9 @@ func NewCheckButtonWithLabel(label string) *CheckButton {
 //
 func NewCheckButtonWithMnemonic(label string) *CheckButton {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "CheckButton").InvokeMethod("new_CheckButton_with_mnemonic", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

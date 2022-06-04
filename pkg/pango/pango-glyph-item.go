@@ -7,12 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <pango/pango.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for pango-glyph-item.go.
@@ -42,25 +43,29 @@ type GlyphItem struct {
 
 // glyphItem is the struct that's finalized.
 type glyphItem struct {
-	native *C.PangoGlyphItem
+	native unsafe.Pointer
 }
 
 func marshalGlyphItem(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &GlyphItem{&glyphItem{(*C.PangoGlyphItem)(b)}}, nil
+	return &GlyphItem{&glyphItem{(unsafe.Pointer)(b)}}, nil
 }
 
 // Item: corresponding PangoItem.
 func (g *GlyphItem) Item() *Item {
+	offset := girepository.MustFind("Pango", "GlyphItem").StructFieldOffset("item")
+	valptr := unsafe.Add(unsafe.Pointer(g), offset)
 	var v *Item // out
-	v = (*Item)(gextras.NewStructNative(unsafe.Pointer(g.native.item)))
+	v = (*Item)(gextras.NewStructNative(unsafe.Pointer(valptr)))
 	return v
 }
 
 // Glyphs: corresponding PangoGlyphString.
 func (g *GlyphItem) Glyphs() *GlyphString {
+	offset := girepository.MustFind("Pango", "GlyphItem").StructFieldOffset("glyphs")
+	valptr := unsafe.Add(unsafe.Pointer(g), offset)
 	var v *GlyphString // out
-	v = (*GlyphString)(gextras.NewStructNative(unsafe.Pointer(g.native.glyphs)))
+	v = (*GlyphString)(gextras.NewStructNative(unsafe.Pointer(valptr)))
 	return v
 }
 
@@ -93,17 +98,15 @@ func (g *GlyphItem) Glyphs() *GlyphString {
 //      the elements using pango.GlyphItem.Free(), the list using g_slist_free().
 //
 func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) []*GlyphItem {
-	var _arg0 *C.PangoGlyphItem // out
-	var _arg1 *C.char           // out
-	var _arg2 *C.PangoAttrList  // out
-	var _cret *C.GSList         // in
+	var _args [3]girepository.Argument
 
-	_arg0 = (*C.PangoGlyphItem)(gextras.StructNative(unsafe.Pointer(glyphItem)))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphItem)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
 
-	_cret = C.pango_glyph_item_apply_attrs(_arg0, _arg1, _arg2)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(glyphItem)
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(list)
@@ -112,7 +115,7 @@ func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) []*GlyphItem
 
 	_sList = make([]*GlyphItem, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.PangoGlyphItem)(v)
+		src := (*C.void)(v)
 		var dst *GlyphItem // out
 		dst = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(src)))
 		runtime.SetFinalizer(
@@ -135,19 +138,19 @@ func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) []*GlyphItem
 //      freed with pango_glyph_item_free(), or NULL if orig was NULL.
 //
 func (orig *GlyphItem) Copy() *GlyphItem {
-	var _arg0 *C.PangoGlyphItem // out
-	var _cret *C.PangoGlyphItem // in
+	var _args [1]girepository.Argument
 
 	if orig != nil {
-		_arg0 = (*C.PangoGlyphItem)(gextras.StructNative(unsafe.Pointer(orig)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(orig)))
 	}
 
-	_cret = C.pango_glyph_item_copy(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(orig)
 
 	var _glyphItem *GlyphItem // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_glyphItem = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_glyphItem)),
@@ -183,17 +186,15 @@ func (orig *GlyphItem) Copy() *GlyphItem {
 //      which should be freed with pango_glyph_item_free().
 //
 func (orig *GlyphItem) Split(text string, splitIndex int32) *GlyphItem {
-	var _arg0 *C.PangoGlyphItem // out
-	var _arg1 *C.char           // out
-	var _arg2 C.int             // out
-	var _cret *C.PangoGlyphItem // in
+	var _args [3]girepository.Argument
 
-	_arg0 = (*C.PangoGlyphItem)(gextras.StructNative(unsafe.Pointer(orig)))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(splitIndex)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(orig)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(splitIndex)
 
-	_cret = C.pango_glyph_item_split(_arg0, _arg1, _arg2)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(orig)
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(splitIndex)
@@ -256,59 +257,75 @@ type GlyphItemIter struct {
 
 // glyphItemIter is the struct that's finalized.
 type glyphItemIter struct {
-	native *C.PangoGlyphItemIter
+	native unsafe.Pointer
 }
 
 func marshalGlyphItemIter(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &GlyphItemIter{&glyphItemIter{(*C.PangoGlyphItemIter)(b)}}, nil
+	return &GlyphItemIter{&glyphItemIter{(unsafe.Pointer)(b)}}, nil
 }
 
 func (g *GlyphItemIter) GlyphItem() *GlyphItem {
+	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("glyph_item")
+	valptr := unsafe.Add(unsafe.Pointer(g), offset)
 	var v *GlyphItem // out
-	v = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(g.native.glyph_item)))
+	v = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(valptr)))
 	return v
 }
 
 func (g *GlyphItemIter) Text() string {
+	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("text")
+	valptr := unsafe.Add(unsafe.Pointer(g), offset)
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(g.native.text)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }
 
 func (g *GlyphItemIter) StartGlyph() int32 {
+	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("start_glyph")
+	valptr := unsafe.Add(unsafe.Pointer(g), offset)
 	var v int32 // out
-	v = int32(g.native.start_glyph)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 func (g *GlyphItemIter) StartIndex() int32 {
+	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("start_index")
+	valptr := unsafe.Add(unsafe.Pointer(g), offset)
 	var v int32 // out
-	v = int32(g.native.start_index)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 func (g *GlyphItemIter) StartChar() int32 {
+	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("start_char")
+	valptr := unsafe.Add(unsafe.Pointer(g), offset)
 	var v int32 // out
-	v = int32(g.native.start_char)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 func (g *GlyphItemIter) EndGlyph() int32 {
+	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("end_glyph")
+	valptr := unsafe.Add(unsafe.Pointer(g), offset)
 	var v int32 // out
-	v = int32(g.native.end_glyph)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 func (g *GlyphItemIter) EndIndex() int32 {
+	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("end_index")
+	valptr := unsafe.Add(unsafe.Pointer(g), offset)
 	var v int32 // out
-	v = int32(g.native.end_index)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 func (g *GlyphItemIter) EndChar() int32 {
+	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("end_char")
+	valptr := unsafe.Add(unsafe.Pointer(g), offset)
 	var v int32 // out
-	v = int32(g.native.end_char)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
@@ -321,19 +338,19 @@ func (g *GlyphItemIter) EndChar() int32 {
 //      NULL.
 //
 func (orig *GlyphItemIter) Copy() *GlyphItemIter {
-	var _arg0 *C.PangoGlyphItemIter // out
-	var _cret *C.PangoGlyphItemIter // in
+	var _args [1]girepository.Argument
 
 	if orig != nil {
-		_arg0 = (*C.PangoGlyphItemIter)(gextras.StructNative(unsafe.Pointer(orig)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(orig)))
 	}
 
-	_cret = C.pango_glyph_item_iter_copy(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(orig)
 
 	var _glyphItemIter *GlyphItemIter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_glyphItemIter = (*GlyphItemIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_glyphItemIter)),
@@ -361,24 +378,22 @@ func (orig *GlyphItemIter) Copy() *GlyphItemIter {
 //    - ok: FALSE if there are no clusters in the glyph item.
 //
 func (iter *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
-	var _arg0 *C.PangoGlyphItemIter // out
-	var _arg1 *C.PangoGlyphItem     // out
-	var _arg2 *C.char               // out
-	var _cret C.gboolean            // in
+	var _args [3]girepository.Argument
 
-	_arg0 = (*C.PangoGlyphItemIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = (*C.PangoGlyphItem)(gextras.StructNative(unsafe.Pointer(glyphItem)))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg2))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphItem)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_args[2]))
 
-	_cret = C.pango_glyph_item_iter_init_end(_arg0, _arg1, _arg2)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(glyphItem)
 	runtime.KeepAlive(text)
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -400,24 +415,22 @@ func (iter *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
 //    - ok: FALSE if there are no clusters in the glyph item.
 //
 func (iter *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
-	var _arg0 *C.PangoGlyphItemIter // out
-	var _arg1 *C.PangoGlyphItem     // out
-	var _arg2 *C.char               // out
-	var _cret C.gboolean            // in
+	var _args [3]girepository.Argument
 
-	_arg0 = (*C.PangoGlyphItemIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = (*C.PangoGlyphItem)(gextras.StructNative(unsafe.Pointer(glyphItem)))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg2))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphItem)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_args[2]))
 
-	_cret = C.pango_glyph_item_iter_init_start(_arg0, _arg1, _arg2)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(glyphItem)
 	runtime.KeepAlive(text)
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -434,17 +447,17 @@ func (iter *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
 //      last cluster.
 //
 func (iter *GlyphItemIter) NextCluster() bool {
-	var _arg0 *C.PangoGlyphItemIter // out
-	var _cret C.gboolean            // in
+	var _args [1]girepository.Argument
 
-	_arg0 = (*C.PangoGlyphItemIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = C.pango_glyph_item_iter_next_cluster(_arg0)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -460,17 +473,17 @@ func (iter *GlyphItemIter) NextCluster() bool {
 //      cluster.
 //
 func (iter *GlyphItemIter) PrevCluster() bool {
-	var _arg0 *C.PangoGlyphItemIter // out
-	var _cret C.gboolean            // in
+	var _args [1]girepository.Argument
 
-	_arg0 = (*C.PangoGlyphItemIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = C.pango_glyph_item_iter_prev_cluster(_arg0)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(iter)
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

@@ -81,8 +81,6 @@ func marshalEventBox(p uintptr) (interface{}, error) {
 //    - eventBox: new EventBox.
 //
 func NewEventBox() *EventBox {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "EventBox").InvokeMethod("new_EventBox", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -102,12 +100,8 @@ func NewEventBox() *EventBox {
 //
 func (eventBox *EventBox) AboveChild() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(eventBox).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(eventBox).Native()))
 
 	_gret := girepository.MustFind("Gtk", "EventBox").InvokeMethod("get_above_child", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -116,7 +110,7 @@ func (eventBox *EventBox) AboveChild() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -132,12 +126,8 @@ func (eventBox *EventBox) AboveChild() bool {
 //
 func (eventBox *EventBox) VisibleWindow() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(eventBox).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(eventBox).Native()))
 
 	_gret := girepository.MustFind("Gtk", "EventBox").InvokeMethod("get_visible_window", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -146,7 +136,7 @@ func (eventBox *EventBox) VisibleWindow() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -167,16 +157,11 @@ func (eventBox *EventBox) VisibleWindow() bool {
 //
 func (eventBox *EventBox) SetAboveChild(aboveChild bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(eventBox).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(eventBox).Native()))
 	if aboveChild {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "EventBox").InvokeMethod("set_above_child", _args[:], nil)
 
@@ -219,16 +204,11 @@ func (eventBox *EventBox) SetAboveChild(aboveChild bool) {
 //
 func (eventBox *EventBox) SetVisibleWindow(visibleWindow bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(eventBox).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(eventBox).Native()))
 	if visibleWindow {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "EventBox").InvokeMethod("set_visible_window", _args[:], nil)
 

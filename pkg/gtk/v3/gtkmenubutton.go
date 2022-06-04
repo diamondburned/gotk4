@@ -185,8 +185,6 @@ func marshalMenuButton(p uintptr) (interface{}, error) {
 //    - menuButton: newly created MenuButton widget.
 //
 func NewMenuButton() *MenuButton {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "MenuButton").InvokeMethod("new_MenuButton", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -205,12 +203,8 @@ func NewMenuButton() *MenuButton {
 //
 func (menuButton *MenuButton) AlignWidget() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
 
 	_gret := girepository.MustFind("Gtk", "MenuButton").InvokeMethod("get_align_widget", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -219,7 +213,7 @@ func (menuButton *MenuButton) AlignWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -247,12 +241,8 @@ func (menuButton *MenuButton) AlignWidget() Widgetter {
 //
 func (menuButton *MenuButton) MenuModel() gio.MenuModeller {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
 
 	_gret := girepository.MustFind("Gtk", "MenuButton").InvokeMethod("get_menu_model", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -261,7 +251,7 @@ func (menuButton *MenuButton) MenuModel() gio.MenuModeller {
 
 	var _menuModel gio.MenuModeller // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -290,12 +280,8 @@ func (menuButton *MenuButton) MenuModel() gio.MenuModeller {
 //
 func (menuButton *MenuButton) Popover() *Popover {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
 
 	_gret := girepository.MustFind("Gtk", "MenuButton").InvokeMethod("get_popover", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -304,7 +290,7 @@ func (menuButton *MenuButton) Popover() *Popover {
 
 	var _popover *Popover // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_popover = wrapPopover(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -320,12 +306,8 @@ func (menuButton *MenuButton) Popover() *Popover {
 //
 func (menuButton *MenuButton) Popup() *Menu {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
 
 	_gret := girepository.MustFind("Gtk", "MenuButton").InvokeMethod("get_popup", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -334,7 +316,7 @@ func (menuButton *MenuButton) Popup() *Menu {
 
 	var _menu *Menu // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_menu = wrapMenu(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -350,12 +332,8 @@ func (menuButton *MenuButton) Popup() *Menu {
 //
 func (menuButton *MenuButton) UsePopover() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
 
 	_gret := girepository.MustFind("Gtk", "MenuButton").InvokeMethod("get_use_popover", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -364,7 +342,7 @@ func (menuButton *MenuButton) UsePopover() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -386,16 +364,11 @@ func (menuButton *MenuButton) UsePopover() bool {
 //
 func (menuButton *MenuButton) SetAlignWidget(alignWidget Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
 	if alignWidget != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(alignWidget).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(alignWidget).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "MenuButton").InvokeMethod("set_align_widget", _args[:], nil)
 
@@ -420,16 +393,11 @@ func (menuButton *MenuButton) SetAlignWidget(alignWidget Widgetter) {
 //
 func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeller) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
 	if menuModel != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuModel).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuModel).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "MenuButton").InvokeMethod("set_menu_model", _args[:], nil)
 
@@ -449,16 +417,11 @@ func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeller) {
 //
 func (menuButton *MenuButton) SetPopover(popover Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
 	if popover != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "MenuButton").InvokeMethod("set_popover", _args[:], nil)
 
@@ -478,16 +441,11 @@ func (menuButton *MenuButton) SetPopover(popover Widgetter) {
 //
 func (menuButton *MenuButton) SetPopup(menu Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
 	if menu != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "MenuButton").InvokeMethod("set_popup", _args[:], nil)
 
@@ -505,16 +463,11 @@ func (menuButton *MenuButton) SetPopup(menu Widgetter) {
 //
 func (menuButton *MenuButton) SetUsePopover(usePopover bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuButton).Native()))
 	if usePopover {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "MenuButton").InvokeMethod("set_use_popover", _args[:], nil)
 

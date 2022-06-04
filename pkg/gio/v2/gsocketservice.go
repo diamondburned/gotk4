@@ -134,8 +134,6 @@ func marshalSocketService(p uintptr) (interface{}, error) {
 //    - socketService: new Service.
 //
 func NewSocketService() *SocketService {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gio", "SocketService").InvokeMethod("new_SocketService", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -156,12 +154,8 @@ func NewSocketService() *SocketService {
 //
 func (service *SocketService) IsActive() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(service).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(service).Native()))
 
 	_gret := girepository.MustFind("Gio", "SocketService").InvokeMethod("is_active", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -170,7 +164,7 @@ func (service *SocketService) IsActive() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -185,11 +179,8 @@ func (service *SocketService) IsActive() bool {
 // incoming client request.
 func (service *SocketService) Start() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(service).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(service).Native()))
 
 	girepository.MustFind("Gio", "SocketService").InvokeMethod("start", _args[:], nil)
 
@@ -213,11 +204,8 @@ func (service *SocketService) Start() {
 // added.
 func (service *SocketService) Stop() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(service).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(service).Native()))
 
 	girepository.MustFind("Gio", "SocketService").InvokeMethod("stop", _args[:], nil)
 

@@ -10,16 +10,15 @@ import (
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
-// #cgo pkg-config: pangocairo pango
-// #cgo CFLAGS: -Wno-deprecated-declarations
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <pango/pangocairo.h>
-// extern void _gotk4_pangocairo1_ShapeRendererFunc(cairo_t*, PangoAttrShape*, gboolean, gpointer);
+// #include <glib.h>
+// extern void _gotk4_pangocairo1_ShapeRendererFunc(void*, void*, gboolean, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -36,12 +35,16 @@ func init() {
 	})
 }
 
+func init() {
+	girepository.Require("PangoCairo", "1.0")
+}
+
 // ShapeRendererFunc: function type for rendering attributes of type
 // PANGO_ATTR_SHAPE with Pango's Cairo renderer.
 type ShapeRendererFunc func(cr *cairo.Context, attr *pango.AttrShape, doPath bool)
 
 //export _gotk4_pangocairo1_ShapeRendererFunc
-func _gotk4_pangocairo1_ShapeRendererFunc(arg1 *C.cairo_t, arg2 *C.PangoAttrShape, arg3 C.gboolean, arg4 C.gpointer) {
+func _gotk4_pangocairo1_ShapeRendererFunc(arg1 *C.void, arg2 *C.void, arg3 C.gboolean, arg4 C.gpointer) {
 	var fn ShapeRendererFunc
 	{
 		v := gbox.Get(uintptr(arg4))
@@ -58,7 +61,7 @@ func _gotk4_pangocairo1_ShapeRendererFunc(arg1 *C.cairo_t, arg2 *C.PangoAttrShap
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
 	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
+		C.cairo_destroy((*C.void)(unsafe.Pointer(v.Native())))
 	})
 	_attr = (*pango.AttrShape)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 	if arg3 != 0 {
@@ -85,17 +88,18 @@ func _gotk4_pangocairo1_ShapeRendererFunc(arg1 *C.cairo_t, arg2 *C.PangoAttrShap
 //      must not be modified or freed.
 //
 func ContextGetFontOptions(context *pango.Context) *cairo.FontOptions {
-	var _arg1 *C.PangoContext         // out
-	var _cret *C.cairo_font_options_t // in
+	var _args [1]girepository.Argument
 
-	_arg1 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_cret = C.pango_cairo_context_get_font_options(_arg1)
+	_gret := girepository.MustFind("PangoCairo", "context_get_font_options").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _fontOptions *cairo.FontOptions // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_fontOptions = (*cairo.FontOptions)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	}
 
@@ -115,17 +119,18 @@ func ContextGetFontOptions(context *pango.Context) *cairo.FontOptions {
 //      if no resolution has previously been set.
 //
 func ContextGetResolution(context *pango.Context) float64 {
-	var _arg1 *C.PangoContext // out
-	var _cret C.double        // in
+	var _args [1]girepository.Argument
 
-	_arg1 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_cret = C.pango_cairo_context_get_resolution(_arg1)
+	_gret := girepository.MustFind("PangoCairo", "context_get_resolution").Invoke(_args[:], nil)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(context)
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(_cret)
+	_gdouble = float64(*(*C.double)(unsafe.Pointer(&_cret)))
 
 	return _gdouble
 }
@@ -143,15 +148,15 @@ func ContextGetResolution(context *pango.Context) float64 {
 //      set options. A copy is made.
 //
 func ContextSetFontOptions(context *pango.Context, options *cairo.FontOptions) {
-	var _arg1 *C.PangoContext         // out
-	var _arg2 *C.cairo_font_options_t // out
+	var _args [2]girepository.Argument
 
-	_arg1 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	if options != nil {
-		_arg2 = (*C.cairo_font_options_t)(gextras.StructNative(unsafe.Pointer(options)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(options)))
 	}
 
-	C.pango_cairo_context_set_font_options(_arg1, _arg2)
+	girepository.MustFind("PangoCairo", "context_set_font_options").Invoke(_args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(options)
 }
@@ -170,13 +175,13 @@ func ContextSetFontOptions(context *pango.Context, options *cairo.FontOptions) {
 //      to use the resolution from the font map.
 //
 func ContextSetResolution(context *pango.Context, dpi float64) {
-	var _arg1 *C.PangoContext // out
-	var _arg2 C.double        // out
+	var _args [2]girepository.Argument
 
-	_arg1 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg2 = C.double(dpi)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(dpi)
 
-	C.pango_cairo_context_set_resolution(_arg1, _arg2)
+	girepository.MustFind("PangoCairo", "context_set_resolution").Invoke(_args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(dpi)
 }
@@ -193,19 +198,17 @@ func ContextSetResolution(context *pango.Context, dpi float64) {
 //      PANGO_ATTR_SHAPE, or NULL to disable shape rendering.
 //
 func ContextSetShapeRenderer(context *pango.Context, fn ShapeRendererFunc) {
-	var _arg1 *C.PangoContext               // out
-	var _arg2 C.PangoCairoShapeRendererFunc // out
-	var _arg3 C.gpointer
-	var _arg4 C.GDestroyNotify
+	var _args [4]girepository.Argument
 
-	_arg1 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	if fn != nil {
-		_arg2 = (*[0]byte)(C._gotk4_pangocairo1_ShapeRendererFunc)
-		_arg3 = C.gpointer(gbox.Assign(fn))
-		_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_pangocairo1_ShapeRendererFunc)
+		_args[2] = C.gpointer(gbox.Assign(fn))
+		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	C.pango_cairo_context_set_shape_renderer(_arg1, _arg2, _arg3, _arg4)
+	girepository.MustFind("PangoCairo", "context_set_shape_renderer").Invoke(_args[:], nil)
+
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(fn)
 }
@@ -229,12 +232,13 @@ func ContextSetShapeRenderer(context *pango.Context, fn ShapeRendererFunc) {
 //    - context: newly created PangoContext. Free with g_object_unref().
 //
 func CreateContext(cr *cairo.Context) *pango.Context {
-	var _arg1 *C.cairo_t      // out
-	var _cret *C.PangoContext // in
+	var _args [1]girepository.Argument
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
 
-	_cret = C.pango_cairo_create_context(_arg1)
+	_gret := girepository.MustFind("PangoCairo", "create_context").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(cr)
 
 	var _context *pango.Context // out
@@ -271,12 +275,13 @@ func CreateContext(cr *cairo.Context) *pango.Context {
 //    - layout: newly created PangoLayout. Free with g_object_unref().
 //
 func CreateLayout(cr *cairo.Context) *pango.Layout {
-	var _arg1 *C.cairo_t     // out
-	var _cret *C.PangoLayout // in
+	var _args [1]girepository.Argument
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
 
-	_cret = C.pango_cairo_create_layout(_arg1)
+	_gret := girepository.MustFind("PangoCairo", "create_layout").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(cr)
 
 	var _layout *pango.Layout // out
@@ -307,19 +312,16 @@ func CreateLayout(cr *cairo.Context) *pango.Layout {
 //    - height: non-negative height of the rectangle.
 //
 func ErrorUnderlinePath(cr *cairo.Context, x, y, width, height float64) {
-	var _arg1 *C.cairo_t // out
-	var _arg2 C.double   // out
-	var _arg3 C.double   // out
-	var _arg4 C.double   // out
-	var _arg5 C.double   // out
+	var _args [5]girepository.Argument
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = C.double(x)
-	_arg3 = C.double(y)
-	_arg4 = C.double(width)
-	_arg5 = C.double(height)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
+	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(x)
+	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(y)
+	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(width)
+	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(height)
 
-	C.pango_cairo_error_underline_path(_arg1, _arg2, _arg3, _arg4, _arg5)
+	girepository.MustFind("PangoCairo", "error_underline_path").Invoke(_args[:], nil)
+
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -340,15 +342,14 @@ func ErrorUnderlinePath(cr *cairo.Context, x, y, width, height float64) {
 //    - glyphs: PangoGlyphString.
 //
 func GlyphStringPath(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphString) {
-	var _arg1 *C.cairo_t          // out
-	var _arg2 *C.PangoFont        // out
-	var _arg3 *C.PangoGlyphString // out
+	var _args [3]girepository.Argument
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
-	_arg3 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(font).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphs)))
 
-	C.pango_cairo_glyph_string_path(_arg1, _arg2, _arg3)
+	girepository.MustFind("PangoCairo", "glyph_string_path").Invoke(_args[:], nil)
+
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(font)
 	runtime.KeepAlive(glyphs)
@@ -366,13 +367,13 @@ func GlyphStringPath(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphSt
 //    - line: PangoLayoutLine.
 //
 func LayoutLinePath(cr *cairo.Context, line *pango.LayoutLine) {
-	var _arg1 *C.cairo_t         // out
-	var _arg2 *C.PangoLayoutLine // out
+	var _args [2]girepository.Argument
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(line)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(line)))
 
-	C.pango_cairo_layout_line_path(_arg1, _arg2)
+	girepository.MustFind("PangoCairo", "layout_line_path").Invoke(_args[:], nil)
+
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(line)
 }
@@ -389,13 +390,13 @@ func LayoutLinePath(cr *cairo.Context, line *pango.LayoutLine) {
 //    - layout: pango layout.
 //
 func LayoutPath(cr *cairo.Context, layout *pango.Layout) {
-	var _arg1 *C.cairo_t     // out
-	var _arg2 *C.PangoLayout // out
+	var _args [2]girepository.Argument
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	C.pango_cairo_layout_path(_arg1, _arg2)
+	girepository.MustFind("PangoCairo", "layout_path").Invoke(_args[:], nil)
+
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(layout)
 }
@@ -416,19 +417,16 @@ func LayoutPath(cr *cairo.Context, layout *pango.Layout) {
 //    - height: non-negative height of the rectangle.
 //
 func ShowErrorUnderline(cr *cairo.Context, x, y, width, height float64) {
-	var _arg1 *C.cairo_t // out
-	var _arg2 C.double   // out
-	var _arg3 C.double   // out
-	var _arg4 C.double   // out
-	var _arg5 C.double   // out
+	var _args [5]girepository.Argument
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = C.double(x)
-	_arg3 = C.double(y)
-	_arg4 = C.double(width)
-	_arg5 = C.double(height)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
+	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(x)
+	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(y)
+	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(width)
+	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(height)
 
-	C.pango_cairo_show_error_underline(_arg1, _arg2, _arg3, _arg4, _arg5)
+	girepository.MustFind("PangoCairo", "show_error_underline").Invoke(_args[:], nil)
+
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
@@ -455,16 +453,15 @@ func ShowErrorUnderline(cr *cairo.Context, x, y, width, height float64) {
 //    - glyphItem: PangoGlyphItem.
 //
 func ShowGlyphItem(cr *cairo.Context, text string, glyphItem *pango.GlyphItem) {
-	var _arg1 *C.cairo_t        // out
-	var _arg2 *C.char           // out
-	var _arg3 *C.PangoGlyphItem // out
+	var _args [3]girepository.Argument
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.PangoGlyphItem)(gextras.StructNative(unsafe.Pointer(glyphItem)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphItem)))
 
-	C.pango_cairo_show_glyph_item(_arg1, _arg2, _arg3)
+	girepository.MustFind("PangoCairo", "show_glyph_item").Invoke(_args[:], nil)
+
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(glyphItem)
@@ -482,15 +479,14 @@ func ShowGlyphItem(cr *cairo.Context, text string, glyphItem *pango.GlyphItem) {
 //    - glyphs: PangoGlyphString.
 //
 func ShowGlyphString(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphString) {
-	var _arg1 *C.cairo_t          // out
-	var _arg2 *C.PangoFont        // out
-	var _arg3 *C.PangoGlyphString // out
+	var _args [3]girepository.Argument
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
-	_arg3 = (*C.PangoGlyphString)(gextras.StructNative(unsafe.Pointer(glyphs)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(font).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphs)))
 
-	C.pango_cairo_show_glyph_string(_arg1, _arg2, _arg3)
+	girepository.MustFind("PangoCairo", "show_glyph_string").Invoke(_args[:], nil)
+
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(font)
 	runtime.KeepAlive(glyphs)
@@ -507,13 +503,13 @@ func ShowGlyphString(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphSt
 //    - layout: pango layout.
 //
 func ShowLayout(cr *cairo.Context, layout *pango.Layout) {
-	var _arg1 *C.cairo_t     // out
-	var _arg2 *C.PangoLayout // out
+	var _args [2]girepository.Argument
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	C.pango_cairo_show_layout(_arg1, _arg2)
+	girepository.MustFind("PangoCairo", "show_layout").Invoke(_args[:], nil)
+
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(layout)
 }
@@ -529,13 +525,13 @@ func ShowLayout(cr *cairo.Context, layout *pango.Layout) {
 //    - line: PangoLayoutLine.
 //
 func ShowLayoutLine(cr *cairo.Context, line *pango.LayoutLine) {
-	var _arg1 *C.cairo_t         // out
-	var _arg2 *C.PangoLayoutLine // out
+	var _args [2]girepository.Argument
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.PangoLayoutLine)(gextras.StructNative(unsafe.Pointer(line)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(line)))
 
-	C.pango_cairo_show_layout_line(_arg1, _arg2)
+	girepository.MustFind("PangoCairo", "show_layout_line").Invoke(_args[:], nil)
+
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(line)
 }
@@ -552,13 +548,13 @@ func ShowLayoutLine(cr *cairo.Context, line *pango.LayoutLine) {
 //    - context: PangoContext, from a pangocairo font map.
 //
 func UpdateContext(cr *cairo.Context, context *pango.Context) {
-	var _arg1 *C.cairo_t      // out
-	var _arg2 *C.PangoContext // out
+	var _args [2]girepository.Argument
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.PangoContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	C.pango_cairo_update_context(_arg1, _arg2)
+	girepository.MustFind("PangoCairo", "update_context").Invoke(_args[:], nil)
+
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(context)
 }
@@ -573,13 +569,13 @@ func UpdateContext(cr *cairo.Context, context *pango.Context) {
 //    - layout: PangoLayout, from create_layout.
 //
 func UpdateLayout(cr *cairo.Context, layout *pango.Layout) {
-	var _arg1 *C.cairo_t     // out
-	var _arg2 *C.PangoLayout // out
+	var _args [2]girepository.Argument
 
-	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	_arg2 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	C.pango_cairo_update_layout(_arg1, _arg2)
+	girepository.MustFind("PangoCairo", "update_layout").Invoke(_args[:], nil)
+
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(layout)
 }
@@ -675,17 +671,17 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 //    - gdouble: resolution in "dots per inch".
 //
 func (fontmap *FontMap) Resolution() float64 {
-	var _arg0 *C.PangoCairoFontMap // out
-	var _cret C.double             // in
+	var _args [1]girepository.Argument
 
-	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
 
-	_cret = C.pango_cairo_font_map_get_resolution(_arg0)
+	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(fontmap)
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(_cret)
+	_gdouble = float64(*(*C.double)(unsafe.Pointer(&_cret)))
 
 	return _gdouble
 }
@@ -705,13 +701,12 @@ func (fontmap *FontMap) Resolution() float64 {
 // released and a new default font map to be created on demand, using
 // pangocairo.FontMap.New.
 func (fontmap *FontMap) SetDefault() {
-	var _arg0 *C.PangoCairoFontMap // out
+	var _args [1]girepository.Argument
 
 	if fontmap != nil {
-		_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
 	}
 
-	C.pango_cairo_font_map_set_default(_arg0)
 	runtime.KeepAlive(fontmap)
 }
 
@@ -727,13 +722,11 @@ func (fontmap *FontMap) SetDefault() {
 //      involved; the terminology is conventional.).
 //
 func (fontmap *FontMap) SetResolution(dpi float64) {
-	var _arg0 *C.PangoCairoFontMap // out
-	var _arg1 C.double             // out
+	var _args [2]girepository.Argument
 
-	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
-	_arg1 = C.double(dpi)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
+	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(dpi)
 
-	C.pango_cairo_font_map_set_resolution(_arg0, _arg1)
 	runtime.KeepAlive(fontmap)
 	runtime.KeepAlive(dpi)
 }
@@ -758,9 +751,8 @@ func (fontmap *FontMap) SetResolution(dpi float64) {
 //      is owned by Pango and must not be freed.
 //
 func FontMapGetDefault() pango.FontMapper {
-	var _cret *C.PangoFontMap // in
-
-	_cret = C.pango_cairo_font_map_get_default()
+	_gret := girepository.MustFind("PangoCairo", "get_default").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _fontMap pango.FontMapper // out
 
@@ -807,9 +799,8 @@ func FontMapGetDefault() pango.FontMapper {
 //      g_object_unref().
 //
 func NewFontMap() pango.FontMapper {
-	var _cret *C.PangoFontMap // in
-
-	_cret = C.pango_cairo_font_map_new()
+	_gret := girepository.MustFind("PangoCairo", "new").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _fontMap pango.FontMapper // out
 

@@ -90,8 +90,6 @@ func marshalActionBar(p uintptr) (interface{}, error) {
 //    - actionBar: new ActionBar.
 //
 func NewActionBar() *ActionBar {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "ActionBar").InvokeMethod("new_ActionBar", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -110,12 +108,8 @@ func NewActionBar() *ActionBar {
 //
 func (actionBar *ActionBar) CenterWidget() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ActionBar").InvokeMethod("get_center_widget", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -124,7 +118,7 @@ func (actionBar *ActionBar) CenterWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -153,14 +147,9 @@ func (actionBar *ActionBar) CenterWidget() Widgetter {
 //
 func (actionBar *ActionBar) PackEnd(child Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
 	girepository.MustFind("Gtk", "ActionBar").InvokeMethod("pack_end", _args[:], nil)
 
@@ -177,14 +166,9 @@ func (actionBar *ActionBar) PackEnd(child Widgetter) {
 //
 func (actionBar *ActionBar) PackStart(child Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
 	girepository.MustFind("Gtk", "ActionBar").InvokeMethod("pack_start", _args[:], nil)
 
@@ -200,16 +184,11 @@ func (actionBar *ActionBar) PackStart(child Widgetter) {
 //
 func (actionBar *ActionBar) SetCenterWidget(centerWidget Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
 	if centerWidget != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(centerWidget).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(centerWidget).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "ActionBar").InvokeMethod("set_center_widget", _args[:], nil)
 

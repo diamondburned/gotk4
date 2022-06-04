@@ -5,7 +5,6 @@ package gtk
 import (
 	"fmt"
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -333,8 +332,6 @@ func marshalBuilder(p uintptr) (interface{}, error) {
 //    - builder: new (empty) Builder object.
 //
 func NewBuilder() *Builder {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("new_Builder", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -362,13 +359,9 @@ func NewBuilder() *Builder {
 //
 func NewBuilderFromFile(filename string) *Builder {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("new_Builder_from_file", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -398,13 +391,9 @@ func NewBuilderFromFile(filename string) *Builder {
 //
 func NewBuilderFromResource(resourcePath string) *Builder {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("new_Builder_from_resource", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -439,16 +428,10 @@ func NewBuilderFromResource(resourcePath string) *Builder {
 //
 func NewBuilderFromString(str string, length int) *Builder {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 C.gssize // out
-	var _cret *C.void  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg0))
-	_arg1 = C.gssize(length)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gssize)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[0]))
+	*(*C.gssize)(unsafe.Pointer(&_args[1])) = C.gssize(length)
 
 	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("new_Builder_from_string", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -488,17 +471,10 @@ func NewBuilderFromString(str string, length int) *Builder {
 //
 func (builder *Builder) AddFromFile(filename string) (uint32, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret C.guint // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("add_from_file", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -509,8 +485,8 @@ func (builder *Builder) AddFromFile(filename string) (uint32, error) {
 	var _guint uint32 // out
 	var _goerr error  // out
 
-	_guint = uint32(_cret)
-	if _cerr != nil {
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -538,17 +514,10 @@ func (builder *Builder) AddFromFile(filename string) (uint32, error) {
 //
 func (builder *Builder) AddFromResource(resourcePath string) (uint32, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret C.guint // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("add_from_resource", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -559,8 +528,8 @@ func (builder *Builder) AddFromResource(resourcePath string) (uint32, error) {
 	var _guint uint32 // out
 	var _goerr error  // out
 
-	_guint = uint32(_cret)
-	if _cerr != nil {
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -589,20 +558,11 @@ func (builder *Builder) AddFromResource(resourcePath string) (uint32, error) {
 //
 func (builder *Builder) AddFromString(buffer string, length uint) (uint32, error) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.gsize // out
-	var _cret C.guint // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(buffer)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gsize(length)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gsize)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(buffer)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(*C.gsize)(unsafe.Pointer(&_args[2])) = C.gsize(length)
 
 	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("add_from_string", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -614,8 +574,8 @@ func (builder *Builder) AddFromString(buffer string, length uint) (uint32, error
 	var _guint uint32 // out
 	var _goerr error  // out
 
-	_guint = uint32(_cret)
-	if _cerr != nil {
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -644,32 +604,23 @@ func (builder *Builder) AddFromString(buffer string, length uint) (uint32, error
 //
 func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) (uint32, error) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 *C.void  // out
-	var _arg2 **C.void // out
-	var _cret C.guint  // in
-	var _cerr *C.void  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_args[1]))
 	{
-		_arg2 = (**C.void)(C.calloc(C.size_t((len(objectIds) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg2))
+		*(***C.void)(unsafe.Pointer(&_args[2])) = (**C.void)(C.calloc(C.size_t((len(objectIds) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_args[2]))
 		{
-			out := unsafe.Slice(_arg2, len(objectIds)+1)
+			out := unsafe.Slice(_args[2], len(objectIds)+1)
 			var zero *C.void
 			out[len(objectIds)] = zero
 			for i := range objectIds {
-				out[i] = (*C.void)(unsafe.Pointer(C.CString(objectIds[i])))
+				*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(objectIds[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(***C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("add_objects_from_file", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -681,8 +632,8 @@ func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) 
 	var _guint uint32 // out
 	var _goerr error  // out
 
-	_guint = uint32(_cret)
-	if _cerr != nil {
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -711,32 +662,23 @@ func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) 
 //
 func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []string) (uint32, error) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 *C.void  // out
-	var _arg2 **C.void // out
-	var _cret C.guint  // in
-	var _cerr *C.void  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_args[1]))
 	{
-		_arg2 = (**C.void)(C.calloc(C.size_t((len(objectIds) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg2))
+		*(***C.void)(unsafe.Pointer(&_args[2])) = (**C.void)(C.calloc(C.size_t((len(objectIds) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_args[2]))
 		{
-			out := unsafe.Slice(_arg2, len(objectIds)+1)
+			out := unsafe.Slice(_args[2], len(objectIds)+1)
 			var zero *C.void
 			out[len(objectIds)] = zero
 			for i := range objectIds {
-				out[i] = (*C.void)(unsafe.Pointer(C.CString(objectIds[i])))
+				*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(objectIds[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(***C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("add_objects_from_resource", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -748,8 +690,8 @@ func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []
 	var _guint uint32 // out
 	var _goerr error  // out
 
-	_guint = uint32(_cret)
-	if _cerr != nil {
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -779,35 +721,24 @@ func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []
 //
 func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectIds []string) (uint32, error) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 *C.void  // out
-	var _arg2 C.gsize  // out
-	var _arg3 **C.void // out
-	var _cret C.guint  // in
-	var _cerr *C.void  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(buffer)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gsize(length)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(buffer)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(*C.gsize)(unsafe.Pointer(&_args[2])) = C.gsize(length)
 	{
-		_arg3 = (**C.void)(C.calloc(C.size_t((len(objectIds) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg3))
+		*(***C.void)(unsafe.Pointer(&_args[3])) = (**C.void)(C.calloc(C.size_t((len(objectIds) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_args[3]))
 		{
-			out := unsafe.Slice(_arg3, len(objectIds)+1)
+			out := unsafe.Slice(_args[3], len(objectIds)+1)
 			var zero *C.void
 			out[len(objectIds)] = zero
 			for i := range objectIds {
-				out[i] = (*C.void)(unsafe.Pointer(C.CString(objectIds[i])))
+				*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(objectIds[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gsize)(unsafe.Pointer(&_args[2])) = _arg2
-	*(***C.void)(unsafe.Pointer(&_args[3])) = _arg3
 
 	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("add_objects_from_string", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -820,8 +751,8 @@ func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectI
 	var _guint uint32 // out
 	var _goerr error  // out
 
-	_guint = uint32(_cret)
-	if _cerr != nil {
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -856,14 +787,9 @@ func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectI
 //
 func (builder *Builder) ConnectSignals(userData unsafe.Pointer) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(userData))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (C.gpointer)(unsafe.Pointer(userData))
 
 	girepository.MustFind("Gtk", "Builder").InvokeMethod("connect_signals", _args[:], nil)
 
@@ -881,18 +807,11 @@ func (builder *Builder) ConnectSignals(userData unsafe.Pointer) {
 //
 func (builder *Builder) ExposeObject(name string, object *coreglib.Object) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.void)(unsafe.Pointer(object.Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(object.Native()))
 
 	girepository.MustFind("Gtk", "Builder").InvokeMethod("expose_object", _args[:], nil)
 
@@ -916,12 +835,8 @@ func (builder *Builder) ExposeObject(name string, object *coreglib.Object) {
 //
 func (builder *Builder) Application() *Application {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("get_application", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -930,7 +845,7 @@ func (builder *Builder) Application() *Application {
 
 	var _application *Application // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_application = wrapApplication(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -951,16 +866,10 @@ func (builder *Builder) Application() *Application {
 //
 func (builder *Builder) GetObject(name string) *coreglib.Object {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("get_object", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -970,7 +879,7 @@ func (builder *Builder) GetObject(name string) *coreglib.Object {
 
 	var _object *coreglib.Object // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_object = coreglib.Take(unsafe.Pointer(_cret))
 	}
 
@@ -988,12 +897,8 @@ func (builder *Builder) GetObject(name string) *coreglib.Object {
 //
 func (builder *Builder) Objects() []*coreglib.Object {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("get_objects", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1022,12 +927,8 @@ func (builder *Builder) Objects() []*coreglib.Object {
 //
 func (builder *Builder) TranslationDomain() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("get_translation_domain", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1052,14 +953,9 @@ func (builder *Builder) TranslationDomain() string {
 //
 func (builder *Builder) SetApplication(application *Application) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
 	girepository.MustFind("Gtk", "Builder").InvokeMethod("set_application", _args[:], nil)
 
@@ -1076,17 +972,12 @@ func (builder *Builder) SetApplication(application *Application) {
 //
 func (builder *Builder) SetTranslationDomain(domain string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
 	if domain != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(domain)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(domain)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Builder").InvokeMethod("set_translation_domain", _args[:], nil)
 

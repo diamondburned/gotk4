@@ -31,12 +31,9 @@ import "C"
 //
 func IOModulesScanAllInDirectory(dirname string) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(dirname)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(dirname)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	girepository.MustFind("Gio", "io_modules_scan_all_in_directory").Invoke(_args[:], nil)
 

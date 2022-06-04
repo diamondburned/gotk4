@@ -388,14 +388,9 @@ func marshalActivatable(p uintptr) (interface{}, error) {
 //
 func (activatable *Activatable) DoSetRelatedAction(action *Action) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
 	runtime.KeepAlive(activatable)
 	runtime.KeepAlive(action)
@@ -411,12 +406,8 @@ func (activatable *Activatable) DoSetRelatedAction(action *Action) {
 //
 func (activatable *Activatable) RelatedAction() *Action {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -441,12 +432,8 @@ func (activatable *Activatable) RelatedAction() *Action {
 //
 func (activatable *Activatable) UseActionAppearance() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -454,7 +441,7 @@ func (activatable *Activatable) UseActionAppearance() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -474,14 +461,9 @@ func (activatable *Activatable) UseActionAppearance() bool {
 //
 func (activatable *Activatable) SetRelatedAction(action *Action) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
 	runtime.KeepAlive(activatable)
 	runtime.KeepAlive(action)
@@ -503,16 +485,11 @@ func (activatable *Activatable) SetRelatedAction(action *Action) {
 //
 func (activatable *Activatable) SetUseActionAppearance(useAppearance bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
 	if useAppearance {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(activatable)
 	runtime.KeepAlive(useAppearance)
@@ -531,16 +508,11 @@ func (activatable *Activatable) SetUseActionAppearance(useAppearance bool) {
 //
 func (activatable *Activatable) SyncActionProperties(action *Action) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
 	if action != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(activatable)
 	runtime.KeepAlive(action)

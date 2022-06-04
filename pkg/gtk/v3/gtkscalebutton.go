@@ -220,12 +220,8 @@ func (button *ScaleButton) ConnectValueChanged(f func(value float64)) coreglib.S
 //
 func (button *ScaleButton) Adjustment() *Adjustment {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ScaleButton").InvokeMethod("get_adjustment", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -247,12 +243,8 @@ func (button *ScaleButton) Adjustment() *Adjustment {
 //
 func (button *ScaleButton) MinusButton() *Button {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ScaleButton").InvokeMethod("get_minus_button", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -274,12 +266,8 @@ func (button *ScaleButton) MinusButton() *Button {
 //
 func (button *ScaleButton) PlusButton() *Button {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ScaleButton").InvokeMethod("get_plus_button", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -301,12 +289,8 @@ func (button *ScaleButton) PlusButton() *Button {
 //
 func (button *ScaleButton) Popup() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ScaleButton").InvokeMethod("get_popup", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -344,12 +328,8 @@ func (button *ScaleButton) Popup() Widgetter {
 //
 func (button *ScaleButton) Value() float64 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.gdouble // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ScaleButton").InvokeMethod("get_value", _args[:], nil)
 	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
@@ -358,7 +338,7 @@ func (button *ScaleButton) Value() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(_cret)
+	_gdouble = float64(*(*C.gdouble)(unsafe.Pointer(&_cret)))
 
 	return _gdouble
 }
@@ -372,14 +352,9 @@ func (button *ScaleButton) Value() float64 {
 //
 func (button *ScaleButton) SetAdjustment(adjustment *Adjustment) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 
 	girepository.MustFind("Gtk", "ScaleButton").InvokeMethod("set_adjustment", _args[:], nil)
 
@@ -396,26 +371,21 @@ func (button *ScaleButton) SetAdjustment(adjustment *Adjustment) {
 //
 func (button *ScaleButton) SetIcons(icons []string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 **C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	{
-		_arg1 = (**C.void)(C.calloc(C.size_t((len(icons) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(***C.void)(unsafe.Pointer(&_args[1])) = (**C.void)(C.calloc(C.size_t((len(icons) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_args[1]))
 		{
-			out := unsafe.Slice(_arg1, len(icons)+1)
+			out := unsafe.Slice(_args[1], len(icons)+1)
 			var zero *C.void
 			out[len(icons)] = zero
 			for i := range icons {
-				out[i] = (*C.void)(unsafe.Pointer(C.CString(icons[i])))
+				*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(icons[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(***C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "ScaleButton").InvokeMethod("set_icons", _args[:], nil)
 
@@ -434,14 +404,9 @@ func (button *ScaleButton) SetIcons(icons []string) {
 //
 func (button *ScaleButton) SetValue(value float64) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 C.gdouble // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	_arg1 = C.gdouble(value)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(value)
 
 	girepository.MustFind("Gtk", "ScaleButton").InvokeMethod("set_value", _args[:], nil)
 

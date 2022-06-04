@@ -124,21 +124,16 @@ func marshalListStore(p uintptr) (interface{}, error) {
 func (listStore *ListStore) Append() *TreeIter {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
 
 	girepository.MustFind("Gtk", "ListStore").InvokeMethod("append", _args[:], _outs[:])
 
 	runtime.KeepAlive(listStore)
 
 	var _iter *TreeIter // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _iter
 }
@@ -146,11 +141,8 @@ func (listStore *ListStore) Append() *TreeIter {
 // Clear removes all rows from the list store.
 func (listStore *ListStore) Clear() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
 
 	girepository.MustFind("Gtk", "ListStore").InvokeMethod("clear", _args[:], nil)
 
@@ -174,15 +166,9 @@ func (listStore *ListStore) Clear() {
 func (listStore *ListStore) Insert(position int32) *TreeIter {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _arg1 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
-	_arg1 = C.int(position)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(position)
 
 	girepository.MustFind("Gtk", "ListStore").InvokeMethod("insert", _args[:], _outs[:])
 
@@ -190,9 +176,8 @@ func (listStore *ListStore) Insert(position int32) *TreeIter {
 	runtime.KeepAlive(position)
 
 	var _iter *TreeIter // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _iter
 }
@@ -214,17 +199,11 @@ func (listStore *ListStore) Insert(position int32) *TreeIter {
 func (listStore *ListStore) InsertAfter(sibling *TreeIter) *TreeIter {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
 	if sibling != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(sibling)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(sibling)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "ListStore").InvokeMethod("insert_after", _args[:], _outs[:])
 
@@ -232,9 +211,8 @@ func (listStore *ListStore) InsertAfter(sibling *TreeIter) *TreeIter {
 	runtime.KeepAlive(sibling)
 
 	var _iter *TreeIter // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _iter
 }
@@ -255,17 +233,11 @@ func (listStore *ListStore) InsertAfter(sibling *TreeIter) *TreeIter {
 func (listStore *ListStore) InsertBefore(sibling *TreeIter) *TreeIter {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
 	if sibling != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(sibling)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(sibling)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "ListStore").InvokeMethod("insert_before", _args[:], _outs[:])
 
@@ -273,9 +245,8 @@ func (listStore *ListStore) InsertBefore(sibling *TreeIter) *TreeIter {
 	runtime.KeepAlive(sibling)
 
 	var _iter *TreeIter // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _iter
 }
@@ -295,15 +266,9 @@ func (listStore *ListStore) InsertBefore(sibling *TreeIter) *TreeIter {
 //
 func (listStore *ListStore) IterIsValid(iter *TreeIter) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_gret := girepository.MustFind("Gtk", "ListStore").InvokeMethod("iter_is_valid", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -313,7 +278,7 @@ func (listStore *ListStore) IterIsValid(iter *TreeIter) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -331,19 +296,12 @@ func (listStore *ListStore) IterIsValid(iter *TreeIter) bool {
 //
 func (store *ListStore) MoveAfter(iter, position *TreeIter) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(store).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(store).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	if position != nil {
-		_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(position)))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(position)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "ListStore").InvokeMethod("move_after", _args[:], nil)
 
@@ -363,19 +321,12 @@ func (store *ListStore) MoveAfter(iter, position *TreeIter) {
 //
 func (store *ListStore) MoveBefore(iter, position *TreeIter) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(store).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(store).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	if position != nil {
-		_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(position)))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(position)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "ListStore").InvokeMethod("move_before", _args[:], nil)
 
@@ -395,21 +346,16 @@ func (store *ListStore) MoveBefore(iter, position *TreeIter) {
 func (listStore *ListStore) Prepend() *TreeIter {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
 
 	girepository.MustFind("Gtk", "ListStore").InvokeMethod("prepend", _args[:], _outs[:])
 
 	runtime.KeepAlive(listStore)
 
 	var _iter *TreeIter // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _iter
 }
@@ -428,15 +374,9 @@ func (listStore *ListStore) Prepend() *TreeIter {
 //
 func (listStore *ListStore) Remove(iter *TreeIter) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_gret := girepository.MustFind("Gtk", "ListStore").InvokeMethod("remove", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -446,7 +386,7 @@ func (listStore *ListStore) Remove(iter *TreeIter) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -464,25 +404,20 @@ func (listStore *ListStore) Remove(iter *TreeIter) bool {
 //
 func (store *ListStore) Reorder(newOrder []int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(store).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(store).Native()))
 	{
-		_arg1 = (*C.void)(C.calloc(C.size_t((len(newOrder) + 1)), C.size_t(C.sizeof_int)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(C.calloc(C.size_t((len(newOrder) + 1)), C.size_t(C.sizeof_int)))
+		defer C.free(unsafe.Pointer(_args[1]))
 		{
-			out := unsafe.Slice(_arg1, len(newOrder)+1)
+			out := unsafe.Slice(_args[1], len(newOrder)+1)
 			var zero C.int
 			out[len(newOrder)] = zero
 			for i := range newOrder {
-				out[i] = C.int(newOrder[i])
+				*(*C.int)(unsafe.Pointer(&out[i])) = C.int(newOrder[i])
 			}
 		}
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "ListStore").InvokeMethod("reorder", _args[:], nil)
 
@@ -501,20 +436,11 @@ func (store *ListStore) Reorder(newOrder []int32) {
 //
 func (listStore *ListStore) SetValue(iter *TreeIter, column int32, value *coreglib.Value) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.int   // out
-	var _arg3 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg2 = C.int(column)
-	_arg3 = (*C.void)(unsafe.Pointer(value.Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(column)
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(value.Native()))
 
 	girepository.MustFind("Gtk", "ListStore").InvokeMethod("set_value", _args[:], nil)
 
@@ -534,17 +460,10 @@ func (listStore *ListStore) SetValue(iter *TreeIter, column int32, value *coregl
 //
 func (store *ListStore) Swap(a, b *TreeIter) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(store).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(a)))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(b)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(store).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(a)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(b)))
 
 	girepository.MustFind("Gtk", "ListStore").InvokeMethod("swap", _args[:], nil)
 

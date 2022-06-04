@@ -5,21 +5,21 @@ package pango
 import (
 	"fmt"
 	"runtime"
-	"runtime/cgo"
 	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <pango/pango.h>
-// extern gboolean _gotk4_pango1_AttrFilterFunc(PangoAttribute*, gpointer);
+// #include <glib.h>
+// extern gboolean _gotk4_pango1_AttrFilterFunc(void*, gpointer);
 import "C"
 
 // glib.Type values for pango-attributes.go.
@@ -209,71 +209,6 @@ func (a AttrType) String() string {
 	}
 }
 
-// AttrTypeGetName fetches the attribute type name.
-//
-// The attribute type name is the string passed in when registering the type
-// using attr_type_register.
-//
-// The returned value is an interned string (see g_intern_string() for what that
-// means) that should not be modified or freed.
-//
-// The function takes the following parameters:
-//
-//    - typ: attribute type ID to fetch the name for.
-//
-// The function returns the following values:
-//
-//    - utf8 (optional): type ID name (which may be NULL), or NULL if type is a
-//      built-in Pango attribute type or invalid.
-//
-func AttrTypeGetName(typ AttrType) string {
-	var _arg1 C.PangoAttrType // out
-	var _cret *C.char         // in
-
-	_arg1 = C.PangoAttrType(typ)
-
-	_cret = C.pango_attr_type_get_name(_arg1)
-	runtime.KeepAlive(typ)
-
-	var _utf8 string // out
-
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	}
-
-	return _utf8
-}
-
-// AttrTypeRegister: allocate a new attribute type ID.
-//
-// The attribute type name can be accessed later by using
-// pango.AttrType.GetName.
-//
-// The function takes the following parameters:
-//
-//    - name: identifier for the type.
-//
-// The function returns the following values:
-//
-//    - attrType: new type ID.
-//
-func AttrTypeRegister(name string) AttrType {
-	var _arg1 *C.gchar        // out
-	var _cret C.PangoAttrType // in
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.pango_attr_type_register(_arg1)
-	runtime.KeepAlive(name)
-
-	var _attrType AttrType // out
-
-	_attrType = AttrType(_cret)
-
-	return _attrType
-}
-
 // Overline: PangoOverline enumeration is used to specify whether text should be
 // overlined, and if so, the type of line.
 type Overline C.gint
@@ -426,7 +361,7 @@ func (s ShowFlags) Has(other ShowFlags) bool {
 type AttrDataCopyFunc func() (gpointer unsafe.Pointer)
 
 //export _gotk4_pango1_AttrDataCopyFunc
-func _gotk4_pango1_AttrDataCopyFunc(arg1 C.gconstpointer) (cret C.gpointer) {
+func _gotk4_pango1_AttrDataCopyFunc(arg1 C.gpointer) (cret C.gpointer) {
 	var fn AttrDataCopyFunc
 	{
 		v := gbox.Get(uintptr(arg1))
@@ -447,7 +382,7 @@ func _gotk4_pango1_AttrDataCopyFunc(arg1 C.gconstpointer) (cret C.gpointer) {
 type AttrFilterFunc func(attribute *Attribute) (ok bool)
 
 //export _gotk4_pango1_AttrFilterFunc
-func _gotk4_pango1_AttrFilterFunc(arg1 *C.PangoAttribute, arg2 C.gpointer) (cret C.gboolean) {
+func _gotk4_pango1_AttrFilterFunc(arg1 *C.void, arg2 C.gpointer) (cret C.gboolean) {
 	var fn AttrFilterFunc
 	{
 		v := gbox.Get(uintptr(arg2))
@@ -485,14 +420,15 @@ func _gotk4_pango1_AttrFilterFunc(arg1 *C.PangoAttribute, arg2 C.gpointer) (cret
 //      pango.Attribute.Destroy().
 //
 func NewAttrAllowBreaks(allowBreaks bool) *Attribute {
-	var _arg1 C.gboolean        // out
-	var _cret *C.PangoAttribute // in
+	var _args [1]girepository.Argument
 
 	if allowBreaks {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[0])) = C.TRUE
 	}
 
-	_cret = C.pango_attr_allow_breaks_new(_arg1)
+	_gret := girepository.MustFind("Pango", "attr_allow_breaks_new").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(allowBreaks)
 
 	var _attribute *Attribute // out
@@ -520,12 +456,13 @@ func NewAttrAllowBreaks(allowBreaks bool) *Attribute {
 //      pango.Attribute.Destroy().
 //
 func NewAttrBackgroundAlpha(alpha uint16) *Attribute {
-	var _arg1 C.guint16         // out
-	var _cret *C.PangoAttribute // in
+	var _args [1]girepository.Argument
 
-	_arg1 = C.guint16(alpha)
+	*(*C.guint16)(unsafe.Pointer(&_args[0])) = C.guint16(alpha)
 
-	_cret = C.pango_attr_background_alpha_new(_arg1)
+	_gret := girepository.MustFind("Pango", "attr_background_alpha_new").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(alpha)
 
 	var _attribute *Attribute // out
@@ -555,16 +492,15 @@ func NewAttrBackgroundAlpha(alpha uint16) *Attribute {
 //      pango.Attribute.Destroy().
 //
 func NewAttrBackground(red, green, blue uint16) *Attribute {
-	var _arg1 C.guint16         // out
-	var _arg2 C.guint16         // out
-	var _arg3 C.guint16         // out
-	var _cret *C.PangoAttribute // in
+	var _args [3]girepository.Argument
 
-	_arg1 = C.guint16(red)
-	_arg2 = C.guint16(green)
-	_arg3 = C.guint16(blue)
+	*(*C.guint16)(unsafe.Pointer(&_args[0])) = C.guint16(red)
+	*(*C.guint16)(unsafe.Pointer(&_args[1])) = C.guint16(green)
+	*(*C.guint16)(unsafe.Pointer(&_args[2])) = C.guint16(blue)
 
-	_cret = C.pango_attr_background_new(_arg1, _arg2, _arg3)
+	_gret := girepository.MustFind("Pango", "attr_background_new").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(red)
 	runtime.KeepAlive(green)
 	runtime.KeepAlive(blue)
@@ -599,14 +535,15 @@ func NewAttrBackground(red, green, blue uint16) *Attribute {
 //      pango.Attribute.Destroy().
 //
 func NewAttrFallback(enableFallback bool) *Attribute {
-	var _arg1 C.gboolean        // out
-	var _cret *C.PangoAttribute // in
+	var _args [1]girepository.Argument
 
 	if enableFallback {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[0])) = C.TRUE
 	}
 
-	_cret = C.pango_attr_fallback_new(_arg1)
+	_gret := girepository.MustFind("Pango", "attr_fallback_new").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(enableFallback)
 
 	var _attribute *Attribute // out
@@ -634,13 +571,14 @@ func NewAttrFallback(enableFallback bool) *Attribute {
 //      pango.Attribute.Destroy().
 //
 func NewAttrFamily(family string) *Attribute {
-	var _arg1 *C.char           // out
-	var _cret *C.PangoAttribute // in
+	var _args [1]girepository.Argument
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(family)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(family)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
-	_cret = C.pango_attr_family_new(_arg1)
+	_gret := girepository.MustFind("Pango", "attr_family_new").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(family)
 
 	var _attribute *Attribute // out
@@ -668,12 +606,13 @@ func NewAttrFamily(family string) *Attribute {
 //      pango.Attribute.Destroy().
 //
 func NewAttrForegroundAlpha(alpha uint16) *Attribute {
-	var _arg1 C.guint16         // out
-	var _cret *C.PangoAttribute // in
+	var _args [1]girepository.Argument
 
-	_arg1 = C.guint16(alpha)
+	*(*C.guint16)(unsafe.Pointer(&_args[0])) = C.guint16(alpha)
 
-	_cret = C.pango_attr_foreground_alpha_new(_arg1)
+	_gret := girepository.MustFind("Pango", "attr_foreground_alpha_new").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(alpha)
 
 	var _attribute *Attribute // out
@@ -703,85 +642,18 @@ func NewAttrForegroundAlpha(alpha uint16) *Attribute {
 //      pango.Attribute.Destroy().
 //
 func NewAttrForeground(red, green, blue uint16) *Attribute {
-	var _arg1 C.guint16         // out
-	var _arg2 C.guint16         // out
-	var _arg3 C.guint16         // out
-	var _cret *C.PangoAttribute // in
+	var _args [3]girepository.Argument
 
-	_arg1 = C.guint16(red)
-	_arg2 = C.guint16(green)
-	_arg3 = C.guint16(blue)
+	*(*C.guint16)(unsafe.Pointer(&_args[0])) = C.guint16(red)
+	*(*C.guint16)(unsafe.Pointer(&_args[1])) = C.guint16(green)
+	*(*C.guint16)(unsafe.Pointer(&_args[2])) = C.guint16(blue)
 
-	_cret = C.pango_attr_foreground_new(_arg1, _arg2, _arg3)
+	_gret := girepository.MustFind("Pango", "attr_foreground_new").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(red)
 	runtime.KeepAlive(green)
 	runtime.KeepAlive(blue)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
-// NewAttrGravityHint: create a new gravity hint attribute.
-//
-// The function takes the following parameters:
-//
-//    - hint: gravity hint value.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrGravityHint(hint GravityHint) *Attribute {
-	var _arg1 C.PangoGravityHint // out
-	var _cret *C.PangoAttribute  // in
-
-	_arg1 = C.PangoGravityHint(hint)
-
-	_cret = C.pango_attr_gravity_hint_new(_arg1)
-	runtime.KeepAlive(hint)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
-// NewAttrGravity: create a new gravity attribute.
-//
-// The function takes the following parameters:
-//
-//    - gravity value; should not be PANGO_GRAVITY_AUTO.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrGravity(gravity Gravity) *Attribute {
-	var _arg1 C.PangoGravity    // out
-	var _cret *C.PangoAttribute // in
-
-	_arg1 = C.PangoGravity(gravity)
-
-	_cret = C.pango_attr_gravity_new(_arg1)
-	runtime.KeepAlive(gravity)
 
 	var _attribute *Attribute // out
 
@@ -811,14 +683,15 @@ func NewAttrGravity(gravity Gravity) *Attribute {
 //      pango.Attribute.Destroy().
 //
 func NewAttrInsertHyphens(insertHyphens bool) *Attribute {
-	var _arg1 C.gboolean        // out
-	var _cret *C.PangoAttribute // in
+	var _args [1]girepository.Argument
 
 	if insertHyphens {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[0])) = C.TRUE
 	}
 
-	_cret = C.pango_attr_insert_hyphens_new(_arg1)
+	_gret := girepository.MustFind("Pango", "attr_insert_hyphens_new").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(insertHyphens)
 
 	var _attribute *Attribute // out
@@ -847,12 +720,13 @@ func NewAttrInsertHyphens(insertHyphens bool) *Attribute {
 //      pango.Attribute.Destroy().
 //
 func NewAttrLetterSpacing(letterSpacing int32) *Attribute {
-	var _arg1 C.int             // out
-	var _cret *C.PangoAttribute // in
+	var _args [1]girepository.Argument
 
-	_arg1 = C.int(letterSpacing)
+	*(*C.int)(unsafe.Pointer(&_args[0])) = C.int(letterSpacing)
 
-	_cret = C.pango_attr_letter_spacing_new(_arg1)
+	_gret := girepository.MustFind("Pango", "attr_letter_spacing_new").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(letterSpacing)
 
 	var _attribute *Attribute // out
@@ -885,52 +759,18 @@ func NewAttrLetterSpacing(letterSpacing int32) *Attribute {
 //      pango.Attribute.Destroy().
 //
 func NewAttrOverlineColor(red, green, blue uint16) *Attribute {
-	var _arg1 C.guint16         // out
-	var _arg2 C.guint16         // out
-	var _arg3 C.guint16         // out
-	var _cret *C.PangoAttribute // in
+	var _args [3]girepository.Argument
 
-	_arg1 = C.guint16(red)
-	_arg2 = C.guint16(green)
-	_arg3 = C.guint16(blue)
+	*(*C.guint16)(unsafe.Pointer(&_args[0])) = C.guint16(red)
+	*(*C.guint16)(unsafe.Pointer(&_args[1])) = C.guint16(green)
+	*(*C.guint16)(unsafe.Pointer(&_args[2])) = C.guint16(blue)
 
-	_cret = C.pango_attr_overline_color_new(_arg1, _arg2, _arg3)
+	_gret := girepository.MustFind("Pango", "attr_overline_color_new").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(red)
 	runtime.KeepAlive(green)
 	runtime.KeepAlive(blue)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
-// NewAttrOverline: create a new overline-style attribute.
-//
-// The function takes the following parameters:
-//
-//    - overline style.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrOverline(overline Overline) *Attribute {
-	var _arg1 C.PangoOverline   // out
-	var _cret *C.PangoAttribute // in
-
-	_arg1 = C.PangoOverline(overline)
-
-	_cret = C.pango_attr_overline_new(_arg1)
-	runtime.KeepAlive(overline)
 
 	var _attribute *Attribute // out
 
@@ -958,12 +798,13 @@ func NewAttrOverline(overline Overline) *Attribute {
 //      pango.Attribute.Destroy().
 //
 func NewAttrRise(rise int32) *Attribute {
-	var _arg1 C.int             // out
-	var _cret *C.PangoAttribute // in
+	var _args [1]girepository.Argument
 
-	_arg1 = C.int(rise)
+	*(*C.int)(unsafe.Pointer(&_args[0])) = C.int(rise)
 
-	_cret = C.pango_attr_rise_new(_arg1)
+	_gret := girepository.MustFind("Pango", "attr_rise_new").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(rise)
 
 	var _attribute *Attribute // out
@@ -994,80 +835,14 @@ func NewAttrRise(rise int32) *Attribute {
 //      pango.Attribute.Destroy().
 //
 func NewAttrScale(scaleFactor float64) *Attribute {
-	var _arg1 C.double          // out
-	var _cret *C.PangoAttribute // in
+	var _args [1]girepository.Argument
 
-	_arg1 = C.double(scaleFactor)
+	*(*C.double)(unsafe.Pointer(&_args[0])) = C.double(scaleFactor)
 
-	_cret = C.pango_attr_scale_new(_arg1)
+	_gret := girepository.MustFind("Pango", "attr_scale_new").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(scaleFactor)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
-// NewAttrShow: create a new attribute that influences how invisible characters
-// are rendered.
-//
-// The function takes the following parameters:
-//
-//    - flags: PangoShowFlags to apply.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrShow(flags ShowFlags) *Attribute {
-	var _arg1 C.PangoShowFlags  // out
-	var _cret *C.PangoAttribute // in
-
-	_arg1 = C.PangoShowFlags(flags)
-
-	_cret = C.pango_attr_show_new(_arg1)
-	runtime.KeepAlive(flags)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
-// NewAttrStretch: create a new font stretch attribute.
-//
-// The function takes the following parameters:
-//
-//    - stretch: stretch.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrStretch(stretch Stretch) *Attribute {
-	var _arg1 C.PangoStretch    // out
-	var _cret *C.PangoAttribute // in
-
-	_arg1 = C.PangoStretch(stretch)
-
-	_cret = C.pango_attr_stretch_new(_arg1)
-	runtime.KeepAlive(stretch)
 
 	var _attribute *Attribute // out
 
@@ -1099,16 +874,15 @@ func NewAttrStretch(stretch Stretch) *Attribute {
 //      pango.Attribute.Destroy().
 //
 func NewAttrStrikethroughColor(red, green, blue uint16) *Attribute {
-	var _arg1 C.guint16         // out
-	var _arg2 C.guint16         // out
-	var _arg3 C.guint16         // out
-	var _cret *C.PangoAttribute // in
+	var _args [3]girepository.Argument
 
-	_arg1 = C.guint16(red)
-	_arg2 = C.guint16(green)
-	_arg3 = C.guint16(blue)
+	*(*C.guint16)(unsafe.Pointer(&_args[0])) = C.guint16(red)
+	*(*C.guint16)(unsafe.Pointer(&_args[1])) = C.guint16(green)
+	*(*C.guint16)(unsafe.Pointer(&_args[2])) = C.guint16(blue)
 
-	_cret = C.pango_attr_strikethrough_color_new(_arg1, _arg2, _arg3)
+	_gret := girepository.MustFind("Pango", "attr_strikethrough_color_new").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(red)
 	runtime.KeepAlive(green)
 	runtime.KeepAlive(blue)
@@ -1138,48 +912,16 @@ func NewAttrStrikethroughColor(red, green, blue uint16) *Attribute {
 //      pango.Attribute.Destroy().
 //
 func NewAttrStrikethrough(strikethrough bool) *Attribute {
-	var _arg1 C.gboolean        // out
-	var _cret *C.PangoAttribute // in
+	var _args [1]girepository.Argument
 
 	if strikethrough {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[0])) = C.TRUE
 	}
 
-	_cret = C.pango_attr_strikethrough_new(_arg1)
+	_gret := girepository.MustFind("Pango", "attr_strikethrough_new").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(strikethrough)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
-// NewAttrStyle: create a new font slant style attribute.
-//
-// The function takes the following parameters:
-//
-//    - style: slant style.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrStyle(style Style) *Attribute {
-	var _arg1 C.PangoStyle      // out
-	var _cret *C.PangoAttribute // in
-
-	_arg1 = C.PangoStyle(style)
-
-	_cret = C.pango_attr_style_new(_arg1)
-	runtime.KeepAlive(style)
 
 	var _attribute *Attribute // out
 
@@ -1211,118 +953,18 @@ func NewAttrStyle(style Style) *Attribute {
 //      pango.Attribute.Destroy().
 //
 func NewAttrUnderlineColor(red, green, blue uint16) *Attribute {
-	var _arg1 C.guint16         // out
-	var _arg2 C.guint16         // out
-	var _arg3 C.guint16         // out
-	var _cret *C.PangoAttribute // in
+	var _args [3]girepository.Argument
 
-	_arg1 = C.guint16(red)
-	_arg2 = C.guint16(green)
-	_arg3 = C.guint16(blue)
+	*(*C.guint16)(unsafe.Pointer(&_args[0])) = C.guint16(red)
+	*(*C.guint16)(unsafe.Pointer(&_args[1])) = C.guint16(green)
+	*(*C.guint16)(unsafe.Pointer(&_args[2])) = C.guint16(blue)
 
-	_cret = C.pango_attr_underline_color_new(_arg1, _arg2, _arg3)
+	_gret := girepository.MustFind("Pango", "attr_underline_color_new").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(red)
 	runtime.KeepAlive(green)
 	runtime.KeepAlive(blue)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
-// NewAttrUnderline: create a new underline-style attribute.
-//
-// The function takes the following parameters:
-//
-//    - underline style.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrUnderline(underline Underline) *Attribute {
-	var _arg1 C.PangoUnderline  // out
-	var _cret *C.PangoAttribute // in
-
-	_arg1 = C.PangoUnderline(underline)
-
-	_cret = C.pango_attr_underline_new(_arg1)
-	runtime.KeepAlive(underline)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
-// NewAttrVariant: create a new font variant attribute (normal or small caps).
-//
-// The function takes the following parameters:
-//
-//    - variant: variant.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrVariant(variant Variant) *Attribute {
-	var _arg1 C.PangoVariant    // out
-	var _cret *C.PangoAttribute // in
-
-	_arg1 = C.PangoVariant(variant)
-
-	_cret = C.pango_attr_variant_new(_arg1)
-	runtime.KeepAlive(variant)
-
-	var _attribute *Attribute // out
-
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
-	)
-
-	return _attribute
-}
-
-// NewAttrWeight: create a new font weight attribute.
-//
-// The function takes the following parameters:
-//
-//    - weight: weight.
-//
-// The function returns the following values:
-//
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
-//
-func NewAttrWeight(weight Weight) *Attribute {
-	var _arg1 C.PangoWeight     // out
-	var _cret *C.PangoAttribute // in
-
-	_arg1 = C.PangoWeight(weight)
-
-	_cret = C.pango_attr_weight_new(_arg1)
-	runtime.KeepAlive(weight)
 
 	var _attribute *Attribute // out
 
@@ -1358,15 +1000,13 @@ func NewAttrWeight(weight Weight) *Attribute {
 //      NULL.
 //
 func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, uint32, error) {
-	var _arg1 *C.GMarkupParseContext // out
-	var _arg2 *C.PangoAttrList       // in
-	var _arg3 *C.char                // in
-	var _arg4 C.gunichar             // in
-	var _cerr *C.GError              // in
+	var _args [1]girepository.Argument
+	var _outs [3]girepository.Argument
 
-	_arg1 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(context)))
 
-	C.pango_markup_parser_finish(_arg1, &_arg2, &_arg3, &_arg4, &_cerr)
+	girepository.MustFind("Pango", "markup_parser_finish").Invoke(_args[:], _outs[:])
+
 	runtime.KeepAlive(context)
 
 	var _attrList *AttrList // out
@@ -1374,8 +1014,8 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, ui
 	var _accelChar uint32   // out
 	var _goerr error        // out
 
-	if _arg2 != nil {
-		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -1383,12 +1023,14 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, ui
 			},
 		)
 	}
-	if _arg3 != nil {
-		_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
-		defer C.free(unsafe.Pointer(_arg3))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_text = C.GoString((*C.gchar)(unsafe.Pointer(_outs[1])))
+		defer C.free(unsafe.Pointer(_outs[1]))
 	}
-	_accelChar = uint32(_arg4)
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
+		_accelChar = *(*uint32)(unsafe.Pointer(_outs[2]))
+	}
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -1428,12 +1070,13 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, ui
 //      g_markup_parse_context_free().
 //
 func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
-	var _arg1 C.gunichar             // out
-	var _cret *C.GMarkupParseContext // in
+	var _args [1]girepository.Argument
 
-	_arg1 = C.gunichar(accelMarker)
+	*(*C.gunichar)(unsafe.Pointer(&_args[0])) = C.gunichar(accelMarker)
 
-	_cret = C.pango_markup_parser_new(_arg1)
+	_gret := girepository.MustFind("Pango", "markup_parser_new").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(accelMarker)
 
 	var _markupParseContext *glib.MarkupParseContext // out
@@ -1484,20 +1127,16 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 //      NULL.
 //
 func ParseMarkup(markupText string, length int32, accelMarker uint32) (*AttrList, string, uint32, error) {
-	var _arg1 *C.char          // out
-	var _arg2 C.int            // out
-	var _arg3 C.gunichar       // out
-	var _arg4 *C.PangoAttrList // in
-	var _arg5 *C.char          // in
-	var _arg6 C.gunichar       // in
-	var _cerr *C.GError        // in
+	var _args [3]girepository.Argument
+	var _outs [3]girepository.Argument
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(markupText)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(length)
-	_arg3 = C.gunichar(accelMarker)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(markupText)))
+	defer C.free(unsafe.Pointer(_args[0]))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(length)
+	*(*C.gunichar)(unsafe.Pointer(&_args[2])) = C.gunichar(accelMarker)
 
-	C.pango_parse_markup(_arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_cerr)
+	girepository.MustFind("Pango", "parse_markup").Invoke(_args[:], _outs[:])
+
 	runtime.KeepAlive(markupText)
 	runtime.KeepAlive(length)
 	runtime.KeepAlive(accelMarker)
@@ -1507,8 +1146,8 @@ func ParseMarkup(markupText string, length int32, accelMarker uint32) (*AttrList
 	var _accelChar uint32   // out
 	var _goerr error        // out
 
-	if _arg4 != nil {
-		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -1516,12 +1155,14 @@ func ParseMarkup(markupText string, length int32, accelMarker uint32) (*AttrList
 			},
 		)
 	}
-	if _arg5 != nil {
-		_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg5)))
-		defer C.free(unsafe.Pointer(_arg5))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_text = C.GoString((*C.gchar)(unsafe.Pointer(_outs[1])))
+		defer C.free(unsafe.Pointer(_outs[1]))
 	}
-	_accelChar = uint32(_arg6)
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
+		_accelChar = *(*uint32)(unsafe.Pointer(_outs[2]))
+	}
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -1538,21 +1179,7 @@ type AttrColor struct {
 
 // attrColor is the struct that's finalized.
 type attrColor struct {
-	native *C.PangoAttrColor
-}
-
-// Attr: common portion of the attribute.
-func (a *AttrColor) Attr() *Attribute {
-	var v *Attribute // out
-	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
-	return v
-}
-
-// Color: PangoColor which is the value of the attribute.
-func (a *AttrColor) Color() *Color {
-	var v *Color // out
-	v = (*Color)(gextras.NewStructNative(unsafe.Pointer((&a.native.color))))
-	return v
+	native unsafe.Pointer
 }
 
 // AttrFloat: PangoAttrFloat structure is used to represent attributes with a
@@ -1565,21 +1192,7 @@ type AttrFloat struct {
 
 // attrFloat is the struct that's finalized.
 type attrFloat struct {
-	native *C.PangoAttrFloat
-}
-
-// Attr: common portion of the attribute.
-func (a *AttrFloat) Attr() *Attribute {
-	var v *Attribute // out
-	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
-	return v
-}
-
-// Value: value of the attribute.
-func (a *AttrFloat) Value() float64 {
-	var v float64 // out
-	v = float64(a.native.value)
-	return v
+	native unsafe.Pointer
 }
 
 // AttrFontDesc: PangoAttrFontDesc structure is used to store an attribute that
@@ -1592,21 +1205,7 @@ type AttrFontDesc struct {
 
 // attrFontDesc is the struct that's finalized.
 type attrFontDesc struct {
-	native *C.PangoAttrFontDesc
-}
-
-// Attr: common portion of the attribute.
-func (a *AttrFontDesc) Attr() *Attribute {
-	var v *Attribute // out
-	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
-	return v
-}
-
-// Desc: font description which is the value of this attribute.
-func (a *AttrFontDesc) Desc() *FontDescription {
-	var v *FontDescription // out
-	v = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(a.native.desc)))
-	return v
+	native unsafe.Pointer
 }
 
 // NewAttrFontDesc: create a new font description attribute.
@@ -1624,12 +1223,13 @@ func (a *AttrFontDesc) Desc() *FontDescription {
 //      pango.Attribute.Destroy().
 //
 func NewAttrFontDesc(desc *FontDescription) *Attribute {
-	var _arg1 *C.PangoFontDescription // out
-	var _cret *C.PangoAttribute       // in
+	var _args [1]girepository.Argument
 
-	_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
 
-	_cret = C.pango_attr_font_desc_new(_arg1)
+	_gret := girepository.MustFind("Pango", "new").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(desc)
 
 	var _attribute *Attribute // out
@@ -1655,21 +1255,7 @@ type AttrFontFeatures struct {
 
 // attrFontFeatures is the struct that's finalized.
 type attrFontFeatures struct {
-	native *C.PangoAttrFontFeatures
-}
-
-// Attr: common portion of the attribute.
-func (a *AttrFontFeatures) Attr() *Attribute {
-	var v *Attribute // out
-	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
-	return v
-}
-
-// Features: featues, as a string in CSS syntax.
-func (a *AttrFontFeatures) Features() string {
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.features)))
-	return v
+	native unsafe.Pointer
 }
 
 // NewAttrFontFeatures: create a new font features tag attribute.
@@ -1684,13 +1270,14 @@ func (a *AttrFontFeatures) Features() string {
 //      pango.Attribute.Destroy().
 //
 func NewAttrFontFeatures(features string) *Attribute {
-	var _arg1 *C.gchar          // out
-	var _cret *C.PangoAttribute // in
+	var _args [1]girepository.Argument
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(features)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(features)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
-	_cret = C.pango_attr_font_features_new(_arg1)
+	_gret := girepository.MustFind("Pango", "new").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(features)
 
 	var _attribute *Attribute // out
@@ -1716,21 +1303,7 @@ type AttrInt struct {
 
 // attrInt is the struct that's finalized.
 type attrInt struct {
-	native *C.PangoAttrInt
-}
-
-// Attr: common portion of the attribute.
-func (a *AttrInt) Attr() *Attribute {
-	var v *Attribute // out
-	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
-	return v
-}
-
-// Value: value of the attribute.
-func (a *AttrInt) Value() int32 {
-	var v int32 // out
-	v = int32(a.native.value)
-	return v
+	native unsafe.Pointer
 }
 
 // AttrIterator: PangoAttrIterator is used to iterate through a PangoAttrList.
@@ -1747,12 +1320,12 @@ type AttrIterator struct {
 
 // attrIterator is the struct that's finalized.
 type attrIterator struct {
-	native *C.PangoAttrIterator
+	native unsafe.Pointer
 }
 
 func marshalAttrIterator(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &AttrIterator{&attrIterator{(*C.PangoAttrIterator)(b)}}, nil
+	return &AttrIterator{&attrIterator{(unsafe.Pointer)(b)}}, nil
 }
 
 // Copy a PangoAttrIterator.
@@ -1763,12 +1336,12 @@ func marshalAttrIterator(p uintptr) (interface{}, error) {
 //      with pango.AttrIterator.Destroy().
 //
 func (iterator *AttrIterator) Copy() *AttrIterator {
-	var _arg0 *C.PangoAttrIterator // out
-	var _cret *C.PangoAttrIterator // in
+	var _args [1]girepository.Argument
 
-	_arg0 = (*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(iterator)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iterator)))
 
-	_cret = C.pango_attr_iterator_copy(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(iterator)
 
 	var _attrIterator *AttrIterator // out
@@ -1786,46 +1359,11 @@ func (iterator *AttrIterator) Copy() *AttrIterator {
 
 // Destroy a PangoAttrIterator and free all associated memory.
 func (iterator *AttrIterator) Destroy() {
-	var _arg0 *C.PangoAttrIterator // out
+	var _args [1]girepository.Argument
 
-	_arg0 = (*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(iterator)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iterator)))
 
-	C.pango_attr_iterator_destroy(_arg0)
 	runtime.KeepAlive(iterator)
-}
-
-// Get: find the current attribute of a particular type at the iterator
-// location. When multiple attributes of the same type overlap, the attribute
-// whose range starts closest to the current location is used.
-//
-// The function takes the following parameters:
-//
-//    - typ: type of attribute to find.
-//
-// The function returns the following values:
-//
-//    - attribute (optional): current attribute of the given type, or NULL if no
-//      attribute of that type applies to the current location.
-//
-func (iterator *AttrIterator) Get(typ AttrType) *Attribute {
-	var _arg0 *C.PangoAttrIterator // out
-	var _arg1 C.PangoAttrType      // out
-	var _cret *C.PangoAttribute    // in
-
-	_arg0 = (*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(iterator)))
-	_arg1 = C.PangoAttrType(typ)
-
-	_cret = C.pango_attr_iterator_get(_arg0, _arg1)
-	runtime.KeepAlive(iterator)
-	runtime.KeepAlive(typ)
-
-	var _attribute *Attribute // out
-
-	if _cret != nil {
-		_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	}
-
-	return _attribute
 }
 
 // Attrs gets a list of all attributes at the current position of the iterator.
@@ -1837,19 +1375,19 @@ func (iterator *AttrIterator) Get(typ AttrType) *Attribute {
 //      the list.
 //
 func (iterator *AttrIterator) Attrs() []*Attribute {
-	var _arg0 *C.PangoAttrIterator // out
-	var _cret *C.GSList            // in
+	var _args [1]girepository.Argument
 
-	_arg0 = (*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(iterator)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iterator)))
 
-	_cret = C.pango_attr_iterator_get_attrs(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(iterator)
 
 	var _sList []*Attribute // out
 
 	_sList = make([]*Attribute, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.PangoAttribute)(v)
+		src := (*C.void)(v)
 		var dst *Attribute // out
 		dst = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(src)))
 		runtime.SetFinalizer(
@@ -1871,17 +1409,17 @@ func (iterator *AttrIterator) Attrs() []*Attribute {
 //    - ok: FALSE if the iterator is at the end of the list, otherwise TRUE.
 //
 func (iterator *AttrIterator) Next() bool {
-	var _arg0 *C.PangoAttrIterator // out
-	var _cret C.gboolean           // in
+	var _args [1]girepository.Argument
 
-	_arg0 = (*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(iterator)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iterator)))
 
-	_cret = C.pango_attr_iterator_next(_arg0)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(iterator)
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1899,20 +1437,18 @@ func (iterator *AttrIterator) Next() bool {
 //    - end: location to store the end of the range.
 //
 func (iterator *AttrIterator) Range() (start int32, end int32) {
-	var _arg0 *C.PangoAttrIterator // out
-	var _arg1 C.gint               // in
-	var _arg2 C.gint               // in
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
 
-	_arg0 = (*C.PangoAttrIterator)(gextras.StructNative(unsafe.Pointer(iterator)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iterator)))
 
-	C.pango_attr_iterator_range(_arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(iterator)
 
 	var _start int32 // out
 	var _end int32   // out
 
-	_start = int32(_arg1)
-	_end = int32(_arg2)
+	_start = *(*int32)(unsafe.Pointer(_outs[0]))
+	_end = *(*int32)(unsafe.Pointer(_outs[1]))
 
 	return _start, _end
 }
@@ -1927,21 +1463,7 @@ type AttrLanguage struct {
 
 // attrLanguage is the struct that's finalized.
 type attrLanguage struct {
-	native *C.PangoAttrLanguage
-}
-
-// Attr: common portion of the attribute.
-func (a *AttrLanguage) Attr() *Attribute {
-	var v *Attribute // out
-	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
-	return v
-}
-
-// Value: PangoLanguage which is the value of the attribute.
-func (a *AttrLanguage) Value() *Language {
-	var v *Language // out
-	v = (*Language)(gextras.NewStructNative(unsafe.Pointer(a.native.value)))
-	return v
+	native unsafe.Pointer
 }
 
 // NewAttrLanguage: create a new language tag attribute.
@@ -1956,12 +1478,13 @@ func (a *AttrLanguage) Value() *Language {
 //      pango.Attribute.Destroy().
 //
 func NewAttrLanguage(language *Language) *Attribute {
-	var _arg1 *C.PangoLanguage  // out
-	var _cret *C.PangoAttribute // in
+	var _args [1]girepository.Argument
 
-	_arg1 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(language)))
 
-	_cret = C.pango_attr_language_new(_arg1)
+	_gret := girepository.MustFind("Pango", "new").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(language)
 
 	var _attribute *Attribute // out
@@ -1996,19 +1519,17 @@ type AttrList struct {
 
 // attrList is the struct that's finalized.
 type attrList struct {
-	native *C.PangoAttrList
+	native unsafe.Pointer
 }
 
 func marshalAttrList(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &AttrList{&attrList{(*C.PangoAttrList)(b)}}, nil
+	return &AttrList{&attrList{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewAttrList constructs a struct AttrList.
 func NewAttrList() *AttrList {
-	var _cret *C.PangoAttrList // in
-
-	_cret = C.pango_attr_list_new()
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _attrList *AttrList // out
 
@@ -2039,14 +1560,12 @@ func NewAttrList() *AttrList {
 //      list.
 //
 func (list *AttrList) Change(attr *Attribute) {
-	var _arg0 *C.PangoAttrList  // out
-	var _arg1 *C.PangoAttribute // out
+	var _args [2]girepository.Argument
 
-	_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
-	_arg1 = (*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(attr)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(attr)))
 	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(attr)), nil)
 
-	C.pango_attr_list_change(_arg0, _arg1)
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(attr)
 }
@@ -2060,19 +1579,19 @@ func (list *AttrList) Change(attr *Attribute) {
 //      NULL if list was NULL.
 //
 func (list *AttrList) Copy() *AttrList {
-	var _arg0 *C.PangoAttrList // out
-	var _cret *C.PangoAttrList // in
+	var _args [1]girepository.Argument
 
 	if list != nil {
-		_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
 	}
 
-	_cret = C.pango_attr_list_copy(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(list)
 
 	var _attrList *AttrList // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
@@ -2098,20 +1617,19 @@ func (list *AttrList) Copy() *AttrList {
 //    - ok: TRUE if the lists are equal, FALSE if they aren't.
 //
 func (list *AttrList) Equal(otherList *AttrList) bool {
-	var _arg0 *C.PangoAttrList // out
-	var _arg1 *C.PangoAttrList // out
-	var _cret C.gboolean       // in
+	var _args [2]girepository.Argument
 
-	_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
-	_arg1 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(otherList)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(otherList)))
 
-	_cret = C.pango_attr_list_equal(_arg0, _arg1)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(otherList)
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2132,23 +1650,21 @@ func (list *AttrList) Equal(otherList *AttrList) bool {
 //      given types were found.
 //
 func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
-	var _arg0 *C.PangoAttrList      // out
-	var _arg1 C.PangoAttrFilterFunc // out
-	var _arg2 C.gpointer
-	var _cret *C.PangoAttrList // in
+	var _args [3]girepository.Argument
 
-	_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
-	_arg1 = (*[0]byte)(C._gotk4_pango1_AttrFilterFunc)
-	_arg2 = C.gpointer(gbox.Assign(fn))
-	defer gbox.Delete(uintptr(_arg2))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_pango1_AttrFilterFunc)
+	_args[2] = C.gpointer(gbox.Assign(fn))
+	defer gbox.Delete(uintptr(_args[2]))
 
-	_cret = C.pango_attr_list_filter(_arg0, _arg1, _arg2)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(fn)
 
 	var _attrList *AttrList // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
@@ -2169,19 +1685,19 @@ func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 //      pango.Attribute.Destroy on each value and g_slist_free() on the list.
 //
 func (list *AttrList) Attributes() []*Attribute {
-	var _arg0 *C.PangoAttrList // out
-	var _cret *C.GSList        // in
+	var _args [1]girepository.Argument
 
-	_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
 
-	_cret = C.pango_attr_list_get_attributes(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(list)
 
 	var _sList []*Attribute // out
 
 	_sList = make([]*Attribute, 0, gextras.SListSize(unsafe.Pointer(_cret)))
 	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.PangoAttribute)(v)
+		src := (*C.void)(v)
 		var dst *Attribute // out
 		dst = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(src)))
 		runtime.SetFinalizer(
@@ -2205,12 +1721,12 @@ func (list *AttrList) Attributes() []*Attribute {
 //      with pango.AttrIterator.Destroy().
 //
 func (list *AttrList) Iterator() *AttrIterator {
-	var _arg0 *C.PangoAttrList     // out
-	var _cret *C.PangoAttrIterator // in
+	var _args [1]girepository.Argument
 
-	_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
 
-	_cret = C.pango_attr_list_get_iterator(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(list)
 
 	var _attrIterator *AttrIterator // out
@@ -2236,14 +1752,12 @@ func (list *AttrList) Iterator() *AttrIterator {
 //      list.
 //
 func (list *AttrList) Insert(attr *Attribute) {
-	var _arg0 *C.PangoAttrList  // out
-	var _arg1 *C.PangoAttribute // out
+	var _args [2]girepository.Argument
 
-	_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
-	_arg1 = (*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(attr)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(attr)))
 	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(attr)), nil)
 
-	C.pango_attr_list_insert(_arg0, _arg1)
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(attr)
 }
@@ -2258,14 +1772,12 @@ func (list *AttrList) Insert(attr *Attribute) {
 //      list.
 //
 func (list *AttrList) InsertBefore(attr *Attribute) {
-	var _arg0 *C.PangoAttrList  // out
-	var _arg1 *C.PangoAttribute // out
+	var _args [2]girepository.Argument
 
-	_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
-	_arg1 = (*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(attr)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(attr)))
 	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(attr)), nil)
 
-	C.pango_attr_list_insert_before(_arg0, _arg1)
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(attr)
 }
@@ -2290,17 +1802,13 @@ func (list *AttrList) InsertBefore(attr *Attribute) {
 //      this range).
 //
 func (list *AttrList) Splice(other *AttrList, pos int32, len int32) {
-	var _arg0 *C.PangoAttrList // out
-	var _arg1 *C.PangoAttrList // out
-	var _arg2 C.gint           // out
-	var _arg3 C.gint           // out
+	var _args [4]girepository.Argument
 
-	_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
-	_arg1 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(other)))
-	_arg2 = C.gint(pos)
-	_arg3 = C.gint(len)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(pos)
+	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(len)
 
-	C.pango_attr_list_splice(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(other)
 	runtime.KeepAlive(pos)
@@ -2327,17 +1835,13 @@ func (list *AttrList) Splice(other *AttrList, pos int32, len int32) {
 //    - add: number of added bytes.
 //
 func (list *AttrList) Update(pos int32, remove int32, add int32) {
-	var _arg0 *C.PangoAttrList // out
-	var _arg1 C.int            // out
-	var _arg2 C.int            // out
-	var _arg3 C.int            // out
+	var _args [4]girepository.Argument
 
-	_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
-	_arg1 = C.int(pos)
-	_arg2 = C.int(remove)
-	_arg3 = C.int(add)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(pos)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(remove)
+	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(add)
 
-	C.pango_attr_list_update(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(pos)
 	runtime.KeepAlive(remove)
@@ -2354,7 +1858,7 @@ type AttrShape struct {
 
 // attrShape is the struct that's finalized.
 type attrShape struct {
-	native *C.PangoAttrShape
+	native unsafe.Pointer
 }
 
 // NewAttrShape: create a new shape attribute.
@@ -2374,14 +1878,14 @@ type attrShape struct {
 //      pango.Attribute.Destroy().
 //
 func NewAttrShape(inkRect, logicalRect *Rectangle) *Attribute {
-	var _arg1 *C.PangoRectangle // out
-	var _arg2 *C.PangoRectangle // out
-	var _cret *C.PangoAttribute // in
+	var _args [2]girepository.Argument
 
-	_arg1 = (*C.PangoRectangle)(gextras.StructNative(unsafe.Pointer(inkRect)))
-	_arg2 = (*C.PangoRectangle)(gextras.StructNative(unsafe.Pointer(logicalRect)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(inkRect)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(logicalRect)))
 
-	_cret = C.pango_attr_shape_new(_arg1, _arg2)
+	_gret := girepository.MustFind("Pango", "new").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(inkRect)
 	runtime.KeepAlive(logicalRect)
 
@@ -2408,22 +1912,7 @@ type AttrSize struct {
 
 // attrSize is the struct that's finalized.
 type attrSize struct {
-	native *C.PangoAttrSize
-}
-
-// Attr: common portion of the attribute.
-func (a *AttrSize) Attr() *Attribute {
-	var v *Attribute // out
-	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
-	return v
-}
-
-// Size: size of font, in units of 1/PANGO_SCALE of a point (for
-// PANGO_ATTR_SIZE) or of a device unit (for PANGO_ATTR_ABSOLUTE_SIZE).
-func (a *AttrSize) Size() int32 {
-	var v int32 // out
-	v = int32(a.native.size)
-	return v
+	native unsafe.Pointer
 }
 
 // NewAttrSize: create a new font-size attribute in fractional points.
@@ -2438,12 +1927,13 @@ func (a *AttrSize) Size() int32 {
 //      pango.Attribute.Destroy().
 //
 func NewAttrSize(size int32) *Attribute {
-	var _arg1 C.int             // out
-	var _cret *C.PangoAttribute // in
+	var _args [1]girepository.Argument
 
-	_arg1 = C.int(size)
+	*(*C.int)(unsafe.Pointer(&_args[0])) = C.int(size)
 
-	_cret = C.pango_attr_size_new(_arg1)
+	_gret := girepository.MustFind("Pango", "new").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(size)
 
 	var _attribute *Attribute // out
@@ -2471,12 +1961,13 @@ func NewAttrSize(size int32) *Attribute {
 //      pango.Attribute.Destroy().
 //
 func NewAttrSizeAbsolute(size int32) *Attribute {
-	var _arg1 C.int             // out
-	var _cret *C.PangoAttribute // in
+	var _args [1]girepository.Argument
 
-	_arg1 = C.int(size)
+	*(*C.int)(unsafe.Pointer(&_args[0])) = C.int(size)
 
-	_cret = C.pango_attr_size_new_absolute(_arg1)
+	_gret := girepository.MustFind("Pango", "new_absolute").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(size)
 
 	var _attribute *Attribute // out
@@ -2502,21 +1993,7 @@ type AttrString struct {
 
 // attrString is the struct that's finalized.
 type attrString struct {
-	native *C.PangoAttrString
-}
-
-// Attr: common portion of the attribute.
-func (a *AttrString) Attr() *Attribute {
-	var v *Attribute // out
-	v = (*Attribute)(gextras.NewStructNative(unsafe.Pointer((&a.native.attr))))
-	return v
-}
-
-// Value: string which is the value of the attribute.
-func (a *AttrString) Value() string {
-	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.value)))
-	return v
+	native unsafe.Pointer
 }
 
 // Attribute: PangoAttribute structure represents the common portions of all
@@ -2535,12 +2012,12 @@ type Attribute struct {
 
 // attribute is the struct that's finalized.
 type attribute struct {
-	native *C.PangoAttribute
+	native unsafe.Pointer
 }
 
 func marshalAttribute(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &Attribute{&attribute{(*C.PangoAttribute)(b)}}, nil
+	return &Attribute{&attribute{(unsafe.Pointer)(b)}}, nil
 }
 
 // Copy: make a copy of an attribute.
@@ -2551,12 +2028,12 @@ func marshalAttribute(p uintptr) (interface{}, error) {
 //      pango.Attribute.Destroy().
 //
 func (attr *Attribute) Copy() *Attribute {
-	var _arg0 *C.PangoAttribute // out
-	var _cret *C.PangoAttribute // in
+	var _args [1]girepository.Argument
 
-	_arg0 = (*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(attr)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(attr)))
 
-	_cret = C.pango_attribute_copy(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(attr)
 
 	var _attribute *Attribute // out
@@ -2574,11 +2051,10 @@ func (attr *Attribute) Copy() *Attribute {
 
 // Destroy a PangoAttribute and free all associated memory.
 func (attr *Attribute) Destroy() {
-	var _arg0 *C.PangoAttribute // out
+	var _args [1]girepository.Argument
 
-	_arg0 = (*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(attr)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(attr)))
 
-	C.pango_attribute_destroy(_arg0)
 	runtime.KeepAlive(attr)
 }
 
@@ -2594,20 +2070,19 @@ func (attr *Attribute) Destroy() {
 //    - ok: TRUE if the two attributes have the same value.
 //
 func (attr1 *Attribute) Equal(attr2 *Attribute) bool {
-	var _arg0 *C.PangoAttribute // out
-	var _arg1 *C.PangoAttribute // out
-	var _cret C.gboolean        // in
+	var _args [2]girepository.Argument
 
-	_arg0 = (*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(attr1)))
-	_arg1 = (*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(attr2)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(attr1)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(attr2)))
 
-	_cret = C.pango_attribute_equal(_arg0, _arg1)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(attr1)
 	runtime.KeepAlive(attr2)
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2624,12 +2099,12 @@ type Color struct {
 
 // color is the struct that's finalized.
 type color struct {
-	native *C.PangoColor
+	native unsafe.Pointer
 }
 
 func marshalColor(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &Color{&color{(*C.PangoColor)(b)}}, nil
+	return &Color{&color{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewColor creates a new Color instance from the given
@@ -2653,22 +2128,28 @@ func NewColor(red, green, blue uint16) Color {
 
 // Red: value of red component.
 func (c *Color) Red() uint16 {
+	offset := girepository.MustFind("Pango", "Color").StructFieldOffset("red")
+	valptr := unsafe.Add(unsafe.Pointer(c), offset)
 	var v uint16 // out
-	v = uint16(c.native.red)
+	v = uint16(*(*C.guint16)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Green: value of green component.
 func (c *Color) Green() uint16 {
+	offset := girepository.MustFind("Pango", "Color").StructFieldOffset("green")
+	valptr := unsafe.Add(unsafe.Pointer(c), offset)
 	var v uint16 // out
-	v = uint16(c.native.green)
+	v = uint16(*(*C.guint16)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Blue: value of blue component.
 func (c *Color) Blue() uint16 {
+	offset := girepository.MustFind("Pango", "Color").StructFieldOffset("blue")
+	valptr := unsafe.Add(unsafe.Pointer(c), offset)
 	var v uint16 // out
-	v = uint16(c.native.blue)
+	v = uint16(*(*C.guint16)(unsafe.Pointer(&valptr)))
 	return v
 }
 
@@ -2684,19 +2165,19 @@ func (c *Color) Blue() uint16 {
 //      pango.Color.Free(), or NULL if src was NULL.
 //
 func (src *Color) Copy() *Color {
-	var _arg0 *C.PangoColor // out
-	var _cret *C.PangoColor // in
+	var _args [1]girepository.Argument
 
 	if src != nil {
-		_arg0 = (*C.PangoColor)(gextras.StructNative(unsafe.Pointer(src)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
 	}
 
-	_cret = C.pango_color_copy(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(src)
 
 	var _color *Color // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_color = (*Color)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_color)),
@@ -2727,23 +2208,22 @@ func (src *Color) Copy() *Color {
 //    - ok: TRUE if parsing of the specifier succeeded, otherwise false.
 //
 func (color *Color) Parse(spec string) bool {
-	var _arg0 *C.PangoColor // out
-	var _arg1 *C.char       // out
-	var _cret C.gboolean    // in
+	var _args [2]girepository.Argument
 
 	if color != nil {
-		_arg0 = (*C.PangoColor)(gextras.StructNative(unsafe.Pointer(color)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 	}
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(spec)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(spec)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = C.pango_color_parse(_arg0, _arg1)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(color)
 	runtime.KeepAlive(spec)
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2774,26 +2254,27 @@ func (color *Color) Parse(spec string) bool {
 //    - ok: TRUE if parsing of the specifier succeeded, otherwise false.
 //
 func (color *Color) ParseWithAlpha(spec string) (uint16, bool) {
-	var _arg0 *C.PangoColor // out
-	var _arg1 C.guint16     // in
-	var _arg2 *C.char       // out
-	var _cret C.gboolean    // in
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
 
 	if color != nil {
-		_arg0 = (*C.PangoColor)(gextras.StructNative(unsafe.Pointer(color)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 	}
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(spec)))
-	defer C.free(unsafe.Pointer(_arg2))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(spec)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = C.pango_color_parse_with_alpha(_arg0, &_arg1, _arg2)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(color)
 	runtime.KeepAlive(spec)
 
 	var _alpha uint16 // out
 	var _ok bool      // out
 
-	_alpha = uint16(_arg1)
-	if _cret != 0 {
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_alpha = *(*uint16)(unsafe.Pointer(_outs[0]))
+	}
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2810,12 +2291,12 @@ func (color *Color) ParseWithAlpha(spec string) (uint16, bool) {
 //    - utf8: newly-allocated text string that must be freed with g_free().
 //
 func (color *Color) String() string {
-	var _arg0 *C.PangoColor // out
-	var _cret *C.gchar      // in
+	var _args [1]girepository.Argument
 
-	_arg0 = (*C.PangoColor)(gextras.StructNative(unsafe.Pointer(color)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 
-	_cret = C.pango_color_to_string(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(color)
 
 	var _utf8 string // out

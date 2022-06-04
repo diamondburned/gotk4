@@ -67,11 +67,8 @@ func marshalGLTexture(p uintptr) (interface{}, error) {
 // function, after this function has been called.
 func (self *GLTexture) Release() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	girepository.MustFind("Gdk", "GLTexture").InvokeMethod("release", _args[:], nil)
 

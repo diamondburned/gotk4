@@ -504,16 +504,10 @@ func BaseCursor(obj Cursorrer) *Cursor {
 //
 func NewCursorFromName(display *Display, name string) *Cursor {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("new_Cursor_from_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -523,7 +517,7 @@ func NewCursorFromName(display *Display, name string) *Cursor {
 
 	var _cursor *Cursor // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_cursor = wrapCursor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
@@ -559,21 +553,11 @@ func NewCursorFromName(display *Display, name string) *Cursor {
 //
 func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x, y int32) *Cursor {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.gint  // out
-	var _arg3 C.gint  // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
-	_arg2 = C.gint(x)
-	_arg3 = C.gint(y)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gint)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(x)
+	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(y)
 
 	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("new_Cursor_from_pixbuf", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -615,21 +599,11 @@ func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x, y int32)
 //
 func NewCursorFromSurface(display *Display, surface *cairo.Surface, x, y float64) *Cursor {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 *C.void   // out
-	var _arg2 C.gdouble // out
-	var _arg3 C.gdouble // out
-	var _cret *C.void   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(surface.Native()))
-	_arg2 = C.gdouble(x)
-	_arg3 = C.gdouble(y)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gdouble)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(surface.Native()))
+	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(x)
+	*(*C.gdouble)(unsafe.Pointer(&_args[3])) = C.gdouble(y)
 
 	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("new_Cursor_from_surface", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -654,12 +628,8 @@ func NewCursorFromSurface(display *Display, surface *cairo.Surface, x, y float64
 //
 func (cursor *Cursor) Display() *Display {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_display", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -685,12 +655,8 @@ func (cursor *Cursor) Display() *Display {
 //
 func (cursor *Cursor) Image() *gdkpixbuf.Pixbuf {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_image", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -699,7 +665,7 @@ func (cursor *Cursor) Image() *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_pixbuf = &gdkpixbuf.Pixbuf{
@@ -729,17 +695,11 @@ func (cursor *Cursor) Image() *gdkpixbuf.Pixbuf {
 //    - yHot (optional): location to store the hotspot y position, or NULL.
 //    - surface (optional): #cairo_surface_t representing cursor, or NULL.
 //
-func (cursor *Cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surface) {
+func (cursor *Cursor) Surface() (xHot, yHot float64, surface *cairo.Surface) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_surface", _args[:], _outs[:])
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -749,16 +709,14 @@ func (cursor *Cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surf
 	var _xHot float64           // out
 	var _yHot float64           // out
 	var _surface *cairo.Surface // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_xHot = *(*float64)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_xHot = *(*float64)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_yHot = *(*float64)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_yHot = *(*float64)(unsafe.Pointer(_outs[1]))
 	}
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 			C.cairo_surface_destroy((*C.void)(unsafe.Pointer(v.Native())))

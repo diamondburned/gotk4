@@ -40,18 +40,16 @@ type ToplevelLayout struct {
 
 // toplevelLayout is the struct that's finalized.
 type toplevelLayout struct {
-	native *C.GdkToplevelLayout
+	native unsafe.Pointer
 }
 
 func marshalToplevelLayout(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &ToplevelLayout{&toplevelLayout{(*C.GdkToplevelLayout)(b)}}, nil
+	return &ToplevelLayout{&toplevelLayout{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewToplevelLayout constructs a struct ToplevelLayout.
 func NewToplevelLayout() *ToplevelLayout {
-	var _cret *C.void // in
-
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _toplevelLayout *ToplevelLayout // out
@@ -75,12 +73,8 @@ func NewToplevelLayout() *ToplevelLayout {
 //
 func (layout *ToplevelLayout) Copy() *ToplevelLayout {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -112,15 +106,9 @@ func (layout *ToplevelLayout) Copy() *ToplevelLayout {
 //
 func (layout *ToplevelLayout) Equal(other *ToplevelLayout) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -129,7 +117,7 @@ func (layout *ToplevelLayout) Equal(other *ToplevelLayout) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -148,13 +136,8 @@ func (layout *ToplevelLayout) Equal(other *ToplevelLayout) bool {
 func (layout *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -162,12 +145,11 @@ func (layout *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
 
 	var _fullscreen bool // out
 	var _ok bool         // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	if *_out0 != 0 {
+	if **(**C.void)(unsafe.Pointer(&_outs[0])) != 0 {
 		_fullscreen = true
 	}
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -183,12 +165,8 @@ func (layout *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
 //
 func (layout *ToplevelLayout) FullscreenMonitor() *Monitor {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -196,7 +174,7 @@ func (layout *ToplevelLayout) FullscreenMonitor() *Monitor {
 
 	var _monitor *Monitor // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_monitor = wrapMonitor(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -215,13 +193,8 @@ func (layout *ToplevelLayout) FullscreenMonitor() *Monitor {
 func (layout *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -229,12 +202,11 @@ func (layout *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 
 	var _maximized bool // out
 	var _ok bool        // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	if *_out0 != 0 {
+	if **(**C.void)(unsafe.Pointer(&_outs[0])) != 0 {
 		_maximized = true
 	}
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -250,12 +222,8 @@ func (layout *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 //
 func (layout *ToplevelLayout) Resizable() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -263,7 +231,7 @@ func (layout *ToplevelLayout) Resizable() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -280,21 +248,14 @@ func (layout *ToplevelLayout) Resizable() bool {
 //
 func (layout *ToplevelLayout) SetFullscreen(fullscreen bool, monitor *Monitor) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
-	var _arg2 *C.void    // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 	if fullscreen {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 	if monitor != nil {
-		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(fullscreen)
@@ -310,16 +271,11 @@ func (layout *ToplevelLayout) SetFullscreen(fullscreen bool, monitor *Monitor) {
 //
 func (layout *ToplevelLayout) SetMaximized(maximized bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 	if maximized {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(maximized)
@@ -334,16 +290,11 @@ func (layout *ToplevelLayout) SetMaximized(maximized bool) {
 //
 func (layout *ToplevelLayout) SetResizable(resizable bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 	if resizable {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(resizable)

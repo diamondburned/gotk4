@@ -358,15 +358,9 @@ func (selection *Selection) ConnectSelectionChanged(f func()) coreglib.SignalHan
 //
 func (selection *Selection) AddSelection(i int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-	_arg1 = C.gint(i)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -375,7 +369,7 @@ func (selection *Selection) AddSelection(i int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -391,12 +385,8 @@ func (selection *Selection) AddSelection(i int32) bool {
 //
 func (selection *Selection) ClearSelection() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -404,7 +394,7 @@ func (selection *Selection) ClearSelection() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -424,12 +414,8 @@ func (selection *Selection) ClearSelection() bool {
 //
 func (selection *Selection) SelectionCount() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -437,7 +423,7 @@ func (selection *Selection) SelectionCount() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -459,15 +445,9 @@ func (selection *Selection) SelectionCount() int32 {
 //
 func (selection *Selection) IsChildSelected(i int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-	_arg1 = C.gint(i)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -476,7 +456,7 @@ func (selection *Selection) IsChildSelected(i int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -501,15 +481,9 @@ func (selection *Selection) IsChildSelected(i int32) bool {
 //
 func (selection *Selection) RefSelection(i int32) *ObjectClass {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-	_arg1 = C.gint(i)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -518,7 +492,7 @@ func (selection *Selection) RefSelection(i int32) *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
@@ -539,15 +513,9 @@ func (selection *Selection) RefSelection(i int32) *ObjectClass {
 //
 func (selection *Selection) RemoveSelection(i int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-	_arg1 = C.gint(i)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -556,7 +524,7 @@ func (selection *Selection) RemoveSelection(i int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -572,12 +540,8 @@ func (selection *Selection) RemoveSelection(i int32) bool {
 //
 func (selection *Selection) SelectAllSelection() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -585,7 +549,7 @@ func (selection *Selection) SelectAllSelection() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

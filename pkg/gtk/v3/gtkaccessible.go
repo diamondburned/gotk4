@@ -124,11 +124,8 @@ func marshalAccessible(p uintptr) (interface{}, error) {
 // Deprecated: Use gtk_accessible_set_widget() and its vfuncs.
 func (accessible *Accessible) ConnectWidgetDestroyed() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
 	girepository.MustFind("Gtk", "Accessible").InvokeMethod("connect_widget_destroyed", _args[:], nil)
 
@@ -145,12 +142,8 @@ func (accessible *Accessible) ConnectWidgetDestroyed() {
 //
 func (accessible *Accessible) Widget() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Accessible").InvokeMethod("get_widget", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -159,7 +152,7 @@ func (accessible *Accessible) Widget() Widgetter {
 
 	var _widget Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -191,16 +184,11 @@ func (accessible *Accessible) Widget() Widgetter {
 //
 func (accessible *Accessible) SetWidget(widget Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 	if widget != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Accessible").InvokeMethod("set_widget", _args[:], nil)
 

@@ -111,18 +111,12 @@ func marshalCustomFilter(p uintptr) (interface{}, error) {
 //
 func NewCustomFilter(matchFunc CustomFilterFunc) *CustomFilter {
 	var _args [3]girepository.Argument
-	var _arg0 C.gpointer // out
-	var _arg1 C.gpointer
-	var _arg2 C.GDestroyNotify
-	var _cret *C.void // in
 
 	if matchFunc != nil {
-		_arg0 = (*[0]byte)(C._gotk4_gtk4_CustomFilterFunc)
-		_arg1 = C.gpointer(gbox.Assign(matchFunc))
-		_arg2 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		*(*C.gpointer)(unsafe.Pointer(&_args[0])) = (*[0]byte)(C._gotk4_gtk4_CustomFilterFunc)
+		_args[1] = C.gpointer(gbox.Assign(matchFunc))
+		_args[2] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
-
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gtk", "CustomFilter").InvokeMethod("new_CustomFilter", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -130,7 +124,6 @@ func NewCustomFilter(matchFunc CustomFilterFunc) *CustomFilter {
 	runtime.KeepAlive(matchFunc)
 
 	var _customFilter *CustomFilter // out
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
 	_customFilter = wrapCustomFilter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
@@ -152,20 +145,13 @@ func NewCustomFilter(matchFunc CustomFilterFunc) *CustomFilter {
 //
 func (self *CustomFilter) SetFilterFunc(matchFunc CustomFilterFunc) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if matchFunc != nil {
-		_arg1 = (*[0]byte)(C._gotk4_gtk4_CustomFilterFunc)
-		_arg2 = C.gpointer(gbox.Assign(matchFunc))
-		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk4_CustomFilterFunc)
+		_args[2] = C.gpointer(gbox.Assign(matchFunc))
+		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "CustomFilter").InvokeMethod("set_filter_func", _args[:], nil)
 

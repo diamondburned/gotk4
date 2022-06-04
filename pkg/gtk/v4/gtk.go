@@ -38,14 +38,12 @@ func init() {
 // The function returns the following values:
 //
 func BuilderErrorQuark() glib.Quark {
-	var _cret C.guint32 // in
-
 	_gret := girepository.MustFind("Gtk", "quark").Invoke(nil, nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
 
 	return _quark
 }
@@ -53,14 +51,12 @@ func BuilderErrorQuark() glib.Quark {
 // The function returns the following values:
 //
 func ConstraintVflParserErrorQuark() glib.Quark {
-	var _cret C.guint32 // in
-
 	_gret := girepository.MustFind("Gtk", "quark").Invoke(nil, nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
 
 	return _quark
 }
@@ -112,14 +108,12 @@ func (e EditableProperties) String() string {
 // The function returns the following values:
 //
 func IconThemeErrorQuark() glib.Quark {
-	var _cret C.guint32 // in
-
 	_gret := girepository.MustFind("Gtk", "quark").Invoke(nil, nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
 
 	return _quark
 }
@@ -127,14 +121,12 @@ func IconThemeErrorQuark() glib.Quark {
 // The function returns the following values:
 //
 func RecentManagerErrorQuark() glib.Quark {
-	var _cret C.guint32 // in
-
 	_gret := girepository.MustFind("Gtk", "quark").Invoke(nil, nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
 
 	return _quark
 }
@@ -237,14 +229,12 @@ func (d DebugFlags) Has(other DebugFlags) bool {
 // The function returns the following values:
 //
 func CSSParserErrorQuark() glib.Quark {
-	var _cret C.guint32 // in
-
 	_gret := girepository.MustFind("Gtk", "css_parser_error_quark").Invoke(nil, nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
 
 	return _quark
 }

@@ -346,12 +346,8 @@ func (seat *Seat) ConnectToolRemoved(f func(tool *DeviceTool)) coreglib.SignalHa
 //
 func (seat *Seat) Display() *Display {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Seat").InvokeMethod("get_display", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -374,12 +370,8 @@ func (seat *Seat) Display() *Display {
 //
 func (seat *Seat) Keyboard() Devicer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Seat").InvokeMethod("get_keyboard", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -388,7 +380,7 @@ func (seat *Seat) Keyboard() Devicer {
 
 	var _device Devicer // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -417,12 +409,8 @@ func (seat *Seat) Keyboard() Devicer {
 //
 func (seat *Seat) Pointer() Devicer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Seat").InvokeMethod("get_pointer", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -431,7 +419,7 @@ func (seat *Seat) Pointer() Devicer {
 
 	var _device Devicer // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -454,11 +442,8 @@ func (seat *Seat) Pointer() Devicer {
 // Ungrab releases a grab added through gdk_seat_grab().
 func (seat *Seat) Ungrab() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
 
 	girepository.MustFind("Gdk", "Seat").InvokeMethod("ungrab", _args[:], nil)
 

@@ -85,21 +85,15 @@ func marshalShortcut(p uintptr) (interface{}, error) {
 //
 func NewShortcut(trigger ShortcutTriggerer, action ShortcutActioner) *Shortcut {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
 	if trigger != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(trigger).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(trigger).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(trigger).Native()))
 	}
 	if action != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(action).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gtk", "Shortcut").InvokeMethod("new_Shortcut", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -122,12 +116,8 @@ func NewShortcut(trigger ShortcutTriggerer, action ShortcutActioner) *Shortcut {
 //
 func (self *Shortcut) Action() ShortcutActioner {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Shortcut").InvokeMethod("get_action", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -136,7 +126,7 @@ func (self *Shortcut) Action() ShortcutActioner {
 
 	var _shortcutAction ShortcutActioner // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -164,12 +154,8 @@ func (self *Shortcut) Action() ShortcutActioner {
 //
 func (self *Shortcut) Arguments() *glib.Variant {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Shortcut").InvokeMethod("get_arguments", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -178,7 +164,7 @@ func (self *Shortcut) Arguments() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.g_variant_ref(_cret)
 		runtime.SetFinalizer(
@@ -200,12 +186,8 @@ func (self *Shortcut) Arguments() *glib.Variant {
 //
 func (self *Shortcut) Trigger() ShortcutTriggerer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Shortcut").InvokeMethod("get_trigger", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -214,7 +196,7 @@ func (self *Shortcut) Trigger() ShortcutTriggerer {
 
 	var _shortcutTrigger ShortcutTriggerer // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -243,17 +225,12 @@ func (self *Shortcut) Trigger() ShortcutTriggerer {
 //
 func (self *Shortcut) SetAction(action ShortcutActioner) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if action != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(action).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Shortcut").InvokeMethod("set_action", _args[:], nil)
 
@@ -269,16 +246,11 @@ func (self *Shortcut) SetAction(action ShortcutActioner) {
 //
 func (self *Shortcut) SetArguments(args *glib.Variant) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if args != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Shortcut").InvokeMethod("set_arguments", _args[:], nil)
 
@@ -295,17 +267,12 @@ func (self *Shortcut) SetArguments(args *glib.Variant) {
 //
 func (self *Shortcut) SetTrigger(trigger ShortcutTriggerer) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if trigger != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(trigger).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(trigger).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(trigger).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Shortcut").InvokeMethod("set_trigger", _args[:], nil)
 

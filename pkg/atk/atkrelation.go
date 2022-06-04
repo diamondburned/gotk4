@@ -67,14 +67,9 @@ func marshalRelation(p uintptr) (interface{}, error) {
 //
 func (relation *Relation) AddTarget(target *ObjectClass) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(target).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(target).Native()))
 
 	girepository.MustFind("Atk", "Relation").InvokeMethod("add_target", _args[:], nil)
 
@@ -95,15 +90,9 @@ func (relation *Relation) AddTarget(target *ObjectClass) {
 //
 func (relation *Relation) RemoveTarget(target *ObjectClass) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(target).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(target).Native()))
 
 	_gret := girepository.MustFind("Atk", "Relation").InvokeMethod("remove_target", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -113,7 +102,7 @@ func (relation *Relation) RemoveTarget(target *ObjectClass) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

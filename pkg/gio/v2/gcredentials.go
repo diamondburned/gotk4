@@ -94,8 +94,6 @@ func marshalCredentials(p uintptr) (interface{}, error) {
 //    - credentials Free with g_object_unref().
 //
 func NewCredentials() *Credentials {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gio", "Credentials").InvokeMethod("new_Credentials", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -116,15 +114,9 @@ func NewCredentials() *Credentials {
 //
 func (credentials *Credentials) IsSameUser(otherCredentials *Credentials) error {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(credentials).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(otherCredentials).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(credentials).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(otherCredentials).Native()))
 
 	girepository.MustFind("Gio", "Credentials").InvokeMethod("is_same_user", _args[:], nil)
 
@@ -133,7 +125,7 @@ func (credentials *Credentials) IsSameUser(otherCredentials *Credentials) error 
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -150,12 +142,8 @@ func (credentials *Credentials) IsSameUser(otherCredentials *Credentials) error 
 //
 func (credentials *Credentials) String() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(credentials).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(credentials).Native()))
 
 	_gret := girepository.MustFind("Gio", "Credentials").InvokeMethod("to_string", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

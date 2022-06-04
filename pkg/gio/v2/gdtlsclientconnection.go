@@ -82,12 +82,8 @@ func marshalDTLSClientConnection(p uintptr) (interface{}, error) {
 //
 func (conn *DTLSClientConnection) ServerIdentity() *SocketConnectable {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -111,14 +107,9 @@ func (conn *DTLSClientConnection) ServerIdentity() *SocketConnectable {
 //
 func (conn *DTLSClientConnection) SetServerIdentity(identity SocketConnectabler) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(identity).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(identity).Native()))
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(identity)
@@ -139,18 +130,11 @@ func (conn *DTLSClientConnection) SetServerIdentity(identity SocketConnectabler)
 //
 func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketConnectabler) (*DTLSClientConnection, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseSocket).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseSocket).Native()))
 	if serverIdentity != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(serverIdentity).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(serverIdentity).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gio", "new").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -162,7 +146,7 @@ func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketC
 	var _goerr error                                // out
 
 	_dtlsClientConnection = wrapDTLSClientConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 

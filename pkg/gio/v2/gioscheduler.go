@@ -19,6 +19,5 @@ import "C"
 // Deprecated: You should never call this function, since you don't know how
 // other libraries in your program might be making use of gioscheduler.
 func IOSchedulerCancelAllJobs() {
-
 	girepository.MustFind("Gio", "io_scheduler_cancel_all_jobs").Invoke(nil, nil)
 }

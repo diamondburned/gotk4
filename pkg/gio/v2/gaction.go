@@ -377,16 +377,11 @@ func marshalAction(p uintptr) (interface{}, error) {
 //
 func (action *Action) Activate(parameter *glib.Variant) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	if parameter != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(parameter)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parameter)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(parameter)
@@ -409,14 +404,9 @@ func (action *Action) Activate(parameter *glib.Variant) {
 //
 func (action *Action) ChangeState(value *glib.Variant) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(value)
@@ -433,12 +423,8 @@ func (action *Action) ChangeState(value *glib.Variant) {
 //
 func (action *Action) Enabled() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -446,7 +432,7 @@ func (action *Action) Enabled() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -461,12 +447,8 @@ func (action *Action) Enabled() bool {
 //
 func (action *Action) Name() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -494,12 +476,8 @@ func (action *Action) Name() string {
 //
 func (action *Action) ParameterType() *glib.VariantType {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -507,7 +485,7 @@ func (action *Action) ParameterType() *glib.VariantType {
 
 	var _variantType *glib.VariantType // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_variantType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	}
 
@@ -529,12 +507,8 @@ func (action *Action) ParameterType() *glib.VariantType {
 //
 func (action *Action) State() *glib.Variant {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -542,7 +516,7 @@ func (action *Action) State() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
@@ -579,12 +553,8 @@ func (action *Action) State() *glib.Variant {
 //
 func (action *Action) StateHint() *glib.Variant {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -592,7 +562,7 @@ func (action *Action) StateHint() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
@@ -623,12 +593,8 @@ func (action *Action) StateHint() *glib.Variant {
 //
 func (action *Action) StateType() *glib.VariantType {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -636,7 +602,7 @@ func (action *Action) StateType() *glib.VariantType {
 
 	var _variantType *glib.VariantType // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_variantType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	}
 
@@ -661,13 +627,9 @@ func (action *Action) StateType() *glib.VariantType {
 //
 func ActionNameIsValid(actionName string) bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gio", "name_is_valid").Invoke(_args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -676,7 +638,7 @@ func ActionNameIsValid(actionName string) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -719,15 +681,9 @@ func ActionNameIsValid(actionName string) bool {
 func ActionParseDetailedName(detailedName string) (string, *glib.Variant, error) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(detailedName)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(detailedName)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	girepository.MustFind("Gio", "parse_detailed_name").Invoke(_args[:], _outs[:])
 
@@ -736,19 +692,17 @@ func ActionParseDetailedName(detailedName string) (string, *glib.Variant, error)
 	var _actionName string         // out
 	var _targetValue *glib.Variant // out
 	var _goerr error               // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(_out0)))
-	defer C.free(unsafe.Pointer(_out0))
-	_targetValue = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_out1)))
+	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(_outs[0])))
+	defer C.free(unsafe.Pointer(_outs[0]))
+	_targetValue = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_targetValue)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.g_variant_unref((*C.GVariant)(intern.C))
 		},
 	)
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -778,18 +732,12 @@ func ActionParseDetailedName(detailedName string) (string, *glib.Variant, error)
 //
 func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) string {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg0))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_args[0]))
 	if targetValue != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(targetValue)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(targetValue)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gio", "print_detailed_name").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

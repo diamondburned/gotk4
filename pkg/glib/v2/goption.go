@@ -5,11 +5,11 @@ package glib
 import (
 	"fmt"
 	"runtime"
-	"runtime/cgo"
 	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -224,7 +224,7 @@ type optionEntry struct {
 // specify the option as --groupname-long_name.
 func (o *OptionEntry) LongName() string {
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(o.native.long_name)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }
 
@@ -233,21 +233,21 @@ func (o *OptionEntry) LongName() string {
 // '-', or zero if the option has no short name.
 func (o *OptionEntry) ShortName() byte {
 	var v byte // out
-	v = byte(o.native.short_name)
+	v = byte(valptr)
 	return v
 }
 
 // Flags from Flags.
 func (o *OptionEntry) Flags() int32 {
 	var v int32 // out
-	v = int32(o.native.flags)
+	v = int32(valptr)
 	return v
 }
 
 // Arg: type of the option, as a Arg.
 func (o *OptionEntry) Arg() OptionArg {
 	var v OptionArg // out
-	v = OptionArg(o.native.arg)
+	v = OptionArg(valptr)
 	return v
 }
 
@@ -265,7 +265,7 @@ func (o *OptionEntry) Arg() OptionArg {
 // freed using g_strfreev().
 func (o *OptionEntry) ArgData() unsafe.Pointer {
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(o.native.arg_data))
+	v = (unsafe.Pointer)(unsafe.Pointer(valptr))
 	return v
 }
 
@@ -274,7 +274,7 @@ func (o *OptionEntry) ArgData() unsafe.Pointer {
 // g_option_group_set_translation_domain().
 func (o *OptionEntry) Description() string {
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(o.native.description)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }
 
@@ -283,7 +283,7 @@ func (o *OptionEntry) Description() string {
 // translate_func of the group, see g_option_group_set_translation_domain().
 func (o *OptionEntry) ArgDescription() string {
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(o.native.arg_description)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }
 

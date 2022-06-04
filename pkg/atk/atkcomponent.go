@@ -131,7 +131,7 @@ type ComponentOverrider interface {
 	//    - width (optional) address of #gint to put width of component.
 	//    - height (optional) address of #gint to put height of component.
 	//
-	Size() (width int32, height int32)
+	Size() (width, height int32)
 	// GrabFocus grabs focus for this component.
 	//
 	// The function returns the following values:
@@ -197,7 +197,7 @@ type Componenter interface {
 	// MDIZOrder gets the zorder of the component.
 	MDIZOrder() int32
 	// Size gets the size of the component in terms of width and height.
-	Size() (width int32, height int32)
+	Size() (width, height int32)
 	// GrabFocus grabs focus for this component.
 	GrabFocus() bool
 	// RemoveFocusHandler: remove the handler specified by handler_id from the
@@ -363,12 +363,8 @@ func (component *Component) ConnectBoundsChanged(f func(arg1 *Rectangle)) coregl
 //
 func (component *Component) Alpha() float64 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.gdouble // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
 
 	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
 
@@ -376,7 +372,7 @@ func (component *Component) Alpha() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(_cret)
+	_gdouble = float64(*(*C.gdouble)(unsafe.Pointer(&_cret)))
 
 	return _gdouble
 }
@@ -392,12 +388,8 @@ func (component *Component) Alpha() float64 {
 //
 func (component *Component) MDIZOrder() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -405,7 +397,7 @@ func (component *Component) MDIZOrder() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -422,29 +414,22 @@ func (component *Component) MDIZOrder() int32 {
 //    - width (optional) address of #gint to put width of component.
 //    - height (optional) address of #gint to put height of component.
 //
-func (component *Component) Size() (width int32, height int32) {
+func (component *Component) Size() (width, height int32) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
 
 	runtime.KeepAlive(component)
 
 	var _width int32  // out
 	var _height int32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_width = *(*int32)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_width = *(*int32)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_height = *(*int32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_height = *(*int32)(unsafe.Pointer(_outs[1]))
 	}
 
 	return _width, _height
@@ -458,12 +443,8 @@ func (component *Component) Size() (width int32, height int32) {
 //
 func (component *Component) GrabFocus() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -471,7 +452,7 @@ func (component *Component) GrabFocus() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -491,14 +472,9 @@ func (component *Component) GrabFocus() bool {
 //
 func (component *Component) RemoveFocusHandler(handlerId uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
-	_arg1 = C.guint(handlerId)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(handlerId)
 
 	runtime.KeepAlive(component)
 	runtime.KeepAlive(handlerId)
@@ -517,18 +493,10 @@ func (component *Component) RemoveFocusHandler(handlerId uint32) {
 //
 func (component *Component) SetSize(width, height int32) bool {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _arg2 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
-	_arg1 = C.gint(width)
-	_arg2 = C.gint(height)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(width)
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(height)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -538,7 +506,7 @@ func (component *Component) SetSize(width, height int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -555,12 +523,12 @@ type Rectangle struct {
 
 // rectangle is the struct that's finalized.
 type rectangle struct {
-	native *C.AtkRectangle
+	native unsafe.Pointer
 }
 
 func marshalRectangle(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &Rectangle{&rectangle{(*C.AtkRectangle)(b)}}, nil
+	return &Rectangle{&rectangle{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewRectangle creates a new Rectangle instance from the given
@@ -587,28 +555,36 @@ func NewRectangle(x, y, width, height int32) Rectangle {
 
 // X coordinate of the left side of the rectangle.
 func (r *Rectangle) X() int32 {
+	offset := girepository.MustFind("Atk", "Rectangle").StructFieldOffset("x")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v int32 // out
-	v = int32(r.native.x)
+	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Y coordinate of the top side of the rectangle.
 func (r *Rectangle) Y() int32 {
+	offset := girepository.MustFind("Atk", "Rectangle").StructFieldOffset("y")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v int32 // out
-	v = int32(r.native.y)
+	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Width: width of the rectangle.
 func (r *Rectangle) Width() int32 {
+	offset := girepository.MustFind("Atk", "Rectangle").StructFieldOffset("width")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v int32 // out
-	v = int32(r.native.width)
+	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Height: height of the rectangle.
 func (r *Rectangle) Height() int32 {
+	offset := girepository.MustFind("Atk", "Rectangle").StructFieldOffset("height")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v int32 // out
-	v = int32(r.native.height)
+	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
 	return v
 }

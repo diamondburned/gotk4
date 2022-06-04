@@ -1364,15 +1364,9 @@ func (table *Table) ConnectRowReordered(f func()) coreglib.SignalHandle {
 //
 func (table *Table) AddColumnSelection(column int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = C.gint(column)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(column)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1381,7 +1375,7 @@ func (table *Table) AddColumnSelection(column int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1401,15 +1395,9 @@ func (table *Table) AddColumnSelection(column int32) bool {
 //
 func (table *Table) AddRowSelection(row int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = C.gint(row)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1418,7 +1406,7 @@ func (table *Table) AddRowSelection(row int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1434,12 +1422,8 @@ func (table *Table) AddRowSelection(row int32) bool {
 //
 func (table *Table) Caption() *ObjectClass {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1447,7 +1431,7 @@ func (table *Table) Caption() *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -1469,15 +1453,9 @@ func (table *Table) Caption() *ObjectClass {
 //
 func (table *Table) ColumnAtIndex(index_ int32) int32 {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = C.gint(index_)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(index_)
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1486,7 +1464,7 @@ func (table *Table) ColumnAtIndex(index_ int32) int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1505,15 +1483,9 @@ func (table *Table) ColumnAtIndex(index_ int32) int32 {
 //
 func (table *Table) ColumnDescription(column int32) string {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = C.gint(column)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(column)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1542,18 +1514,10 @@ func (table *Table) ColumnDescription(column int32) string {
 //
 func (table *Table) ColumnExtentAt(row, column int32) int32 {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _arg2 C.gint  // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = C.gint(row)
-	_arg2 = C.gint(column)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(column)
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1563,7 +1527,7 @@ func (table *Table) ColumnExtentAt(row, column int32) int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1582,15 +1546,9 @@ func (table *Table) ColumnExtentAt(row, column int32) int32 {
 //
 func (table *Table) ColumnHeader(column int32) *ObjectClass {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = C.gint(column)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(column)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1599,7 +1557,7 @@ func (table *Table) ColumnHeader(column int32) *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -1624,18 +1582,10 @@ func (table *Table) ColumnHeader(column int32) *ObjectClass {
 //
 func (table *Table) IndexAt(row, column int32) int32 {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _arg2 C.gint  // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = C.gint(row)
-	_arg2 = C.gint(column)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(column)
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1645,7 +1595,7 @@ func (table *Table) IndexAt(row, column int32) int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1659,12 +1609,8 @@ func (table *Table) IndexAt(row, column int32) int32 {
 //
 func (table *Table) NColumns() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1672,7 +1618,7 @@ func (table *Table) NColumns() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1686,12 +1632,8 @@ func (table *Table) NColumns() int32 {
 //
 func (table *Table) NRows() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1699,7 +1641,7 @@ func (table *Table) NRows() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1719,15 +1661,9 @@ func (table *Table) NRows() int32 {
 //
 func (table *Table) RowAtIndex(index_ int32) int32 {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = C.gint(index_)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(index_)
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1736,7 +1672,7 @@ func (table *Table) RowAtIndex(index_ int32) int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1754,15 +1690,9 @@ func (table *Table) RowAtIndex(index_ int32) int32 {
 //
 func (table *Table) RowDescription(row int32) string {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = C.gint(row)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1771,7 +1701,7 @@ func (table *Table) RowDescription(row int32) string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -1793,18 +1723,10 @@ func (table *Table) RowDescription(row int32) string {
 //
 func (table *Table) RowExtentAt(row, column int32) int32 {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _arg2 C.gint  // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = C.gint(row)
-	_arg2 = C.gint(column)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(column)
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1814,7 +1736,7 @@ func (table *Table) RowExtentAt(row, column int32) int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1832,15 +1754,9 @@ func (table *Table) RowExtentAt(row, column int32) int32 {
 //
 func (table *Table) RowHeader(row int32) *ObjectClass {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = C.gint(row)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1849,7 +1765,7 @@ func (table *Table) RowHeader(row int32) *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -1871,15 +1787,9 @@ func (table *Table) RowHeader(row int32) *ObjectClass {
 //
 func (table *Table) SelectedColumns(selected **int32) int32 {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 **C.void // out
-	var _cret C.gint   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = (**C.void)(unsafe.Pointer(selected))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(***C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(***C.void)(unsafe.Pointer(&_args[1])) = (**C.void)(unsafe.Pointer(selected))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1888,7 +1798,7 @@ func (table *Table) SelectedColumns(selected **int32) int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1907,15 +1817,9 @@ func (table *Table) SelectedColumns(selected **int32) int32 {
 //
 func (table *Table) SelectedRows(selected **int32) int32 {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 **C.void // out
-	var _cret C.gint   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = (**C.void)(unsafe.Pointer(selected))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(***C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(***C.void)(unsafe.Pointer(&_args[1])) = (**C.void)(unsafe.Pointer(selected))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1924,7 +1828,7 @@ func (table *Table) SelectedRows(selected **int32) int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1938,12 +1842,8 @@ func (table *Table) SelectedRows(selected **int32) int32 {
 //
 func (table *Table) Summary() *ObjectClass {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1970,15 +1870,9 @@ func (table *Table) Summary() *ObjectClass {
 //
 func (table *Table) IsColumnSelected(column int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = C.gint(column)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(column)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1987,7 +1881,7 @@ func (table *Table) IsColumnSelected(column int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2008,15 +1902,9 @@ func (table *Table) IsColumnSelected(column int32) bool {
 //
 func (table *Table) IsRowSelected(row int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = C.gint(row)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -2025,7 +1913,7 @@ func (table *Table) IsRowSelected(row int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2047,18 +1935,10 @@ func (table *Table) IsRowSelected(row int32) bool {
 //
 func (table *Table) IsSelected(row, column int32) bool {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _arg2 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = C.gint(row)
-	_arg2 = C.gint(column)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(column)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -2068,7 +1948,7 @@ func (table *Table) IsSelected(row, column int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2089,18 +1969,10 @@ func (table *Table) IsSelected(row, column int32) bool {
 //
 func (table *Table) RefAt(row, column int32) *ObjectClass {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _arg2 C.gint  // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = C.gint(row)
-	_arg2 = C.gint(column)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(column)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -2128,15 +2000,9 @@ func (table *Table) RefAt(row, column int32) *ObjectClass {
 //
 func (table *Table) RemoveColumnSelection(column int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = C.gint(column)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(column)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -2145,7 +2011,7 @@ func (table *Table) RemoveColumnSelection(column int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2165,15 +2031,9 @@ func (table *Table) RemoveColumnSelection(column int32) bool {
 //
 func (table *Table) RemoveRowSelection(row int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = C.gint(row)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -2182,7 +2042,7 @@ func (table *Table) RemoveRowSelection(row int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2197,14 +2057,9 @@ func (table *Table) RemoveRowSelection(row int32) bool {
 //
 func (table *Table) SetCaption(caption *ObjectClass) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(caption).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(caption).Native()))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(caption)
@@ -2221,18 +2076,11 @@ func (table *Table) SetCaption(caption *ObjectClass) {
 //
 func (table *Table) SetColumnDescription(column int32, description string) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = C.gint(column)
-	_arg2 = (*C.void)(unsafe.Pointer(C.CString(description)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(column)
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_args[2]))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
@@ -2248,17 +2096,10 @@ func (table *Table) SetColumnDescription(column int32, description string) {
 //
 func (table *Table) SetColumnHeader(column int32, header *ObjectClass) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = C.gint(column)
-	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(header).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(column)
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(header).Native()))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
@@ -2275,18 +2116,11 @@ func (table *Table) SetColumnHeader(column int32, header *ObjectClass) {
 //
 func (table *Table) SetRowDescription(row int32, description string) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = C.gint(row)
-	_arg2 = (*C.void)(unsafe.Pointer(C.CString(description)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_args[2]))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
@@ -2302,17 +2136,10 @@ func (table *Table) SetRowDescription(row int32, description string) {
 //
 func (table *Table) SetRowHeader(row int32, header *ObjectClass) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = C.gint(row)
-	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(header).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(header).Native()))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
@@ -2327,14 +2154,9 @@ func (table *Table) SetRowHeader(row int32, header *ObjectClass) {
 //
 func (table *Table) SetSummary(accessible *ObjectClass) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(accessible)

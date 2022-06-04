@@ -223,11 +223,8 @@ func (cellEditable *CellEditable) ConnectRemoveWidget(f func()) coreglib.SignalH
 // EditingDone emits the CellEditable::editing-done signal.
 func (cellEditable *CellEditable) EditingDone() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
 
 	runtime.KeepAlive(cellEditable)
 }
@@ -235,11 +232,8 @@ func (cellEditable *CellEditable) EditingDone() {
 // RemoveWidget emits the CellEditable::remove-widget signal.
 func (cellEditable *CellEditable) RemoveWidget() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
 
 	runtime.KeepAlive(cellEditable)
 }
@@ -262,16 +256,11 @@ func (cellEditable *CellEditable) RemoveWidget() {
 //
 func (cellEditable *CellEditable) StartEditing(event *gdk.Event) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
 	if event != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(cellEditable)
 	runtime.KeepAlive(event)

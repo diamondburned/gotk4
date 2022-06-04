@@ -238,12 +238,8 @@ func marshalActionable(p uintptr) (interface{}, error) {
 //
 func (actionable *Actionable) ActionName() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -251,7 +247,7 @@ func (actionable *Actionable) ActionName() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -268,12 +264,8 @@ func (actionable *Actionable) ActionName() string {
 //
 func (actionable *Actionable) ActionTargetValue() *glib.Variant {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -310,17 +302,12 @@ func (actionable *Actionable) ActionTargetValue() *glib.Variant {
 //
 func (actionable *Actionable) SetActionName(actionName string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
 	if actionName != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(actionable)
 	runtime.KeepAlive(actionName)
@@ -350,16 +337,11 @@ func (actionable *Actionable) SetActionName(actionName string) {
 //
 func (actionable *Actionable) SetActionTargetValue(targetValue *glib.Variant) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
 	if targetValue != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(targetValue)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(targetValue)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(actionable)
 	runtime.KeepAlive(targetValue)
@@ -382,15 +364,10 @@ func (actionable *Actionable) SetActionTargetValue(targetValue *glib.Variant) {
 //
 func (actionable *Actionable) SetDetailedActionName(detailedActionName string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(detailedActionName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(detailedActionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	runtime.KeepAlive(actionable)
 	runtime.KeepAlive(detailedActionName)

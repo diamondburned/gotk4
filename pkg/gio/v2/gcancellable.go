@@ -160,8 +160,6 @@ func (cancellable *Cancellable) ConnectCancelled(f func()) coreglib.SignalHandle
 //    - cancellable: #GCancellable.
 //
 func NewCancellable() *Cancellable {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gio", "Cancellable").InvokeMethod("new_Cancellable", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -189,13 +187,10 @@ func NewCancellable() *Cancellable {
 // not be invoked until the application returns to the main loop.
 func (cancellable *Cancellable) Cancel() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
 	if cancellable != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	girepository.MustFind("Gio", "Cancellable").InvokeMethod("cancel", _args[:], nil)
 
@@ -220,16 +215,11 @@ func (cancellable *Cancellable) Cancel() {
 //
 func (cancellable *Cancellable) Disconnect(handlerId uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 C.gulong // out
 
 	if cancellable != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
-	_arg1 = C.gulong(handlerId)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gulong)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gulong)(unsafe.Pointer(&_args[1])) = C.gulong(handlerId)
 
 	girepository.MustFind("Gio", "Cancellable").InvokeMethod("disconnect", _args[:], nil)
 
@@ -258,14 +248,10 @@ func (cancellable *Cancellable) Disconnect(handlerId uint32) {
 //
 func (cancellable *Cancellable) Fd() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
 	if cancellable != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gio", "Cancellable").InvokeMethod("get_fd", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -274,7 +260,7 @@ func (cancellable *Cancellable) Fd() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -288,14 +274,10 @@ func (cancellable *Cancellable) Fd() int32 {
 //
 func (cancellable *Cancellable) IsCancelled() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
 	if cancellable != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gio", "Cancellable").InvokeMethod("is_cancelled", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -304,7 +286,7 @@ func (cancellable *Cancellable) IsCancelled() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -315,13 +297,10 @@ func (cancellable *Cancellable) IsCancelled() bool {
 // cancellable is on the top of the stack).
 func (cancellable *Cancellable) PopCurrent() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
 	if cancellable != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	girepository.MustFind("Gio", "Cancellable").InvokeMethod("pop_current", _args[:], nil)
 
@@ -338,13 +317,10 @@ func (cancellable *Cancellable) PopCurrent() {
 // rarely have to call this yourself.
 func (cancellable *Cancellable) PushCurrent() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
 	if cancellable != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	girepository.MustFind("Gio", "Cancellable").InvokeMethod("push_current", _args[:], nil)
 
@@ -362,13 +338,10 @@ func (cancellable *Cancellable) PushCurrent() {
 // are used at the same time.
 func (cancellable *Cancellable) ReleaseFd() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
 	if cancellable != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	girepository.MustFind("Gio", "Cancellable").InvokeMethod("release_fd", _args[:], nil)
 
@@ -388,13 +361,10 @@ func (cancellable *Cancellable) ReleaseFd() {
 // operations.
 func (cancellable *Cancellable) Reset() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
 	if cancellable != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	girepository.MustFind("Gio", "Cancellable").InvokeMethod("reset", _args[:], nil)
 
@@ -405,14 +375,10 @@ func (cancellable *Cancellable) Reset() {
 // notify that the operation was cancelled.
 func (cancellable *Cancellable) SetErrorIfCancelled() error {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cerr *C.void // in
 
 	if cancellable != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	girepository.MustFind("Gio", "Cancellable").InvokeMethod("set_error_if_cancelled", _args[:], nil)
 
@@ -420,7 +386,7 @@ func (cancellable *Cancellable) SetErrorIfCancelled() error {
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -443,14 +409,10 @@ func (cancellable *Cancellable) SetErrorIfCancelled() error {
 //
 func (cancellable *Cancellable) NewSource() *glib.Source {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
 	if cancellable != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cancellable).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gio", "Cancellable").InvokeMethod("source_new", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -478,14 +440,12 @@ func (cancellable *Cancellable) NewSource() *glib.Source {
 //      empty.
 //
 func CancellableGetCurrent() *Cancellable {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gio", "get_current").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _cancellable *Cancellable // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_cancellable = wrapCancellable(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 

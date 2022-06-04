@@ -96,8 +96,6 @@ func marshalCellAreaBox(p uintptr) (interface{}, error) {
 //    - cellAreaBox: newly created CellAreaBox.
 //
 func NewCellAreaBox() *CellAreaBox {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "CellAreaBox").InvokeMethod("new_CellAreaBox", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -116,12 +114,8 @@ func NewCellAreaBox() *CellAreaBox {
 //
 func (box *CellAreaBox) Spacing() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
 	_gret := girepository.MustFind("Gtk", "CellAreaBox").InvokeMethod("get_spacing", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -130,7 +124,7 @@ func (box *CellAreaBox) Spacing() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -150,29 +144,18 @@ func (box *CellAreaBox) Spacing() int32 {
 //
 func (box *CellAreaBox) PackEnd(renderer CellRendererer, expand, align, fixed bool) {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.gboolean // out
-	var _arg3 C.gboolean // out
-	var _arg4 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	if expand {
-		_arg2 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 	if align {
-		_arg3 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
 	}
 	if fixed {
-		_arg4 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[4])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gboolean)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.gboolean)(unsafe.Pointer(&_args[4])) = _arg4
 
 	girepository.MustFind("Gtk", "CellAreaBox").InvokeMethod("pack_end", _args[:], nil)
 
@@ -198,29 +181,18 @@ func (box *CellAreaBox) PackEnd(renderer CellRendererer, expand, align, fixed bo
 //
 func (box *CellAreaBox) PackStart(renderer CellRendererer, expand, align, fixed bool) {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.gboolean // out
-	var _arg3 C.gboolean // out
-	var _arg4 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	if expand {
-		_arg2 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 	if align {
-		_arg3 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
 	}
 	if fixed {
-		_arg4 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[4])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gboolean)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.gboolean)(unsafe.Pointer(&_args[4])) = _arg4
 
 	girepository.MustFind("Gtk", "CellAreaBox").InvokeMethod("pack_start", _args[:], nil)
 
@@ -239,14 +211,9 @@ func (box *CellAreaBox) PackStart(renderer CellRendererer, expand, align, fixed 
 //
 func (box *CellAreaBox) SetSpacing(spacing int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	_arg1 = C.gint(spacing)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(spacing)
 
 	girepository.MustFind("Gtk", "CellAreaBox").InvokeMethod("set_spacing", _args[:], nil)
 

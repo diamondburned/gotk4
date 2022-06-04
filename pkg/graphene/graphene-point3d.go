@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -63,21 +64,21 @@ func NewPoint3DAlloc() *Point3D {
 // X coordinate.
 func (p *Point3D) X() float32 {
 	var v float32 // out
-	v = float32(p.native.x)
+	v = float32(valptr)
 	return v
 }
 
 // Y coordinate.
 func (p *Point3D) Y() float32 {
 	var v float32 // out
-	v = float32(p.native.y)
+	v = float32(valptr)
 	return v
 }
 
 // Z coordinate.
 func (p *Point3D) Z() float32 {
 	var v float32 // out
-	v = float32(p.native.z)
+	v = float32(valptr)
 	return v
 }
 

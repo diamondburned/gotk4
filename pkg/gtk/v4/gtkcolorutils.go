@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
@@ -30,23 +31,13 @@ import "C"
 //    - g: return value for the green component.
 //    - b: return value for the blue component.
 //
-func HSVToRGB(h, s, v float32) (r float32, g float32, b float32) {
+func HSVToRGB(h, s, v float32) (r, g, b float32) {
 	var _args [3]girepository.Argument
 	var _outs [3]girepository.Argument
-	var _arg0 C.float // out
-	var _arg1 C.float // out
-	var _arg2 C.float // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
-	var _out2 *C.void // in
 
-	_arg0 = C.float(h)
-	_arg1 = C.float(s)
-	_arg2 = C.float(v)
-
-	*(*C.float)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.float)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.float)(unsafe.Pointer(&_args[0])) = C.float(h)
+	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(s)
+	*(*C.float)(unsafe.Pointer(&_args[2])) = C.float(v)
 
 	girepository.MustFind("Gtk", "hsv_to_rgb").Invoke(_args[:], _outs[:])
 
@@ -57,13 +48,10 @@ func HSVToRGB(h, s, v float32) (r float32, g float32, b float32) {
 	var _r float32 // out
 	var _g float32 // out
 	var _b float32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
-	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
 
-	_r = *(*float32)(unsafe.Pointer(_out0))
-	_g = *(*float32)(unsafe.Pointer(_out1))
-	_b = *(*float32)(unsafe.Pointer(_out2))
+	_r = *(*float32)(unsafe.Pointer(_outs[0]))
+	_g = *(*float32)(unsafe.Pointer(_outs[1]))
+	_b = *(*float32)(unsafe.Pointer(_outs[2]))
 
 	return _r, _g, _b
 }
@@ -85,23 +73,13 @@ func HSVToRGB(h, s, v float32) (r float32, g float32, b float32) {
 //    - s: return value for the saturation component.
 //    - v: return value for the value component.
 //
-func RGBToHSV(r, g, b float32) (h float32, s float32, v float32) {
+func RGBToHSV(r, g, b float32) (h, s, v float32) {
 	var _args [3]girepository.Argument
 	var _outs [3]girepository.Argument
-	var _arg0 C.float // out
-	var _arg1 C.float // out
-	var _arg2 C.float // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
-	var _out2 *C.void // in
 
-	_arg0 = C.float(r)
-	_arg1 = C.float(g)
-	_arg2 = C.float(b)
-
-	*(*C.float)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.float)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.float)(unsafe.Pointer(&_args[0])) = C.float(r)
+	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(g)
+	*(*C.float)(unsafe.Pointer(&_args[2])) = C.float(b)
 
 	girepository.MustFind("Gtk", "rgb_to_hsv").Invoke(_args[:], _outs[:])
 
@@ -112,13 +90,10 @@ func RGBToHSV(r, g, b float32) (h float32, s float32, v float32) {
 	var _h float32 // out
 	var _s float32 // out
 	var _v float32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
-	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
 
-	_h = *(*float32)(unsafe.Pointer(_out0))
-	_s = *(*float32)(unsafe.Pointer(_out1))
-	_v = *(*float32)(unsafe.Pointer(_out2))
+	_h = *(*float32)(unsafe.Pointer(_outs[0]))
+	_s = *(*float32)(unsafe.Pointer(_outs[1]))
+	_v = *(*float32)(unsafe.Pointer(_outs[2]))
 
 	return _h, _s, _v
 }

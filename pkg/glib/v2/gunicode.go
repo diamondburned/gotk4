@@ -1076,7 +1076,7 @@ func (u UnicodeType) String() string {
 //      freed with g_free(). If an error occurs, NULL will be returned and error
 //      set.
 //
-func UCS4ToUTF16(str *uint32, len int32) (itemsRead int32, itemsWritten int32, guint16 *uint16, goerr error) {
+func UCS4ToUTF16(str *uint32, len int32) (itemsRead, itemsWritten int32, guint16 *uint16, goerr error) {
 	var _arg1 *C.gunichar  // out
 	var _arg2 C.glong      // out
 	var _arg3 C.glong      // in
@@ -1126,7 +1126,7 @@ func UCS4ToUTF16(str *uint32, len int32) (itemsRead int32, itemsWritten int32, g
 //      In that case, items_read will be set to the position of the first invalid
 //      input character.
 //
-func UCS4ToUTF8(str *uint32, len int32) (itemsRead int32, itemsWritten int32, utf8 string, goerr error) {
+func UCS4ToUTF8(str *uint32, len int32) (itemsRead, itemsWritten int32, utf8 string, goerr error) {
 	var _arg1 *C.gunichar // out
 	var _arg2 C.glong     // out
 	var _arg3 C.glong     // in
@@ -1290,7 +1290,7 @@ func UnicharCompose(a, b uint32) (uint32, bool) {
 //    - b: return location for the second component of ch.
 //    - ok: TRUE if the character could be decomposed.
 //
-func UnicharDecompose(ch uint32) (a uint32, b uint32, ok bool) {
+func UnicharDecompose(ch uint32) (a, b uint32, ok bool) {
 	var _arg1 C.gunichar // out
 	var _arg2 C.gunichar // in
 	var _arg3 C.gunichar // in
@@ -2300,7 +2300,7 @@ func UnicodeScriptToISO15924(script UnicodeScript) uint32 {
 //      freed with g_free(). If an error occurs, NULL will be returned and error
 //      set.
 //
-func UTF16ToUCS4(str *uint16, len int32) (itemsRead int32, itemsWritten int32, gunichar *uint32, goerr error) {
+func UTF16ToUCS4(str *uint16, len int32) (itemsRead, itemsWritten int32, gunichar *uint32, goerr error) {
 	var _arg1 *C.gunichar2 // out
 	var _arg2 C.glong      // out
 	var _arg3 C.glong      // in
@@ -2359,7 +2359,7 @@ func UTF16ToUCS4(str *uint16, len int32) (itemsRead int32, itemsWritten int32, g
 //    - utf8: pointer to a newly allocated UTF-8 string. This value must be freed
 //      with g_free(). If an error occurs, NULL will be returned and error set.
 //
-func UTF16ToUTF8(str *uint16, len int32) (itemsRead int32, itemsWritten int32, utf8 string, goerr error) {
+func UTF16ToUTF8(str *uint16, len int32) (itemsRead, itemsWritten int32, utf8 string, goerr error) {
 	var _arg1 *C.gunichar2 // out
 	var _arg2 C.glong      // out
 	var _arg3 C.glong      // in
@@ -3250,7 +3250,7 @@ func UTF8Substring(str string, startPos, endPos int32) string {
 //      freed with g_free(). If an error occurs, NULL will be returned and error
 //      set.
 //
-func UTF8ToUCS4(str string, len int32) (itemsRead int32, itemsWritten int32, gunichar *uint32, goerr error) {
+func UTF8ToUCS4(str string, len int32) (itemsRead, itemsWritten int32, gunichar *uint32, goerr error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.glong     // out
 	var _arg3 C.glong     // in
@@ -3343,7 +3343,7 @@ func UTF8ToUCS4Fast(str string, len int32) (int32, *uint32) {
 //      freed with g_free(). If an error occurs, NULL will be returned and error
 //      set.
 //
-func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, guint16 *uint16, goerr error) {
+func UTF8ToUTF16(str string, len int32) (itemsRead, itemsWritten int32, guint16 *uint16, goerr error) {
 	var _arg1 *C.gchar     // out
 	var _arg2 C.glong      // out
 	var _arg3 C.glong      // in

@@ -131,12 +131,12 @@ type TextIter struct {
 
 // textIter is the struct that's finalized.
 type textIter struct {
-	native *C.GtkTextIter
+	native unsafe.Pointer
 }
 
 func marshalTextIter(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &TextIter{&textIter{(*C.GtkTextIter)(b)}}, nil
+	return &TextIter{&textIter{(unsafe.Pointer)(b)}}, nil
 }
 
 // Assign assigns the value of other to iter. This function is not useful in
@@ -149,14 +149,9 @@ func marshalTextIter(p uintptr) (interface{}, error) {
 //
 func (iter *TextIter) Assign(other *TextIter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(other)
@@ -173,12 +168,8 @@ func (iter *TextIter) Assign(other *TextIter) {
 //
 func (iter *TextIter) BackwardChar() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -186,7 +177,7 @@ func (iter *TextIter) BackwardChar() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -210,15 +201,9 @@ func (iter *TextIter) BackwardChar() bool {
 //
 func (iter *TextIter) BackwardChars(count int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = C.gint(count)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -227,7 +212,7 @@ func (iter *TextIter) BackwardChars(count int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -243,12 +228,8 @@ func (iter *TextIter) BackwardChars(count int32) bool {
 //
 func (iter *TextIter) BackwardCursorPosition() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -256,7 +237,7 @@ func (iter *TextIter) BackwardCursorPosition() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -276,15 +257,9 @@ func (iter *TextIter) BackwardCursorPosition() bool {
 //
 func (iter *TextIter) BackwardCursorPositions(count int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = C.gint(count)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -293,7 +268,7 @@ func (iter *TextIter) BackwardCursorPositions(count int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -314,23 +289,14 @@ func (iter *TextIter) BackwardCursorPositions(count int32) bool {
 //
 func (iter *TextIter) BackwardFindChar(pred TextCharPredicate, limit *TextIter) bool {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer
-	var _arg3 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_TextCharPredicate)
-	_arg2 = C.gpointer(gbox.Assign(pred))
-	defer gbox.Delete(uintptr(_arg2))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk3_TextCharPredicate)
+	_args[2] = C.gpointer(gbox.Assign(pred))
+	defer gbox.Delete(uintptr(_args[2]))
 	if limit != nil {
-		_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(limit)))
+		*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(limit)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -339,9 +305,8 @@ func (iter *TextIter) BackwardFindChar(pred TextCharPredicate, limit *TextIter) 
 	runtime.KeepAlive(limit)
 
 	var _ok bool // out
-	_out3 = *(*C.gboolean)(unsafe.Pointer(&_outs[3]))
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -362,12 +327,8 @@ func (iter *TextIter) BackwardFindChar(pred TextCharPredicate, limit *TextIter) 
 //
 func (iter *TextIter) BackwardLine() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -375,7 +336,7 @@ func (iter *TextIter) BackwardLine() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -399,15 +360,9 @@ func (iter *TextIter) BackwardLine() bool {
 //
 func (iter *TextIter) BackwardLines(count int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = C.gint(count)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -416,7 +371,7 @@ func (iter *TextIter) BackwardLines(count int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -435,12 +390,8 @@ func (iter *TextIter) BackwardLines(count int32) bool {
 //
 func (iter *TextIter) BackwardSentenceStart() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -448,7 +399,7 @@ func (iter *TextIter) BackwardSentenceStart() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -469,15 +420,9 @@ func (iter *TextIter) BackwardSentenceStart() bool {
 //
 func (iter *TextIter) BackwardSentenceStarts(count int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = C.gint(count)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -486,7 +431,7 @@ func (iter *TextIter) BackwardSentenceStarts(count int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -509,17 +454,11 @@ func (iter *TextIter) BackwardSentenceStarts(count int32) bool {
 //
 func (iter *TextIter) BackwardToTagToggle(tag *TextTag) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	if tag != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -528,7 +467,7 @@ func (iter *TextIter) BackwardToTagToggle(tag *TextTag) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -544,12 +483,8 @@ func (iter *TextIter) BackwardToTagToggle(tag *TextTag) bool {
 //
 func (iter *TextIter) BackwardVisibleCursorPosition() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -557,7 +492,7 @@ func (iter *TextIter) BackwardVisibleCursorPosition() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -577,15 +512,9 @@ func (iter *TextIter) BackwardVisibleCursorPosition() bool {
 //
 func (iter *TextIter) BackwardVisibleCursorPositions(count int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = C.gint(count)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -594,7 +523,7 @@ func (iter *TextIter) BackwardVisibleCursorPositions(count int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -615,12 +544,8 @@ func (iter *TextIter) BackwardVisibleCursorPositions(count int32) bool {
 //
 func (iter *TextIter) BackwardVisibleLine() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -628,7 +553,7 @@ func (iter *TextIter) BackwardVisibleLine() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -653,15 +578,9 @@ func (iter *TextIter) BackwardVisibleLine() bool {
 //
 func (iter *TextIter) BackwardVisibleLines(count int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = C.gint(count)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -670,7 +589,7 @@ func (iter *TextIter) BackwardVisibleLines(count int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -689,12 +608,8 @@ func (iter *TextIter) BackwardVisibleLines(count int32) bool {
 //
 func (iter *TextIter) BackwardVisibleWordStart() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -702,7 +617,7 @@ func (iter *TextIter) BackwardVisibleWordStart() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -722,15 +637,9 @@ func (iter *TextIter) BackwardVisibleWordStart() bool {
 //
 func (iter *TextIter) BackwardVisibleWordStarts(count int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = C.gint(count)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -739,7 +648,7 @@ func (iter *TextIter) BackwardVisibleWordStarts(count int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -757,12 +666,8 @@ func (iter *TextIter) BackwardVisibleWordStarts(count int32) bool {
 //
 func (iter *TextIter) BackwardWordStart() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -770,7 +675,7 @@ func (iter *TextIter) BackwardWordStart() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -790,15 +695,9 @@ func (iter *TextIter) BackwardWordStart() bool {
 //
 func (iter *TextIter) BackwardWordStarts(count int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = C.gint(count)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -807,7 +706,7 @@ func (iter *TextIter) BackwardWordStarts(count int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -835,17 +734,11 @@ func (iter *TextIter) BackwardWordStarts(count int32) bool {
 //
 func (iter *TextIter) BeginsTag(tag *TextTag) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	if tag != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -854,7 +747,7 @@ func (iter *TextIter) BeginsTag(tag *TextTag) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -877,17 +770,11 @@ func (iter *TextIter) BeginsTag(tag *TextTag) bool {
 //
 func (iter *TextIter) CanInsert(defaultEditability bool) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	if defaultEditability {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -896,7 +783,7 @@ func (iter *TextIter) CanInsert(defaultEditability bool) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -919,15 +806,9 @@ func (iter *TextIter) CanInsert(defaultEditability bool) bool {
 //
 func (lhs *TextIter) Compare(rhs *TextIter) int32 {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(lhs)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rhs)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(lhs)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rhs)))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -936,7 +817,7 @@ func (lhs *TextIter) Compare(rhs *TextIter) int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -951,12 +832,8 @@ func (lhs *TextIter) Compare(rhs *TextIter) int32 {
 //
 func (iter *TextIter) Copy() *TextIter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -997,17 +874,11 @@ func (iter *TextIter) Copy() *TextIter {
 //
 func (iter *TextIter) Editable(defaultSetting bool) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	if defaultSetting {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1016,7 +887,7 @@ func (iter *TextIter) Editable(defaultSetting bool) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1037,12 +908,8 @@ func (iter *TextIter) Editable(defaultSetting bool) bool {
 //
 func (iter *TextIter) EndsLine() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1050,7 +917,7 @@ func (iter *TextIter) EndsLine() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1067,12 +934,8 @@ func (iter *TextIter) EndsLine() bool {
 //
 func (iter *TextIter) EndsSentence() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1080,7 +943,7 @@ func (iter *TextIter) EndsSentence() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1106,17 +969,11 @@ func (iter *TextIter) EndsSentence() bool {
 //
 func (iter *TextIter) EndsTag(tag *TextTag) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	if tag != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1125,7 +982,7 @@ func (iter *TextIter) EndsTag(tag *TextTag) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1142,12 +999,8 @@ func (iter *TextIter) EndsTag(tag *TextTag) bool {
 //
 func (iter *TextIter) EndsWord() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1155,7 +1008,7 @@ func (iter *TextIter) EndsWord() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1177,15 +1030,9 @@ func (iter *TextIter) EndsWord() bool {
 //
 func (lhs *TextIter) Equal(rhs *TextIter) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(lhs)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rhs)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(lhs)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rhs)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1194,7 +1041,7 @@ func (lhs *TextIter) Equal(rhs *TextIter) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1215,12 +1062,8 @@ func (lhs *TextIter) Equal(rhs *TextIter) bool {
 //
 func (iter *TextIter) ForwardChar() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1228,7 +1071,7 @@ func (iter *TextIter) ForwardChar() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1252,15 +1095,9 @@ func (iter *TextIter) ForwardChar() bool {
 //
 func (iter *TextIter) ForwardChars(count int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = C.gint(count)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1269,7 +1106,7 @@ func (iter *TextIter) ForwardChars(count int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1292,12 +1129,8 @@ func (iter *TextIter) ForwardChars(count int32) bool {
 //
 func (iter *TextIter) ForwardCursorPosition() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1305,7 +1138,7 @@ func (iter *TextIter) ForwardCursorPosition() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1325,15 +1158,9 @@ func (iter *TextIter) ForwardCursorPosition() bool {
 //
 func (iter *TextIter) ForwardCursorPositions(count int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = C.gint(count)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1342,7 +1169,7 @@ func (iter *TextIter) ForwardCursorPositions(count int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1364,23 +1191,14 @@ func (iter *TextIter) ForwardCursorPositions(count int32) bool {
 //
 func (iter *TextIter) ForwardFindChar(pred TextCharPredicate, limit *TextIter) bool {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer
-	var _arg3 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_TextCharPredicate)
-	_arg2 = C.gpointer(gbox.Assign(pred))
-	defer gbox.Delete(uintptr(_arg2))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk3_TextCharPredicate)
+	_args[2] = C.gpointer(gbox.Assign(pred))
+	defer gbox.Delete(uintptr(_args[2]))
 	if limit != nil {
-		_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(limit)))
+		*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(limit)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1389,9 +1207,8 @@ func (iter *TextIter) ForwardFindChar(pred TextCharPredicate, limit *TextIter) b
 	runtime.KeepAlive(limit)
 
 	var _ok bool // out
-	_out3 = *(*C.gboolean)(unsafe.Pointer(&_outs[3]))
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1409,12 +1226,8 @@ func (iter *TextIter) ForwardFindChar(pred TextCharPredicate, limit *TextIter) b
 //
 func (iter *TextIter) ForwardLine() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1422,7 +1235,7 @@ func (iter *TextIter) ForwardLine() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1446,15 +1259,9 @@ func (iter *TextIter) ForwardLine() bool {
 //
 func (iter *TextIter) ForwardLines(count int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = C.gint(count)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1463,7 +1270,7 @@ func (iter *TextIter) ForwardLines(count int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1481,12 +1288,8 @@ func (iter *TextIter) ForwardLines(count int32) bool {
 //
 func (iter *TextIter) ForwardSentenceEnd() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1494,7 +1297,7 @@ func (iter *TextIter) ForwardSentenceEnd() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1515,15 +1318,9 @@ func (iter *TextIter) ForwardSentenceEnd() bool {
 //
 func (iter *TextIter) ForwardSentenceEnds(count int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = C.gint(count)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1532,7 +1329,7 @@ func (iter *TextIter) ForwardSentenceEnds(count int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1544,11 +1341,8 @@ func (iter *TextIter) ForwardSentenceEnds(count int32) bool {
 // the end iterator returns 0, which is convenient for writing loops.
 func (iter *TextIter) ForwardToEnd() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	runtime.KeepAlive(iter)
 }
@@ -1567,12 +1361,8 @@ func (iter *TextIter) ForwardToEnd() {
 //
 func (iter *TextIter) ForwardToLineEnd() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1580,7 +1370,7 @@ func (iter *TextIter) ForwardToLineEnd() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1603,17 +1393,11 @@ func (iter *TextIter) ForwardToLineEnd() bool {
 //
 func (iter *TextIter) ForwardToTagToggle(tag *TextTag) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	if tag != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1622,7 +1406,7 @@ func (iter *TextIter) ForwardToTagToggle(tag *TextTag) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1638,12 +1422,8 @@ func (iter *TextIter) ForwardToTagToggle(tag *TextTag) bool {
 //
 func (iter *TextIter) ForwardVisibleCursorPosition() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1651,7 +1431,7 @@ func (iter *TextIter) ForwardVisibleCursorPosition() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1671,15 +1451,9 @@ func (iter *TextIter) ForwardVisibleCursorPosition() bool {
 //
 func (iter *TextIter) ForwardVisibleCursorPositions(count int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = C.gint(count)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1688,7 +1462,7 @@ func (iter *TextIter) ForwardVisibleCursorPositions(count int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1706,12 +1480,8 @@ func (iter *TextIter) ForwardVisibleCursorPositions(count int32) bool {
 //
 func (iter *TextIter) ForwardVisibleLine() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1719,7 +1489,7 @@ func (iter *TextIter) ForwardVisibleLine() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1743,15 +1513,9 @@ func (iter *TextIter) ForwardVisibleLine() bool {
 //
 func (iter *TextIter) ForwardVisibleLines(count int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = C.gint(count)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1760,7 +1524,7 @@ func (iter *TextIter) ForwardVisibleLines(count int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1778,12 +1542,8 @@ func (iter *TextIter) ForwardVisibleLines(count int32) bool {
 //
 func (iter *TextIter) ForwardVisibleWordEnd() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1791,7 +1551,7 @@ func (iter *TextIter) ForwardVisibleWordEnd() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1811,15 +1571,9 @@ func (iter *TextIter) ForwardVisibleWordEnd() bool {
 //
 func (iter *TextIter) ForwardVisibleWordEnds(count int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = C.gint(count)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1828,7 +1582,7 @@ func (iter *TextIter) ForwardVisibleWordEnds(count int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1846,12 +1600,8 @@ func (iter *TextIter) ForwardVisibleWordEnds(count int32) bool {
 //
 func (iter *TextIter) ForwardWordEnd() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1859,7 +1609,7 @@ func (iter *TextIter) ForwardWordEnd() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1878,15 +1628,9 @@ func (iter *TextIter) ForwardWordEnd() bool {
 //
 func (iter *TextIter) ForwardWordEnds(count int32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = C.gint(count)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1895,7 +1639,7 @@ func (iter *TextIter) ForwardWordEnds(count int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1919,13 +1663,8 @@ func (iter *TextIter) ForwardWordEnds(count int32) bool {
 func (iter *TextIter) Attributes() (*TextAttributes, bool) {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1933,17 +1672,16 @@ func (iter *TextIter) Attributes() (*TextAttributes, bool) {
 
 	var _values *TextAttributes // out
 	var _ok bool                // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_values = (*TextAttributes)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	C.gtk_text_attributes_ref(_out0)
+	_values = (*TextAttributes)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	C.gtk_text_attributes_ref(_outs[0])
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_values)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.gtk_text_attributes_unref((*C.GtkTextAttributes)(intern.C))
 		},
 	)
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1958,12 +1696,8 @@ func (iter *TextIter) Attributes() (*TextAttributes, bool) {
 //
 func (iter *TextIter) Buffer() *TextBuffer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1985,12 +1719,8 @@ func (iter *TextIter) Buffer() *TextBuffer {
 //
 func (iter *TextIter) BytesInLine() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1998,7 +1728,7 @@ func (iter *TextIter) BytesInLine() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -2016,12 +1746,8 @@ func (iter *TextIter) BytesInLine() int32 {
 //
 func (iter *TextIter) Char() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gunichar // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gunichar)(unsafe.Pointer(&_gret))
 
@@ -2029,7 +1755,7 @@ func (iter *TextIter) Char() uint32 {
 
 	var _gunichar uint32 // out
 
-	_gunichar = uint32(_cret)
+	_gunichar = uint32(*(*C.gunichar)(unsafe.Pointer(&_cret)))
 
 	return _gunichar
 }
@@ -2043,12 +1769,8 @@ func (iter *TextIter) Char() uint32 {
 //
 func (iter *TextIter) CharsInLine() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -2056,7 +1778,7 @@ func (iter *TextIter) CharsInLine() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -2070,12 +1792,8 @@ func (iter *TextIter) CharsInLine() int32 {
 //
 func (iter *TextIter) ChildAnchor() *TextChildAnchor {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -2098,12 +1816,8 @@ func (iter *TextIter) ChildAnchor() *TextChildAnchor {
 //
 func (iter *TextIter) Language() *pango.Language {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -2131,12 +1845,8 @@ func (iter *TextIter) Language() *pango.Language {
 //
 func (iter *TextIter) Line() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -2144,7 +1854,7 @@ func (iter *TextIter) Line() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -2159,12 +1869,8 @@ func (iter *TextIter) Line() int32 {
 //
 func (iter *TextIter) LineIndex() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -2172,7 +1878,7 @@ func (iter *TextIter) LineIndex() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -2187,12 +1893,8 @@ func (iter *TextIter) LineIndex() int32 {
 //
 func (iter *TextIter) LineOffset() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -2200,7 +1902,7 @@ func (iter *TextIter) LineOffset() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -2216,12 +1918,8 @@ func (iter *TextIter) LineOffset() int32 {
 //
 func (iter *TextIter) Marks() []*TextMark {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -2251,12 +1949,8 @@ func (iter *TextIter) Marks() []*TextMark {
 //
 func (iter *TextIter) Offset() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -2264,7 +1958,7 @@ func (iter *TextIter) Offset() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -2278,12 +1972,8 @@ func (iter *TextIter) Offset() int32 {
 //
 func (iter *TextIter) Pixbuf() *gdkpixbuf.Pixbuf {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -2324,15 +2014,9 @@ func (iter *TextIter) Pixbuf() *gdkpixbuf.Pixbuf {
 //
 func (start *TextIter) Slice(end *TextIter) string {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -2357,12 +2041,8 @@ func (start *TextIter) Slice(end *TextIter) string {
 //
 func (iter *TextIter) Tags() []*TextTag {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -2396,15 +2076,9 @@ func (iter *TextIter) Tags() []*TextTag {
 //
 func (start *TextIter) Text(end *TextIter) string {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -2435,17 +2109,11 @@ func (start *TextIter) Text(end *TextIter) string {
 //
 func (iter *TextIter) ToggledTags(toggledOn bool) []*TextTag {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
-	var _cret *C.void    // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	if toggledOn {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -2475,12 +2143,8 @@ func (iter *TextIter) ToggledTags(toggledOn bool) []*TextTag {
 //
 func (iter *TextIter) VisibleLineIndex() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -2488,7 +2152,7 @@ func (iter *TextIter) VisibleLineIndex() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -2503,12 +2167,8 @@ func (iter *TextIter) VisibleLineIndex() int32 {
 //
 func (iter *TextIter) VisibleLineOffset() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -2516,7 +2176,7 @@ func (iter *TextIter) VisibleLineOffset() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -2535,15 +2195,9 @@ func (iter *TextIter) VisibleLineOffset() int32 {
 //
 func (start *TextIter) VisibleSlice(end *TextIter) string {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -2572,15 +2226,9 @@ func (start *TextIter) VisibleSlice(end *TextIter) string {
 //
 func (start *TextIter) VisibleText(end *TextIter) string {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -2609,15 +2257,9 @@ func (start *TextIter) VisibleText(end *TextIter) string {
 //
 func (iter *TextIter) HasTag(tag *TextTag) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -2626,7 +2268,7 @@ func (iter *TextIter) HasTag(tag *TextTag) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2647,18 +2289,10 @@ func (iter *TextIter) HasTag(tag *TextTag) bool {
 //
 func (iter *TextIter) InRange(start *TextIter, end *TextIter) bool {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -2668,7 +2302,7 @@ func (iter *TextIter) InRange(start *TextIter, end *TextIter) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2687,12 +2321,8 @@ func (iter *TextIter) InRange(start *TextIter, end *TextIter) bool {
 //
 func (iter *TextIter) InsideSentence() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -2700,7 +2330,7 @@ func (iter *TextIter) InsideSentence() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2721,12 +2351,8 @@ func (iter *TextIter) InsideSentence() bool {
 //
 func (iter *TextIter) InsideWord() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -2734,7 +2360,7 @@ func (iter *TextIter) InsideWord() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2750,12 +2376,8 @@ func (iter *TextIter) InsideWord() bool {
 //
 func (iter *TextIter) IsCursorPosition() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -2763,7 +2385,7 @@ func (iter *TextIter) IsCursorPosition() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2780,12 +2402,8 @@ func (iter *TextIter) IsCursorPosition() bool {
 //
 func (iter *TextIter) IsEnd() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -2793,7 +2411,7 @@ func (iter *TextIter) IsEnd() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2809,12 +2427,8 @@ func (iter *TextIter) IsEnd() bool {
 //
 func (iter *TextIter) IsStart() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -2822,7 +2436,7 @@ func (iter *TextIter) IsStart() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2841,14 +2455,9 @@ func (iter *TextIter) IsStart() bool {
 //
 func (first *TextIter) Order(second *TextIter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(first)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(second)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(first)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(second)))
 
 	runtime.KeepAlive(first)
 	runtime.KeepAlive(second)
@@ -2864,14 +2473,9 @@ func (first *TextIter) Order(second *TextIter) {
 //
 func (iter *TextIter) SetLine(lineNumber int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = C.gint(lineNumber)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(lineNumber)
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(lineNumber)
@@ -2887,14 +2491,9 @@ func (iter *TextIter) SetLine(lineNumber int32) {
 //
 func (iter *TextIter) SetLineIndex(byteOnLine int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = C.gint(byteOnLine)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(byteOnLine)
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(byteOnLine)
@@ -2913,14 +2512,9 @@ func (iter *TextIter) SetLineIndex(byteOnLine int32) {
 //
 func (iter *TextIter) SetLineOffset(charOnLine int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = C.gint(charOnLine)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(charOnLine)
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(charOnLine)
@@ -2935,14 +2529,9 @@ func (iter *TextIter) SetLineOffset(charOnLine int32) {
 //
 func (iter *TextIter) SetOffset(charOffset int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = C.gint(charOffset)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(charOffset)
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(charOffset)
@@ -2958,14 +2547,9 @@ func (iter *TextIter) SetOffset(charOffset int32) {
 //
 func (iter *TextIter) SetVisibleLineIndex(byteOnLine int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = C.gint(byteOnLine)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(byteOnLine)
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(byteOnLine)
@@ -2981,14 +2565,9 @@ func (iter *TextIter) SetVisibleLineIndex(byteOnLine int32) {
 //
 func (iter *TextIter) SetVisibleLineOffset(charOnLine int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg1 = C.gint(charOnLine)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(charOnLine)
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(charOnLine)
@@ -3005,12 +2584,8 @@ func (iter *TextIter) SetVisibleLineOffset(charOnLine int32) {
 //
 func (iter *TextIter) StartsLine() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -3018,7 +2593,7 @@ func (iter *TextIter) StartsLine() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -3035,12 +2610,8 @@ func (iter *TextIter) StartsLine() bool {
 //
 func (iter *TextIter) StartsSentence() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -3048,7 +2619,7 @@ func (iter *TextIter) StartsSentence() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -3074,17 +2645,11 @@ func (iter *TextIter) StartsSentence() bool {
 //
 func (iter *TextIter) StartsTag(tag *TextTag) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	if tag != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -3093,7 +2658,7 @@ func (iter *TextIter) StartsTag(tag *TextTag) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -3110,12 +2675,8 @@ func (iter *TextIter) StartsTag(tag *TextTag) bool {
 //
 func (iter *TextIter) StartsWord() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -3123,7 +2684,7 @@ func (iter *TextIter) StartsWord() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -3144,17 +2705,11 @@ func (iter *TextIter) StartsWord() bool {
 //
 func (iter *TextIter) TogglesTag(tag *TextTag) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	if tag != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -3163,7 +2718,7 @@ func (iter *TextIter) TogglesTag(tag *TextTag) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

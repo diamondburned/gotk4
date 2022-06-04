@@ -84,8 +84,6 @@ func marshalMemoryInputStream(p uintptr) (interface{}, error) {
 //    - memoryInputStream: new Stream.
 //
 func NewMemoryInputStream() *MemoryInputStream {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gio", "MemoryInputStream").InvokeMethod("new_MemoryInputStream", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -109,12 +107,8 @@ func NewMemoryInputStream() *MemoryInputStream {
 //
 func NewMemoryInputStreamFromBytes(bytes *glib.Bytes) *MemoryInputStream {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(bytes)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bytes)))
 
 	_gret := girepository.MustFind("Gio", "MemoryInputStream").InvokeMethod("new_MemoryInputStream_from_bytes", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -136,14 +130,9 @@ func NewMemoryInputStreamFromBytes(bytes *glib.Bytes) *MemoryInputStream {
 //
 func (stream *MemoryInputStream) AddBytes(bytes *glib.Bytes) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(bytes)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bytes)))
 
 	girepository.MustFind("Gio", "MemoryInputStream").InvokeMethod("add_bytes", _args[:], nil)
 

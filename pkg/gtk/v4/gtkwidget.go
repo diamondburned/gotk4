@@ -1205,20 +1205,13 @@ func (widget *Widget) ConnectUnrealize(f func()) coreglib.SignalHandle {
 //
 func (widget *Widget) ActionSetEnabled(actionName string, enabled bool) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 	if enabled {
-		_arg2 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("action_set_enabled", _args[:], nil)
 
@@ -1248,12 +1241,8 @@ func (widget *Widget) ActionSetEnabled(actionName string, enabled bool) {
 //
 func (widget *Widget) Activate() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("activate", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1262,7 +1251,7 @@ func (widget *Widget) Activate() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1290,21 +1279,13 @@ func (widget *Widget) Activate() bool {
 //
 func (widget *Widget) ActivateAction(name string, args *glib.Variant) bool {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
 	if args != nil {
-		_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("activate_action_variant", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1315,7 +1296,7 @@ func (widget *Widget) ActivateAction(name string, args *glib.Variant) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1325,11 +1306,8 @@ func (widget *Widget) ActivateAction(name string, args *glib.Variant) bool {
 // ActivateDefault activates the default.activate action from widget.
 func (widget *Widget) ActivateDefault() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("activate_default", _args[:], nil)
 
@@ -1347,15 +1325,10 @@ func (widget *Widget) ActivateDefault() {
 //
 func (widget *Widget) AddController(controller EventControllerer) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(controller).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("add_controller", _args[:], nil)
 
@@ -1377,15 +1350,10 @@ func (widget *Widget) AddController(controller EventControllerer) {
 //
 func (widget *Widget) AddCSSClass(cssClass string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(cssClass)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(cssClass)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("add_css_class", _args[:], nil)
 
@@ -1407,14 +1375,9 @@ func (widget *Widget) AddCSSClass(cssClass string) {
 //
 func (widget *Widget) AddMnemonicLabel(label Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("add_mnemonic_label", _args[:], nil)
 
@@ -1454,19 +1417,11 @@ func (widget *Widget) AddMnemonicLabel(label Widgetter) {
 //
 func (widget *Widget) AddTickCallback(callback TickCallback) uint32 {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk4_TickCallback)
-	_arg2 = C.gpointer(gbox.Assign(callback))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk4_TickCallback)
+	_args[2] = C.gpointer(gbox.Assign(callback))
+	_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("add_tick_callback", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -1475,9 +1430,8 @@ func (widget *Widget) AddTickCallback(callback TickCallback) uint32 {
 	runtime.KeepAlive(callback)
 
 	var _guint uint32 // out
-	_out2 = *(*C.guint)(unsafe.Pointer(&_outs[2]))
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -1500,25 +1454,14 @@ func (widget *Widget) AddTickCallback(callback TickCallback) uint32 {
 //
 func (widget *Widget) Allocate(width, height, baseline int32, transform *gsk.Transform) {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
-	var _arg2 C.int   // out
-	var _arg3 C.int   // out
-	var _arg4 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.int(width)
-	_arg2 = C.int(height)
-	_arg3 = C.int(baseline)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(width)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(height)
+	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(baseline)
 	if transform != nil {
-		_arg4 = (*C.void)(gextras.StructNative(unsafe.Pointer(transform)))
+		*(**C.void)(unsafe.Pointer(&_args[4])) = (*C.void)(gextras.StructNative(unsafe.Pointer(transform)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.int)(unsafe.Pointer(&_args[3])) = _arg3
-	*(**C.void)(unsafe.Pointer(&_args[4])) = _arg4
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("allocate", _args[:], nil)
 
@@ -1553,16 +1496,9 @@ func (widget *Widget) Allocate(width, height, baseline int32, transform *gsk.Tra
 func (widget *Widget) ComputeBounds(target Widgetter) (*graphene.Rect, bool) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _out0 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(target).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(target).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("compute_bounds", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1572,10 +1508,9 @@ func (widget *Widget) ComputeBounds(target Widgetter) (*graphene.Rect, bool) {
 
 	var _outBounds *graphene.Rect // out
 	var _ok bool                  // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_outBounds = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	if _cret != 0 {
+	_outBounds = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1603,19 +1538,10 @@ func (widget *Widget) ComputeBounds(target Widgetter) (*graphene.Rect, bool) {
 func (widget *Widget) ComputePoint(target Widgetter, point *graphene.Point) (*graphene.Point, bool) {
 	var _args [3]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 *C.void    // out
-	var _out0 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(target).Native()))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(target).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("compute_point", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1626,10 +1552,9 @@ func (widget *Widget) ComputePoint(target Widgetter, point *graphene.Point) (*gr
 
 	var _outPoint *graphene.Point // out
 	var _ok bool                  // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_outPoint = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	if _cret != 0 {
+	_outPoint = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1654,16 +1579,9 @@ func (widget *Widget) ComputePoint(target Widgetter, point *graphene.Point) (*gr
 func (widget *Widget) ComputeTransform(target Widgetter) (*graphene.Matrix, bool) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _out0 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(target).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(target).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("compute_transform", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1673,10 +1591,9 @@ func (widget *Widget) ComputeTransform(target Widgetter) (*graphene.Matrix, bool
 
 	var _outTransform *graphene.Matrix // out
 	var _ok bool                       // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_outTransform = (*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	if _cret != 0 {
+	_outTransform = (*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1699,18 +1616,10 @@ func (widget *Widget) ComputeTransform(target Widgetter) (*graphene.Matrix, bool
 //
 func (widget *Widget) Contains(x, y float64) bool {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.double   // out
-	var _arg2 C.double   // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.double(x)
-	_arg2 = C.double(y)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.double)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(x)
+	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(y)
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("contains", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1721,7 +1630,7 @@ func (widget *Widget) Contains(x, y float64) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1740,12 +1649,8 @@ func (widget *Widget) Contains(x, y float64) bool {
 //
 func (widget *Widget) CreatePangoContext() *pango.Context {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("create_pango_context", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1781,18 +1686,12 @@ func (widget *Widget) CreatePangoContext() *pango.Context {
 //
 func (widget *Widget) CreatePangoLayout(text string) *pango.Layout {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if text != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("create_pango_layout", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1822,11 +1721,8 @@ func (widget *Widget) CreatePangoLayout(text string) *pango.Layout {
 // manager that is used.
 func (widget *Widget) ErrorBell() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("error_bell", _args[:], nil)
 
@@ -1846,12 +1742,8 @@ func (widget *Widget) ErrorBell() {
 //
 func (widget *Widget) AllocatedBaseline() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_allocated_baseline", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -1860,7 +1752,7 @@ func (widget *Widget) AllocatedBaseline() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1874,12 +1766,8 @@ func (widget *Widget) AllocatedBaseline() int32 {
 //
 func (widget *Widget) AllocatedHeight() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_allocated_height", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -1888,7 +1776,7 @@ func (widget *Widget) AllocatedHeight() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1901,12 +1789,8 @@ func (widget *Widget) AllocatedHeight() int32 {
 //
 func (widget *Widget) AllocatedWidth() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_allocated_width", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -1915,7 +1799,7 @@ func (widget *Widget) AllocatedWidth() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1931,12 +1815,8 @@ func (widget *Widget) AllocatedWidth() int32 {
 //
 func (widget *Widget) CanFocus() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_can_focus", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1945,7 +1825,7 @@ func (widget *Widget) CanFocus() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1960,12 +1840,8 @@ func (widget *Widget) CanFocus() bool {
 //
 func (widget *Widget) CanTarget() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_can_target", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1974,7 +1850,7 @@ func (widget *Widget) CanTarget() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1995,12 +1871,8 @@ func (widget *Widget) CanTarget() bool {
 //
 func (widget *Widget) ChildVisible() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_child_visible", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -2009,7 +1881,7 @@ func (widget *Widget) ChildVisible() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2029,12 +1901,8 @@ func (widget *Widget) ChildVisible() bool {
 //
 func (widget *Widget) Clipboard() *gdk.Clipboard {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_clipboard", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -2062,12 +1930,8 @@ func (widget *Widget) Clipboard() *gdk.Clipboard {
 //
 func (widget *Widget) CSSClasses() []string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void  // out
-	var _cret **C.char // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_css_classes", _args[:], nil)
 	_cret = *(***C.char)(unsafe.Pointer(&_gret))
@@ -2103,12 +1967,8 @@ func (widget *Widget) CSSClasses() []string {
 //
 func (self *Widget) CSSName() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_css_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -2132,12 +1992,8 @@ func (self *Widget) CSSName() string {
 //
 func (widget *Widget) Cursor() *gdk.Cursor {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_cursor", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -2146,7 +2002,7 @@ func (widget *Widget) Cursor() *gdk.Cursor {
 
 	var _cursor *gdk.Cursor // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			obj := coreglib.Take(unsafe.Pointer(_cret))
 			_cursor = &gdk.Cursor{
@@ -2174,12 +2030,8 @@ func (widget *Widget) Cursor() *gdk.Cursor {
 //
 func (widget *Widget) Display() *gdk.Display {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_display", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -2208,12 +2060,8 @@ func (widget *Widget) Display() *gdk.Display {
 //
 func (widget *Widget) FirstChild() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_first_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -2222,7 +2070,7 @@ func (widget *Widget) FirstChild() Widgetter {
 
 	var _ret Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -2251,12 +2099,8 @@ func (widget *Widget) FirstChild() Widgetter {
 //
 func (widget *Widget) FocusChild() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_focus_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -2265,7 +2109,7 @@ func (widget *Widget) FocusChild() Widgetter {
 
 	var _ret Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -2297,12 +2141,8 @@ func (widget *Widget) FocusChild() Widgetter {
 //
 func (widget *Widget) FocusOnClick() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_focus_on_click", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -2311,7 +2151,7 @@ func (widget *Widget) FocusOnClick() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2328,12 +2168,8 @@ func (widget *Widget) FocusOnClick() bool {
 //
 func (widget *Widget) Focusable() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_focusable", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -2342,7 +2178,7 @@ func (widget *Widget) Focusable() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2359,12 +2195,8 @@ func (widget *Widget) Focusable() bool {
 //
 func (widget *Widget) FontMap() pango.FontMapper {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_font_map", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -2373,7 +2205,7 @@ func (widget *Widget) FontMap() pango.FontMapper {
 
 	var _fontMap pango.FontMapper // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -2403,12 +2235,8 @@ func (widget *Widget) FontMap() pango.FontMapper {
 //
 func (widget *Widget) FontOptions() *cairo.FontOptions {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_font_options", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -2417,7 +2245,7 @@ func (widget *Widget) FontOptions() *cairo.FontOptions {
 
 	var _fontOptions *cairo.FontOptions // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_fontOptions = (*cairo.FontOptions)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	}
 
@@ -2451,12 +2279,8 @@ func (widget *Widget) FontOptions() *cairo.FontOptions {
 //
 func (widget *Widget) FrameClock() gdk.FrameClocker {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_frame_clock", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -2465,7 +2289,7 @@ func (widget *Widget) FrameClock() gdk.FrameClocker {
 
 	var _frameClock gdk.FrameClocker // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -2493,12 +2317,8 @@ func (widget *Widget) FrameClock() gdk.FrameClocker {
 //
 func (widget *Widget) HasTooltip() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_has_tooltip", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -2507,7 +2327,7 @@ func (widget *Widget) HasTooltip() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2527,12 +2347,8 @@ func (widget *Widget) HasTooltip() bool {
 //
 func (widget *Widget) Height() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_height", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -2541,7 +2357,7 @@ func (widget *Widget) Height() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -2567,12 +2383,8 @@ func (widget *Widget) Height() int32 {
 //
 func (widget *Widget) HExpand() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_hexpand", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -2581,7 +2393,7 @@ func (widget *Widget) HExpand() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2604,12 +2416,8 @@ func (widget *Widget) HExpand() bool {
 //
 func (widget *Widget) HExpandSet() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_hexpand_set", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -2618,7 +2426,7 @@ func (widget *Widget) HExpandSet() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2635,12 +2443,8 @@ func (widget *Widget) HExpandSet() bool {
 //
 func (widget *Widget) LastChild() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_last_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -2649,7 +2453,7 @@ func (widget *Widget) LastChild() Widgetter {
 
 	var _ret Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -2679,12 +2483,8 @@ func (widget *Widget) LastChild() Widgetter {
 //
 func (widget *Widget) LayoutManager() LayoutManagerer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_layout_manager", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -2693,7 +2493,7 @@ func (widget *Widget) LayoutManager() LayoutManagerer {
 
 	var _layoutManager LayoutManagerer // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -2721,12 +2521,8 @@ func (widget *Widget) LayoutManager() LayoutManagerer {
 //
 func (widget *Widget) Mapped() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_mapped", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -2735,7 +2531,7 @@ func (widget *Widget) Mapped() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2750,12 +2546,8 @@ func (widget *Widget) Mapped() bool {
 //
 func (widget *Widget) MarginBottom() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_margin_bottom", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -2764,7 +2556,7 @@ func (widget *Widget) MarginBottom() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -2777,12 +2569,8 @@ func (widget *Widget) MarginBottom() int32 {
 //
 func (widget *Widget) MarginEnd() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_margin_end", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -2791,7 +2579,7 @@ func (widget *Widget) MarginEnd() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -2804,12 +2592,8 @@ func (widget *Widget) MarginEnd() int32 {
 //
 func (widget *Widget) MarginStart() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_margin_start", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -2818,7 +2602,7 @@ func (widget *Widget) MarginStart() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -2831,12 +2615,8 @@ func (widget *Widget) MarginStart() int32 {
 //
 func (widget *Widget) MarginTop() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_margin_top", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -2845,7 +2625,7 @@ func (widget *Widget) MarginTop() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -2861,12 +2641,8 @@ func (widget *Widget) MarginTop() int32 {
 //
 func (widget *Widget) Name() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -2893,12 +2669,8 @@ func (widget *Widget) Name() string {
 //
 func (widget *Widget) Native() *NativeSurface {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_native", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -2907,7 +2679,7 @@ func (widget *Widget) Native() *NativeSurface {
 
 	var _native *NativeSurface // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_native = wrapNativeSurface(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -2924,12 +2696,8 @@ func (widget *Widget) Native() *NativeSurface {
 //
 func (widget *Widget) NextSibling() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_next_sibling", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -2938,7 +2706,7 @@ func (widget *Widget) NextSibling() Widgetter {
 
 	var _ret Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -2968,12 +2736,8 @@ func (widget *Widget) NextSibling() Widgetter {
 //
 func (widget *Widget) Opacity() float64 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void  // out
-	var _cret C.double // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_opacity", _args[:], nil)
 	_cret = *(*C.double)(unsafe.Pointer(&_gret))
@@ -2982,7 +2746,7 @@ func (widget *Widget) Opacity() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(_cret)
+	_gdouble = float64(*(*C.double)(unsafe.Pointer(&_cret)))
 
 	return _gdouble
 }
@@ -3002,12 +2766,8 @@ func (widget *Widget) Opacity() float64 {
 //
 func (widget *Widget) PangoContext() *pango.Context {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_pango_context", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -3034,12 +2794,8 @@ func (widget *Widget) PangoContext() *pango.Context {
 //
 func (widget *Widget) Parent() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_parent", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -3048,7 +2804,7 @@ func (widget *Widget) Parent() Widgetter {
 
 	var _ret Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -3088,16 +2844,11 @@ func (widget *Widget) Parent() Widgetter {
 //    - minimumSize (optional): location for storing the minimum size, or NULL.
 //    - naturalSize (optional): location for storing the natural size, or NULL.
 //
-func (widget *Widget) PreferredSize() (minimumSize *Requisition, naturalSize *Requisition) {
+func (widget *Widget) PreferredSize() (minimumSize, naturalSize *Requisition) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("get_preferred_size", _args[:], _outs[:])
 
@@ -3105,14 +2856,12 @@ func (widget *Widget) PreferredSize() (minimumSize *Requisition, naturalSize *Re
 
 	var _minimumSize *Requisition // out
 	var _naturalSize *Requisition // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_minimumSize = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_minimumSize = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 	}
-	if _out1 != nil {
-		_naturalSize = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(_out1)))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_naturalSize = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
 	}
 
 	return _minimumSize, _naturalSize
@@ -3128,12 +2877,8 @@ func (widget *Widget) PreferredSize() (minimumSize *Requisition, naturalSize *Re
 //
 func (widget *Widget) PrevSibling() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_prev_sibling", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -3142,7 +2887,7 @@ func (widget *Widget) PrevSibling() Widgetter {
 
 	var _ret Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -3175,12 +2920,8 @@ func (widget *Widget) PrevSibling() Widgetter {
 //
 func (widget *Widget) PrimaryClipboard() *gdk.Clipboard {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_primary_clipboard", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -3207,12 +2948,8 @@ func (widget *Widget) PrimaryClipboard() *gdk.Clipboard {
 //
 func (widget *Widget) Realized() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_realized", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -3221,7 +2958,7 @@ func (widget *Widget) Realized() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -3241,12 +2978,8 @@ func (widget *Widget) Realized() bool {
 //
 func (widget *Widget) ReceivesDefault() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_receives_default", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -3255,7 +2988,7 @@ func (widget *Widget) ReceivesDefault() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -3275,12 +3008,8 @@ func (widget *Widget) ReceivesDefault() bool {
 //
 func (widget *Widget) Root() *Root {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_root", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -3289,7 +3018,7 @@ func (widget *Widget) Root() *Root {
 
 	var _root *Root // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_root = wrapRoot(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -3310,12 +3039,8 @@ func (widget *Widget) Root() *Root {
 //
 func (widget *Widget) ScaleFactor() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_scale_factor", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -3324,7 +3049,7 @@ func (widget *Widget) ScaleFactor() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -3343,12 +3068,8 @@ func (widget *Widget) ScaleFactor() int32 {
 //
 func (widget *Widget) Sensitive() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_sensitive", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -3357,7 +3078,7 @@ func (widget *Widget) Sensitive() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -3377,12 +3098,8 @@ func (widget *Widget) Sensitive() bool {
 //
 func (widget *Widget) Settings() *Settings {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_settings", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -3409,16 +3126,11 @@ func (widget *Widget) Settings() *Settings {
 //    - width (optional): return location for width, or NULL.
 //    - height (optional): return location for height, or NULL.
 //
-func (widget *Widget) SizeRequest() (width int32, height int32) {
+func (widget *Widget) SizeRequest() (width, height int32) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("get_size_request", _args[:], _outs[:])
 
@@ -3426,14 +3138,12 @@ func (widget *Widget) SizeRequest() (width int32, height int32) {
 
 	var _width int32  // out
 	var _height int32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_width = *(*int32)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_width = *(*int32)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_height = *(*int32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_height = *(*int32)(unsafe.Pointer(_outs[1]))
 	}
 
 	return _width, _height
@@ -3450,12 +3160,8 @@ func (widget *Widget) SizeRequest() (width int32, height int32) {
 //
 func (widget *Widget) StyleContext() *StyleContext {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_style_context", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -3480,12 +3186,8 @@ func (widget *Widget) StyleContext() *StyleContext {
 //
 func (widget *Widget) TooltipMarkup() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_tooltip_markup", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -3494,7 +3196,7 @@ func (widget *Widget) TooltipMarkup() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -3512,12 +3214,8 @@ func (widget *Widget) TooltipMarkup() string {
 //
 func (widget *Widget) TooltipText() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_tooltip_text", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -3526,7 +3224,7 @@ func (widget *Widget) TooltipText() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -3544,12 +3242,8 @@ func (widget *Widget) TooltipText() string {
 //
 func (widget *Widget) VExpand() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_vexpand", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -3558,7 +3252,7 @@ func (widget *Widget) VExpand() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -3576,12 +3270,8 @@ func (widget *Widget) VExpand() bool {
 //
 func (widget *Widget) VExpandSet() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_vexpand_set", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -3590,7 +3280,7 @@ func (widget *Widget) VExpandSet() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -3612,12 +3302,8 @@ func (widget *Widget) VExpandSet() bool {
 //
 func (widget *Widget) Visible() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_visible", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -3626,7 +3312,7 @@ func (widget *Widget) Visible() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -3646,12 +3332,8 @@ func (widget *Widget) Visible() bool {
 //
 func (widget *Widget) Width() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_width", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -3660,7 +3342,7 @@ func (widget *Widget) Width() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -3681,12 +3363,8 @@ func (widget *Widget) Width() int32 {
 //
 func (widget *Widget) GrabFocus() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("grab_focus", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -3695,7 +3373,7 @@ func (widget *Widget) GrabFocus() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -3715,16 +3393,10 @@ func (widget *Widget) GrabFocus() bool {
 //
 func (widget *Widget) HasCSSClass(cssClass string) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(cssClass)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(cssClass)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("has_css_class", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -3734,7 +3406,7 @@ func (widget *Widget) HasCSSClass(cssClass string) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -3751,12 +3423,8 @@ func (widget *Widget) HasCSSClass(cssClass string) bool {
 //
 func (widget *Widget) HasDefault() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("has_default", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -3765,7 +3433,7 @@ func (widget *Widget) HasDefault() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -3783,12 +3451,8 @@ func (widget *Widget) HasDefault() bool {
 //
 func (widget *Widget) HasFocus() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("has_focus", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -3797,7 +3461,7 @@ func (widget *Widget) HasFocus() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -3820,12 +3484,8 @@ func (widget *Widget) HasFocus() bool {
 //
 func (widget *Widget) HasVisibleFocus() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("has_visible_focus", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -3834,7 +3494,7 @@ func (widget *Widget) HasVisibleFocus() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -3846,11 +3506,8 @@ func (widget *Widget) HasVisibleFocus() bool {
 // This is causing the widget to be hidden (invisible to the user).
 func (widget *Widget) Hide() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("hide", _args[:], nil)
 
@@ -3867,12 +3524,8 @@ func (widget *Widget) Hide() {
 //
 func (widget *Widget) InDestruction() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("in_destruction", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -3881,7 +3534,7 @@ func (widget *Widget) InDestruction() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -3909,11 +3562,8 @@ func (widget *Widget) InDestruction() bool {
 // instance initialization function.
 func (widget *Widget) InitTemplate() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("init_template", _args[:], nil)
 
@@ -3940,20 +3590,13 @@ func (widget *Widget) InitTemplate() {
 //
 func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
 	if group != nil {
-		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("insert_action_group", _args[:], nil)
 
@@ -3983,19 +3626,12 @@ func (widget *Widget) InsertActionGroup(name string, group gio.ActionGrouper) {
 //
 func (widget *Widget) InsertAfter(parent, previousSibling Widgetter) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	if previousSibling != nil {
-		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(previousSibling).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(previousSibling).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("insert_after", _args[:], nil)
 
@@ -4024,19 +3660,12 @@ func (widget *Widget) InsertAfter(parent, previousSibling Widgetter) {
 //
 func (widget *Widget) InsertBefore(parent, nextSibling Widgetter) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	if nextSibling != nil {
-		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(nextSibling).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(nextSibling).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("insert_before", _args[:], nil)
 
@@ -4059,15 +3688,9 @@ func (widget *Widget) InsertBefore(parent, nextSibling Widgetter) {
 //
 func (widget *Widget) IsAncestor(ancestor Widgetter) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(ancestor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(ancestor).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("is_ancestor", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -4077,7 +3700,7 @@ func (widget *Widget) IsAncestor(ancestor Widgetter) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -4094,12 +3717,8 @@ func (widget *Widget) IsAncestor(ancestor Widgetter) bool {
 //
 func (widget *Widget) IsDrawable() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("is_drawable", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -4108,7 +3727,7 @@ func (widget *Widget) IsDrawable() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -4127,12 +3746,8 @@ func (widget *Widget) IsDrawable() bool {
 //
 func (widget *Widget) IsFocus() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("is_focus", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -4141,7 +3756,7 @@ func (widget *Widget) IsFocus() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -4158,12 +3773,8 @@ func (widget *Widget) IsFocus() bool {
 //
 func (widget *Widget) IsSensitive() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("is_sensitive", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -4172,7 +3783,7 @@ func (widget *Widget) IsSensitive() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -4192,12 +3803,8 @@ func (widget *Widget) IsSensitive() bool {
 //
 func (widget *Widget) IsVisible() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("is_visible", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -4206,7 +3813,7 @@ func (widget *Widget) IsVisible() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -4231,12 +3838,8 @@ func (widget *Widget) IsVisible() bool {
 //
 func (widget *Widget) ListMnemonicLabels() []Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("list_mnemonic_labels", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -4277,11 +3880,8 @@ func (widget *Widget) ListMnemonicLabels() []Widgetter {
 // This function is only for use in widget implementations.
 func (widget *Widget) Map() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("map", _args[:], nil)
 
@@ -4300,17 +3900,11 @@ func (widget *Widget) Map() {
 //
 func (widget *Widget) MnemonicActivate(groupCycling bool) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if groupCycling {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("mnemonic_activate", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -4320,7 +3914,7 @@ func (widget *Widget) MnemonicActivate(groupCycling bool) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -4342,12 +3936,8 @@ func (widget *Widget) MnemonicActivate(groupCycling bool) bool {
 //
 func (widget *Widget) ObserveChildren() *gio.ListModel {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("observe_children", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -4382,12 +3972,8 @@ func (widget *Widget) ObserveChildren() *gio.ListModel {
 //
 func (widget *Widget) ObserveControllers() *gio.ListModel {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("observe_controllers", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -4417,11 +4003,8 @@ func (widget *Widget) ObserveControllers() *gio.ListModel {
 // This function is only for use in widget implementations.
 func (widget *Widget) QueueAllocate() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("queue_allocate", _args[:], nil)
 
@@ -4434,11 +4017,8 @@ func (widget *Widget) QueueAllocate() {
 // This means widget's GtkWidgetClass.snapshot() implementation will be called.
 func (widget *Widget) QueueDraw() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("queue_draw", _args[:], nil)
 
@@ -4459,11 +4039,8 @@ func (widget *Widget) QueueDraw() {
 // This function is only for use in widget implementations.
 func (widget *Widget) QueueResize() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("queue_resize", _args[:], nil)
 
@@ -4486,11 +4063,8 @@ func (widget *Widget) QueueResize() {
 // realized automatically, such as gtk.Widget::realize.
 func (widget *Widget) Realize() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("realize", _args[:], nil)
 
@@ -4511,14 +4085,9 @@ func (widget *Widget) Realize() {
 //
 func (widget *Widget) RemoveController(controller EventControllerer) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("remove_controller", _args[:], nil)
 
@@ -4537,15 +4106,10 @@ func (widget *Widget) RemoveController(controller EventControllerer) {
 //
 func (widget *Widget) RemoveCSSClass(cssClass string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(cssClass)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(cssClass)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("remove_css_class", _args[:], nil)
 
@@ -4566,14 +4130,9 @@ func (widget *Widget) RemoveCSSClass(cssClass string) {
 //
 func (widget *Widget) RemoveMnemonicLabel(label Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(label).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("remove_mnemonic_label", _args[:], nil)
 
@@ -4590,14 +4149,9 @@ func (widget *Widget) RemoveMnemonicLabel(label Widgetter) {
 //
 func (widget *Widget) RemoveTickCallback(id uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.guint(id)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(id)
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("remove_tick_callback", _args[:], nil)
 
@@ -4625,16 +4179,11 @@ func (widget *Widget) RemoveTickCallback(id uint32) {
 //
 func (widget *Widget) SetCanFocus(canFocus bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if canFocus {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_can_focus", _args[:], nil)
 
@@ -4650,16 +4199,11 @@ func (widget *Widget) SetCanFocus(canFocus bool) {
 //
 func (widget *Widget) SetCanTarget(canTarget bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if canTarget {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_can_target", _args[:], nil)
 
@@ -4688,16 +4232,11 @@ func (widget *Widget) SetCanTarget(canTarget bool) {
 //
 func (widget *Widget) SetChildVisible(childVisible bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if childVisible {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_child_visible", _args[:], nil)
 
@@ -4714,26 +4253,21 @@ func (widget *Widget) SetChildVisible(childVisible bool) {
 //
 func (widget *Widget) SetCSSClasses(classes []string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 **C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	{
-		_arg1 = (**C.void)(C.calloc(C.size_t((len(classes) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(***C.void)(unsafe.Pointer(&_args[1])) = (**C.void)(C.calloc(C.size_t((len(classes) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_args[1]))
 		{
-			out := unsafe.Slice(_arg1, len(classes)+1)
+			out := unsafe.Slice(_args[1], len(classes)+1)
 			var zero *C.void
 			out[len(classes)] = zero
 			for i := range classes {
-				out[i] = (*C.void)(unsafe.Pointer(C.CString(classes[i])))
+				*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(classes[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(***C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_css_classes", _args[:], nil)
 
@@ -4753,16 +4287,11 @@ func (widget *Widget) SetCSSClasses(classes []string) {
 //
 func (widget *Widget) SetCursor(cursor *gdk.Cursor) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if cursor != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_cursor", _args[:], nil)
 
@@ -4786,17 +4315,12 @@ func (widget *Widget) SetCursor(cursor *gdk.Cursor) {
 //
 func (widget *Widget) SetCursorFromName(name string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if name != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_cursor_from_name", _args[:], nil)
 
@@ -4818,16 +4342,11 @@ func (widget *Widget) SetCursorFromName(name string) {
 //
 func (widget *Widget) SetFocusChild(child Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if child != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_focus_child", _args[:], nil)
 
@@ -4849,16 +4368,11 @@ func (widget *Widget) SetFocusChild(child Widgetter) {
 //
 func (widget *Widget) SetFocusOnClick(focusOnClick bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if focusOnClick {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_focus_on_click", _args[:], nil)
 
@@ -4884,16 +4398,11 @@ func (widget *Widget) SetFocusOnClick(focusOnClick bool) {
 //
 func (widget *Widget) SetFocusable(focusable bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if focusable {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_focusable", _args[:], nil)
 
@@ -4916,16 +4425,11 @@ func (widget *Widget) SetFocusable(focusable bool) {
 //
 func (widget *Widget) SetFontMap(fontMap pango.FontMapper) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if fontMap != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontMap).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontMap).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_font_map", _args[:], nil)
 
@@ -4945,16 +4449,11 @@ func (widget *Widget) SetFontMap(fontMap pango.FontMapper) {
 //
 func (widget *Widget) SetFontOptions(options *cairo.FontOptions) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if options != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(options)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(options)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_font_options", _args[:], nil)
 
@@ -4970,16 +4469,11 @@ func (widget *Widget) SetFontOptions(options *cairo.FontOptions) {
 //
 func (widget *Widget) SetHasTooltip(hasTooltip bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if hasTooltip {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_has_tooltip", _args[:], nil)
 
@@ -5018,16 +4512,11 @@ func (widget *Widget) SetHasTooltip(hasTooltip bool) {
 //
 func (widget *Widget) SetHExpand(expand bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if expand {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_hexpand", _args[:], nil)
 
@@ -5054,16 +4543,11 @@ func (widget *Widget) SetHExpand(expand bool) {
 //
 func (widget *Widget) SetHExpandSet(set bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if set {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_hexpand_set", _args[:], nil)
 
@@ -5080,17 +4564,12 @@ func (widget *Widget) SetHExpandSet(set bool) {
 //
 func (widget *Widget) SetLayoutManager(layoutManager LayoutManagerer) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if layoutManager != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(layoutManager).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layoutManager).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(layoutManager).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_layout_manager", _args[:], nil)
 
@@ -5106,14 +4585,9 @@ func (widget *Widget) SetLayoutManager(layoutManager LayoutManagerer) {
 //
 func (widget *Widget) SetMarginBottom(margin int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.int(margin)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(margin)
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_margin_bottom", _args[:], nil)
 
@@ -5129,14 +4603,9 @@ func (widget *Widget) SetMarginBottom(margin int32) {
 //
 func (widget *Widget) SetMarginEnd(margin int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.int(margin)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(margin)
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_margin_end", _args[:], nil)
 
@@ -5152,14 +4621,9 @@ func (widget *Widget) SetMarginEnd(margin int32) {
 //
 func (widget *Widget) SetMarginStart(margin int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.int(margin)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(margin)
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_margin_start", _args[:], nil)
 
@@ -5175,14 +4639,9 @@ func (widget *Widget) SetMarginStart(margin int32) {
 //
 func (widget *Widget) SetMarginTop(margin int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.int(margin)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(margin)
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_margin_top", _args[:], nil)
 
@@ -5208,15 +4667,10 @@ func (widget *Widget) SetMarginTop(margin int32) {
 //
 func (widget *Widget) SetName(name string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_name", _args[:], nil)
 
@@ -5250,14 +4704,9 @@ func (widget *Widget) SetName(name string) {
 //
 func (widget *Widget) SetOpacity(opacity float64) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 C.double // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.double(opacity)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.double)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(opacity)
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_opacity", _args[:], nil)
 
@@ -5279,14 +4728,9 @@ func (widget *Widget) SetOpacity(opacity float64) {
 //
 func (widget *Widget) SetParent(parent Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_parent", _args[:], nil)
 
@@ -5304,16 +4748,11 @@ func (widget *Widget) SetParent(parent Widgetter) {
 //
 func (widget *Widget) SetReceivesDefault(receivesDefault bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if receivesDefault {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_receives_default", _args[:], nil)
 
@@ -5333,16 +4772,11 @@ func (widget *Widget) SetReceivesDefault(receivesDefault bool) {
 //
 func (widget *Widget) SetSensitive(sensitive bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if sensitive {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_sensitive", _args[:], nil)
 
@@ -5385,17 +4819,10 @@ func (widget *Widget) SetSensitive(sensitive bool) {
 //
 func (widget *Widget) SetSizeRequest(width, height int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
-	var _arg2 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.int(width)
-	_arg2 = C.int(height)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(width)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(height)
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_size_request", _args[:], nil)
 
@@ -5418,17 +4845,12 @@ func (widget *Widget) SetSizeRequest(width, height int32) {
 //
 func (widget *Widget) SetTooltipMarkup(markup string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if markup != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(markup)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(markup)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_tooltip_markup", _args[:], nil)
 
@@ -5451,17 +4873,12 @@ func (widget *Widget) SetTooltipMarkup(markup string) {
 //
 func (widget *Widget) SetTooltipText(text string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if text != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_tooltip_text", _args[:], nil)
 
@@ -5480,16 +4897,11 @@ func (widget *Widget) SetTooltipText(text string) {
 //
 func (widget *Widget) SetVExpand(expand bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if expand {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_vexpand", _args[:], nil)
 
@@ -5507,16 +4919,11 @@ func (widget *Widget) SetVExpand(expand bool) {
 //
 func (widget *Widget) SetVExpandSet(set bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if set {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_vexpand_set", _args[:], nil)
 
@@ -5538,16 +4945,11 @@ func (widget *Widget) SetVExpandSet(set bool) {
 //
 func (widget *Widget) SetVisible(visible bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	if visible {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_visible", _args[:], nil)
 
@@ -5567,12 +4969,8 @@ func (widget *Widget) SetVisible(visible bool) {
 //
 func (widget *Widget) ShouldLayout() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("should_layout", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -5581,7 +4979,7 @@ func (widget *Widget) ShouldLayout() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -5600,11 +4998,8 @@ func (widget *Widget) ShouldLayout() bool {
 // realized and mapped.
 func (widget *Widget) Show() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("show", _args[:], nil)
 
@@ -5623,17 +5018,10 @@ func (widget *Widget) Show() {
 //
 func (widget *Widget) SizeAllocate(allocation *Allocation, baseline int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(allocation)))
-	_arg2 = C.int(baseline)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(allocation)))
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(baseline)
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("size_allocate", _args[:], nil)
 
@@ -5663,17 +5051,10 @@ func (widget *Widget) SizeAllocate(allocation *Allocation, baseline int32) {
 //
 func (widget *Widget) SnapshotChild(child Widgetter, snapshot *Snapshot) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("snapshot_child", _args[:], nil)
 
@@ -5700,26 +5081,14 @@ func (widget *Widget) SnapshotChild(child Widgetter, snapshot *Snapshot) {
 //    - ok: FALSE if src_widget and dest_widget have no common ancestor. In this
 //      case, 0 is stored in *dest_x and *dest_y. Otherwise TRUE.
 //
-func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX, srcY float64) (destX float64, destY float64, ok bool) {
+func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX, srcY float64) (destX, destY float64, ok bool) {
 	var _args [4]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.double   // out
-	var _arg3 C.double   // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(srcWidget).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(destWidget).Native()))
-	_arg2 = C.double(srcX)
-	_arg3 = C.double(srcY)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(srcWidget).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(destWidget).Native()))
+	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(srcX)
+	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(srcY)
 
 	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("translate_coordinates", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -5732,16 +5101,14 @@ func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX, srcY f
 	var _destX float64 // out
 	var _destY float64 // out
 	var _ok bool       // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_destX = *(*float64)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_destX = *(*float64)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_destY = *(*float64)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_destY = *(*float64)(unsafe.Pointer(_outs[1]))
 	}
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -5752,11 +5119,8 @@ func (srcWidget *Widget) TranslateCoordinates(destWidget Widgetter, srcX, srcY f
 // toplevel of widget is located.
 func (widget *Widget) TriggerTooltipQuery() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("trigger_tooltip_query", _args[:], nil)
 
@@ -5768,11 +5132,8 @@ func (widget *Widget) TriggerTooltipQuery() {
 // This function is only for use in widget implementations.
 func (widget *Widget) Unmap() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("unmap", _args[:], nil)
 
@@ -5785,11 +5146,8 @@ func (widget *Widget) Unmap() {
 // dispose.
 func (widget *Widget) Unparent() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("unparent", _args[:], nil)
 
@@ -5802,11 +5160,8 @@ func (widget *Widget) Unparent() {
 // This function is only useful in widget implementations.
 func (widget *Widget) Unrealize() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "Widget").InvokeMethod("unrealize", _args[:], nil)
 
@@ -5823,18 +5178,16 @@ type Requisition struct {
 
 // requisition is the struct that's finalized.
 type requisition struct {
-	native *C.GtkRequisition
+	native unsafe.Pointer
 }
 
 func marshalRequisition(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &Requisition{&requisition{(*C.GtkRequisition)(b)}}, nil
+	return &Requisition{&requisition{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewRequisition constructs a struct Requisition.
 func NewRequisition() *Requisition {
-	var _cret *C.void // in
-
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _requisition *Requisition // out
@@ -5852,15 +5205,19 @@ func NewRequisition() *Requisition {
 
 // Width widget’s desired width.
 func (r *Requisition) Width() int32 {
+	offset := girepository.MustFind("Gtk", "Requisition").StructFieldOffset("width")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v int32 // out
-	v = int32(r.native.width)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Height widget’s desired height.
 func (r *Requisition) Height() int32 {
+	offset := girepository.MustFind("Gtk", "Requisition").StructFieldOffset("height")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v int32 // out
-	v = int32(r.native.height)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
@@ -5872,12 +5229,8 @@ func (r *Requisition) Height() int32 {
 //
 func (requisition *Requisition) Copy() *Requisition {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(requisition)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(requisition)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

@@ -194,8 +194,6 @@ func (infoBar *InfoBar) ConnectResponse(f func(responseId int32)) coreglib.Signa
 //    - infoBar: new GtkInfoBar object.
 //
 func NewInfoBar() *InfoBar {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "InfoBar").InvokeMethod("new_InfoBar", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -220,17 +218,10 @@ func NewInfoBar() *InfoBar {
 //
 func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	_arg2 = C.int(responseId)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(responseId)
 
 	girepository.MustFind("Gtk", "InfoBar").InvokeMethod("add_action_widget", _args[:], nil)
 
@@ -256,19 +247,11 @@ func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int32) {
 //
 func (infoBar *InfoBar) AddButton(buttonText string, responseId int32) *Button {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.int   // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(buttonText)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(responseId)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(buttonText)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(responseId)
 
 	_gret := girepository.MustFind("Gtk", "InfoBar").InvokeMethod("add_button", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -292,14 +275,9 @@ func (infoBar *InfoBar) AddButton(buttonText string, responseId int32) *Button {
 //
 func (infoBar *InfoBar) AddChild(widget Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "InfoBar").InvokeMethod("add_child", _args[:], nil)
 
@@ -315,12 +293,8 @@ func (infoBar *InfoBar) AddChild(widget Widgetter) {
 //
 func (infoBar *InfoBar) Revealed() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
 
 	_gret := girepository.MustFind("Gtk", "InfoBar").InvokeMethod("get_revealed", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -329,7 +303,7 @@ func (infoBar *InfoBar) Revealed() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -345,12 +319,8 @@ func (infoBar *InfoBar) Revealed() bool {
 //
 func (infoBar *InfoBar) ShowCloseButton() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
 
 	_gret := girepository.MustFind("Gtk", "InfoBar").InvokeMethod("get_show_close_button", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -359,7 +329,7 @@ func (infoBar *InfoBar) ShowCloseButton() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -377,14 +347,9 @@ func (infoBar *InfoBar) ShowCloseButton() bool {
 //
 func (infoBar *InfoBar) RemoveActionWidget(widget Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "InfoBar").InvokeMethod("remove_action_widget", _args[:], nil)
 
@@ -400,14 +365,9 @@ func (infoBar *InfoBar) RemoveActionWidget(widget Widgetter) {
 //
 func (infoBar *InfoBar) RemoveChild(widget Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "InfoBar").InvokeMethod("remove_child", _args[:], nil)
 
@@ -423,14 +383,9 @@ func (infoBar *InfoBar) RemoveChild(widget Widgetter) {
 //
 func (infoBar *InfoBar) Response(responseId int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
-	_arg1 = C.int(responseId)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(responseId)
 
 	girepository.MustFind("Gtk", "InfoBar").InvokeMethod("response", _args[:], nil)
 
@@ -452,14 +407,9 @@ func (infoBar *InfoBar) Response(responseId int32) {
 //
 func (infoBar *InfoBar) SetDefaultResponse(responseId int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
-	_arg1 = C.int(responseId)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(responseId)
 
 	girepository.MustFind("Gtk", "InfoBar").InvokeMethod("set_default_response", _args[:], nil)
 
@@ -480,19 +430,12 @@ func (infoBar *InfoBar) SetDefaultResponse(responseId int32) {
 //
 func (infoBar *InfoBar) SetResponseSensitive(responseId int32, setting bool) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.int      // out
-	var _arg2 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
-	_arg1 = C.int(responseId)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(responseId)
 	if setting {
-		_arg2 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "InfoBar").InvokeMethod("set_response_sensitive", _args[:], nil)
 
@@ -515,16 +458,11 @@ func (infoBar *InfoBar) SetResponseSensitive(responseId int32, setting bool) {
 //
 func (infoBar *InfoBar) SetRevealed(revealed bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
 	if revealed {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "InfoBar").InvokeMethod("set_revealed", _args[:], nil)
 
@@ -542,16 +480,11 @@ func (infoBar *InfoBar) SetRevealed(revealed bool) {
 //
 func (infoBar *InfoBar) SetShowCloseButton(setting bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
 	if setting {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "InfoBar").InvokeMethod("set_show_close_button", _args[:], nil)
 

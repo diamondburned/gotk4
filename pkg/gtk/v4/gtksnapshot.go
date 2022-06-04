@@ -83,8 +83,6 @@ func marshalSnapshot(p uintptr) (interface{}, error) {
 //    - snapshot: newly-allocated GtkSnapshot.
 //
 func NewSnapshot() *Snapshot {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "Snapshot").InvokeMethod("new_Snapshot", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -109,15 +107,9 @@ func NewSnapshot() *Snapshot {
 //
 func (snapshot *Snapshot) AppendCairo(bounds *graphene.Rect) *cairo.Context {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	_gret := girepository.MustFind("Gtk", "Snapshot").InvokeMethod("append_cairo", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -147,17 +139,10 @@ func (snapshot *Snapshot) AppendCairo(bounds *graphene.Rect) *cairo.Context {
 //
 func (snapshot *Snapshot) AppendColor(color *gdk.RGBA, bounds *graphene.Rect) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("append_color", _args[:], nil)
 
@@ -179,29 +164,14 @@ func (snapshot *Snapshot) AppendColor(color *gdk.RGBA, bounds *graphene.Rect) {
 //
 func (snapshot *Snapshot) AppendInsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx, dy, spread, blurRadius float32) {
 	var _args [7]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 C.float // out
-	var _arg4 C.float // out
-	var _arg5 C.float // out
-	var _arg6 C.float // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(outline)))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
-	_arg3 = C.float(dx)
-	_arg4 = C.float(dy)
-	_arg5 = C.float(spread)
-	_arg6 = C.float(blurRadius)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.float)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.float)(unsafe.Pointer(&_args[4])) = _arg4
-	*(*C.float)(unsafe.Pointer(&_args[5])) = _arg5
-	*(*C.float)(unsafe.Pointer(&_args[6])) = _arg6
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(outline)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
+	*(*C.float)(unsafe.Pointer(&_args[3])) = C.float(dx)
+	*(*C.float)(unsafe.Pointer(&_args[4])) = C.float(dy)
+	*(*C.float)(unsafe.Pointer(&_args[5])) = C.float(spread)
+	*(*C.float)(unsafe.Pointer(&_args[6])) = C.float(blurRadius)
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("append_inset_shadow", _args[:], nil)
 
@@ -221,17 +191,10 @@ func (snapshot *Snapshot) AppendInsetShadow(outline *gsk.RoundedRect, color *gdk
 //
 func (snapshot *Snapshot) AppendLayout(layout *pango.Layout, color *gdk.RGBA) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("append_layout", _args[:], nil)
 
@@ -252,14 +215,9 @@ func (snapshot *Snapshot) AppendLayout(layout *pango.Layout, color *gdk.RGBA) {
 //
 func (snapshot *Snapshot) AppendNode(node gsk.RenderNoder) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("append_node", _args[:], nil)
 
@@ -281,29 +239,14 @@ func (snapshot *Snapshot) AppendNode(node gsk.RenderNoder) {
 //
 func (snapshot *Snapshot) AppendOutsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx, dy, spread, blurRadius float32) {
 	var _args [7]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 C.float // out
-	var _arg4 C.float // out
-	var _arg5 C.float // out
-	var _arg6 C.float // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(outline)))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
-	_arg3 = C.float(dx)
-	_arg4 = C.float(dy)
-	_arg5 = C.float(spread)
-	_arg6 = C.float(blurRadius)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.float)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.float)(unsafe.Pointer(&_args[4])) = _arg4
-	*(*C.float)(unsafe.Pointer(&_args[5])) = _arg5
-	*(*C.float)(unsafe.Pointer(&_args[6])) = _arg6
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(outline)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
+	*(*C.float)(unsafe.Pointer(&_args[3])) = C.float(dx)
+	*(*C.float)(unsafe.Pointer(&_args[4])) = C.float(dy)
+	*(*C.float)(unsafe.Pointer(&_args[5])) = C.float(spread)
+	*(*C.float)(unsafe.Pointer(&_args[6])) = C.float(blurRadius)
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("append_outset_shadow", _args[:], nil)
 
@@ -326,17 +269,10 @@ func (snapshot *Snapshot) AppendOutsetShadow(outline *gsk.RoundedRect, color *gd
 //
 func (snapshot *Snapshot) AppendTexture(texture gdk.Texturer, bounds *graphene.Rect) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("append_texture", _args[:], nil)
 
@@ -352,11 +288,8 @@ func (snapshot *Snapshot) AppendTexture(texture gdk.Texturer, bounds *graphene.R
 // needed for the shader in gtk.Snapshot.PushGLShader().
 func (snapshot *Snapshot) GLShaderPopTexture() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("gl_shader_pop_texture", _args[:], nil)
 
@@ -373,14 +306,9 @@ func (snapshot *Snapshot) GLShaderPopTexture() {
 //
 func (snapshot *Snapshot) Perspective(depth float32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.float // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = C.float(depth)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(depth)
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("perspective", _args[:], nil)
 
@@ -392,11 +320,8 @@ func (snapshot *Snapshot) Perspective(depth float32) {
 // the node underneath it.
 func (snapshot *Snapshot) Pop() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("pop", _args[:], nil)
 
@@ -413,14 +338,9 @@ func (snapshot *Snapshot) Pop() {
 //
 func (snapshot *Snapshot) PushBlur(radius float64) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 C.double // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = C.double(radius)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.double)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(radius)
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("push_blur", _args[:], nil)
 
@@ -438,14 +358,9 @@ func (snapshot *Snapshot) PushBlur(radius float64) {
 //
 func (snapshot *Snapshot) PushClip(bounds *graphene.Rect) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("push_clip", _args[:], nil)
 
@@ -465,17 +380,10 @@ func (snapshot *Snapshot) PushClip(bounds *graphene.Rect) {
 //
 func (snapshot *Snapshot) PushColorMatrix(colorMatrix *graphene.Matrix, colorOffset *graphene.Vec4) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(colorMatrix)))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(colorOffset)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(colorMatrix)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(colorOffset)))
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("push_color_matrix", _args[:], nil)
 
@@ -499,14 +407,9 @@ func (snapshot *Snapshot) PushColorMatrix(colorMatrix *graphene.Matrix, colorOff
 //
 func (snapshot *Snapshot) PushCrossFade(progress float64) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 C.double // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = C.double(progress)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.double)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(progress)
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("push_cross_fade", _args[:], nil)
 
@@ -555,20 +458,11 @@ func (snapshot *Snapshot) PushCrossFade(progress float64) {
 //
 func (snapshot *Snapshot) PushGLShader(shader *gsk.GLShader, bounds *graphene.Rect, takeArgs *glib.Bytes) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
-	_arg3 = (*C.void)(gextras.StructNative(unsafe.Pointer(takeArgs)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(takeArgs)))
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("push_gl_shader", _args[:], nil)
 
@@ -588,14 +482,9 @@ func (snapshot *Snapshot) PushGLShader(shader *gsk.GLShader, bounds *graphene.Re
 //
 func (snapshot *Snapshot) PushOpacity(opacity float64) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 C.double // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = C.double(opacity)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.double)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(opacity)
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("push_opacity", _args[:], nil)
 
@@ -615,19 +504,12 @@ func (snapshot *Snapshot) PushOpacity(opacity float64) {
 //
 func (snapshot *Snapshot) PushRepeat(bounds, childBounds *graphene.Rect) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
 	if childBounds != nil {
-		_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(childBounds)))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(childBounds)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("push_repeat", _args[:], nil)
 
@@ -646,14 +528,9 @@ func (snapshot *Snapshot) PushRepeat(bounds, childBounds *graphene.Rect) {
 //
 func (snapshot *Snapshot) PushRoundedClip(bounds *gsk.RoundedRect) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("push_rounded_clip", _args[:], nil)
 
@@ -672,17 +549,10 @@ func (snapshot *Snapshot) PushRoundedClip(bounds *gsk.RoundedRect) {
 //
 func (snapshot *Snapshot) PushShadow(shadow *gsk.Shadow, nShadows uint) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.gsize // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(shadow)))
-	_arg2 = C.gsize(nShadows)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gsize)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(shadow)))
+	*(*C.gsize)(unsafe.Pointer(&_args[2])) = C.gsize(nShadows)
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("push_shadow", _args[:], nil)
 
@@ -705,26 +575,13 @@ func (snapshot *Snapshot) PushShadow(shadow *gsk.Shadow, nShadows uint) {
 //
 func (snapshot *Snapshot) RenderBackground(context *StyleContext, x, y, width, height float64) {
 	var _args [6]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 *C.void  // out
-	var _arg2 C.double // out
-	var _arg3 C.double // out
-	var _arg4 C.double // out
-	var _arg5 C.double // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg2 = C.double(x)
-	_arg3 = C.double(y)
-	_arg4 = C.double(width)
-	_arg5 = C.double(height)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.double)(unsafe.Pointer(&_args[4])) = _arg4
-	*(*C.double)(unsafe.Pointer(&_args[5])) = _arg5
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(x)
+	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(y)
+	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(width)
+	*(*C.double)(unsafe.Pointer(&_args[5])) = C.double(height)
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("render_background", _args[:], nil)
 
@@ -750,26 +607,13 @@ func (snapshot *Snapshot) RenderBackground(context *StyleContext, x, y, width, h
 //
 func (snapshot *Snapshot) RenderFocus(context *StyleContext, x, y, width, height float64) {
 	var _args [6]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 *C.void  // out
-	var _arg2 C.double // out
-	var _arg3 C.double // out
-	var _arg4 C.double // out
-	var _arg5 C.double // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg2 = C.double(x)
-	_arg3 = C.double(y)
-	_arg4 = C.double(width)
-	_arg5 = C.double(height)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.double)(unsafe.Pointer(&_args[4])) = _arg4
-	*(*C.double)(unsafe.Pointer(&_args[5])) = _arg5
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(x)
+	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(y)
+	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(width)
+	*(*C.double)(unsafe.Pointer(&_args[5])) = C.double(height)
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("render_focus", _args[:], nil)
 
@@ -795,26 +639,13 @@ func (snapshot *Snapshot) RenderFocus(context *StyleContext, x, y, width, height
 //
 func (snapshot *Snapshot) RenderFrame(context *StyleContext, x, y, width, height float64) {
 	var _args [6]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 *C.void  // out
-	var _arg2 C.double // out
-	var _arg3 C.double // out
-	var _arg4 C.double // out
-	var _arg5 C.double // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg2 = C.double(x)
-	_arg3 = C.double(y)
-	_arg4 = C.double(width)
-	_arg5 = C.double(height)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.double)(unsafe.Pointer(&_args[4])) = _arg4
-	*(*C.double)(unsafe.Pointer(&_args[5])) = _arg5
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(x)
+	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(y)
+	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(width)
+	*(*C.double)(unsafe.Pointer(&_args[5])) = C.double(height)
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("render_frame", _args[:], nil)
 
@@ -839,23 +670,12 @@ func (snapshot *Snapshot) RenderFrame(context *StyleContext, x, y, width, height
 //
 func (snapshot *Snapshot) RenderLayout(context *StyleContext, x, y float64, layout *pango.Layout) {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 *C.void  // out
-	var _arg2 C.double // out
-	var _arg3 C.double // out
-	var _arg4 *C.void  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg2 = C.double(x)
-	_arg3 = C.double(y)
-	_arg4 = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
-	*(**C.void)(unsafe.Pointer(&_args[4])) = _arg4
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(x)
+	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(y)
+	*(**C.void)(unsafe.Pointer(&_args[4])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("render_layout", _args[:], nil)
 
@@ -870,11 +690,8 @@ func (snapshot *Snapshot) RenderLayout(context *StyleContext, x, y float64, layo
 // gtk_snapshot_save() and removes that state from the stack of saved states.
 func (snapshot *Snapshot) Restore() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("restore", _args[:], nil)
 
@@ -892,14 +709,9 @@ func (snapshot *Snapshot) Restore() {
 //
 func (snapshot *Snapshot) Rotate(angle float32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.float // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = C.float(angle)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(angle)
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("rotate", _args[:], nil)
 
@@ -918,17 +730,10 @@ func (snapshot *Snapshot) Rotate(angle float32) {
 //
 func (snapshot *Snapshot) Rotate3D(angle float32, axis *graphene.Vec3) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.float // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = C.float(angle)
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(axis)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(angle)
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(axis)))
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("rotate_3d", _args[:], nil)
 
@@ -949,11 +754,8 @@ func (snapshot *Snapshot) Rotate3D(angle float32, axis *graphene.Vec3) {
 // gtk_snapshot_restore().
 func (snapshot *Snapshot) Save() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("save", _args[:], nil)
 
@@ -972,17 +774,10 @@ func (snapshot *Snapshot) Save() {
 //
 func (snapshot *Snapshot) Scale(factorX, factorY float32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.float // out
-	var _arg2 C.float // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = C.float(factorX)
-	_arg2 = C.float(factorY)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.float)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(factorX)
+	*(*C.float)(unsafe.Pointer(&_args[2])) = C.float(factorY)
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("scale", _args[:], nil)
 
@@ -1001,20 +796,11 @@ func (snapshot *Snapshot) Scale(factorX, factorY float32) {
 //
 func (snapshot *Snapshot) Scale3D(factorX, factorY, factorZ float32) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.float // out
-	var _arg2 C.float // out
-	var _arg3 C.float // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = C.float(factorX)
-	_arg2 = C.float(factorY)
-	_arg3 = C.float(factorZ)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.float)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.float)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(factorX)
+	*(*C.float)(unsafe.Pointer(&_args[2])) = C.float(factorY)
+	*(*C.float)(unsafe.Pointer(&_args[3])) = C.float(factorZ)
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("scale_3d", _args[:], nil)
 
@@ -1036,12 +822,8 @@ func (snapshot *Snapshot) Scale3D(factorX, factorY, factorZ float32) {
 //
 func (snapshot *Snapshot) ToNode() gsk.RenderNoder {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Snapshot").InvokeMethod("to_node", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1089,17 +871,11 @@ func (snapshot *Snapshot) ToNode() gsk.RenderNoder {
 //
 func (snapshot *Snapshot) ToPaintable(size *graphene.Size) *gdk.Paintable {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
 	if size != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gtk", "Snapshot").InvokeMethod("to_paintable", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1127,16 +903,11 @@ func (snapshot *Snapshot) ToPaintable(size *graphene.Size) *gdk.Paintable {
 //
 func (snapshot *Snapshot) Transform(transform *gsk.Transform) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
 	if transform != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(transform)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(transform)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("transform", _args[:], nil)
 
@@ -1153,14 +924,9 @@ func (snapshot *Snapshot) Transform(transform *gsk.Transform) {
 //
 func (snapshot *Snapshot) TransformMatrix(matrix *graphene.Matrix) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("transform_matrix", _args[:], nil)
 
@@ -1177,14 +943,9 @@ func (snapshot *Snapshot) TransformMatrix(matrix *graphene.Matrix) {
 //
 func (snapshot *Snapshot) Translate(point *graphene.Point) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("translate", _args[:], nil)
 
@@ -1200,14 +961,9 @@ func (snapshot *Snapshot) Translate(point *graphene.Point) {
 //
 func (snapshot *Snapshot) Translate3D(point *graphene.Point3D) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
 
 	girepository.MustFind("Gtk", "Snapshot").InvokeMethod("translate_3d", _args[:], nil)
 

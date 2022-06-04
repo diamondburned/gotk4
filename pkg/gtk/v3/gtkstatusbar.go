@@ -236,8 +236,6 @@ func (statusbar *Statusbar) ConnectTextPushed(f func(contextId uint32, text stri
 //    - statusbar: new Statusbar.
 //
 func NewStatusbar() *Statusbar {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "Statusbar").InvokeMethod("new_Statusbar", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -262,16 +260,10 @@ func NewStatusbar() *Statusbar {
 //
 func (statusbar *Statusbar) ContextID(contextDescription string) uint32 {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(contextDescription)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(contextDescription)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "Statusbar").InvokeMethod("get_context_id", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -281,7 +273,7 @@ func (statusbar *Statusbar) ContextID(contextDescription string) uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -294,12 +286,8 @@ func (statusbar *Statusbar) ContextID(contextDescription string) uint32 {
 //
 func (statusbar *Statusbar) MessageArea() *Box {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Statusbar").InvokeMethod("get_message_area", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -325,14 +313,9 @@ func (statusbar *Statusbar) MessageArea() *Box {
 //
 func (statusbar *Statusbar) Pop(contextId uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
-	_arg1 = C.guint(contextId)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(contextId)
 
 	girepository.MustFind("Gtk", "Statusbar").InvokeMethod("pop", _args[:], nil)
 
@@ -354,19 +337,11 @@ func (statusbar *Statusbar) Pop(contextId uint32) {
 //
 func (statusbar *Statusbar) Push(contextId uint32, text string) uint32 {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
-	var _arg2 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
-	_arg1 = C.guint(contextId)
-	_arg2 = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(contextId)
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_args[2]))
 
 	_gret := girepository.MustFind("Gtk", "Statusbar").InvokeMethod("push", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -377,7 +352,7 @@ func (statusbar *Statusbar) Push(contextId uint32, text string) uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -392,17 +367,10 @@ func (statusbar *Statusbar) Push(contextId uint32, text string) uint32 {
 //
 func (statusbar *Statusbar) Remove(contextId, messageId uint32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
-	var _arg2 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
-	_arg1 = C.guint(contextId)
-	_arg2 = C.guint(messageId)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(contextId)
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(messageId)
 
 	girepository.MustFind("Gtk", "Statusbar").InvokeMethod("remove", _args[:], nil)
 
@@ -420,14 +388,9 @@ func (statusbar *Statusbar) Remove(contextId, messageId uint32) {
 //
 func (statusbar *Statusbar) RemoveAll(contextId uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
-	_arg1 = C.guint(contextId)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(contextId)
 
 	girepository.MustFind("Gtk", "Statusbar").InvokeMethod("remove_all", _args[:], nil)
 

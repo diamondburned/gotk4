@@ -26,11 +26,8 @@ import "C"
 //
 func ResourcesRegister(resource *Resource) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(resource)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(resource)))
 
 	girepository.MustFind("Gio", "resources_register").Invoke(_args[:], nil)
 
@@ -46,11 +43,8 @@ func ResourcesRegister(resource *Resource) {
 //
 func ResourcesUnregister(resource *Resource) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(resource)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(resource)))
 
 	girepository.MustFind("Gio", "resources_unregister").Invoke(_args[:], nil)
 
@@ -77,14 +71,9 @@ func ResourcesUnregister(resource *Resource) {
 //
 func ResourceLoad(filename string) (*Resource, error) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gio", "load").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -101,7 +90,7 @@ func ResourceLoad(filename string) (*Resource, error) {
 			C.g_resource_unref((*C.GResource)(intern.C))
 		},
 	)
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -118,7 +107,7 @@ type StaticResource struct {
 
 // staticResource is the struct that's finalized.
 type staticResource struct {
-	native *C.GStaticResource
+	native unsafe.Pointer
 }
 
 // Fini: finalized a GResource initialized by g_static_resource_init().
@@ -128,11 +117,8 @@ type staticResource struct {
 // other code.
 func (staticResource *StaticResource) Fini() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(staticResource)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(staticResource)))
 
 	runtime.KeepAlive(staticResource)
 }
@@ -150,12 +136,8 @@ func (staticResource *StaticResource) Fini() {
 //
 func (staticResource *StaticResource) Resource() *Resource {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(staticResource)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(staticResource)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -182,11 +164,8 @@ func (staticResource *StaticResource) Resource() *Resource {
 // other code.
 func (staticResource *StaticResource) Init() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(staticResource)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(staticResource)))
 
 	runtime.KeepAlive(staticResource)
 }

@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -37,18 +36,10 @@ import "C"
 //
 func DistributeNaturalAllocation(extraSpace int32, nRequestedSizes uint32, sizes *RequestedSize) int32 {
 	var _args [3]girepository.Argument
-	var _arg0 C.gint  // out
-	var _arg1 C.guint // out
-	var _arg2 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = C.gint(extraSpace)
-	_arg1 = C.guint(nRequestedSizes)
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(sizes)))
-
-	*(*C.gint)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint)(unsafe.Pointer(&_args[0])) = C.gint(extraSpace)
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(nRequestedSizes)
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(sizes)))
 
 	_gret := girepository.MustFind("Gtk", "distribute_natural_allocation").Invoke(_args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -59,7 +50,7 @@ func DistributeNaturalAllocation(extraSpace int32, nRequestedSizes uint32, sizes
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -75,26 +66,32 @@ type RequestedSize struct {
 
 // requestedSize is the struct that's finalized.
 type requestedSize struct {
-	native *C.GtkRequestedSize
+	native unsafe.Pointer
 }
 
 // Data: client pointer.
 func (r *RequestedSize) Data() unsafe.Pointer {
+	offset := girepository.MustFind("Gtk", "RequestedSize").StructFieldOffset("data")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(r.native.data))
+	v = (unsafe.Pointer)(unsafe.Pointer(valptr))
 	return v
 }
 
 // MinimumSize: minimum size needed for allocation in a given orientation.
 func (r *RequestedSize) MinimumSize() int32 {
+	offset := girepository.MustFind("Gtk", "RequestedSize").StructFieldOffset("minimum_size")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v int32 // out
-	v = int32(r.native.minimum_size)
+	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // NaturalSize: natural size for allocation in a given orientation.
 func (r *RequestedSize) NaturalSize() int32 {
+	offset := girepository.MustFind("Gtk", "RequestedSize").StructFieldOffset("natural_size")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v int32 // out
-	v = int32(r.native.natural_size)
+	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
 	return v
 }

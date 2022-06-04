@@ -4,6 +4,7 @@ package gtk
 
 import (
 	"runtime"
+	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
@@ -23,14 +24,12 @@ import "C"
 //    - guint: GTK+ debug flags.
 //
 func GetDebugFlags() uint32 {
-	var _cret C.guint // in
-
 	_gret := girepository.MustFind("Gtk", "get_debug_flags").Invoke(nil, nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -41,11 +40,8 @@ func GetDebugFlags() uint32 {
 //
 func SetDebugFlags(flags uint32) {
 	var _args [1]girepository.Argument
-	var _arg0 C.guint // out
 
-	_arg0 = C.guint(flags)
-
-	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(flags)
 
 	girepository.MustFind("Gtk", "set_debug_flags").Invoke(_args[:], nil)
 

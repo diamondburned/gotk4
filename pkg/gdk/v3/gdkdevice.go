@@ -277,12 +277,8 @@ func (device *Device) ConnectToolChanged(f func(tool *DeviceTool)) coreglib.Sign
 //
 func (device *Device) AssociatedDevice() Devicer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_associated_device", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -291,7 +287,7 @@ func (device *Device) AssociatedDevice() Devicer {
 
 	var _ret Devicer // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -319,12 +315,8 @@ func (device *Device) AssociatedDevice() Devicer {
 //
 func (device *Device) Display() *Display {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_display", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -347,12 +339,8 @@ func (device *Device) Display() *Display {
 //
 func (device *Device) HasCursor() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_has_cursor", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -361,7 +349,7 @@ func (device *Device) HasCursor() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -384,17 +372,9 @@ func (device *Device) HasCursor() bool {
 func (device *Device) Key(index_ uint32) (uint32, ModifierType, bool) {
 	var _args [2]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.guint    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	_arg1 = C.guint(index_)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(index_)
 
 	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_key", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -405,12 +385,10 @@ func (device *Device) Key(index_ uint32) (uint32, ModifierType, bool) {
 	var _keyval uint32          // out
 	var _modifiers ModifierType // out
 	var _ok bool                // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_keyval = *(*uint32)(unsafe.Pointer(_out0))
-	_modifiers = *(*ModifierType)(unsafe.Pointer(_out1))
-	if _cret != 0 {
+	_keyval = *(*uint32)(unsafe.Pointer(_outs[0]))
+	_modifiers = *(*ModifierType)(unsafe.Pointer(_outs[1]))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -429,12 +407,8 @@ func (device *Device) Key(index_ uint32) (uint32, ModifierType, bool) {
 //
 func (device *Device) LastEventWindow() Windower {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_last_event_window", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -443,7 +417,7 @@ func (device *Device) LastEventWindow() Windower {
 
 	var _window Windower // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -471,12 +445,8 @@ func (device *Device) LastEventWindow() Windower {
 //
 func (device *Device) NAxes() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_n_axes", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -485,7 +455,7 @@ func (device *Device) NAxes() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -498,12 +468,8 @@ func (device *Device) NAxes() int32 {
 //
 func (device *Device) NKeys() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_n_keys", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -512,7 +478,7 @@ func (device *Device) NKeys() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -525,12 +491,8 @@ func (device *Device) NKeys() int32 {
 //
 func (device *Device) Name() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -558,17 +520,11 @@ func (device *Device) Name() string {
 //    - y (optional): location to store root window Y coordinate of device, or
 //      NULL.
 //
-func (device *Device) Position() (screen *Screen, x int32, y int32) {
+func (device *Device) Position() (screen *Screen, x, y int32) {
 	var _args [1]girepository.Argument
 	var _outs [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
-	var _out2 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	girepository.MustFind("Gdk", "Device").InvokeMethod("get_position", _args[:], _outs[:])
 
@@ -577,18 +533,15 @@ func (device *Device) Position() (screen *Screen, x int32, y int32) {
 	var _screen *Screen // out
 	var _x int32        // out
 	var _y int32        // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
-	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
 
-	if _out0 != nil {
-		_screen = wrapScreen(coreglib.Take(unsafe.Pointer(_out0)))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_screen = wrapScreen(coreglib.Take(unsafe.Pointer(_outs[0])))
 	}
-	if _out1 != nil {
-		_x = *(*int32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_x = *(*int32)(unsafe.Pointer(_outs[1]))
 	}
-	if _out2 != nil {
-		_y = *(*int32)(unsafe.Pointer(_out2))
+	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
+		_y = *(*int32)(unsafe.Pointer(_outs[2]))
 	}
 
 	return _screen, _x, _y
@@ -608,17 +561,11 @@ func (device *Device) Position() (screen *Screen, x int32, y int32) {
 //    - y (optional): location to store root window Y coordinate of device, or
 //      NULL.
 //
-func (device *Device) PositionDouble() (screen *Screen, x float64, y float64) {
+func (device *Device) PositionDouble() (screen *Screen, x, y float64) {
 	var _args [1]girepository.Argument
 	var _outs [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
-	var _out2 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	girepository.MustFind("Gdk", "Device").InvokeMethod("get_position_double", _args[:], _outs[:])
 
@@ -627,18 +574,15 @@ func (device *Device) PositionDouble() (screen *Screen, x float64, y float64) {
 	var _screen *Screen // out
 	var _x float64      // out
 	var _y float64      // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
-	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
 
-	if _out0 != nil {
-		_screen = wrapScreen(coreglib.Take(unsafe.Pointer(_out0)))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_screen = wrapScreen(coreglib.Take(unsafe.Pointer(_outs[0])))
 	}
-	if _out1 != nil {
-		_x = *(*float64)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_x = *(*float64)(unsafe.Pointer(_outs[1]))
 	}
-	if _out2 != nil {
-		_y = *(*float64)(unsafe.Pointer(_out2))
+	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
+		_y = *(*float64)(unsafe.Pointer(_outs[2]))
 	}
 
 	return _screen, _x, _y
@@ -654,12 +598,8 @@ func (device *Device) PositionDouble() (screen *Screen, x float64, y float64) {
 //
 func (device *Device) ProductID() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_product_id", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -668,7 +608,7 @@ func (device *Device) ProductID() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -683,12 +623,8 @@ func (device *Device) ProductID() string {
 //
 func (device *Device) Seat() Seater {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_seat", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -749,12 +685,8 @@ func (device *Device) Seat() Seater {
 //
 func (device *Device) VendorID() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_vendor_id", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -763,7 +695,7 @@ func (device *Device) VendorID() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -786,17 +718,11 @@ func (device *Device) VendorID() string {
 //      location, relative to the window origin, or NULL.
 //    - window (optional) under the device position, or NULL.
 //
-func (device *Device) WindowAtPosition() (winX int32, winY int32, window Windower) {
+func (device *Device) WindowAtPosition() (winX, winY int32, window Windower) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_window_at_position", _args[:], _outs[:])
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -806,16 +732,14 @@ func (device *Device) WindowAtPosition() (winX int32, winY int32, window Windowe
 	var _winX int32      // out
 	var _winY int32      // out
 	var _window Windower // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_winX = *(*int32)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_winX = *(*int32)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_winY = *(*int32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_winY = *(*int32)(unsafe.Pointer(_outs[1]))
 	}
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -852,17 +776,11 @@ func (device *Device) WindowAtPosition() (winX int32, winY int32, window Windowe
 //      location, relative to the window origin, or NULL.
 //    - window (optional) under the device position, or NULL.
 //
-func (device *Device) WindowAtPositionDouble() (winX float64, winY float64, window Windower) {
+func (device *Device) WindowAtPositionDouble() (winX, winY float64, window Windower) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("get_window_at_position_double", _args[:], _outs[:])
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -872,16 +790,14 @@ func (device *Device) WindowAtPositionDouble() (winX float64, winY float64, wind
 	var _winX float64    // out
 	var _winY float64    // out
 	var _window Windower // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_winX = *(*float64)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_winX = *(*float64)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_winY = *(*float64)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_winY = *(*float64)(unsafe.Pointer(_outs[1]))
 	}
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -913,12 +829,8 @@ func (device *Device) WindowAtPositionDouble() (winX float64, winY float64, wind
 //
 func (device *Device) ListSlaveDevices() []Devicer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Device").InvokeMethod("list_slave_devices", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -927,7 +839,7 @@ func (device *Device) ListSlaveDevices() []Devicer {
 
 	var _list []Devicer // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_list = make([]Devicer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 		gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
 			src := (*C.void)(v)
@@ -966,14 +878,9 @@ func (device *Device) ListSlaveDevices() []Devicer {
 //
 func (device *Device) Ungrab(time_ uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 C.guint32 // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	_arg1 = C.guint32(time_)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint32)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(time_)
 
 	girepository.MustFind("Gdk", "Device").InvokeMethod("ungrab", _args[:], nil)
 
@@ -998,20 +905,11 @@ func (device *Device) Ungrab(time_ uint32) {
 //
 func (device *Device) Warp(screen *Screen, x, y int32) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.gint  // out
-	var _arg3 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	_arg2 = C.gint(x)
-	_arg3 = C.gint(y)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gint)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(x)
+	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(y)
 
 	girepository.MustFind("Gdk", "Device").InvokeMethod("warp", _args[:], nil)
 
@@ -1038,20 +936,12 @@ func (device *Device) Warp(screen *Screen, x, y int32) {
 //      owner_events flag to gdk_keyboard_grab() or gdk_pointer_grab() was TRUE.
 //    - ok: TRUE if this application currently has the keyboard grabbed.
 //
-func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow Windower, ownerEvents bool, ok bool) {
+func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow Windower, ownerEvents, ok bool) {
 	var _args [2]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	_gret := girepository.MustFind("Gdk", "grab_info_libgtk_only").Invoke(_args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1062,11 +952,9 @@ func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow Wind
 	var _grabWindow Windower // out
 	var _ownerEvents bool    // out
 	var _ok bool             // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
 	{
-		objptr := unsafe.Pointer(_out0)
+		objptr := unsafe.Pointer(_outs[0])
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -1082,10 +970,10 @@ func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow Wind
 		}
 		_grabWindow = rv
 	}
-	if *_out1 != 0 {
+	if **(**C.void)(unsafe.Pointer(&_outs[1])) != 0 {
 		_ownerEvents = true
 	}
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1101,19 +989,23 @@ type TimeCoord struct {
 
 // timeCoord is the struct that's finalized.
 type timeCoord struct {
-	native *C.GdkTimeCoord
+	native unsafe.Pointer
 }
 
 // Time: timestamp for this event.
 func (t *TimeCoord) Time() uint32 {
+	offset := girepository.MustFind("Gdk", "TimeCoord").StructFieldOffset("time")
+	valptr := unsafe.Add(unsafe.Pointer(t), offset)
 	var v uint32 // out
-	v = uint32(t.native.time)
+	v = uint32(*(*C.guint32)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Axes values of the device’s axes.
 func (t *TimeCoord) Axes() [128]float64 {
+	offset := girepository.MustFind("Gdk", "TimeCoord").StructFieldOffset("axes")
+	valptr := unsafe.Add(unsafe.Pointer(t), offset)
 	var v [128]float64 // out
-	v = *(*[128]float64)(unsafe.Pointer(&t.native.axes))
+	v = *(*[128]float64)(unsafe.Pointer(&valptr))
 	return v
 }

@@ -89,11 +89,8 @@ func marshalConverter(p uintptr) (interface{}, error) {
 // output then that output is lost.
 func (converter *Converter) Reset() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(converter).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(converter).Native()))
 
 	runtime.KeepAlive(converter)
 }

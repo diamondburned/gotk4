@@ -31,15 +31,9 @@ import "C"
 //
 func BindingsActivateEvent(object *coreglib.Object, event *gdk.EventKey) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(object.Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(object.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
 
 	_gret := girepository.MustFind("Gtk", "bindings_activate_event").Invoke(_args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -49,7 +43,7 @@ func BindingsActivateEvent(object *coreglib.Object, event *gdk.EventKey) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -66,7 +60,7 @@ type BindingArg struct {
 
 // bindingArg is the struct that's finalized.
 type bindingArg struct {
-	native *C.GtkBindingArg
+	native unsafe.Pointer
 }
 
 // BindingEntry: each key binding element of a binding sets binding list is
@@ -79,7 +73,7 @@ type BindingEntry struct {
 
 // bindingEntry is the struct that's finalized.
 type bindingEntry struct {
-	native *C.GtkBindingEntry
+	native unsafe.Pointer
 }
 
 // BindingSet: binding set maintains a list of activatable key bindings. A
@@ -95,34 +89,42 @@ type BindingSet struct {
 
 // bindingSet is the struct that's finalized.
 type bindingSet struct {
-	native *C.GtkBindingSet
+	native unsafe.Pointer
 }
 
 // SetName: unique name of this binding set.
 func (b *BindingSet) SetName() string {
+	offset := girepository.MustFind("Gtk", "BindingSet").StructFieldOffset("set_name")
+	valptr := unsafe.Add(unsafe.Pointer(b), offset)
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(b.native.set_name)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }
 
 // Priority: unused.
 func (b *BindingSet) Priority() int32 {
+	offset := girepository.MustFind("Gtk", "BindingSet").StructFieldOffset("priority")
+	valptr := unsafe.Add(unsafe.Pointer(b), offset)
 	var v int32 // out
-	v = int32(b.native.priority)
+	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Entries: key binding entries in this binding set.
 func (b *BindingSet) Entries() *BindingEntry {
+	offset := girepository.MustFind("Gtk", "BindingSet").StructFieldOffset("entries")
+	valptr := unsafe.Add(unsafe.Pointer(b), offset)
 	var v *BindingEntry // out
-	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(b.native.entries)))
+	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(valptr)))
 	return v
 }
 
 // Current: implementation detail.
 func (b *BindingSet) Current() *BindingEntry {
+	offset := girepository.MustFind("Gtk", "BindingSet").StructFieldOffset("current")
+	valptr := unsafe.Add(unsafe.Pointer(b), offset)
 	var v *BindingEntry // out
-	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(b.native.current)))
+	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(valptr)))
 	return v
 }
 
@@ -141,13 +143,9 @@ func (b *BindingSet) Current() *BindingEntry {
 //
 func BindingSetFind(setName string) *BindingSet {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(setName)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(setName)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "find").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -156,7 +154,7 @@ func BindingSetFind(setName string) *BindingSet {
 
 	var _bindingSet *BindingSet // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_bindingSet = (*BindingSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	}
 
@@ -173,5 +171,5 @@ type BindingSignal struct {
 
 // bindingSignal is the struct that's finalized.
 type bindingSignal struct {
-	native *C.GtkBindingSignal
+	native unsafe.Pointer
 }

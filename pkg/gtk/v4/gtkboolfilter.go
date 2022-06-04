@@ -71,15 +71,11 @@ func marshalBoolFilter(p uintptr) (interface{}, error) {
 //
 func NewBoolFilter(expression Expressioner) *BoolFilter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
 	if expression != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(expression).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gtk", "BoolFilter").InvokeMethod("new_BoolFilter", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -102,12 +98,8 @@ func NewBoolFilter(expression Expressioner) *BoolFilter {
 //
 func (self *BoolFilter) Expression() Expressioner {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "BoolFilter").InvokeMethod("get_expression", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -116,7 +108,7 @@ func (self *BoolFilter) Expression() Expressioner {
 
 	var _expression Expressioner // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -144,12 +136,8 @@ func (self *BoolFilter) Expression() Expressioner {
 //
 func (self *BoolFilter) Invert() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "BoolFilter").InvokeMethod("get_invert", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -158,7 +146,7 @@ func (self *BoolFilter) Invert() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -176,16 +164,11 @@ func (self *BoolFilter) Invert() bool {
 //
 func (self *BoolFilter) SetExpression(expression Expressioner) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if expression != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "BoolFilter").InvokeMethod("set_expression", _args[:], nil)
 
@@ -201,16 +184,11 @@ func (self *BoolFilter) SetExpression(expression Expressioner) {
 //
 func (self *BoolFilter) SetInvert(invert bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if invert {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "BoolFilter").InvokeMethod("set_invert", _args[:], nil)
 

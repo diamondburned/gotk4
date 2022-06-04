@@ -92,14 +92,9 @@ func BaseTLSFileDatabase(obj TLSFileDatabaser) *TLSFileDatabase {
 //
 func NewTLSFileDatabase(anchors string) (*TLSFileDatabase, error) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(anchors)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(anchors)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gio", "new").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -110,7 +105,7 @@ func NewTLSFileDatabase(anchors string) (*TLSFileDatabase, error) {
 	var _goerr error                      // out
 
 	_tlsFileDatabase = wrapTLSFileDatabase(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 

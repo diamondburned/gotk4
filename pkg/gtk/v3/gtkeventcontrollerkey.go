@@ -130,12 +130,8 @@ func (controller *EventControllerKey) ConnectIMUpdate(f func()) coreglib.SignalH
 //
 func NewEventControllerKey(widget Widgetter) *EventControllerKey {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("new_EventControllerKey", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -155,15 +151,9 @@ func NewEventControllerKey(widget Widgetter) *EventControllerKey {
 //
 func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_gret := girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("forward", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -173,7 +163,7 @@ func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -184,12 +174,8 @@ func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 //
 func (controller *EventControllerKey) Group() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
 
 	_gret := girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("get_group", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -198,7 +184,7 @@ func (controller *EventControllerKey) Group() uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -211,12 +197,8 @@ func (controller *EventControllerKey) Group() uint32 {
 //
 func (controller *EventControllerKey) IMContext() IMContexter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
 
 	_gret := girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("get_im_context", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -250,14 +232,9 @@ func (controller *EventControllerKey) IMContext() IMContexter {
 //
 func (controller *EventControllerKey) SetIMContext(imContext IMContexter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(imContext).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(imContext).Native()))
 
 	girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("set_im_context", _args[:], nil)
 

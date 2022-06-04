@@ -166,12 +166,8 @@ func marshalDBusInterface(p uintptr) (interface{}, error) {
 //
 func (interface_ *DBusInterface) GetObject() *DBusObject {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -179,7 +175,7 @@ func (interface_ *DBusInterface) GetObject() *DBusObject {
 
 	var _dBusObject *DBusObject // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_dBusObject = wrapDBusObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
@@ -195,12 +191,8 @@ func (interface_ *DBusInterface) GetObject() *DBusObject {
 //
 func (interface_ *DBusInterface) Info() *DBusInterfaceInfo {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -230,16 +222,11 @@ func (interface_ *DBusInterface) Info() *DBusInterfaceInfo {
 //
 func (interface_ *DBusInterface) SetObject(object DBusObjector) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 	if object != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(interface_)
 	runtime.KeepAlive(object)

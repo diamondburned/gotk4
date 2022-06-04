@@ -4,7 +4,6 @@ package glib
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -652,7 +651,7 @@ func HashTableLookup(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Poi
 //    - value (optional): return location for the value associated with the key.
 //    - ok: TRUE if the key was found in the Table.
 //
-func HashTableLookupExtended(hashTable map[unsafe.Pointer]unsafe.Pointer, lookupKey unsafe.Pointer) (origKey unsafe.Pointer, value unsafe.Pointer, ok bool) {
+func HashTableLookupExtended(hashTable map[unsafe.Pointer]unsafe.Pointer, lookupKey unsafe.Pointer) (origKey, value unsafe.Pointer, ok bool) {
 	var _arg1 *C.GHashTable   // out
 	var _arg2 C.gconstpointer // out
 	var _arg3 C.gpointer      // in
@@ -932,7 +931,7 @@ func HashTableStealAll(hashTable map[unsafe.Pointer]unsafe.Pointer) {
 //      key.
 //    - ok: TRUE if the key was found in the Table.
 //
-func HashTableStealExtended(hashTable map[unsafe.Pointer]unsafe.Pointer, lookupKey unsafe.Pointer) (stolenKey unsafe.Pointer, stolenValue unsafe.Pointer, ok bool) {
+func HashTableStealExtended(hashTable map[unsafe.Pointer]unsafe.Pointer, lookupKey unsafe.Pointer) (stolenKey, stolenValue unsafe.Pointer, ok bool) {
 	var _arg1 *C.GHashTable   // out
 	var _arg2 C.gconstpointer // out
 	var _arg3 C.gpointer      // in

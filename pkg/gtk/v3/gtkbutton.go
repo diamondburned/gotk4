@@ -362,8 +362,6 @@ func (button *Button) ConnectReleased(f func()) coreglib.SignalHandle {
 //    - button: newly created Button widget.
 //
 func NewButton() *Button {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "Button").InvokeMethod("new_Button", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -394,13 +392,9 @@ func NewButton() *Button {
 //
 func NewButtonFromStock(stockId string) *Button {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "Button").InvokeMethod("new_Button_from_stock", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -427,13 +421,9 @@ func NewButtonFromStock(stockId string) *Button {
 //
 func NewButtonWithLabel(label string) *Button {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "Button").InvokeMethod("new_Button_with_label", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -464,13 +454,9 @@ func NewButtonWithLabel(label string) *Button {
 //
 func NewButtonWithMnemonic(label string) *Button {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "Button").InvokeMethod("new_Button_with_mnemonic", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -487,11 +473,8 @@ func NewButtonWithMnemonic(label string) *Button {
 // Clicked emits a Button::clicked signal to the given Button.
 func (button *Button) Clicked() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
 	girepository.MustFind("Gtk", "Button").InvokeMethod("clicked", _args[:], nil)
 
@@ -503,11 +486,8 @@ func (button *Button) Clicked() {
 // Deprecated: Use the Widget::enter-notify-event signal.
 func (button *Button) Enter() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
 	girepository.MustFind("Gtk", "Button").InvokeMethod("enter", _args[:], nil)
 
@@ -524,16 +504,11 @@ func (button *Button) Enter() {
 //    - xalign: return location for horizontal alignment.
 //    - yalign: return location for vertical alignment.
 //
-func (button *Button) Alignment() (xalign float32, yalign float32) {
+func (button *Button) Alignment() (xalign, yalign float32) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
 	girepository.MustFind("Gtk", "Button").InvokeMethod("get_alignment", _args[:], _outs[:])
 
@@ -541,11 +516,9 @@ func (button *Button) Alignment() (xalign float32, yalign float32) {
 
 	var _xalign float32 // out
 	var _yalign float32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_xalign = *(*float32)(unsafe.Pointer(_out0))
-	_yalign = *(*float32)(unsafe.Pointer(_out1))
+	_xalign = *(*float32)(unsafe.Pointer(_outs[0]))
+	_yalign = *(*float32)(unsafe.Pointer(_outs[1]))
 
 	return _xalign, _yalign
 }
@@ -559,12 +532,8 @@ func (button *Button) Alignment() (xalign float32, yalign float32) {
 //
 func (button *Button) AlwaysShowImage() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Button").InvokeMethod("get_always_show_image", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -573,7 +542,7 @@ func (button *Button) AlwaysShowImage() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -589,12 +558,8 @@ func (button *Button) AlwaysShowImage() bool {
 //
 func (button *Button) EventWindow() gdk.Windower {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Button").InvokeMethod("get_event_window", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -635,12 +600,8 @@ func (button *Button) EventWindow() gdk.Windower {
 //
 func (button *Button) FocusOnClick() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Button").InvokeMethod("get_focus_on_click", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -649,7 +610,7 @@ func (button *Button) FocusOnClick() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -666,12 +627,8 @@ func (button *Button) FocusOnClick() bool {
 //
 func (button *Button) Image() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Button").InvokeMethod("get_image", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -680,7 +637,7 @@ func (button *Button) Image() Widgetter {
 
 	var _widget Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -712,12 +669,8 @@ func (button *Button) Image() Widgetter {
 //
 func (button *Button) Label() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Button").InvokeMethod("get_label", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -742,12 +695,8 @@ func (button *Button) Label() string {
 //
 func (button *Button) UseStock() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Button").InvokeMethod("get_use_stock", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -756,7 +705,7 @@ func (button *Button) UseStock() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -773,12 +722,8 @@ func (button *Button) UseStock() bool {
 //
 func (button *Button) UseUnderline() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Button").InvokeMethod("get_use_underline", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -787,7 +732,7 @@ func (button *Button) UseUnderline() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -799,11 +744,8 @@ func (button *Button) UseUnderline() bool {
 // Deprecated: Use the Widget::leave-notify-event signal.
 func (button *Button) Leave() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
 	girepository.MustFind("Gtk", "Button").InvokeMethod("leave", _args[:], nil)
 
@@ -815,11 +757,8 @@ func (button *Button) Leave() {
 // Deprecated: Use the Widget::button-press-event signal.
 func (button *Button) Pressed() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
 	girepository.MustFind("Gtk", "Button").InvokeMethod("pressed", _args[:], nil)
 
@@ -831,11 +770,8 @@ func (button *Button) Pressed() {
 // Deprecated: Use the Widget::button-release-event signal.
 func (button *Button) Released() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
 	girepository.MustFind("Gtk", "Button").InvokeMethod("released", _args[:], nil)
 
@@ -857,17 +793,10 @@ func (button *Button) Released() {
 //
 func (button *Button) SetAlignment(xalign, yalign float32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 C.gfloat // out
-	var _arg2 C.gfloat // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	_arg1 = C.gfloat(xalign)
-	_arg2 = C.gfloat(yalign)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gfloat)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gfloat)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(*C.gfloat)(unsafe.Pointer(&_args[1])) = C.gfloat(xalign)
+	*(*C.gfloat)(unsafe.Pointer(&_args[2])) = C.gfloat(yalign)
 
 	girepository.MustFind("Gtk", "Button").InvokeMethod("set_alignment", _args[:], nil)
 
@@ -888,16 +817,11 @@ func (button *Button) SetAlignment(xalign, yalign float32) {
 //
 func (button *Button) SetAlwaysShowImage(alwaysShow bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	if alwaysShow {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Button").InvokeMethod("set_always_show_image", _args[:], nil)
 
@@ -918,16 +842,11 @@ func (button *Button) SetAlwaysShowImage(alwaysShow bool) {
 //
 func (button *Button) SetFocusOnClick(focusOnClick bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	if focusOnClick {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Button").InvokeMethod("set_focus_on_click", _args[:], nil)
 
@@ -946,16 +865,11 @@ func (button *Button) SetFocusOnClick(focusOnClick bool) {
 //
 func (button *Button) SetImage(image Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	if image != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Button").InvokeMethod("set_image", _args[:], nil)
 
@@ -974,15 +888,10 @@ func (button *Button) SetImage(image Widgetter) {
 //
 func (button *Button) SetLabel(label string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "Button").InvokeMethod("set_label", _args[:], nil)
 
@@ -1001,16 +910,11 @@ func (button *Button) SetLabel(label string) {
 //
 func (button *Button) SetUseStock(useStock bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	if useStock {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Button").InvokeMethod("set_use_stock", _args[:], nil)
 
@@ -1027,16 +931,11 @@ func (button *Button) SetUseStock(useStock bool) {
 //
 func (button *Button) SetUseUnderline(useUnderline bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	if useUnderline {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Button").InvokeMethod("set_use_underline", _args[:], nil)
 

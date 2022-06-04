@@ -5,7 +5,6 @@ package atk
 import (
 	"fmt"
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -1604,12 +1603,8 @@ func (accessible *ObjectClass) ConnectVisibleDataChanged(f func()) coreglib.Sign
 //
 func (accessible *ObjectClass) AccessibleID() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
 	_gret := girepository.MustFind("Atk", "Object").InvokeMethod("get_accessible_id", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1632,12 +1627,8 @@ func (accessible *ObjectClass) AccessibleID() string {
 //
 func (accessible *ObjectClass) Description() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
 	_gret := girepository.MustFind("Atk", "Object").InvokeMethod("get_description", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1660,12 +1651,8 @@ func (accessible *ObjectClass) Description() string {
 //
 func (accessible *ObjectClass) IndexInParent() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
 	_gret := girepository.MustFind("Atk", "Object").InvokeMethod("get_index_in_parent", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -1674,7 +1661,7 @@ func (accessible *ObjectClass) IndexInParent() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1691,12 +1678,8 @@ func (accessible *ObjectClass) IndexInParent() int32 {
 //
 func (accessible *ObjectClass) MDIZOrder() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
 	_gret := girepository.MustFind("Atk", "Object").InvokeMethod("get_mdi_zorder", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -1705,7 +1688,7 @@ func (accessible *ObjectClass) MDIZOrder() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1719,12 +1702,8 @@ func (accessible *ObjectClass) MDIZOrder() int32 {
 //
 func (accessible *ObjectClass) NAccessibleChildren() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
 	_gret := girepository.MustFind("Atk", "Object").InvokeMethod("get_n_accessible_children", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -1733,7 +1712,7 @@ func (accessible *ObjectClass) NAccessibleChildren() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1746,12 +1725,8 @@ func (accessible *ObjectClass) NAccessibleChildren() int32 {
 //
 func (accessible *ObjectClass) Name() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
 	_gret := girepository.MustFind("Atk", "Object").InvokeMethod("get_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1775,12 +1750,8 @@ func (accessible *ObjectClass) Name() string {
 //
 func (accessible *ObjectClass) ObjectLocale() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
 	_gret := girepository.MustFind("Atk", "Object").InvokeMethod("get_object_locale", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1809,12 +1780,8 @@ func (accessible *ObjectClass) ObjectLocale() string {
 //
 func (accessible *ObjectClass) Parent() *ObjectClass {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
 	_gret := girepository.MustFind("Atk", "Object").InvokeMethod("get_parent", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1840,14 +1807,9 @@ func (accessible *ObjectClass) Parent() *ObjectClass {
 //
 func (accessible *ObjectClass) Initialize(data unsafe.Pointer) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(data))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (C.gpointer)(unsafe.Pointer(data))
 
 	girepository.MustFind("Atk", "Object").InvokeMethod("initialize", _args[:], nil)
 
@@ -1867,19 +1829,12 @@ func (accessible *ObjectClass) Initialize(data unsafe.Pointer) {
 //
 func (accessible *ObjectClass) NotifyStateChange(state State, value bool) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.guint64  // out
-	var _arg2 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-	_arg1 = C.guint64(state)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	*(*C.guint64)(unsafe.Pointer(&_args[1])) = C.guint64(state)
 	if value {
-		_arg2 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint64)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Atk", "Object").InvokeMethod("notify_state_change", _args[:], nil)
 
@@ -1902,12 +1857,8 @@ func (accessible *ObjectClass) NotifyStateChange(state State, value bool) {
 //
 func (accessible *ObjectClass) PeekParent() *ObjectClass {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
 	_gret := girepository.MustFind("Atk", "Object").InvokeMethod("peek_parent", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1935,15 +1886,9 @@ func (accessible *ObjectClass) PeekParent() *ObjectClass {
 //
 func (accessible *ObjectClass) RefAccessibleChild(i int32) *ObjectClass {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-	_arg1 = C.gint(i)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
 
 	_gret := girepository.MustFind("Atk", "Object").InvokeMethod("ref_accessible_child", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1966,12 +1911,8 @@ func (accessible *ObjectClass) RefAccessibleChild(i int32) *ObjectClass {
 //
 func (accessible *ObjectClass) RefRelationSet() *RelationSet {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
 	_gret := girepository.MustFind("Atk", "Object").InvokeMethod("ref_relation_set", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1995,12 +1936,8 @@ func (accessible *ObjectClass) RefRelationSet() *RelationSet {
 //
 func (accessible *ObjectClass) RefStateSet() *StateSet {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
 	_gret := girepository.MustFind("Atk", "Object").InvokeMethod("ref_state_set", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -2024,14 +1961,9 @@ func (accessible *ObjectClass) RefStateSet() *StateSet {
 //
 func (accessible *ObjectClass) RemovePropertyChangeHandler(handlerId uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-	_arg1 = C.guint(handlerId)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(handlerId)
 
 	girepository.MustFind("Atk", "Object").InvokeMethod("remove_property_change_handler", _args[:], nil)
 
@@ -2051,15 +1983,10 @@ func (accessible *ObjectClass) RemovePropertyChangeHandler(handlerId uint32) {
 //
 func (accessible *ObjectClass) SetAccessibleID(name string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Atk", "Object").InvokeMethod("set_accessible_id", _args[:], nil)
 
@@ -2078,15 +2005,10 @@ func (accessible *ObjectClass) SetAccessibleID(name string) {
 //
 func (accessible *ObjectClass) SetDescription(description string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(description)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Atk", "Object").InvokeMethod("set_description", _args[:], nil)
 
@@ -2105,15 +2027,10 @@ func (accessible *ObjectClass) SetDescription(description string) {
 //
 func (accessible *ObjectClass) SetName(name string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Atk", "Object").InvokeMethod("set_name", _args[:], nil)
 
@@ -2129,14 +2046,9 @@ func (accessible *ObjectClass) SetName(name string) {
 //
 func (accessible *ObjectClass) SetParent(parent *ObjectClass) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 
 	girepository.MustFind("Atk", "Object").InvokeMethod("set_parent", _args[:], nil)
 
@@ -2163,20 +2075,24 @@ type Attribute struct {
 
 // attribute is the struct that's finalized.
 type attribute struct {
-	native *C.AtkAttribute
+	native unsafe.Pointer
 }
 
 // Name: attribute name.
 func (a *Attribute) Name() string {
+	offset := girepository.MustFind("Atk", "Attribute").StructFieldOffset("name")
+	valptr := unsafe.Add(unsafe.Pointer(a), offset)
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.name)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }
 
 // Value: value of the attribute, represented as a string.
 func (a *Attribute) Value() string {
+	offset := girepository.MustFind("Atk", "Attribute").StructFieldOffset("value")
+	valptr := unsafe.Add(unsafe.Pointer(a), offset)
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.value)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }
 
@@ -2191,12 +2107,14 @@ type PropertyValues struct {
 
 // propertyValues is the struct that's finalized.
 type propertyValues struct {
-	native *C.AtkPropertyValues
+	native unsafe.Pointer
 }
 
 // PropertyName: name of the ATK property which has changed.
 func (p *PropertyValues) PropertyName() string {
+	offset := girepository.MustFind("Atk", "PropertyValues").StructFieldOffset("property_name")
+	valptr := unsafe.Add(unsafe.Pointer(p), offset)
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(p.native.property_name)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }

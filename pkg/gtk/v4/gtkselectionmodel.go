@@ -520,12 +520,8 @@ func (model *SelectionModel) ConnectSelectionChanged(f func(position, nItems uin
 //
 func (model *SelectionModel) Selection() *Bitset {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -562,18 +558,10 @@ func (model *SelectionModel) Selection() *Bitset {
 //
 func (model *SelectionModel) SelectionInRange(position, nItems uint32) *Bitset {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
-	var _arg2 C.guint // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	_arg1 = C.guint(position)
-	_arg2 = C.guint(nItems)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(nItems)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -606,15 +594,9 @@ func (model *SelectionModel) SelectionInRange(position, nItems uint32) *Bitset {
 //
 func (model *SelectionModel) IsSelected(position uint32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.guint    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	_arg1 = C.guint(position)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -623,7 +605,7 @@ func (model *SelectionModel) IsSelected(position uint32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -639,12 +621,8 @@ func (model *SelectionModel) IsSelected(position uint32) bool {
 //
 func (model *SelectionModel) SelectAll() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -652,7 +630,7 @@ func (model *SelectionModel) SelectAll() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -673,20 +651,12 @@ func (model *SelectionModel) SelectAll() bool {
 //
 func (model *SelectionModel) SelectItem(position uint32, unselectRest bool) bool {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.guint    // out
-	var _arg2 C.gboolean // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	_arg1 = C.guint(position)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
 	if unselectRest {
-		_arg2 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -696,7 +666,7 @@ func (model *SelectionModel) SelectItem(position uint32, unselectRest bool) bool
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -718,23 +688,13 @@ func (model *SelectionModel) SelectItem(position uint32, unselectRest bool) bool
 //
 func (model *SelectionModel) SelectRange(position, nItems uint32, unselectRest bool) bool {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.guint    // out
-	var _arg2 C.guint    // out
-	var _arg3 C.gboolean // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	_arg1 = C.guint(position)
-	_arg2 = C.guint(nItems)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(nItems)
 	if unselectRest {
-		_arg3 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gboolean)(unsafe.Pointer(&_args[3])) = _arg3
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -745,7 +705,7 @@ func (model *SelectionModel) SelectRange(position, nItems uint32, unselectRest b
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -764,17 +724,10 @@ func (model *SelectionModel) SelectRange(position, nItems uint32, unselectRest b
 //
 func (model *SelectionModel) SelectionChanged(position, nItems uint32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
-	var _arg2 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	_arg1 = C.guint(position)
-	_arg2 = C.guint(nItems)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(nItems)
 
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(position)
@@ -825,18 +778,10 @@ func (model *SelectionModel) SelectionChanged(position, nItems uint32) {
 //
 func (model *SelectionModel) SetSelection(selected, mask *Bitset) bool {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(selected)))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(mask)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selected)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(mask)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -846,7 +791,7 @@ func (model *SelectionModel) SetSelection(selected, mask *Bitset) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -862,12 +807,8 @@ func (model *SelectionModel) SetSelection(selected, mask *Bitset) bool {
 //
 func (model *SelectionModel) UnselectAll() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -875,7 +816,7 @@ func (model *SelectionModel) UnselectAll() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -895,15 +836,9 @@ func (model *SelectionModel) UnselectAll() bool {
 //
 func (model *SelectionModel) UnselectItem(position uint32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.guint    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	_arg1 = C.guint(position)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -912,7 +847,7 @@ func (model *SelectionModel) UnselectItem(position uint32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -933,18 +868,10 @@ func (model *SelectionModel) UnselectItem(position uint32) bool {
 //
 func (model *SelectionModel) UnselectRange(position, nItems uint32) bool {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.guint    // out
-	var _arg2 C.guint    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	_arg1 = C.guint(position)
-	_arg2 = C.guint(nItems)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(nItems)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -954,7 +881,7 @@ func (model *SelectionModel) UnselectRange(position, nItems uint32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

@@ -107,8 +107,6 @@ func (completer *FilenameCompleter) ConnectGotCompletionData(f func()) coreglib.
 //    - filenameCompleter: Completer.
 //
 func NewFilenameCompleter() *FilenameCompleter {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gio", "FilenameCompleter").InvokeMethod("new_FilenameCompleter", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -132,16 +130,10 @@ func NewFilenameCompleter() *FilenameCompleter {
 //
 func (completer *FilenameCompleter) CompletionSuffix(initialText string) string {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(completer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(initialText)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(completer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(initialText)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gio", "FilenameCompleter").InvokeMethod("get_completion_suffix", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -151,7 +143,7 @@ func (completer *FilenameCompleter) CompletionSuffix(initialText string) string 
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 		defer C.free(unsafe.Pointer(_cret))
 	}
@@ -172,16 +164,10 @@ func (completer *FilenameCompleter) CompletionSuffix(initialText string) string 
 //
 func (completer *FilenameCompleter) Completions(initialText string) []string {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 *C.void  // out
-	var _cret **C.char // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(completer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(initialText)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(completer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(initialText)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gio", "FilenameCompleter").InvokeMethod("get_completions", _args[:], nil)
 	_cret = *(***C.char)(unsafe.Pointer(&_gret))
@@ -219,16 +205,11 @@ func (completer *FilenameCompleter) Completions(initialText string) []string {
 //
 func (completer *FilenameCompleter) SetDirsOnly(dirsOnly bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(completer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(completer).Native()))
 	if dirsOnly {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gio", "FilenameCompleter").InvokeMethod("set_dirs_only", _args[:], nil)
 

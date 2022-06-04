@@ -203,12 +203,8 @@ func (selection *TreeSelection) ConnectChanged(f func()) coreglib.SignalHandle {
 //
 func (selection *TreeSelection) CountSelectedRows() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TreeSelection").InvokeMethod("count_selected_rows", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -217,7 +213,7 @@ func (selection *TreeSelection) CountSelectedRows() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -237,14 +233,8 @@ func (selection *TreeSelection) CountSelectedRows() int32 {
 func (selection *TreeSelection) Selected() (*TreeModel, *TreeIter, bool) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TreeSelection").InvokeMethod("get_selected", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -254,16 +244,14 @@ func (selection *TreeSelection) Selected() (*TreeModel, *TreeIter, bool) {
 	var _model *TreeModel // out
 	var _iter *TreeIter   // out
 	var _ok bool          // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_model = wrapTreeModel(coreglib.Take(unsafe.Pointer(_out0)))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_model = wrapTreeModel(coreglib.Take(unsafe.Pointer(_outs[0])))
 	}
-	if _out1 != nil {
-		_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_out1)))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
 	}
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -287,13 +275,8 @@ func (selection *TreeSelection) Selected() (*TreeModel, *TreeIter, bool) {
 func (selection *TreeSelection) SelectedRows() (*TreeModel, []*TreePath) {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TreeSelection").InvokeMethod("get_selected_rows", _args[:], _outs[:])
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -302,10 +285,9 @@ func (selection *TreeSelection) SelectedRows() (*TreeModel, []*TreePath) {
 
 	var _model *TreeModel // out
 	var _list []*TreePath // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	if _out0 != nil {
-		_model = wrapTreeModel(coreglib.Take(unsafe.Pointer(_out0)))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_model = wrapTreeModel(coreglib.Take(unsafe.Pointer(_outs[0])))
 	}
 	_list = make([]*TreePath, 0, gextras.ListSize(unsafe.Pointer(_cret)))
 	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
@@ -332,12 +314,8 @@ func (selection *TreeSelection) SelectedRows() (*TreeModel, []*TreePath) {
 //
 func (selection *TreeSelection) TreeView() *TreeView {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TreeSelection").InvokeMethod("get_tree_view", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -363,15 +341,9 @@ func (selection *TreeSelection) TreeView() *TreeView {
 //
 func (selection *TreeSelection) IterIsSelected(iter *TreeIter) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_gret := girepository.MustFind("Gtk", "TreeSelection").InvokeMethod("iter_is_selected", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -381,7 +353,7 @@ func (selection *TreeSelection) IterIsSelected(iter *TreeIter) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -401,15 +373,9 @@ func (selection *TreeSelection) IterIsSelected(iter *TreeIter) bool {
 //
 func (selection *TreeSelection) PathIsSelected(path *TreePath) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_gret := girepository.MustFind("Gtk", "TreeSelection").InvokeMethod("path_is_selected", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -419,7 +385,7 @@ func (selection *TreeSelection) PathIsSelected(path *TreePath) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -430,11 +396,8 @@ func (selection *TreeSelection) PathIsSelected(path *TreePath) bool {
 // K_SELECTION_MULTIPLE mode.
 func (selection *TreeSelection) SelectAll() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
 
 	girepository.MustFind("Gtk", "TreeSelection").InvokeMethod("select_all", _args[:], nil)
 
@@ -449,14 +412,9 @@ func (selection *TreeSelection) SelectAll() {
 //
 func (selection *TreeSelection) SelectIter(iter *TreeIter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	girepository.MustFind("Gtk", "TreeSelection").InvokeMethod("select_iter", _args[:], nil)
 
@@ -472,14 +430,9 @@ func (selection *TreeSelection) SelectIter(iter *TreeIter) {
 //
 func (selection *TreeSelection) SelectPath(path *TreePath) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	girepository.MustFind("Gtk", "TreeSelection").InvokeMethod("select_path", _args[:], nil)
 
@@ -497,17 +450,10 @@ func (selection *TreeSelection) SelectPath(path *TreePath) {
 //
 func (selection *TreeSelection) SelectRange(startPath, endPath *TreePath) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(startPath)))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(endPath)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(startPath)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(endPath)))
 
 	girepository.MustFind("Gtk", "TreeSelection").InvokeMethod("select_range", _args[:], nil)
 
@@ -526,17 +472,11 @@ func (selection *TreeSelection) SelectRange(startPath, endPath *TreePath) {
 //
 func (selection *TreeSelection) SelectedForEach(fn TreeSelectionForEachFunc) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk4_TreeSelectionForEachFunc)
-	_arg2 = C.gpointer(gbox.Assign(fn))
-	defer gbox.Delete(uintptr(_arg2))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk4_TreeSelectionForEachFunc)
+	_args[2] = C.gpointer(gbox.Assign(fn))
+	defer gbox.Delete(uintptr(_args[2]))
 
 	girepository.MustFind("Gtk", "TreeSelection").InvokeMethod("selected_foreach", _args[:], nil)
 
@@ -557,20 +497,13 @@ func (selection *TreeSelection) SelectedForEach(fn TreeSelectionForEachFunc) {
 //
 func (selection *TreeSelection) SetSelectFunction(fn TreeSelectionFunc) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
 	if fn != nil {
-		_arg1 = (*[0]byte)(C._gotk4_gtk4_TreeSelectionFunc)
-		_arg2 = C.gpointer(gbox.Assign(fn))
-		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk4_TreeSelectionFunc)
+		_args[2] = C.gpointer(gbox.Assign(fn))
+		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "TreeSelection").InvokeMethod("set_select_function", _args[:], nil)
 
@@ -581,11 +514,8 @@ func (selection *TreeSelection) SetSelectFunction(fn TreeSelectionFunc) {
 // UnselectAll unselects all the nodes.
 func (selection *TreeSelection) UnselectAll() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
 
 	girepository.MustFind("Gtk", "TreeSelection").InvokeMethod("unselect_all", _args[:], nil)
 
@@ -600,14 +530,9 @@ func (selection *TreeSelection) UnselectAll() {
 //
 func (selection *TreeSelection) UnselectIter(iter *TreeIter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	girepository.MustFind("Gtk", "TreeSelection").InvokeMethod("unselect_iter", _args[:], nil)
 
@@ -623,14 +548,9 @@ func (selection *TreeSelection) UnselectIter(iter *TreeIter) {
 //
 func (selection *TreeSelection) UnselectPath(path *TreePath) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	girepository.MustFind("Gtk", "TreeSelection").InvokeMethod("unselect_path", _args[:], nil)
 
@@ -648,17 +568,10 @@ func (selection *TreeSelection) UnselectPath(path *TreePath) {
 //
 func (selection *TreeSelection) UnselectRange(startPath, endPath *TreePath) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(startPath)))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(endPath)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(startPath)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(endPath)))
 
 	girepository.MustFind("Gtk", "TreeSelection").InvokeMethod("unselect_range", _args[:], nil)
 

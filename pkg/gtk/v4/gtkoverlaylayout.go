@@ -74,8 +74,6 @@ func marshalOverlayLayout(p uintptr) (interface{}, error) {
 //    - overlayLayout: newly created instance.
 //
 func NewOverlayLayout() *OverlayLayout {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "OverlayLayout").InvokeMethod("new_OverlayLayout", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -129,12 +127,8 @@ func marshalOverlayLayoutChild(p uintptr) (interface{}, error) {
 //
 func (child *OverlayLayoutChild) ClipOverlay() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
 	_gret := girepository.MustFind("Gtk", "OverlayLayoutChild").InvokeMethod("get_clip_overlay", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -143,7 +137,7 @@ func (child *OverlayLayoutChild) ClipOverlay() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -158,12 +152,8 @@ func (child *OverlayLayoutChild) ClipOverlay() bool {
 //
 func (child *OverlayLayoutChild) Measure() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
 	_gret := girepository.MustFind("Gtk", "OverlayLayoutChild").InvokeMethod("get_measure", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -172,7 +162,7 @@ func (child *OverlayLayoutChild) Measure() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -187,16 +177,11 @@ func (child *OverlayLayoutChild) Measure() bool {
 //
 func (child *OverlayLayoutChild) SetClipOverlay(clipOverlay bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	if clipOverlay {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "OverlayLayoutChild").InvokeMethod("set_clip_overlay", _args[:], nil)
 
@@ -212,16 +197,11 @@ func (child *OverlayLayoutChild) SetClipOverlay(clipOverlay bool) {
 //
 func (child *OverlayLayoutChild) SetMeasure(measure bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	if measure {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "OverlayLayoutChild").InvokeMethod("set_measure", _args[:], nil)
 

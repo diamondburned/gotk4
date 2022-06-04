@@ -103,8 +103,6 @@ var DynamicLinkNamespaces = []string{
 	"GLib-2",
 	"GObject-2",
 	"Graphene-1",
-	"Pango-1",
-	"PangoCairo-1",
 	"GdkPixbuf-2",
 }
 
@@ -511,7 +509,7 @@ func GLibDateTime(nsgen *girgen.NamespaceGenerator) error {
 			// Second offset within a minute in nanoseconds.
 			seconds := (time.Duration(s) * time.Second) + time.Duration(t.Nanosecond())
 
-			return NewDateTime(tz, Y, int(M), D, h, m, seconds.Seconds())
+			return NewDateTime(tz, int32(Y), int32(M), int32(D), int32(h), int32(m), seconds.Seconds())
 		}
 	`)
 

@@ -80,17 +80,11 @@ func marshalEmblemedIcon(p uintptr) (interface{}, error) {
 //
 func NewEmblemedIcon(icon Iconner, emblem *Emblem) *EmblemedIcon {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 	if emblem != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblem).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblem).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gio", "EmblemedIcon").InvokeMethod("new_EmblemedIcon", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -113,14 +107,9 @@ func NewEmblemedIcon(icon Iconner, emblem *Emblem) *EmblemedIcon {
 //
 func (emblemed *EmblemedIcon) AddEmblem(emblem *Emblem) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblem).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblem).Native()))
 
 	girepository.MustFind("Gio", "EmblemedIcon").InvokeMethod("add_emblem", _args[:], nil)
 
@@ -131,11 +120,8 @@ func (emblemed *EmblemedIcon) AddEmblem(emblem *Emblem) {
 // ClearEmblems removes all the emblems from icon.
 func (emblemed *EmblemedIcon) ClearEmblems() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
 
 	girepository.MustFind("Gio", "EmblemedIcon").InvokeMethod("clear_emblems", _args[:], nil)
 
@@ -150,12 +136,8 @@ func (emblemed *EmblemedIcon) ClearEmblems() {
 //
 func (emblemed *EmblemedIcon) Emblems() []*Emblem {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
 
 	_gret := girepository.MustFind("Gio", "EmblemedIcon").InvokeMethod("get_emblems", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -183,12 +165,8 @@ func (emblemed *EmblemedIcon) Emblems() []*Emblem {
 //
 func (emblemed *EmblemedIcon) GetIcon() *Icon {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
 
 	_gret := girepository.MustFind("Gio", "EmblemedIcon").InvokeMethod("get_icon", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

@@ -70,21 +70,16 @@ func marshalX11Monitor(p uintptr) (interface{}, error) {
 func (monitor *X11Monitor) Workarea() *gdk.Rectangle {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
 	girepository.MustFind("GdkX11", "X11Monitor").InvokeMethod("get_workarea", _args[:], _outs[:])
 
 	runtime.KeepAlive(monitor)
 
 	var _workarea *gdk.Rectangle // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_workarea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_workarea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _workarea
 }

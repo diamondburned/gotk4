@@ -253,8 +253,6 @@ func (self *DrawingArea) ConnectResize(f func(width, height int32)) coreglib.Sig
 //    - drawingArea: new GtkDrawingArea.
 //
 func NewDrawingArea() *DrawingArea {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("new_DrawingArea", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -273,12 +271,8 @@ func NewDrawingArea() *DrawingArea {
 //
 func (self *DrawingArea) ContentHeight() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("get_content_height", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -287,7 +281,7 @@ func (self *DrawingArea) ContentHeight() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -300,12 +294,8 @@ func (self *DrawingArea) ContentHeight() int32 {
 //
 func (self *DrawingArea) ContentWidth() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("get_content_width", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -314,7 +304,7 @@ func (self *DrawingArea) ContentWidth() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -333,14 +323,9 @@ func (self *DrawingArea) ContentWidth() int32 {
 //
 func (self *DrawingArea) SetContentHeight(height int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = C.int(height)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(height)
 
 	girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("set_content_height", _args[:], nil)
 
@@ -362,14 +347,9 @@ func (self *DrawingArea) SetContentHeight(height int32) {
 //
 func (self *DrawingArea) SetContentWidth(width int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = C.int(width)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(width)
 
 	girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("set_content_width", _args[:], nil)
 
@@ -398,20 +378,13 @@ func (self *DrawingArea) SetContentWidth(width int32) {
 //
 func (self *DrawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if drawFunc != nil {
-		_arg1 = (*[0]byte)(C._gotk4_gtk4_DrawingAreaDrawFunc)
-		_arg2 = C.gpointer(gbox.Assign(drawFunc))
-		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk4_DrawingAreaDrawFunc)
+		_args[2] = C.gpointer(gbox.Assign(drawFunc))
+		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("set_draw_func", _args[:], nil)
 

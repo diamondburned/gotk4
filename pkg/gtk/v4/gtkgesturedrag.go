@@ -159,8 +159,6 @@ func (gesture *GestureDrag) ConnectDragUpdate(f func(offsetX, offsetY float64)) 
 //    - gestureDrag: newly created GtkGestureDrag.
 //
 func NewGestureDrag() *GestureDrag {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "GestureDrag").InvokeMethod("new_GestureDrag", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -183,17 +181,11 @@ func NewGestureDrag() *GestureDrag {
 //    - y (optional): y offset for the current point.
 //    - ok: TRUE if the gesture is active.
 //
-func (gesture *GestureDrag) Offset() (x float64, y float64, ok bool) {
+func (gesture *GestureDrag) Offset() (x, y float64, ok bool) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
 	_gret := girepository.MustFind("Gtk", "GestureDrag").InvokeMethod("get_offset", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -203,16 +195,14 @@ func (gesture *GestureDrag) Offset() (x float64, y float64, ok bool) {
 	var _x float64 // out
 	var _y float64 // out
 	var _ok bool   // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_x = *(*float64)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_x = *(*float64)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_y = *(*float64)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_y = *(*float64)(unsafe.Pointer(_outs[1]))
 	}
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -230,17 +220,11 @@ func (gesture *GestureDrag) Offset() (x float64, y float64, ok bool) {
 //    - y (optional): y coordinate for the drag start point.
 //    - ok: TRUE if the gesture is active.
 //
-func (gesture *GestureDrag) StartPoint() (x float64, y float64, ok bool) {
+func (gesture *GestureDrag) StartPoint() (x, y float64, ok bool) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
 	_gret := girepository.MustFind("Gtk", "GestureDrag").InvokeMethod("get_start_point", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -250,16 +234,14 @@ func (gesture *GestureDrag) StartPoint() (x float64, y float64, ok bool) {
 	var _x float64 // out
 	var _y float64 // out
 	var _ok bool   // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_x = *(*float64)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_x = *(*float64)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_y = *(*float64)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_y = *(*float64)(unsafe.Pointer(_outs[1]))
 	}
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

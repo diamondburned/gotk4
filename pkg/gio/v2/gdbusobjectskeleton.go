@@ -192,13 +192,9 @@ func (object *DBusObjectSkeleton) ConnectAuthorizeMethod(f func(iface DBusInterf
 //
 func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeleton {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gio", "DBusObjectSkeleton").InvokeMethod("new_DBusObjectSkeleton", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -226,14 +222,9 @@ func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeleton {
 //
 func (object *DBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeletonner) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 
 	girepository.MustFind("Gio", "DBusObjectSkeleton").InvokeMethod("add_interface", _args[:], nil)
 
@@ -245,11 +236,8 @@ func (object *DBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeletonn
 // interfaces belonging to object. See that method for when flushing is useful.
 func (object *DBusObjectSkeleton) Flush() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
 
 	girepository.MustFind("Gio", "DBusObjectSkeleton").InvokeMethod("flush", _args[:], nil)
 
@@ -264,14 +252,9 @@ func (object *DBusObjectSkeleton) Flush() {
 //
 func (object *DBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkeletonner) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 
 	girepository.MustFind("Gio", "DBusObjectSkeleton").InvokeMethod("remove_interface", _args[:], nil)
 
@@ -291,15 +274,10 @@ func (object *DBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkelet
 //
 func (object *DBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(interfaceName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(interfaceName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gio", "DBusObjectSkeleton").InvokeMethod("remove_interface_by_name", _args[:], nil)
 
@@ -315,15 +293,10 @@ func (object *DBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
 //
 func (object *DBusObjectSkeleton) SetObjectPath(objectPath string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gio", "DBusObjectSkeleton").InvokeMethod("set_object_path", _args[:], nil)
 

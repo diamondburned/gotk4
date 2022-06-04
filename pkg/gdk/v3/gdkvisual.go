@@ -97,8 +97,6 @@ func (v VisualType) String() string {
 //    - list: a list of visuals; the list must be freed, but not its contents.
 //
 func ListVisuals() []*Visual {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gdk", "list_visuals").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -130,18 +128,15 @@ func ListVisuals() []*Visual {
 //
 func QueryDepths() []int32 {
 	var _outs [2]girepository.Argument
-	var _out0 *C.gint // in
-	var _out1 *C.void // in
 
 	girepository.MustFind("Gdk", "query_depths").Invoke(nil, _outs[:])
 
 	var _depths []int32 // out
-	_out0 = *(**C.gint)(unsafe.Pointer(&_outs[0]))
 
 	{
-		src := unsafe.Slice((**C.void)(_out0), _out1)
-		_depths = make([]int32, _out1)
-		for i := 0; i < int(_out1); i++ {
+		src := unsafe.Slice((**C.void)(_outs[0]), _outs[1])
+		_depths = make([]int32, _outs[1])
+		for i := 0; i < int(_outs[1]); i++ {
 			_depths[i] = *(*int32)(unsafe.Pointer(src[i]))
 		}
 	}
@@ -164,16 +159,13 @@ func QueryDepths() []int32 {
 //
 func QueryVisualTypes() []VisualType {
 	var _outs [2]girepository.Argument
-	var _out0 *C.GdkVisualType // in
-	var _out1 *C.void          // in
 
 	girepository.MustFind("Gdk", "query_visual_types").Invoke(nil, _outs[:])
 
 	var _visualTypes []VisualType // out
-	_out0 = *(**C.GdkVisualType)(unsafe.Pointer(&_outs[0]))
 
-	_visualTypes = make([]VisualType, _out1)
-	copy(_visualTypes, unsafe.Slice((*VisualType)(unsafe.Pointer(_out0)), _out1))
+	_visualTypes = make([]VisualType, _outs[1])
+	copy(_visualTypes, unsafe.Slice((*VisualType)(unsafe.Pointer(_outs[0])), _outs[1]))
 
 	return _visualTypes
 }
@@ -212,12 +204,8 @@ func marshalVisual(p uintptr) (interface{}, error) {
 //
 func (visual *Visual) BitsPerRGB() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(visual).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(visual).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Visual").InvokeMethod("get_bits_per_rgb", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -226,7 +214,7 @@ func (visual *Visual) BitsPerRGB() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -244,17 +232,11 @@ func (visual *Visual) BitsPerRGB() int32 {
 //    - shift (optional): pointer to a #gint to be filled in, or NULL.
 //    - precision (optional): pointer to a #gint to be filled in, or NULL.
 //
-func (visual *Visual) BluePixelDetails() (mask uint32, shift int32, precision int32) {
+func (visual *Visual) BluePixelDetails() (mask uint32, shift, precision int32) {
 	var _args [1]girepository.Argument
 	var _outs [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
-	var _out2 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(visual).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(visual).Native()))
 
 	girepository.MustFind("Gdk", "Visual").InvokeMethod("get_blue_pixel_details", _args[:], _outs[:])
 
@@ -263,18 +245,15 @@ func (visual *Visual) BluePixelDetails() (mask uint32, shift int32, precision in
 	var _mask uint32     // out
 	var _shift int32     // out
 	var _precision int32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
-	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
 
-	if _out0 != nil {
-		_mask = *(*uint32)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_mask = *(*uint32)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_shift = *(*int32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_shift = *(*int32)(unsafe.Pointer(_outs[1]))
 	}
-	if _out2 != nil {
-		_precision = *(*int32)(unsafe.Pointer(_out2))
+	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
+		_precision = *(*int32)(unsafe.Pointer(_outs[2]))
 	}
 
 	return _mask, _shift, _precision
@@ -293,12 +272,8 @@ func (visual *Visual) BluePixelDetails() (mask uint32, shift int32, precision in
 //
 func (visual *Visual) ColormapSize() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(visual).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(visual).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Visual").InvokeMethod("get_colormap_size", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -307,7 +282,7 @@ func (visual *Visual) ColormapSize() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -320,12 +295,8 @@ func (visual *Visual) ColormapSize() int32 {
 //
 func (visual *Visual) Depth() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(visual).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(visual).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Visual").InvokeMethod("get_depth", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -334,7 +305,7 @@ func (visual *Visual) Depth() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -352,17 +323,11 @@ func (visual *Visual) Depth() int32 {
 //    - shift (optional): pointer to a #gint to be filled in, or NULL.
 //    - precision (optional): pointer to a #gint to be filled in, or NULL.
 //
-func (visual *Visual) GreenPixelDetails() (mask uint32, shift int32, precision int32) {
+func (visual *Visual) GreenPixelDetails() (mask uint32, shift, precision int32) {
 	var _args [1]girepository.Argument
 	var _outs [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
-	var _out2 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(visual).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(visual).Native()))
 
 	girepository.MustFind("Gdk", "Visual").InvokeMethod("get_green_pixel_details", _args[:], _outs[:])
 
@@ -371,18 +336,15 @@ func (visual *Visual) GreenPixelDetails() (mask uint32, shift int32, precision i
 	var _mask uint32     // out
 	var _shift int32     // out
 	var _precision int32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
-	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
 
-	if _out0 != nil {
-		_mask = *(*uint32)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_mask = *(*uint32)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_shift = *(*int32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_shift = *(*int32)(unsafe.Pointer(_outs[1]))
 	}
-	if _out2 != nil {
-		_precision = *(*int32)(unsafe.Pointer(_out2))
+	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
+		_precision = *(*int32)(unsafe.Pointer(_outs[2]))
 	}
 
 	return _mask, _shift, _precision
@@ -400,17 +362,11 @@ func (visual *Visual) GreenPixelDetails() (mask uint32, shift int32, precision i
 //    - shift (optional): pointer to a #gint to be filled in, or NULL.
 //    - precision (optional): pointer to a #gint to be filled in, or NULL.
 //
-func (visual *Visual) RedPixelDetails() (mask uint32, shift int32, precision int32) {
+func (visual *Visual) RedPixelDetails() (mask uint32, shift, precision int32) {
 	var _args [1]girepository.Argument
 	var _outs [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
-	var _out2 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(visual).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(visual).Native()))
 
 	girepository.MustFind("Gdk", "Visual").InvokeMethod("get_red_pixel_details", _args[:], _outs[:])
 
@@ -419,18 +375,15 @@ func (visual *Visual) RedPixelDetails() (mask uint32, shift int32, precision int
 	var _mask uint32     // out
 	var _shift int32     // out
 	var _precision int32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
-	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
 
-	if _out0 != nil {
-		_mask = *(*uint32)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_mask = *(*uint32)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_shift = *(*int32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_shift = *(*int32)(unsafe.Pointer(_outs[1]))
 	}
-	if _out2 != nil {
-		_precision = *(*int32)(unsafe.Pointer(_out2))
+	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
+		_precision = *(*int32)(unsafe.Pointer(_outs[2]))
 	}
 
 	return _mask, _shift, _precision
@@ -444,12 +397,8 @@ func (visual *Visual) RedPixelDetails() (mask uint32, shift int32, precision int
 //
 func (visual *Visual) Screen() *Screen {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(visual).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(visual).Native()))
 
 	_gret := girepository.MustFind("Gdk", "Visual").InvokeMethod("get_screen", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -474,8 +423,6 @@ func (visual *Visual) Screen() *Screen {
 //    - visual: best visual.
 //
 func VisualGetBest() *Visual {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gdk", "get_best").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -498,14 +445,12 @@ func VisualGetBest() *Visual {
 //    - gint: best available depth.
 //
 func VisualGetBestDepth() int32 {
-	var _cret C.gint // in
-
 	_gret := girepository.MustFind("Gdk", "get_best_depth").Invoke(nil, nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -528,12 +473,8 @@ func VisualGetBestDepth() int32 {
 //
 func VisualGetBestWithDepth(depth int32) *Visual {
 	var _args [1]girepository.Argument
-	var _arg0 C.gint  // out
-	var _cret *C.void // in
 
-	_arg0 = C.gint(depth)
-
-	*(*C.gint)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gint)(unsafe.Pointer(&_args[0])) = C.gint(depth)
 
 	_gret := girepository.MustFind("Gdk", "get_best_with_depth").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -558,8 +499,6 @@ func VisualGetBestWithDepth(depth int32) *Visual {
 //    - visual: system visual.
 //
 func VisualGetSystem() *Visual {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gdk", "get_system").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

@@ -52,7 +52,7 @@ type ScaleOverrider interface {
 	//    - x (optional): location to store X offset of layout, or NULL.
 	//    - y (optional): location to store Y offset of layout, or NULL.
 	//
-	LayoutOffsets() (x int32, y int32)
+	LayoutOffsets() (x, y int32)
 }
 
 // Scale is a slider control used to select a numeric value. To use it, you’ll
@@ -152,7 +152,7 @@ func classInitScaler(gclassPtr, data C.gpointer) {
 		pclass.format_value = (*[0]byte)(C._gotk4_gtk3_ScaleClass_format_value)
 	}
 
-	if _, ok := goval.(interface{ LayoutOffsets() (x int32, y int32) }); ok {
+	if _, ok := goval.(interface{ LayoutOffsets() (x, y int32) }); ok {
 		pclass.get_layout_offsets = (*[0]byte)(C._gotk4_gtk3_ScaleClass_get_layout_offsets)
 	}
 }
@@ -184,7 +184,7 @@ func _gotk4_gtk3_ScaleClass_format_value(arg0 *C.void, arg1 C.gdouble) (cret *C.
 //export _gotk4_gtk3_ScaleClass_get_layout_offsets
 func _gotk4_gtk3_ScaleClass_get_layout_offsets(arg0 *C.void, arg1 *C.void, arg2 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(interface{ LayoutOffsets() (x int32, y int32) })
+	iface := goval.(interface{ LayoutOffsets() (x, y int32) })
 
 	x, y := iface.LayoutOffsets()
 
@@ -268,11 +268,8 @@ func (scale *Scale) ConnectFormatValue(f func(value float64) (utf8 string)) core
 // ClearMarks removes any marks that have been added with gtk_scale_add_mark().
 func (scale *Scale) ClearMarks() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
 
 	girepository.MustFind("Gtk", "Scale").InvokeMethod("clear_marks", _args[:], nil)
 
@@ -287,12 +284,8 @@ func (scale *Scale) ClearMarks() {
 //
 func (scale *Scale) Digits() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Scale").InvokeMethod("get_digits", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -301,7 +294,7 @@ func (scale *Scale) Digits() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -315,12 +308,8 @@ func (scale *Scale) Digits() int32 {
 //
 func (scale *Scale) DrawValue() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Scale").InvokeMethod("get_draw_value", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -329,7 +318,7 @@ func (scale *Scale) DrawValue() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -344,12 +333,8 @@ func (scale *Scale) DrawValue() bool {
 //
 func (scale *Scale) HasOrigin() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Scale").InvokeMethod("get_has_origin", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -358,7 +343,7 @@ func (scale *Scale) HasOrigin() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -375,12 +360,8 @@ func (scale *Scale) HasOrigin() bool {
 //
 func (scale *Scale) Layout() *pango.Layout {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Scale").InvokeMethod("get_layout", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -389,7 +370,7 @@ func (scale *Scale) Layout() *pango.Layout {
 
 	var _layout *pango.Layout // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			obj := coreglib.Take(unsafe.Pointer(_cret))
 			_layout = &pango.Layout{
@@ -412,16 +393,11 @@ func (scale *Scale) Layout() *pango.Layout {
 //    - x (optional): location to store X offset of layout, or NULL.
 //    - y (optional): location to store Y offset of layout, or NULL.
 //
-func (scale *Scale) LayoutOffsets() (x int32, y int32) {
+func (scale *Scale) LayoutOffsets() (x, y int32) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
 
 	girepository.MustFind("Gtk", "Scale").InvokeMethod("get_layout_offsets", _args[:], _outs[:])
 
@@ -429,14 +405,12 @@ func (scale *Scale) LayoutOffsets() (x int32, y int32) {
 
 	var _x int32 // out
 	var _y int32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_x = *(*int32)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_x = *(*int32)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_y = *(*int32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_y = *(*int32)(unsafe.Pointer(_outs[1]))
 	}
 
 	return _x, _y
@@ -459,14 +433,9 @@ func (scale *Scale) LayoutOffsets() (x int32, y int32) {
 //
 func (scale *Scale) SetDigits(digits int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
-	_arg1 = C.gint(digits)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(digits)
 
 	girepository.MustFind("Gtk", "Scale").InvokeMethod("set_digits", _args[:], nil)
 
@@ -483,16 +452,11 @@ func (scale *Scale) SetDigits(digits int32) {
 //
 func (scale *Scale) SetDrawValue(drawValue bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
 	if drawValue {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Scale").InvokeMethod("set_draw_value", _args[:], nil)
 
@@ -510,16 +474,11 @@ func (scale *Scale) SetDrawValue(drawValue bool) {
 //
 func (scale *Scale) SetHasOrigin(hasOrigin bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
 	if hasOrigin {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Scale").InvokeMethod("set_has_origin", _args[:], nil)
 

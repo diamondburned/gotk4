@@ -38,12 +38,8 @@ func init() {
 //
 func X11GetServerTime(surface *X11Surface) uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.guint32 // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
 	_gret := girepository.MustFind("GdkX11", "x11_get_server_time").Invoke(_args[:], nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
@@ -52,7 +48,7 @@ func X11GetServerTime(surface *X11Surface) uint32 {
 
 	var _guint32 uint32 // out
 
-	_guint32 = uint32(_cret)
+	_guint32 = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
 
 	return _guint32
 }
@@ -98,12 +94,8 @@ func marshalX11Surface(p uintptr) (interface{}, error) {
 //
 func (surface *X11Surface) Desktop() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.guint32 // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
 	_gret := girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("get_desktop", _args[:], nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
@@ -112,7 +104,7 @@ func (surface *X11Surface) Desktop() uint32 {
 
 	var _guint32 uint32 // out
 
-	_guint32 = uint32(_cret)
+	_guint32 = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
 
 	return _guint32
 }
@@ -125,12 +117,8 @@ func (surface *X11Surface) Desktop() uint32 {
 //
 func (surface *X11Surface) Group() gdk.Surfacer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
 	_gret := girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("get_group", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -167,11 +155,8 @@ func (surface *X11Surface) Group() gdk.Surfacer {
 // workspaces.
 func (surface *X11Surface) MoveToCurrentDesktop() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
 	girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("move_to_current_desktop", _args[:], nil)
 
@@ -189,14 +174,9 @@ func (surface *X11Surface) MoveToCurrentDesktop() {
 //
 func (surface *X11Surface) MoveToDesktop(desktop uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 C.guint32 // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
-	_arg1 = C.guint32(desktop)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint32)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(desktop)
 
 	girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("move_to_desktop", _args[:], nil)
 
@@ -217,16 +197,11 @@ func (surface *X11Surface) MoveToDesktop(desktop uint32) {
 //
 func (surface *X11Surface) SetFrameSyncEnabled(frameSyncEnabled bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 	if frameSyncEnabled {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("set_frame_sync_enabled", _args[:], nil)
 
@@ -243,14 +218,9 @@ func (surface *X11Surface) SetFrameSyncEnabled(frameSyncEnabled bool) {
 //
 func (surface *X11Surface) SetGroup(leader gdk.Surfacer) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(leader).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(leader).Native()))
 
 	girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("set_group", _args[:], nil)
 
@@ -267,16 +237,11 @@ func (surface *X11Surface) SetGroup(leader gdk.Surfacer) {
 //
 func (surface *X11Surface) SetSkipPagerHint(skipsPager bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 	if skipsPager {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("set_skip_pager_hint", _args[:], nil)
 
@@ -293,16 +258,11 @@ func (surface *X11Surface) SetSkipPagerHint(skipsPager bool) {
 //
 func (surface *X11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 	if skipsTaskbar {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("set_skip_taskbar_hint", _args[:], nil)
 
@@ -325,15 +285,10 @@ func (surface *X11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
 //
 func (surface *X11Surface) SetThemeVariant(variant string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(variant)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(variant)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("set_theme_variant", _args[:], nil)
 
@@ -350,16 +305,11 @@ func (surface *X11Surface) SetThemeVariant(variant string) {
 //
 func (surface *X11Surface) SetUrgencyHint(urgent bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 	if urgent {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("set_urgency_hint", _args[:], nil)
 
@@ -384,14 +334,9 @@ func (surface *X11Surface) SetUrgencyHint(urgent bool) {
 //
 func (surface *X11Surface) SetUserTime(timestamp uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 C.guint32 // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
-	_arg1 = C.guint32(timestamp)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint32)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(timestamp)
 
 	girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("set_user_time", _args[:], nil)
 
@@ -410,21 +355,14 @@ func (surface *X11Surface) SetUserTime(timestamp uint32) {
 //
 func (surface *X11Surface) SetUTF8Property(name, value string) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_args[1]))
 	if value != "" {
-		_arg2 = (*C.void)(unsafe.Pointer(C.CString(value)))
-		defer C.free(unsafe.Pointer(_arg2))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(value)))
+		defer C.free(unsafe.Pointer(_args[2]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("set_utf8_property", _args[:], nil)
 

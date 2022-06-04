@@ -150,15 +150,11 @@ func marshalFrame(p uintptr) (interface{}, error) {
 //
 func NewFrame(label string) *Frame {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
 	if label != "" {
-		_arg0 = (*C.void)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_arg0))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_args[0]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gtk", "Frame").InvokeMethod("new_Frame", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -184,12 +180,8 @@ func NewFrame(label string) *Frame {
 //
 func (frame *Frame) Label() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Frame").InvokeMethod("get_label", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -198,7 +190,7 @@ func (frame *Frame) Label() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -215,16 +207,11 @@ func (frame *Frame) Label() string {
 //    - yalign (optional): location to store X alignment of frame’s label, or
 //      NULL.
 //
-func (frame *Frame) LabelAlign() (xalign float32, yalign float32) {
+func (frame *Frame) LabelAlign() (xalign, yalign float32) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
 
 	girepository.MustFind("Gtk", "Frame").InvokeMethod("get_label_align", _args[:], _outs[:])
 
@@ -232,14 +219,12 @@ func (frame *Frame) LabelAlign() (xalign float32, yalign float32) {
 
 	var _xalign float32 // out
 	var _yalign float32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_xalign = *(*float32)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_xalign = *(*float32)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_yalign = *(*float32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_yalign = *(*float32)(unsafe.Pointer(_outs[1]))
 	}
 
 	return _xalign, _yalign
@@ -254,12 +239,8 @@ func (frame *Frame) LabelAlign() (xalign float32, yalign float32) {
 //
 func (frame *Frame) LabelWidget() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Frame").InvokeMethod("get_label_widget", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -268,7 +249,7 @@ func (frame *Frame) LabelWidget() Widgetter {
 
 	var _widget Widgetter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -297,17 +278,12 @@ func (frame *Frame) LabelWidget() Widgetter {
 //
 func (frame *Frame) SetLabel(label string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
 	if label != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Frame").InvokeMethod("set_label", _args[:], nil)
 
@@ -329,17 +305,10 @@ func (frame *Frame) SetLabel(label string) {
 //
 func (frame *Frame) SetLabelAlign(xalign, yalign float32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 C.gfloat // out
-	var _arg2 C.gfloat // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
-	_arg1 = C.gfloat(xalign)
-	_arg2 = C.gfloat(yalign)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gfloat)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gfloat)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
+	*(*C.gfloat)(unsafe.Pointer(&_args[1])) = C.gfloat(xalign)
+	*(*C.gfloat)(unsafe.Pointer(&_args[2])) = C.gfloat(yalign)
 
 	girepository.MustFind("Gtk", "Frame").InvokeMethod("set_label_align", _args[:], nil)
 
@@ -357,16 +326,11 @@ func (frame *Frame) SetLabelAlign(xalign, yalign float32) {
 //
 func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
 	if labelWidget != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(labelWidget).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(labelWidget).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Frame").InvokeMethod("set_label_widget", _args[:], nil)
 

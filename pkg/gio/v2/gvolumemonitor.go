@@ -1199,12 +1199,8 @@ func (volumeMonitor *VolumeMonitor) ConnectVolumeRemoved(f func(volume Volumer))
 //
 func (volumeMonitor *VolumeMonitor) ConnectedDrives() []*Drive {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(volumeMonitor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(volumeMonitor).Native()))
 
 	_gret := girepository.MustFind("Gio", "VolumeMonitor").InvokeMethod("get_connected_drives", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1237,16 +1233,10 @@ func (volumeMonitor *VolumeMonitor) ConnectedDrives() []*Drive {
 //
 func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) *Mount {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(volumeMonitor).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uuid)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(volumeMonitor).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uuid)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gio", "VolumeMonitor").InvokeMethod("get_mount_for_uuid", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1256,7 +1246,7 @@ func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) *Mount {
 
 	var _mount *Mount // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_mount = wrapMount(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
@@ -1274,12 +1264,8 @@ func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) *Mount {
 //
 func (volumeMonitor *VolumeMonitor) Mounts() []*Mount {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(volumeMonitor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(volumeMonitor).Native()))
 
 	_gret := girepository.MustFind("Gio", "VolumeMonitor").InvokeMethod("get_mounts", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1312,16 +1298,10 @@ func (volumeMonitor *VolumeMonitor) Mounts() []*Mount {
 //
 func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) *Volume {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(volumeMonitor).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(uuid)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(volumeMonitor).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uuid)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gio", "VolumeMonitor").InvokeMethod("get_volume_for_uuid", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1331,7 +1311,7 @@ func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) *Volume {
 
 	var _volume *Volume // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_volume = wrapVolume(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
@@ -1349,12 +1329,8 @@ func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) *Volume {
 //
 func (volumeMonitor *VolumeMonitor) Volumes() []*Volume {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(volumeMonitor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(volumeMonitor).Native()))
 
 	_gret := girepository.MustFind("Gio", "VolumeMonitor").InvokeMethod("get_volumes", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1419,12 +1395,8 @@ func (volumeMonitor *VolumeMonitor) Volumes() []*Volume {
 //
 func VolumeMonitorAdoptOrphanMount(mount Mounter) *Volume {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 
 	_gret := girepository.MustFind("Gio", "adopt_orphan_mount").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1446,8 +1418,6 @@ func VolumeMonitorAdoptOrphanMount(mount Mounter) *Volume {
 //      g_object_unref() when done with it.
 //
 func VolumeMonitorGet() *VolumeMonitor {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gio", "get").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

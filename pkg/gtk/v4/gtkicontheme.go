@@ -163,18 +163,10 @@ func marshalIconPaintable(p uintptr) (interface{}, error) {
 //
 func NewIconPaintableForFile(file gio.Filer, size, scale int32) *IconPaintable {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
-	var _arg2 C.int   // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	_arg1 = C.int(size)
-	_arg2 = C.int(scale)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(size)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(scale)
 
 	_gret := girepository.MustFind("Gtk", "IconPaintable").InvokeMethod("new_IconPaintable_for_file", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -200,12 +192,8 @@ func NewIconPaintableForFile(file gio.Filer, size, scale int32) *IconPaintable {
 //
 func (self *IconPaintable) File() *gio.File {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconPaintable").InvokeMethod("get_file", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -214,7 +202,7 @@ func (self *IconPaintable) File() *gio.File {
 
 	var _file *gio.File // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_file = &gio.File{
@@ -242,12 +230,8 @@ func (self *IconPaintable) File() *gio.File {
 //
 func (self *IconPaintable) IconName() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconPaintable").InvokeMethod("get_icon_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -256,7 +240,7 @@ func (self *IconPaintable) IconName() string {
 
 	var _filename string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -277,12 +261,8 @@ func (self *IconPaintable) IconName() string {
 //
 func (self *IconPaintable) IsSymbolic() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconPaintable").InvokeMethod("is_symbolic", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -291,7 +271,7 @@ func (self *IconPaintable) IsSymbolic() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -383,8 +363,6 @@ func (self *IconTheme) ConnectChanged(f func()) coreglib.SignalHandle {
 //    - iconTheme: newly created GtkIconTheme object.
 //
 func NewIconTheme() *IconTheme {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "IconTheme").InvokeMethod("new_IconTheme", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -409,15 +387,10 @@ func NewIconTheme() *IconTheme {
 //
 func (self *IconTheme) AddResourcePath(path string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "IconTheme").InvokeMethod("add_resource_path", _args[:], nil)
 
@@ -435,15 +408,10 @@ func (self *IconTheme) AddResourcePath(path string) {
 //
 func (self *IconTheme) AddSearchPath(path string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "IconTheme").InvokeMethod("add_search_path", _args[:], nil)
 
@@ -459,12 +427,8 @@ func (self *IconTheme) AddSearchPath(path string) {
 //
 func (self *IconTheme) Display() *gdk.Display {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconTheme").InvokeMethod("get_display", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -473,7 +437,7 @@ func (self *IconTheme) Display() *gdk.Display {
 
 	var _display *gdk.Display // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			obj := coreglib.Take(unsafe.Pointer(_cret))
 			_display = &gdk.Display{
@@ -494,12 +458,8 @@ func (self *IconTheme) Display() *gdk.Display {
 //
 func (self *IconTheme) IconNames() []string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void  // out
-	var _cret **C.char // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconTheme").InvokeMethod("get_icon_names", _args[:], nil)
 	_cret = *(***C.char)(unsafe.Pointer(&_gret))
@@ -545,16 +505,10 @@ func (self *IconTheme) IconNames() []string {
 //
 func (self *IconTheme) IconSizes(iconName string) []int32 {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.int  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "IconTheme").InvokeMethod("get_icon_sizes", _args[:], nil)
 	_cret = *(**C.int)(unsafe.Pointer(&_gret))
@@ -575,7 +529,7 @@ func (self *IconTheme) IconSizes(iconName string) []int32 {
 		src := unsafe.Slice(_cret, i)
 		_gints = make([]int32, i)
 		for i := range src {
-			_gints[i] = int32(src[i])
+			_gints[i] = int32(*(*C.int)(unsafe.Pointer(&src[i])))
 		}
 	}
 
@@ -593,12 +547,8 @@ func (self *IconTheme) IconSizes(iconName string) []int32 {
 //
 func (self *IconTheme) ResourcePath() []string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void  // out
-	var _cret **C.char // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconTheme").InvokeMethod("get_resource_path", _args[:], nil)
 	_cret = *(***C.char)(unsafe.Pointer(&_gret))
@@ -607,7 +557,7 @@ func (self *IconTheme) ResourcePath() []string {
 
 	var _utf8s []string // out
 
-	if _cret != nil {
+	if *(***C.void)(unsafe.Pointer(&_cret)) != nil {
 		defer C.free(unsafe.Pointer(_cret))
 		{
 			var i int
@@ -639,12 +589,8 @@ func (self *IconTheme) ResourcePath() []string {
 //
 func (self *IconTheme) SearchPath() []string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void  // out
-	var _cret **C.char // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconTheme").InvokeMethod("get_search_path", _args[:], nil)
 	_cret = *(***C.char)(unsafe.Pointer(&_gret))
@@ -653,7 +599,7 @@ func (self *IconTheme) SearchPath() []string {
 
 	var _filenames []string // out
 
-	if _cret != nil {
+	if *(***C.void)(unsafe.Pointer(&_cret)) != nil {
 		defer C.free(unsafe.Pointer(_cret))
 		{
 			var i int
@@ -682,12 +628,8 @@ func (self *IconTheme) SearchPath() []string {
 //
 func (self *IconTheme) ThemeName() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconTheme").InvokeMethod("get_theme_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -715,15 +657,9 @@ func (self *IconTheme) ThemeName() string {
 //
 func (self *IconTheme) HasGIcon(gicon gio.Iconner) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(gicon).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gicon).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconTheme").InvokeMethod("has_gicon", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -733,7 +669,7 @@ func (self *IconTheme) HasGIcon(gicon gio.Iconner) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -752,16 +688,10 @@ func (self *IconTheme) HasGIcon(gicon gio.Iconner) bool {
 //
 func (self *IconTheme) HasIcon(iconName string) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "IconTheme").InvokeMethod("has_icon", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -771,7 +701,7 @@ func (self *IconTheme) HasIcon(iconName string) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -800,26 +730,21 @@ func (self *IconTheme) HasIcon(iconName string) bool {
 //
 func (self *IconTheme) SetSearchPath(path []string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 **C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	{
-		_arg1 = (**C.void)(C.calloc(C.size_t((len(path) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(***C.void)(unsafe.Pointer(&_args[1])) = (**C.void)(C.calloc(C.size_t((len(path) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_args[1]))
 		{
-			out := unsafe.Slice(_arg1, len(path)+1)
+			out := unsafe.Slice(_args[1], len(path)+1)
 			var zero *C.void
 			out[len(path)] = zero
 			for i := range path {
-				out[i] = (*C.void)(unsafe.Pointer(C.CString(path[i])))
+				*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(path[i])))
 				defer C.free(unsafe.Pointer(out[i]))
 			}
 		}
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(***C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "IconTheme").InvokeMethod("set_search_path", _args[:], nil)
 
@@ -840,17 +765,12 @@ func (self *IconTheme) SetSearchPath(path []string) {
 //
 func (self *IconTheme) SetThemeName(themeName string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if themeName != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(themeName)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(themeName)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "IconTheme").InvokeMethod("set_theme_name", _args[:], nil)
 
@@ -879,12 +799,8 @@ func (self *IconTheme) SetThemeName(themeName string) {
 //
 func IconThemeGetForDisplay(display *gdk.Display) *IconTheme {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("Gtk", "get_for_display").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

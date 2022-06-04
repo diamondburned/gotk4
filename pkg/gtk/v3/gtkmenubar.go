@@ -86,8 +86,6 @@ func marshalMenuBar(p uintptr) (interface{}, error) {
 //    - menuBar: new menu bar, as a Widget.
 //
 func NewMenuBar() *MenuBar {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "MenuBar").InvokeMethod("new_MenuBar", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -115,12 +113,8 @@ func NewMenuBar() *MenuBar {
 //
 func NewMenuBarFromModel(model gio.MenuModeller) *MenuBar {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 
 	_gret := girepository.MustFind("Gtk", "MenuBar").InvokeMethod("new_MenuBar_from_model", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

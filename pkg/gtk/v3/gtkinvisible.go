@@ -80,8 +80,6 @@ func marshalInvisible(p uintptr) (interface{}, error) {
 //    - invisible: new Invisible.
 //
 func NewInvisible() *Invisible {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "Invisible").InvokeMethod("new_Invisible", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -104,12 +102,8 @@ func NewInvisible() *Invisible {
 //
 func NewInvisibleForScreen(screen *gdk.Screen) *Invisible {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Invisible").InvokeMethod("new_Invisible_for_screen", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -131,12 +125,8 @@ func NewInvisibleForScreen(screen *gdk.Screen) *Invisible {
 //
 func (invisible *Invisible) Screen() *gdk.Screen {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(invisible).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(invisible).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Invisible").InvokeMethod("get_screen", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -163,14 +153,9 @@ func (invisible *Invisible) Screen() *gdk.Screen {
 //
 func (invisible *Invisible) SetScreen(screen *gdk.Screen) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(invisible).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(invisible).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
 	girepository.MustFind("Gtk", "Invisible").InvokeMethod("set_screen", _args[:], nil)
 

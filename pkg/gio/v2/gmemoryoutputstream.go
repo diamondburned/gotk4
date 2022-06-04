@@ -4,7 +4,6 @@ package gio
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -85,8 +84,6 @@ func marshalMemoryOutputStream(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 func NewMemoryOutputStreamResizable() *MemoryOutputStream {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gio", "MemoryOutputStream").InvokeMethod("new_MemoryOutputStream_resizable", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -109,12 +106,8 @@ func NewMemoryOutputStreamResizable() *MemoryOutputStream {
 //
 func (ostream *MemoryOutputStream) Data() unsafe.Pointer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gpointer // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(ostream).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(ostream).Native()))
 
 	_gret := girepository.MustFind("Gio", "MemoryOutputStream").InvokeMethod("get_data", _args[:], nil)
 	_cret = *(*C.gpointer)(unsafe.Pointer(&_gret))
@@ -137,12 +130,8 @@ func (ostream *MemoryOutputStream) Data() unsafe.Pointer {
 //
 func (ostream *MemoryOutputStream) DataSize() uint {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gsize // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(ostream).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(ostream).Native()))
 
 	_gret := girepository.MustFind("Gio", "MemoryOutputStream").InvokeMethod("get_data_size", _args[:], nil)
 	_cret = *(*C.gsize)(unsafe.Pointer(&_gret))
@@ -151,7 +140,7 @@ func (ostream *MemoryOutputStream) DataSize() uint {
 
 	var _gsize uint // out
 
-	_gsize = uint(_cret)
+	_gsize = uint(*(*C.gsize)(unsafe.Pointer(&_cret)))
 
 	return _gsize
 }
@@ -177,12 +166,8 @@ func (ostream *MemoryOutputStream) DataSize() uint {
 //
 func (ostream *MemoryOutputStream) Size() uint {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gsize // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(ostream).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(ostream).Native()))
 
 	_gret := girepository.MustFind("Gio", "MemoryOutputStream").InvokeMethod("get_size", _args[:], nil)
 	_cret = *(*C.gsize)(unsafe.Pointer(&_gret))
@@ -191,7 +176,7 @@ func (ostream *MemoryOutputStream) Size() uint {
 
 	var _gsize uint // out
 
-	_gsize = uint(_cret)
+	_gsize = uint(*(*C.gsize)(unsafe.Pointer(&_cret)))
 
 	return _gsize
 }
@@ -205,12 +190,8 @@ func (ostream *MemoryOutputStream) Size() uint {
 //
 func (ostream *MemoryOutputStream) StealAsBytes() *glib.Bytes {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(ostream).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(ostream).Native()))
 
 	_gret := girepository.MustFind("Gio", "MemoryOutputStream").InvokeMethod("steal_as_bytes", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -243,12 +224,8 @@ func (ostream *MemoryOutputStream) StealAsBytes() *glib.Bytes {
 //
 func (ostream *MemoryOutputStream) StealData() unsafe.Pointer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gpointer // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(ostream).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(ostream).Native()))
 
 	_gret := girepository.MustFind("Gio", "MemoryOutputStream").InvokeMethod("steal_data", _args[:], nil)
 	_cret = *(*C.gpointer)(unsafe.Pointer(&_gret))

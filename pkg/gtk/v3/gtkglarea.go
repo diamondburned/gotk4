@@ -331,8 +331,6 @@ func (area *GLArea) ConnectResize(f func(width, height int32)) coreglib.SignalHa
 //    - glArea: new GLArea.
 //
 func NewGLArea() *GLArea {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "GLArea").InvokeMethod("new_GLArea", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -351,11 +349,8 @@ func NewGLArea() *GLArea {
 // signal, and doesn't normally need to be called by application code.
 func (area *GLArea) AttachBuffers() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
 	girepository.MustFind("Gtk", "GLArea").InvokeMethod("attach_buffers", _args[:], nil)
 
@@ -370,12 +365,8 @@ func (area *GLArea) AttachBuffers() {
 //
 func (area *GLArea) AutoRender() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
 	_gret := girepository.MustFind("Gtk", "GLArea").InvokeMethod("get_auto_render", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -384,7 +375,7 @@ func (area *GLArea) AutoRender() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -399,12 +390,8 @@ func (area *GLArea) AutoRender() bool {
 //
 func (area *GLArea) Context() gdk.GLContexter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
 	_gret := girepository.MustFind("Gtk", "GLArea").InvokeMethod("get_context", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -442,12 +429,8 @@ func (area *GLArea) Context() gdk.GLContexter {
 //
 func (area *GLArea) Error() error {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
 	_gret := girepository.MustFind("Gtk", "GLArea").InvokeMethod("get_error", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -456,7 +439,7 @@ func (area *GLArea) Error() error {
 
 	var _err error // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_err = gerror.Take(unsafe.Pointer(_cret))
 	}
 
@@ -471,12 +454,8 @@ func (area *GLArea) Error() error {
 //
 func (area *GLArea) HasAlpha() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
 	_gret := girepository.MustFind("Gtk", "GLArea").InvokeMethod("get_has_alpha", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -485,7 +464,7 @@ func (area *GLArea) HasAlpha() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -500,12 +479,8 @@ func (area *GLArea) HasAlpha() bool {
 //
 func (area *GLArea) HasDepthBuffer() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
 	_gret := girepository.MustFind("Gtk", "GLArea").InvokeMethod("get_has_depth_buffer", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -514,7 +489,7 @@ func (area *GLArea) HasDepthBuffer() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -529,12 +504,8 @@ func (area *GLArea) HasDepthBuffer() bool {
 //
 func (area *GLArea) HasStencilBuffer() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
 	_gret := girepository.MustFind("Gtk", "GLArea").InvokeMethod("get_has_stencil_buffer", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -543,7 +514,7 @@ func (area *GLArea) HasStencilBuffer() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -558,16 +529,11 @@ func (area *GLArea) HasStencilBuffer() bool {
 //    - major: return location for the required major version.
 //    - minor: return location for the required minor version.
 //
-func (area *GLArea) RequiredVersion() (major int32, minor int32) {
+func (area *GLArea) RequiredVersion() (major, minor int32) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
 	girepository.MustFind("Gtk", "GLArea").InvokeMethod("get_required_version", _args[:], _outs[:])
 
@@ -575,11 +541,9 @@ func (area *GLArea) RequiredVersion() (major int32, minor int32) {
 
 	var _major int32 // out
 	var _minor int32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_major = *(*int32)(unsafe.Pointer(_out0))
-	_minor = *(*int32)(unsafe.Pointer(_out1))
+	_major = *(*int32)(unsafe.Pointer(_outs[0]))
+	_minor = *(*int32)(unsafe.Pointer(_outs[1]))
 
 	return _major, _minor
 }
@@ -593,12 +557,8 @@ func (area *GLArea) RequiredVersion() (major int32, minor int32) {
 //
 func (area *GLArea) UseES() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
 	_gret := girepository.MustFind("Gtk", "GLArea").InvokeMethod("get_use_es", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -607,7 +567,7 @@ func (area *GLArea) UseES() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -621,11 +581,8 @@ func (area *GLArea) UseES() bool {
 // signal, and doesn't normally need to be called by application code.
 func (area *GLArea) MakeCurrent() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
 	girepository.MustFind("Gtk", "GLArea").InvokeMethod("make_current", _args[:], nil)
 
@@ -641,11 +598,8 @@ func (area *GLArea) MakeCurrent() {
 // draw.
 func (area *GLArea) QueueRender() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
 	girepository.MustFind("Gtk", "GLArea").InvokeMethod("queue_render", _args[:], nil)
 
@@ -668,16 +622,11 @@ func (area *GLArea) QueueRender() {
 //
 func (area *GLArea) SetAutoRender(autoRender bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	if autoRender {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "GLArea").InvokeMethod("set_auto_render", _args[:], nil)
 
@@ -695,16 +644,11 @@ func (area *GLArea) SetAutoRender(autoRender bool) {
 //
 func (area *GLArea) SetError(err error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	if err != nil {
-		_arg1 = (*C.void)(gerror.New(err))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gerror.New(err))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "GLArea").InvokeMethod("set_error", _args[:], nil)
 
@@ -725,16 +669,11 @@ func (area *GLArea) SetError(err error) {
 //
 func (area *GLArea) SetHasAlpha(hasAlpha bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	if hasAlpha {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "GLArea").InvokeMethod("set_has_alpha", _args[:], nil)
 
@@ -752,16 +691,11 @@ func (area *GLArea) SetHasAlpha(hasAlpha bool) {
 //
 func (area *GLArea) SetHasDepthBuffer(hasDepthBuffer bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	if hasDepthBuffer {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "GLArea").InvokeMethod("set_has_depth_buffer", _args[:], nil)
 
@@ -779,16 +713,11 @@ func (area *GLArea) SetHasDepthBuffer(hasDepthBuffer bool) {
 //
 func (area *GLArea) SetHasStencilBuffer(hasStencilBuffer bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	if hasStencilBuffer {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "GLArea").InvokeMethod("set_has_stencil_buffer", _args[:], nil)
 
@@ -808,17 +737,10 @@ func (area *GLArea) SetHasStencilBuffer(hasStencilBuffer bool) {
 //
 func (area *GLArea) SetRequiredVersion(major, minor int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _arg2 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	_arg1 = C.gint(major)
-	_arg2 = C.gint(minor)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(major)
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(minor)
 
 	girepository.MustFind("Gtk", "GLArea").InvokeMethod("set_required_version", _args[:], nil)
 
@@ -839,16 +761,11 @@ func (area *GLArea) SetRequiredVersion(major, minor int32) {
 //
 func (area *GLArea) SetUseES(useEs bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	if useEs {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "GLArea").InvokeMethod("set_use_es", _args[:], nil)
 

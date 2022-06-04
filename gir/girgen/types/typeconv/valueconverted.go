@@ -315,6 +315,19 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		}
 	}
 
+	if conv.MustCast {
+		value.header.Import("unsafe")
+
+		switch value.Direction {
+		case ConvertGoToC:
+			// Output C is of type girepository.Argument.
+			value.Out.Set = fmt.Sprintf("*(*%s)(unsafe.Pointer(&%s))", value.Out.Type, value.Out.Set)
+		case ConvertCToGo:
+			// Return C is of type girepository.Argument.
+			value.In.Name = fmt.Sprintf("*(*%s)(unsafe.Pointer(&%s))", value.In.Type, value.In.Name)
+		}
+	}
+
 	if value.GoType == "Allocation" {
 		value.Logln(logger.Error, "2: allocation value while record, ptr =", value.Resolved.Ptr)
 	}

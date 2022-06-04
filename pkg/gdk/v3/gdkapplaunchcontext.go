@@ -72,8 +72,6 @@ func marshalAppLaunchContext(p uintptr) (interface{}, error) {
 //    - appLaunchContext: new AppLaunchContext.
 //
 func NewAppLaunchContext() *AppLaunchContext {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gdk", "AppLaunchContext").InvokeMethod("new_AppLaunchContext", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -98,14 +96,9 @@ func NewAppLaunchContext() *AppLaunchContext {
 //
 func (context *AppLaunchContext) SetDesktop(desktop int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = C.gint(desktop)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(desktop)
 
 	girepository.MustFind("Gdk", "AppLaunchContext").InvokeMethod("set_desktop", _args[:], nil)
 
@@ -124,14 +117,9 @@ func (context *AppLaunchContext) SetDesktop(desktop int32) {
 //
 func (context *AppLaunchContext) SetDisplay(display *Display) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	girepository.MustFind("Gdk", "AppLaunchContext").InvokeMethod("set_display", _args[:], nil)
 
@@ -152,16 +140,11 @@ func (context *AppLaunchContext) SetDisplay(display *Display) {
 //
 func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	if icon != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gdk", "AppLaunchContext").InvokeMethod("set_icon", _args[:], nil)
 
@@ -184,17 +167,12 @@ func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 //
 func (context *AppLaunchContext) SetIconName(iconName string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	if iconName != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(iconName)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gdk", "AppLaunchContext").InvokeMethod("set_icon_name", _args[:], nil)
 
@@ -214,14 +192,9 @@ func (context *AppLaunchContext) SetIconName(iconName string) {
 //
 func (context *AppLaunchContext) SetScreen(screen *Screen) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
 	girepository.MustFind("Gdk", "AppLaunchContext").InvokeMethod("set_screen", _args[:], nil)
 
@@ -242,14 +215,9 @@ func (context *AppLaunchContext) SetScreen(screen *Screen) {
 //
 func (context *AppLaunchContext) SetTimestamp(timestamp uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 C.guint32 // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = C.guint32(timestamp)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint32)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(timestamp)
 
 	girepository.MustFind("Gdk", "AppLaunchContext").InvokeMethod("set_timestamp", _args[:], nil)
 

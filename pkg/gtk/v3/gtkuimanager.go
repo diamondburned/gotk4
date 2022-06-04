@@ -868,8 +868,6 @@ func (manager *UIManager) ConnectPreActivate(f func(action *Action)) coreglib.Si
 //    - uiManager: new ui manager object.
 //
 func NewUIManager() *UIManager {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("new_UIManager", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -897,17 +895,10 @@ func NewUIManager() *UIManager {
 //
 func (manager *UIManager) AddUiFromFile(filename string) (uint32, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret C.guint // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("add_ui_from_file", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -918,8 +909,8 @@ func (manager *UIManager) AddUiFromFile(filename string) (uint32, error) {
 	var _guint uint32 // out
 	var _goerr error  // out
 
-	_guint = uint32(_cret)
-	if _cerr != nil {
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -943,17 +934,10 @@ func (manager *UIManager) AddUiFromFile(filename string) (uint32, error) {
 //
 func (manager *UIManager) AddUiFromResource(resourcePath string) (uint32, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret C.guint // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("add_ui_from_resource", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -964,8 +948,8 @@ func (manager *UIManager) AddUiFromResource(resourcePath string) (uint32, error)
 	var _guint uint32 // out
 	var _goerr error  // out
 
-	_guint = uint32(_cret)
-	if _cerr != nil {
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -991,20 +975,11 @@ func (manager *UIManager) AddUiFromResource(resourcePath string) (uint32, error)
 //
 func (manager *UIManager) AddUiFromString(buffer string, length int) (uint32, error) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 *C.void  // out
-	var _arg2 C.gssize // out
-	var _cret C.guint  // in
-	var _cerr *C.void  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(buffer)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gssize(length)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gssize)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(buffer)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(*C.gssize)(unsafe.Pointer(&_args[2])) = C.gssize(length)
 
 	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("add_ui_from_string", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1016,8 +991,8 @@ func (manager *UIManager) AddUiFromString(buffer string, length int) (uint32, er
 	var _guint uint32 // out
 	var _goerr error  // out
 
-	_guint = uint32(_cret)
-	if _cerr != nil {
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -1042,11 +1017,8 @@ func (manager *UIManager) AddUiFromString(buffer string, length int) (uint32, er
 // Deprecated: since version 3.10.
 func (manager *UIManager) EnsureUpdate() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
 	girepository.MustFind("Gtk", "UIManager").InvokeMethod("ensure_update", _args[:], nil)
 
@@ -1063,12 +1035,8 @@ func (manager *UIManager) EnsureUpdate() {
 //
 func (manager *UIManager) AccelGroup() *AccelGroup {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
 	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_accel_group", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1098,16 +1066,10 @@ func (manager *UIManager) AccelGroup() *AccelGroup {
 //
 func (manager *UIManager) Action(path string) *Action {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_action", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1133,12 +1095,8 @@ func (manager *UIManager) Action(path string) *Action {
 //
 func (manager *UIManager) ActionGroups() []*ActionGroup {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
 	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_action_groups", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1170,12 +1128,8 @@ func (manager *UIManager) ActionGroups() []*ActionGroup {
 //
 func (manager *UIManager) AddTearoffs() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
 	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_add_tearoffs", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1184,7 +1138,7 @@ func (manager *UIManager) AddTearoffs() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1202,12 +1156,8 @@ func (manager *UIManager) AddTearoffs() bool {
 //
 func (manager *UIManager) Ui() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
 	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_ui", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1248,16 +1198,10 @@ func (manager *UIManager) Ui() string {
 //
 func (manager *UIManager) Widget(path string) Widgetter {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_widget", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1304,17 +1248,10 @@ func (manager *UIManager) Widget(path string) Widgetter {
 //
 func (manager *UIManager) InsertActionGroup(actionGroup *ActionGroup, pos int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	_arg2 = C.gint(pos)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(pos)
 
 	girepository.MustFind("Gtk", "UIManager").InvokeMethod("insert_action_group", _args[:], nil)
 
@@ -1334,12 +1271,8 @@ func (manager *UIManager) InsertActionGroup(actionGroup *ActionGroup, pos int32)
 //
 func (manager *UIManager) NewMergeID() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
 	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("new_merge_id", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -1348,7 +1281,7 @@ func (manager *UIManager) NewMergeID() uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -1364,14 +1297,9 @@ func (manager *UIManager) NewMergeID() uint32 {
 //
 func (manager *UIManager) RemoveActionGroup(actionGroup *ActionGroup) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 
 	girepository.MustFind("Gtk", "UIManager").InvokeMethod("remove_action_group", _args[:], nil)
 
@@ -1389,14 +1317,9 @@ func (manager *UIManager) RemoveActionGroup(actionGroup *ActionGroup) {
 //
 func (manager *UIManager) RemoveUi(mergeId uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = C.guint(mergeId)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(mergeId)
 
 	girepository.MustFind("Gtk", "UIManager").InvokeMethod("remove_ui", _args[:], nil)
 
@@ -1419,16 +1342,11 @@ func (manager *UIManager) RemoveUi(mergeId uint32) {
 //
 func (manager *UIManager) SetAddTearoffs(addTearoffs bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	if addTearoffs {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "UIManager").InvokeMethod("set_add_tearoffs", _args[:], nil)
 

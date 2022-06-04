@@ -207,18 +207,11 @@ func (p PixdataType) Has(other PixdataType) bool {
 //
 func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
-	var _cret *C.void    // in
-	var _cerr *C.void    // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(pixdata)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(pixdata)))
 	if copyPixels {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("GdkPixdata", "pixbuf_from_pixdata").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -240,7 +233,7 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, er
 			},
 		}
 	}
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -267,7 +260,7 @@ type Pixdata struct {
 
 // pixdata is the struct that's finalized.
 type pixdata struct {
-	native *C.GdkPixdata
+	native unsafe.Pointer
 }
 
 // Deserialize deserializes (reconstruct) a Pixdata structure from a byte
@@ -291,27 +284,19 @@ type pixdata struct {
 //
 func (pixdata *Pixdata) Deserialize(stream []byte) error {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg2 *C.void // out
-	var _arg1 C.guint
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(pixdata)))
-	_arg1 = (C.guint)(len(stream))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(pixdata)))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = (C.guint)(len(stream))
 	if len(stream) > 0 {
-		_arg2 = (*C.void)(unsafe.Pointer(&stream[0]))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(&stream[0]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(pixdata)
 	runtime.KeepAlive(stream)
 
 	var _goerr error // out
-	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -332,24 +317,18 @@ func (pixdata *Pixdata) Deserialize(stream []byte) error {
 func (pixdata *Pixdata) Serialize() []byte {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret *C.guint8 // in
-	var _out0 *C.void   // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(pixdata)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(pixdata)))
 
 	_cret = *(**C.guint8)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pixdata)
 
 	var _guint8s []byte // out
-	_out0 = *(**C.guint8)(unsafe.Pointer(&_outs[0]))
 
 	defer C.free(unsafe.Pointer(_cret))
-	_guint8s = make([]byte, _out0)
-	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _out0))
+	_guint8s = make([]byte, _outs[0])
+	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _outs[0]))
 
 	return _guint8s
 }

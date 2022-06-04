@@ -231,8 +231,6 @@ func (v *SignalListItemFactory) ConnectUnbind(f func(listitem *ListItem)) coregl
 //    - signalListItemFactory: new GtkSignalListItemFactory.
 //
 func NewSignalListItemFactory() *SignalListItemFactory {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "SignalListItemFactory").InvokeMethod("new_SignalListItemFactory", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

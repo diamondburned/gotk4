@@ -217,8 +217,6 @@ func (socket_ *Socket) ConnectPlugRemoved(f func() (ok bool)) coreglib.SignalHan
 //    - socket: new Socket.
 //
 func NewSocket() *Socket {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "Socket").InvokeMethod("new_Socket", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -238,12 +236,8 @@ func NewSocket() *Socket {
 //
 func (socket_ *Socket) PlugWindow() gdk.Windower {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket_).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket_).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Socket").InvokeMethod("get_plug_window", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -252,7 +246,7 @@ func (socket_ *Socket) PlugWindow() gdk.Windower {
 
 	var _window gdk.Windower // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 

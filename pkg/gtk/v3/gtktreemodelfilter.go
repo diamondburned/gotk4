@@ -137,17 +137,11 @@ func _gotk4_gtk3_TreeModelFilterVisibleFunc(arg1 *C.void, arg2 *C.void, arg3 C.g
 //
 func (childModel *TreeModel) NewFilter(root *TreePath) *TreeModel {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(childModel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(childModel).Native()))
 	if root != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(root)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(root)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -376,11 +370,8 @@ func marshalTreeModelFilter(p uintptr) (interface{}, error) {
 // iters will be invalid.
 func (filter *TreeModelFilter) ClearCache() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 
 	girepository.MustFind("Gtk", "TreeModelFilter").InvokeMethod("clear_cache", _args[:], nil)
 
@@ -404,16 +395,9 @@ func (filter *TreeModelFilter) ClearCache() {
 func (filter *TreeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (*TreeIter, bool) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(childIter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(childIter)))
 
 	_gret := girepository.MustFind("Gtk", "TreeModelFilter").InvokeMethod("convert_child_iter_to_iter", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -423,10 +407,9 @@ func (filter *TreeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (*Tre
 
 	var _filterIter *TreeIter // out
 	var _ok bool              // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_filterIter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	if _cret != 0 {
+	_filterIter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -449,15 +432,9 @@ func (filter *TreeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (*Tre
 //
 func (filter *TreeModelFilter) ConvertChildPathToPath(childPath *TreePath) *TreePath {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(childPath)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(childPath)))
 
 	_gret := girepository.MustFind("Gtk", "TreeModelFilter").InvokeMethod("convert_child_path_to_path", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -467,7 +444,7 @@ func (filter *TreeModelFilter) ConvertChildPathToPath(childPath *TreePath) *Tree
 
 	var _treePath *TreePath // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_treePath)),
@@ -494,15 +471,9 @@ func (filter *TreeModelFilter) ConvertChildPathToPath(childPath *TreePath) *Tree
 func (filter *TreeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) *TreeIter {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(filterIter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(filterIter)))
 
 	girepository.MustFind("Gtk", "TreeModelFilter").InvokeMethod("convert_iter_to_child_iter", _args[:], _outs[:])
 
@@ -510,9 +481,8 @@ func (filter *TreeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) *Tre
 	runtime.KeepAlive(filterIter)
 
 	var _childIter *TreeIter // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_childIter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_childIter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _childIter
 }
@@ -533,15 +503,9 @@ func (filter *TreeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) *Tre
 //
 func (filter *TreeModelFilter) ConvertPathToChildPath(filterPath *TreePath) *TreePath {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(filterPath)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(filterPath)))
 
 	_gret := girepository.MustFind("Gtk", "TreeModelFilter").InvokeMethod("convert_path_to_child_path", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -551,7 +515,7 @@ func (filter *TreeModelFilter) ConvertPathToChildPath(filterPath *TreePath) *Tre
 
 	var _treePath *TreePath // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_treePath)),
@@ -572,12 +536,8 @@ func (filter *TreeModelFilter) ConvertPathToChildPath(filterPath *TreePath) *Tre
 //
 func (filter *TreeModelFilter) Model() *TreeModel {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TreeModelFilter").InvokeMethod("get_model", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -595,11 +555,8 @@ func (filter *TreeModelFilter) Model() *TreeModel {
 // the filter to re-evaluate whether a row is visible or not.
 func (filter *TreeModelFilter) Refilter() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 
 	girepository.MustFind("Gtk", "TreeModelFilter").InvokeMethod("refilter", _args[:], nil)
 
@@ -620,14 +577,9 @@ func (filter *TreeModelFilter) Refilter() {
 //
 func (filter *TreeModelFilter) SetVisibleColumn(column int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
-	_arg1 = C.gint(column)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(column)
 
 	girepository.MustFind("Gtk", "TreeModelFilter").InvokeMethod("set_visible_column", _args[:], nil)
 
@@ -675,18 +627,11 @@ func (filter *TreeModelFilter) SetVisibleColumn(column int32) {
 //
 func (filter *TreeModelFilter) SetVisibleFunc(fn TreeModelFilterVisibleFunc) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_TreeModelFilterVisibleFunc)
-	_arg2 = C.gpointer(gbox.Assign(fn))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk3_TreeModelFilterVisibleFunc)
+	_args[2] = C.gpointer(gbox.Assign(fn))
+	_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	girepository.MustFind("Gtk", "TreeModelFilter").InvokeMethod("set_visible_func", _args[:], nil)
 

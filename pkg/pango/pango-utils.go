@@ -6,12 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
-	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <pango/pango.h>
+// #include <glib.h>
 import "C"
 
 // IsZeroWidth checks if a character that should not be normally rendered.
@@ -29,17 +29,18 @@ import "C"
 //    - ok: TRUE if ch is a zero-width character, FALSE otherwise.
 //
 func IsZeroWidth(ch uint32) bool {
-	var _arg1 C.gunichar // out
-	var _cret C.gboolean // in
+	var _args [1]girepository.Argument
 
-	_arg1 = C.gunichar(ch)
+	*(*C.gunichar)(unsafe.Pointer(&_args[0])) = C.gunichar(ch)
 
-	_cret = C.pango_is_zero_width(_arg1)
+	_gret := girepository.MustFind("Pango", "is_zero_width").Invoke(_args[:], nil)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(ch)
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -70,88 +71,25 @@ func IsZeroWidth(ch uint32) bool {
 //      (not byte), that should be freed using g_free().
 //
 func Log2VisGetEmbeddingLevels(text string, length int32, pbaseDir *Direction) *byte {
-	var _arg1 *C.gchar          // out
-	var _arg2 C.int             // out
-	var _arg3 *C.PangoDirection // out
-	var _cret *C.guint8         // in
+	var _args [3]girepository.Argument
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(length)
-	_arg3 = (*C.PangoDirection)(unsafe.Pointer(pbaseDir))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_args[0]))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(length)
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(pbaseDir))
 
-	_cret = C.pango_log2vis_get_embedding_levels(_arg1, _arg2, _arg3)
+	_gret := girepository.MustFind("Pango", "log2vis_get_embedding_levels").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(length)
 	runtime.KeepAlive(pbaseDir)
 
 	var _guint8 *byte // out
 
-	_guint8 = (*byte)(unsafe.Pointer(_cret))
+	_guint8 = (*byte)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 
 	return _guint8
-}
-
-// ParseEnum parses an enum type and stores the result in value.
-//
-// If str does not match the nick name of any of the possible values for the
-// enum and is not an integer, FALSE is returned, a warning is issued if warn is
-// TRUE, and a string representing the list of possible values is stored in
-// possible_values. The list is slash-separated, eg. "none/start/middle/end". If
-// failed and possible_values is not NULL, returned string should be freed using
-// g_free().
-//
-// Deprecated: since version 1.38.
-//
-// The function takes the following parameters:
-//
-//    - typ: enum type to parse, eg. PANGO_TYPE_ELLIPSIZE_MODE.
-//    - str (optional): string to parse. May be NULL.
-//    - warn: if TRUE, issue a g_warning() on bad input.
-//
-// The function returns the following values:
-//
-//    - value (optional): integer to store the result in, or NULL.
-//    - possibleValues (optional): place to store list of possible values on
-//      failure, or NULL.
-//    - ok: TRUE if str was successfully parsed.
-//
-func ParseEnum(typ coreglib.Type, str string, warn bool) (int32, string, bool) {
-	var _arg1 C.GType    // out
-	var _arg2 *C.char    // out
-	var _arg3 C.int      // in
-	var _arg4 C.gboolean // out
-	var _arg5 *C.char    // in
-	var _cret C.gboolean // in
-
-	_arg1 = C.GType(typ)
-	if str != "" {
-		_arg2 = (*C.char)(unsafe.Pointer(C.CString(str)))
-		defer C.free(unsafe.Pointer(_arg2))
-	}
-	if warn {
-		_arg4 = C.TRUE
-	}
-
-	_cret = C.pango_parse_enum(_arg1, _arg2, &_arg3, _arg4, &_arg5)
-	runtime.KeepAlive(typ)
-	runtime.KeepAlive(str)
-	runtime.KeepAlive(warn)
-
-	var _value int32           // out
-	var _possibleValues string // out
-	var _ok bool               // out
-
-	_value = int32(_arg3)
-	if _arg5 != nil {
-		_possibleValues = C.GoString((*C.gchar)(unsafe.Pointer(_arg5)))
-		defer C.free(unsafe.Pointer(_arg5))
-	}
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _value, _possibleValues, _ok
 }
 
 // ParseStretch parses a font stretch.
@@ -172,26 +110,26 @@ func ParseEnum(typ coreglib.Type, str string, warn bool) (int32, string, bool) {
 //    - ok: TRUE if str was successfully parsed.
 //
 func ParseStretch(str string, warn bool) (Stretch, bool) {
-	var _arg1 *C.char        // out
-	var _arg2 C.PangoStretch // in
-	var _arg3 C.gboolean     // out
-	var _cret C.gboolean     // in
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[0]))
 	if warn {
-		_arg3 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	_cret = C.pango_parse_stretch(_arg1, &_arg2, _arg3)
+	_gret := girepository.MustFind("Pango", "parse_stretch").Invoke(_args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(str)
 	runtime.KeepAlive(warn)
 
 	var _stretch Stretch // out
 	var _ok bool         // out
 
-	_stretch = Stretch(_arg2)
-	if _cret != 0 {
+	_stretch = *(*Stretch)(unsafe.Pointer(_outs[0]))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -214,26 +152,26 @@ func ParseStretch(str string, warn bool) (Stretch, bool) {
 //    - ok: TRUE if str was successfully parsed.
 //
 func ParseStyle(str string, warn bool) (Style, bool) {
-	var _arg1 *C.char      // out
-	var _arg2 C.PangoStyle // in
-	var _arg3 C.gboolean   // out
-	var _cret C.gboolean   // in
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[0]))
 	if warn {
-		_arg3 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	_cret = C.pango_parse_style(_arg1, &_arg2, _arg3)
+	_gret := girepository.MustFind("Pango", "parse_style").Invoke(_args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(str)
 	runtime.KeepAlive(warn)
 
 	var _style Style // out
 	var _ok bool     // out
 
-	_style = Style(_arg2)
-	if _cret != 0 {
+	_style = *(*Style)(unsafe.Pointer(_outs[0]))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -256,26 +194,26 @@ func ParseStyle(str string, warn bool) (Style, bool) {
 //    - ok: TRUE if str was successfully parsed.
 //
 func ParseVariant(str string, warn bool) (Variant, bool) {
-	var _arg1 *C.char        // out
-	var _arg2 C.PangoVariant // in
-	var _arg3 C.gboolean     // out
-	var _cret C.gboolean     // in
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[0]))
 	if warn {
-		_arg3 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	_cret = C.pango_parse_variant(_arg1, &_arg2, _arg3)
+	_gret := girepository.MustFind("Pango", "parse_variant").Invoke(_args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(str)
 	runtime.KeepAlive(warn)
 
 	var _variant Variant // out
 	var _ok bool         // out
 
-	_variant = Variant(_arg2)
-	if _cret != 0 {
+	_variant = *(*Variant)(unsafe.Pointer(_outs[0]))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -298,26 +236,26 @@ func ParseVariant(str string, warn bool) (Variant, bool) {
 //    - ok: TRUE if str was successfully parsed.
 //
 func ParseWeight(str string, warn bool) (Weight, bool) {
-	var _arg1 *C.char       // out
-	var _arg2 C.PangoWeight // in
-	var _arg3 C.gboolean    // out
-	var _cret C.gboolean    // in
+	var _args [2]girepository.Argument
+	var _outs [1]girepository.Argument
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[0]))
 	if warn {
-		_arg3 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	_cret = C.pango_parse_weight(_arg1, &_arg2, _arg3)
+	_gret := girepository.MustFind("Pango", "parse_weight").Invoke(_args[:], _outs[:])
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(str)
 	runtime.KeepAlive(warn)
 
 	var _weight Weight // out
 	var _ok bool       // out
 
-	_weight = Weight(_arg2)
-	if _cret != 0 {
+	_weight = *(*Weight)(unsafe.Pointer(_outs[0]))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -338,13 +276,14 @@ func ParseWeight(str string, warn bool) (Weight, bool) {
 //    - utf8s: list of strings to be freed with g_strfreev().
 //
 func SplitFileList(str string) []string {
-	var _arg1 *C.char  // out
-	var _cret **C.char // in
+	var _args [1]girepository.Argument
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
-	_cret = C.pango_split_file_list(_arg1)
+	_gret := girepository.MustFind("Pango", "split_file_list").Invoke(_args[:], nil)
+	_cret = *(***C.char)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(str)
 
 	var _utf8s []string // out
@@ -352,7 +291,7 @@ func SplitFileList(str string) []string {
 	defer C.free(unsafe.Pointer(_cret))
 	{
 		var i int
-		var z *C.char
+		var z *C.void
 		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -381,13 +320,14 @@ func SplitFileList(str string) []string {
 //    - utf8: newly-allocated string that must be freed with g_free().
 //
 func TrimString(str string) string {
-	var _arg1 *C.char // out
-	var _cret *C.char // in
+	var _args [1]girepository.Argument
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
-	_cret = C.pango_trim_string(_arg1)
+	_gret := girepository.MustFind("Pango", "trim_string").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(str)
 
 	var _utf8 string // out
@@ -409,13 +349,12 @@ func TrimString(str string) string {
 //    - gint: encoded version of Pango library available at run time.
 //
 func Version() int32 {
-	var _cret C.int // in
-
-	_cret = C.pango_version()
+	_gret := girepository.MustFind("Pango", "version").Invoke(nil, nil)
+	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -450,23 +389,22 @@ func Version() int32 {
 //      is owned by Pango and should not be modified or freed.
 //
 func VersionCheck(requiredMajor, requiredMinor, requiredMicro int32) string {
-	var _arg1 C.int   // out
-	var _arg2 C.int   // out
-	var _arg3 C.int   // out
-	var _cret *C.char // in
+	var _args [3]girepository.Argument
 
-	_arg1 = C.int(requiredMajor)
-	_arg2 = C.int(requiredMinor)
-	_arg3 = C.int(requiredMicro)
+	*(*C.int)(unsafe.Pointer(&_args[0])) = C.int(requiredMajor)
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(requiredMinor)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(requiredMicro)
 
-	_cret = C.pango_version_check(_arg1, _arg2, _arg3)
+	_gret := girepository.MustFind("Pango", "version_check").Invoke(_args[:], nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(requiredMajor)
 	runtime.KeepAlive(requiredMinor)
 	runtime.KeepAlive(requiredMicro)
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -485,9 +423,8 @@ func VersionCheck(requiredMajor, requiredMinor, requiredMicro int32) string {
 //      freed.
 //
 func VersionString() string {
-	var _cret *C.char // in
-
-	_cret = C.pango_version_string()
+	_gret := girepository.MustFind("Pango", "version_string").Invoke(nil, nil)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _utf8 string // out
 

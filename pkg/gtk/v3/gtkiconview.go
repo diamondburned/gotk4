@@ -506,8 +506,6 @@ func (iconView *IconView) ConnectUnselectAll(f func()) coreglib.SignalHandle {
 //    - iconView: newly created IconView widget.
 //
 func NewIconView() *IconView {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("new_IconView", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -531,12 +529,8 @@ func NewIconView() *IconView {
 //
 func NewIconViewWithArea(area CellAreaer) *IconView {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("new_IconView_with_area", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -562,12 +556,8 @@ func NewIconViewWithArea(area CellAreaer) *IconView {
 //
 func NewIconViewWithModel(model TreeModeller) *IconView {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("new_IconView_with_model", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -594,22 +584,13 @@ func NewIconViewWithModel(model TreeModeller) *IconView {
 //    - bx: return location for bin_window X coordinate.
 //    - by: return location for bin_window Y coordinate.
 //
-func (iconView *IconView) ConvertWidgetToBinWindowCoords(wx, wy int32) (bx int32, by int32) {
+func (iconView *IconView) ConvertWidgetToBinWindowCoords(wx, wy int32) (bx, by int32) {
 	var _args [3]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _arg2 C.gint  // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = C.gint(wx)
-	_arg2 = C.gint(wy)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(wx)
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(wy)
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("convert_widget_to_bin_window_coords", _args[:], _outs[:])
 
@@ -619,11 +600,9 @@ func (iconView *IconView) ConvertWidgetToBinWindowCoords(wx, wy int32) (bx int32
 
 	var _bx int32 // out
 	var _by int32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_bx = *(*int32)(unsafe.Pointer(_out0))
-	_by = *(*int32)(unsafe.Pointer(_out1))
+	_bx = *(*int32)(unsafe.Pointer(_outs[0]))
+	_by = *(*int32)(unsafe.Pointer(_outs[1]))
 
 	return _bx, _by
 }
@@ -641,15 +620,9 @@ func (iconView *IconView) ConvertWidgetToBinWindowCoords(wx, wy int32) (bx int32
 //
 func (iconView *IconView) CreateDragIcon(path *TreePath) *cairo.Surface {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("create_drag_icon", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -676,12 +649,8 @@ func (iconView *IconView) CreateDragIcon(path *TreePath) *cairo.Surface {
 //
 func (iconView *IconView) ActivateOnSingleClick() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_activate_on_single_click", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -690,7 +659,7 @@ func (iconView *IconView) ActivateOnSingleClick() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -715,21 +684,12 @@ func (iconView *IconView) ActivateOnSingleClick() bool {
 func (iconView *IconView) CellRect(path *TreePath, cell CellRendererer) (*gdk.Rectangle, bool) {
 	var _args [3]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 *C.void    // out
-	var _out0 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	if cell != nil {
-		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_cell_rect", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -740,10 +700,9 @@ func (iconView *IconView) CellRect(path *TreePath, cell CellRendererer) (*gdk.Re
 
 	var _rect *gdk.Rectangle // out
 	var _ok bool             // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	if _cret != 0 {
+	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -758,12 +717,8 @@ func (iconView *IconView) CellRect(path *TreePath, cell CellRendererer) (*gdk.Re
 //
 func (iconView *IconView) ColumnSpacing() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_column_spacing", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -772,7 +727,7 @@ func (iconView *IconView) ColumnSpacing() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -785,12 +740,8 @@ func (iconView *IconView) ColumnSpacing() int32 {
 //
 func (iconView *IconView) Columns() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_columns", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -799,7 +750,7 @@ func (iconView *IconView) Columns() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -819,14 +770,8 @@ func (iconView *IconView) Columns() int32 {
 func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_cursor", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -836,11 +781,9 @@ func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
 	var _path *TreePath      // out
 	var _cell CellRendererer // out
 	var _ok bool             // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_path)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -848,9 +791,9 @@ func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
 			},
 		)
 	}
-	if _out1 != nil {
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
 		{
-			objptr := unsafe.Pointer(_out1)
+			objptr := unsafe.Pointer(_outs[1])
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -864,7 +807,7 @@ func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
 			_cell = rv
 		}
 	}
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -887,20 +830,10 @@ func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
 func (iconView *IconView) DestItemAtPos(dragX, dragY int32) (*TreePath, IconViewDropPosition, bool) {
 	var _args [3]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _arg2 C.gint     // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = C.gint(dragX)
-	_arg2 = C.gint(dragY)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(dragX)
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(dragY)
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_dest_item_at_pos", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -912,11 +845,9 @@ func (iconView *IconView) DestItemAtPos(dragX, dragY int32) (*TreePath, IconView
 	var _path *TreePath           // out
 	var _pos IconViewDropPosition // out
 	var _ok bool                  // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_path)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -924,10 +855,10 @@ func (iconView *IconView) DestItemAtPos(dragX, dragY int32) (*TreePath, IconView
 			},
 		)
 	}
-	if _out1 != nil {
-		_pos = *(*IconViewDropPosition)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_pos = *(*IconViewDropPosition)(unsafe.Pointer(_outs[1]))
 	}
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -946,13 +877,8 @@ func (iconView *IconView) DestItemAtPos(dragX, dragY int32) (*TreePath, IconView
 func (iconView *IconView) DragDestItem() (*TreePath, IconViewDropPosition) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("get_drag_dest_item", _args[:], _outs[:])
 
@@ -960,11 +886,9 @@ func (iconView *IconView) DragDestItem() (*TreePath, IconViewDropPosition) {
 
 	var _path *TreePath           // out
 	var _pos IconViewDropPosition // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_path)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -972,8 +896,8 @@ func (iconView *IconView) DragDestItem() (*TreePath, IconViewDropPosition) {
 			},
 		)
 	}
-	if _out1 != nil {
-		_pos = *(*IconViewDropPosition)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_pos = *(*IconViewDropPosition)(unsafe.Pointer(_outs[1]))
 	}
 
 	return _path, _pos
@@ -1001,20 +925,10 @@ func (iconView *IconView) DragDestItem() (*TreePath, IconViewDropPosition) {
 func (iconView *IconView) ItemAtPos(x, y int32) (*TreePath, CellRendererer, bool) {
 	var _args [3]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gint     // out
-	var _arg2 C.gint     // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = C.gint(x)
-	_arg2 = C.gint(y)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(x)
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(y)
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_item_at_pos", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1026,11 +940,9 @@ func (iconView *IconView) ItemAtPos(x, y int32) (*TreePath, CellRendererer, bool
 	var _path *TreePath      // out
 	var _cell CellRendererer // out
 	var _ok bool             // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_path)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -1038,9 +950,9 @@ func (iconView *IconView) ItemAtPos(x, y int32) (*TreePath, CellRendererer, bool
 			},
 		)
 	}
-	if _out1 != nil {
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
 		{
-			objptr := unsafe.Pointer(_out1)
+			objptr := unsafe.Pointer(_outs[1])
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -1054,7 +966,7 @@ func (iconView *IconView) ItemAtPos(x, y int32) (*TreePath, CellRendererer, bool
 			_cell = rv
 		}
 	}
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1074,15 +986,9 @@ func (iconView *IconView) ItemAtPos(x, y int32) (*TreePath, CellRendererer, bool
 //
 func (iconView *IconView) ItemColumn(path *TreePath) int32 {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_item_column", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -1092,7 +998,7 @@ func (iconView *IconView) ItemColumn(path *TreePath) int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1105,12 +1011,8 @@ func (iconView *IconView) ItemColumn(path *TreePath) int32 {
 //
 func (iconView *IconView) ItemPadding() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_item_padding", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -1119,7 +1021,7 @@ func (iconView *IconView) ItemPadding() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1137,15 +1039,9 @@ func (iconView *IconView) ItemPadding() int32 {
 //
 func (iconView *IconView) ItemRow(path *TreePath) int32 {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_item_row", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -1155,7 +1051,7 @@ func (iconView *IconView) ItemRow(path *TreePath) int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1168,12 +1064,8 @@ func (iconView *IconView) ItemRow(path *TreePath) int32 {
 //
 func (iconView *IconView) ItemWidth() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_item_width", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -1182,7 +1074,7 @@ func (iconView *IconView) ItemWidth() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1195,12 +1087,8 @@ func (iconView *IconView) ItemWidth() int32 {
 //
 func (iconView *IconView) Margin() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_margin", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -1209,7 +1097,7 @@ func (iconView *IconView) Margin() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1222,12 +1110,8 @@ func (iconView *IconView) Margin() int32 {
 //
 func (iconView *IconView) MarkupColumn() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_markup_column", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -1236,7 +1120,7 @@ func (iconView *IconView) MarkupColumn() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1250,12 +1134,8 @@ func (iconView *IconView) MarkupColumn() int32 {
 //
 func (iconView *IconView) Model() *TreeModel {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_model", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1264,7 +1144,7 @@ func (iconView *IconView) Model() *TreeModel {
 
 	var _treeModel *TreeModel // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_treeModel = wrapTreeModel(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -1289,18 +1169,10 @@ func (iconView *IconView) Model() *TreeModel {
 //
 func (iconView *IconView) PathAtPos(x, y int32) *TreePath {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _arg2 C.gint  // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = C.gint(x)
-	_arg2 = C.gint(y)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(x)
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(y)
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_path_at_pos", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1311,7 +1183,7 @@ func (iconView *IconView) PathAtPos(x, y int32) *TreePath {
 
 	var _treePath *TreePath // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_treePath)),
@@ -1332,12 +1204,8 @@ func (iconView *IconView) PathAtPos(x, y int32) *TreePath {
 //
 func (iconView *IconView) PixbufColumn() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_pixbuf_column", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -1346,7 +1214,7 @@ func (iconView *IconView) PixbufColumn() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1360,12 +1228,8 @@ func (iconView *IconView) PixbufColumn() int32 {
 //
 func (iconView *IconView) Reorderable() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_reorderable", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1374,7 +1238,7 @@ func (iconView *IconView) Reorderable() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1389,12 +1253,8 @@ func (iconView *IconView) Reorderable() bool {
 //
 func (iconView *IconView) RowSpacing() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_row_spacing", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -1403,7 +1263,7 @@ func (iconView *IconView) RowSpacing() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1423,12 +1283,8 @@ func (iconView *IconView) RowSpacing() int32 {
 //
 func (iconView *IconView) SelectedItems() []*TreePath {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_selected_items", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1462,12 +1318,8 @@ func (iconView *IconView) SelectedItems() []*TreePath {
 //
 func (iconView *IconView) Spacing() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_spacing", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -1476,7 +1328,7 @@ func (iconView *IconView) Spacing() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1489,12 +1341,8 @@ func (iconView *IconView) Spacing() int32 {
 //
 func (iconView *IconView) TextColumn() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_text_column", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -1503,7 +1351,7 @@ func (iconView *IconView) TextColumn() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1518,12 +1366,8 @@ func (iconView *IconView) TextColumn() int32 {
 //
 func (iconView *IconView) TooltipColumn() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_tooltip_column", _args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -1532,7 +1376,7 @@ func (iconView *IconView) TooltipColumn() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1548,17 +1392,11 @@ func (iconView *IconView) TooltipColumn() int32 {
 //    - endPath (optional): return location for end of region, or NULL.
 //    - ok: TRUE, if valid paths were placed in start_path and end_path.
 //
-func (iconView *IconView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool) {
+func (iconView *IconView) VisibleRange() (startPath, endPath *TreePath, ok bool) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("get_visible_range", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1568,11 +1406,9 @@ func (iconView *IconView) VisibleRange() (startPath *TreePath, endPath *TreePath
 	var _startPath *TreePath // out
 	var _endPath *TreePath   // out
 	var _ok bool             // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_startPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_startPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_startPath)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -1580,8 +1416,8 @@ func (iconView *IconView) VisibleRange() (startPath *TreePath, endPath *TreePath
 			},
 		)
 	}
-	if _out1 != nil {
-		_endPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_out1)))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_endPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_endPath)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -1589,7 +1425,7 @@ func (iconView *IconView) VisibleRange() (startPath *TreePath, endPath *TreePath
 			},
 		)
 	}
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1604,14 +1440,9 @@ func (iconView *IconView) VisibleRange() (startPath *TreePath, endPath *TreePath
 //
 func (iconView *IconView) ItemActivated(path *TreePath) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("item_activated", _args[:], nil)
 
@@ -1632,15 +1463,9 @@ func (iconView *IconView) ItemActivated(path *TreePath) {
 //
 func (iconView *IconView) PathIsSelected(path *TreePath) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_gret := girepository.MustFind("Gtk", "IconView").InvokeMethod("path_is_selected", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1650,7 +1475,7 @@ func (iconView *IconView) PathIsSelected(path *TreePath) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1680,25 +1505,14 @@ func (iconView *IconView) PathIsSelected(path *TreePath) bool {
 //
 func (iconView *IconView) ScrollToPath(path *TreePath, useAlign bool, rowAlign, colAlign float32) {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.gboolean // out
-	var _arg3 C.gfloat   // out
-	var _arg4 C.gfloat   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	if useAlign {
-		_arg2 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
-	_arg3 = C.gfloat(rowAlign)
-	_arg4 = C.gfloat(colAlign)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gfloat)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.gfloat)(unsafe.Pointer(&_args[4])) = _arg4
+	*(*C.gfloat)(unsafe.Pointer(&_args[3])) = C.gfloat(rowAlign)
+	*(*C.gfloat)(unsafe.Pointer(&_args[4])) = C.gfloat(colAlign)
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("scroll_to_path", _args[:], nil)
 
@@ -1713,11 +1527,8 @@ func (iconView *IconView) ScrollToPath(path *TreePath, useAlign bool, rowAlign, 
 // K_SELECTION_MULTIPLE.
 func (iconView *IconView) SelectAll() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("select_all", _args[:], nil)
 
@@ -1732,14 +1543,9 @@ func (iconView *IconView) SelectAll() {
 //
 func (iconView *IconView) SelectPath(path *TreePath) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("select_path", _args[:], nil)
 
@@ -1756,17 +1562,11 @@ func (iconView *IconView) SelectPath(path *TreePath) {
 //
 func (iconView *IconView) SelectedForEach(fn IconViewForEachFunc) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_IconViewForEachFunc)
-	_arg2 = C.gpointer(gbox.Assign(fn))
-	defer gbox.Delete(uintptr(_arg2))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk3_IconViewForEachFunc)
+	_args[2] = C.gpointer(gbox.Assign(fn))
+	defer gbox.Delete(uintptr(_args[2]))
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("selected_foreach", _args[:], nil)
 
@@ -1783,16 +1583,11 @@ func (iconView *IconView) SelectedForEach(fn IconViewForEachFunc) {
 //
 func (iconView *IconView) SetActivateOnSingleClick(single bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 	if single {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_activate_on_single_click", _args[:], nil)
 
@@ -1809,14 +1604,9 @@ func (iconView *IconView) SetActivateOnSingleClick(single bool) {
 //
 func (iconView *IconView) SetColumnSpacing(columnSpacing int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = C.gint(columnSpacing)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(columnSpacing)
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_column_spacing", _args[:], nil)
 
@@ -1834,14 +1624,9 @@ func (iconView *IconView) SetColumnSpacing(columnSpacing int32) {
 //
 func (iconView *IconView) SetColumns(columns int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = C.gint(columns)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(columns)
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_columns", _args[:], nil)
 
@@ -1867,24 +1652,15 @@ func (iconView *IconView) SetColumns(columns int32) {
 //
 func (iconView *IconView) SetCursor(path *TreePath, cell CellRendererer, startEditing bool) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 *C.void    // out
-	var _arg3 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	if cell != nil {
-		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 	}
 	if startEditing {
-		_arg3 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gboolean)(unsafe.Pointer(&_args[3])) = _arg3
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_cursor", _args[:], nil)
 
@@ -1903,14 +1679,9 @@ func (iconView *IconView) SetCursor(path *TreePath, cell CellRendererer, startEd
 //
 func (iconView *IconView) SetItemPadding(itemPadding int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = C.gint(itemPadding)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(itemPadding)
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_item_padding", _args[:], nil)
 
@@ -1928,14 +1699,9 @@ func (iconView *IconView) SetItemPadding(itemPadding int32) {
 //
 func (iconView *IconView) SetItemWidth(itemWidth int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = C.gint(itemWidth)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(itemWidth)
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_item_width", _args[:], nil)
 
@@ -1952,14 +1718,9 @@ func (iconView *IconView) SetItemWidth(itemWidth int32) {
 //
 func (iconView *IconView) SetMargin(margin int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = C.gint(margin)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(margin)
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_margin", _args[:], nil)
 
@@ -1978,14 +1739,9 @@ func (iconView *IconView) SetMargin(margin int32) {
 //
 func (iconView *IconView) SetMarkupColumn(column int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = C.gint(column)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(column)
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_markup_column", _args[:], nil)
 
@@ -2003,16 +1759,11 @@ func (iconView *IconView) SetMarkupColumn(column int32) {
 //
 func (iconView *IconView) SetModel(model TreeModeller) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 	if model != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_model", _args[:], nil)
 
@@ -2029,14 +1780,9 @@ func (iconView *IconView) SetModel(model TreeModeller) {
 //
 func (iconView *IconView) SetPixbufColumn(column int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = C.gint(column)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(column)
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_pixbuf_column", _args[:], nil)
 
@@ -2063,16 +1809,11 @@ func (iconView *IconView) SetPixbufColumn(column int32) {
 //
 func (iconView *IconView) SetReorderable(reorderable bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 	if reorderable {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_reorderable", _args[:], nil)
 
@@ -2089,14 +1830,9 @@ func (iconView *IconView) SetReorderable(reorderable bool) {
 //
 func (iconView *IconView) SetRowSpacing(rowSpacing int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = C.gint(rowSpacing)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(rowSpacing)
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_row_spacing", _args[:], nil)
 
@@ -2113,14 +1849,9 @@ func (iconView *IconView) SetRowSpacing(rowSpacing int32) {
 //
 func (iconView *IconView) SetSpacing(spacing int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = C.gint(spacing)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(spacing)
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_spacing", _args[:], nil)
 
@@ -2137,14 +1868,9 @@ func (iconView *IconView) SetSpacing(spacing int32) {
 //
 func (iconView *IconView) SetTextColumn(column int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = C.gint(column)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(column)
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_text_column", _args[:], nil)
 
@@ -2165,22 +1891,13 @@ func (iconView *IconView) SetTextColumn(column int32) {
 //
 func (iconView *IconView) SetTooltipCell(tooltip *Tooltip, path *TreePath, cell CellRendererer) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	if cell != nil {
-		_arg3 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_tooltip_cell", _args[:], nil)
 
@@ -2207,14 +1924,9 @@ func (iconView *IconView) SetTooltipCell(tooltip *Tooltip, path *TreePath, cell 
 //
 func (iconView *IconView) SetTooltipColumn(column int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = C.gint(column)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(column)
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_tooltip_column", _args[:], nil)
 
@@ -2233,17 +1945,10 @@ func (iconView *IconView) SetTooltipColumn(column int32) {
 //
 func (iconView *IconView) SetTooltipItem(tooltip *Tooltip, path *TreePath) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("set_tooltip_item", _args[:], nil)
 
@@ -2255,11 +1960,8 @@ func (iconView *IconView) SetTooltipItem(tooltip *Tooltip, path *TreePath) {
 // UnselectAll unselects all the icons.
 func (iconView *IconView) UnselectAll() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("unselect_all", _args[:], nil)
 
@@ -2274,14 +1976,9 @@ func (iconView *IconView) UnselectAll() {
 //
 func (iconView *IconView) UnselectPath(path *TreePath) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("unselect_path", _args[:], nil)
 
@@ -2294,11 +1991,8 @@ func (iconView *IconView) UnselectPath(path *TreePath) {
 // IconView:reorderable to FALSE.
 func (iconView *IconView) UnsetModelDragDest() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("unset_model_drag_dest", _args[:], nil)
 
@@ -2310,11 +2004,8 @@ func (iconView *IconView) UnsetModelDragDest() {
 // IconView:reorderable to FALSE.
 func (iconView *IconView) UnsetModelDragSource() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconView).Native()))
 
 	girepository.MustFind("Gtk", "IconView").InvokeMethod("unset_model_drag_source", _args[:], nil)
 

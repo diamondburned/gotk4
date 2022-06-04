@@ -32,7 +32,7 @@ type TextAppearance struct {
 
 // textAppearance is the struct that's finalized.
 type textAppearance struct {
-	native *C.GtkTextAppearance
+	native unsafe.Pointer
 }
 
 // TextAttributes: using TextAttributes directly should rarely be necessary.
@@ -47,18 +47,16 @@ type TextAttributes struct {
 
 // textAttributes is the struct that's finalized.
 type textAttributes struct {
-	native *C.GtkTextAttributes
+	native unsafe.Pointer
 }
 
 func marshalTextAttributes(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &TextAttributes{&textAttributes{(*C.GtkTextAttributes)(b)}}, nil
+	return &TextAttributes{&textAttributes{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewTextAttributes constructs a struct TextAttributes.
 func NewTextAttributes() *TextAttributes {
-	var _cret *C.void // in
-
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _textAttributes *TextAttributes // out
@@ -82,12 +80,8 @@ func NewTextAttributes() *TextAttributes {
 //
 func (src *TextAttributes) Copy() *TextAttributes {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -115,14 +109,9 @@ func (src *TextAttributes) Copy() *TextAttributes {
 //
 func (src *TextAttributes) CopyValues(dest *TextAttributes) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(dest)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(dest)))
 
 	runtime.KeepAlive(src)
 	runtime.KeepAlive(dest)

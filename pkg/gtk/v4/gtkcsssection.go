@@ -38,31 +38,23 @@ type CSSSection struct {
 
 // cssSection is the struct that's finalized.
 type cssSection struct {
-	native *C.GtkCssSection
+	native unsafe.Pointer
 }
 
 func marshalCSSSection(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &CSSSection{&cssSection{(*C.GtkCssSection)(b)}}, nil
+	return &CSSSection{&cssSection{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewCSSSection constructs a struct CSSSection.
 func NewCSSSection(file gio.Filer, start *CSSLocation, end *CSSLocation) *CSSSection {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _cret *C.void // in
 
 	if file != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	}
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -91,12 +83,8 @@ func NewCSSSection(file gio.Filer, start *CSSLocation, end *CSSLocation) *CSSSec
 //
 func (section *CSSSection) EndLocation() *CSSLocation {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -120,12 +108,8 @@ func (section *CSSSection) EndLocation() *CSSLocation {
 //
 func (section *CSSSection) File() *gio.File {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -157,12 +141,8 @@ func (section *CSSSection) File() *gio.File {
 //
 func (section *CSSSection) Parent() *CSSSection {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -170,7 +150,7 @@ func (section *CSSSection) Parent() *CSSSection {
 
 	var _cssSection *CSSSection // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.gtk_css_section_ref(_cret)
 		runtime.SetFinalizer(
@@ -193,12 +173,8 @@ func (section *CSSSection) Parent() *CSSSection {
 //
 func (section *CSSSection) StartLocation() *CSSLocation {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -220,12 +196,8 @@ func (section *CSSSection) StartLocation() *CSSLocation {
 //
 func (section *CSSSection) String() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(section)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

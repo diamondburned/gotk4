@@ -5,11 +5,11 @@ package glib
 import (
 	"fmt"
 	"runtime"
-	"runtime/cgo"
 	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
 // #include <stdlib.h>
@@ -133,7 +133,7 @@ type node struct {
 // Data contains the actual data of the node.
 func (n *Node) Data() unsafe.Pointer {
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(n.native.data))
+	v = (unsafe.Pointer)(unsafe.Pointer(valptr))
 	return v
 }
 
@@ -141,14 +141,14 @@ func (n *Node) Data() unsafe.Pointer {
 // same parent).
 func (n *Node) Next() *Node {
 	var v *Node // out
-	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(n.native.next)))
+	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(valptr)))
 	return v
 }
 
 // Prev points to the node's previous sibling.
 func (n *Node) Prev() *Node {
 	var v *Node // out
-	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(n.native.prev)))
+	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(valptr)))
 	return v
 }
 
@@ -156,7 +156,7 @@ func (n *Node) Prev() *Node {
 // root of the tree.
 func (n *Node) Parent() *Node {
 	var v *Node // out
-	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(n.native.parent)))
+	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(valptr)))
 	return v
 }
 
@@ -164,7 +164,7 @@ func (n *Node) Parent() *Node {
 // accessed by using the next pointer of each child.
 func (n *Node) Children() *Node {
 	var v *Node // out
-	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(n.native.children)))
+	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(valptr)))
 	return v
 }
 

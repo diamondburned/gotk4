@@ -2,8 +2,13 @@
 
 package pango
 
+import (
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
+)
+
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <pango/pango.h>
+// #include <glib.h>
 import "C"
 
 // VERSION_MAJOR: major component of the version of Pango available at

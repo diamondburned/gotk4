@@ -87,8 +87,6 @@ func marshalVSeparator(p uintptr) (interface{}, error) {
 //    - vSeparator: new VSeparator.
 //
 func NewVSeparator() *VSeparator {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "VSeparator").InvokeMethod("new_VSeparator", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

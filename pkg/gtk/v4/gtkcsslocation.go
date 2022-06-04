@@ -33,7 +33,7 @@ type CSSLocation struct {
 
 // cssLocation is the struct that's finalized.
 type cssLocation struct {
-	native *C.GtkCssLocation
+	native unsafe.Pointer
 }
 
 // NewCSSLocation creates a new CSSLocation instance from the given
@@ -63,36 +63,46 @@ func NewCSSLocation(bytes, chars, lines, lineBytes, lineChars uint) CSSLocation 
 
 // Bytes: number of bytes parsed since the beginning.
 func (c *CSSLocation) Bytes() uint {
+	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("bytes")
+	valptr := unsafe.Add(unsafe.Pointer(c), offset)
 	var v uint // out
-	v = uint(c.native.bytes)
+	v = uint(*(*C.gsize)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Chars: number of characters parsed since the beginning.
 func (c *CSSLocation) Chars() uint {
+	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("chars")
+	valptr := unsafe.Add(unsafe.Pointer(c), offset)
 	var v uint // out
-	v = uint(c.native.chars)
+	v = uint(*(*C.gsize)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Lines: number of full lines that have been parsed If you want to display this
 // as a line number, you need to add 1 to this.
 func (c *CSSLocation) Lines() uint {
+	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("lines")
+	valptr := unsafe.Add(unsafe.Pointer(c), offset)
 	var v uint // out
-	v = uint(c.native.lines)
+	v = uint(*(*C.gsize)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // LineBytes: number of bytes parsed since the last line break.
 func (c *CSSLocation) LineBytes() uint {
+	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("line_bytes")
+	valptr := unsafe.Add(unsafe.Pointer(c), offset)
 	var v uint // out
-	v = uint(c.native.line_bytes)
+	v = uint(*(*C.gsize)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // LineChars: number of characters parsed since the last line break.
 func (c *CSSLocation) LineChars() uint {
+	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("line_chars")
+	valptr := unsafe.Add(unsafe.Pointer(c), offset)
 	var v uint // out
-	v = uint(c.native.line_chars)
+	v = uint(*(*C.gsize)(unsafe.Pointer(&valptr)))
 	return v
 }

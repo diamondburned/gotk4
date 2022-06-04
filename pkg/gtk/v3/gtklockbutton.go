@@ -135,14 +135,10 @@ func marshalLockButton(p uintptr) (interface{}, error) {
 //
 func NewLockButton(permission gio.Permissioner) *LockButton {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
 	if permission != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gtk", "LockButton").InvokeMethod("new_LockButton", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -164,12 +160,8 @@ func NewLockButton(permission gio.Permissioner) *LockButton {
 //
 func (button *LockButton) Permission() gio.Permissioner {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
 	_gret := girepository.MustFind("Gtk", "LockButton").InvokeMethod("get_permission", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -207,16 +199,11 @@ func (button *LockButton) Permission() gio.Permissioner {
 //
 func (button *LockButton) SetPermission(permission gio.Permissioner) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	if permission != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "LockButton").InvokeMethod("set_permission", _args[:], nil)
 

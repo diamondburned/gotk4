@@ -35,14 +35,12 @@ func init() {
 //      XOpenDisplay().
 //
 func X11GetDefaultScreen() int32 {
-	var _cret C.gint // in
-
 	_gret := girepository.MustFind("GdkX11", "x11_get_default_screen").Invoke(nil, nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -111,12 +109,8 @@ func (screen *X11Screen) ConnectWindowManagerChanged(f func()) coreglib.SignalHa
 //
 func (screen *X11Screen) CurrentDesktop() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.guint32 // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
 	_gret := girepository.MustFind("GdkX11", "X11Screen").InvokeMethod("get_current_desktop", _args[:], nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
@@ -125,7 +119,7 @@ func (screen *X11Screen) CurrentDesktop() uint32 {
 
 	var _guint32 uint32 // out
 
-	_guint32 = uint32(_cret)
+	_guint32 = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
 
 	return _guint32
 }
@@ -141,12 +135,8 @@ func (screen *X11Screen) CurrentDesktop() uint32 {
 //
 func (screen *X11Screen) NumberOfDesktops() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.guint32 // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
 	_gret := girepository.MustFind("GdkX11", "X11Screen").InvokeMethod("get_number_of_desktops", _args[:], nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
@@ -155,7 +145,7 @@ func (screen *X11Screen) NumberOfDesktops() uint32 {
 
 	var _guint32 uint32 // out
 
-	_guint32 = uint32(_cret)
+	_guint32 = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
 
 	return _guint32
 }
@@ -168,12 +158,8 @@ func (screen *X11Screen) NumberOfDesktops() uint32 {
 //
 func (screen *X11Screen) ScreenNumber() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
 	_gret := girepository.MustFind("GdkX11", "X11Screen").InvokeMethod("get_screen_number", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -182,7 +168,7 @@ func (screen *X11Screen) ScreenNumber() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -197,12 +183,8 @@ func (screen *X11Screen) ScreenNumber() int32 {
 //
 func (screen *X11Screen) WindowManagerName() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
 	_gret := girepository.MustFind("GdkX11", "X11Screen").InvokeMethod("get_window_manager_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

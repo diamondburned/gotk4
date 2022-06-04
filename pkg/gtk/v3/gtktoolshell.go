@@ -157,12 +157,8 @@ func marshalToolShell(p uintptr) (interface{}, error) {
 //
 func (shell *ToolShell) TextAlignment() float32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void  // out
-	var _cret C.gfloat // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(shell).Native()))
 
 	_cret = *(*C.gfloat)(unsafe.Pointer(&_gret))
 
@@ -170,7 +166,7 @@ func (shell *ToolShell) TextAlignment() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = float32(_cret)
+	_gfloat = float32(*(*C.gfloat)(unsafe.Pointer(&_cret)))
 
 	return _gfloat
 }
@@ -185,12 +181,8 @@ func (shell *ToolShell) TextAlignment() float32 {
 //
 func (shell *ToolShell) TextSizeGroup() *SizeGroup {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(shell).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -211,11 +203,8 @@ func (shell *ToolShell) TextSizeGroup() *SizeGroup {
 // gtk_tool_item_rebuild_menu() instead.
 func (shell *ToolShell) RebuildMenu() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(shell).Native()))
 
 	runtime.KeepAlive(shell)
 }

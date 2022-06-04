@@ -19,6 +19,9 @@ type Converter struct {
 	Parent   *gir.TypeFindResult
 	Results  []ValueConverted
 	Callback bool
+	// MustCast, if true, will force the converter to generate code that
+	// force-casts InName and OutName to the right type.
+	MustCast bool
 
 	fgen   types.FileGenerator
 	logger logger.LineLogger

@@ -859,7 +859,7 @@ type Point struct {
 
 // point is the struct that's finalized.
 type point struct {
-	native *C.GdkPoint
+	native unsafe.Pointer
 }
 
 // NewPoint creates a new Point instance from the given
@@ -880,15 +880,19 @@ func NewPoint(x, y int32) Point {
 
 // X: x coordinate of the point.
 func (p *Point) X() int32 {
+	offset := girepository.MustFind("Gdk", "Point").StructFieldOffset("x")
+	valptr := unsafe.Add(unsafe.Pointer(p), offset)
 	var v int32 // out
-	v = int32(p.native.x)
+	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Y: y coordinate of the point.
 func (p *Point) Y() int32 {
+	offset := girepository.MustFind("Gdk", "Point").StructFieldOffset("y")
+	valptr := unsafe.Add(unsafe.Pointer(p), offset)
 	var v int32 // out
-	v = int32(p.native.y)
+	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
 	return v
 }
 
@@ -902,12 +906,12 @@ type Rectangle struct {
 
 // rectangle is the struct that's finalized.
 type rectangle struct {
-	native *C.GdkRectangle
+	native unsafe.Pointer
 }
 
 func marshalRectangle(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &Rectangle{&rectangle{(*C.GdkRectangle)(b)}}, nil
+	return &Rectangle{&rectangle{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewRectangle creates a new Rectangle instance from the given
@@ -933,26 +937,34 @@ func NewRectangle(x, y, width, height int32) Rectangle {
 }
 
 func (r *Rectangle) X() int32 {
+	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("x")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v int32 // out
-	v = int32(r.native.x)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 func (r *Rectangle) Y() int32 {
+	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("y")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v int32 // out
-	v = int32(r.native.y)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 func (r *Rectangle) Width() int32 {
+	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("width")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v int32 // out
-	v = int32(r.native.width)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 func (r *Rectangle) Height() int32 {
+	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("height")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v int32 // out
-	v = int32(r.native.height)
+	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
 	return v
 }
 
@@ -968,15 +980,9 @@ func (r *Rectangle) Height() int32 {
 //
 func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(rect1)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(rect2)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rect1)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rect2)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -985,7 +991,7 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1011,16 +1017,9 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _out0 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(src1)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(src2)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src1)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src2)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1029,12 +1028,11 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
 
 	var _dest *Rectangle // out
 	var _ok bool         // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	if _out0 != nil {
-		_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 	}
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1059,23 +1057,16 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
 func (src1 *Rectangle) Union(src2 *Rectangle) *Rectangle {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(src1)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(src2)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src1)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src2)))
 
 	runtime.KeepAlive(src1)
 	runtime.KeepAlive(src2)
 
 	var _dest *Rectangle // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _dest
 }

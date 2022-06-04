@@ -628,8 +628,6 @@ func _gotk4_gtk3_TranslateFunc(arg1 *C.void, arg2 C.gpointer) (cret *C.gchar) {
 //    - sList: list of known stock IDs.
 //
 func StockListIDs() []string {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "stock_list_ids").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -664,14 +662,9 @@ func StockListIDs() []string {
 func StockLookup(stockId string) (*StockItem, bool) {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "stock_lookup").Invoke(_args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -680,10 +673,9 @@ func StockLookup(stockId string) (*StockItem, bool) {
 
 	var _item *StockItem // out
 	var _ok bool         // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_item = (*StockItem)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	if _cret != 0 {
+	_item = (*StockItem)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -730,19 +722,12 @@ func StockLookup(stockId string) (*StockItem, bool) {
 //
 func StockSetTranslateFunc(domain string, fn TranslateFunc) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(domain)))
-	defer C.free(unsafe.Pointer(_arg0))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_TranslateFunc)
-	_arg2 = C.gpointer(gbox.Assign(fn))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(domain)))
+	defer C.free(unsafe.Pointer(_args[0]))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk3_TranslateFunc)
+	_args[2] = C.gpointer(gbox.Assign(fn))
+	_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	girepository.MustFind("Gtk", "stock_set_translate_func").Invoke(_args[:], nil)
 
@@ -759,5 +744,5 @@ type StockItem struct {
 
 // stockItem is the struct that's finalized.
 type stockItem struct {
-	native *C.GtkStockItem
+	native unsafe.Pointer
 }

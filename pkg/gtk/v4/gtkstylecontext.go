@@ -200,15 +200,10 @@ func marshalStyleContext(p uintptr) (interface{}, error) {
 //
 func (context *StyleContext) AddClass(className string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(className)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(className)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("add_class", _args[:], nil)
 
@@ -237,17 +232,10 @@ func (context *StyleContext) AddClass(className string) {
 //
 func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
-	_arg2 = C.guint(priority)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(priority)
 
 	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("add_provider", _args[:], nil)
 
@@ -265,21 +253,16 @@ func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint
 func (context *StyleContext) Border() *Border {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("get_border", _args[:], _outs[:])
 
 	runtime.KeepAlive(context)
 
 	var _border *Border // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _border
 }
@@ -293,21 +276,16 @@ func (context *StyleContext) Border() *Border {
 func (context *StyleContext) Color() *gdk.RGBA {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("get_color", _args[:], _outs[:])
 
 	runtime.KeepAlive(context)
 
 	var _color *gdk.RGBA // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _color
 }
@@ -320,12 +298,8 @@ func (context *StyleContext) Color() *gdk.RGBA {
 //
 func (context *StyleContext) Display() *gdk.Display {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gtk", "StyleContext").InvokeMethod("get_display", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -353,21 +327,16 @@ func (context *StyleContext) Display() *gdk.Display {
 func (context *StyleContext) Margin() *Border {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("get_margin", _args[:], _outs[:])
 
 	runtime.KeepAlive(context)
 
 	var _margin *Border // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_margin = (*Border)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_margin = (*Border)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _margin
 }
@@ -381,21 +350,16 @@ func (context *StyleContext) Margin() *Border {
 func (context *StyleContext) Padding() *Border {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("get_padding", _args[:], _outs[:])
 
 	runtime.KeepAlive(context)
 
 	var _padding *Border // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_padding = (*Border)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_padding = (*Border)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _padding
 }
@@ -408,12 +372,8 @@ func (context *StyleContext) Padding() *Border {
 //
 func (context *StyleContext) Scale() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gtk", "StyleContext").InvokeMethod("get_scale", _args[:], nil)
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
@@ -422,7 +382,7 @@ func (context *StyleContext) Scale() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -439,16 +399,10 @@ func (context *StyleContext) Scale() int32 {
 //
 func (context *StyleContext) HasClass(className string) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(className)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(className)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "StyleContext").InvokeMethod("has_class", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -458,7 +412,7 @@ func (context *StyleContext) HasClass(className string) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -479,17 +433,10 @@ func (context *StyleContext) HasClass(className string) bool {
 func (context *StyleContext) LookupColor(colorName string) (*gdk.RGBA, bool) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _out0 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(colorName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(colorName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gtk", "StyleContext").InvokeMethod("lookup_color", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -499,10 +446,9 @@ func (context *StyleContext) LookupColor(colorName string) (*gdk.RGBA, bool) {
 
 	var _color *gdk.RGBA // out
 	var _ok bool         // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	if _cret != 0 {
+	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -517,15 +463,10 @@ func (context *StyleContext) LookupColor(colorName string) (*gdk.RGBA, bool) {
 //
 func (context *StyleContext) RemoveClass(className string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(className)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(className)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("remove_class", _args[:], nil)
 
@@ -541,14 +482,9 @@ func (context *StyleContext) RemoveClass(className string) {
 //
 func (context *StyleContext) RemoveProvider(provider StyleProviderer) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
 
 	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("remove_provider", _args[:], nil)
 
@@ -561,11 +497,8 @@ func (context *StyleContext) RemoveProvider(provider StyleProviderer) {
 // See gtk.StyleContext.Save().
 func (context *StyleContext) Restore() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("restore", _args[:], nil)
 
@@ -582,11 +515,8 @@ func (context *StyleContext) Restore() {
 // returns to the main loop.
 func (context *StyleContext) Save() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("save", _args[:], nil)
 
@@ -607,14 +537,9 @@ func (context *StyleContext) Save() {
 //
 func (context *StyleContext) SetDisplay(display *gdk.Display) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("set_display", _args[:], nil)
 
@@ -630,14 +555,9 @@ func (context *StyleContext) SetDisplay(display *gdk.Display) {
 //
 func (context *StyleContext) SetScale(scale int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = C.int(scale)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(scale)
 
 	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("set_scale", _args[:], nil)
 
@@ -666,17 +586,10 @@ func (context *StyleContext) SetScale(scale int32) {
 //
 func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProviderer, priority uint32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
-	_arg2 = C.guint(priority)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(priority)
 
 	girepository.MustFind("Gtk", "add_provider_for_display").Invoke(_args[:], nil)
 
@@ -695,14 +608,9 @@ func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProvi
 //
 func StyleContextRemoveProviderForDisplay(display *gdk.Display, provider StyleProviderer) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
 
 	girepository.MustFind("Gtk", "remove_provider_for_display").Invoke(_args[:], nil)
 

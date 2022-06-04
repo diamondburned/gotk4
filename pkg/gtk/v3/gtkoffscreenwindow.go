@@ -99,8 +99,6 @@ func marshalOffscreenWindow(p uintptr) (interface{}, error) {
 //    - offscreenWindow: pointer to a Widget.
 //
 func NewOffscreenWindow() *OffscreenWindow {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "OffscreenWindow").InvokeMethod("new_OffscreenWindow", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -121,12 +119,8 @@ func NewOffscreenWindow() *OffscreenWindow {
 //
 func (offscreen *OffscreenWindow) Pixbuf() *gdkpixbuf.Pixbuf {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(offscreen).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(offscreen).Native()))
 
 	_gret := girepository.MustFind("Gtk", "OffscreenWindow").InvokeMethod("get_pixbuf", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -135,7 +129,7 @@ func (offscreen *OffscreenWindow) Pixbuf() *gdkpixbuf.Pixbuf {
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_pixbuf = &gdkpixbuf.Pixbuf{
@@ -162,12 +156,8 @@ func (offscreen *OffscreenWindow) Pixbuf() *gdkpixbuf.Pixbuf {
 //
 func (offscreen *OffscreenWindow) Surface() *cairo.Surface {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(offscreen).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(offscreen).Native()))
 
 	_gret := girepository.MustFind("Gtk", "OffscreenWindow").InvokeMethod("get_surface", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -176,7 +166,7 @@ func (offscreen *OffscreenWindow) Surface() *cairo.Surface {
 
 	var _surface *cairo.Surface // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
 		C.cairo_surface_reference(_cret)
 		runtime.SetFinalizer(_surface, func(v *cairo.Surface) {

@@ -7,53 +7,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <pango/pango.h>
+// #include <glib.h>
 import "C"
-
-// Break determines possible line, word, and character breaks for a string of
-// Unicode text with a single analysis.
-//
-// For most purposes you may want to use pango_get_log_attrs().
-//
-// Deprecated: Use pango_default_break() and pango_tailor_break().
-//
-// The function takes the following parameters:
-//
-//    - text to process. Must be valid UTF-8.
-//    - length of text in bytes (may be -1 if text is nul-terminated).
-//    - analysis structure from pango_itemize().
-//    - attrs: array to store character information in.
-//
-func Break(text string, length int32, analysis *Analysis, attrs []LogAttr) {
-	var _arg1 *C.gchar         // out
-	var _arg2 C.int            // out
-	var _arg3 *C.PangoAnalysis // out
-	var _arg4 *C.PangoLogAttr  // out
-	var _arg5 C.int
-
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(length)
-	_arg3 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
-	_arg5 = (C.int)(len(attrs))
-	_arg4 = (*C.PangoLogAttr)(C.calloc(C.size_t(len(attrs)), C.size_t(C.sizeof_PangoLogAttr)))
-	defer C.free(unsafe.Pointer(_arg4))
-	{
-		out := unsafe.Slice((*C.PangoLogAttr)(_arg4), len(attrs))
-		for i := range attrs {
-			out[i] = *(*C.PangoLogAttr)(gextras.StructNative(unsafe.Pointer((&attrs[i]))))
-		}
-	}
-
-	C.pango_break(_arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(text)
-	runtime.KeepAlive(length)
-	runtime.KeepAlive(analysis)
-	runtime.KeepAlive(attrs)
-}
 
 // DefaultBreak: this is the default break algorithm.
 //
@@ -71,22 +31,19 @@ func Break(text string, length int32, analysis *Analysis, attrs []LogAttr) {
 //    - attrsLen: size of the array passed as attrs.
 //
 func DefaultBreak(text string, length int32, analysis *Analysis, attrs *LogAttr, attrsLen int32) {
-	var _arg1 *C.gchar         // out
-	var _arg2 C.int            // out
-	var _arg3 *C.PangoAnalysis // out
-	var _arg4 *C.PangoLogAttr  // out
-	var _arg5 C.int            // out
+	var _args [5]girepository.Argument
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(length)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_args[0]))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(length)
 	if analysis != nil {
-		_arg3 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(analysis)))
 	}
-	_arg4 = (*C.PangoLogAttr)(gextras.StructNative(unsafe.Pointer(attrs)))
-	_arg5 = C.int(attrsLen)
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(attrs)))
+	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(attrsLen)
 
-	C.pango_default_break(_arg1, _arg2, _arg3, _arg4, _arg5)
+	girepository.MustFind("Pango", "default_break").Invoke(_args[:], nil)
+
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(length)
 	runtime.KeepAlive(analysis)
@@ -116,123 +73,26 @@ func DefaultBreak(text string, length int32, analysis *Analysis, attrs *LogAttr,
 //    - paragraphDelimiterIndex: return location for index of delimiter.
 //    - nextParagraphStart: return location for start of next paragraph.
 //
-func FindParagraphBoundary(text string, length int32) (paragraphDelimiterIndex int32, nextParagraphStart int32) {
-	var _arg1 *C.gchar // out
-	var _arg2 C.gint   // out
-	var _arg3 C.gint   // in
-	var _arg4 C.gint   // in
+func FindParagraphBoundary(text string, length int32) (paragraphDelimiterIndex, nextParagraphStart int32) {
+	var _args [2]girepository.Argument
+	var _outs [2]girepository.Argument
 
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(length)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_args[0]))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(length)
 
-	C.pango_find_paragraph_boundary(_arg1, _arg2, &_arg3, &_arg4)
+	girepository.MustFind("Pango", "find_paragraph_boundary").Invoke(_args[:], _outs[:])
+
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(length)
 
 	var _paragraphDelimiterIndex int32 // out
 	var _nextParagraphStart int32      // out
 
-	_paragraphDelimiterIndex = int32(_arg3)
-	_nextParagraphStart = int32(_arg4)
+	_paragraphDelimiterIndex = *(*int32)(unsafe.Pointer(_outs[0]))
+	_nextParagraphStart = *(*int32)(unsafe.Pointer(_outs[1]))
 
 	return _paragraphDelimiterIndex, _nextParagraphStart
-}
-
-// GetLogAttrs computes a PangoLogAttr for each character in text.
-//
-// The log_attrs array must have one PangoLogAttr for each position in text; if
-// text contains N characters, it has N+1 positions, including the last position
-// at the end of the text. text should be an entire paragraph; logical
-// attributes can't be computed without context (for example you need to see
-// spaces on either side of a word to know the word is a word).
-//
-// The function takes the following parameters:
-//
-//    - text to process. Must be valid UTF-8.
-//    - length in bytes of text.
-//    - level: embedding level, or -1 if unknown.
-//    - language tag.
-//    - logAttrs: array with one PangoLogAttr per character in text, plus one
-//      extra, to be filled in.
-//
-func GetLogAttrs(text string, length, level int32, language *Language, logAttrs []LogAttr) {
-	var _arg1 *C.char          // out
-	var _arg2 C.int            // out
-	var _arg3 C.int            // out
-	var _arg4 *C.PangoLanguage // out
-	var _arg5 *C.PangoLogAttr  // out
-	var _arg6 C.int
-
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(length)
-	_arg3 = C.int(level)
-	_arg4 = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
-	_arg6 = (C.int)(len(logAttrs))
-	_arg5 = (*C.PangoLogAttr)(C.calloc(C.size_t(len(logAttrs)), C.size_t(C.sizeof_PangoLogAttr)))
-	defer C.free(unsafe.Pointer(_arg5))
-	{
-		out := unsafe.Slice((*C.PangoLogAttr)(_arg5), len(logAttrs))
-		for i := range logAttrs {
-			out[i] = *(*C.PangoLogAttr)(gextras.StructNative(unsafe.Pointer((&logAttrs[i]))))
-		}
-	}
-
-	C.pango_get_log_attrs(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-	runtime.KeepAlive(text)
-	runtime.KeepAlive(length)
-	runtime.KeepAlive(level)
-	runtime.KeepAlive(language)
-	runtime.KeepAlive(logAttrs)
-}
-
-// TailorBreak: apply language-specific tailoring to the breaks in log_attrs.
-//
-// The line breaks are assumed to have been produced by default_break.
-//
-// If offset is not -1, it is used to apply attributes from analysis that are
-// relevant to line breaking.
-//
-// The function takes the following parameters:
-//
-//    - text to process. Must be valid UTF-8.
-//    - length in bytes of text.
-//    - analysis: PangoAnalysis structure from itemize for text.
-//    - offset: byte offset of text from the beginning of the paragraph, or -1 to
-//      ignore attributes from analysis.
-//    - logAttrs: array with one PangoLogAttr per character in text, plus one
-//      extra, to be filled in.
-//
-func TailorBreak(text string, length int32, analysis *Analysis, offset int32, logAttrs []LogAttr) {
-	var _arg1 *C.char          // out
-	var _arg2 C.int            // out
-	var _arg3 *C.PangoAnalysis // out
-	var _arg4 C.int            // out
-	var _arg5 *C.PangoLogAttr  // out
-	var _arg6 C.int
-
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(length)
-	_arg3 = (*C.PangoAnalysis)(gextras.StructNative(unsafe.Pointer(analysis)))
-	_arg4 = C.int(offset)
-	_arg6 = (C.int)(len(logAttrs))
-	_arg5 = (*C.PangoLogAttr)(C.calloc(C.size_t(len(logAttrs)), C.size_t(C.sizeof_PangoLogAttr)))
-	defer C.free(unsafe.Pointer(_arg5))
-	{
-		out := unsafe.Slice((*C.PangoLogAttr)(_arg5), len(logAttrs))
-		for i := range logAttrs {
-			out[i] = *(*C.PangoLogAttr)(gextras.StructNative(unsafe.Pointer((&logAttrs[i]))))
-		}
-	}
-
-	C.pango_tailor_break(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-	runtime.KeepAlive(text)
-	runtime.KeepAlive(length)
-	runtime.KeepAlive(analysis)
-	runtime.KeepAlive(offset)
-	runtime.KeepAlive(logAttrs)
 }
 
 // LogAttr: PangoLogAttr structure stores information about the attributes of a
@@ -245,5 +105,5 @@ type LogAttr struct {
 
 // logAttr is the struct that's finalized.
 type logAttr struct {
-	native *C.PangoLogAttr
+	native unsafe.Pointer
 }

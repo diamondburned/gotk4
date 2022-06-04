@@ -186,7 +186,7 @@ type IMContextOverrider interface {
 	//    - ok: TRUE if surrounding text was provided; in this case you must free
 	//      the result stored in text.
 	//
-	SurroundingWithSelection() (text string, cursorIndex int32, anchorIndex int32, ok bool)
+	SurroundingWithSelection() (text string, cursorIndex, anchorIndex int32, ok bool)
 	PreeditChanged()
 	PreeditEnd()
 	PreeditStart()
@@ -364,7 +364,7 @@ func classInitIMContexter(gclassPtr, data C.gpointer) {
 	}
 
 	if _, ok := goval.(interface {
-		SurroundingWithSelection() (text string, cursorIndex int32, anchorIndex int32, ok bool)
+		SurroundingWithSelection() (text string, cursorIndex, anchorIndex int32, ok bool)
 	}); ok {
 		pclass.get_surrounding_with_selection = (*[0]byte)(C._gotk4_gtk4_IMContextClass_get_surrounding_with_selection)
 	}
@@ -532,7 +532,7 @@ func _gotk4_gtk4_IMContextClass_get_surrounding(arg0 *C.void, arg1 **C.void, arg
 func _gotk4_gtk4_IMContextClass_get_surrounding_with_selection(arg0 *C.void, arg1 **C.void, arg2 *C.void, arg3 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
-		SurroundingWithSelection() (text string, cursorIndex int32, anchorIndex int32, ok bool)
+		SurroundingWithSelection() (text string, cursorIndex, anchorIndex int32, ok bool)
 	})
 
 	text, cursorIndex, anchorIndex, ok := iface.SurroundingWithSelection()
@@ -890,18 +890,10 @@ func (context *IMContext) ConnectRetrieveSurrounding(f func() (ok bool)) coregli
 //
 func (context *IMContext) DeleteSurrounding(offset, nChars int32) bool {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.int      // out
-	var _arg2 C.int      // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = C.int(offset)
-	_arg2 = C.int(nChars)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(offset)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(nChars)
 
 	_gret := girepository.MustFind("Gtk", "IMContext").InvokeMethod("delete_surrounding", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -912,7 +904,7 @@ func (context *IMContext) DeleteSurrounding(offset, nChars int32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -935,15 +927,9 @@ func (context *IMContext) DeleteSurrounding(offset, nChars int32) bool {
 //
 func (context *IMContext) FilterKeypress(event gdk.Eventer) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IMContext").InvokeMethod("filter_keypress", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -953,7 +939,7 @@ func (context *IMContext) FilterKeypress(event gdk.Eventer) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -967,11 +953,8 @@ func (context *IMContext) FilterKeypress(event gdk.Eventer) bool {
 // this change.
 func (context *IMContext) FocusIn() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	girepository.MustFind("Gtk", "IMContext").InvokeMethod("focus_in", _args[:], nil)
 
@@ -985,11 +968,8 @@ func (context *IMContext) FocusIn() {
 // contexts state to reflect this change.
 func (context *IMContext) FocusOut() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	girepository.MustFind("Gtk", "IMContext").InvokeMethod("focus_out", _args[:], nil)
 
@@ -1013,14 +993,8 @@ func (context *IMContext) FocusOut() {
 func (context *IMContext) PreeditString() (string, *pango.AttrList, int32) {
 	var _args [1]girepository.Argument
 	var _outs [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
-	var _out2 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	girepository.MustFind("Gtk", "IMContext").InvokeMethod("get_preedit_string", _args[:], _outs[:])
 
@@ -1029,20 +1003,17 @@ func (context *IMContext) PreeditString() (string, *pango.AttrList, int32) {
 	var _str string            // out
 	var _attrs *pango.AttrList // out
 	var _cursorPos int32       // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
-	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
 
-	_str = C.GoString((*C.gchar)(unsafe.Pointer(_out0)))
-	defer C.free(unsafe.Pointer(_out0))
-	_attrs = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_out1)))
+	_str = C.GoString((*C.gchar)(unsafe.Pointer(_outs[0])))
+	defer C.free(unsafe.Pointer(_outs[0]))
+	_attrs = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attrs)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
 		},
 	)
-	_cursorPos = *(*int32)(unsafe.Pointer(_out2))
+	_cursorPos = *(*int32)(unsafe.Pointer(_outs[2]))
 
 	return _str, _attrs, _cursorPos
 }
@@ -1077,14 +1048,8 @@ func (context *IMContext) PreeditString() (string, *pango.AttrList, int32) {
 func (context *IMContext) Surrounding() (string, int32, bool) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IMContext").InvokeMethod("get_surrounding", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1094,13 +1059,11 @@ func (context *IMContext) Surrounding() (string, int32, bool) {
 	var _text string       // out
 	var _cursorIndex int32 // out
 	var _ok bool           // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_text = C.GoString((*C.gchar)(unsafe.Pointer(_out0)))
-	defer C.free(unsafe.Pointer(_out0))
-	_cursorIndex = *(*int32)(unsafe.Pointer(_out1))
-	if _cret != 0 {
+	_text = C.GoString((*C.gchar)(unsafe.Pointer(_outs[0])))
+	defer C.free(unsafe.Pointer(_outs[0]))
+	_cursorIndex = *(*int32)(unsafe.Pointer(_outs[1]))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1135,18 +1098,11 @@ func (context *IMContext) Surrounding() (string, int32, bool) {
 //    - ok: TRUE if surrounding text was provided; in this case you must free the
 //      result stored in text.
 //
-func (context *IMContext) SurroundingWithSelection() (text string, cursorIndex int32, anchorIndex int32, ok bool) {
+func (context *IMContext) SurroundingWithSelection() (text string, cursorIndex, anchorIndex int32, ok bool) {
 	var _args [1]girepository.Argument
 	var _outs [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _out2 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IMContext").InvokeMethod("get_surrounding_with_selection", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -1157,15 +1113,12 @@ func (context *IMContext) SurroundingWithSelection() (text string, cursorIndex i
 	var _cursorIndex int32 // out
 	var _anchorIndex int32 // out
 	var _ok bool           // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
-	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
 
-	_text = C.GoString((*C.gchar)(unsafe.Pointer(_out0)))
-	defer C.free(unsafe.Pointer(_out0))
-	_cursorIndex = *(*int32)(unsafe.Pointer(_out1))
-	_anchorIndex = *(*int32)(unsafe.Pointer(_out2))
-	if _cret != 0 {
+	_text = C.GoString((*C.gchar)(unsafe.Pointer(_outs[0])))
+	defer C.free(unsafe.Pointer(_outs[0]))
+	_cursorIndex = *(*int32)(unsafe.Pointer(_outs[1]))
+	_anchorIndex = *(*int32)(unsafe.Pointer(_outs[2]))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1178,11 +1131,8 @@ func (context *IMContext) SurroundingWithSelection() (text string, cursorIndex i
 // This will typically cause the input method to clear the preedit state.
 func (context *IMContext) Reset() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	girepository.MustFind("Gtk", "IMContext").InvokeMethod("reset", _args[:], nil)
 
@@ -1202,16 +1152,11 @@ func (context *IMContext) Reset() {
 //
 func (context *IMContext) SetClientWidget(widget Widgetter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	if widget != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "IMContext").InvokeMethod("set_client_widget", _args[:], nil)
 
@@ -1230,14 +1175,9 @@ func (context *IMContext) SetClientWidget(widget Widgetter) {
 //
 func (context *IMContext) SetCursorLocation(area *gdk.Rectangle) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(area)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(area)))
 
 	girepository.MustFind("Gtk", "IMContext").InvokeMethod("set_cursor_location", _args[:], nil)
 
@@ -1263,21 +1203,12 @@ func (context *IMContext) SetCursorLocation(area *gdk.Rectangle) {
 //
 func (context *IMContext) SetSurrounding(text string, len, cursorIndex int32) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.int   // out
-	var _arg3 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(len)
-	_arg3 = C.int(cursorIndex)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.int)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(len)
+	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(cursorIndex)
 
 	girepository.MustFind("Gtk", "IMContext").InvokeMethod("set_surrounding", _args[:], nil)
 
@@ -1302,24 +1233,13 @@ func (context *IMContext) SetSurrounding(text string, len, cursorIndex int32) {
 //
 func (context *IMContext) SetSurroundingWithSelection(text string, len, cursorIndex, anchorIndex int32) {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.int   // out
-	var _arg3 C.int   // out
-	var _arg4 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(len)
-	_arg3 = C.int(cursorIndex)
-	_arg4 = C.int(anchorIndex)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.int)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.int)(unsafe.Pointer(&_args[4])) = _arg4
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(len)
+	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(cursorIndex)
+	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(anchorIndex)
 
 	girepository.MustFind("Gtk", "IMContext").InvokeMethod("set_surrounding_with_selection", _args[:], nil)
 
@@ -1343,16 +1263,11 @@ func (context *IMContext) SetSurroundingWithSelection(text string, len, cursorIn
 //
 func (context *IMContext) SetUsePreedit(usePreedit bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	if usePreedit {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "IMContext").InvokeMethod("set_use_preedit", _args[:], nil)
 

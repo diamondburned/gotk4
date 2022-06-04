@@ -113,11 +113,8 @@ func marshalMisc(p uintptr) (interface{}, error) {
 // Deprecated: Since 2.12.
 func (misc *Misc) ThreadsEnter() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
 
 	girepository.MustFind("Atk", "Misc").InvokeMethod("threads_enter", _args[:], nil)
 
@@ -136,11 +133,8 @@ func (misc *Misc) ThreadsEnter() {
 // Deprecated: Since 2.12.
 func (misc *Misc) ThreadsLeave() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
 
 	girepository.MustFind("Atk", "Misc").InvokeMethod("threads_leave", _args[:], nil)
 
@@ -157,8 +151,6 @@ func (misc *Misc) ThreadsLeave() {
 //    - misc: singleton instance of AtkMisc for this application.
 //
 func MiscGetInstance() *Misc {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Atk", "get_instance").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

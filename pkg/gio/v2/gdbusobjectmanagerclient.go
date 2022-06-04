@@ -308,13 +308,8 @@ func (manager *DBusObjectManagerClient) ConnectInterfaceProxySignal(f func(objec
 //
 func NewDBusObjectManagerClientFinish(res AsyncResulter) (*DBusObjectManagerClient, error) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusObjectManagerClient").InvokeMethod("new_DBusObjectManagerClient_finish", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -325,7 +320,7 @@ func NewDBusObjectManagerClientFinish(res AsyncResulter) (*DBusObjectManagerClie
 	var _goerr error                                      // out
 
 	_dBusObjectManagerClient = wrapDBusObjectManagerClient(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -347,13 +342,8 @@ func NewDBusObjectManagerClientFinish(res AsyncResulter) (*DBusObjectManagerClie
 //
 func NewDBusObjectManagerClientForBusFinish(res AsyncResulter) (*DBusObjectManagerClient, error) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusObjectManagerClient").InvokeMethod("new_DBusObjectManagerClient_for_bus_finish", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -364,7 +354,7 @@ func NewDBusObjectManagerClientForBusFinish(res AsyncResulter) (*DBusObjectManag
 	var _goerr error                                      // out
 
 	_dBusObjectManagerClient = wrapDBusObjectManagerClient(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -379,12 +369,8 @@ func NewDBusObjectManagerClientForBusFinish(res AsyncResulter) (*DBusObjectManag
 //
 func (manager *DBusObjectManagerClient) Connection() *DBusConnection {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusObjectManagerClient").InvokeMethod("get_connection", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -408,12 +394,8 @@ func (manager *DBusObjectManagerClient) Connection() *DBusConnection {
 //
 func (manager *DBusObjectManagerClient) Name() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusObjectManagerClient").InvokeMethod("get_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -438,12 +420,8 @@ func (manager *DBusObjectManagerClient) Name() string {
 //
 func (manager *DBusObjectManagerClient) NameOwner() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusObjectManagerClient").InvokeMethod("get_name_owner", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -452,7 +430,7 @@ func (manager *DBusObjectManagerClient) NameOwner() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 		defer C.free(unsafe.Pointer(_cret))
 	}

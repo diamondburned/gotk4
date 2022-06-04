@@ -117,12 +117,8 @@ func marshalDeviceTool(p uintptr) (interface{}, error) {
 //
 func (tool *DeviceTool) HardwareID() uint64 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.guint64 // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tool).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tool).Native()))
 
 	_gret := girepository.MustFind("Gdk", "DeviceTool").InvokeMethod("get_hardware_id", _args[:], nil)
 	_cret = *(*C.guint64)(unsafe.Pointer(&_gret))
@@ -131,7 +127,7 @@ func (tool *DeviceTool) HardwareID() uint64 {
 
 	var _guint64 uint64 // out
 
-	_guint64 = uint64(_cret)
+	_guint64 = uint64(*(*C.guint64)(unsafe.Pointer(&_cret)))
 
 	return _guint64
 }
@@ -147,12 +143,8 @@ func (tool *DeviceTool) HardwareID() uint64 {
 //
 func (tool *DeviceTool) Serial() uint64 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.guint64 // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(tool).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tool).Native()))
 
 	_gret := girepository.MustFind("Gdk", "DeviceTool").InvokeMethod("get_serial", _args[:], nil)
 	_cret = *(*C.guint64)(unsafe.Pointer(&_gret))
@@ -161,7 +153,7 @@ func (tool *DeviceTool) Serial() uint64 {
 
 	var _guint64 uint64 // out
 
-	_guint64 = uint64(_cret)
+	_guint64 = uint64(*(*C.guint64)(unsafe.Pointer(&_cret)))
 
 	return _guint64
 }

@@ -80,12 +80,8 @@ func marshalDrawingContext(p uintptr) (interface{}, error) {
 //
 func (context *DrawingContext) CairoContext() *cairo.Context {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gdk", "DrawingContext").InvokeMethod("get_cairo_context", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -111,12 +107,8 @@ func (context *DrawingContext) CairoContext() *cairo.Context {
 //
 func (context *DrawingContext) Clip() *cairo.Region {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gdk", "DrawingContext").InvokeMethod("get_clip", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -125,7 +117,7 @@ func (context *DrawingContext) Clip() *cairo.Region {
 
 	var _region *cairo.Region // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 			_region = (*cairo.Region)(unsafe.Pointer(_pp))
@@ -146,12 +138,8 @@ func (context *DrawingContext) Clip() *cairo.Region {
 //
 func (context *DrawingContext) Window() Windower {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gdk", "DrawingContext").InvokeMethod("get_window", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -189,12 +177,8 @@ func (context *DrawingContext) Window() Windower {
 //
 func (context *DrawingContext) IsValid() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gdk", "DrawingContext").InvokeMethod("is_valid", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -203,7 +187,7 @@ func (context *DrawingContext) IsValid() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

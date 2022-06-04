@@ -127,12 +127,8 @@ func BaseGLContext(obj GLContexter) *GLContext {
 //
 func (context *GLContext) DebugEnabled() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gdk", "GLContext").InvokeMethod("get_debug_enabled", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -141,7 +137,7 @@ func (context *GLContext) DebugEnabled() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -156,12 +152,8 @@ func (context *GLContext) DebugEnabled() bool {
 //
 func (context *GLContext) Display() *Display {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gdk", "GLContext").InvokeMethod("get_display", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -170,7 +162,7 @@ func (context *GLContext) Display() *Display {
 
 	var _display *Display // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -187,12 +179,8 @@ func (context *GLContext) Display() *Display {
 //
 func (context *GLContext) ForwardCompatible() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gdk", "GLContext").InvokeMethod("get_forward_compatible", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -201,7 +189,7 @@ func (context *GLContext) ForwardCompatible() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -217,16 +205,11 @@ func (context *GLContext) ForwardCompatible() bool {
 //    - major (optional): return location for the major version to request.
 //    - minor (optional): return location for the minor version to request.
 //
-func (context *GLContext) RequiredVersion() (major int32, minor int32) {
+func (context *GLContext) RequiredVersion() (major, minor int32) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	girepository.MustFind("Gdk", "GLContext").InvokeMethod("get_required_version", _args[:], _outs[:])
 
@@ -234,14 +217,12 @@ func (context *GLContext) RequiredVersion() (major int32, minor int32) {
 
 	var _major int32 // out
 	var _minor int32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_major = *(*int32)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_major = *(*int32)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_minor = *(*int32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_minor = *(*int32)(unsafe.Pointer(_outs[1]))
 	}
 
 	return _major, _minor
@@ -255,12 +236,8 @@ func (context *GLContext) RequiredVersion() (major int32, minor int32) {
 //
 func (context *GLContext) SharedContext() GLContexter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gdk", "GLContext").InvokeMethod("get_shared_context", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -269,7 +246,7 @@ func (context *GLContext) SharedContext() GLContexter {
 
 	var _glContext GLContexter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -297,12 +274,8 @@ func (context *GLContext) SharedContext() GLContexter {
 //
 func (context *GLContext) Surface() Surfacer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gdk", "GLContext").InvokeMethod("get_surface", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -311,7 +284,7 @@ func (context *GLContext) Surface() Surfacer {
 
 	var _surface Surfacer // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -339,12 +312,8 @@ func (context *GLContext) Surface() Surfacer {
 //
 func (context *GLContext) UseES() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gdk", "GLContext").InvokeMethod("get_use_es", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -353,7 +322,7 @@ func (context *GLContext) UseES() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -369,16 +338,11 @@ func (context *GLContext) UseES() bool {
 //    - major: return location for the major version.
 //    - minor: return location for the minor version.
 //
-func (context *GLContext) Version() (major int32, minor int32) {
+func (context *GLContext) Version() (major, minor int32) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	girepository.MustFind("Gdk", "GLContext").InvokeMethod("get_version", _args[:], _outs[:])
 
@@ -386,11 +350,9 @@ func (context *GLContext) Version() (major int32, minor int32) {
 
 	var _major int32 // out
 	var _minor int32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_major = *(*int32)(unsafe.Pointer(_out0))
-	_minor = *(*int32)(unsafe.Pointer(_out1))
+	_major = *(*int32)(unsafe.Pointer(_outs[0]))
+	_minor = *(*int32)(unsafe.Pointer(_outs[1]))
 
 	return _major, _minor
 }
@@ -418,12 +380,8 @@ func (context *GLContext) Version() (major int32, minor int32) {
 //
 func (context *GLContext) IsLegacy() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gdk", "GLContext").InvokeMethod("is_legacy", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -432,7 +390,7 @@ func (context *GLContext) IsLegacy() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -442,11 +400,8 @@ func (context *GLContext) IsLegacy() bool {
 // MakeCurrent makes the context the current one.
 func (context *GLContext) MakeCurrent() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	girepository.MustFind("Gdk", "GLContext").InvokeMethod("make_current", _args[:], nil)
 
@@ -458,12 +413,8 @@ func (context *GLContext) MakeCurrent() {
 // It is safe to call this function on a realized GdkGLContext.
 func (context *GLContext) Realize() error {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	girepository.MustFind("Gdk", "GLContext").InvokeMethod("realize", _args[:], nil)
 
@@ -471,7 +422,7 @@ func (context *GLContext) Realize() error {
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -492,16 +443,11 @@ func (context *GLContext) Realize() error {
 //
 func (context *GLContext) SetDebugEnabled(enabled bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	if enabled {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gdk", "GLContext").InvokeMethod("set_debug_enabled", _args[:], nil)
 
@@ -526,16 +472,11 @@ func (context *GLContext) SetDebugEnabled(enabled bool) {
 //
 func (context *GLContext) SetForwardCompatible(compatible bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	if compatible {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gdk", "GLContext").InvokeMethod("set_forward_compatible", _args[:], nil)
 
@@ -557,17 +498,10 @@ func (context *GLContext) SetForwardCompatible(compatible bool) {
 //
 func (context *GLContext) SetRequiredVersion(major, minor int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
-	var _arg2 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = C.int(major)
-	_arg2 = C.int(minor)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(major)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(minor)
 
 	girepository.MustFind("Gdk", "GLContext").InvokeMethod("set_required_version", _args[:], nil)
 
@@ -597,14 +531,9 @@ func (context *GLContext) SetRequiredVersion(major, minor int32) {
 //
 func (context *GLContext) SetUseES(useEs int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = C.int(useEs)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(useEs)
 
 	girepository.MustFind("Gdk", "GLContext").InvokeMethod("set_use_es", _args[:], nil)
 
@@ -617,7 +546,6 @@ func (context *GLContext) SetUseES(useEs int32) {
 // Any OpenGL call after this function returns will be ignored until
 // gdk.GLContext.MakeCurrent() is called.
 func GLContextClearCurrent() {
-
 	girepository.MustFind("Gdk", "clear_current").Invoke(nil, nil)
 }
 
@@ -628,14 +556,12 @@ func GLContextClearCurrent() {
 //    - glContext (optional): current GdkGLContext, or NULL.
 //
 func GLContextGetCurrent() GLContexter {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gdk", "get_current").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _glContext GLContexter // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 

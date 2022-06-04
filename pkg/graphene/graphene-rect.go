@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -55,14 +56,14 @@ func marshalRect(p uintptr) (interface{}, error) {
 // Origin coordinates of the origin of the rectangle.
 func (r *Rect) Origin() *Point {
 	var v *Point // out
-	v = (*Point)(gextras.NewStructNative(unsafe.Pointer((&r.native.origin))))
+	v = (*Point)(gextras.NewStructNative(unsafe.Pointer((&valptr))))
 	return v
 }
 
 // Size: size of the rectangle.
 func (r *Rect) Size() *Size {
 	var v *Size // out
-	v = (*Size)(gextras.NewStructNative(unsafe.Pointer((&r.native.size))))
+	v = (*Size)(gextras.NewStructNative(unsafe.Pointer((&valptr))))
 	return v
 }
 

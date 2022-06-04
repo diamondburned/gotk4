@@ -156,12 +156,8 @@ func marshalTLSBackend(p uintptr) (interface{}, error) {
 //
 func (backend *TLSBackend) DefaultDatabase() TLSDatabaser {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -205,16 +201,11 @@ func (backend *TLSBackend) DefaultDatabase() TLSDatabaser {
 //
 func (backend *TLSBackend) SetDefaultDatabase(database TLSDatabaser) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
 	if database != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(database).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(database).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(backend)
 	runtime.KeepAlive(database)
@@ -229,12 +220,8 @@ func (backend *TLSBackend) SetDefaultDatabase(database TLSDatabaser) {
 //
 func (backend *TLSBackend) SupportsDTLS() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -242,7 +229,7 @@ func (backend *TLSBackend) SupportsDTLS() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -258,12 +245,8 @@ func (backend *TLSBackend) SupportsDTLS() bool {
 //
 func (backend *TLSBackend) SupportsTLS() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -271,7 +254,7 @@ func (backend *TLSBackend) SupportsTLS() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -285,8 +268,6 @@ func (backend *TLSBackend) SupportsTLS() bool {
 //    - tlsBackend which will be a dummy object if no TLS backend is available.
 //
 func TLSBackendGetDefault() *TLSBackend {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gio", "get_default").Invoke(nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

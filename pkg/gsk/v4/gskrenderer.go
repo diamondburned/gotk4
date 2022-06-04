@@ -108,12 +108,8 @@ func BaseRenderer(obj Rendererer) *Renderer {
 //
 func NewRendererForSurface(surface gdk.Surfacer) *Renderer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
 	_gret := girepository.MustFind("Gsk", "Renderer").InvokeMethod("new_Renderer_for_surface", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -122,7 +118,7 @@ func NewRendererForSurface(surface gdk.Surfacer) *Renderer {
 
 	var _renderer *Renderer // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_renderer = wrapRenderer(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
@@ -139,12 +135,8 @@ func NewRendererForSurface(surface gdk.Surfacer) *Renderer {
 //
 func (renderer *Renderer) Surface() gdk.Surfacer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
 	_gret := girepository.MustFind("Gsk", "Renderer").InvokeMethod("get_surface", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -153,7 +145,7 @@ func (renderer *Renderer) Surface() gdk.Surfacer {
 
 	var _surface gdk.Surfacer // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
 
@@ -181,12 +173,8 @@ func (renderer *Renderer) Surface() gdk.Surfacer {
 //
 func (renderer *Renderer) IsRealized() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
 	_gret := girepository.MustFind("Gsk", "Renderer").InvokeMethod("is_realized", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -195,7 +183,7 @@ func (renderer *Renderer) IsRealized() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -211,15 +199,9 @@ func (renderer *Renderer) IsRealized() bool {
 //
 func (renderer *Renderer) Realize(surface gdk.Surfacer) error {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
 	girepository.MustFind("Gsk", "Renderer").InvokeMethod("realize", _args[:], nil)
 
@@ -228,7 +210,7 @@ func (renderer *Renderer) Realize(surface gdk.Surfacer) error {
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -254,19 +236,12 @@ func (renderer *Renderer) Realize(surface gdk.Surfacer) error {
 //
 func (renderer *Renderer) Render(root RenderNoder, region *cairo.Region) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(root).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(root).Native()))
 	if region != nil {
-		_arg2 = (*C.void)(unsafe.Pointer(region.Native()))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(region.Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gsk", "Renderer").InvokeMethod("render", _args[:], nil)
 
@@ -295,20 +270,12 @@ func (renderer *Renderer) Render(root RenderNoder, region *cairo.Region) {
 //
 func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rect) gdk.Texturer {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(root).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(root).Native()))
 	if viewport != nil {
-		_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(viewport)))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(viewport)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gsk", "Renderer").InvokeMethod("render_texture", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -343,11 +310,8 @@ func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rec
 // Unrealize releases all the resources created by gsk_renderer_realize().
 func (renderer *Renderer) Unrealize() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
 	girepository.MustFind("Gsk", "Renderer").InvokeMethod("unrealize", _args[:], nil)
 

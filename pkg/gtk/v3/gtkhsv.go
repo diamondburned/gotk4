@@ -120,8 +120,6 @@ func (hsv *HSV) ConnectChanged(f func()) coreglib.SignalHandle {
 //    - hsV: newly-created HSV color selector.
 //
 func NewHSV() *HSV {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "HSV").InvokeMethod("new_HSV", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -141,17 +139,11 @@ func NewHSV() *HSV {
 //    - s: return value for the saturation.
 //    - v: return value for the value.
 //
-func (hsv *HSV) Color() (h float64, s float64, v float64) {
+func (hsv *HSV) Color() (h, s, v float64) {
 	var _args [1]girepository.Argument
 	var _outs [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
-	var _out2 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hsv).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hsv).Native()))
 
 	girepository.MustFind("Gtk", "HSV").InvokeMethod("get_color", _args[:], _outs[:])
 
@@ -160,13 +152,10 @@ func (hsv *HSV) Color() (h float64, s float64, v float64) {
 	var _h float64 // out
 	var _s float64 // out
 	var _v float64 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
-	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
 
-	_h = *(*float64)(unsafe.Pointer(_out0))
-	_s = *(*float64)(unsafe.Pointer(_out1))
-	_v = *(*float64)(unsafe.Pointer(_out2))
+	_h = *(*float64)(unsafe.Pointer(_outs[0]))
+	_s = *(*float64)(unsafe.Pointer(_outs[1]))
+	_v = *(*float64)(unsafe.Pointer(_outs[2]))
 
 	return _h, _s, _v
 }
@@ -178,16 +167,11 @@ func (hsv *HSV) Color() (h float64, s float64, v float64) {
 //    - size: return value for the diameter of the hue ring.
 //    - ringWidth: return value for the width of the hue ring.
 //
-func (hsv *HSV) Metrics() (size int32, ringWidth int32) {
+func (hsv *HSV) Metrics() (size, ringWidth int32) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hsv).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hsv).Native()))
 
 	girepository.MustFind("Gtk", "HSV").InvokeMethod("get_metrics", _args[:], _outs[:])
 
@@ -195,11 +179,9 @@ func (hsv *HSV) Metrics() (size int32, ringWidth int32) {
 
 	var _size int32      // out
 	var _ringWidth int32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_size = *(*int32)(unsafe.Pointer(_out0))
-	_ringWidth = *(*int32)(unsafe.Pointer(_out1))
+	_size = *(*int32)(unsafe.Pointer(_outs[0]))
+	_ringWidth = *(*int32)(unsafe.Pointer(_outs[1]))
 
 	return _size, _ringWidth
 }
@@ -217,12 +199,8 @@ func (hsv *HSV) Metrics() (size int32, ringWidth int32) {
 //
 func (hsv *HSV) IsAdjusting() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hsv).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hsv).Native()))
 
 	_gret := girepository.MustFind("Gtk", "HSV").InvokeMethod("is_adjusting", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -231,7 +209,7 @@ func (hsv *HSV) IsAdjusting() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -249,20 +227,11 @@ func (hsv *HSV) IsAdjusting() bool {
 //
 func (hsv *HSV) SetColor(h, s, v float64) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 C.double // out
-	var _arg2 C.double // out
-	var _arg3 C.double // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hsv).Native()))
-	_arg1 = C.double(h)
-	_arg2 = C.double(s)
-	_arg3 = C.double(v)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.double)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hsv).Native()))
+	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(h)
+	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(s)
+	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(v)
 
 	girepository.MustFind("Gtk", "HSV").InvokeMethod("set_color", _args[:], nil)
 
@@ -281,17 +250,10 @@ func (hsv *HSV) SetColor(h, s, v float64) {
 //
 func (hsv *HSV) SetMetrics(size, ringWidth int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
-	var _arg2 C.gint  // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(hsv).Native()))
-	_arg1 = C.gint(size)
-	_arg2 = C.gint(ringWidth)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hsv).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(size)
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(ringWidth)
 
 	girepository.MustFind("Gtk", "HSV").InvokeMethod("set_metrics", _args[:], nil)
 

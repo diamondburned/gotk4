@@ -33,12 +33,8 @@ import "C"
 //
 func X11DeviceGetID(device *X11DeviceCore) int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	_gret := girepository.MustFind("GdkX11", "x11_device_get_id").Invoke(_args[:], nil)
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
@@ -47,7 +43,7 @@ func X11DeviceGetID(device *X11DeviceCore) int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }

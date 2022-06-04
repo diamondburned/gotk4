@@ -5,7 +5,6 @@ package gio
 import (
 	"context"
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -202,24 +201,20 @@ type FileAttributeMatcher struct {
 
 // fileAttributeMatcher is the struct that's finalized.
 type fileAttributeMatcher struct {
-	native *C.GFileAttributeMatcher
+	native unsafe.Pointer
 }
 
 func marshalFileAttributeMatcher(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &FileAttributeMatcher{&fileAttributeMatcher{(*C.GFileAttributeMatcher)(b)}}, nil
+	return &FileAttributeMatcher{&fileAttributeMatcher{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewFileAttributeMatcher constructs a struct FileAttributeMatcher.
 func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(attributes)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -256,16 +251,10 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 //
 func (matcher *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(matcher)))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(ns)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matcher)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(ns)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -274,7 +263,7 @@ func (matcher *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -290,12 +279,8 @@ func (matcher *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 //
 func (matcher *FileAttributeMatcher) EnumerateNext() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(matcher)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matcher)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -303,7 +288,7 @@ func (matcher *FileAttributeMatcher) EnumerateNext() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -324,16 +309,10 @@ func (matcher *FileAttributeMatcher) EnumerateNext() string {
 //
 func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(matcher)))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matcher)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -342,7 +321,7 @@ func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -362,16 +341,10 @@ func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
 //
 func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(matcher)))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matcher)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -380,7 +353,7 @@ func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -406,19 +379,13 @@ func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 //
 func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *FileAttributeMatcher {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
 	if matcher != nil {
-		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(matcher)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matcher)))
 	}
 	if subtract != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(subtract)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(subtract)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -427,7 +394,7 @@ func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *F
 
 	var _fileAttributeMatcher *FileAttributeMatcher // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_fileAttributeMatcher = (*FileAttributeMatcher)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_fileAttributeMatcher)),
@@ -452,14 +419,10 @@ func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *F
 //
 func (matcher *FileAttributeMatcher) String() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
 	if matcher != nil {
-		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(matcher)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matcher)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -500,7 +463,7 @@ type InputMessage struct {
 
 // inputMessage is the struct that's finalized.
 type inputMessage struct {
-	native *C.GInputMessage
+	native unsafe.Pointer
 }
 
 // InputVector: structure used for scatter/gather data input. You generally pass
@@ -514,20 +477,24 @@ type InputVector struct {
 
 // inputVector is the struct that's finalized.
 type inputVector struct {
-	native *C.GInputVector
+	native unsafe.Pointer
 }
 
 // Buffer: pointer to a buffer where data will be written.
 func (i *InputVector) Buffer() unsafe.Pointer {
+	offset := girepository.MustFind("Gio", "InputVector").StructFieldOffset("buffer")
+	valptr := unsafe.Add(unsafe.Pointer(i), offset)
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(i.native.buffer))
+	v = (unsafe.Pointer)(unsafe.Pointer(valptr))
 	return v
 }
 
 // Size: available size in buffer.
 func (i *InputVector) Size() uint {
+	offset := girepository.MustFind("Gio", "InputVector").StructFieldOffset("size")
+	valptr := unsafe.Add(unsafe.Pointer(i), offset)
 	var v uint // out
-	v = uint(i.native.size)
+	v = uint(*(*C.gsize)(unsafe.Pointer(&valptr)))
 	return v
 }
 
@@ -546,7 +513,7 @@ type OutputMessage struct {
 
 // outputMessage is the struct that's finalized.
 type outputMessage struct {
-	native *C.GOutputMessage
+	native unsafe.Pointer
 }
 
 // OutputVector: structure used for scatter/gather data output. You generally
@@ -560,20 +527,24 @@ type OutputVector struct {
 
 // outputVector is the struct that's finalized.
 type outputVector struct {
-	native *C.GOutputVector
+	native unsafe.Pointer
 }
 
 // Buffer: pointer to a buffer of data to read.
 func (o *OutputVector) Buffer() unsafe.Pointer {
+	offset := girepository.MustFind("Gio", "OutputVector").StructFieldOffset("buffer")
+	valptr := unsafe.Add(unsafe.Pointer(o), offset)
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(o.native.buffer))
+	v = (unsafe.Pointer)(unsafe.Pointer(valptr))
 	return v
 }
 
 // Size: size of buffer.
 func (o *OutputVector) Size() uint {
+	offset := girepository.MustFind("Gio", "OutputVector").StructFieldOffset("size")
+	valptr := unsafe.Add(unsafe.Pointer(o), offset)
 	var v uint // out
-	v = uint(o.native.size)
+	v = uint(*(*C.gsize)(unsafe.Pointer(&valptr)))
 	return v
 }
 
@@ -731,24 +702,19 @@ type Resource struct {
 
 // resource is the struct that's finalized.
 type resource struct {
-	native *C.GResource
+	native unsafe.Pointer
 }
 
 func marshalResource(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &Resource{&resource{(*C.GResource)(b)}}, nil
+	return &Resource{&resource{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewResourceFromData constructs a struct Resource.
 func NewResourceFromData(data *glib.Bytes) (*Resource, error) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(data)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(data)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -764,7 +730,7 @@ func NewResourceFromData(data *glib.Bytes) (*Resource, error) {
 			C.g_resource_unref((*C.GResource)(intern.C))
 		},
 	)
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -791,33 +757,23 @@ type SrvTarget struct {
 
 // srvTarget is the struct that's finalized.
 type srvTarget struct {
-	native *C.GSrvTarget
+	native unsafe.Pointer
 }
 
 func marshalSrvTarget(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &SrvTarget{&srvTarget{(*C.GSrvTarget)(b)}}, nil
+	return &SrvTarget{&srvTarget{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewSrvTarget constructs a struct SrvTarget.
 func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) *SrvTarget {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 C.guint16 // out
-	var _arg2 C.guint16 // out
-	var _arg3 C.guint16 // out
-	var _cret *C.void   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(hostname)))
-	defer C.free(unsafe.Pointer(_arg0))
-	_arg1 = C.guint16(port)
-	_arg2 = C.guint16(priority)
-	_arg3 = C.guint16(weight)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint16)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.guint16)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.guint16)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(hostname)))
+	defer C.free(unsafe.Pointer(_args[0]))
+	*(*C.guint16)(unsafe.Pointer(&_args[1])) = C.guint16(port)
+	*(*C.guint16)(unsafe.Pointer(&_args[2])) = C.guint16(priority)
+	*(*C.guint16)(unsafe.Pointer(&_args[3])) = C.guint16(weight)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -847,12 +803,8 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 //
 func (target *SrvTarget) Copy() *SrvTarget {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -882,12 +834,8 @@ func (target *SrvTarget) Copy() *SrvTarget {
 //
 func (target *SrvTarget) Hostname() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -908,12 +856,8 @@ func (target *SrvTarget) Hostname() string {
 //
 func (target *SrvTarget) Port() uint16 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.guint16 // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
 
 	_cret = *(*C.guint16)(unsafe.Pointer(&_gret))
 
@@ -921,7 +865,7 @@ func (target *SrvTarget) Port() uint16 {
 
 	var _guint16 uint16 // out
 
-	_guint16 = uint16(_cret)
+	_guint16 = uint16(*(*C.guint16)(unsafe.Pointer(&_cret)))
 
 	return _guint16
 }
@@ -935,12 +879,8 @@ func (target *SrvTarget) Port() uint16 {
 //
 func (target *SrvTarget) Priority() uint16 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.guint16 // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
 
 	_cret = *(*C.guint16)(unsafe.Pointer(&_gret))
 
@@ -948,7 +888,7 @@ func (target *SrvTarget) Priority() uint16 {
 
 	var _guint16 uint16 // out
 
-	_guint16 = uint16(_cret)
+	_guint16 = uint16(*(*C.guint16)(unsafe.Pointer(&_cret)))
 
 	return _guint16
 }
@@ -962,12 +902,8 @@ func (target *SrvTarget) Priority() uint16 {
 //
 func (target *SrvTarget) Weight() uint16 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.guint16 // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
 
 	_cret = *(*C.guint16)(unsafe.Pointer(&_gret))
 
@@ -975,7 +911,7 @@ func (target *SrvTarget) Weight() uint16 {
 
 	var _guint16 uint16 // out
 
-	_guint16 = uint16(_cret)
+	_guint16 = uint16(*(*C.guint16)(unsafe.Pointer(&_cret)))
 
 	return _guint16
 }

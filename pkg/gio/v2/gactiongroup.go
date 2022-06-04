@@ -136,7 +136,7 @@ type ActionGrouper interface {
 	ListActions() []string
 	// QueryAction queries all aspects of the named action within an
 	// action_group.
-	QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool)
+	QueryAction(actionName string) (enabled bool, parameterType, stateType *glib.VariantType, stateHint, state *glib.Variant, ok bool)
 
 	// Action-added signals that a new action was just added to the group.
 	ConnectActionAdded(func(actionName string)) coreglib.SignalHandle
@@ -291,15 +291,10 @@ func (actionGroup *ActionGroup) ConnectActionStateChanged(f func(actionName stri
 //
 func (actionGroup *ActionGroup) ActionAdded(actionName string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
@@ -317,20 +312,13 @@ func (actionGroup *ActionGroup) ActionAdded(actionName string) {
 //
 func (actionGroup *ActionGroup) ActionEnabledChanged(actionName string, enabled bool) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 	if enabled {
-		_arg2 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
@@ -347,15 +335,10 @@ func (actionGroup *ActionGroup) ActionEnabledChanged(actionName string, enabled 
 //
 func (actionGroup *ActionGroup) ActionRemoved(actionName string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
@@ -373,18 +356,11 @@ func (actionGroup *ActionGroup) ActionRemoved(actionName string) {
 //
 func (actionGroup *ActionGroup) ActionStateChanged(actionName string, state *glib.Variant) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(state)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(state)))
 
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
@@ -428,20 +404,13 @@ func (actionGroup *ActionGroup) ActionStateChanged(actionName string, state *gli
 //
 func (actionGroup *ActionGroup) ActivateAction(actionName string, parameter *glib.Variant) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 	if parameter != nil {
-		_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(parameter)))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parameter)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
@@ -467,18 +436,11 @@ func (actionGroup *ActionGroup) ActivateAction(actionName string, parameter *gli
 //
 func (actionGroup *ActionGroup) ChangeActionState(actionName string, value *glib.Variant) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
 
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
@@ -501,16 +463,10 @@ func (actionGroup *ActionGroup) ChangeActionState(actionName string, value *glib
 //
 func (actionGroup *ActionGroup) ActionEnabled(actionName string) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -519,7 +475,7 @@ func (actionGroup *ActionGroup) ActionEnabled(actionName string) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -550,16 +506,10 @@ func (actionGroup *ActionGroup) ActionEnabled(actionName string) bool {
 //
 func (actionGroup *ActionGroup) ActionParameterType(actionName string) *glib.VariantType {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -568,7 +518,7 @@ func (actionGroup *ActionGroup) ActionParameterType(actionName string) *glib.Var
 
 	var _variantType *glib.VariantType // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_variantType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	}
 
@@ -595,16 +545,10 @@ func (actionGroup *ActionGroup) ActionParameterType(actionName string) *glib.Var
 //
 func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -613,7 +557,7 @@ func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
@@ -654,16 +598,10 @@ func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
 //
 func (actionGroup *ActionGroup) ActionStateHint(actionName string) *glib.Variant {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -672,7 +610,7 @@ func (actionGroup *ActionGroup) ActionStateHint(actionName string) *glib.Variant
 
 	var _variant *glib.Variant // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
@@ -711,16 +649,10 @@ func (actionGroup *ActionGroup) ActionStateHint(actionName string) *glib.Variant
 //
 func (actionGroup *ActionGroup) ActionStateType(actionName string) *glib.VariantType {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -729,7 +661,7 @@ func (actionGroup *ActionGroup) ActionStateType(actionName string) *glib.Variant
 
 	var _variantType *glib.VariantType // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_variantType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	}
 
@@ -748,16 +680,10 @@ func (actionGroup *ActionGroup) ActionStateType(actionName string) *glib.Variant
 //
 func (actionGroup *ActionGroup) HasAction(actionName string) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -766,7 +692,7 @@ func (actionGroup *ActionGroup) HasAction(actionName string) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -784,12 +710,8 @@ func (actionGroup *ActionGroup) HasAction(actionName string) bool {
 //
 func (actionGroup *ActionGroup) ListActions() []string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret **C.gchar // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 
 	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
 
@@ -856,24 +778,13 @@ func (actionGroup *ActionGroup) ListActions() []string {
 //    - state (optional): current state, or NULL if stateless.
 //    - ok: TRUE if the action exists, else FALSE.
 //
-func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
+func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, parameterType, stateType *glib.VariantType, stateHint, state *glib.Variant, ok bool) {
 	var _args [2]girepository.Argument
 	var _outs [5]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _out2 *C.void    // in
-	var _out3 *C.void    // in
-	var _out4 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -886,17 +797,12 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 	var _stateHint *glib.Variant         // out
 	var _state *glib.Variant             // out
 	var _ok bool                         // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
-	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
-	_out3 = *(**C.void)(unsafe.Pointer(&_outs[3]))
-	_out4 = *(**C.void)(unsafe.Pointer(&_outs[4]))
 
-	if *_out0 != 0 {
+	if **(**C.void)(unsafe.Pointer(&_outs[0])) != 0 {
 		_enabled = true
 	}
-	if _out1 != nil {
-		_parameterType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_out1)))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_parameterType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_parameterType)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -904,8 +810,8 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 			},
 		)
 	}
-	if _out2 != nil {
-		_stateType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_out2)))
+	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
+		_stateType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(_outs[2])))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_stateType)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -913,8 +819,8 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 			},
 		)
 	}
-	if _out3 != nil {
-		_stateHint = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_out3)))
+	if *(**C.void)(unsafe.Pointer(&_outs[3])) != nil {
+		_stateHint = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_outs[3])))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_stateHint)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -922,8 +828,8 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 			},
 		)
 	}
-	if _out4 != nil {
-		_state = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_out4)))
+	if *(**C.void)(unsafe.Pointer(&_outs[4])) != nil {
+		_state = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_outs[4])))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_state)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -931,7 +837,7 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 			},
 		)
 	}
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

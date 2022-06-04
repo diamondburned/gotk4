@@ -79,18 +79,12 @@ func marshalCustomSorter(p uintptr) (interface{}, error) {
 //
 func NewCustomSorter(sortFunc glib.CompareDataFunc) *CustomSorter {
 	var _args [3]girepository.Argument
-	var _arg0 C.gpointer // out
-	var _arg1 C.gpointer
-	var _arg2 C.GDestroyNotify
-	var _cret *C.void // in
 
 	if sortFunc != nil {
-		_arg0 = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
-		_arg1 = C.gpointer(gbox.Assign(sortFunc))
-		_arg2 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		*(*C.gpointer)(unsafe.Pointer(&_args[0])) = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
+		_args[1] = C.gpointer(gbox.Assign(sortFunc))
+		_args[2] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
-
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gtk", "CustomSorter").InvokeMethod("new_CustomSorter", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -98,7 +92,6 @@ func NewCustomSorter(sortFunc glib.CompareDataFunc) *CustomSorter {
 	runtime.KeepAlive(sortFunc)
 
 	var _customSorter *CustomSorter // out
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
 	_customSorter = wrapCustomSorter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
@@ -120,20 +113,13 @@ func NewCustomSorter(sortFunc glib.CompareDataFunc) *CustomSorter {
 //
 func (self *CustomSorter) SetSortFunc(sortFunc glib.CompareDataFunc) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if sortFunc != nil {
-		_arg1 = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
-		_arg2 = C.gpointer(gbox.Assign(sortFunc))
-		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+		*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
+		_args[2] = C.gpointer(gbox.Assign(sortFunc))
+		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "CustomSorter").InvokeMethod("set_sort_func", _args[:], nil)
 

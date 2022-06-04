@@ -5,7 +5,6 @@ package gtk
 import (
 	"fmt"
 	"runtime"
-	"runtime/cgo"
 	"strings"
 	"unsafe"
 
@@ -1101,17 +1100,11 @@ func (childModel *TreeModel) ConnectRowsReordered(f func(path *TreePath, iter *T
 //
 func (model *TreeModel) ForEach(fn TreeModelForEachFunc) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _arg2 C.gpointer
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_TreeModelForEachFunc)
-	_arg2 = C.gpointer(gbox.Assign(fn))
-	defer gbox.Delete(uintptr(_arg2))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gtk3_TreeModelForEachFunc)
+	_args[2] = C.gpointer(gbox.Assign(fn))
+	defer gbox.Delete(uintptr(_args[2]))
 
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(fn)
@@ -1132,16 +1125,9 @@ func (model *TreeModel) ForEach(fn TreeModelForEachFunc) {
 func (treeModel *TreeModel) Iter(path *TreePath) (*TreeIter, bool) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1150,10 +1136,9 @@ func (treeModel *TreeModel) Iter(path *TreePath) (*TreeIter, bool) {
 
 	var _iter *TreeIter // out
 	var _ok bool        // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	if _cret != 0 {
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1171,13 +1156,8 @@ func (treeModel *TreeModel) Iter(path *TreePath) (*TreeIter, bool) {
 func (treeModel *TreeModel) IterFirst() (*TreeIter, bool) {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1185,10 +1165,9 @@ func (treeModel *TreeModel) IterFirst() (*TreeIter, bool) {
 
 	var _iter *TreeIter // out
 	var _ok bool        // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	if _cret != 0 {
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1210,17 +1189,10 @@ func (treeModel *TreeModel) IterFirst() (*TreeIter, bool) {
 func (treeModel *TreeModel) IterFromString(pathString string) (*TreeIter, bool) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(pathString)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(pathString)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1229,10 +1201,9 @@ func (treeModel *TreeModel) IterFromString(pathString string) (*TreeIter, bool) 
 
 	var _iter *TreeIter // out
 	var _ok bool        // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	if _cret != 0 {
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1247,12 +1218,8 @@ func (treeModel *TreeModel) IterFromString(pathString string) (*TreeIter, bool) 
 //
 func (treeModel *TreeModel) NColumns() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1260,7 +1227,7 @@ func (treeModel *TreeModel) NColumns() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1279,15 +1246,9 @@ func (treeModel *TreeModel) NColumns() int32 {
 //
 func (treeModel *TreeModel) Path(iter *TreeIter) *TreePath {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1322,15 +1283,9 @@ func (treeModel *TreeModel) Path(iter *TreeIter) *TreePath {
 //
 func (treeModel *TreeModel) StringFromIter(iter *TreeIter) string {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1362,27 +1317,18 @@ func (treeModel *TreeModel) StringFromIter(iter *TreeIter) string {
 func (treeModel *TreeModel) Value(iter *TreeIter, column int32) coreglib.Value {
 	var _args [3]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.gint  // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg2 = C.gint(column)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(column)
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(column)
 
 	var _value coreglib.Value // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(_out0))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer(_outs[0]))
 
 	return _value
 }
@@ -1407,18 +1353,11 @@ func (treeModel *TreeModel) Value(iter *TreeIter, column int32) coreglib.Value {
 func (treeModel *TreeModel) IterChildren(parent *TreeIter) (*TreeIter, bool) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 	if parent != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(parent)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parent)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1427,10 +1366,9 @@ func (treeModel *TreeModel) IterChildren(parent *TreeIter) (*TreeIter, bool) {
 
 	var _iter *TreeIter // out
 	var _ok bool        // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	if _cret != 0 {
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1449,15 +1387,9 @@ func (treeModel *TreeModel) IterChildren(parent *TreeIter) (*TreeIter, bool) {
 //
 func (treeModel *TreeModel) IterHasChild(iter *TreeIter) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1466,7 +1398,7 @@ func (treeModel *TreeModel) IterHasChild(iter *TreeIter) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1488,17 +1420,11 @@ func (treeModel *TreeModel) IterHasChild(iter *TreeIter) bool {
 //
 func (treeModel *TreeModel) IterNChildren(iter *TreeIter) int32 {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 	if iter != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -1507,7 +1433,7 @@ func (treeModel *TreeModel) IterNChildren(iter *TreeIter) int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -1526,15 +1452,9 @@ func (treeModel *TreeModel) IterNChildren(iter *TreeIter) int32 {
 //
 func (treeModel *TreeModel) IterNext(iter *TreeIter) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1543,7 +1463,7 @@ func (treeModel *TreeModel) IterNext(iter *TreeIter) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1570,21 +1490,12 @@ func (treeModel *TreeModel) IterNext(iter *TreeIter) bool {
 func (treeModel *TreeModel) IterNthChild(parent *TreeIter, n int32) (*TreeIter, bool) {
 	var _args [3]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _arg1 *C.void    // out
-	var _arg2 C.gint     // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 	if parent != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(parent)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parent)))
 	}
-	_arg2 = C.gint(n)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(n)
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1594,10 +1505,9 @@ func (treeModel *TreeModel) IterNthChild(parent *TreeIter, n int32) (*TreeIter, 
 
 	var _iter *TreeIter // out
 	var _ok bool        // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	if _cret != 0 {
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1625,16 +1535,9 @@ func (treeModel *TreeModel) IterNthChild(parent *TreeIter, n int32) (*TreeIter, 
 func (treeModel *TreeModel) IterParent(child *TreeIter) (*TreeIter, bool) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(child)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(child)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1643,10 +1546,9 @@ func (treeModel *TreeModel) IterParent(child *TreeIter) (*TreeIter, bool) {
 
 	var _iter *TreeIter // out
 	var _ok bool        // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_out0)))
-	if _cret != 0 {
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1668,15 +1570,9 @@ func (treeModel *TreeModel) IterParent(child *TreeIter) (*TreeIter, bool) {
 //
 func (treeModel *TreeModel) IterPrevious(iter *TreeIter) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -1685,7 +1581,7 @@ func (treeModel *TreeModel) IterPrevious(iter *TreeIter) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -1714,14 +1610,9 @@ func (treeModel *TreeModel) IterPrevious(iter *TreeIter) bool {
 //
 func (treeModel *TreeModel) RefNode(iter *TreeIter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(iter)
@@ -1736,17 +1627,10 @@ func (treeModel *TreeModel) RefNode(iter *TreeIter) {
 //
 func (treeModel *TreeModel) RowChanged(path *TreePath, iter *TreeIter) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(path)
@@ -1768,14 +1652,9 @@ func (treeModel *TreeModel) RowChanged(path *TreePath, iter *TreeIter) {
 //
 func (treeModel *TreeModel) RowDeleted(path *TreePath) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(path)
@@ -1792,17 +1671,10 @@ func (treeModel *TreeModel) RowDeleted(path *TreePath) {
 //
 func (treeModel *TreeModel) RowHasChildToggled(path *TreePath, iter *TreeIter) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(path)
@@ -1818,17 +1690,10 @@ func (treeModel *TreeModel) RowHasChildToggled(path *TreePath, iter *TreeIter) {
 //
 func (treeModel *TreeModel) RowInserted(path *TreePath, iter *TreeIter) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(path)
@@ -1849,31 +1714,21 @@ func (treeModel *TreeModel) RowInserted(path *TreePath, iter *TreeIter) {
 //
 func (treeModel *TreeModel) RowsReordered(path *TreePath, iter *TreeIter, newOrder []int32) {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _arg3 *C.void // out
-	var _arg4 C.gint
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	if iter != nil {
-		_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	}
-	_arg4 = (C.gint)(len(newOrder))
-	_arg3 = (*C.void)(C.calloc(C.size_t(len(newOrder)), C.size_t(C.sizeof_gint)))
-	defer C.free(unsafe.Pointer(_arg3))
+	*(*C.gint)(unsafe.Pointer(&_args[4])) = (C.gint)(len(newOrder))
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(C.calloc(C.size_t(len(newOrder)), C.size_t(C.sizeof_gint)))
+	defer C.free(unsafe.Pointer(_args[3]))
 	{
-		out := unsafe.Slice((*C.gint)(_arg3), len(newOrder))
+		out := unsafe.Slice((*C.gint)(*(**C.void)(unsafe.Pointer(&_args[3]))), len(newOrder))
 		for i := range newOrder {
-			out[i] = C.gint(newOrder[i])
+			*(*C.gint)(unsafe.Pointer(&out[i])) = C.gint(newOrder[i])
 		}
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(path)
@@ -1895,14 +1750,9 @@ func (treeModel *TreeModel) RowsReordered(path *TreePath, iter *TreeIter, newOrd
 //
 func (treeModel *TreeModel) UnrefNode(iter *TreeIter) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(iter)
@@ -1919,39 +1769,47 @@ type TreeIter struct {
 
 // treeIter is the struct that's finalized.
 type treeIter struct {
-	native *C.GtkTreeIter
+	native unsafe.Pointer
 }
 
 func marshalTreeIter(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &TreeIter{&treeIter{(*C.GtkTreeIter)(b)}}, nil
+	return &TreeIter{&treeIter{(unsafe.Pointer)(b)}}, nil
 }
 
 // Stamp: unique stamp to catch invalid iterators.
 func (t *TreeIter) Stamp() int32 {
+	offset := girepository.MustFind("Gtk", "TreeIter").StructFieldOffset("stamp")
+	valptr := unsafe.Add(unsafe.Pointer(t), offset)
 	var v int32 // out
-	v = int32(t.native.stamp)
+	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // UserData: model-specific data.
 func (t *TreeIter) UserData() unsafe.Pointer {
+	offset := girepository.MustFind("Gtk", "TreeIter").StructFieldOffset("user_data")
+	valptr := unsafe.Add(unsafe.Pointer(t), offset)
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(t.native.user_data))
+	v = (unsafe.Pointer)(unsafe.Pointer(valptr))
 	return v
 }
 
 // UserData2: model-specific data.
 func (t *TreeIter) UserData2() unsafe.Pointer {
+	offset := girepository.MustFind("Gtk", "TreeIter").StructFieldOffset("user_data2")
+	valptr := unsafe.Add(unsafe.Pointer(t), offset)
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(t.native.user_data2))
+	v = (unsafe.Pointer)(unsafe.Pointer(valptr))
 	return v
 }
 
 // UserData3: model-specific data.
 func (t *TreeIter) UserData3() unsafe.Pointer {
+	offset := girepository.MustFind("Gtk", "TreeIter").StructFieldOffset("user_data3")
+	valptr := unsafe.Add(unsafe.Pointer(t), offset)
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(t.native.user_data3))
+	v = (unsafe.Pointer)(unsafe.Pointer(valptr))
 	return v
 }
 
@@ -1967,12 +1825,8 @@ func (t *TreeIter) UserData3() unsafe.Pointer {
 //
 func (iter *TreeIter) Copy() *TreeIter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -1998,18 +1852,16 @@ type TreePath struct {
 
 // treePath is the struct that's finalized.
 type treePath struct {
-	native *C.GtkTreePath
+	native unsafe.Pointer
 }
 
 func marshalTreePath(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &TreePath{&treePath{(*C.GtkTreePath)(b)}}, nil
+	return &TreePath{&treePath{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewTreePath constructs a struct TreePath.
 func NewTreePath() *TreePath {
-	var _cret *C.void // in
-
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _treePath *TreePath // out
@@ -2027,8 +1879,6 @@ func NewTreePath() *TreePath {
 
 // NewTreePathFirst constructs a struct TreePath.
 func NewTreePathFirst() *TreePath {
-	var _cret *C.void // in
-
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _treePath *TreePath // out
@@ -2047,28 +1897,22 @@ func NewTreePathFirst() *TreePath {
 // NewTreePathFromIndices constructs a struct TreePath.
 func NewTreePathFromIndices(indices []int32) *TreePath {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gsize
-	var _cret *C.void // in
 
-	_arg1 = (C.gsize)(len(indices))
-	_arg0 = (*C.void)(C.calloc(C.size_t(len(indices)), C.size_t(C.sizeof_gint)))
-	defer C.free(unsafe.Pointer(_arg0))
+	*(*C.gsize)(unsafe.Pointer(&_args[1])) = (C.gsize)(len(indices))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(C.calloc(C.size_t(len(indices)), C.size_t(C.sizeof_gint)))
+	defer C.free(unsafe.Pointer(_args[0]))
 	{
-		out := unsafe.Slice((*C.gint)(_arg0), len(indices))
+		out := unsafe.Slice((*C.gint)(*(**C.void)(unsafe.Pointer(&_args[0]))), len(indices))
 		for i := range indices {
-			out[i] = C.gint(indices[i])
+			*(*C.gint)(unsafe.Pointer(&out[i])) = C.gint(indices[i])
 		}
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(indices)
 
 	var _treePath *TreePath // out
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
 	_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	runtime.SetFinalizer(
@@ -2084,13 +1928,9 @@ func NewTreePathFromIndices(indices []int32) *TreePath {
 // NewTreePathFromString constructs a struct TreePath.
 func NewTreePathFromString(path string) *TreePath {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -2119,14 +1959,9 @@ func NewTreePathFromString(path string) *TreePath {
 //
 func (path *TreePath) AppendIndex(index_ int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	_arg1 = C.gint(index_)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(index_)
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(index_)
@@ -2147,15 +1982,9 @@ func (path *TreePath) AppendIndex(index_ int32) {
 //
 func (a *TreePath) Compare(b *TreePath) int32 {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(a)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(b)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(a)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(b)))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -2164,7 +1993,7 @@ func (a *TreePath) Compare(b *TreePath) int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -2177,12 +2006,8 @@ func (a *TreePath) Compare(b *TreePath) int32 {
 //
 func (path *TreePath) Copy() *TreePath {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -2204,11 +2029,8 @@ func (path *TreePath) Copy() *TreePath {
 // Down moves path to point to the first child of the current path.
 func (path *TreePath) Down() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	runtime.KeepAlive(path)
 }
@@ -2221,12 +2043,8 @@ func (path *TreePath) Down() {
 //
 func (path *TreePath) Depth() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -2234,7 +2052,7 @@ func (path *TreePath) Depth() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -2251,26 +2069,20 @@ func (path *TreePath) Depth() int32 {
 func (path *TreePath) Indices() []int32 {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.gint // in
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = *(**C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 
 	var _gints []int32 // out
-	_out0 = *(**C.gint)(unsafe.Pointer(&_outs[0]))
 
 	{
-		src := unsafe.Slice((*C.gint)(_cret), _out0)
-		_gints = make([]int32, _out0)
-		for i := 0; i < int(_out0); i++ {
-			_gints[i] = int32(src[i])
+		src := unsafe.Slice((*C.gint)(_cret), _outs[0])
+		_gints = make([]int32, _outs[0])
+		for i := 0; i < int(_outs[0]); i++ {
+			_gints[i] = int32(*(*C.gint)(unsafe.Pointer(&src[i])))
 		}
 	}
 
@@ -2289,15 +2101,9 @@ func (path *TreePath) Indices() []int32 {
 //
 func (path *TreePath) IsAncestor(descendant *TreePath) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(descendant)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(descendant)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -2306,7 +2112,7 @@ func (path *TreePath) IsAncestor(descendant *TreePath) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2325,15 +2131,9 @@ func (path *TreePath) IsAncestor(descendant *TreePath) bool {
 //
 func (path *TreePath) IsDescendant(ancestor *TreePath) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(ancestor)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(ancestor)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -2342,7 +2142,7 @@ func (path *TreePath) IsDescendant(ancestor *TreePath) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2352,11 +2152,8 @@ func (path *TreePath) IsDescendant(ancestor *TreePath) bool {
 // Next moves the path to point to the next node at the current depth.
 func (path *TreePath) Next() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	runtime.KeepAlive(path)
 }
@@ -2371,14 +2168,9 @@ func (path *TreePath) Next() {
 //
 func (path *TreePath) PrependIndex(index_ int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.gint  // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-	_arg1 = C.gint(index_)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(index_)
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(index_)
@@ -2393,12 +2185,8 @@ func (path *TreePath) PrependIndex(index_ int32) {
 //
 func (path *TreePath) Prev() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -2406,7 +2194,7 @@ func (path *TreePath) Prev() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2424,12 +2212,8 @@ func (path *TreePath) Prev() bool {
 //
 func (path *TreePath) String() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -2451,12 +2235,8 @@ func (path *TreePath) String() string {
 //
 func (path *TreePath) Up() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -2464,7 +2244,7 @@ func (path *TreePath) Up() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2482,26 +2262,20 @@ type TreeRowReference struct {
 
 // treeRowReference is the struct that's finalized.
 type treeRowReference struct {
-	native *C.GtkTreeRowReference
+	native unsafe.Pointer
 }
 
 func marshalTreeRowReference(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &TreeRowReference{&treeRowReference{(*C.GtkTreeRowReference)(b)}}, nil
+	return &TreeRowReference{&treeRowReference{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewTreeRowReference constructs a struct TreeRowReference.
 func NewTreeRowReference(model TreeModeller, path *TreePath) *TreeRowReference {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -2524,18 +2298,10 @@ func NewTreeRowReference(model TreeModeller, path *TreePath) *TreeRowReference {
 // NewTreeRowReferenceProxy constructs a struct TreeRowReference.
 func NewTreeRowReferenceProxy(proxy *coreglib.Object, model TreeModeller, path *TreePath) *TreeRowReference {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(proxy.Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	_arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(proxy.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -2564,12 +2330,8 @@ func NewTreeRowReferenceProxy(proxy *coreglib.Object, model TreeModeller, path *
 //
 func (reference *TreeRowReference) Copy() *TreeRowReference {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(reference)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(reference)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -2596,12 +2358,8 @@ func (reference *TreeRowReference) Copy() *TreeRowReference {
 //
 func (reference *TreeRowReference) Model() *TreeModel {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(reference)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(reference)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -2623,12 +2381,8 @@ func (reference *TreeRowReference) Model() *TreeModel {
 //
 func (reference *TreeRowReference) Path() *TreePath {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(reference)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(reference)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -2636,7 +2390,7 @@ func (reference *TreeRowReference) Path() *TreePath {
 
 	var _treePath *TreePath // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_treePath)),
@@ -2658,14 +2412,10 @@ func (reference *TreeRowReference) Path() *TreePath {
 //
 func (reference *TreeRowReference) Valid() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
 	if reference != nil {
-		_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(reference)))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(reference)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -2673,7 +2423,7 @@ func (reference *TreeRowReference) Valid() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -2691,14 +2441,9 @@ func (reference *TreeRowReference) Valid() bool {
 //
 func TreeRowReferenceDeleted(proxy *coreglib.Object, path *TreePath) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(proxy.Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(proxy.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	girepository.MustFind("Gtk", "deleted").Invoke(_args[:], nil)
 
@@ -2717,14 +2462,9 @@ func TreeRowReferenceDeleted(proxy *coreglib.Object, path *TreePath) {
 //
 func TreeRowReferenceInserted(proxy *coreglib.Object, path *TreePath) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(proxy.Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(proxy.Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	girepository.MustFind("Gtk", "inserted").Invoke(_args[:], nil)
 

@@ -196,8 +196,6 @@ func marshalFileFilter(p uintptr) (interface{}, error) {
 //    - fileFilter: new FileFilter.
 //
 func NewFileFilter() *FileFilter {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "FileFilter").InvokeMethod("new_FileFilter", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -221,12 +219,8 @@ func NewFileFilter() *FileFilter {
 //
 func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(variant)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(variant)))
 
 	_gret := girepository.MustFind("Gtk", "FileFilter").InvokeMethod("new_FileFilter_from_gvariant", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -248,15 +242,10 @@ func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 //
 func (filter *FileFilter) AddMIMEType(mimeType string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "FileFilter").InvokeMethod("add_mime_type", _args[:], nil)
 
@@ -272,15 +261,10 @@ func (filter *FileFilter) AddMIMEType(mimeType string) {
 //
 func (filter *FileFilter) AddPattern(pattern string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(pattern)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(pattern)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "FileFilter").InvokeMethod("add_pattern", _args[:], nil)
 
@@ -292,11 +276,8 @@ func (filter *FileFilter) AddPattern(pattern string) {
 // GdkPixbuf.
 func (filter *FileFilter) AddPixbufFormats() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 
 	girepository.MustFind("Gtk", "FileFilter").InvokeMethod("add_pixbuf_formats", _args[:], nil)
 
@@ -320,15 +301,9 @@ func (filter *FileFilter) AddPixbufFormats() {
 //
 func (filter *FileFilter) Filter(filterInfo *FileFilterInfo) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(filterInfo)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(filterInfo)))
 
 	_gret := girepository.MustFind("Gtk", "FileFilter").InvokeMethod("filter", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -338,7 +313,7 @@ func (filter *FileFilter) Filter(filterInfo *FileFilterInfo) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -355,12 +330,8 @@ func (filter *FileFilter) Filter(filterInfo *FileFilterInfo) bool {
 //
 func (filter *FileFilter) Name() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 
 	_gret := girepository.MustFind("Gtk", "FileFilter").InvokeMethod("get_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -369,7 +340,7 @@ func (filter *FileFilter) Name() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -386,17 +357,12 @@ func (filter *FileFilter) Name() string {
 //
 func (filter *FileFilter) SetName(name string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	if name != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "FileFilter").InvokeMethod("set_name", _args[:], nil)
 
@@ -412,12 +378,8 @@ func (filter *FileFilter) SetName(name string) {
 //
 func (filter *FileFilter) ToGVariant() *glib.Variant {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 
 	_gret := girepository.MustFind("Gtk", "FileFilter").InvokeMethod("to_gvariant", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -448,5 +410,5 @@ type FileFilterInfo struct {
 
 // fileFilterInfo is the struct that's finalized.
 type fileFilterInfo struct {
-	native *C.GtkFileFilterInfo
+	native unsafe.Pointer
 }

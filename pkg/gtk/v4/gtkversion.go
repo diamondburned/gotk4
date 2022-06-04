@@ -74,18 +74,10 @@ const MINOR_VERSION = 2
 //
 func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint32) string {
 	var _args [3]girepository.Argument
-	var _arg0 C.guint // out
-	var _arg1 C.guint // out
-	var _arg2 C.guint // out
-	var _cret *C.void // in
 
-	_arg0 = C.guint(requiredMajor)
-	_arg1 = C.guint(requiredMinor)
-	_arg2 = C.guint(requiredMicro)
-
-	*(*C.guint)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(requiredMajor)
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(requiredMinor)
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(requiredMicro)
 
 	_gret := girepository.MustFind("Gtk", "check_version").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -96,7 +88,7 @@ func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint32) string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -112,14 +104,12 @@ func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint32) string {
 //    - guint: binary age of the GTK library.
 //
 func GetBinaryAge() uint32 {
-	var _cret C.guint // in
-
 	_gret := girepository.MustFind("Gtk", "get_binary_age").Invoke(nil, nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -133,14 +123,12 @@ func GetBinaryAge() uint32 {
 //    - guint: interface age of the GTK library.
 //
 func GetInterfaceAge() uint32 {
-	var _cret C.guint // in
-
 	_gret := girepository.MustFind("Gtk", "get_interface_age").Invoke(nil, nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -159,14 +147,12 @@ func GetInterfaceAge() uint32 {
 //    - guint: major version number of the GTK library.
 //
 func GetMajorVersion() uint32 {
-	var _cret C.guint // in
-
 	_gret := girepository.MustFind("Gtk", "get_major_version").Invoke(nil, nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -185,14 +171,12 @@ func GetMajorVersion() uint32 {
 //    - guint: micro version number of the GTK library.
 //
 func GetMicroVersion() uint32 {
-	var _cret C.guint // in
-
 	_gret := girepository.MustFind("Gtk", "get_micro_version").Invoke(nil, nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -211,14 +195,12 @@ func GetMicroVersion() uint32 {
 //    - guint: minor version number of the GTK library.
 //
 func GetMinorVersion() uint32 {
-	var _cret C.guint // in
-
 	_gret := girepository.MustFind("Gtk", "get_minor_version").Invoke(nil, nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }

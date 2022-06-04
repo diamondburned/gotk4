@@ -1585,7 +1585,7 @@ func URIResolveRelative(baseUriString, uriRef string, flags URIFlags) (string, e
 //    - query (optional): on return, contains the query, or NULL.
 //    - fragment (optional): on return, contains the fragment, or NULL.
 //
-func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, host string, port int32, path string, query string, fragment string, goerr error) {
+func URISplit(uriRef string, flags URIFlags) (scheme, userinfo, host string, port int32, path, query, fragment string, goerr error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GUriFlags // out
 	var _arg3 *C.gchar    // in
@@ -1665,7 +1665,7 @@ func URISplit(uriRef string, flags URIFlags) (scheme string, userinfo string, ho
 //    - host (optional): on return, contains the host, or NULL.
 //    - port (optional): on return, contains the port, or -1.
 //
-func URISplitNetwork(uriString string, flags URIFlags) (scheme string, host string, port int32, goerr error) {
+func URISplitNetwork(uriString string, flags URIFlags) (scheme, host string, port int32, goerr error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GUriFlags // out
 	var _arg3 *C.gchar    // in
@@ -1731,7 +1731,7 @@ func URISplitNetwork(uriString string, flags URIFlags) (scheme string, host stri
 //    - query (optional): on return, contains the query, or NULL.
 //    - fragment (optional): on return, contains the fragment, or NULL.
 //
-func URISplitWithUser(uriRef string, flags URIFlags) (scheme string, user string, password string, authParams string, host string, port int32, path string, query string, fragment string, goerr error) {
+func URISplitWithUser(uriRef string, flags URIFlags) (scheme, user, password, authParams, host string, port int32, path, query, fragment string, goerr error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GUriFlags // out
 	var _arg3 *C.gchar    // in

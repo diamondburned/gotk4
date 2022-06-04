@@ -193,7 +193,7 @@ type Editabler interface {
 	// start of the content of the editable.
 	Position() int32
 	// SelectionBounds retrieves the selection bound of the editable.
-	SelectionBounds() (startPos int32, endPos int32, ok bool)
+	SelectionBounds() (startPos, endPos int32, ok bool)
 	// Text retrieves the contents of editable.
 	Text() string
 	// WidthChars gets the number of characters of space reserved for the
@@ -323,11 +323,8 @@ func (editable *Editable) ConnectDeleteText(f func(startPos, endPos int32)) core
 // This call doesn’t do anything if there is no selected text.
 func (editable *Editable) DeleteSelection() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
 	runtime.KeepAlive(editable)
 }
@@ -347,17 +344,10 @@ func (editable *Editable) DeleteSelection() {
 //
 func (editable *Editable) DeleteText(startPos, endPos int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
-	var _arg2 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-	_arg1 = C.int(startPos)
-	_arg2 = C.int(endPos)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(startPos)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(endPos)
 
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(startPos)
@@ -370,11 +360,8 @@ func (editable *Editable) DeleteText(startPos, endPos int32) {
 // the delegate object.
 func (editable *Editable) FinishDelegate() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
 	runtime.KeepAlive(editable)
 }
@@ -387,12 +374,8 @@ func (editable *Editable) FinishDelegate() {
 //
 func (editable *Editable) Alignment() float32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.float // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
 	_cret = *(*C.float)(unsafe.Pointer(&_gret))
 
@@ -400,7 +383,7 @@ func (editable *Editable) Alignment() float32 {
 
 	var _gfloat float32 // out
 
-	_gfloat = float32(_cret)
+	_gfloat = float32(*(*C.float)(unsafe.Pointer(&_cret)))
 
 	return _gfloat
 }
@@ -427,18 +410,10 @@ func (editable *Editable) Alignment() float32 {
 //
 func (editable *Editable) Chars(startPos, endPos int32) string {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
-	var _arg2 C.int   // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-	_arg1 = C.int(startPos)
-	_arg2 = C.int(endPos)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(startPos)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(endPos)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -465,12 +440,8 @@ func (editable *Editable) Chars(startPos, endPos int32) string {
 //
 func (editable *Editable) Delegate() *Editable {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -478,7 +449,7 @@ func (editable *Editable) Delegate() *Editable {
 
 	var _ret *Editable // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_ret = wrapEditable(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -493,12 +464,8 @@ func (editable *Editable) Delegate() *Editable {
 //
 func (editable *Editable) Editable() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -506,7 +473,7 @@ func (editable *Editable) Editable() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -521,12 +488,8 @@ func (editable *Editable) Editable() bool {
 //
 func (editable *Editable) EnableUndo() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -534,7 +497,7 @@ func (editable *Editable) EnableUndo() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -549,12 +512,8 @@ func (editable *Editable) EnableUndo() bool {
 //
 func (editable *Editable) MaxWidthChars() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
@@ -562,7 +521,7 @@ func (editable *Editable) MaxWidthChars() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -578,12 +537,8 @@ func (editable *Editable) MaxWidthChars() int32 {
 //
 func (editable *Editable) Position() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
@@ -591,7 +546,7 @@ func (editable *Editable) Position() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -610,17 +565,11 @@ func (editable *Editable) Position() int32 {
 //    - endPos (optional): location to store the end position, or NULL.
 //    - ok: TRUE if there is a non-empty selection, FALSE otherwise.
 //
-func (editable *Editable) SelectionBounds() (startPos int32, endPos int32, ok bool) {
+func (editable *Editable) SelectionBounds() (startPos, endPos int32, ok bool) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -629,16 +578,14 @@ func (editable *Editable) SelectionBounds() (startPos int32, endPos int32, ok bo
 	var _startPos int32 // out
 	var _endPos int32   // out
 	var _ok bool        // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_startPos = *(*int32)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_startPos = *(*int32)(unsafe.Pointer(_outs[0]))
 	}
-	if _out1 != nil {
-		_endPos = *(*int32)(unsafe.Pointer(_out1))
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_endPos = *(*int32)(unsafe.Pointer(_outs[1]))
 	}
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -655,12 +602,8 @@ func (editable *Editable) SelectionBounds() (startPos int32, endPos int32, ok bo
 //
 func (editable *Editable) Text() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -682,12 +625,8 @@ func (editable *Editable) Text() string {
 //
 func (editable *Editable) WidthChars() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
@@ -695,7 +634,7 @@ func (editable *Editable) WidthChars() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -709,11 +648,8 @@ func (editable *Editable) WidthChars() int32 {
 // creating the delegate object.
 func (editable *Editable) InitDelegate() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
 	runtime.KeepAlive(editable)
 }
@@ -734,17 +670,10 @@ func (editable *Editable) InitDelegate() {
 //
 func (editable *Editable) SelectRegion(startPos, endPos int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
-	var _arg2 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-	_arg1 = C.int(startPos)
-	_arg2 = C.int(endPos)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(startPos)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(endPos)
 
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(startPos)
@@ -763,14 +692,9 @@ func (editable *Editable) SelectRegion(startPos, endPos int32) {
 //
 func (editable *Editable) SetAlignment(xalign float32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.float // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-	_arg1 = C.float(xalign)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.float)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(xalign)
 
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(xalign)
@@ -784,16 +708,11 @@ func (editable *Editable) SetAlignment(xalign float32) {
 //
 func (editable *Editable) SetEditable(isEditable bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 	if isEditable {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(isEditable)
@@ -812,16 +731,11 @@ func (editable *Editable) SetEditable(isEditable bool) {
 //
 func (editable *Editable) SetEnableUndo(enableUndo bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 	if enableUndo {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(enableUndo)
@@ -835,14 +749,9 @@ func (editable *Editable) SetEnableUndo(enableUndo bool) {
 //
 func (editable *Editable) SetMaxWidthChars(nChars int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-	_arg1 = C.int(nChars)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(nChars)
 
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(nChars)
@@ -862,14 +771,9 @@ func (editable *Editable) SetMaxWidthChars(nChars int32) {
 //
 func (editable *Editable) SetPosition(position int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-	_arg1 = C.int(position)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(position)
 
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(position)
@@ -885,15 +789,10 @@ func (editable *Editable) SetPosition(position int32) {
 //
 func (editable *Editable) SetText(text string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(text)
@@ -912,14 +811,9 @@ func (editable *Editable) SetText(text string) {
 //
 func (editable *Editable) SetWidthChars(nChars int32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-	_arg1 = C.int(nChars)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(nChars)
 
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(nChars)

@@ -37,30 +37,22 @@ type Range struct {
 
 // _range is the struct that's finalized.
 type _range struct {
-	native *C.AtkRange
+	native unsafe.Pointer
 }
 
 func marshalRange(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &Range{&_range{(*C.AtkRange)(b)}}, nil
+	return &Range{&_range{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewRange constructs a struct Range.
 func NewRange(lowerLimit float64, upperLimit float64, description string) *Range {
 	var _args [3]girepository.Argument
-	var _arg0 C.gdouble // out
-	var _arg1 C.gdouble // out
-	var _arg2 *C.void   // out
-	var _cret *C.void   // in
 
-	_arg0 = C.gdouble(lowerLimit)
-	_arg1 = C.gdouble(upperLimit)
-	_arg2 = (*C.void)(unsafe.Pointer(C.CString(description)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	*(*C.gdouble)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(*C.gdouble)(unsafe.Pointer(&_args[0])) = C.gdouble(lowerLimit)
+	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(upperLimit)
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_args[2]))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -89,12 +81,8 @@ func NewRange(lowerLimit float64, upperLimit float64, description string) *Range
 //
 func (src *Range) Copy() *Range {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -121,12 +109,8 @@ func (src *Range) Copy() *Range {
 //
 func (_range *Range) Description() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(_range)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(_range)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -147,12 +131,8 @@ func (_range *Range) Description() string {
 //
 func (_range *Range) LowerLimit() float64 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.gdouble // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(_range)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(_range)))
 
 	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
 
@@ -160,7 +140,7 @@ func (_range *Range) LowerLimit() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(_cret)
+	_gdouble = float64(*(*C.gdouble)(unsafe.Pointer(&_cret)))
 
 	return _gdouble
 }
@@ -173,12 +153,8 @@ func (_range *Range) LowerLimit() float64 {
 //
 func (_range *Range) UpperLimit() float64 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void   // out
-	var _cret C.gdouble // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(_range)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(_range)))
 
 	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
 
@@ -186,7 +162,7 @@ func (_range *Range) UpperLimit() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(_cret)
+	_gdouble = float64(*(*C.gdouble)(unsafe.Pointer(&_cret)))
 
 	return _gdouble
 }

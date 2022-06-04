@@ -89,8 +89,6 @@ func marshalFontChooserWidget(p uintptr) (interface{}, error) {
 //    - fontChooserWidget: new GtkFontChooserWidget.
 //
 func NewFontChooserWidget() *FontChooserWidget {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "FontChooserWidget").InvokeMethod("new_FontChooserWidget", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

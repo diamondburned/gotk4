@@ -99,12 +99,8 @@ func marshalAppChooser(p uintptr) (interface{}, error) {
 //
 func (self *AppChooser) AppInfo() *gio.AppInfo {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -112,7 +108,7 @@ func (self *AppChooser) AppInfo() *gio.AppInfo {
 
 	var _appInfo *gio.AppInfo // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 			_appInfo = &gio.AppInfo{
@@ -133,12 +129,8 @@ func (self *AppChooser) AppInfo() *gio.AppInfo {
 //
 func (self *AppChooser) ContentType() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -155,11 +147,8 @@ func (self *AppChooser) ContentType() string {
 // Refresh reloads the list of applications.
 func (self *AppChooser) Refresh() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	runtime.KeepAlive(self)
 }

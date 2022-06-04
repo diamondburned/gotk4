@@ -35,18 +35,16 @@ type Border struct {
 
 // border is the struct that's finalized.
 type border struct {
-	native *C.GtkBorder
+	native unsafe.Pointer
 }
 
 func marshalBorder(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &Border{&border{(*C.GtkBorder)(b)}}, nil
+	return &Border{&border{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewBorder constructs a struct Border.
 func NewBorder() *Border {
-	var _cret *C.void // in
-
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _border *Border // out
@@ -64,29 +62,37 @@ func NewBorder() *Border {
 
 // Left: width of the left border.
 func (b *Border) Left() int16 {
+	offset := girepository.MustFind("Gtk", "Border").StructFieldOffset("left")
+	valptr := unsafe.Add(unsafe.Pointer(b), offset)
 	var v int16 // out
-	v = int16(b.native.left)
+	v = int16(*(*C.gint16)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Right: width of the right border.
 func (b *Border) Right() int16 {
+	offset := girepository.MustFind("Gtk", "Border").StructFieldOffset("right")
+	valptr := unsafe.Add(unsafe.Pointer(b), offset)
 	var v int16 // out
-	v = int16(b.native.right)
+	v = int16(*(*C.gint16)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Top: width of the top border.
 func (b *Border) Top() int16 {
+	offset := girepository.MustFind("Gtk", "Border").StructFieldOffset("top")
+	valptr := unsafe.Add(unsafe.Pointer(b), offset)
 	var v int16 // out
-	v = int16(b.native.top)
+	v = int16(*(*C.gint16)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Bottom: width of the bottom border.
 func (b *Border) Bottom() int16 {
+	offset := girepository.MustFind("Gtk", "Border").StructFieldOffset("bottom")
+	valptr := unsafe.Add(unsafe.Pointer(b), offset)
 	var v int16 // out
-	v = int16(b.native.bottom)
+	v = int16(*(*C.gint16)(unsafe.Pointer(&valptr)))
 	return v
 }
 
@@ -98,12 +104,8 @@ func (b *Border) Bottom() int16 {
 //
 func (border_ *Border) Copy() *Border {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(border_)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(border_)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

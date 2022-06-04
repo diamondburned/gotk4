@@ -41,12 +41,12 @@ type RGBA struct {
 
 // rgbA is the struct that's finalized.
 type rgbA struct {
-	native *C.GdkRGBA
+	native unsafe.Pointer
 }
 
 func marshalRGBA(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &RGBA{&rgbA{(*C.GdkRGBA)(b)}}, nil
+	return &RGBA{&rgbA{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewRGBA creates a new RGBA instance from the given
@@ -73,30 +73,38 @@ func NewRGBA(red, green, blue, alpha float32) RGBA {
 
 // Red: intensity of the red channel from 0.0 to 1.0 inclusive.
 func (r *RGBA) Red() float32 {
+	offset := girepository.MustFind("Gdk", "RGBA").StructFieldOffset("red")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v float32 // out
-	v = float32(r.native.red)
+	v = float32(*(*C.float)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Green: intensity of the green channel from 0.0 to 1.0 inclusive.
 func (r *RGBA) Green() float32 {
+	offset := girepository.MustFind("Gdk", "RGBA").StructFieldOffset("green")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v float32 // out
-	v = float32(r.native.green)
+	v = float32(*(*C.float)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Blue: intensity of the blue channel from 0.0 to 1.0 inclusive.
 func (r *RGBA) Blue() float32 {
+	offset := girepository.MustFind("Gdk", "RGBA").StructFieldOffset("blue")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v float32 // out
-	v = float32(r.native.blue)
+	v = float32(*(*C.float)(unsafe.Pointer(&valptr)))
 	return v
 }
 
 // Alpha: opacity of the color from 0.0 for completely translucent to 1.0 for
 // opaque.
 func (r *RGBA) Alpha() float32 {
+	offset := girepository.MustFind("Gdk", "RGBA").StructFieldOffset("alpha")
+	valptr := unsafe.Add(unsafe.Pointer(r), offset)
 	var v float32 // out
-	v = float32(r.native.alpha)
+	v = float32(*(*C.float)(unsafe.Pointer(&valptr)))
 	return v
 }
 
@@ -110,12 +118,8 @@ func (r *RGBA) Alpha() float32 {
 //
 func (rgba *RGBA) Copy() *RGBA {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -146,15 +150,9 @@ func (rgba *RGBA) Copy() *RGBA {
 //
 func (p1 *RGBA) Equal(p2 *RGBA) bool {
 	var _args [2]girepository.Argument
-	var _arg0 C.gpointer // out
-	var _arg1 C.gpointer // out
-	var _cret C.gboolean // in
 
-	_arg0 = C.gpointer(gextras.StructNative(unsafe.Pointer(p1)))
-	_arg1 = C.gpointer(gextras.StructNative(unsafe.Pointer(p2)))
-
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = C.gpointer(gextras.StructNative(unsafe.Pointer(p1)))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = C.gpointer(gextras.StructNative(unsafe.Pointer(p2)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -163,7 +161,7 @@ func (p1 *RGBA) Equal(p2 *RGBA) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -178,12 +176,8 @@ func (p1 *RGBA) Equal(p2 *RGBA) bool {
 //
 func (p *RGBA) Hash() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 C.gpointer // out
-	var _cret C.guint    // in
 
-	_arg0 = C.gpointer(gextras.StructNative(unsafe.Pointer(p)))
-
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = C.gpointer(gextras.StructNative(unsafe.Pointer(p)))
 
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
@@ -191,7 +185,7 @@ func (p *RGBA) Hash() uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -206,12 +200,8 @@ func (p *RGBA) Hash() uint32 {
 //
 func (rgba *RGBA) IsClear() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -219,7 +209,7 @@ func (rgba *RGBA) IsClear() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -237,12 +227,8 @@ func (rgba *RGBA) IsClear() bool {
 //
 func (rgba *RGBA) IsOpaque() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -250,7 +236,7 @@ func (rgba *RGBA) IsOpaque() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -289,16 +275,10 @@ func (rgba *RGBA) IsOpaque() bool {
 //
 func (rgba *RGBA) Parse(spec string) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(spec)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(spec)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -307,7 +287,7 @@ func (rgba *RGBA) Parse(spec string) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -333,12 +313,8 @@ func (rgba *RGBA) Parse(spec string) bool {
 //
 func (rgba *RGBA) String() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

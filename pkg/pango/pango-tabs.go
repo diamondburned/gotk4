@@ -8,12 +8,13 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
+// #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
-// #include <glib-object.h>
-// #include <pango/pango.h>
+// #include <glib.h>
 import "C"
 
 // glib.Type values for pango-tabs.go.
@@ -64,26 +65,25 @@ type TabArray struct {
 
 // tabArray is the struct that's finalized.
 type tabArray struct {
-	native *C.PangoTabArray
+	native unsafe.Pointer
 }
 
 func marshalTabArray(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &TabArray{&tabArray{(*C.PangoTabArray)(b)}}, nil
+	return &TabArray{&tabArray{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewTabArray constructs a struct TabArray.
 func NewTabArray(initialSize int32, positionsInPixels bool) *TabArray {
-	var _arg1 C.gint           // out
-	var _arg2 C.gboolean       // out
-	var _cret *C.PangoTabArray // in
+	var _args [2]girepository.Argument
 
-	_arg1 = C.gint(initialSize)
+	*(*C.gint)(unsafe.Pointer(&_args[0])) = C.gint(initialSize)
 	if positionsInPixels {
-		_arg2 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	_cret = C.pango_tab_array_new(_arg1, _arg2)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(initialSize)
 	runtime.KeepAlive(positionsInPixels)
 
@@ -108,12 +108,12 @@ func NewTabArray(initialSize int32, positionsInPixels bool) *TabArray {
 //      pango.TabArray.Free().
 //
 func (src *TabArray) Copy() *TabArray {
-	var _arg0 *C.PangoTabArray // out
-	var _cret *C.PangoTabArray // in
+	var _args [1]girepository.Argument
 
-	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(src)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
 
-	_cret = C.pango_tab_array_copy(_arg0)
+	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(src)
 
 	var _tabArray *TabArray // out
@@ -137,17 +137,17 @@ func (src *TabArray) Copy() *TabArray {
 //    - ok: whether positions are in pixels.
 //
 func (tabArray *TabArray) PositionsInPixels() bool {
-	var _arg0 *C.PangoTabArray // out
-	var _cret C.gboolean       // in
+	var _args [1]girepository.Argument
 
-	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabArray)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(tabArray)))
 
-	_cret = C.pango_tab_array_get_positions_in_pixels(_arg0)
+	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(tabArray)
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -161,17 +161,17 @@ func (tabArray *TabArray) PositionsInPixels() bool {
 //    - gint: number of tab stops in the array.
 //
 func (tabArray *TabArray) Size() int32 {
-	var _arg0 *C.PangoTabArray // out
-	var _cret C.gint           // in
+	var _args [1]girepository.Argument
 
-	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabArray)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(tabArray)))
 
-	_cret = C.pango_tab_array_get_size(_arg0)
+	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+
 	runtime.KeepAlive(tabArray)
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -188,23 +188,24 @@ func (tabArray *TabArray) Size() int32 {
 //    - location (optional) to store tab position, or NULL.
 //
 func (tabArray *TabArray) Tab(tabIndex int32) (TabAlign, int32) {
-	var _arg0 *C.PangoTabArray // out
-	var _arg1 C.gint           // out
-	var _arg2 C.PangoTabAlign  // in
-	var _arg3 C.gint           // in
+	var _args [2]girepository.Argument
+	var _outs [2]girepository.Argument
 
-	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabArray)))
-	_arg1 = C.gint(tabIndex)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(tabArray)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(tabIndex)
 
-	C.pango_tab_array_get_tab(_arg0, _arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(tabArray)
 	runtime.KeepAlive(tabIndex)
 
 	var _alignment TabAlign // out
 	var _location int32     // out
 
-	_alignment = TabAlign(_arg2)
-	_location = int32(_arg3)
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_alignment = *(*TabAlign)(unsafe.Pointer(_outs[0]))
+	}
+	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
+		_location = *(*int32)(unsafe.Pointer(_outs[1]))
+	}
 
 	return _alignment, _location
 }
@@ -219,41 +220,11 @@ func (tabArray *TabArray) Tab(tabIndex int32) (TabAlign, int32) {
 //    - newSize: new size of the array.
 //
 func (tabArray *TabArray) Resize(newSize int32) {
-	var _arg0 *C.PangoTabArray // out
-	var _arg1 C.gint           // out
+	var _args [2]girepository.Argument
 
-	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabArray)))
-	_arg1 = C.gint(newSize)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(tabArray)))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(newSize)
 
-	C.pango_tab_array_resize(_arg0, _arg1)
 	runtime.KeepAlive(tabArray)
 	runtime.KeepAlive(newSize)
-}
-
-// SetTab sets the alignment and location of a tab stop.
-//
-// alignment must always be PANGO_TAB_LEFT in the current implementation.
-//
-// The function takes the following parameters:
-//
-//    - tabIndex: index of a tab stop.
-//    - alignment: tab alignment.
-//    - location: tab location in Pango units.
-//
-func (tabArray *TabArray) SetTab(tabIndex int32, alignment TabAlign, location int32) {
-	var _arg0 *C.PangoTabArray // out
-	var _arg1 C.gint           // out
-	var _arg2 C.PangoTabAlign  // out
-	var _arg3 C.gint           // out
-
-	_arg0 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabArray)))
-	_arg1 = C.gint(tabIndex)
-	_arg2 = C.PangoTabAlign(alignment)
-	_arg3 = C.gint(location)
-
-	C.pango_tab_array_set_tab(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(tabArray)
-	runtime.KeepAlive(tabIndex)
-	runtime.KeepAlive(alignment)
-	runtime.KeepAlive(location)
 }

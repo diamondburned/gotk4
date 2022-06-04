@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -342,12 +341,8 @@ func marshalBuildable(p uintptr) (interface{}, error) {
 //
 func (buildable *Buildable) BuildableID() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -369,5 +364,5 @@ type BuildableParser struct {
 
 // buildableParser is the struct that's finalized.
 type buildableParser struct {
-	native *C.GtkBuildableParser
+	native unsafe.Pointer
 }

@@ -4,6 +4,7 @@ package gdk
 
 import (
 	_ "runtime/cgo"
+	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -21,14 +22,12 @@ func init() {
 // The function returns the following values:
 //
 func GLErrorQuark() glib.Quark {
-	var _cret C.guint32 // in
-
 	_gret := girepository.MustFind("Gdk", "quark").Invoke(nil, nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
 
 	return _quark
 }
@@ -36,14 +35,12 @@ func GLErrorQuark() glib.Quark {
 // The function returns the following values:
 //
 func VulkanErrorQuark() glib.Quark {
-	var _cret C.guint32 // in
-
 	_gret := girepository.MustFind("Gdk", "quark").Invoke(nil, nil)
 	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
 
 	return _quark
 }

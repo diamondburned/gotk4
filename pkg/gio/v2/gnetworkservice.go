@@ -83,21 +83,13 @@ func marshalNetworkService(p uintptr) (interface{}, error) {
 //
 func NewNetworkService(service, protocol, domain string) *NetworkService {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(service)))
-	defer C.free(unsafe.Pointer(_arg0))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(protocol)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.void)(unsafe.Pointer(C.CString(domain)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(service)))
+	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(protocol)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(domain)))
+	defer C.free(unsafe.Pointer(_args[2]))
 
 	_gret := girepository.MustFind("Gio", "NetworkService").InvokeMethod("new_NetworkService", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -122,12 +114,8 @@ func NewNetworkService(service, protocol, domain string) *NetworkService {
 //
 func (srv *NetworkService) Domain() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
 
 	_gret := girepository.MustFind("Gio", "NetworkService").InvokeMethod("get_domain", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -149,12 +137,8 @@ func (srv *NetworkService) Domain() string {
 //
 func (srv *NetworkService) Protocol() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
 
 	_gret := girepository.MustFind("Gio", "NetworkService").InvokeMethod("get_protocol", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -177,12 +161,8 @@ func (srv *NetworkService) Protocol() string {
 //
 func (srv *NetworkService) Scheme() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
 
 	_gret := girepository.MustFind("Gio", "NetworkService").InvokeMethod("get_scheme", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -204,12 +184,8 @@ func (srv *NetworkService) Scheme() string {
 //
 func (srv *NetworkService) Service() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
 
 	_gret := girepository.MustFind("Gio", "NetworkService").InvokeMethod("get_service", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -232,15 +208,10 @@ func (srv *NetworkService) Service() string {
 //
 func (srv *NetworkService) SetScheme(scheme string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(scheme)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(scheme)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gio", "NetworkService").InvokeMethod("set_scheme", _args[:], nil)
 

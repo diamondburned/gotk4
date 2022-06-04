@@ -236,7 +236,7 @@ type Paintabler interface {
 	coreglib.Objector
 
 	// ComputeConcreteSize: compute a concrete size for the GdkPaintable.
-	ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight float64) (concreteWidth float64, concreteHeight float64)
+	ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight float64) (concreteWidth, concreteHeight float64)
 	// CurrentImage gets an immutable paintable for the current contents
 	// displayed by paintable.
 	CurrentImage() *Paintable
@@ -446,28 +446,15 @@ func (paintable *Paintable) ConnectInvalidateSize(f func()) coreglib.SignalHandl
 //    - concreteWidth will be set to the concrete width computed.
 //    - concreteHeight will be set to the concrete height computed.
 //
-func (paintable *Paintable) ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight float64) (concreteWidth float64, concreteHeight float64) {
+func (paintable *Paintable) ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight float64) (concreteWidth, concreteHeight float64) {
 	var _args [5]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 C.double // out
-	var _arg2 C.double // out
-	var _arg3 C.double // out
-	var _arg4 C.double // out
-	var _out0 *C.void  // in
-	var _out1 *C.void  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
-	_arg1 = C.double(specifiedWidth)
-	_arg2 = C.double(specifiedHeight)
-	_arg3 = C.double(defaultWidth)
-	_arg4 = C.double(defaultHeight)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.double)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.double)(unsafe.Pointer(&_args[4])) = _arg4
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
+	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(specifiedWidth)
+	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(specifiedHeight)
+	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(defaultWidth)
+	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(defaultHeight)
 
 	runtime.KeepAlive(paintable)
 	runtime.KeepAlive(specifiedWidth)
@@ -477,11 +464,9 @@ func (paintable *Paintable) ComputeConcreteSize(specifiedWidth, specifiedHeight,
 
 	var _concreteWidth float64  // out
 	var _concreteHeight float64 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_concreteWidth = *(*float64)(unsafe.Pointer(_out0))
-	_concreteHeight = *(*float64)(unsafe.Pointer(_out1))
+	_concreteWidth = *(*float64)(unsafe.Pointer(_outs[0]))
+	_concreteHeight = *(*float64)(unsafe.Pointer(_outs[1]))
 
 	return _concreteWidth, _concreteHeight
 }
@@ -500,12 +485,8 @@ func (paintable *Paintable) ComputeConcreteSize(specifiedWidth, specifiedHeight,
 //
 func (paintable *Paintable) CurrentImage() *Paintable {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -542,12 +523,8 @@ func (paintable *Paintable) CurrentImage() *Paintable {
 //
 func (paintable *Paintable) IntrinsicAspectRatio() float64 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void  // out
-	var _cret C.double // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
 
 	_cret = *(*C.double)(unsafe.Pointer(&_gret))
 
@@ -555,7 +532,7 @@ func (paintable *Paintable) IntrinsicAspectRatio() float64 {
 
 	var _gdouble float64 // out
 
-	_gdouble = float64(_cret)
+	_gdouble = float64(*(*C.double)(unsafe.Pointer(&_cret)))
 
 	return _gdouble
 }
@@ -578,12 +555,8 @@ func (paintable *Paintable) IntrinsicAspectRatio() float64 {
 //
 func (paintable *Paintable) IntrinsicHeight() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
 
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
@@ -591,7 +564,7 @@ func (paintable *Paintable) IntrinsicHeight() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -614,12 +587,8 @@ func (paintable *Paintable) IntrinsicHeight() int32 {
 //
 func (paintable *Paintable) IntrinsicWidth() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
 
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
@@ -627,7 +596,7 @@ func (paintable *Paintable) IntrinsicWidth() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -644,11 +613,8 @@ func (paintable *Paintable) IntrinsicWidth() int32 {
 // call this function.
 func (paintable *Paintable) InvalidateContents() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
 
 	runtime.KeepAlive(paintable)
 }
@@ -665,11 +631,8 @@ func (paintable *Paintable) InvalidateContents() {
 // this function.
 func (paintable *Paintable) InvalidateSize() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
 
 	runtime.KeepAlive(paintable)
 }
@@ -687,20 +650,11 @@ func (paintable *Paintable) InvalidateSize() {
 //
 func (paintable *Paintable) Snapshot(snapshot Snapshotter, width, height float64) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 *C.void  // out
-	var _arg2 C.double // out
-	var _arg3 C.double // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg2 = C.double(width)
-	_arg3 = C.double(height)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.double)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.double)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
+	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(width)
+	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(height)
 
 	runtime.KeepAlive(paintable)
 	runtime.KeepAlive(snapshot)
@@ -727,15 +681,9 @@ func (paintable *Paintable) Snapshot(snapshot Snapshotter, width, height float64
 //
 func NewPaintableEmpty(intrinsicWidth, intrinsicHeight int32) *Paintable {
 	var _args [2]girepository.Argument
-	var _arg0 C.int   // out
-	var _arg1 C.int   // out
-	var _cret *C.void // in
 
-	_arg0 = C.int(intrinsicWidth)
-	_arg1 = C.int(intrinsicHeight)
-
-	*(*C.int)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
+	*(*C.int)(unsafe.Pointer(&_args[0])) = C.int(intrinsicWidth)
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(intrinsicHeight)
 
 	_gret := girepository.MustFind("Gdk", "new_empty").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

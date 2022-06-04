@@ -75,12 +75,8 @@ func marshalFileIcon(p uintptr) (interface{}, error) {
 //
 func NewFileIcon(file Filer) *FileIcon {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
 	_gret := girepository.MustFind("Gio", "FileIcon").InvokeMethod("new_FileIcon", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -102,12 +98,8 @@ func NewFileIcon(file Filer) *FileIcon {
 //
 func (icon *FileIcon) File() *File {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 
 	_gret := girepository.MustFind("Gio", "FileIcon").InvokeMethod("get_file", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

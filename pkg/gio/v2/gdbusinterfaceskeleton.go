@@ -268,19 +268,11 @@ func (interface_ *DBusInterfaceSkeleton) ConnectGAuthorizeMethod(f func(invocati
 //
 func (interface_ *DBusInterfaceSkeleton) Export(connection *DBusConnection, objectPath string) error {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	_arg2 = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_args[2]))
 
 	girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("export", _args[:], nil)
 
@@ -290,7 +282,7 @@ func (interface_ *DBusInterfaceSkeleton) Export(connection *DBusConnection, obje
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -306,11 +298,8 @@ func (interface_ *DBusInterfaceSkeleton) Export(connection *DBusConnection, obje
 // property changes into one.
 func (interface_ *DBusInterfaceSkeleton) Flush() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 
 	girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("flush", _args[:], nil)
 
@@ -326,12 +315,8 @@ func (interface_ *DBusInterfaceSkeleton) Flush() {
 //
 func (interface_ *DBusInterfaceSkeleton) Connection() *DBusConnection {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("get_connection", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -340,7 +325,7 @@ func (interface_ *DBusInterfaceSkeleton) Connection() *DBusConnection {
 
 	var _dBusConnection *DBusConnection // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_dBusConnection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -357,12 +342,8 @@ func (interface_ *DBusInterfaceSkeleton) Connection() *DBusConnection {
 //
 func (interface_ *DBusInterfaceSkeleton) Connections() []*DBusConnection {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("get_connections", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -391,12 +372,8 @@ func (interface_ *DBusInterfaceSkeleton) Connections() []*DBusConnection {
 //
 func (interface_ *DBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("get_info", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -426,12 +403,8 @@ func (interface_ *DBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 //
 func (interface_ *DBusInterfaceSkeleton) ObjectPath() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("get_object_path", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -440,7 +413,7 @@ func (interface_ *DBusInterfaceSkeleton) ObjectPath() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -456,12 +429,8 @@ func (interface_ *DBusInterfaceSkeleton) ObjectPath() string {
 //
 func (interface_ *DBusInterfaceSkeleton) Properties() *glib.Variant {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("get_properties", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -493,15 +462,9 @@ func (interface_ *DBusInterfaceSkeleton) Properties() *glib.Variant {
 //
 func (interface_ *DBusInterfaceSkeleton) HasConnection(connection *DBusConnection) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
 	_gret := girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("has_connection", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -511,7 +474,7 @@ func (interface_ *DBusInterfaceSkeleton) HasConnection(connection *DBusConnectio
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -524,11 +487,8 @@ func (interface_ *DBusInterfaceSkeleton) HasConnection(connection *DBusConnectio
 // g_dbus_interface_skeleton_unexport_from_connection().
 func (interface_ *DBusInterfaceSkeleton) Unexport() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 
 	girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("unexport", _args[:], nil)
 
@@ -546,14 +506,9 @@ func (interface_ *DBusInterfaceSkeleton) Unexport() {
 //
 func (interface_ *DBusInterfaceSkeleton) UnexportFromConnection(connection *DBusConnection) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
 	girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("unexport_from_connection", _args[:], nil)
 

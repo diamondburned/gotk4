@@ -185,8 +185,6 @@ func (gesture *GestureStylus) ConnectUp(f func(x, y float64)) coreglib.SignalHan
 //    - gestureStylus: newly created stylus gesture.
 //
 func NewGestureStylus() *GestureStylus {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "GestureStylus").InvokeMethod("new_GestureStylus", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -219,14 +217,8 @@ func NewGestureStylus() *GestureStylus {
 func (gesture *GestureStylus) Backlog() ([]gdk.TimeCoord, bool) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void         // out
-	var _out0 *C.GdkTimeCoord // in
-	var _out1 *C.void         // in
-	var _cret C.gboolean      // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
 	_gret := girepository.MustFind("Gtk", "GestureStylus").InvokeMethod("get_backlog", _args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -235,14 +227,12 @@ func (gesture *GestureStylus) Backlog() ([]gdk.TimeCoord, bool) {
 
 	var _backlog []gdk.TimeCoord // out
 	var _ok bool                 // out
-	_out0 = *(**C.GdkTimeCoord)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(*C.gboolean)(unsafe.Pointer(&_outs[1]))
 
-	defer C.free(unsafe.Pointer(_out0))
+	defer C.free(unsafe.Pointer(_outs[0]))
 	{
-		src := unsafe.Slice((**C.void)(_out0), _out1)
-		_backlog = make([]gdk.TimeCoord, _out1)
-		for i := 0; i < int(_out1); i++ {
+		src := unsafe.Slice((**C.void)(_outs[0]), _outs[1])
+		_backlog = make([]gdk.TimeCoord, _outs[1])
+		for i := 0; i < int(_outs[1]); i++ {
 			_backlog[i] = *(*gdk.TimeCoord)(gextras.NewStructNative(unsafe.Pointer(src[i])))
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(&_backlog[i])),
@@ -252,7 +242,7 @@ func (gesture *GestureStylus) Backlog() ([]gdk.TimeCoord, bool) {
 			)
 		}
 	}
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -272,12 +262,8 @@ func (gesture *GestureStylus) Backlog() ([]gdk.TimeCoord, bool) {
 //
 func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
 	_gret := girepository.MustFind("Gtk", "GestureStylus").InvokeMethod("get_device_tool", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -286,7 +272,7 @@ func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
 
 	var _deviceTool *gdk.DeviceTool // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
 			obj := coreglib.Take(unsafe.Pointer(_cret))
 			_deviceTool = &gdk.DeviceTool{

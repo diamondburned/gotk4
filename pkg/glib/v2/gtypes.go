@@ -4,11 +4,11 @@ package glib
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
 // #include <stdlib.h>
@@ -211,14 +211,14 @@ func NewTimeVal(tvSec, tvUsec int32) TimeVal {
 // TvSec: seconds.
 func (t *TimeVal) TvSec() int32 {
 	var v int32 // out
-	v = int32(t.native.tv_sec)
+	v = int32(valptr)
 	return v
 }
 
 // TvUsec: microseconds.
 func (t *TimeVal) TvUsec() int32 {
 	var v int32 // out
-	v = int32(t.native.tv_usec)
+	v = int32(valptr)
 	return v
 }
 

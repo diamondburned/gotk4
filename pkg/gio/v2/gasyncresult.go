@@ -4,7 +4,6 @@ package gio
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -241,12 +240,8 @@ func marshalAsyncResult(p uintptr) (interface{}, error) {
 //
 func (res *AsyncResult) SourceObject() *coreglib.Object {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -254,7 +249,7 @@ func (res *AsyncResult) SourceObject() *coreglib.Object {
 
 	var _object *coreglib.Object // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_object = coreglib.AssumeOwnership(unsafe.Pointer(_cret))
 	}
 
@@ -269,12 +264,8 @@ func (res *AsyncResult) SourceObject() *coreglib.Object {
 //
 func (res *AsyncResult) UserData() unsafe.Pointer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gpointer // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
 	_cret = *(*C.gpointer)(unsafe.Pointer(&_gret))
 
@@ -300,15 +291,9 @@ func (res *AsyncResult) UserData() unsafe.Pointer {
 //
 func (res *AsyncResult) IsTagged(sourceTag unsafe.Pointer) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gpointer // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
-	_arg1 = (C.gpointer)(unsafe.Pointer(sourceTag))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (C.gpointer)(unsafe.Pointer(sourceTag))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -317,7 +302,7 @@ func (res *AsyncResult) IsTagged(sourceTag unsafe.Pointer) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -334,18 +319,14 @@ func (res *AsyncResult) IsTagged(sourceTag unsafe.Pointer) bool {
 // by virtual methods, to enable subclasses to chain up correctly.
 func (res *AsyncResult) LegacyPropagateError() error {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
 	runtime.KeepAlive(res)
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 

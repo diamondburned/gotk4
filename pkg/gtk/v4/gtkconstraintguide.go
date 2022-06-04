@@ -78,8 +78,6 @@ func marshalConstraintGuide(p uintptr) (interface{}, error) {
 //    - constraintGuide: new GtkConstraintGuide object.
 //
 func NewConstraintGuide() *ConstraintGuide {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("new_ConstraintGuide", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -99,21 +97,14 @@ func NewConstraintGuide() *ConstraintGuide {
 //
 func (guide *ConstraintGuide) MaxSize(width, height *int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
 	if width != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(width))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(width))
 	}
 	if height != nil {
-		_arg2 = (*C.void)(unsafe.Pointer(height))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(height))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("get_max_size", _args[:], nil)
 
@@ -131,21 +122,14 @@ func (guide *ConstraintGuide) MaxSize(width, height *int32) {
 //
 func (guide *ConstraintGuide) MinSize(width, height *int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
 	if width != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(width))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(width))
 	}
 	if height != nil {
-		_arg2 = (*C.void)(unsafe.Pointer(height))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(height))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("get_min_size", _args[:], nil)
 
@@ -162,12 +146,8 @@ func (guide *ConstraintGuide) MinSize(width, height *int32) {
 //
 func (guide *ConstraintGuide) Name() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("get_name", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -176,7 +156,7 @@ func (guide *ConstraintGuide) Name() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -192,21 +172,14 @@ func (guide *ConstraintGuide) Name() string {
 //
 func (guide *ConstraintGuide) NatSize(width, height *int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
 	if width != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(width))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(width))
 	}
 	if height != nil {
-		_arg2 = (*C.void)(unsafe.Pointer(height))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(height))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("get_nat_size", _args[:], nil)
 
@@ -227,17 +200,10 @@ func (guide *ConstraintGuide) NatSize(width, height *int32) {
 //
 func (guide *ConstraintGuide) SetMaxSize(width, height int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
-	var _arg2 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
-	_arg1 = C.int(width)
-	_arg2 = C.int(height)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(width)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(height)
 
 	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("set_max_size", _args[:], nil)
 
@@ -258,17 +224,10 @@ func (guide *ConstraintGuide) SetMaxSize(width, height int32) {
 //
 func (guide *ConstraintGuide) SetMinSize(width, height int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
-	var _arg2 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
-	_arg1 = C.int(width)
-	_arg2 = C.int(height)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(width)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(height)
 
 	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("set_min_size", _args[:], nil)
 
@@ -287,17 +246,12 @@ func (guide *ConstraintGuide) SetMinSize(width, height int32) {
 //
 func (guide *ConstraintGuide) SetName(name string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
 	if name != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("set_name", _args[:], nil)
 
@@ -317,17 +271,10 @@ func (guide *ConstraintGuide) SetName(name string) {
 //
 func (guide *ConstraintGuide) SetNatSize(width, height int32) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.int   // out
-	var _arg2 C.int   // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
-	_arg1 = C.int(width)
-	_arg2 = C.int(height)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.int)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.int)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(width)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(height)
 
 	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("set_nat_size", _args[:], nil)
 

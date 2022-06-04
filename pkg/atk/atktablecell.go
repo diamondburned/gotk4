@@ -48,7 +48,7 @@ type TableCellOverrider interface {
 	//    - column of the given cell.
 	//    - ok: TRUE if successful; FALSE otherwise.
 	//
-	Position() (row int32, column int32, ok bool)
+	Position() (row, column int32, ok bool)
 	// RowColumnSpan gets the row and column indexes and span of this cell
 	// accessible.
 	//
@@ -64,7 +64,7 @@ type TableCellOverrider interface {
 	//    - columnSpan: number of columns occupied by this cell.
 	//    - ok: TRUE if successful; FALSE otherwise.
 	//
-	RowColumnSpan() (row int32, column int32, rowSpan int32, columnSpan int32, ok bool)
+	RowColumnSpan() (row, column, rowSpan, columnSpan int32, ok bool)
 	// RowSpan returns the number of rows occupied by this cell accessible.
 	//
 	// The function returns the following values:
@@ -107,10 +107,10 @@ type TableCeller interface {
 	// accessible.
 	ColumnSpan() int32
 	// Position retrieves the tabular position of this cell.
-	Position() (row int32, column int32, ok bool)
+	Position() (row, column int32, ok bool)
 	// RowColumnSpan gets the row and column indexes and span of this cell
 	// accessible.
-	RowColumnSpan() (row int32, column int32, rowSpan int32, columnSpan int32, ok bool)
+	RowColumnSpan() (row, column, rowSpan, columnSpan int32, ok bool)
 	// RowSpan returns the number of rows occupied by this cell accessible.
 	RowSpan() int32
 	// Table returns a reference to the accessible of the containing table.
@@ -220,12 +220,8 @@ func marshalTableCell(p uintptr) (interface{}, error) {
 //
 func (cell *TableCell) ColumnSpan() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -233,7 +229,7 @@ func (cell *TableCell) ColumnSpan() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -246,17 +242,11 @@ func (cell *TableCell) ColumnSpan() int32 {
 //    - column of the given cell.
 //    - ok: TRUE if successful; FALSE otherwise.
 //
-func (cell *TableCell) Position() (row int32, column int32, ok bool) {
+func (cell *TableCell) Position() (row, column int32, ok bool) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -265,12 +255,10 @@ func (cell *TableCell) Position() (row int32, column int32, ok bool) {
 	var _row int32    // out
 	var _column int32 // out
 	var _ok bool      // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_row = *(*int32)(unsafe.Pointer(_out0))
-	_column = *(*int32)(unsafe.Pointer(_out1))
-	if _cret != 0 {
+	_row = *(*int32)(unsafe.Pointer(_outs[0]))
+	_column = *(*int32)(unsafe.Pointer(_outs[1]))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -292,19 +280,11 @@ func (cell *TableCell) Position() (row int32, column int32, ok bool) {
 //    - columnSpan: number of columns occupied by this cell.
 //    - ok: TRUE if successful; FALSE otherwise.
 //
-func (cell *TableCell) RowColumnSpan() (row int32, column int32, rowSpan int32, columnSpan int32, ok bool) {
+func (cell *TableCell) RowColumnSpan() (row, column, rowSpan, columnSpan int32, ok bool) {
 	var _args [1]girepository.Argument
 	var _outs [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _out2 *C.void    // in
-	var _out3 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -315,16 +295,12 @@ func (cell *TableCell) RowColumnSpan() (row int32, column int32, rowSpan int32, 
 	var _rowSpan int32    // out
 	var _columnSpan int32 // out
 	var _ok bool          // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
-	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
-	_out3 = *(**C.void)(unsafe.Pointer(&_outs[3]))
 
-	_row = *(*int32)(unsafe.Pointer(_out0))
-	_column = *(*int32)(unsafe.Pointer(_out1))
-	_rowSpan = *(*int32)(unsafe.Pointer(_out2))
-	_columnSpan = *(*int32)(unsafe.Pointer(_out3))
-	if _cret != 0 {
+	_row = *(*int32)(unsafe.Pointer(_outs[0]))
+	_column = *(*int32)(unsafe.Pointer(_outs[1]))
+	_rowSpan = *(*int32)(unsafe.Pointer(_outs[2]))
+	_columnSpan = *(*int32)(unsafe.Pointer(_outs[3]))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -340,12 +316,8 @@ func (cell *TableCell) RowColumnSpan() (row int32, column int32, rowSpan int32, 
 //
 func (cell *TableCell) RowSpan() int32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.gint  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
 	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
 
@@ -353,7 +325,7 @@ func (cell *TableCell) RowSpan() int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -366,12 +338,8 @@ func (cell *TableCell) RowSpan() int32 {
 //
 func (cell *TableCell) Table() *ObjectClass {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

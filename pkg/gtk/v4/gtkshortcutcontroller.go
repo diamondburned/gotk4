@@ -118,8 +118,6 @@ func marshalShortcutController(p uintptr) (interface{}, error) {
 //    - shortcutController: newly created shortcut controller.
 //
 func NewShortcutController() *ShortcutController {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "ShortcutController").InvokeMethod("new_ShortcutController", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -147,12 +145,8 @@ func NewShortcutController() *ShortcutController {
 //
 func NewShortcutControllerForModel(model gio.ListModeller) *ShortcutController {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 
 	_gret := girepository.MustFind("Gtk", "ShortcutController").InvokeMethod("new_ShortcutController_for_model", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -177,15 +171,10 @@ func NewShortcutControllerForModel(model gio.ListModeller) *ShortcutController {
 //
 func (self *ShortcutController) AddShortcut(shortcut *Shortcut) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shortcut).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(shortcut).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(shortcut).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "ShortcutController").InvokeMethod("add_shortcut", _args[:], nil)
 
@@ -204,14 +193,9 @@ func (self *ShortcutController) AddShortcut(shortcut *Shortcut) {
 //
 func (self *ShortcutController) RemoveShortcut(shortcut *Shortcut) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(shortcut).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(shortcut).Native()))
 
 	girepository.MustFind("Gtk", "ShortcutController").InvokeMethod("remove_shortcut", _args[:], nil)
 

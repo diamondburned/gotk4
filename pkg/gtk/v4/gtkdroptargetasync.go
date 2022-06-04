@@ -273,12 +273,8 @@ func (self *DropTargetAsync) ConnectDrop(f func(drop gdk.Dropper, x, y float64) 
 //
 func (self *DropTargetAsync) Formats() *gdk.ContentFormats {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "DropTargetAsync").InvokeMethod("get_formats", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -287,7 +283,7 @@ func (self *DropTargetAsync) Formats() *gdk.ContentFormats {
 
 	var _contentFormats *gdk.ContentFormats // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_contentFormats = (*gdk.ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_contentFormats)),
@@ -311,14 +307,9 @@ func (self *DropTargetAsync) Formats() *gdk.ContentFormats {
 //
 func (self *DropTargetAsync) RejectDrop(drop gdk.Dropper) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(drop).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drop).Native()))
 
 	girepository.MustFind("Gtk", "DropTargetAsync").InvokeMethod("reject_drop", _args[:], nil)
 
@@ -334,16 +325,11 @@ func (self *DropTargetAsync) RejectDrop(drop gdk.Dropper) {
 //
 func (self *DropTargetAsync) SetFormats(formats *gdk.ContentFormats) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if formats != nil {
-		_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "DropTargetAsync").InvokeMethod("set_formats", _args[:], nil)
 

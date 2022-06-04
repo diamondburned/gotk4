@@ -79,8 +79,6 @@ func marshalSpinner(p uintptr) (interface{}, error) {
 //    - spinner: new GtkSpinner.
 //
 func NewSpinner() *Spinner {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "Spinner").InvokeMethod("new_Spinner", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -99,12 +97,8 @@ func NewSpinner() *Spinner {
 //
 func (spinner *Spinner) Spinning() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinner).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinner).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Spinner").InvokeMethod("get_spinning", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -113,7 +107,7 @@ func (spinner *Spinner) Spinning() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -128,16 +122,11 @@ func (spinner *Spinner) Spinning() bool {
 //
 func (spinner *Spinner) SetSpinning(spinning bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinner).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinner).Native()))
 	if spinning {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Spinner").InvokeMethod("set_spinning", _args[:], nil)
 
@@ -148,11 +137,8 @@ func (spinner *Spinner) SetSpinning(spinning bool) {
 // Start starts the animation of the spinner.
 func (spinner *Spinner) Start() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinner).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinner).Native()))
 
 	girepository.MustFind("Gtk", "Spinner").InvokeMethod("start", _args[:], nil)
 
@@ -162,11 +148,8 @@ func (spinner *Spinner) Start() {
 // Stop stops the animation of the spinner.
 func (spinner *Spinner) Stop() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinner).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinner).Native()))
 
 	girepository.MustFind("Gtk", "Spinner").InvokeMethod("stop", _args[:], nil)
 

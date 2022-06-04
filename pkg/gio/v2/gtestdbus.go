@@ -24,15 +24,10 @@ import "C"
 //
 func (self *TestDBus) AddServiceDir(path string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gio", "TestDBus").InvokeMethod("add_service_dir", _args[:], nil)
 
@@ -47,11 +42,8 @@ func (self *TestDBus) AddServiceDir(path string) {
 // leaked singleton from this test.
 func (self *TestDBus) Down() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	girepository.MustFind("Gio", "TestDBus").InvokeMethod("down", _args[:], nil)
 
@@ -68,12 +60,8 @@ func (self *TestDBus) Down() {
 //
 func (self *TestDBus) BusAddress() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gio", "TestDBus").InvokeMethod("get_bus_address", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -82,7 +70,7 @@ func (self *TestDBus) BusAddress() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	}
 
@@ -97,11 +85,8 @@ func (self *TestDBus) BusAddress() string {
 // function but should still call g_test_dbus_down() when done.
 func (self *TestDBus) Stop() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	girepository.MustFind("Gio", "TestDBus").InvokeMethod("stop", _args[:], nil)
 
@@ -118,11 +103,8 @@ func (self *TestDBus) Stop() {
 // must be called after g_test_run().
 func (self *TestDBus) Up() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	girepository.MustFind("Gio", "TestDBus").InvokeMethod("up", _args[:], nil)
 
@@ -136,6 +118,5 @@ func (self *TestDBus) Up() {
 // bus is running. It is not necessary to call this if unit test already calls
 // g_test_dbus_up() before acquiring the session bus.
 func TestDBusUnset() {
-
 	girepository.MustFind("Gio", "unset").Invoke(nil, nil)
 }

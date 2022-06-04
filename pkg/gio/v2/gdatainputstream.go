@@ -83,12 +83,8 @@ func marshalDataInputStream(p uintptr) (interface{}, error) {
 //
 func NewDataInputStream(baseStream InputStreamer) *DataInputStream {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseStream).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseStream).Native()))
 
 	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("new_DataInputStream", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -115,20 +111,13 @@ func NewDataInputStream(baseStream InputStreamer) *DataInputStream {
 //
 func (stream *DataInputStream) ReadByte(ctx context.Context) (byte, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 *C.void  // out
-	var _cret C.guchar // in
-	var _cerr *C.void  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_byte", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -139,8 +128,8 @@ func (stream *DataInputStream) ReadByte(ctx context.Context) (byte, error) {
 	var _guint8 byte // out
 	var _goerr error // out
 
-	_guint8 = byte(_cret)
-	if _cerr != nil {
+	_guint8 = byte(*(*C.guchar)(unsafe.Pointer(&_cret)))
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -164,20 +153,13 @@ func (stream *DataInputStream) ReadByte(ctx context.Context) (byte, error) {
 //
 func (stream *DataInputStream) ReadInt16(ctx context.Context) (int16, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 *C.void  // out
-	var _cret C.gint16 // in
-	var _cerr *C.void  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_int16", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -188,8 +170,8 @@ func (stream *DataInputStream) ReadInt16(ctx context.Context) (int16, error) {
 	var _gint16 int16 // out
 	var _goerr error  // out
 
-	_gint16 = int16(_cret)
-	if _cerr != nil {
+	_gint16 = int16(*(*C.gint16)(unsafe.Pointer(&_cret)))
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -217,20 +199,13 @@ func (stream *DataInputStream) ReadInt16(ctx context.Context) (int16, error) {
 //
 func (stream *DataInputStream) ReadInt32(ctx context.Context) (int32, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 *C.void  // out
-	var _cret C.gint32 // in
-	var _cerr *C.void  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_int32", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -241,8 +216,8 @@ func (stream *DataInputStream) ReadInt32(ctx context.Context) (int32, error) {
 	var _gint32 int32 // out
 	var _goerr error  // out
 
-	_gint32 = int32(_cret)
-	if _cerr != nil {
+	_gint32 = int32(*(*C.gint32)(unsafe.Pointer(&_cret)))
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -270,20 +245,13 @@ func (stream *DataInputStream) ReadInt32(ctx context.Context) (int32, error) {
 //
 func (stream *DataInputStream) ReadInt64(ctx context.Context) (int64, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg1 *C.void  // out
-	var _cret C.gint64 // in
-	var _cerr *C.void  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_int64", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -294,8 +262,8 @@ func (stream *DataInputStream) ReadInt64(ctx context.Context) (int64, error) {
 	var _gint64 int64 // out
 	var _goerr error  // out
 
-	_gint64 = int64(_cret)
-	if _cerr != nil {
+	_gint64 = int64(*(*C.gint64)(unsafe.Pointer(&_cret)))
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -326,21 +294,13 @@ func (stream *DataInputStream) ReadInt64(ctx context.Context) (int64, error) {
 func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, error) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _out0 *C.void // in
-	var _cret *C.char // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_line", _args[:], _outs[:])
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -351,12 +311,11 @@ func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, erro
 	var _length uint    // out
 	var _guint8s []byte // out
 	var _goerr error    // out
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_length = *(*uint)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_length = *(*uint)(unsafe.Pointer(_outs[0]))
 	}
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		defer C.free(unsafe.Pointer(_cret))
 		{
 			var i int
@@ -368,11 +327,11 @@ func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, erro
 			src := unsafe.Slice(_cret, i)
 			_guint8s = make([]byte, i)
 			for i := range src {
-				_guint8s[i] = byte(src[i])
+				_guint8s[i] = byte(*(*C.char)(unsafe.Pointer(&src[i])))
 			}
 		}
 	}
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -393,28 +352,18 @@ func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, erro
 //
 func (stream *DataInputStream) ReadLineAsync(ctx context.Context, ioPriority int32, callback AsyncReadyCallback) {
 	var _args [5]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg2 *C.void    // out
-	var _arg1 C.gint     // out
-	var _arg3 C.gpointer // out
-	var _arg4 C.gpointer
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = C.gint(ioPriority)
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(ioPriority)
 	if callback != nil {
-		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+		*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gint)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gpointer)(unsafe.Pointer(&_args[3])) = _arg3
 
 	girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_line_async", _args[:], nil)
 
@@ -444,17 +393,9 @@ func (stream *DataInputStream) ReadLineAsync(ctx context.Context, ioPriority int
 func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byte, error) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _out0 *C.void // in
-	var _cret *C.char // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
 	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_line_finish", _args[:], _outs[:])
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -465,12 +406,11 @@ func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byt
 	var _length uint    // out
 	var _guint8s []byte // out
 	var _goerr error    // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	if _out0 != nil {
-		_length = *(*uint)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_length = *(*uint)(unsafe.Pointer(_outs[0]))
 	}
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		defer C.free(unsafe.Pointer(_cret))
 		{
 			var i int
@@ -482,11 +422,11 @@ func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byt
 			src := unsafe.Slice(_cret, i)
 			_guint8s = make([]byte, i)
 			for i := range src {
-				_guint8s[i] = byte(src[i])
+				_guint8s[i] = byte(*(*C.char)(unsafe.Pointer(&src[i])))
 			}
 		}
 	}
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -512,17 +452,9 @@ func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byt
 func (stream *DataInputStream) ReadLineFinishUTF8(result AsyncResulter) (uint, string, error) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _out0 *C.void // in
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
 	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_line_finish_utf8", _args[:], _outs[:])
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -533,16 +465,15 @@ func (stream *DataInputStream) ReadLineFinishUTF8(result AsyncResulter) (uint, s
 	var _length uint // out
 	var _utf8 string // out
 	var _goerr error // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	if _out0 != nil {
-		_length = *(*uint)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_length = *(*uint)(unsafe.Pointer(_outs[0]))
 	}
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 		defer C.free(unsafe.Pointer(_cret))
 	}
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -572,21 +503,13 @@ func (stream *DataInputStream) ReadLineFinishUTF8(result AsyncResulter) (uint, s
 func (stream *DataInputStream) ReadLineUTF8(ctx context.Context) (uint, string, error) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _out0 *C.void // in
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_line_utf8", _args[:], _outs[:])
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -597,16 +520,15 @@ func (stream *DataInputStream) ReadLineUTF8(ctx context.Context) (uint, string, 
 	var _length uint // out
 	var _utf8 string // out
 	var _goerr error // out
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	if _out0 != nil {
-		_length = *(*uint)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_length = *(*uint)(unsafe.Pointer(_outs[0]))
 	}
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 		defer C.free(unsafe.Pointer(_cret))
 	}
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -630,20 +552,13 @@ func (stream *DataInputStream) ReadLineUTF8(ctx context.Context) (uint, string, 
 //
 func (stream *DataInputStream) ReadUint16(ctx context.Context) (uint16, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 *C.void   // out
-	var _cret C.guint16 // in
-	var _cerr *C.void   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_uint16", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -654,8 +569,8 @@ func (stream *DataInputStream) ReadUint16(ctx context.Context) (uint16, error) {
 	var _guint16 uint16 // out
 	var _goerr error    // out
 
-	_guint16 = uint16(_cret)
-	if _cerr != nil {
+	_guint16 = uint16(*(*C.guint16)(unsafe.Pointer(&_cret)))
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -683,20 +598,13 @@ func (stream *DataInputStream) ReadUint16(ctx context.Context) (uint16, error) {
 //
 func (stream *DataInputStream) ReadUint32(ctx context.Context) (uint32, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 *C.void   // out
-	var _cret C.guint32 // in
-	var _cerr *C.void   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_uint32", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -707,8 +615,8 @@ func (stream *DataInputStream) ReadUint32(ctx context.Context) (uint32, error) {
 	var _guint32 uint32 // out
 	var _goerr error    // out
 
-	_guint32 = uint32(_cret)
-	if _cerr != nil {
+	_guint32 = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -735,20 +643,13 @@ func (stream *DataInputStream) ReadUint32(ctx context.Context) (uint32, error) {
 //
 func (stream *DataInputStream) ReadUint64(ctx context.Context) (uint64, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void   // out
-	var _arg1 *C.void   // out
-	var _cret C.guint64 // in
-	var _cerr *C.void   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_uint64", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -759,8 +660,8 @@ func (stream *DataInputStream) ReadUint64(ctx context.Context) (uint64, error) {
 	var _guint64 uint64 // out
 	var _goerr error    // out
 
-	_guint64 = uint64(_cret)
-	if _cerr != nil {
+	_guint64 = uint64(*(*C.guint64)(unsafe.Pointer(&_cret)))
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -796,25 +697,15 @@ func (stream *DataInputStream) ReadUint64(ctx context.Context) (uint64, error) {
 func (stream *DataInputStream) ReadUntil(ctx context.Context, stopChars string) (uint, string, error) {
 	var _args [3]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg2 *C.void // out
-	var _arg1 *C.void // out
-	var _out0 *C.void // in
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(stopChars)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(stopChars)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_until", _args[:], _outs[:])
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -826,14 +717,13 @@ func (stream *DataInputStream) ReadUntil(ctx context.Context, stopChars string) 
 	var _length uint // out
 	var _utf8 string // out
 	var _goerr error // out
-	_out2 = *(**C.void)(unsafe.Pointer(&_outs[2]))
 
-	if _out0 != nil {
-		_length = *(*uint)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_length = *(*uint)(unsafe.Pointer(_outs[0]))
 	}
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -866,32 +756,20 @@ func (stream *DataInputStream) ReadUntil(ctx context.Context, stopChars string) 
 //
 func (stream *DataInputStream) ReadUntilAsync(ctx context.Context, stopChars string, ioPriority int32, callback AsyncReadyCallback) {
 	var _args [6]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg3 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.gint     // out
-	var _arg4 C.gpointer // out
-	var _arg5 C.gpointer
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(stopChars)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(ioPriority)
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(stopChars)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(ioPriority)
 	if callback != nil {
-		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[5] = C.gpointer(gbox.AssignOnce(callback))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gint)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.gpointer)(unsafe.Pointer(&_args[4])) = _arg4
 
 	girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_until_async", _args[:], nil)
 
@@ -922,17 +800,9 @@ func (stream *DataInputStream) ReadUntilAsync(ctx context.Context, stopChars str
 func (stream *DataInputStream) ReadUntilFinish(result AsyncResulter) (uint, string, error) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _out0 *C.void // in
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
 	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_until_finish", _args[:], _outs[:])
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -943,14 +813,13 @@ func (stream *DataInputStream) ReadUntilFinish(result AsyncResulter) (uint, stri
 	var _length uint // out
 	var _utf8 string // out
 	var _goerr error // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	if _out0 != nil {
-		_length = *(*uint)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_length = *(*uint)(unsafe.Pointer(_outs[0]))
 	}
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -985,28 +854,16 @@ func (stream *DataInputStream) ReadUntilFinish(result AsyncResulter) (uint, stri
 func (stream *DataInputStream) ReadUpto(ctx context.Context, stopChars string, stopCharsLen int) (uint, string, error) {
 	var _args [4]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void  // out
-	var _arg3 *C.void  // out
-	var _arg1 *C.void  // out
-	var _arg2 C.gssize // out
-	var _out0 *C.void  // in
-	var _cret *C.void  // in
-	var _cerr *C.void  // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(stopChars)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gssize(stopCharsLen)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gssize)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(stopChars)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(*C.gssize)(unsafe.Pointer(&_args[2])) = C.gssize(stopCharsLen)
 
 	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_upto", _args[:], _outs[:])
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1019,14 +876,13 @@ func (stream *DataInputStream) ReadUpto(ctx context.Context, stopChars string, s
 	var _length uint // out
 	var _utf8 string // out
 	var _goerr error // out
-	_out3 = *(**C.void)(unsafe.Pointer(&_outs[3]))
 
-	if _out0 != nil {
-		_length = *(*uint)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_length = *(*uint)(unsafe.Pointer(_outs[0]))
 	}
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -1056,35 +912,21 @@ func (stream *DataInputStream) ReadUpto(ctx context.Context, stopChars string, s
 //
 func (stream *DataInputStream) ReadUptoAsync(ctx context.Context, stopChars string, stopCharsLen int, ioPriority int32, callback AsyncReadyCallback) {
 	var _args [7]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg4 *C.void    // out
-	var _arg1 *C.void    // out
-	var _arg2 C.gssize   // out
-	var _arg3 C.gint     // out
-	var _arg5 C.gpointer // out
-	var _arg6 C.gpointer
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_arg4 = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[4] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(stopChars)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gssize(stopCharsLen)
-	_arg3 = C.gint(ioPriority)
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(stopChars)))
+	defer C.free(unsafe.Pointer(_args[1]))
+	*(*C.gssize)(unsafe.Pointer(&_args[2])) = C.gssize(stopCharsLen)
+	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(ioPriority)
 	if callback != nil {
-		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+		*(*C.gpointer)(unsafe.Pointer(&_args[5])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[6] = C.gpointer(gbox.AssignOnce(callback))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
-	*(*C.gssize)(unsafe.Pointer(&_args[3])) = _arg3
-	*(*C.gint)(unsafe.Pointer(&_args[4])) = _arg4
-	*(*C.gpointer)(unsafe.Pointer(&_args[5])) = _arg5
 
 	girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_upto_async", _args[:], nil)
 
@@ -1119,17 +961,9 @@ func (stream *DataInputStream) ReadUptoAsync(ctx context.Context, stopChars stri
 func (stream *DataInputStream) ReadUptoFinish(result AsyncResulter) (uint, string, error) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _out0 *C.void // in
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
 	_gret := girepository.MustFind("Gio", "DataInputStream").InvokeMethod("read_upto_finish", _args[:], _outs[:])
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -1140,14 +974,13 @@ func (stream *DataInputStream) ReadUptoFinish(result AsyncResulter) (uint, strin
 	var _length uint // out
 	var _utf8 string // out
 	var _goerr error // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	if _out0 != nil {
-		_length = *(*uint)(unsafe.Pointer(_out0))
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_length = *(*uint)(unsafe.Pointer(_outs[0]))
 	}
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 

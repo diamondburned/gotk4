@@ -58,7 +58,7 @@ type CellAccessibleParentOverrider interface {
 	//    - row
 	//    - column
 	//
-	CellPosition(cell *CellAccessible) (row int32, column int32)
+	CellPosition(cell *CellAccessible) (row, column int32)
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
@@ -97,7 +97,7 @@ type CellAccessibleParenter interface {
 	Edit(cell *CellAccessible)
 	ExpandCollapse(cell *CellAccessible)
 	CellArea(cell *CellAccessible) *gdk.Rectangle
-	CellPosition(cell *CellAccessible) (row int32, column int32)
+	CellPosition(cell *CellAccessible) (row, column int32)
 	ChildIndex(cell *CellAccessible) int32
 	GrabFocus(cell *CellAccessible) bool
 	UpdateRelationset(cell *CellAccessible, relationset *atk.RelationSet)
@@ -249,14 +249,9 @@ func marshalCellAccessibleParent(p uintptr) (interface{}, error) {
 //
 func (parent *CellAccessibleParent) Activate(cell *CellAccessible) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(cell)
@@ -266,14 +261,9 @@ func (parent *CellAccessibleParent) Activate(cell *CellAccessible) {
 //
 func (parent *CellAccessibleParent) Edit(cell *CellAccessible) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(cell)
@@ -283,14 +273,9 @@ func (parent *CellAccessibleParent) Edit(cell *CellAccessible) {
 //
 func (parent *CellAccessibleParent) ExpandCollapse(cell *CellAccessible) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(cell)
@@ -303,23 +288,16 @@ func (parent *CellAccessibleParent) ExpandCollapse(cell *CellAccessible) {
 func (parent *CellAccessibleParent) CellArea(cell *CellAccessible) *gdk.Rectangle {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _out0 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(cell)
 
 	var _cellRect *gdk.Rectangle // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_cellRect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_cellRect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 
 	return _cellRect
 }
@@ -331,30 +309,21 @@ func (parent *CellAccessibleParent) CellArea(cell *CellAccessible) *gdk.Rectangl
 //    - row
 //    - column
 //
-func (parent *CellAccessibleParent) CellPosition(cell *CellAccessible) (row int32, column int32) {
+func (parent *CellAccessibleParent) CellPosition(cell *CellAccessible) (row, column int32) {
 	var _args [2]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _out0 *C.void // in
-	var _out1 *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(cell)
 
 	var _row int32    // out
 	var _column int32 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_row = *(*int32)(unsafe.Pointer(_out0))
-	_column = *(*int32)(unsafe.Pointer(_out1))
+	_row = *(*int32)(unsafe.Pointer(_outs[0]))
+	_column = *(*int32)(unsafe.Pointer(_outs[1]))
 
 	return _row, _column
 }
@@ -365,15 +334,9 @@ func (parent *CellAccessibleParent) CellPosition(cell *CellAccessible) (row int3
 //
 func (parent *CellAccessibleParent) ChildIndex(cell *CellAccessible) int32 {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret C.int   // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
 	_cret = *(*C.int)(unsafe.Pointer(&_gret))
 
@@ -382,7 +345,7 @@ func (parent *CellAccessibleParent) ChildIndex(cell *CellAccessible) int32 {
 
 	var _gint int32 // out
 
-	_gint = int32(_cret)
+	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
 }
@@ -393,15 +356,9 @@ func (parent *CellAccessibleParent) ChildIndex(cell *CellAccessible) int32 {
 //
 func (parent *CellAccessibleParent) GrabFocus(cell *CellAccessible) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -410,7 +367,7 @@ func (parent *CellAccessibleParent) GrabFocus(cell *CellAccessible) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -424,17 +381,10 @@ func (parent *CellAccessibleParent) GrabFocus(cell *CellAccessible) bool {
 //
 func (parent *CellAccessibleParent) UpdateRelationset(cell *CellAccessible, relationset *atk.RelationSet) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(relationset).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(relationset).Native()))
 
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(cell)

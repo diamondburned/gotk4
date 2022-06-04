@@ -70,8 +70,6 @@ func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 //    - textChildAnchor: new GtkTextChildAnchor.
 //
 func NewTextChildAnchor() *TextChildAnchor {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "TextChildAnchor").InvokeMethod("new_TextChildAnchor", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -95,12 +93,8 @@ func NewTextChildAnchor() *TextChildAnchor {
 //
 func (anchor *TextChildAnchor) Deleted() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TextChildAnchor").InvokeMethod("get_deleted", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -109,7 +103,7 @@ func (anchor *TextChildAnchor) Deleted() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -127,13 +121,8 @@ func (anchor *TextChildAnchor) Deleted() bool {
 func (anchor *TextChildAnchor) Widgets() []Widgetter {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void       // out
-	var _cret **C.GtkWidget // in
-	var _out0 *C.void       // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TextChildAnchor").InvokeMethod("get_widgets", _args[:], _outs[:])
 	_cret = *(***C.GtkWidget)(unsafe.Pointer(&_gret))
@@ -141,13 +130,12 @@ func (anchor *TextChildAnchor) Widgets() []Widgetter {
 	runtime.KeepAlive(anchor)
 
 	var _widgets []Widgetter // out
-	_out0 = *(***C.GtkWidget)(unsafe.Pointer(&_outs[0]))
 
 	defer C.free(unsafe.Pointer(_cret))
 	{
-		src := unsafe.Slice((**C.void)(_cret), _out0)
-		_widgets = make([]Widgetter, _out0)
-		for i := 0; i < int(_out0); i++ {
+		src := unsafe.Slice((**C.void)(_cret), _outs[0])
+		_widgets = make([]Widgetter, _outs[0])
+		for i := 0; i < int(_outs[0]); i++ {
 			{
 				objptr := unsafe.Pointer(src[i])
 				if objptr == nil {

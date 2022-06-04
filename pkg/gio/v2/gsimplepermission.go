@@ -28,14 +28,10 @@ import "C"
 //
 func NewSimplePermission(allowed bool) *SimplePermission {
 	var _args [1]girepository.Argument
-	var _arg0 C.gboolean // out
-	var _cret *C.void    // in
 
 	if allowed {
-		_arg0 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[0])) = C.TRUE
 	}
-
-	*(*C.gboolean)(unsafe.Pointer(&_args[0])) = _arg0
 
 	_gret := girepository.MustFind("Gio", "SimplePermission").InvokeMethod("new_SimplePermission", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

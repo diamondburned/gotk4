@@ -36,14 +36,9 @@ import "C"
 func TransformParse(str string) (*Transform, bool) {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gsk", "parse").Invoke(_args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -52,16 +47,15 @@ func TransformParse(str string) (*Transform, bool) {
 
 	var _outTransform *Transform // out
 	var _ok bool                 // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
 
-	_outTransform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_out0)))
+	_outTransform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_outTransform)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.gsk_transform_unref((*C.GskTransform)(intern.C))
 		},
 	)
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

@@ -37,17 +37,11 @@ func init() {
 //    - minor: return location for the GLX minor version.
 //    - ok: TRUE if GLX is available.
 //
-func X11DisplayGetGLXVersion(display *gdk.Display) (major int32, minor int32, ok bool) {
+func X11DisplayGetGLXVersion(display *gdk.Display) (major, minor int32, ok bool) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _out0 *C.void    // in
-	var _out1 *C.void    // in
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_gret := girepository.MustFind("GdkX11", "get_glx_version").Invoke(_args[:], _outs[:])
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -57,12 +51,10 @@ func X11DisplayGetGLXVersion(display *gdk.Display) (major int32, minor int32, ok
 	var _major int32 // out
 	var _minor int32 // out
 	var _ok bool     // out
-	_out0 = *(**C.void)(unsafe.Pointer(&_outs[0]))
-	_out1 = *(**C.void)(unsafe.Pointer(&_outs[1]))
 
-	_major = *(*int32)(unsafe.Pointer(_out0))
-	_minor = *(*int32)(unsafe.Pointer(_out1))
-	if _cret != 0 {
+	_major = *(*int32)(unsafe.Pointer(_outs[0]))
+	_minor = *(*int32)(unsafe.Pointer(_outs[1]))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 

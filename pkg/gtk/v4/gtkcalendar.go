@@ -222,8 +222,6 @@ func (calendar *Calendar) ConnectPrevYear(f func()) coreglib.SignalHandle {
 //    - calendar: newly GtkCalendar widget.
 //
 func NewCalendar() *Calendar {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "Calendar").InvokeMethod("new_Calendar", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -237,11 +235,8 @@ func NewCalendar() *Calendar {
 // ClearMarks: remove all visual markers.
 func (calendar *Calendar) ClearMarks() {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(calendar).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(calendar).Native()))
 
 	girepository.MustFind("Gtk", "Calendar").InvokeMethod("clear_marks", _args[:], nil)
 
@@ -258,12 +253,8 @@ func (calendar *Calendar) ClearMarks() {
 //
 func (self *Calendar) Date() *glib.DateTime {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Calendar").InvokeMethod("get_date", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -295,15 +286,9 @@ func (self *Calendar) Date() *glib.DateTime {
 //
 func (calendar *Calendar) DayIsMarked(day uint32) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.guint    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(calendar).Native()))
-	_arg1 = C.guint(day)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(calendar).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(day)
 
 	_gret := girepository.MustFind("Gtk", "Calendar").InvokeMethod("get_day_is_marked", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -313,7 +298,7 @@ func (calendar *Calendar) DayIsMarked(day uint32) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -331,12 +316,8 @@ func (calendar *Calendar) DayIsMarked(day uint32) bool {
 //
 func (self *Calendar) ShowDayNames() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Calendar").InvokeMethod("get_show_day_names", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -345,7 +326,7 @@ func (self *Calendar) ShowDayNames() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -362,12 +343,8 @@ func (self *Calendar) ShowDayNames() bool {
 //
 func (self *Calendar) ShowHeading() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Calendar").InvokeMethod("get_show_heading", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -376,7 +353,7 @@ func (self *Calendar) ShowHeading() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -393,12 +370,8 @@ func (self *Calendar) ShowHeading() bool {
 //
 func (self *Calendar) ShowWeekNumbers() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Calendar").InvokeMethod("get_show_week_numbers", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -407,7 +380,7 @@ func (self *Calendar) ShowWeekNumbers() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -422,14 +395,9 @@ func (self *Calendar) ShowWeekNumbers() bool {
 //
 func (calendar *Calendar) MarkDay(day uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(calendar).Native()))
-	_arg1 = C.guint(day)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(calendar).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(day)
 
 	girepository.MustFind("Gtk", "Calendar").InvokeMethod("mark_day", _args[:], nil)
 
@@ -445,14 +413,9 @@ func (calendar *Calendar) MarkDay(day uint32) {
 //
 func (self *Calendar) SelectDay(date *glib.DateTime) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(date)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(date)))
 
 	girepository.MustFind("Gtk", "Calendar").InvokeMethod("select_day", _args[:], nil)
 
@@ -468,16 +431,11 @@ func (self *Calendar) SelectDay(date *glib.DateTime) {
 //
 func (self *Calendar) SetShowDayNames(value bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if value {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Calendar").InvokeMethod("set_show_day_names", _args[:], nil)
 
@@ -496,16 +454,11 @@ func (self *Calendar) SetShowDayNames(value bool) {
 //
 func (self *Calendar) SetShowHeading(value bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if value {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Calendar").InvokeMethod("set_show_heading", _args[:], nil)
 
@@ -521,16 +474,11 @@ func (self *Calendar) SetShowHeading(value bool) {
 //
 func (self *Calendar) SetShowWeekNumbers(value bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if value {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Calendar").InvokeMethod("set_show_week_numbers", _args[:], nil)
 
@@ -546,14 +494,9 @@ func (self *Calendar) SetShowWeekNumbers(value bool) {
 //
 func (calendar *Calendar) UnmarkDay(day uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(calendar).Native()))
-	_arg1 = C.guint(day)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(calendar).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(day)
 
 	girepository.MustFind("Gtk", "Calendar").InvokeMethod("unmark_day", _args[:], nil)
 

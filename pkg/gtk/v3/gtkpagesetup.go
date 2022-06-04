@@ -94,8 +94,6 @@ func marshalPageSetup(p uintptr) (interface{}, error) {
 //    - pageSetup: new PageSetup.
 //
 func NewPageSetup() *PageSetup {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "PageSetup").InvokeMethod("new_PageSetup", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -120,14 +118,9 @@ func NewPageSetup() *PageSetup {
 //
 func NewPageSetupFromFile(fileName string) (*PageSetup, error) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(fileName)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(fileName)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gtk", "PageSetup").InvokeMethod("new_PageSetup_from_file", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -138,7 +131,7 @@ func NewPageSetupFromFile(fileName string) (*PageSetup, error) {
 	var _goerr error          // out
 
 	_pageSetup = wrapPageSetup(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -158,12 +151,8 @@ func NewPageSetupFromFile(fileName string) (*PageSetup, error) {
 //
 func NewPageSetupFromGVariant(variant *glib.Variant) *PageSetup {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(variant)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(variant)))
 
 	_gret := girepository.MustFind("Gtk", "PageSetup").InvokeMethod("new_PageSetup_from_gvariant", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -193,19 +182,12 @@ func NewPageSetupFromGVariant(variant *glib.Variant) *PageSetup {
 //
 func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PageSetup, error) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(keyFile)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	if groupName != "" {
-		_arg1 = (*C.void)(unsafe.Pointer(C.CString(groupName)))
-		defer C.free(unsafe.Pointer(_arg1))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(groupName)))
+		defer C.free(unsafe.Pointer(_args[1]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gtk", "PageSetup").InvokeMethod("new_PageSetup_from_key_file", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -217,7 +199,7 @@ func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PageSetu
 	var _goerr error          // out
 
 	_pageSetup = wrapPageSetup(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -232,12 +214,8 @@ func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PageSetu
 //
 func (other *PageSetup) Copy() *PageSetup {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(other).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(other).Native()))
 
 	_gret := girepository.MustFind("Gtk", "PageSetup").InvokeMethod("copy", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -259,12 +237,8 @@ func (other *PageSetup) Copy() *PageSetup {
 //
 func (setup *PageSetup) PaperSize() *PaperSize {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
 
 	_gret := girepository.MustFind("Gtk", "PageSetup").InvokeMethod("get_paper_size", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -287,16 +261,10 @@ func (setup *PageSetup) PaperSize() *PaperSize {
 //
 func (setup *PageSetup) LoadFile(fileName string) error {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(fileName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(fileName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "PageSetup").InvokeMethod("load_file", _args[:], nil)
 
@@ -305,7 +273,7 @@ func (setup *PageSetup) LoadFile(fileName string) error {
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -323,21 +291,13 @@ func (setup *PageSetup) LoadFile(fileName string) error {
 //
 func (setup *PageSetup) LoadKeyFile(keyFile *glib.KeyFile, groupName string) error {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(keyFile)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	if groupName != "" {
-		_arg2 = (*C.void)(unsafe.Pointer(C.CString(groupName)))
-		defer C.free(unsafe.Pointer(_arg2))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(groupName)))
+		defer C.free(unsafe.Pointer(_args[2]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "PageSetup").InvokeMethod("load_key_file", _args[:], nil)
 
@@ -347,7 +307,7 @@ func (setup *PageSetup) LoadKeyFile(keyFile *glib.KeyFile, groupName string) err
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -363,14 +323,9 @@ func (setup *PageSetup) LoadKeyFile(keyFile *glib.KeyFile, groupName string) err
 //
 func (setup *PageSetup) SetPaperSize(size *PaperSize) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
 
 	girepository.MustFind("Gtk", "PageSetup").InvokeMethod("set_paper_size", _args[:], nil)
 
@@ -387,14 +342,9 @@ func (setup *PageSetup) SetPaperSize(size *PaperSize) {
 //
 func (setup *PageSetup) SetPaperSizeAndDefaultMargins(size *PaperSize) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
 
 	girepository.MustFind("Gtk", "PageSetup").InvokeMethod("set_paper_size_and_default_margins", _args[:], nil)
 
@@ -410,16 +360,10 @@ func (setup *PageSetup) SetPaperSizeAndDefaultMargins(size *PaperSize) {
 //
 func (setup *PageSetup) ToFile(fileName string) error {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(fileName)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(fileName)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "PageSetup").InvokeMethod("to_file", _args[:], nil)
 
@@ -428,7 +372,7 @@ func (setup *PageSetup) ToFile(fileName string) error {
 
 	var _goerr error // out
 
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
@@ -443,12 +387,8 @@ func (setup *PageSetup) ToFile(fileName string) error {
 //
 func (setup *PageSetup) ToGVariant() *glib.Variant {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
 
 	_gret := girepository.MustFind("Gtk", "PageSetup").InvokeMethod("to_gvariant", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -479,20 +419,13 @@ func (setup *PageSetup) ToGVariant() *glib.Variant {
 //
 func (setup *PageSetup) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(keyFile)))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	if groupName != "" {
-		_arg2 = (*C.void)(unsafe.Pointer(C.CString(groupName)))
-		defer C.free(unsafe.Pointer(_arg2))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(groupName)))
+		defer C.free(unsafe.Pointer(_args[2]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	girepository.MustFind("Gtk", "PageSetup").InvokeMethod("to_key_file", _args[:], nil)
 

@@ -128,12 +128,8 @@ func marshalNoOpObject(p uintptr) (interface{}, error) {
 //
 func NewNoOpObject(obj *coreglib.Object) *NoOpObject {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(obj.Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(obj.Native()))
 
 	_gret := girepository.MustFind("Atk", "NoOpObject").InvokeMethod("new_NoOpObject", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

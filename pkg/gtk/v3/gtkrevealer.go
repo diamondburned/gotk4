@@ -140,8 +140,6 @@ func marshalRevealer(p uintptr) (interface{}, error) {
 //    - revealer: newly created Revealer.
 //
 func NewRevealer() *Revealer {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "Revealer").InvokeMethod("new_Revealer", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -161,12 +159,8 @@ func NewRevealer() *Revealer {
 //
 func (revealer *Revealer) ChildRevealed() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Revealer").InvokeMethod("get_child_revealed", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -175,7 +169,7 @@ func (revealer *Revealer) ChildRevealed() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -195,12 +189,8 @@ func (revealer *Revealer) ChildRevealed() bool {
 //
 func (revealer *Revealer) RevealChild() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Revealer").InvokeMethod("get_reveal_child", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -209,7 +199,7 @@ func (revealer *Revealer) RevealChild() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -225,12 +215,8 @@ func (revealer *Revealer) RevealChild() bool {
 //
 func (revealer *Revealer) TransitionDuration() uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret C.guint // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
 
 	_gret := girepository.MustFind("Gtk", "Revealer").InvokeMethod("get_transition_duration", _args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -239,7 +225,7 @@ func (revealer *Revealer) TransitionDuration() uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -254,16 +240,11 @@ func (revealer *Revealer) TransitionDuration() uint32 {
 //
 func (revealer *Revealer) SetRevealChild(revealChild bool) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.gboolean // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
 	if revealChild {
-		_arg1 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.gboolean)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gtk", "Revealer").InvokeMethod("set_reveal_child", _args[:], nil)
 
@@ -279,14 +260,9 @@ func (revealer *Revealer) SetRevealChild(revealChild bool) {
 //
 func (revealer *Revealer) SetTransitionDuration(duration uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
-	_arg1 = C.guint(duration)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(revealer).Native()))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(duration)
 
 	girepository.MustFind("Gtk", "Revealer").InvokeMethod("set_transition_duration", _args[:], nil)
 

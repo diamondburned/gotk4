@@ -92,12 +92,8 @@ func BaseLayoutChild(obj LayoutChilder) *LayoutChild {
 //
 func (layoutChild *LayoutChild) ChildWidget() Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(layoutChild).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layoutChild).Native()))
 
 	_gret := girepository.MustFind("Gtk", "LayoutChild").InvokeMethod("get_child_widget", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -136,12 +132,8 @@ func (layoutChild *LayoutChild) ChildWidget() Widgetter {
 //
 func (layoutChild *LayoutChild) LayoutManager() LayoutManagerer {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(layoutChild).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layoutChild).Native()))
 
 	_gret := girepository.MustFind("Gtk", "LayoutChild").InvokeMethod("get_layout_manager", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

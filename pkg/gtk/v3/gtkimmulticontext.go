@@ -64,8 +64,6 @@ func marshalIMMulticontext(p uintptr) (interface{}, error) {
 //    - imMulticontext: new IMMulticontext.
 //
 func NewIMMulticontext() *IMMulticontext {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "IMMulticontext").InvokeMethod("new_IMMulticontext", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -90,14 +88,9 @@ func NewIMMulticontext() *IMMulticontext {
 //
 func (context *IMMulticontext) AppendMenuitems(menushell MenuSheller) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(menushell).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menushell).Native()))
 
 	girepository.MustFind("Gtk", "IMMulticontext").InvokeMethod("append_menuitems", _args[:], nil)
 
@@ -113,12 +106,8 @@ func (context *IMMulticontext) AppendMenuitems(menushell MenuSheller) {
 //
 func (context *IMMulticontext) ContextID() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_gret := girepository.MustFind("Gtk", "IMMulticontext").InvokeMethod("get_context_id", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -143,15 +132,10 @@ func (context *IMMulticontext) ContextID() string {
 //
 func (context *IMMulticontext) SetContextID(contextId string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(contextId)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(contextId)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gtk", "IMMulticontext").InvokeMethod("set_context_id", _args[:], nil)
 

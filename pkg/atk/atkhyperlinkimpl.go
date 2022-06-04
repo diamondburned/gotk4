@@ -120,12 +120,8 @@ func marshalHyperlinkImpl(p uintptr) (interface{}, error) {
 //
 func (impl *HyperlinkImpl) Hyperlink() *Hyperlink {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(impl).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(impl).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 

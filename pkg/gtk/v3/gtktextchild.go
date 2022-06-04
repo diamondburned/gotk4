@@ -69,8 +69,6 @@ func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 //    - textChildAnchor: new TextChildAnchor.
 //
 func NewTextChildAnchor() *TextChildAnchor {
-	var _cret *C.void // in
-
 	_gret := girepository.MustFind("Gtk", "TextChildAnchor").InvokeMethod("new_TextChildAnchor", nil, nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -93,12 +91,8 @@ func NewTextChildAnchor() *TextChildAnchor {
 //
 func (anchor *TextChildAnchor) Deleted() bool {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void    // out
-	var _cret C.gboolean // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TextChildAnchor").InvokeMethod("get_deleted", _args[:], nil)
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
@@ -107,7 +101,7 @@ func (anchor *TextChildAnchor) Deleted() bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -123,12 +117,8 @@ func (anchor *TextChildAnchor) Deleted() bool {
 //
 func (anchor *TextChildAnchor) Widgets() []Widgetter {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
 
 	_gret := girepository.MustFind("Gtk", "TextChildAnchor").InvokeMethod("get_widgets", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))

@@ -202,15 +202,9 @@ func marshalStyleProvider(p uintptr) (interface{}, error) {
 //
 func (provider *StyleProvider) IconFactory(path *WidgetPath) *IconFactory {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -219,7 +213,7 @@ func (provider *StyleProvider) IconFactory(path *WidgetPath) *IconFactory {
 
 	var _iconFactory *IconFactory // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_iconFactory = wrapIconFactory(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
@@ -242,15 +236,9 @@ func (provider *StyleProvider) IconFactory(path *WidgetPath) *IconFactory {
 //
 func (provider *StyleProvider) Style(path *WidgetPath) *StyleProperties {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
-	_arg1 = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -259,7 +247,7 @@ func (provider *StyleProvider) Style(path *WidgetPath) *StyleProperties {
 
 	var _styleProperties *StyleProperties // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_styleProperties = wrapStyleProperties(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 

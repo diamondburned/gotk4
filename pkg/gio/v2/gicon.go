@@ -4,7 +4,6 @@ package gio
 
 import (
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
@@ -208,19 +207,13 @@ func marshalIcon(p uintptr) (interface{}, error) {
 //
 func (icon1 *Icon) Equal(icon2 Iconner) bool {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 *C.void    // out
-	var _cret C.gboolean // in
 
 	if icon1 != nil {
-		_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon1).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon1).Native()))
 	}
 	if icon2 != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon2).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon2).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
 
@@ -229,7 +222,7 @@ func (icon1 *Icon) Equal(icon2 Iconner) bool {
 
 	var _ok bool // out
 
-	if _cret != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
 
@@ -249,12 +242,8 @@ func (icon1 *Icon) Equal(icon2 Iconner) bool {
 //
 func (icon *Icon) Serialize() *glib.Variant {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -262,7 +251,7 @@ func (icon *Icon) Serialize() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
@@ -298,12 +287,8 @@ func (icon *Icon) Serialize() *glib.Variant {
 //
 func (icon *Icon) String() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -311,7 +296,7 @@ func (icon *Icon) String() string {
 
 	var _utf8 string // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 		defer C.free(unsafe.Pointer(_cret))
 	}
@@ -332,12 +317,8 @@ func (icon *Icon) String() string {
 //
 func IconDeserialize(value *glib.Variant) *Icon {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_gret := girepository.MustFind("Gio", "deserialize").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -346,7 +327,7 @@ func IconDeserialize(value *glib.Variant) *Icon {
 
 	var _icon *Icon // out
 
-	if _cret != nil {
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 	}
 
@@ -366,12 +347,8 @@ func IconDeserialize(value *glib.Variant) *Icon {
 //
 func IconHash(icon unsafe.Pointer) uint32 {
 	var _args [1]girepository.Argument
-	var _arg0 C.gpointer // out
-	var _cret C.guint    // in
 
-	_arg0 = (C.gpointer)(unsafe.Pointer(icon))
-
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = _arg0
+	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = (C.gpointer)(unsafe.Pointer(icon))
 
 	_gret := girepository.MustFind("Gio", "hash").Invoke(_args[:], nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
@@ -380,7 +357,7 @@ func IconHash(icon unsafe.Pointer) uint32 {
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -402,14 +379,9 @@ func IconHash(icon unsafe.Pointer) uint32 {
 //
 func NewIconForString(str string) (*Icon, error) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
-	var _cerr *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg0))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_args[0]))
 
 	_gret := girepository.MustFind("Gio", "new_for_string").Invoke(_args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -420,7 +392,7 @@ func NewIconForString(str string) (*Icon, error) {
 	var _goerr error // out
 
 	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	if _cerr != nil {
+	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 

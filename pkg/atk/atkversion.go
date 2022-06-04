@@ -3,6 +3,8 @@
 package atk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
@@ -57,14 +59,12 @@ const VERSION_MIN_REQUIRED = 2
 //    - guint: binary age of the ATK library.
 //
 func GetBinaryAge() uint32 {
-	var _cret C.guint // in
-
 	_gret := girepository.MustFind("Atk", "get_binary_age").Invoke(nil, nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -77,14 +77,12 @@ func GetBinaryAge() uint32 {
 //    - guint: interface age of the ATK library.
 //
 func GetInterfaceAge() uint32 {
-	var _cret C.guint // in
-
 	_gret := girepository.MustFind("Atk", "get_interface_age").Invoke(nil, nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -101,14 +99,12 @@ func GetInterfaceAge() uint32 {
 //    - guint: major version number of the ATK library.
 //
 func GetMajorVersion() uint32 {
-	var _cret C.guint // in
-
 	_gret := girepository.MustFind("Atk", "get_major_version").Invoke(nil, nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -125,14 +121,12 @@ func GetMajorVersion() uint32 {
 //    - guint: micro version number of the ATK library.
 //
 func GetMicroVersion() uint32 {
-	var _cret C.guint // in
-
 	_gret := girepository.MustFind("Atk", "get_micro_version").Invoke(nil, nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }
@@ -149,14 +143,12 @@ func GetMicroVersion() uint32 {
 //    - guint: minor version number of the ATK library.
 //
 func GetMinorVersion() uint32 {
-	var _cret C.guint // in
-
 	_gret := girepository.MustFind("Atk", "get_minor_version").Invoke(nil, nil)
 	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
 
-	_guint = uint32(_cret)
+	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 
 	return _guint
 }

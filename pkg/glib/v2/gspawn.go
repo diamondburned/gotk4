@@ -368,7 +368,7 @@ func SpawnCommandLineAsync(commandLine string) error {
 //    - exitStatus (optional): return location for child exit status, as returned
 //      by waitpid().
 //
-func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardError []byte, exitStatus int32, goerr error) {
+func SpawnCommandLineSync(commandLine string) (standardOutput, standardError []byte, exitStatus int32, goerr error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // in
 	var _arg3 *C.gchar  // in
@@ -462,7 +462,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 //    - exitStatus (optional): return location for child exit status, as returned
 //      by waitpid(), or NULL.
 //
-func SpawnSync(workingDirectory string, argv, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (standardOutput []byte, standardError []byte, exitStatus int32, goerr error) {
+func SpawnSync(workingDirectory string, argv, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (standardOutput, standardError []byte, exitStatus int32, goerr error) {
 	var _arg1 *C.gchar               // out
 	var _arg2 **C.gchar              // out
 	var _arg3 **C.gchar              // out

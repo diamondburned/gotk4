@@ -156,20 +156,12 @@ func marshalPadController(p uintptr) (interface{}, error) {
 //
 func NewPadController(window *Window, group gio.ActionGrouper, pad gdk.Devicer) *PadController {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	if pad != nil {
-		_arg2 = (*C.void)(unsafe.Pointer(coreglib.InternObject(pad).Native()))
+		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pad).Native()))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
-	*(**C.void)(unsafe.Pointer(&_args[2])) = _arg2
 
 	_gret := girepository.MustFind("Gtk", "PadController").InvokeMethod("new_PadController", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -194,5 +186,5 @@ type PadActionEntry struct {
 
 // padActionEntry is the struct that's finalized.
 type padActionEntry struct {
-	native *C.GtkPadActionEntry
+	native unsafe.Pointer
 }

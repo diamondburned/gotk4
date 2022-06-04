@@ -7,12 +7,12 @@ import (
 	"log"
 	"os"
 	"runtime"
-	"runtime/cgo"
 	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
 // #include <stdlib.h>
@@ -908,7 +908,7 @@ type logField struct {
 // Key: field name (UTF-8 string).
 func (l *LogField) Key() string {
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(l.native.key)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }
 

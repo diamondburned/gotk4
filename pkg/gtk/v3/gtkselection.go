@@ -102,11 +102,8 @@ func (t TargetFlags) Has(other TargetFlags) bool {
 //
 func SelectionRemoveAll(widget Widgetter) {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	girepository.MustFind("Gtk", "selection_remove_all").Invoke(_args[:], nil)
 
@@ -123,30 +120,22 @@ type TargetEntry struct {
 
 // targetEntry is the struct that's finalized.
 type targetEntry struct {
-	native *C.GtkTargetEntry
+	native unsafe.Pointer
 }
 
 func marshalTargetEntry(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &TargetEntry{&targetEntry{(*C.GtkTargetEntry)(b)}}, nil
+	return &TargetEntry{&targetEntry{(unsafe.Pointer)(b)}}, nil
 }
 
 // NewTargetEntry constructs a struct TargetEntry.
 func NewTargetEntry(target string, flags uint32, info uint32) *TargetEntry {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
-	var _arg2 C.guint // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(C.CString(target)))
-	defer C.free(unsafe.Pointer(_arg0))
-	_arg1 = C.guint(flags)
-	_arg2 = C.guint(info)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.guint)(unsafe.Pointer(&_args[2])) = _arg2
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(target)))
+	defer C.free(unsafe.Pointer(_args[0]))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(flags)
+	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(info)
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -169,15 +158,19 @@ func NewTargetEntry(target string, flags uint32, info uint32) *TargetEntry {
 
 // Target: string representation of the target type.
 func (t *TargetEntry) Target() string {
+	offset := girepository.MustFind("Gtk", "TargetEntry").StructFieldOffset("target")
+	valptr := unsafe.Add(unsafe.Pointer(t), offset)
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(t.native.target)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }
 
 // Flags for DND.
 func (t *TargetEntry) Flags() uint32 {
+	offset := girepository.MustFind("Gtk", "TargetEntry").StructFieldOffset("flags")
+	valptr := unsafe.Add(unsafe.Pointer(t), offset)
 	var v uint32 // out
-	v = uint32(t.native.flags)
+	v = uint32(*(*C.guint)(unsafe.Pointer(&valptr)))
 	return v
 }
 
@@ -185,8 +178,10 @@ func (t *TargetEntry) Flags() uint32 {
 // e.g the Widget::selection-get signal. It allows the application to identify
 // the target type without extensive string compares.
 func (t *TargetEntry) Info() uint32 {
+	offset := girepository.MustFind("Gtk", "TargetEntry").StructFieldOffset("info")
+	valptr := unsafe.Add(unsafe.Pointer(t), offset)
 	var v uint32 // out
-	v = uint32(t.native.info)
+	v = uint32(*(*C.guint)(unsafe.Pointer(&valptr)))
 	return v
 }
 
@@ -199,12 +194,8 @@ func (t *TargetEntry) Info() uint32 {
 //
 func (data *TargetEntry) Copy() *TargetEntry {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(data)))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(data)))
 
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
 
@@ -233,12 +224,12 @@ type TargetList struct {
 
 // targetList is the struct that's finalized.
 type targetList struct {
-	native *C.GtkTargetList
+	native unsafe.Pointer
 }
 
 func marshalTargetList(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
-	return &TargetList{&targetList{(*C.GtkTargetList)(b)}}, nil
+	return &TargetList{&targetList{(unsafe.Pointer)(b)}}, nil
 }
 
 // AddImageTargets appends the image targets supported by SelectionData to the
@@ -252,19 +243,12 @@ func marshalTargetList(p uintptr) (interface{}, error) {
 //
 func (list *TargetList) AddImageTargets(info uint32, writable bool) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.guint    // out
-	var _arg2 C.gboolean // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
-	_arg1 = C.guint(info)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(info)
 	if writable {
-		_arg2 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
 
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(info)
@@ -285,22 +269,13 @@ func (list *TargetList) AddImageTargets(info uint32, writable bool) {
 //
 func (list *TargetList) AddRichTextTargets(info uint32, deserializable bool, buffer *TextBuffer) {
 	var _args [4]girepository.Argument
-	var _arg0 *C.void    // out
-	var _arg1 C.guint    // out
-	var _arg2 C.gboolean // out
-	var _arg3 *C.void    // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
-	_arg1 = C.guint(info)
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(info)
 	if deserializable {
-		_arg2 = C.TRUE
+		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
-	_arg3 = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
-	*(*C.gboolean)(unsafe.Pointer(&_args[2])) = _arg2
-	*(**C.void)(unsafe.Pointer(&_args[3])) = _arg3
+	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(info)
@@ -317,14 +292,9 @@ func (list *TargetList) AddRichTextTargets(info uint32, deserializable bool, buf
 //
 func (list *TargetList) AddTextTargets(info uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
-	_arg1 = C.guint(info)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(info)
 
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(info)
@@ -339,14 +309,9 @@ func (list *TargetList) AddTextTargets(info uint32) {
 //
 func (list *TargetList) AddURITargets(info uint32) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 C.guint // out
 
-	_arg0 = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
-	_arg1 = C.guint(info)
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(*C.guint)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
+	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(info)
 
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(info)
@@ -362,5 +327,5 @@ type TargetPair struct {
 
 // targetPair is the struct that's finalized.
 type targetPair struct {
-	native *C.GtkTargetPair
+	native unsafe.Pointer
 }

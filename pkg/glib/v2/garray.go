@@ -5,11 +5,11 @@ package glib
 import (
 	"reflect"
 	"runtime"
-	"runtime/cgo"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
 // #include <stdlib.h>
@@ -33,7 +33,7 @@ type array struct {
 // added to the #GArray.
 func (a *Array) Data() string {
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(a.native.data)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
 }
 
@@ -41,7 +41,7 @@ func (a *Array) Data() string {
 // zero element.
 func (a *Array) Len() uint32 {
 	var v uint32 // out
-	v = uint32(a.native.len)
+	v = uint32(valptr)
 	return v
 }
 
@@ -61,14 +61,14 @@ type byteArray struct {
 // added to the Array.
 func (b *ByteArray) Data() *byte {
 	var v *byte // out
-	v = (*byte)(unsafe.Pointer(b.native.data))
+	v = (*byte)(unsafe.Pointer(valptr))
 	return v
 }
 
 // Len: number of elements in the Array.
 func (b *ByteArray) Len() uint32 {
 	var v uint32 // out
-	v = uint32(b.native.len)
+	v = uint32(valptr)
 	return v
 }
 
@@ -350,14 +350,14 @@ type ptrArray struct {
 // grows.
 func (p *PtrArray) Pdata() *unsafe.Pointer {
 	var v *unsafe.Pointer // out
-	v = (*unsafe.Pointer)(unsafe.Pointer(p.native.pdata))
+	v = (*unsafe.Pointer)(unsafe.Pointer(valptr))
 	return v
 }
 
 // Len: number of pointers in the array.
 func (p *PtrArray) Len() uint32 {
 	var v uint32 // out
-	v = uint32(p.native.len)
+	v = uint32(valptr)
 	return v
 }
 

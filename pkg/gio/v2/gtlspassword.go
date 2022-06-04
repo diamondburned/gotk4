@@ -128,12 +128,8 @@ func marshalTLSPassword(p uintptr) (interface{}, error) {
 //
 func (password *TLSPassword) Description() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(password).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(password).Native()))
 
 	_gret := girepository.MustFind("Gio", "TlsPassword").InvokeMethod("get_description", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -162,17 +158,11 @@ func (password *TLSPassword) Description() string {
 //
 func (password *TLSPassword) Value(length *uint) *byte {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(password).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(password).Native()))
 	if length != nil {
-		_arg1 = (*C.void)(unsafe.Pointer(length))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(length))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	_gret := girepository.MustFind("Gio", "TlsPassword").InvokeMethod("get_value", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -182,7 +172,7 @@ func (password *TLSPassword) Value(length *uint) *byte {
 
 	var _guint8 *byte // out
 
-	_guint8 = (*byte)(unsafe.Pointer(_cret))
+	_guint8 = (*byte)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 
 	return _guint8
 }
@@ -197,12 +187,8 @@ func (password *TLSPassword) Value(length *uint) *byte {
 //
 func (password *TLSPassword) Warning() string {
 	var _args [1]girepository.Argument
-	var _arg0 *C.void // out
-	var _cret *C.void // in
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(password).Native()))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(password).Native()))
 
 	_gret := girepository.MustFind("Gio", "TlsPassword").InvokeMethod("get_warning", _args[:], nil)
 	_cret = *(**C.void)(unsafe.Pointer(&_gret))
@@ -225,15 +211,10 @@ func (password *TLSPassword) Warning() string {
 //
 func (password *TLSPassword) SetDescription(description string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(password).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(description)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(password).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gio", "TlsPassword").InvokeMethod("set_description", _args[:], nil)
 
@@ -255,18 +236,12 @@ func (password *TLSPassword) SetDescription(description string) {
 //
 func (password *TLSPassword) SetValue(value []byte) {
 	var _args [3]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
-	var _arg2 C.gssize
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(password).Native()))
-	_arg2 = (C.gssize)(len(value))
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(password).Native()))
+	*(*C.gssize)(unsafe.Pointer(&_args[2])) = (C.gssize)(len(value))
 	if len(value) > 0 {
-		_arg1 = (*C.void)(unsafe.Pointer(&value[0]))
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(&value[0]))
 	}
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
 
 	girepository.MustFind("Gio", "TlsPassword").InvokeMethod("set_value", _args[:], nil)
 
@@ -284,15 +259,10 @@ func (password *TLSPassword) SetValue(value []byte) {
 //
 func (password *TLSPassword) SetWarning(warning string) {
 	var _args [2]girepository.Argument
-	var _arg0 *C.void // out
-	var _arg1 *C.void // out
 
-	_arg0 = (*C.void)(unsafe.Pointer(coreglib.InternObject(password).Native()))
-	_arg1 = (*C.void)(unsafe.Pointer(C.CString(warning)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	*(**C.void)(unsafe.Pointer(&_args[0])) = _arg0
-	*(**C.void)(unsafe.Pointer(&_args[1])) = _arg1
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(password).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(warning)))
+	defer C.free(unsafe.Pointer(_args[1]))
 
 	girepository.MustFind("Gio", "TlsPassword").InvokeMethod("set_warning", _args[:], nil)
 

@@ -16,6 +16,11 @@ import (
 // #include <glib.h>
 // extern void _gotk4_gdk4_Device_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gdk4_Device_ConnectToolChanged(gpointer, void*, guintptr);
+// struct TimeCoord {
+//     guint32 time;
+//             flags;
+//     void    axes;
+// };
 import "C"
 
 // glib.Type values for gdkdevice.go.

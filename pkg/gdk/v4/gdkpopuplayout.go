@@ -189,7 +189,7 @@ func (layout *PopupLayout) Copy() *PopupLayout {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_popupLayout)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_popup_layout_unref((*C.GdkPopupLayout)(intern.C))
+			C.free(intern.C)
 		},
 	)
 

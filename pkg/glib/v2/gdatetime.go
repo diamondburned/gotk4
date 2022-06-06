@@ -96,7 +96,7 @@ func NewDateTime(tz *TimeZone, year int32, month int32, day int32, hour int32, m
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -127,7 +127,7 @@ func NewDateTimeFromISO8601(text string, defaultTz *TimeZone) *DateTime {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -152,7 +152,7 @@ func NewDateTimeFromTimevalLocal(tv *TimeVal) *DateTime {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -177,7 +177,7 @@ func NewDateTimeFromTimevalUTC(tv *TimeVal) *DateTime {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -202,7 +202,7 @@ func NewDateTimeFromUnixLocal(t int64) *DateTime {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -227,7 +227,7 @@ func NewDateTimeFromUnixUTC(t int64) *DateTime {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -267,7 +267,7 @@ func NewDateTimeLocal(year int32, month int32, day int32, hour int32, minute int
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -292,7 +292,7 @@ func NewDateTimeNow(tz *TimeZone) *DateTime {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -313,7 +313,7 @@ func NewDateTimeNowLocal() *DateTime {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -334,7 +334,7 @@ func NewDateTimeNowUTC() *DateTime {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -374,7 +374,7 @@ func NewDateTimeUTC(year int32, month int32, day int32, hour int32, minute int32
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -412,7 +412,7 @@ func (datetime *DateTime) Add(timespan TimeSpan) *DateTime {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -451,7 +451,7 @@ func (datetime *DateTime) AddDays(days int32) *DateTime {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -510,7 +510,7 @@ func (datetime *DateTime) AddFull(years int32, months int32, days int32, hours i
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -549,7 +549,7 @@ func (datetime *DateTime) AddHours(hours int32) *DateTime {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -588,7 +588,7 @@ func (datetime *DateTime) AddMinutes(minutes int32) *DateTime {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -632,7 +632,7 @@ func (datetime *DateTime) AddMonths(months int32) *DateTime {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -671,7 +671,7 @@ func (datetime *DateTime) AddSeconds(seconds float64) *DateTime {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -710,7 +710,7 @@ func (datetime *DateTime) AddWeeks(weeks int32) *DateTime {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -752,7 +752,7 @@ func (datetime *DateTime) AddYears(years int32) *DateTime {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -1287,7 +1287,7 @@ func (datetime *DateTime) Timezone() *TimeZone {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_timeZone)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_time_zone_unref((*C.GTimeZone)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -1563,7 +1563,7 @@ func (datetime *DateTime) ToLocal() *DateTime {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -1650,7 +1650,7 @@ func (datetime *DateTime) ToTimezone(tz *TimeZone) *DateTime {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -1711,7 +1711,7 @@ func (datetime *DateTime) ToUTC() *DateTime {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}

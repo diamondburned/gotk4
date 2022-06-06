@@ -27,6 +27,35 @@ import (
 // extern void _gotk4_gdk3_WindowClass_from_embedder(void*, gdouble, gdouble, void*, void*);
 // extern void _gotk4_gdk3_WindowClass_to_embedder(void*, gdouble, gdouble, void*, void*);
 // extern void _gotk4_gdk3_Window_ConnectMovedToRect(gpointer, gpointer, gpointer, gboolean, gboolean, guintptr);
+// struct Geometry {
+//     gint    min_width;
+//     gint    min_height;
+//     gint    max_width;
+//     gint    max_height;
+//     gint    base_width;
+//     gint    base_height;
+//     gint    width_inc;
+//     gint    height_inc;
+//     gdouble min_aspect;
+//     gdouble max_aspect;
+//             win_gravity;
+// };
+// struct WindowAttr {
+//     void*    title;
+//     gint     event_mask;
+//     gint     x;
+//     gint     y;
+//     gint     width;
+//     gint     height;
+//              wclass;
+//     void*    visual;
+//              window_type;
+//     void*    cursor;
+//     void*    wmclass_name;
+//     void*    wmclass_class;
+//     gboolean override_redirect;
+//              type_hint;
+// };
 import "C"
 
 // glib.Type values for gdkwindow.go.

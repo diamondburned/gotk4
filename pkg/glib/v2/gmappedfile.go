@@ -67,7 +67,7 @@ func NewMappedFile(filename string, writable bool) (*MappedFile, error) {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_mappedFile)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_mapped_file_unref((*C.GMappedFile)(intern.C))
+			C.g_mapped_file_free((*C.GMappedFile)(intern.C))
 		},
 	)
 	if _cerr != nil {
@@ -100,7 +100,7 @@ func NewMappedFileFromFd(fd int32, writable bool) (*MappedFile, error) {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_mappedFile)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_mapped_file_unref((*C.GMappedFile)(intern.C))
+			C.g_mapped_file_free((*C.GMappedFile)(intern.C))
 		},
 	)
 	if _cerr != nil {
@@ -133,7 +133,7 @@ func (file *MappedFile) Bytes() *Bytes {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
+			C.free(intern.C)
 		},
 	)
 

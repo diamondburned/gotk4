@@ -110,7 +110,10 @@ func TreeGetRowDragData(value *coreglib.Value) (*TreeModel, *TreePath, bool) {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_path)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}

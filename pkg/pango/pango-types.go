@@ -13,6 +13,12 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// struct Rectangle {
+//     int x;
+//     int y;
+//     int width;
+//     int height;
+// };
 import "C"
 
 // SCALE: scale between dimensions used for Pango distances and device units.

@@ -845,7 +845,10 @@ func (iter *TextIter) Copy() *TextIter {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_textIter)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_text_iter_free((*C.GtkTextIter)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "TextIter").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -1678,7 +1681,7 @@ func (iter *TextIter) Attributes() (*TextAttributes, bool) {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_values)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_text_attributes_unref((*C.GtkTextAttributes)(intern.C))
+			C.free(intern.C)
 		},
 	)
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {

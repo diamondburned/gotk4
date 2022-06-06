@@ -148,7 +148,7 @@ func (invocation *DBusMethodInvocation) MethodInfo() *DBusMethodInfo {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dBusMethodInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_dbus_method_info_unref((*C.GDBusMethodInfo)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -227,7 +227,7 @@ func (invocation *DBusMethodInvocation) Parameters() *glib.Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -268,7 +268,7 @@ func (invocation *DBusMethodInvocation) PropertyInfo() *DBusPropertyInfo {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dBusPropertyInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_dbus_property_info_unref((*C.GDBusPropertyInfo)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}

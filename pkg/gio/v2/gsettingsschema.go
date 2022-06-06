@@ -130,7 +130,7 @@ func (schema *SettingsSchema) Key(name string) *SettingsSchemaKey {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_settingsSchemaKey)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_settings_schema_key_unref((*C.GSettingsSchemaKey)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -320,7 +320,7 @@ func (key *SettingsSchemaKey) DefaultValue() *glib.Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -438,7 +438,7 @@ func (key *SettingsSchemaKey) Range() *glib.Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -579,7 +579,7 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_settingsSchemaSource)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_settings_schema_source_unref((*C.GSettingsSchemaSource)(intern.C))
+			C.free(intern.C)
 		},
 	)
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
@@ -702,7 +702,7 @@ func (source *SettingsSchemaSource) Lookup(schemaId string, recursive bool) *Set
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_settingsSchema)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_settings_schema_unref((*C.GSettingsSchema)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -739,7 +739,7 @@ func SettingsSchemaSourceGetDefault() *SettingsSchemaSource {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_settingsSchemaSource)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_settings_schema_source_unref((*C.GSettingsSchemaSource)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}

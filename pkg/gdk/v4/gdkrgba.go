@@ -14,6 +14,12 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// struct RGBA {
+//     float red;
+//     float green;
+//     float blue;
+//     float alpha;
+// };
 import "C"
 
 // glib.Type values for gdkrgba.go.
@@ -131,7 +137,10 @@ func (rgba *RGBA) Copy() *RGBA {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_rgbA)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_rgba_free((*C.GdkRGBA)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "RGBA").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 

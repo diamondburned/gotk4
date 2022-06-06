@@ -9,7 +9,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
 // #include <stdlib.h>
@@ -32,6 +31,7 @@ type array struct {
 // Data: pointer to the element data. The data may be moved as elements are
 // added to the #GArray.
 func (a *Array) Data() string {
+	valptr := a.native.data
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
@@ -40,6 +40,7 @@ func (a *Array) Data() string {
 // Len: number of elements in the #GArray not including the possible terminating
 // zero element.
 func (a *Array) Len() uint32 {
+	valptr := a.native.len
 	var v uint32 // out
 	v = uint32(valptr)
 	return v
@@ -60,6 +61,7 @@ type byteArray struct {
 // Data: pointer to the element data. The data may be moved as elements are
 // added to the Array.
 func (b *ByteArray) Data() *byte {
+	valptr := b.native.data
 	var v *byte // out
 	v = (*byte)(unsafe.Pointer(valptr))
 	return v
@@ -67,6 +69,7 @@ func (b *ByteArray) Data() *byte {
 
 // Len: number of elements in the Array.
 func (b *ByteArray) Len() uint32 {
+	valptr := b.native.len
 	var v uint32 // out
 	v = uint32(valptr)
 	return v
@@ -126,7 +129,7 @@ func NewBytes(data []byte) *Bytes {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -327,7 +330,7 @@ func (bytes *Bytes) NewFromBytes(offset uint, length uint) *Bytes {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_ret)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -349,6 +352,7 @@ type ptrArray struct {
 // Pdata points to the array of pointers, which may be moved when the array
 // grows.
 func (p *PtrArray) Pdata() *unsafe.Pointer {
+	valptr := p.native.pdata
 	var v *unsafe.Pointer // out
 	v = (*unsafe.Pointer)(unsafe.Pointer(valptr))
 	return v
@@ -356,6 +360,7 @@ func (p *PtrArray) Pdata() *unsafe.Pointer {
 
 // Len: number of pointers in the array.
 func (p *PtrArray) Len() uint32 {
+	valptr := p.native.len
 	var v uint32 // out
 	v = uint32(valptr)
 	return v

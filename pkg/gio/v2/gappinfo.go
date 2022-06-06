@@ -1548,7 +1548,7 @@ func _gotk4_gio2_AppLaunchContextClass_launched(arg0 *C.void, arg1 *C.void, arg2
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_platformData)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -1630,7 +1630,7 @@ func _gotk4_gio2_AppLaunchContext_ConnectLaunched(arg0 C.gpointer, arg1 *C.void,
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_platformData)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
+			C.free(intern.C)
 		},
 	)
 

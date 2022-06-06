@@ -538,7 +538,7 @@ func (image *Image) IconSet() (*IconSet, int32) {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_iconSet)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_icon_set_unref((*C.GtkIconSet)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}

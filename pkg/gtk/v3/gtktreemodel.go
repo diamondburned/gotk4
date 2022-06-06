@@ -40,6 +40,12 @@ import (
 // extern void _gotk4_gtk3_TreeModel_ConnectRowHasChildToggled(gpointer, void*, void*, guintptr);
 // extern void _gotk4_gtk3_TreeModel_ConnectRowInserted(gpointer, void*, void*, guintptr);
 // extern void _gotk4_gtk3_TreeModel_ConnectRowsReordered(gpointer, void*, void*, gpointer, guintptr);
+// struct TreeIter {
+//     gint     stamp;
+//     gpointer user_data;
+//     gpointer user_data2;
+//     gpointer user_data3;
+// };
 import "C"
 
 // glib.Type values for gtktreemodel.go.
@@ -1261,7 +1267,10 @@ func (treeModel *TreeModel) Path(iter *TreeIter) *TreePath {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_treePath)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -1838,7 +1847,10 @@ func (iter *TreeIter) Copy() *TreeIter {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_treeIter)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_iter_free((*C.GtkTreeIter)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "TreeIter").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -1870,7 +1882,10 @@ func NewTreePath() *TreePath {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_treePath)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -1887,7 +1902,10 @@ func NewTreePathFirst() *TreePath {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_treePath)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -1918,7 +1936,10 @@ func NewTreePathFromIndices(indices []int32) *TreePath {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_treePath)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -1942,7 +1963,10 @@ func NewTreePathFromString(path string) *TreePath {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_treePath)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -2019,7 +2043,10 @@ func (path *TreePath) Copy() *TreePath {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_treePath)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -2288,7 +2315,10 @@ func NewTreeRowReference(model TreeModeller, path *TreePath) *TreeRowReference {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_treeRowReference)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_row_reference_free((*C.GtkTreeRowReference)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "TreeRowReference").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -2315,7 +2345,10 @@ func NewTreeRowReferenceProxy(proxy *coreglib.Object, model TreeModeller, path *
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_treeRowReference)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_row_reference_free((*C.GtkTreeRowReference)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "TreeRowReference").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -2343,7 +2376,10 @@ func (reference *TreeRowReference) Copy() *TreeRowReference {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_treeRowReference)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_row_reference_free((*C.GtkTreeRowReference)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "TreeRowReference").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -2395,7 +2431,10 @@ func (reference *TreeRowReference) Path() *TreePath {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_treePath)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}

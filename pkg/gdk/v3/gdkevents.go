@@ -19,6 +19,252 @@ import (
 // #include <glib.h>
 // extern void _gotk4_gdk3_EventFunc(void*, gpointer);
 // extern void callbackDelete(gpointer);
+// struct EventAny {
+//           type;
+//     void* window;
+//     gint8 send_event;
+// };
+// struct EventButton {
+//             type;
+//     void*   window;
+//     gint8   send_event;
+//     guint32 time;
+//     gdouble x;
+//     gdouble y;
+//     void*   axes;
+//             state;
+//     guint   button;
+//     void*   device;
+//     gdouble x_root;
+//     gdouble y_root;
+// };
+// struct EventConfigure {
+//           type;
+//     void* window;
+//     gint8 send_event;
+//     gint  x;
+//     gint  y;
+//     gint  width;
+//     gint  height;
+// };
+// struct EventCrossing {
+//              type;
+//     void*    window;
+//     gint8    send_event;
+//     void*    subwindow;
+//     guint32  time;
+//     gdouble  x;
+//     gdouble  y;
+//     gdouble  x_root;
+//     gdouble  y_root;
+//              mode;
+//              detail;
+//     gboolean focus;
+//              state;
+// };
+// struct EventDND {
+//             type;
+//     void*   window;
+//     gint8   send_event;
+//     void*   context;
+//     guint32 time;
+//     gshort  x_root;
+//     gshort  y_root;
+// };
+// struct EventExpose {
+//           type;
+//     void* window;
+//     gint8 send_event;
+//           area;
+//     void* region;
+//     gint  count;
+// };
+// struct EventFocus {
+//            type;
+//     void*  window;
+//     gint8  send_event;
+//     gint16 in;
+// };
+// struct EventGrabBroken {
+//              type;
+//     void*    window;
+//     gint8    send_event;
+//     gboolean keyboard;
+//     gboolean implicit;
+//     void*    grab_window;
+// };
+// struct EventKey {
+//             type;
+//     void*   window;
+//     gint8   send_event;
+//     guint32 time;
+//             state;
+//     guint   keyval;
+//     gint    length;
+//     void*   string;
+//     guint16 hardware_keycode;
+//     guint8  group;
+//     guint   is_modifier  : 1;
+// };
+// struct EventMotion {
+//             type;
+//     void*   window;
+//     gint8   send_event;
+//     guint32 time;
+//     gdouble x;
+//     gdouble y;
+//     void*   axes;
+//             state;
+//     gint16  is_hint;
+//     void*   device;
+//     gdouble x_root;
+//     gdouble y_root;
+// };
+// struct EventOwnerChange {
+//             type;
+//     void*   window;
+//     gint8   send_event;
+//     void*   owner;
+//             reason;
+//             selection;
+//     guint32 time;
+//     guint32 selection_time;
+// };
+// struct EventPadAxis {
+//             type;
+//     void*   window;
+//     gint8   send_event;
+//     guint32 time;
+//     guint   group;
+//     guint   index;
+//     guint   mode;
+//     gdouble value;
+// };
+// struct EventPadButton {
+//             type;
+//     void*   window;
+//     gint8   send_event;
+//     guint32 time;
+//     guint   group;
+//     guint   button;
+//     guint   mode;
+// };
+// struct EventPadGroupMode {
+//             type;
+//     void*   window;
+//     gint8   send_event;
+//     guint32 time;
+//     guint   group;
+//     guint   mode;
+// };
+// struct EventProperty {
+//             type;
+//     void*   window;
+//     gint8   send_event;
+//             atom;
+//     guint32 time;
+//             state;
+// };
+// struct EventProximity {
+//             type;
+//     void*   window;
+//     gint8   send_event;
+//     guint32 time;
+//     void*   device;
+// };
+// struct EventScroll {
+//             type;
+//     void*   window;
+//     gint8   send_event;
+//     guint32 time;
+//     gdouble x;
+//     gdouble y;
+//             state;
+//             direction;
+//     void*   device;
+//     gdouble x_root;
+//     gdouble y_root;
+//     gdouble delta_x;
+//     gdouble delta_y;
+//     guint   is_stop  : 1;
+// };
+// struct EventSelection {
+//             type;
+//     void*   window;
+//     gint8   send_event;
+//             selection;
+//             target;
+//             property;
+//     guint32 time;
+//     void*   requestor;
+// };
+// struct EventSetting {
+//           type;
+//     void* window;
+//     gint8 send_event;
+//           action;
+//     void* name;
+// };
+// struct EventTouch {
+//              type;
+//     void*    window;
+//     gint8    send_event;
+//     guint32  time;
+//     gdouble  x;
+//     gdouble  y;
+//     void*    axes;
+//              state;
+//     void*    sequence;
+//     gboolean emulating_pointer;
+//     void*    device;
+//     gdouble  x_root;
+//     gdouble  y_root;
+// };
+// struct EventTouchpadPinch {
+//             type;
+//     void*   window;
+//     gint8   send_event;
+//     gint8   phase;
+//     gint8   n_fingers;
+//     guint32 time;
+//     gdouble x;
+//     gdouble y;
+//     gdouble dx;
+//     gdouble dy;
+//     gdouble angle_delta;
+//     gdouble scale;
+//     gdouble x_root;
+//     gdouble y_root;
+//             state;
+// };
+// struct EventTouchpadSwipe {
+//             type;
+//     void*   window;
+//     gint8   send_event;
+//     gint8   phase;
+//     gint8   n_fingers;
+//     guint32 time;
+//     gdouble x;
+//     gdouble y;
+//     gdouble dx;
+//     gdouble dy;
+//     gdouble x_root;
+//     gdouble y_root;
+//             state;
+// };
+// struct EventVisibility {
+//           type;
+//     void* window;
+//     gint8 send_event;
+//           state;
+// };
+// struct EventWindowState {
+//           type;
+//     void* window;
+//     gint8 send_event;
+//           changed_mask;
+//           new_window_state;
+// };
 import "C"
 
 // glib.Type values for gdkevents.go.
@@ -1483,7 +1729,10 @@ func CopyEventer(e Eventer) *Event {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	return dst
@@ -1524,7 +1773,10 @@ func (e *Event) AsAny() *EventAny {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -1546,7 +1798,10 @@ func (e *Event) AsExpose() *EventExpose {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -1568,7 +1823,10 @@ func (e *Event) AsVisibility() *EventVisibility {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -1590,7 +1848,10 @@ func (e *Event) AsMotion() *EventMotion {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -1612,7 +1873,10 @@ func (e *Event) AsButton() *EventButton {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -1634,7 +1898,10 @@ func (e *Event) AsTouch() *EventTouch {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -1656,7 +1923,10 @@ func (e *Event) AsScroll() *EventScroll {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -1678,7 +1948,10 @@ func (e *Event) AsKey() *EventKey {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -1700,7 +1973,10 @@ func (e *Event) AsCrossing() *EventCrossing {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -1722,7 +1998,10 @@ func (e *Event) AsFocusChange() *EventFocus {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -1744,7 +2023,10 @@ func (e *Event) AsConfigure() *EventConfigure {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -1766,7 +2048,10 @@ func (e *Event) AsProperty() *EventProperty {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -1788,7 +2073,10 @@ func (e *Event) AsSelection() *EventSelection {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -1810,7 +2098,10 @@ func (e *Event) AsOwnerChange() *EventOwnerChange {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -1832,7 +2123,10 @@ func (e *Event) AsProximity() *EventProximity {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -1854,7 +2148,10 @@ func (e *Event) AsDND() *EventDND {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -1876,7 +2173,10 @@ func (e *Event) AsWindowState() *EventWindowState {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -1898,7 +2198,10 @@ func (e *Event) AsSetting() *EventSetting {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -1920,7 +2223,10 @@ func (e *Event) AsGrabBroken() *EventGrabBroken {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -1942,7 +2248,10 @@ func (e *Event) AsTouchpadSwipe() *EventTouchpadSwipe {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -1964,7 +2273,10 @@ func (e *Event) AsTouchpadPinch() *EventTouchpadPinch {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -1986,7 +2298,10 @@ func (e *Event) AsPadButton() *EventPadButton {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -2008,7 +2323,10 @@ func (e *Event) AsPadAxis() *EventPadAxis {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)
@@ -2030,7 +2348,10 @@ func (e *Event) AsPadGroupMode() *EventPadGroupMode {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Event").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	runtime.KeepAlive(e.event)

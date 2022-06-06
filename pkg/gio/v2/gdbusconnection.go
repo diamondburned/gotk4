@@ -22,6 +22,18 @@ import (
 // extern GDBusMessage* _gotk4_gio2_DBusMessageFilterFunction(void*, void*, gboolean, gpointer);
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 // extern void callbackDelete(gpointer);
+// struct DBusInterfaceVTable {
+//     gpointer method_call;
+//     gpointer get_property;
+//     gpointer set_property;
+//     void     padding;
+// };
+// struct DBusSubtreeVTable {
+//     gpointer enumerate;
+//     gpointer introspect;
+//     gpointer dispatch;
+//     void     padding;
+// };
 import "C"
 
 // DBusInterfaceGetPropertyFunc: type of the get_property function in
@@ -94,7 +106,7 @@ func _gotk4_gio2_DBusInterfaceMethodCallFunc(arg1 *C.void, arg2 *C.void, arg3 *C
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_parameters)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
+			C.free(intern.C)
 		},
 	)
 	_invocation = wrapDBusMethodInvocation(coreglib.AssumeOwnership(unsafe.Pointer(arg7)))
@@ -134,7 +146,7 @@ func _gotk4_gio2_DBusInterfaceSetPropertyFunc(arg1 *C.void, arg2 *C.void, arg3 *
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_value)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -276,7 +288,7 @@ func _gotk4_gio2_DBusSignalCallback(arg1 *C.void, arg2 *C.void, arg3 *C.void, ar
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_parameters)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -620,7 +632,7 @@ func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, 
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
+			C.free(intern.C)
 		},
 	)
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {

@@ -568,7 +568,10 @@ func ColorSelectionPaletteFromString(str string) ([]gdk.Color, bool) {
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(&_colors[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
-					C.gdk_color_free((*C.GdkColor)(intern.C))
+					{
+						args := [1]girepository.Argument{(*C.void)(intern.C)}
+						girepository.MustFind("Gdk", "Color").InvokeMethod("free", args[:], nil)
+					}
 				},
 			)
 		}

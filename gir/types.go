@@ -172,7 +172,8 @@ type Field struct {
 	Writable bool     `xml:"writable,attr"` // default false
 	Readable *bool    `xml:"readable,attr"` // default true
 	AnyType
-	Doc *Doc
+	Callback *Callback
+	Doc      *Doc
 }
 
 // IsReadable returns true if the field is readable.

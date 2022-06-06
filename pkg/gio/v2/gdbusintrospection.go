@@ -15,6 +15,53 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// struct DBusAnnotationInfo {
+//     gint   ref_count;
+//     void*  key;
+//     void*  value;
+//     void** annotations;
+// };
+// struct DBusArgInfo {
+//     gint   ref_count;
+//     void*  name;
+//     void*  signature;
+//     void** annotations;
+// };
+// struct DBusInterfaceInfo {
+//     gint   ref_count;
+//     void*  name;
+//     void** methods;
+//     void** signals;
+//     void** properties;
+//     void** annotations;
+// };
+// struct DBusMethodInfo {
+//     gint   ref_count;
+//     void*  name;
+//     void** in_args;
+//     void** out_args;
+//     void** annotations;
+// };
+// struct DBusNodeInfo {
+//     gint   ref_count;
+//     void*  path;
+//     void** interfaces;
+//     void** nodes;
+//     void** annotations;
+// };
+// struct DBusPropertyInfo {
+//     gint   ref_count;
+//     void*  name;
+//     void*  signature;
+//            flags;
+//     void** annotations;
+// };
+// struct DBusSignalInfo {
+//     gint   ref_count;
+//     void*  name;
+//     void** args;
+//     void** annotations;
+// };
 import "C"
 
 // glib.Type values for gdbusintrospection.go.
@@ -105,7 +152,7 @@ func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
-					C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(intern.C))
+					C.free(intern.C)
 				},
 			)
 		}
@@ -227,7 +274,7 @@ func (d *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
-					C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(intern.C))
+					C.free(intern.C)
 				},
 			)
 		}
@@ -291,7 +338,7 @@ func (d *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
-					C.g_dbus_method_info_unref((*C.GDBusMethodInfo)(intern.C))
+					C.free(intern.C)
 				},
 			)
 		}
@@ -320,7 +367,7 @@ func (d *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
-					C.g_dbus_signal_info_unref((*C.GDBusSignalInfo)(intern.C))
+					C.free(intern.C)
 				},
 			)
 		}
@@ -349,7 +396,7 @@ func (d *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
-					C.g_dbus_property_info_unref((*C.GDBusPropertyInfo)(intern.C))
+					C.free(intern.C)
 				},
 			)
 		}
@@ -378,7 +425,7 @@ func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
-					C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(intern.C))
+					C.free(intern.C)
 				},
 			)
 		}
@@ -448,7 +495,7 @@ func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dBusMethodInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_dbus_method_info_unref((*C.GDBusMethodInfo)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -490,7 +537,7 @@ func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dBusPropertyInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_dbus_property_info_unref((*C.GDBusPropertyInfo)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -532,7 +579,7 @@ func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dBusSignalInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_dbus_signal_info_unref((*C.GDBusSignalInfo)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -596,7 +643,7 @@ func (d *DBusMethodInfo) InArgs() []*DBusArgInfo {
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
-					C.g_dbus_arg_info_unref((*C.GDBusArgInfo)(intern.C))
+					C.free(intern.C)
 				},
 			)
 		}
@@ -625,7 +672,7 @@ func (d *DBusMethodInfo) OutArgs() []*DBusArgInfo {
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
-					C.g_dbus_arg_info_unref((*C.GDBusArgInfo)(intern.C))
+					C.free(intern.C)
 				},
 			)
 		}
@@ -654,7 +701,7 @@ func (d *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
-					C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(intern.C))
+					C.free(intern.C)
 				},
 			)
 		}
@@ -697,7 +744,7 @@ func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_dBusNodeInfo)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_dbus_node_info_unref((*C.GDBusNodeInfo)(intern.C))
+			C.free(intern.C)
 		},
 	)
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
@@ -747,7 +794,7 @@ func (d *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
-					C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(intern.C))
+					C.free(intern.C)
 				},
 			)
 		}
@@ -776,7 +823,7 @@ func (d *DBusNodeInfo) Nodes() []*DBusNodeInfo {
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
-					C.g_dbus_node_info_unref((*C.GDBusNodeInfo)(intern.C))
+					C.free(intern.C)
 				},
 			)
 		}
@@ -805,7 +852,7 @@ func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
-					C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(intern.C))
+					C.free(intern.C)
 				},
 			)
 		}
@@ -846,7 +893,7 @@ func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dBusInterfaceInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -927,7 +974,7 @@ func (d *DBusSignalInfo) Args() []*DBusArgInfo {
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
-					C.g_dbus_arg_info_unref((*C.GDBusArgInfo)(intern.C))
+					C.free(intern.C)
 				},
 			)
 		}
@@ -956,7 +1003,7 @@ func (d *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
-					C.g_dbus_annotation_info_unref((*C.GDBusAnnotationInfo)(intern.C))
+					C.free(intern.C)
 				},
 			)
 		}

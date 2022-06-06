@@ -16,6 +16,16 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// struct TargetEntry {
+//     void* target;
+//     guint flags;
+//     guint info;
+// };
+// struct TargetPair {
+//           target;
+//     guint flags;
+//     guint info;
+// };
 import "C"
 
 // glib.Type values for gtkselection.go.
@@ -149,7 +159,10 @@ func NewTargetEntry(target string, flags uint32, info uint32) *TargetEntry {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_targetEntry)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_target_entry_free((*C.GtkTargetEntry)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "TargetEntry").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -207,7 +220,10 @@ func (data *TargetEntry) Copy() *TargetEntry {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_targetEntry)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_target_entry_free((*C.GtkTargetEntry)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "TargetEntry").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 

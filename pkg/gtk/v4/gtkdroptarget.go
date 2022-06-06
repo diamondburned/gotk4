@@ -279,7 +279,7 @@ func (self *DropTarget) Formats() *gdk.ContentFormats {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_contentFormats)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}

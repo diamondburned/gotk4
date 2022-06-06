@@ -62,7 +62,7 @@ func NewIconSet() *IconSet {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_iconSet)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_icon_set_unref((*C.GtkIconSet)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -85,7 +85,7 @@ func NewIconSetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *IconSet {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_iconSet)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_icon_set_unref((*C.GtkIconSet)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -155,7 +155,7 @@ func (iconSet *IconSet) Copy() *IconSet {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_iconSet)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_icon_set_unref((*C.GtkIconSet)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -218,7 +218,10 @@ func NewIconSource() *IconSource {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_iconSource)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_icon_source_free((*C.GtkIconSource)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "IconSource").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -248,7 +251,10 @@ func (source *IconSource) Copy() *IconSource {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_iconSource)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_icon_source_free((*C.GtkIconSource)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "IconSource").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -609,7 +615,10 @@ func (data *SelectionData) Copy() *SelectionData {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_selectionData)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_selection_data_free((*C.GtkSelectionData)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "SelectionData").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -1099,7 +1108,10 @@ func NewWidgetPath() *WidgetPath {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "WidgetPath").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -1197,7 +1209,10 @@ func (path *WidgetPath) Copy() *WidgetPath {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "WidgetPath").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -1383,7 +1398,10 @@ func (path *WidgetPath) IterGetSiblings(pos int32) *WidgetPath {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "WidgetPath").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 

@@ -19,6 +19,15 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// struct Pixdata {
+//     guint32 magic;
+//     gint32  length;
+//     guint32 pixdata_type;
+//     guint32 rowstride;
+//     guint32 width;
+//     guint32 height;
+//     void*   pixel_data;
+// };
 import "C"
 
 // PIXBUF_MAGIC_NUMBER: magic number for Pixdata structures.

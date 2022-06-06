@@ -387,7 +387,7 @@ func (interface_ *DBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_dBusInterfaceInfo)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -443,7 +443,7 @@ func (interface_ *DBusInterfaceSkeleton) Properties() *glib.Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
+			C.free(intern.C)
 		},
 	)
 

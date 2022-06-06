@@ -52,7 +52,7 @@ func TransformParse(str string) (*Transform, bool) {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_outTransform)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+			C.free(intern.C)
 		},
 	)
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {

@@ -12,7 +12,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
 // #include <stdlib.h>
@@ -907,6 +906,7 @@ type logField struct {
 
 // Key: field name (UTF-8 string).
 func (l *LogField) Key() string {
+	valptr := l.native.key
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v

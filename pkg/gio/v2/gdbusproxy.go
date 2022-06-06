@@ -127,7 +127,7 @@ func _gotk4_gio2_DBusProxyClass_g_signal(arg0 *C.void, arg1 *C.void, arg2 *C.voi
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_parameters)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -174,7 +174,7 @@ func _gotk4_gio2_DBusProxy_ConnectGPropertiesChanged(arg0 C.gpointer, arg1 *C.vo
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_changedProperties)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
+			C.free(intern.C)
 		},
 	)
 	{
@@ -234,7 +234,7 @@ func _gotk4_gio2_DBusProxy_ConnectGSignal(arg0 C.gpointer, arg1 *C.void, arg2 *C
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_parameters)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -341,7 +341,7 @@ func (proxy *DBusProxy) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
+			C.free(intern.C)
 		},
 	)
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
@@ -388,7 +388,7 @@ func (proxy *DBusProxy) CachedProperty(propertyName string) *glib.Variant {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -513,7 +513,7 @@ func (proxy *DBusProxy) InterfaceInfo() *DBusInterfaceInfo {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dBusInterfaceInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}

@@ -14,6 +14,14 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// struct Matrix {
+//     double xx;
+//     double xy;
+//     double yx;
+//     double yy;
+//     double x0;
+//     double y0;
+// };
 import "C"
 
 // glib.Type values for pango-matrix.go.
@@ -174,7 +182,10 @@ func (matrix *Matrix) Copy() *Matrix {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_ret)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_matrix_free((*C.PangoMatrix)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Pango", "Matrix").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}

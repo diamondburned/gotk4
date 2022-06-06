@@ -567,7 +567,10 @@ func NewScriptIter(text string, length int32) *ScriptIter {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_scriptIter)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_script_iter_free((*C.PangoScriptIter)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "ScriptIter").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 

@@ -14,6 +14,12 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// struct Border {
+//     gint16 left;
+//     gint16 right;
+//     gint16 top;
+//     gint16 bottom;
+// };
 import "C"
 
 // glib.Type values for gtkborder.go.
@@ -53,7 +59,10 @@ func NewBorder() *Border {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_border)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_border_free((*C.GtkBorder)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "Border").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -117,7 +126,10 @@ func (border_ *Border) Copy() *Border {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_border)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_border_free((*C.GtkBorder)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "Border").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 

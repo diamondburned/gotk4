@@ -21,6 +21,15 @@ import (
 // #include <glib.h>
 // extern void _gotk4_gtk4_RecentManagerClass_changed(void*);
 // extern void _gotk4_gtk4_RecentManager_ConnectChanged(gpointer, guintptr);
+// struct RecentData {
+//     void*    display_name;
+//     void*    description;
+//     void*    mime_type;
+//     void*    app_name;
+//     void*    app_exec;
+//     void**   groups;
+//     gboolean is_private;
+// };
 import "C"
 
 // glib.Type values for gtkrecentmanager.go.
@@ -357,7 +366,7 @@ func (manager *RecentManager) Items() []*RecentInfo {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
+				C.free(intern.C)
 			},
 		)
 		_list = append(_list, dst)
@@ -434,7 +443,7 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_recentInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -764,7 +773,7 @@ func (info *RecentInfo) Added() *glib.DateTime {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_dateTime)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_date_time_unref((*C.GDateTime)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -840,7 +849,7 @@ func (info *RecentInfo) ApplicationInfo(appName string) (string, uint32, *glib.D
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_stamp)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_date_time_unref((*C.GDateTime)(intern.C))
+			C.free(intern.C)
 		},
 	)
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
@@ -1041,7 +1050,7 @@ func (info *RecentInfo) Modified() *glib.DateTime {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_dateTime)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_date_time_unref((*C.GDateTime)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -1176,7 +1185,7 @@ func (info *RecentInfo) Visited() *glib.DateTime {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_dateTime)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_date_time_unref((*C.GDateTime)(intern.C))
+			C.free(intern.C)
 		},
 	)
 

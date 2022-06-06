@@ -134,7 +134,7 @@ func _gotk4_gtk4_ShortcutFunc(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) (cret
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_args)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}

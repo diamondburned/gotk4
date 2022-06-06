@@ -138,7 +138,10 @@ func _gotk4_gtk3_StyleProviderIface_get_icon_factory(arg0 *C.void, arg1 *C.void)
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_path)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "WidgetPath").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -163,7 +166,10 @@ func _gotk4_gtk3_StyleProviderIface_get_style(arg0 *C.void, arg1 *C.void) (cret 
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_path)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "WidgetPath").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 

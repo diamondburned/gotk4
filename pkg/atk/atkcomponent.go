@@ -23,6 +23,12 @@ import (
 // extern void _gotk4_atk1_ComponentIface_get_size(void*, void*, void*);
 // extern void _gotk4_atk1_ComponentIface_remove_focus_handler(void*, guint);
 // extern void _gotk4_atk1_Component_ConnectBoundsChanged(gpointer, void*, guintptr);
+// struct Rectangle {
+//     gint x;
+//     gint y;
+//     gint width;
+//     gint height;
+// };
 import "C"
 
 // glib.Type values for atkcomponent.go.

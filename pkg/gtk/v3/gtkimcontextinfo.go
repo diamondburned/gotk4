@@ -11,6 +11,13 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// struct IMContextInfo {
+//     void* context_id;
+//     void* context_name;
+//     void* domain;
+//     void* domain_dirname;
+//     void* default_locales;
+// };
 import "C"
 
 // IMContextInfo: bookkeeping information about a loadable input method.

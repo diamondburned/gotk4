@@ -70,7 +70,7 @@ func (icon *BytesIcon) Bytes() *glib.Bytes {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
+			C.free(intern.C)
 		},
 	)
 

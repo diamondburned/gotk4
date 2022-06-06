@@ -16,6 +16,22 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// struct GlyphGeometry {
+//     gint32 width;
+//     gint32 x_offset;
+//     gint32 y_offset;
+// };
+// struct GlyphInfo {
+//     guint32 glyph;
+//             geometry;
+//             attr;
+// };
+// struct GlyphString {
+//     gint  num_glyphs;
+//     void* glyphs;
+//     void* log_clusters;
+//     gint  space;
+// };
 import "C"
 
 // glib.Type values for pango-glyph.go.
@@ -134,7 +150,10 @@ func ReorderItems(logicalItems []*Item) []*Item {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_item_free((*C.PangoItem)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Pango", "Item").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 		_list = append(_list, dst)
@@ -316,7 +335,10 @@ func NewGlyphString() *GlyphString {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_glyphString)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_glyph_string_free((*C.PangoGlyphString)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "GlyphString").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -348,7 +370,10 @@ func (str *GlyphString) Copy() *GlyphString {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_glyphString)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_glyph_string_free((*C.PangoGlyphString)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Pango", "GlyphString").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}

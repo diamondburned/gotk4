@@ -6,6 +6,7 @@ import (
 	"unicode"
 
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen/pen"
 )
 
 // LinkMode describes the mode that determines how the generator generates
@@ -118,28 +119,47 @@ func RecordHasFree(record *gir.Record) *gir.Method {
 
 // RecordPrintFree prints the call to the record's free function OR an empty
 // string.
-func RecordPrintFree(record *gir.Record, value string) string {
-	free := RecordHasFree(record)
-	if free == nil {
-		return ""
-	}
-	return RecordPrintFreeMethod(free, value)
+func RecordPrintFree(gen FileGenerator, parent *gir.TypeFindResult, value string) string {
+	return RecordPrintFreeMethod(gen, parent, value)
 }
 
 // RecordPrintFreeMethod generates a call with 1 argument for either free or
 // unref. If method is nil, then a C.free call is generated. Value is assumed to
 // be an unsafe.Pointer.
-func RecordPrintFreeMethod(method *gir.Method, value string) string {
-	if method == nil {
+//
+// The caller must import girepository.Argument manually.
+//
+// Deprecated: Use RecordPrintFree.
+func RecordPrintFreeMethod(gen FileGenerator, parent *gir.TypeFindResult, value string) string {
+	rec := parent.Type.(*gir.Record)
+
+	free := RecordHasFree(rec)
+	if free == nil {
 		return fmt.Sprintf("C.free(%s)", value)
 	}
 
-	return fmt.Sprintf(
-		"C.%s((%s)(%s))",
-		method.CIdentifier,
-		AnyTypeCGo(method.Parameters.InstanceParameter.AnyType),
-		value,
-	)
+	// TODO: refactor thoughts: should typeconv and girgen/callable be combined?
+	// typeconv has to generate function calling code in some cases for freeing,
+	// and we have various different ways of doing that scattered throughout the
+	// program. It would be far better to have 1 place of doing them all.
+
+	switch gen.LinkMode() {
+	case RuntimeLinkMode:
+		p := pen.NewBlock()
+		p.Linef("args := [1]girepository.Argument{(%s)(%s)}",
+			AnyTypeCGoPrimitive(gen, free.Parameters.InstanceParameter.AnyType), value)
+		p.Linef("girepository.MustFind(%q, %q).InvokeMethod(%q, args[:], nil)",
+			parent.Namespace.Name, rec.Name, "free")
+		return p.String()
+	case DynamicLinkMode:
+		return fmt.Sprintf(
+			"C.%s((%s)(%s))",
+			free.CIdentifier,
+			AnyTypeCGo(free.Parameters.InstanceParameter.AnyType),
+			value)
+	default:
+		panic("unreachable")
+	}
 }
 
 // RecordHasUnref returns the unref method if it has one.
@@ -350,6 +370,11 @@ func AnyTypeCPrimitive(gen FileGenerator, any gir.AnyType) string {
 	}
 
 	return ""
+}
+
+// AnyTypeCGoPrimitive converts AnyType to a CGo primitive type.
+func AnyTypeCGoPrimitive(gen FileGenerator, any gir.AnyType) string {
+	return CGoTypeFromC(AnyTypeCPrimitive(gen, any))
 }
 
 // CTypeToPrimitive converts a C type to the primitive type.

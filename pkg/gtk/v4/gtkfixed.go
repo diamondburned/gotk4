@@ -190,7 +190,7 @@ func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_transform)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.gsk_transform_unref((*C.GskTransform)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}

@@ -19,6 +19,31 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// struct InputMessage {
+//     void**  address;
+//     void*   vectors;
+//     guint   num_vectors;
+//     gsize   bytes_received;
+//     gint    flags;
+//     void*** control_messages;
+//     void*   num_control_messages;
+// };
+// struct InputVector {
+//     gpointer buffer;
+//     gsize    size;
+// };
+// struct OutputMessage {
+//     void*  address;
+//     void*  vectors;
+//     guint  num_vectors;
+//     guint  bytes_sent;
+//     void** control_messages;
+//     guint  num_control_messages;
+// };
+// struct OutputVector {
+//     gpointer buffer;
+//     gsize    size;
+// };
 import "C"
 
 // glib.Type values for giotypes.go.
@@ -226,7 +251,7 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fileAttributeMatcher)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -399,7 +424,7 @@ func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *F
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_fileAttributeMatcher)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_file_attribute_matcher_unref((*C.GFileAttributeMatcher)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -727,7 +752,7 @@ func NewResourceFromData(data *glib.Bytes) (*Resource, error) {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_resource)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_resource_unref((*C.GResource)(intern.C))
+			C.free(intern.C)
 		},
 	)
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
@@ -788,7 +813,10 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_srvTarget)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_srv_target_free((*C.GSrvTarget)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gio", "SrvTarget").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -816,7 +844,10 @@ func (target *SrvTarget) Copy() *SrvTarget {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_srvTarget)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_srv_target_free((*C.GSrvTarget)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gio", "SrvTarget").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 

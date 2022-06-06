@@ -626,7 +626,7 @@ func (stream *InputStream) ReadBytes(ctx context.Context, count uint) (*glib.Byt
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
+			C.free(intern.C)
 		},
 	)
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
@@ -717,7 +717,7 @@ func (stream *InputStream) ReadBytesFinish(result AsyncResulter) (*glib.Bytes, e
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
+			C.free(intern.C)
 		},
 	)
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {

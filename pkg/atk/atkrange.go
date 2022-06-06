@@ -66,7 +66,10 @@ func NewRange(lowerLimit float64, upperLimit float64, description string) *Range
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(__range)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.atk_range_free((*C.AtkRange)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Atk", "Range").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -94,7 +97,10 @@ func (src *Range) Copy() *Range {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(__range)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.atk_range_free((*C.AtkRange)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Atk", "Range").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 

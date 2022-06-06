@@ -1000,7 +1000,7 @@ func (resolver *Resolver) LookupRecordsFinish(result AsyncResulter) ([]*glib.Var
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
+				C.free(intern.C)
 			},
 		)
 		_list = append(_list, dst)
@@ -1080,7 +1080,10 @@ func (resolver *Resolver) LookupService(ctx context.Context, service, protocol, 
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_srv_target_free((*C.GSrvTarget)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Gio", "SrvTarget").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 		_list = append(_list, dst)
@@ -1174,7 +1177,10 @@ func (resolver *Resolver) LookupServiceFinish(result AsyncResulter) ([]*SrvTarge
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_srv_target_free((*C.GSrvTarget)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Gio", "SrvTarget").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 		_list = append(_list, dst)

@@ -146,6 +146,10 @@ import (
 // extern void _gotk4_gtk3_Widget_ConnectUnmap(gpointer, guintptr);
 // extern void _gotk4_gtk3_Widget_ConnectUnrealize(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
+// struct Requisition {
+//     gint width;
+//     gint height;
+// };
 import "C"
 
 // glib.Type values for gtkwidget.go.
@@ -6138,7 +6142,10 @@ func (widget *Widget) GetPath() *WidgetPath {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "WidgetPath").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -9820,7 +9827,10 @@ func NewRequisition() *Requisition {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_requisition)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_requisition_free((*C.GtkRequisition)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "Requisition").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -9866,7 +9876,10 @@ func (requisition *Requisition) Copy() *Requisition {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_ret)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_requisition_free((*C.GtkRequisition)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "Requisition").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 

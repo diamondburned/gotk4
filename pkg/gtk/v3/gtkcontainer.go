@@ -1089,7 +1089,10 @@ func (container *Container) PathForChild(child Widgetter) *WidgetPath {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_widget_path_unref((*C.GtkWidgetPath)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "WidgetPath").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 

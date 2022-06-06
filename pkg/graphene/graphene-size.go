@@ -7,7 +7,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -63,6 +62,7 @@ func NewSizeAlloc() *Size {
 
 // Width: width.
 func (s *Size) Width() float32 {
+	valptr := s.native.width
 	var v float32 // out
 	v = float32(valptr)
 	return v
@@ -70,6 +70,7 @@ func (s *Size) Width() float32 {
 
 // Height: height.
 func (s *Size) Height() float32 {
+	valptr := s.native.height
 	var v float32 // out
 	v = float32(valptr)
 	return v

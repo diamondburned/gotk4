@@ -21,6 +21,12 @@ import (
 // #include <glib.h>
 // extern guint _gotk4_gtk3_RcStyleClass_parse(void*, void*, void*);
 // extern void _gotk4_gtk3_RcStyleClass_merge(void*, void*);
+// struct RcProperty {
+//     guint32 type_name;
+//     guint32 property_name;
+//     void*   origin;
+//             value;
+// };
 import "C"
 
 // glib.Type values for gtkrc.go.

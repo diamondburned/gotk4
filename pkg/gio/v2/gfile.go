@@ -1416,7 +1416,7 @@ func (file *File) LoadBytes(ctx context.Context) (string, *glib.Bytes, error) {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
+			C.free(intern.C)
 		},
 	)
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
@@ -1506,7 +1506,7 @@ func (file *File) LoadBytesFinish(result AsyncResulter) (string, *glib.Bytes, er
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
+			C.free(intern.C)
 		},
 	)
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
@@ -2552,7 +2552,7 @@ func (file *File) QuerySettableAttributes(ctx context.Context) (*FileAttributeIn
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fileAttributeInfoList)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(intern.C))
+			C.free(intern.C)
 		},
 	)
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
@@ -2601,7 +2601,7 @@ func (file *File) QueryWritableNamespaces(ctx context.Context) (*FileAttributeIn
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fileAttributeInfoList)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(intern.C))
+			C.free(intern.C)
 		},
 	)
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {

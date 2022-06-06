@@ -218,7 +218,7 @@ func NewIdleSource() *Source {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_source)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
+			C.g_source_destroy((*C.GSource)(intern.C))
 		},
 	)
 
@@ -244,7 +244,7 @@ func MainCurrentSource() *Source {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_source)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_source_unref((*C.GSource)(intern.C))
+				C.g_source_destroy((*C.GSource)(intern.C))
 			},
 		)
 	}
@@ -357,7 +357,7 @@ func NewTimeoutSource(interval uint32) *Source {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_source)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
+			C.g_source_destroy((*C.GSource)(intern.C))
 		},
 	)
 
@@ -398,7 +398,7 @@ func TimeoutSourceNewSeconds(interval uint32) *Source {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_source)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
+			C.g_source_destroy((*C.GSource)(intern.C))
 		},
 	)
 
@@ -435,7 +435,7 @@ func NewMainContext() *MainContext {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_mainContext)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_main_context_unref((*C.GMainContext)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -525,7 +525,7 @@ func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userDa
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_source)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
+			C.g_source_destroy((*C.GSource)(intern.C))
 		},
 	)
 
@@ -573,7 +573,7 @@ func (context *MainContext) FindSourceByID(sourceId uint32) *Source {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_source)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
+			C.g_source_destroy((*C.GSource)(intern.C))
 		},
 	)
 
@@ -611,7 +611,7 @@ func (context *MainContext) FindSourceByUserData(userData unsafe.Pointer) *Sourc
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_source)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
+			C.g_source_destroy((*C.GSource)(intern.C))
 		},
 	)
 
@@ -898,7 +898,7 @@ func MainContextDefault() *MainContext {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_mainContext)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_main_context_unref((*C.GMainContext)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -934,7 +934,7 @@ func MainContextGetThreadDefault() *MainContext {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_mainContext)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_main_context_unref((*C.GMainContext)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -965,7 +965,7 @@ func MainContextRefThreadDefault() *MainContext {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_mainContext)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_main_context_unref((*C.GMainContext)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -1013,7 +1013,7 @@ func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_mainLoop)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_main_loop_unref((*C.GMainLoop)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -1042,7 +1042,7 @@ func (loop *MainLoop) Context() *MainContext {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_mainContext)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_main_context_unref((*C.GMainContext)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -1136,7 +1136,7 @@ func NewSource(sourceFuncs *SourceFuncs, structSize uint32) *Source {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_source)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
+			C.g_source_destroy((*C.GSource)(intern.C))
 		},
 	)
 
@@ -1284,7 +1284,7 @@ func (source *Source) Context() *MainContext {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_mainContext)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_main_context_unref((*C.GMainContext)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}

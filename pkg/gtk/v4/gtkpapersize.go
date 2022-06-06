@@ -93,7 +93,10 @@ func NewPaperSize(name string) *PaperSize {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_paperSize)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "PaperSize").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -116,7 +119,10 @@ func NewPaperSizeFromGVariant(variant *glib.Variant) *PaperSize {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_paperSize)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "PaperSize").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -144,7 +150,10 @@ func NewPaperSizeFromIPP(ippName string, width float64, height float64) *PaperSi
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_paperSize)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "PaperSize").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -173,7 +182,10 @@ func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PaperSiz
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_paperSize)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "PaperSize").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
@@ -207,7 +219,10 @@ func NewPaperSizeFromPPD(ppdName string, ppdDisplayName string, width float64, h
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_paperSize)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "PaperSize").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -235,7 +250,10 @@ func (other *PaperSize) Copy() *PaperSize {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_paperSize)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "PaperSize").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -408,7 +426,7 @@ func (paperSize *PaperSize) ToGVariant() *glib.Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -487,7 +505,10 @@ func PaperSizeGetPaperSizes(includeCustom bool) []*PaperSize {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Gtk", "PaperSize").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 		_list = append(_list, dst)

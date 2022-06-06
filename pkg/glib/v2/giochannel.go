@@ -288,7 +288,7 @@ func IOCreateWatch(channel *IOChannel, condition IOCondition) *Source {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_source)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
+			C.g_source_destroy((*C.GSource)(intern.C))
 		},
 	)
 
@@ -336,7 +336,7 @@ func NewIOChannelFile(filename string, mode string) (*IOChannel, error) {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_ioChannel)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_io_channel_unref((*C.GIOChannel)(intern.C))
+			C.free(intern.C)
 		},
 	)
 	if _cerr != nil {
@@ -362,7 +362,7 @@ func NewIOChannelUnix(fd int32) *IOChannel {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_ioChannel)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_io_channel_unref((*C.GIOChannel)(intern.C))
+			C.free(intern.C)
 		},
 	)
 

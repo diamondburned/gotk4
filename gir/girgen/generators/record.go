@@ -3,6 +3,7 @@ package generators
 import (
 	"fmt"
 	"strings"
+	"text/tabwriter"
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
@@ -116,7 +117,7 @@ func CanGenerateRecord(gen FileGenerator, rec *gir.Record) bool {
 
 	// Ignore non-type/array fields.
 	for _, field := range rec.Fields {
-		if ignoreField(&field) {
+		if ignoreField(field) {
 			continue
 		}
 	}
@@ -318,7 +319,7 @@ func (rg *RecordGenerator) getters() {
 	willDoConstructor := len(rg.Fields) > 0 && len(rg.Record.Constructors) == 0
 
 	for _, field := range rg.Fields {
-		if ignoreField(&field) || mustIgnoreAny(rg.gen, field.AnyType) {
+		if ignoreField(field) || mustIgnoreAny(rg.gen, field.AnyType) {
 			rg.Logln(logger.Debug, "skipping field", field.Name, "after ignoreField")
 			willDoConstructor = false
 			continue
@@ -326,6 +327,10 @@ func (rg *RecordGenerator) getters() {
 		if types.FilterField(rg.gen, rg.Name, &field) {
 			rg.Logln(logger.Skip, "record", rg.Name, "field", field.Name)
 			willDoConstructor = false
+			continue
+		}
+		// We can't generate bitfield accesses if we're in runtime mode.
+		if field.Bits > 0 && rg.gen.LinkMode() == types.RuntimeLinkMode {
 			continue
 		}
 
@@ -381,14 +386,15 @@ func (rg *RecordGenerator) getters() {
 
 		switch converted.Direction {
 		case typeconv.ConvertCToGo: // getter
-			rg.hdr.ImportCore("girepository")
-
 			b := pen.NewBlock()
 
 			// Runtime-link mode assumes a hard-coded valptr name.
 			if rg.gen.LinkMode() == types.RuntimeLinkMode {
+				rg.hdr.ImportCore("girepository")
 				b.Linef("offset := girepository.MustFind(%q, %q).StructFieldOffset(%q)", rg.typ.Namespace.Name, rg.typ.Name(), fields[i])
 				b.Linef("valptr := unsafe.Add(unsafe.Pointer(%s), offset)", recv)
+			} else {
+				b.Linef("valptr := %s.native.%s", recv, strcases.CGoField(fields[i]))
 			}
 
 			b.Linef(converted.Out.Declare)
@@ -420,10 +426,26 @@ func (rg *RecordGenerator) getters() {
 	if willDoConstructor {
 		rg.genManualConstructor()
 	}
+
+	// We need to generate this if we have any readable fields.
+	if rg.gen.LinkMode() == types.RuntimeLinkMode {
+		for _, field := range rg.Fields {
+			if ignoreField(field) {
+				continue
+			}
+			if field.AnyType == (gir.AnyType{}) && field.Callback == nil {
+				// Unknown?
+				continue
+			}
+
+			rg.hdr.AddCBlock(generateCPrimitiveRecord(rg.gen, rg.Record))
+			break
+		}
+	}
 }
 
 // ignoreField returns true if the given field should be ignored.
-func ignoreField(field *gir.Field) bool {
+func ignoreField(field gir.Field) bool {
 	// For "Bits > 0", we can't safely do this in Go (and probably not CGo
 	// either?) so we're not doing it.
 	return field.Private || field.Bits > 0 || !field.IsReadable()
@@ -500,4 +522,33 @@ func (rg *RecordGenerator) CGoPtrType() string {
 func (rg *RecordGenerator) Logln(lvl logger.Level, v ...interface{}) {
 	p := fmt.Sprintf("record %s (C.%s):", rg.GoName, rg.Record.CType)
 	rg.gen.Logln(lvl, logger.Prefix(v, p)...)
+}
+
+// generateCPrimitiveRecord generates C struct code with primitive C types.
+func generateCPrimitiveRecord(gen types.FileGenerator, rec *gir.Record) string {
+	var b strings.Builder
+
+	w := tabwriter.NewWriter(&b, 0, 4, 1, ' ', 0)
+	for i, field := range rec.Fields {
+		if i != 0 {
+			fmt.Fprintln(w)
+		}
+
+		if field.Callback != nil {
+			// Any pointer works.
+			fmt.Fprintf(w, "    void*\t%s;", field.Name)
+			continue
+		}
+
+		fmt.Fprint(w, "    ", types.AnyTypeCPrimitive(gen, field.AnyType), "\t", field.Name)
+		if field.Bits > 0 {
+			fmt.Fprint(w, "\t : ", field.Bits)
+		}
+		fmt.Fprint(w, ";")
+	}
+	if err := w.Flush(); err != nil {
+		panic("cannot flush tabwriter: " + err.Error())
+	}
+
+	return fmt.Sprintf("struct %s {\n%s\n};", rec.Name, b.String())
 }

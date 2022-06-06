@@ -547,7 +547,10 @@ func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_optionGroup)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_option_group_unref((*C.GOptionGroup)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("GLib", "OptionGroup").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 

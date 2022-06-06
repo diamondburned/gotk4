@@ -17,6 +17,11 @@ import (
 // extern void _gotk4_gdk3_Keymap_ConnectDirectionChanged(gpointer, guintptr);
 // extern void _gotk4_gdk3_Keymap_ConnectKeysChanged(gpointer, guintptr);
 // extern void _gotk4_gdk3_Keymap_ConnectStateChanged(gpointer, guintptr);
+// struct KeymapKey {
+//     guint keycode;
+//     gint  group;
+//     gint  level;
+// };
 import "C"
 
 // glib.Type values for gdkkeys.go.

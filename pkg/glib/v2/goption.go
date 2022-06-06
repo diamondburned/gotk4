@@ -9,7 +9,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -223,6 +222,7 @@ type optionEntry struct {
 // multiple option groups contain the same long name, it is also possible to
 // specify the option as --groupname-long_name.
 func (o *OptionEntry) LongName() string {
+	valptr := o.native.long_name
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
@@ -232,6 +232,7 @@ func (o *OptionEntry) LongName() string {
 // a commandline. short_name must be a printable ASCII character different from
 // '-', or zero if the option has no short name.
 func (o *OptionEntry) ShortName() byte {
+	valptr := o.native.short_name
 	var v byte // out
 	v = byte(valptr)
 	return v
@@ -239,6 +240,7 @@ func (o *OptionEntry) ShortName() byte {
 
 // Flags from Flags.
 func (o *OptionEntry) Flags() int32 {
+	valptr := o.native.flags
 	var v int32 // out
 	v = int32(valptr)
 	return v
@@ -246,6 +248,7 @@ func (o *OptionEntry) Flags() int32 {
 
 // Arg: type of the option, as a Arg.
 func (o *OptionEntry) Arg() OptionArg {
+	valptr := o.native.arg
 	var v OptionArg // out
 	v = OptionArg(valptr)
 	return v
@@ -264,6 +267,7 @@ func (o *OptionEntry) Arg() OptionArg {
 // G_OPTION_ARG_STRING_ARRAY or G_OPTION_ARG_FILENAME_ARRAY, the data should be
 // freed using g_strfreev().
 func (o *OptionEntry) ArgData() unsafe.Pointer {
+	valptr := o.native.arg_data
 	var v unsafe.Pointer // out
 	v = (unsafe.Pointer)(unsafe.Pointer(valptr))
 	return v
@@ -273,6 +277,7 @@ func (o *OptionEntry) ArgData() unsafe.Pointer {
 // translated using the translate_func of the group, see
 // g_option_group_set_translation_domain().
 func (o *OptionEntry) Description() string {
+	valptr := o.native.description
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
@@ -282,6 +287,7 @@ func (o *OptionEntry) Description() string {
 // option in --help output. The arg_description is translated using the
 // translate_func of the group, see g_option_group_set_translation_domain().
 func (o *OptionEntry) ArgDescription() string {
+	valptr := o.native.arg_description
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v

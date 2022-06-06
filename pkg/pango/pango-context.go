@@ -86,7 +86,10 @@ func Itemize(context *Context, text string, startIndex, length int32, attrs *Att
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_item_free((*C.PangoItem)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Pango", "Item").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 		_list = append(_list, dst)
@@ -350,7 +353,7 @@ func (context *Context) Metrics(desc *FontDescription, language *Language) *Font
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fontMetrics)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_font_metrics_unref((*C.PangoFontMetrics)(intern.C))
+			C.free(intern.C)
 		},
 	)
 

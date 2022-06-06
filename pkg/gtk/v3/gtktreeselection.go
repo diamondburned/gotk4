@@ -323,7 +323,10 @@ func (selection *TreeSelection) SelectedRows() (*TreeModel, []*TreePath) {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 		_list = append(_list, dst)

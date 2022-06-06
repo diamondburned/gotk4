@@ -67,7 +67,7 @@ func NewBitsetEmpty() *Bitset {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bitset)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_bitset_unref((*C.GtkBitset)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -92,7 +92,7 @@ func NewBitsetRange(start uint32, nItems uint32) *Bitset {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bitset)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_bitset_unref((*C.GtkBitset)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -247,7 +247,7 @@ func (self *Bitset) Copy() *Bitset {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bitset)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_bitset_unref((*C.GtkBitset)(intern.C))
+			C.free(intern.C)
 		},
 	)
 

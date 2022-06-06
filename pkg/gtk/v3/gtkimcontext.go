@@ -876,7 +876,7 @@ func (context *IMContext) PreeditString() (string, *pango.AttrList, int32) {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attrs)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
+			C.free(intern.C)
 		},
 	)
 	_cursorPos = *(*int32)(unsafe.Pointer(_outs[2]))

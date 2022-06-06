@@ -16,6 +16,17 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// struct KeymapKey {
+//     guint keycode;
+//     int   group;
+//     int   level;
+// };
+// struct Rectangle {
+//     int x;
+//     int y;
+//     int width;
+//     int height;
+// };
 import "C"
 
 // glib.Type values for gdktypes.go.
@@ -567,7 +578,7 @@ func NewContentFormats(mimeTypes []string) *ContentFormats {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -757,7 +768,7 @@ func (first *ContentFormats) Union(second *ContentFormats) *ContentFormats {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -786,7 +797,7 @@ func (formats *ContentFormats) UnionDeserializeGTypes() *ContentFormats {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -815,7 +826,7 @@ func (formats *ContentFormats) UnionDeserializeMIMETypes() *ContentFormats {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -844,7 +855,7 @@ func (formats *ContentFormats) UnionSerializeGTypes() *ContentFormats {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -873,7 +884,7 @@ func (formats *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
+			C.free(intern.C)
 		},
 	)
 

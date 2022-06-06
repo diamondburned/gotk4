@@ -17,6 +17,15 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// struct RecentFilterInfo {
+//            contains;
+//     void*  uri;
+//     void*  display_name;
+//     void*  mime_type;
+//     void** applications;
+//     void** groups;
+//     gint   age;
+// };
 import "C"
 
 // glib.Type values for gtkrecentfilter.go.

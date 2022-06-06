@@ -618,9 +618,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 			return false
 		}
 
-		var free *gir.Method
 		var unref bool
-
 		if ref := types.RecordHasRef(v); ref != nil && value.Resolved.Ptr > 0 {
 			// MustRealloc can also be used to check if we need to take a
 			// reference: instead of reallocating, we take our own reference.
@@ -628,9 +626,6 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 				value.p.Linef("C.%s(%s)", ref.CIdentifier, value.InNamePtr(1))
 			}
 			unref = true
-			free = types.RecordHasUnref(v)
-		} else {
-			free = types.RecordHasFree(v)
 		}
 
 		// We can take ownership if the type can be reference-counted anyway.
@@ -645,7 +640,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 				value.Logln(logger.Debug, "SetFinalizer set fail")
 			}
 
-			value.p.Linef(types.RecordPrintFreeMethod(free, "intern.C"))
+			value.p.Linef(types.RecordPrintFree(value.conv.fgen, value.Resolved.Extern, "intern.C"))
 			value.p.Linef("},")
 			value.p.Linef(")")
 		}

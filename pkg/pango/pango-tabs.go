@@ -93,7 +93,10 @@ func NewTabArray(initialSize int32, positionsInPixels bool) *TabArray {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_tabArray)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_tab_array_free((*C.PangoTabArray)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "TabArray").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -122,7 +125,10 @@ func (src *TabArray) Copy() *TabArray {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_tabArray)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_tab_array_free((*C.PangoTabArray)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "TabArray").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 

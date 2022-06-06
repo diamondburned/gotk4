@@ -14,6 +14,15 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// struct FileAttributeInfo {
+//     void* name;
+//           type;
+//           flags;
+// };
+// struct FileAttributeInfoList {
+//     void* infos;
+//     int   n_infos;
+// };
 import "C"
 
 // glib.Type values for gfileattribute.go.
@@ -65,7 +74,7 @@ func NewFileAttributeInfoList() *FileAttributeInfoList {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fileAttributeInfoList)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -111,7 +120,7 @@ func (list *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fileAttributeInfoList)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(intern.C))
+			C.free(intern.C)
 		},
 	)
 

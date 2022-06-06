@@ -61,7 +61,7 @@ func NewTransform() *Transform {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -132,7 +132,7 @@ func (self *Transform) Invert() *Transform {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_transform)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.gsk_transform_unref((*C.GskTransform)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -169,7 +169,7 @@ func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -210,7 +210,7 @@ func (next *Transform) Perspective(depth float32) *Transform {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -246,7 +246,7 @@ func (next *Transform) Rotate(angle float32) *Transform {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -287,7 +287,7 @@ func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -328,7 +328,7 @@ func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -370,7 +370,7 @@ func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -571,7 +571,7 @@ func (next *Transform) Transform(other *Transform) *Transform {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -663,7 +663,7 @@ func (next *Transform) Translate(point *graphene.Point) *Transform {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -699,7 +699,7 @@ func (next *Transform) Translate3D(point *graphene.Point3D) *Transform {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+			C.free(intern.C)
 		},
 	)
 

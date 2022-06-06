@@ -15,6 +15,14 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// struct LayoutLine {
+//     void* layout;
+//     gint  start_index;
+//     gint  length;
+//     void* runs;
+//     guint is_paragraph_start  : 1;
+//     guint resolved_dir        : 3;
+// };
 import "C"
 
 // glib.Type values for pango-layout.go.
@@ -297,7 +305,7 @@ func (layout *Layout) Attributes() *AttrList {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -592,7 +600,10 @@ func (layout *Layout) Iter() *LayoutIter {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_layoutIter)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_layout_iter_free((*C.PangoLayoutIter)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "LayoutIter").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -661,7 +672,7 @@ func (layout *Layout) Line(line int32) *LayoutLine {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_layoutLine)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -729,7 +740,7 @@ func (layout *Layout) LineReadonly(line int32) *LayoutLine {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_layoutLine)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -792,7 +803,7 @@ func (layout *Layout) Lines() []*LayoutLine {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
+				C.free(intern.C)
 			},
 		)
 		_sList = append(_sList, dst)
@@ -834,7 +845,7 @@ func (layout *Layout) LinesReadonly() []*LayoutLine {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
+				C.free(intern.C)
 			},
 		)
 		_sList = append(_sList, dst)
@@ -1090,7 +1101,10 @@ func (layout *Layout) Tabs() *TabArray {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_tabArray)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_tab_array_free((*C.PangoTabArray)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Pango", "TabArray").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}
@@ -1918,7 +1932,10 @@ func (iter *LayoutIter) Copy() *LayoutIter {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_layoutIter)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_layout_iter_free((*C.PangoLayoutIter)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Pango", "LayoutIter").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}
@@ -2103,7 +2120,7 @@ func (iter *LayoutIter) Line() *LayoutLine {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_layoutLine)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -2167,7 +2184,7 @@ func (iter *LayoutIter) LineReadonly() *LayoutLine {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_layoutLine)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
+			C.free(intern.C)
 		},
 	)
 

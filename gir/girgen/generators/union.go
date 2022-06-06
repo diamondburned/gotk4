@@ -162,6 +162,14 @@ func (ug *UnionGenerator) Use(union *gir.Union) bool {
 		Type:                union,
 	}
 
+	typRecord := gir.TypeFindResult{
+		NamespaceFindResult: typ.NamespaceFindResult,
+		Type: &gir.Record{
+			Name:    union.Name,
+			Methods: union.Methods,
+		},
+	}
+
 	// Can we copy? Exit if not. We want the finalizer to work properly.
 	copyMethod := types.FindMethodName(union.Methods, "copy")
 	if copyMethod == nil {
@@ -170,7 +178,7 @@ func (ug *UnionGenerator) Use(union *gir.Union) bool {
 	}
 
 	// We can optionally have a freeMethod.
-	freeMethod := types.RecordHasFree(&gir.Record{Methods: union.Methods})
+	// freeMethod := types.RecordHasFree(&gir.Record{Methods: union.Methods})
 
 	{
 		ug.hdr.Import("unsafe")
@@ -183,7 +191,7 @@ func (ug *UnionGenerator) Use(union *gir.Union) bool {
 		p.Linef("runtime.SetFinalizer(")
 		p.Linef("  gextras.StructIntern(unsafe.Pointer(dst)),")
 		p.Linef("  func(intern *struct{ C unsafe.Pointer }) {")
-		p.Linef(types.RecordPrintFreeMethod(freeMethod, "intern.C"))
+		p.Linef(types.RecordPrintFree(ug.gen, &typRecord, "intern.C"))
 		p.Linef("},")
 		p.Linef(")")
 		p.Linef("return dst")
@@ -261,7 +269,7 @@ func (ug *UnionGenerator) Use(union *gir.Union) bool {
 			// dst is ASSUMED TO BE A POINTER.
 			p.Linef("  gextras.StructIntern(unsafe.Pointer(dst)),")
 			p.Linef("  func(intern *struct{ C unsafe.Pointer }) {")
-			p.Linef(types.RecordPrintFreeMethod(freeMethod, "intern.C"))
+			p.Linef(types.RecordPrintFree(ug.gen, &typRecord, "intern.C"))
 			p.Linef("},")
 			p.Linef(")")
 		}

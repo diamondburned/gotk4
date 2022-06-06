@@ -18,6 +18,13 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// struct FileFilterInfo {
+//           contains;
+//     void* filename;
+//     void* uri;
+//     void* display_name;
+//     void* mime_type;
+// };
 import "C"
 
 // glib.Type values for gtkfilefilter.go.
@@ -393,7 +400,7 @@ func (filter *FileFilter) ToGVariant() *glib.Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
+			C.free(intern.C)
 		},
 	)
 

@@ -20,6 +20,57 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // extern gboolean _gotk4_pango1_AttrFilterFunc(void*, gpointer);
+// struct AttrColor {
+//      attr;
+//      color;
+// };
+// struct AttrFloat {
+//            attr;
+//     double value;
+// };
+// struct AttrFontDesc {
+//           attr;
+//     void* desc;
+// };
+// struct AttrFontFeatures {
+//           attr;
+//     void* features;
+// };
+// struct AttrInt {
+//         attr;
+//     int value;
+// };
+// struct AttrLanguage {
+//           attr;
+//     void* value;
+// };
+// struct AttrShape {
+//              attr;
+//              ink_rect;
+//              logical_rect;
+//     gpointer data;
+//     gpointer copy_func;
+//              destroy_func;
+// };
+// struct AttrSize {
+//           attr;
+//     int   size;
+//     guint absolute  : 1;
+// };
+// struct AttrString {
+//           attr;
+//     void* value;
+// };
+// struct Attribute {
+//     void* klass;
+//     guint start_index;
+//     guint end_index;
+// };
+// struct Color {
+//     guint16 red;
+//     guint16 green;
+//     guint16 blue;
+// };
 import "C"
 
 // glib.Type values for pango-attributes.go.
@@ -437,7 +488,10 @@ func NewAttrAllowBreaks(allowBreaks bool) *Attribute {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -471,7 +525,10 @@ func NewAttrBackgroundAlpha(alpha uint16) *Attribute {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -511,7 +568,10 @@ func NewAttrBackground(red, green, blue uint16) *Attribute {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -552,7 +612,10 @@ func NewAttrFallback(enableFallback bool) *Attribute {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -587,7 +650,10 @@ func NewAttrFamily(family string) *Attribute {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -621,7 +687,10 @@ func NewAttrForegroundAlpha(alpha uint16) *Attribute {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -661,7 +730,10 @@ func NewAttrForeground(red, green, blue uint16) *Attribute {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -700,7 +772,10 @@ func NewAttrInsertHyphens(insertHyphens bool) *Attribute {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -735,7 +810,10 @@ func NewAttrLetterSpacing(letterSpacing int32) *Attribute {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -778,7 +856,10 @@ func NewAttrOverlineColor(red, green, blue uint16) *Attribute {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -813,7 +894,10 @@ func NewAttrRise(rise int32) *Attribute {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -850,7 +934,10 @@ func NewAttrScale(scaleFactor float64) *Attribute {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -893,7 +980,10 @@ func NewAttrStrikethroughColor(red, green, blue uint16) *Attribute {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -929,7 +1019,10 @@ func NewAttrStrikethrough(strikethrough bool) *Attribute {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -972,7 +1065,10 @@ func NewAttrUnderlineColor(red, green, blue uint16) *Attribute {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -1019,7 +1115,7 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, ui
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -1086,7 +1182,10 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_markupParseContext)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_markup_parse_context_unref((*C.GMarkupParseContext)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("GLib", "MarkupParseContext").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -1151,7 +1250,7 @@ func ParseMarkup(markupText string, length int32, accelMarker uint32) (*AttrList
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -1238,7 +1337,10 @@ func NewAttrFontDesc(desc *FontDescription) *Attribute {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -1286,7 +1388,10 @@ func NewAttrFontFeatures(features string) *Attribute {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -1350,7 +1455,10 @@ func (iterator *AttrIterator) Copy() *AttrIterator {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attrIterator)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attr_iterator_destroy((*C.PangoAttrIterator)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "AttrIterator").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -1393,7 +1501,10 @@ func (iterator *AttrIterator) Attrs() []*Attribute {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 		_sList = append(_sList, dst)
@@ -1493,7 +1604,10 @@ func NewAttrLanguage(language *Language) *Attribute {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -1537,7 +1651,7 @@ func NewAttrList() *AttrList {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attrList)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -1596,7 +1710,7 @@ func (list *AttrList) Copy() *AttrList {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -1669,7 +1783,7 @@ func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -1703,7 +1817,10 @@ func (list *AttrList) Attributes() []*Attribute {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 		_sList = append(_sList, dst)
@@ -1735,7 +1852,10 @@ func (list *AttrList) Iterator() *AttrIterator {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attrIterator)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attr_iterator_destroy((*C.PangoAttrIterator)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "AttrIterator").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -1895,7 +2015,10 @@ func NewAttrShape(inkRect, logicalRect *Rectangle) *Attribute {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -1942,7 +2065,10 @@ func NewAttrSize(size int32) *Attribute {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -1976,7 +2102,10 @@ func NewAttrSizeAbsolute(size int32) *Attribute {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -2042,7 +2171,10 @@ func (attr *Attribute) Copy() *Attribute {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Attribute").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -2182,7 +2314,10 @@ func (src *Color) Copy() *Color {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_color)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_color_free((*C.PangoColor)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Pango", "Color").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}

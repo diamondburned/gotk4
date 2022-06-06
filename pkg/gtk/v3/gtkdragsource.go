@@ -85,7 +85,7 @@ func (widget *Widget) DragSourceGetTargetList() *TargetList {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_targetList)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_target_list_unref((*C.GtkTargetList)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}

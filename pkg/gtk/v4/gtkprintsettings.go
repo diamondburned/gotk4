@@ -18,6 +18,10 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // extern void _gotk4_gtk4_PrintSettingsFunc(void*, void*, gpointer);
+// struct PageRange {
+//     int start;
+//     int end;
+// };
 import "C"
 
 // glib.Type values for gtkprintsettings.go.
@@ -707,7 +711,10 @@ func (settings *PrintSettings) PaperSize() *PaperSize {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_paperSize)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "PaperSize").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -1458,7 +1465,7 @@ func (settings *PrintSettings) ToGVariant() *glib.Variant {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
+			C.free(intern.C)
 		},
 	)
 

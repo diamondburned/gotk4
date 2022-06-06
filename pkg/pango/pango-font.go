@@ -619,7 +619,10 @@ func (font *Font) Describe() *FontDescription {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fontDescription)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "FontDescription").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -651,7 +654,10 @@ func (font *Font) DescribeWithAbsoluteSize() *FontDescription {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fontDescription)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "FontDescription").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -866,7 +872,7 @@ func (font *Font) Metrics(language *Language) *FontMetrics {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fontMetrics)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_font_metrics_unref((*C.PangoFontMetrics)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -1126,7 +1132,10 @@ func (face *FontFace) Describe() *FontDescription {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fontDescription)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "FontDescription").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -1710,7 +1719,10 @@ func NewFontDescription() *FontDescription {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fontDescription)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "FontDescription").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -1788,7 +1800,10 @@ func (desc *FontDescription) Copy() *FontDescription {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_fontDescription)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Pango", "FontDescription").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}
@@ -1828,7 +1843,10 @@ func (desc *FontDescription) CopyStatic() *FontDescription {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_fontDescription)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Pango", "FontDescription").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}
@@ -2334,7 +2352,10 @@ func FontDescriptionFromString(str string) *FontDescription {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fontDescription)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "FontDescription").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 

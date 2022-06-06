@@ -14,6 +14,20 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// struct GlyphItem {
+//     void* item;
+//     void* glyphs;
+// };
+// struct GlyphItemIter {
+//     void* glyph_item;
+//     void* text;
+//     int   start_glyph;
+//     int   start_index;
+//     int   start_char;
+//     int   end_glyph;
+//     int   end_index;
+//     int   end_char;
+// };
 import "C"
 
 // glib.Type values for pango-glyph-item.go.
@@ -121,7 +135,10 @@ func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) []*GlyphItem
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_glyph_item_free((*C.PangoGlyphItem)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Pango", "GlyphItem").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 		_sList = append(_sList, dst)
@@ -155,7 +172,10 @@ func (orig *GlyphItem) Copy() *GlyphItem {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_glyphItem)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_glyph_item_free((*C.PangoGlyphItem)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Pango", "GlyphItem").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}
@@ -205,7 +225,10 @@ func (orig *GlyphItem) Split(text string, splitIndex int32) *GlyphItem {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_glyphItem)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_glyph_item_free((*C.PangoGlyphItem)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "GlyphItem").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -355,7 +378,10 @@ func (orig *GlyphItemIter) Copy() *GlyphItemIter {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_glyphItemIter)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_glyph_item_iter_free((*C.PangoGlyphItemIter)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Pango", "GlyphItemIter").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}

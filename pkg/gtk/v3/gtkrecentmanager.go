@@ -21,6 +21,15 @@ import (
 // #include <glib.h>
 // extern void _gotk4_gtk3_RecentManagerClass_changed(void*);
 // extern void _gotk4_gtk3_RecentManager_ConnectChanged(gpointer, guintptr);
+// struct RecentData {
+//     void*    display_name;
+//     void*    description;
+//     void*    mime_type;
+//     void*    app_name;
+//     void*    app_exec;
+//     void**   groups;
+//     gboolean is_private;
+// };
 import "C"
 
 // glib.Type values for gtkrecentmanager.go.
@@ -344,7 +353,7 @@ func (manager *RecentManager) Items() []*RecentInfo {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
+				C.free(intern.C)
 			},
 		)
 		_list = append(_list, dst)
@@ -421,7 +430,7 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_recentInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}

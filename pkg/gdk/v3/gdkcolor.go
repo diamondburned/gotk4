@@ -14,6 +14,12 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// struct Color {
+//     guint32 pixel;
+//     guint16 red;
+//     guint16 green;
+//     guint16 blue;
+// };
 import "C"
 
 // glib.Type values for gdkcolor.go.
@@ -130,7 +136,10 @@ func (color *Color) Copy() *Color {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_ret)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_color_free((*C.GdkColor)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gdk", "Color").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 

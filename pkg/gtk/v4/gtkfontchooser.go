@@ -340,7 +340,10 @@ func (fontchooser *FontChooser) FontDesc() *pango.FontDescription {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_fontDescription)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Pango", "FontDescription").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}

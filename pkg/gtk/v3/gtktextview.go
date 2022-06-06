@@ -1142,7 +1142,7 @@ func (textView *TextView) DefaultAttributes() *TextAttributes {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_textAttributes)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_text_attributes_unref((*C.GtkTextAttributes)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -1620,7 +1620,10 @@ func (textView *TextView) Tabs() *pango.TabArray {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_tabArray)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_tab_array_free((*C.PangoTabArray)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Pango", "TabArray").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}

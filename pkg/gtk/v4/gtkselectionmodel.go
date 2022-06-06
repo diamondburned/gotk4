@@ -388,7 +388,7 @@ func _gotk4_gtk4_SelectionModelInterface_set_selection(arg0 *C.void, arg1 *C.voi
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_selected)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_bitset_unref((*C.GtkBitset)(intern.C))
+			C.free(intern.C)
 		},
 	)
 	_mask = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(arg2)))
@@ -396,7 +396,7 @@ func _gotk4_gtk4_SelectionModelInterface_set_selection(arg0 *C.void, arg1 *C.voi
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_mask)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_bitset_unref((*C.GtkBitset)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -533,7 +533,7 @@ func (model *SelectionModel) Selection() *Bitset {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bitset)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_bitset_unref((*C.GtkBitset)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -575,7 +575,7 @@ func (model *SelectionModel) SelectionInRange(position, nItems uint32) *Bitset {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bitset)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_bitset_unref((*C.GtkBitset)(intern.C))
+			C.free(intern.C)
 		},
 	)
 

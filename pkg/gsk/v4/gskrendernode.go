@@ -22,6 +22,23 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // extern void _gotk4_gsk4_ParseErrorFunc(void*, void*, void*, gpointer);
+// struct ColorStop {
+//     float offset;
+//           color;
+// };
+// struct ParseLocation {
+//     gsize bytes;
+//     gsize chars;
+//     gsize lines;
+//     gsize line_bytes;
+//     gsize line_chars;
+// };
+// struct Shadow {
+//           color;
+//     float dx;
+//     float dy;
+//     float radius;
+// };
 import "C"
 
 // glib.Type values for gskrendernode.go.
@@ -1181,7 +1198,7 @@ func (node *GLShaderNode) Args() *glib.Bytes {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -2073,7 +2090,7 @@ func (node *RenderNode) Serialize() *glib.Bytes {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -2784,7 +2801,7 @@ func (node *TransformNode) Transform() *Transform {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
+			C.free(intern.C)
 		},
 	)
 

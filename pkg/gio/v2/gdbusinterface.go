@@ -205,7 +205,7 @@ func (interface_ *DBusInterface) Info() *DBusInterfaceInfo {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_dBusInterfaceInfo)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_dbus_interface_info_unref((*C.GDBusInterfaceInfo)(intern.C))
+			C.free(intern.C)
 		},
 	)
 

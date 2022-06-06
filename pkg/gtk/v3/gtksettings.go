@@ -15,6 +15,10 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// struct SettingsValue {
+//     void* origin;
+//           value;
+// };
 import "C"
 
 // glib.Type values for gtksettings.go.

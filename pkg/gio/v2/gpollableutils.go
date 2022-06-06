@@ -49,7 +49,10 @@ func NewPollableSource(pollableStream *coreglib.Object) *glib.Source {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_source)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("GLib", "Source").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -97,7 +100,10 @@ func PollableSourceNewFull(ctx context.Context, pollableStream *coreglib.Object,
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_source)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("GLib", "Source").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 

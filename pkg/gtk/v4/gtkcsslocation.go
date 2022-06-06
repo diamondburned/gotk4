@@ -12,6 +12,13 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// struct CssLocation {
+//     gsize bytes;
+//     gsize chars;
+//     gsize lines;
+//     gsize line_bytes;
+//     gsize line_chars;
+// };
 import "C"
 
 // CSSLocation represents a location in a file or other source of data parsed by

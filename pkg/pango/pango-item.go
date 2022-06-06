@@ -14,6 +14,23 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// struct Analysis {
+//     gpointer shape_engine;
+//     gpointer lang_engine;
+//     void*    font;
+//     guint8   level;
+//     guint8   gravity;
+//     guint8   flags;
+//     guint8   script;
+//     void*    language;
+//     void*    extra_attrs;
+// };
+// struct Item {
+//     gint offset;
+//     gint length;
+//     gint num_chars;
+//          analysis;
+// };
 import "C"
 
 // glib.Type values for pango-item.go.
@@ -168,7 +185,10 @@ func NewItem() *Item {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_item)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_item_free((*C.PangoItem)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Item").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 
@@ -225,7 +245,10 @@ func (item *Item) Copy() *Item {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_ret)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_item_free((*C.PangoItem)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Pango", "Item").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}
@@ -274,7 +297,10 @@ func (orig *Item) Split(splitIndex int32, splitOffset int32) *Item {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_item)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_item_free((*C.PangoItem)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Pango", "Item").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 

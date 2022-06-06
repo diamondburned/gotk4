@@ -9,7 +9,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
 // #include <stdlib.h>
@@ -1014,6 +1013,7 @@ type debugKey struct {
 
 // Key: string.
 func (d *DebugKey) Key() string {
+	valptr := d.native.key
 	var v string // out
 	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
 	return v
@@ -1021,6 +1021,7 @@ func (d *DebugKey) Key() string {
 
 // Value: flag.
 func (d *DebugKey) Value() uint32 {
+	valptr := d.native.value
 	var v uint32 // out
 	v = uint32(valptr)
 	return v

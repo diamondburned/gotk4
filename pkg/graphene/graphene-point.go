@@ -7,7 +7,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -63,6 +62,7 @@ func NewPointAlloc() *Point {
 
 // X coordinate of the point.
 func (p *Point) X() float32 {
+	valptr := p.native.x
 	var v float32 // out
 	v = float32(valptr)
 	return v
@@ -70,6 +70,7 @@ func (p *Point) X() float32 {
 
 // Y coordinate of the point.
 func (p *Point) Y() float32 {
+	valptr := p.native.y
 	var v float32 // out
 	v = float32(valptr)
 	return v

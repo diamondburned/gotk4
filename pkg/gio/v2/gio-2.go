@@ -900,7 +900,7 @@ func _gotk4_gio2_SimpleAction_ConnectActivate(arg0 C.gpointer, arg1 *C.void, arg
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_parameter)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}
@@ -945,7 +945,7 @@ func _gotk4_gio2_SimpleAction_ConnectChangeState(arg0 C.gpointer, arg1 *C.void, 
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_value)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
+				C.free(intern.C)
 			},
 		)
 	}

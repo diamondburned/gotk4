@@ -1922,7 +1922,10 @@ func (treeView *TreeView) Cursor() (*TreePath, *TreeViewColumn) {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_path)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}
@@ -1975,7 +1978,10 @@ func (treeView *TreeView) DestRowAtPos(dragX, dragY int32) (*TreePath, TreeViewD
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_path)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}
@@ -2015,7 +2021,10 @@ func (treeView *TreeView) DragDestRow() (*TreePath, TreeViewDropPosition) {
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_path)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}
@@ -2386,7 +2395,10 @@ func (treeView *TreeView) PathAtPos(x, y int32) (path *TreePath, column *TreeVie
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_path)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}
@@ -2663,7 +2675,10 @@ func (treeView *TreeView) VisibleRange() (startPath, endPath *TreePath, ok bool)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_startPath)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}
@@ -2672,7 +2687,10 @@ func (treeView *TreeView) VisibleRange() (startPath, endPath *TreePath, ok bool)
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_endPath)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}
@@ -2850,7 +2868,10 @@ func (treeView *TreeView) IsBlankAtPos(x, y int32) (path *TreePath, column *Tree
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_path)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}

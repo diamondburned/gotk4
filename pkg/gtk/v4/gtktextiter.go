@@ -840,7 +840,10 @@ func (iter *TextIter) Copy() *TextIter {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_textIter)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_text_iter_free((*C.GtkTextIter)(intern.C))
+			{
+				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				girepository.MustFind("Gtk", "TextIter").InvokeMethod("free", args[:], nil)
+			}
 		},
 	)
 

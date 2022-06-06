@@ -515,7 +515,7 @@ func (self *Expression) Bind(target *coreglib.Object, property string, this_ *co
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_expressionWatch)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(intern.C))
+			C.free(intern.C)
 		},
 	)
 
@@ -637,7 +637,7 @@ func (self *Expression) Watch(this_ *coreglib.Object, notify ExpressionNotify) *
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_expressionWatch)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(intern.C))
+			C.free(intern.C)
 		},
 	)
 

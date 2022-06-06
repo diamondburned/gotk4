@@ -8,7 +8,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
 // #include <stdlib.h>
@@ -210,6 +209,7 @@ func NewTimeVal(tvSec, tvUsec int32) TimeVal {
 
 // TvSec: seconds.
 func (t *TimeVal) TvSec() int32 {
+	valptr := t.native.tv_sec
 	var v int32 // out
 	v = int32(valptr)
 	return v
@@ -217,6 +217,7 @@ func (t *TimeVal) TvSec() int32 {
 
 // TvUsec: microseconds.
 func (t *TimeVal) TvUsec() int32 {
+	valptr := t.native.tv_usec
 	var v int32 // out
 	v = int32(valptr)
 	return v

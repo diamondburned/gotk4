@@ -13,6 +13,11 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// struct RequestedSize {
+//     gpointer data;
+//     gint     minimum_size;
+//     gint     natural_size;
+// };
 import "C"
 
 // DistributeNaturalAllocation distributes extra_space to child sizes by

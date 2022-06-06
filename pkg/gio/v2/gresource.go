@@ -87,7 +87,7 @@ func ResourceLoad(filename string) (*Resource, error) {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_resource)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_resource_unref((*C.GResource)(intern.C))
+			C.free(intern.C)
 		},
 	)
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
@@ -150,7 +150,7 @@ func (staticResource *StaticResource) Resource() *Resource {
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_resource)),
 		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_resource_unref((*C.GResource)(intern.C))
+			C.free(intern.C)
 		},
 	)
 

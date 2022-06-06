@@ -451,7 +451,10 @@ func (filter *TreeModelFilter) ConvertChildPathToPath(childPath *TreePath) *Tree
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_treePath)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}
@@ -522,7 +525,10 @@ func (filter *TreeModelFilter) ConvertPathToChildPath(filterPath *TreePath) *Tre
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_treePath)),
 			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
+				{
+					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+				}
 			},
 		)
 	}

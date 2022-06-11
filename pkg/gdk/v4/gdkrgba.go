@@ -14,12 +14,6 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// struct RGBA {
-//     float red;
-//     float green;
-//     float blue;
-//     float alpha;
-// };
 import "C"
 
 // glib.Type values for gdkrgba.go.

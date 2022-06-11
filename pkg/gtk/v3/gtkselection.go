@@ -16,16 +16,6 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// struct TargetEntry {
-//     void* target;
-//     guint flags;
-//     guint info;
-// };
-// struct TargetPair {
-//           target;
-//     guint flags;
-//     guint info;
-// };
 import "C"
 
 // glib.Type values for gtkselection.go.

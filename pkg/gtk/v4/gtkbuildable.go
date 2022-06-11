@@ -23,13 +23,6 @@ import (
 // extern void _gotk4_gtk4_BuildableIface_parser_finished(void*, void*);
 // extern void _gotk4_gtk4_BuildableIface_set_buildable_property(void*, void*, void*, void*);
 // extern void _gotk4_gtk4_BuildableIface_set_id(void*, void*);
-// struct BuildableParser {
-//     void* start_element;
-//     void* end_element;
-//     void* text;
-//     void* error;
-//     void  padding;
-// };
 import "C"
 
 // glib.Type values for gtkbuildable.go.

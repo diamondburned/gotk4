@@ -15,53 +15,6 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// struct DBusAnnotationInfo {
-//     gint   ref_count;
-//     void*  key;
-//     void*  value;
-//     void** annotations;
-// };
-// struct DBusArgInfo {
-//     gint   ref_count;
-//     void*  name;
-//     void*  signature;
-//     void** annotations;
-// };
-// struct DBusInterfaceInfo {
-//     gint   ref_count;
-//     void*  name;
-//     void** methods;
-//     void** signals;
-//     void** properties;
-//     void** annotations;
-// };
-// struct DBusMethodInfo {
-//     gint   ref_count;
-//     void*  name;
-//     void** in_args;
-//     void** out_args;
-//     void** annotations;
-// };
-// struct DBusNodeInfo {
-//     gint   ref_count;
-//     void*  path;
-//     void** interfaces;
-//     void** nodes;
-//     void** annotations;
-// };
-// struct DBusPropertyInfo {
-//     gint   ref_count;
-//     void*  name;
-//     void*  signature;
-//            flags;
-//     void** annotations;
-// };
-// struct DBusSignalInfo {
-//     gint   ref_count;
-//     void*  name;
-//     void** args;
-//     void** annotations;
-// };
 import "C"
 
 // glib.Type values for gdbusintrospection.go.

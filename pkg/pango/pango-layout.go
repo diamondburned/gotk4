@@ -15,14 +15,6 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// struct LayoutLine {
-//     void* layout;
-//     gint  start_index;
-//     gint  length;
-//     void* runs;
-//     guint is_paragraph_start  : 1;
-//     guint resolved_dir        : 3;
-// };
 import "C"
 
 // glib.Type values for pango-layout.go.

@@ -14,10 +14,6 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// struct DBusErrorEntry {
-//     gint  error_code;
-//     void* dbus_error_name;
-// };
 import "C"
 
 // DBusErrorEncodeGError creates a D-Bus error name to use for error. If error

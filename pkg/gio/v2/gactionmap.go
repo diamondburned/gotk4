@@ -16,14 +16,6 @@ import (
 // extern GAction* _gotk4_gio2_ActionMapInterface_lookup_action(void*, void*);
 // extern void _gotk4_gio2_ActionMapInterface_add_action(void*, void*);
 // extern void _gotk4_gio2_ActionMapInterface_remove_action(void*, void*);
-// struct ActionEntry {
-//     void* name;
-//     void* activate;
-//     void* parameter_type;
-//     void* state;
-//     void* change_state;
-//     void  padding;
-// };
 import "C"
 
 // glib.Type values for gactionmap.go.

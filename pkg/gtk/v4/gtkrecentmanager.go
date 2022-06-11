@@ -21,15 +21,6 @@ import (
 // #include <glib.h>
 // extern void _gotk4_gtk4_RecentManagerClass_changed(void*);
 // extern void _gotk4_gtk4_RecentManager_ConnectChanged(gpointer, guintptr);
-// struct RecentData {
-//     void*    display_name;
-//     void*    description;
-//     void*    mime_type;
-//     void*    app_name;
-//     void*    app_exec;
-//     void**   groups;
-//     gboolean is_private;
-// };
 import "C"
 
 // glib.Type values for gtkrecentmanager.go.

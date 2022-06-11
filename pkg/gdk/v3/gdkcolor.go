@@ -14,12 +14,6 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// struct Color {
-//     guint32 pixel;
-//     guint16 red;
-//     guint16 green;
-//     guint16 blue;
-// };
 import "C"
 
 // glib.Type values for gdkcolor.go.

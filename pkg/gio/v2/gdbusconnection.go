@@ -22,18 +22,6 @@ import (
 // extern GDBusMessage* _gotk4_gio2_DBusMessageFilterFunction(void*, void*, gboolean, gpointer);
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 // extern void callbackDelete(gpointer);
-// struct DBusInterfaceVTable {
-//     gpointer method_call;
-//     gpointer get_property;
-//     gpointer set_property;
-//     void     padding;
-// };
-// struct DBusSubtreeVTable {
-//     gpointer enumerate;
-//     gpointer introspect;
-//     gpointer dispatch;
-//     void     padding;
-// };
 import "C"
 
 // DBusInterfaceGetPropertyFunc: type of the get_property function in

@@ -19,6 +19,8 @@ type FileGeneratorWriter interface {
 	FileGenerator
 	// FileWriter returns the file writer for the given source position.
 	FileWriter(cmt.InfoFields) FileWriter
+	// CHeaderFile returns the C header file.
+	CHeaderFile() FileWriter
 }
 
 // FileWriterFromType is a convenient function that returns the FileWriter from
@@ -54,9 +56,8 @@ type (
 	stubFileWriter          struct{}
 )
 
-func (s stubFileGeneratorWriter) FileWriter(cmt.InfoFields) FileWriter {
-	return stubFileWriter{}
-}
+func (s stubFileGeneratorWriter) FileWriter(cmt.InfoFields) FileWriter { return stubFileWriter{} }
+func (s stubFileGeneratorWriter) CHeaderFile() FileWriter              { return stubFileWriter{} }
 
 func (s stubFileWriter) Header() *file.Header { return file.NoopHeader }
 func (s stubFileWriter) Pen() *pen.Pen        { return pen.NoopPen }

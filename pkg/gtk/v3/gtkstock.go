@@ -16,13 +16,6 @@ import (
 // #include <glib.h>
 // extern gchar* _gotk4_gtk3_TranslateFunc(void*, gpointer);
 // extern void callbackDelete(gpointer);
-// struct StockItem {
-//     void* stock_id;
-//     void* label;
-//           modifier;
-//     guint keyval;
-//     void* translation_domain;
-// };
 import "C"
 
 // STOCK_ABOUT: “About” item. ! (help-about.png)

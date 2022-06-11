@@ -14,23 +14,6 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// struct Analysis {
-//     gpointer shape_engine;
-//     gpointer lang_engine;
-//     void*    font;
-//     guint8   level;
-//     guint8   gravity;
-//     guint8   flags;
-//     guint8   script;
-//     void*    language;
-//     void*    extra_attrs;
-// };
-// struct Item {
-//     gint offset;
-//     gint length;
-//     gint num_chars;
-//          analysis;
-// };
 import "C"
 
 // glib.Type values for pango-item.go.

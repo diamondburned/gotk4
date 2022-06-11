@@ -19,31 +19,6 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// struct InputMessage {
-//     void**  address;
-//     void*   vectors;
-//     guint   num_vectors;
-//     gsize   bytes_received;
-//     gint    flags;
-//     void*** control_messages;
-//     void*   num_control_messages;
-// };
-// struct InputVector {
-//     gpointer buffer;
-//     gsize    size;
-// };
-// struct OutputMessage {
-//     void*  address;
-//     void*  vectors;
-//     guint  num_vectors;
-//     guint  bytes_sent;
-//     void** control_messages;
-//     guint  num_control_messages;
-// };
-// struct OutputVector {
-//     gpointer buffer;
-//     gsize    size;
-// };
 import "C"
 
 // glib.Type values for giotypes.go.

@@ -14,10 +14,6 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// struct RoundedRect {
-//          bounds;
-//     void corner;
-// };
 import "C"
 
 // RoundedRect: rectangular region with rounded corners.

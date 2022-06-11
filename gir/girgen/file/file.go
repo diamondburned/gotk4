@@ -55,7 +55,7 @@ type Header struct {
 	Imports        map[string]string
 	CIncludes      map[string]struct{}
 	Packages       map[string]struct{} // for pkg-config
-	Callbacks      map[string]struct{}
+	Callbacks      map[string]struct{} // used for C blocks in general
 	CallbackDelete bool
 
 	stop bool

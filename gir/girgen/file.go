@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/generators"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
@@ -16,8 +17,72 @@ import (
 	"github.com/pkg/errors"
 )
 
-// FileGenerator is a file generator.
-type FileGenerator struct {
+// FileGenerator describes any file that can be generated.
+type FileGenerator interface {
+	generators.FileGenerator
+	generators.FileWriter
+	Generate() ([]byte, error)
+	IsEmpty() bool
+}
+
+// CFileGenerator creates a new C file generator.
+type CFileGenerator struct {
+	*NamespaceGenerator
+	pen    *pen.PaperBuffer
+	header file.Header
+}
+
+// NewCFileGenerator creates as new C file generator.
+func NewCFileGenerator(n *NamespaceGenerator) *CFileGenerator {
+	return &CFileGenerator{
+		NamespaceGenerator: n,
+		pen:                pen.NewPaperBufferSize(10 * 1024), // 10KB
+	}
+}
+
+// Header returns the C file generator's headers.
+func (f *CFileGenerator) Header() *file.Header { return &f.header }
+
+// Pen returns the C file generator's writer.
+func (f *CFileGenerator) Pen() *pen.Pen { return &f.pen.Pen }
+
+// IsEmpty returns true if the file is empty.
+func (f *CFileGenerator) IsEmpty() bool {
+	return f == nil || (f.pen.Len() == 0 && len(f.header.Callbacks) == 0)
+}
+
+// Generate implements FileGenerator.
+func (f *CFileGenerator) Generate() ([]byte, error) {
+	switch f.LinkMode() {
+	case types.DynamicLinkMode:
+		f.pen.Words("#include <stdlib.h>")
+		if incls := f.CIncludes(); len(incls) > 0 {
+			for _, incl := range incls {
+				f.pen.Linef("#include <%s>", incl)
+			}
+		}
+	case types.RuntimeLinkMode:
+		f.pen.Words("#include <stdlib.h>")
+		f.pen.Words("#include <glib.h>")
+	}
+
+	if len(f.header.Callbacks) > 0 {
+		f.pen.EmptyLine()
+		for _, callback := range f.header.SortedCallbackHeaders() {
+			f.pen.Words(callback)
+		}
+	}
+
+	return f.pen.Bytes(), nil
+}
+
+// CIncludes returns the list of C includes at the top of the file.
+func (f *CFileGenerator) CIncludes() []string {
+	return namespaceCIncludes(f.current, &f.header)
+}
+
+// GoFileGenerator is a file generator.
+type GoFileGenerator struct {
 	*NamespaceGenerator
 	BuildTags []string // go:build lines, joined by AND (&&)
 	Packages  []string // extra
@@ -30,14 +95,15 @@ type FileGenerator struct {
 }
 
 var (
-	_ types.FileGenerator      = (*FileGenerator)(nil)
-	_ generators.FileGenerator = (*FileGenerator)(nil)
-	_ generators.FileWriter    = (*FileGenerator)(nil)
+	_ FileGenerator            = (*GoFileGenerator)(nil)
+	_ types.FileGenerator      = (*GoFileGenerator)(nil)
+	_ generators.FileGenerator = (*GoFileGenerator)(nil)
+	_ generators.FileWriter    = (*GoFileGenerator)(nil)
 )
 
-// NewFileGenerator creates a new empty FileGenerator instance.
-func NewFileGenerator(n *NamespaceGenerator, name string, isRoot bool) *FileGenerator {
-	return &FileGenerator{
+// NewGoFileGenerator creates a new empty GoFileGenerator instance.
+func NewGoFileGenerator(n *NamespaceGenerator, name string, isRoot bool) *GoFileGenerator {
+	return &GoFileGenerator{
 		NamespaceGenerator: n,
 
 		pen:    pen.NewPaperBufferSize(10 * 1024), // 10KB
@@ -47,32 +113,32 @@ func NewFileGenerator(n *NamespaceGenerator, name string, isRoot bool) *FileGene
 }
 
 // Name returns the current file's name.
-func (f *FileGenerator) Name() string {
+func (f *GoFileGenerator) Name() string {
 	return f.name
 }
 
 // Header returns the current file's header.
-func (f *FileGenerator) Header() *file.Header {
+func (f *GoFileGenerator) Header() *file.Header {
 	return &f.header
 }
 
 // Pen returns the current file's writing pen.
-func (f *FileGenerator) Pen() *pen.Pen {
+func (f *GoFileGenerator) Pen() *pen.Pen {
 	return &f.pen.Pen
 }
 
-func (f *FileGenerator) Logln(lvl logger.Level, v ...interface{}) {
+func (f *GoFileGenerator) Logln(lvl logger.Level, v ...interface{}) {
 	p := fmt.Sprintf("file %s", f.name)
 	f.NamespaceGenerator.Logln(lvl, logger.Prefix(v, p)...)
 }
 
 // IsEmpty returns true if the file is empty.
-func (f *FileGenerator) IsEmpty() bool {
+func (f *GoFileGenerator) IsEmpty() bool {
 	return !f.isRoot && f.pen.Len() == 0
 }
 
 // Generate generates the final file content, completed with gofmt.
-func (f *FileGenerator) Generate() ([]byte, error) {
+func (f *GoFileGenerator) Generate() ([]byte, error) {
 	if len(f.header.Marshalers) > 0 {
 		// Import coreglib for the RegisterMarshal function.
 		f.header.NeedsExternGLib()
@@ -236,17 +302,21 @@ func makeImport(importPath, alias string) string {
 }
 
 // Pkgconfig returns the current repository's pkg-config names.
-func (f *FileGenerator) Pkgconfig() []string {
+func (f *GoFileGenerator) Pkgconfig() []string {
 	return append(f.Packages, f.NamespaceGenerator.Pkgconfig()...)
 }
 
 // CIncludes returns this file's sorted C includes, including the repository's C
 // includes.
-func (f *FileGenerator) CIncludes() []string {
-	extraIncludes := f.header.SortedCIncludes()
+func (f *GoFileGenerator) CIncludes() []string {
+	return namespaceCIncludes(f.current, &f.header)
+}
 
-	includes := make([]string, 0, len(extraIncludes)+len(f.current.Repository.CIncludes))
-	for _, incl := range f.current.Repository.CIncludes {
+func namespaceCIncludes(n *gir.NamespaceFindResult, h *file.Header) []string {
+	extraIncludes := h.SortedCIncludes()
+
+	includes := make([]string, 0, len(extraIncludes)+len(n.Repository.CIncludes))
+	for _, incl := range n.Repository.CIncludes {
 		includes = append(includes, incl.Name)
 	}
 	includes = append(includes, extraIncludes...)

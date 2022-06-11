@@ -16,17 +16,6 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// struct KeymapKey {
-//     guint keycode;
-//     int   group;
-//     int   level;
-// };
-// struct Rectangle {
-//     int x;
-//     int y;
-//     int width;
-//     int height;
-// };
 import "C"
 
 // glib.Type values for gdktypes.go.

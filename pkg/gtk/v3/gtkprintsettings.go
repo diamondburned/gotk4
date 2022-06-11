@@ -18,10 +18,6 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // extern void _gotk4_gtk3_PrintSettingsFunc(void*, void*, gpointer);
-// struct PageRange {
-//     gint start;
-//     gint end;
-// };
 import "C"
 
 // glib.Type values for gtkprintsettings.go.

@@ -14,20 +14,6 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// struct GlyphItem {
-//     void* item;
-//     void* glyphs;
-// };
-// struct GlyphItemIter {
-//     void* glyph_item;
-//     void* text;
-//     int   start_glyph;
-//     int   start_index;
-//     int   start_char;
-//     int   end_glyph;
-//     int   end_index;
-//     int   end_char;
-// };
 import "C"
 
 // glib.Type values for pango-glyph-item.go.

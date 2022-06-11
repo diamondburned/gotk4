@@ -35,18 +35,6 @@ import (
 // extern void _gotk4_atk1_Text_ConnectTextInsert(gpointer, gint, gint, void*, guintptr);
 // extern void _gotk4_atk1_Text_ConnectTextRemove(gpointer, gint, gint, void*, guintptr);
 // extern void _gotk4_atk1_Text_ConnectTextSelectionChanged(gpointer, guintptr);
-// struct TextRange {
-//           bounds;
-//     gint  start_offset;
-//     gint  end_offset;
-//     void* content;
-// };
-// struct TextRectangle {
-//     gint x;
-//     gint y;
-//     gint width;
-//     gint height;
-// };
 import "C"
 
 // glib.Type values for atktext.go.

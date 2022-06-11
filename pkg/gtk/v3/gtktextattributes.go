@@ -14,40 +14,6 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// struct TextAppearance {
-//           bg_color;
-//           fg_color;
-//     gint  rise;
-//     guint underline         : 4;
-//     guint strikethrough     : 1;
-//     guint draw_bg           : 1;
-//     guint inside_selection  : 1;
-//     guint is_text           : 1;
-// };
-// struct TextAttributes {
-//     guint   refcount;
-//             appearance;
-//             justification;
-//             direction;
-//     void*   font;
-//     gdouble font_scale;
-//     gint    left_margin;
-//     gint    right_margin;
-//     gint    indent;
-//     gint    pixels_above_lines;
-//     gint    pixels_below_lines;
-//     gint    pixels_inside_wrap;
-//     void*   tabs;
-//             wrap_mode;
-//     void*   language;
-//     void*   pg_bg_color;
-//     guint   invisible       : 1;
-//     guint   bg_full_height  : 1;
-//     guint   editable        : 1;
-//     guint   no_fallback     : 1;
-//     void*   pg_bg_rgba;
-//     gint    letter_spacing;
-// };
 import "C"
 
 // glib.Type values for gtktextattributes.go.

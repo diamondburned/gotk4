@@ -16,22 +16,6 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// struct GlyphGeometry {
-//     gint32 width;
-//     gint32 x_offset;
-//     gint32 y_offset;
-// };
-// struct GlyphInfo {
-//     guint32 glyph;
-//             geometry;
-//             attr;
-// };
-// struct GlyphString {
-//     gint  num_glyphs;
-//     void* glyphs;
-//     void* log_clusters;
-//     gint  space;
-// };
 import "C"
 
 // glib.Type values for pango-glyph.go.

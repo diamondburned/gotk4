@@ -16,16 +16,6 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// struct Point {
-//     gint x;
-//     gint y;
-// };
-// struct Rectangle {
-//     int x;
-//     int y;
-//     int width;
-//     int height;
-// };
 import "C"
 
 // glib.Type values for gdktypes.go.

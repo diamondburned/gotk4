@@ -15,36 +15,6 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// struct BindingArg {
-//      arg_type;
-// };
-// struct BindingEntry {
-//     guint keyval;
-//           modifiers;
-//     void* binding_set;
-//     guint destroyed      : 1;
-//     guint in_emission    : 1;
-//     guint marks_unbound  : 1;
-//     void* set_next;
-//     void* hash_next;
-//     void* signals;
-// };
-// struct BindingSet {
-//     void* set_name;
-//     gint  priority;
-//     void* widget_path_pspecs;
-//     void* widget_class_pspecs;
-//     void* class_branch_pspecs;
-//     void* entries;
-//     void* current;
-//     guint parsed  : 1;
-// };
-// struct BindingSignal {
-//     void* next;
-//     void* signal_name;
-//     guint n_args;
-//     void* args;
-// };
 import "C"
 
 // BindingsActivateEvent looks up key bindings for object to find one matching

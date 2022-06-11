@@ -26,10 +26,11 @@ type NamespaceGenerator struct {
 	PkgName    string
 	PkgVersion string
 
-	Files map[string]*FileGenerator
+	Files map[string]FileGenerator
 
 	postprocs  []Postprocessor
 	current    *gir.NamespaceFindResult
+	cFile      *CFileGenerator
 	canResolve map[string]bool
 	genMode    types.LinkMode
 }
@@ -48,7 +49,7 @@ func NewNamespaceGenerator(g *Generator, n *gir.NamespaceFindResult) *NamespaceG
 		PkgPath:    g.ModPath(n.Namespace),
 		PkgName:    gir.GoNamespace(n.Namespace),
 		PkgVersion: gir.MajorVersion(n.Namespace.Version),
-		Files:      map[string]*FileGenerator{},
+		Files:      map[string]FileGenerator{},
 		current:    n,
 		canResolve: map[string]bool{},
 	}
@@ -186,22 +187,29 @@ func swapFileExt(filepath, ext string) string {
 	return strings.Split(filename, ".")[0] + ext
 }
 
-// File gets an existing file but returns false if no such file exists. It's
+// File gets an existing Go file but returns false if no such file exists. It's
 // useful for postprocessors to check if generation is working as intended. If
 // SingleFile is true, then File will always return the same file.
-func (n *NamespaceGenerator) File(filename string) (*FileGenerator, bool) {
+func (n *NamespaceGenerator) File(filename string) (*GoFileGenerator, bool) {
 	if n.Generator.Opts.SingleFile || filename == "" {
 		f, ok := n.Files[n.PkgName+".go"]
-		return f, ok
+		if ok {
+			goFile, ok := f.(*GoFileGenerator)
+			return goFile, ok
+		}
 	}
 
 	f, ok := n.Files[filename]
-	return f, ok
+	if ok {
+		goFile, ok := f.(*GoFileGenerator)
+		return goFile, ok
+	}
+	return nil, false
 }
 
-// MakeFile makes a new FileGenerator for the given filename or returns an
+// MakeFile makes a new GoFileGenerator for the given filename or returns an
 // existing one.
-func (n *NamespaceGenerator) MakeFile(filename string) *FileGenerator {
+func (n *NamespaceGenerator) MakeFile(filename string) *GoFileGenerator {
 	// this should lead us down the right branch
 	if n.Generator.Opts.SingleFile {
 		filename = ""
@@ -216,12 +224,20 @@ func (n *NamespaceGenerator) MakeFile(filename string) *FileGenerator {
 
 	f, ok := n.Files[filename]
 	if ok {
-		return f
+		return f.(*GoFileGenerator)
 	}
 
-	f = NewFileGenerator(n, filename, isRoot)
-	n.Files[filename] = f
-	return f
+	goFile := NewGoFileGenerator(n, filename, isRoot)
+	n.Files[filename] = goFile
+	return goFile
+}
+
+// CHeaderFile returns the only C header file.
+func (n *NamespaceGenerator) CHeaderFile() generators.FileWriter {
+	if n.cFile == nil {
+		n.cFile = NewCFileGenerator(n)
+	}
+	return n.cFile
 }
 
 // Generate generates everything in the current namespace into files. The
@@ -279,6 +295,11 @@ func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
 		generateFunctions(v.Name, v.Functions)
 	}
 	for _, v := range n.current.Namespace.Records {
+		if n.LinkMode() == types.RuntimeLinkMode {
+			// Just generate all records in C.
+			c := n.CHeaderFile()
+			c.Header().AddCBlock(generators.GenerateCPrimitiveRecord(n, &v))
+		}
 		if !generators.GenerateRecord(n, &v) {
 			n.logIfSkipped(false, "record "+v.Name)
 			continue
@@ -312,6 +333,17 @@ func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
 	files := make(map[string][]byte, len(n.Files))
 
 	var firstErr error
+
+	if !n.cFile.IsEmpty() {
+		name := n.PkgName + ".h"
+
+		b, err := n.cFile.Generate()
+		files[name] = b
+
+		if err != nil {
+			return files, errors.Wrapf(err, "cannot generate C file %s", name)
+		}
+	}
 
 	for name, file := range n.Files {
 		if file.IsEmpty() {

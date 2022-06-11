@@ -22,31 +22,6 @@ import (
 // extern void _gotk4_gtk3_ActionGroup_ConnectPostActivate(gpointer, void*, guintptr);
 // extern void _gotk4_gtk3_ActionGroup_ConnectPreActivate(gpointer, void*, guintptr);
 // extern void callbackDelete(gpointer);
-// struct ActionEntry {
-//     void* name;
-//     void* stock_id;
-//     void* label;
-//     void* accelerator;
-//     void* tooltip;
-//           callback;
-// };
-// struct RadioActionEntry {
-//     void* name;
-//     void* stock_id;
-//     void* label;
-//     void* accelerator;
-//     void* tooltip;
-//     gint  value;
-// };
-// struct ToggleActionEntry {
-//     void*    name;
-//     void*    stock_id;
-//     void*    label;
-//     void*    accelerator;
-//     void*    tooltip;
-//              callback;
-//     gboolean is_active;
-// };
 import "C"
 
 // glib.Type values for gtkactiongroup.go.

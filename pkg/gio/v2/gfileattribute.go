@@ -14,15 +14,6 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// struct FileAttributeInfo {
-//     void* name;
-//           type;
-//           flags;
-// };
-// struct FileAttributeInfoList {
-//     void* infos;
-//     int   n_infos;
-// };
 import "C"
 
 // glib.Type values for gfileattribute.go.

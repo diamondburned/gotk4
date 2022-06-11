@@ -48,10 +48,6 @@ import (
 // extern void _gotk4_gtk4_Widget_ConnectUnmap(gpointer, guintptr);
 // extern void _gotk4_gtk4_Widget_ConnectUnrealize(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
-// struct Requisition {
-//     int width;
-//     int height;
-// };
 import "C"
 
 // glib.Type values for gtkwidget.go.

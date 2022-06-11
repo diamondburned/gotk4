@@ -16,15 +16,6 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// struct KeyEventStruct {
-//     gint    type;
-//     guint   state;
-//     guint   keyval;
-//     gint    length;
-//     void*   string;
-//     guint16 keycode;
-//     guint32 timestamp;
-// };
 import "C"
 
 // glib.Type values for atkutil.go.

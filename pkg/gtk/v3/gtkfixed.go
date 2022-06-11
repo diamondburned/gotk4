@@ -14,11 +14,6 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// struct FixedChild {
-//     void* widget;
-//     gint  x;
-//     gint  y;
-// };
 import "C"
 
 // glib.Type values for gtkfixed.go.

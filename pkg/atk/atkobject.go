@@ -42,15 +42,6 @@ import (
 // extern void _gotk4_atk1_Object_ConnectPropertyChange(gpointer, void*, guintptr);
 // extern void _gotk4_atk1_Object_ConnectStateChange(gpointer, void*, gboolean, guintptr);
 // extern void _gotk4_atk1_Object_ConnectVisibleDataChanged(gpointer, guintptr);
-// struct Attribute {
-//     void* name;
-//     void* value;
-// };
-// struct PropertyValues {
-//     void* property_name;
-//           old_value;
-//           new_value;
-// };
 import "C"
 
 // glib.Type values for atkobject.go.

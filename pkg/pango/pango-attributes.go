@@ -20,57 +20,6 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // extern gboolean _gotk4_pango1_AttrFilterFunc(void*, gpointer);
-// struct AttrColor {
-//      attr;
-//      color;
-// };
-// struct AttrFloat {
-//            attr;
-//     double value;
-// };
-// struct AttrFontDesc {
-//           attr;
-//     void* desc;
-// };
-// struct AttrFontFeatures {
-//           attr;
-//     void* features;
-// };
-// struct AttrInt {
-//         attr;
-//     int value;
-// };
-// struct AttrLanguage {
-//           attr;
-//     void* value;
-// };
-// struct AttrShape {
-//              attr;
-//              ink_rect;
-//              logical_rect;
-//     gpointer data;
-//     gpointer copy_func;
-//              destroy_func;
-// };
-// struct AttrSize {
-//           attr;
-//     int   size;
-//     guint absolute  : 1;
-// };
-// struct AttrString {
-//           attr;
-//     void* value;
-// };
-// struct Attribute {
-//     void* klass;
-//     guint start_index;
-//     guint end_index;
-// };
-// struct Color {
-//     guint16 red;
-//     guint16 green;
-//     guint16 blue;
-// };
 import "C"
 
 // glib.Type values for pango-attributes.go.

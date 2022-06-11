@@ -16,31 +16,6 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
-// struct TableChild {
-//     void*   widget;
-//     guint16 left_attach;
-//     guint16 right_attach;
-//     guint16 top_attach;
-//     guint16 bottom_attach;
-//     guint16 xpadding;
-//     guint16 ypadding;
-//     guint   xexpand  : 1;
-//     guint   yexpand  : 1;
-//     guint   xshrink  : 1;
-//     guint   yshrink  : 1;
-//     guint   xfill    : 1;
-//     guint   yfill    : 1;
-// };
-// struct TableRowCol {
-//     guint16 requisition;
-//     guint16 allocation;
-//     guint16 spacing;
-//     guint   need_expand  : 1;
-//     guint   need_shrink  : 1;
-//     guint   expand       : 1;
-//     guint   shrink       : 1;
-//     guint   empty        : 1;
-// };
 import "C"
 
 // glib.Type values for gtktable.go.

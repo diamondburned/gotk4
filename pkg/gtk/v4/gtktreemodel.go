@@ -40,12 +40,6 @@ import (
 // extern void _gotk4_gtk4_TreeModel_ConnectRowHasChildToggled(gpointer, void*, void*, guintptr);
 // extern void _gotk4_gtk4_TreeModel_ConnectRowInserted(gpointer, void*, void*, guintptr);
 // extern void _gotk4_gtk4_TreeModel_ConnectRowsReordered(gpointer, void*, void*, gpointer, guintptr);
-// struct TreeIter {
-//     int      stamp;
-//     gpointer user_data;
-//     gpointer user_data2;
-//     gpointer user_data3;
-// };
 import "C"
 
 // glib.Type values for gtktreemodel.go.

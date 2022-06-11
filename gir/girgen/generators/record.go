@@ -33,6 +33,12 @@ var recordIgnoreSuffixes = []string{
 	"Private",
 }
 
+var recordNeedCDeclSuffixes = []string{
+	"Interface",
+	"Iface",
+	"Class",
+}
+
 var recordTmpl = gotmpl.NewGoTemplate(`
 	{{ $impl := UnexportPascal .GoName }}
 
@@ -426,22 +432,6 @@ func (rg *RecordGenerator) getters() {
 	if willDoConstructor {
 		rg.genManualConstructor()
 	}
-
-	// We need to generate this if we have any readable fields.
-	if rg.gen.LinkMode() == types.RuntimeLinkMode {
-		for _, field := range rg.Fields {
-			if ignoreField(field) {
-				continue
-			}
-			if field.AnyType == (gir.AnyType{}) && field.Callback == nil {
-				// Unknown?
-				continue
-			}
-
-			rg.hdr.AddCBlock(generateCPrimitiveRecord(rg.gen, rg.Record))
-			break
-		}
-	}
 }
 
 // ignoreField returns true if the given field should be ignored.
@@ -524,11 +514,12 @@ func (rg *RecordGenerator) Logln(lvl logger.Level, v ...interface{}) {
 	rg.gen.Logln(lvl, logger.Prefix(v, p)...)
 }
 
-// generateCPrimitiveRecord generates C struct code with primitive C types.
-func generateCPrimitiveRecord(gen types.FileGenerator, rec *gir.Record) string {
+// GenerateCPrimitiveRecord generates C struct code with primitive C types.
+func GenerateCPrimitiveRecord(gen types.FileGenerator, rec *gir.Record) string {
 	var b strings.Builder
 
 	w := tabwriter.NewWriter(&b, 0, 4, 1, ' ', 0)
+
 	for i, field := range rec.Fields {
 		if i != 0 {
 			fmt.Fprintln(w)
@@ -546,6 +537,7 @@ func generateCPrimitiveRecord(gen types.FileGenerator, rec *gir.Record) string {
 		}
 		fmt.Fprint(w, ";")
 	}
+
 	if err := w.Flush(); err != nil {
 		panic("cannot flush tabwriter: " + err.Error())
 	}

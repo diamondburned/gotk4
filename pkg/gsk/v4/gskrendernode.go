@@ -22,23 +22,6 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // extern void _gotk4_gsk4_ParseErrorFunc(void*, void*, void*, gpointer);
-// struct ColorStop {
-//     float offset;
-//           color;
-// };
-// struct ParseLocation {
-//     gsize bytes;
-//     gsize chars;
-//     gsize lines;
-//     gsize line_bytes;
-//     gsize line_chars;
-// };
-// struct Shadow {
-//           color;
-//     float dx;
-//     float dy;
-//     float radius;
-// };
 import "C"
 
 // glib.Type values for gskrendernode.go.

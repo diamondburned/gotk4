@@ -1,6 +1,4 @@
-// Package genutil provides helper functions that are useful for generating GIR
-// packages.
-package genutil
+package genmain
 
 import (
 	"context"
@@ -15,7 +13,6 @@ import (
 	"sync"
 
 	"github.com/diamondburned/gotk4/gir"
-	"github.com/diamondburned/gotk4/gir/cmd/gir_generate/gendata"
 	"github.com/diamondburned/gotk4/gir/girgen"
 	"github.com/pkg/errors"
 	"golang.org/x/sync/semaphore"
@@ -114,7 +111,7 @@ func WriteNamespace(ng *girgen.NamespaceGenerator, basePath string) error {
 }
 
 // MustLoadPackages bails if packages fail to load.
-func MustLoadPackages(pkgs []gendata.Package) gir.Repositories {
+func MustLoadPackages(pkgs []Package) gir.Repositories {
 	p, err := LoadPackages(pkgs)
 	if err != nil {
 		log.Fatalln(err)
@@ -123,30 +120,30 @@ func MustLoadPackages(pkgs []gendata.Package) gir.Repositories {
 }
 
 // LoadPackages loads all GIR repositories from the given list of packages.
-func LoadPackages(pkgs []gendata.Package) (gir.Repositories, error) {
+func LoadPackages(pkgs []Package) (gir.Repositories, error) {
 	var repos gir.Repositories
 	return repos, AddPackages(&repos, pkgs)
 }
 
 // MustAddPackages bails if packages fail to be added.
-func MustAddPackages(repos *gir.Repositories, pkgs []gendata.Package) {
+func MustAddPackages(repos *gir.Repositories, pkgs []Package) {
 	if err := AddPackages(repos, pkgs); err != nil {
 		log.Fatalln(err)
 	}
 }
 
 // AddPackages adds the given list of packages into the repository.
-func AddPackages(repos *gir.Repositories, pkgs []gendata.Package) error {
+func AddPackages(repos *gir.Repositories, pkgs []Package) error {
 	for _, pkg := range pkgs {
 		var err error
 		if pkg.Namespaces != nil {
-			err = repos.AddSelected(pkg.PkgName, pkg.Namespaces)
+			err = repos.AddSelected(pkg.Name, pkg.Namespaces)
 		} else {
-			err = repos.Add(pkg.PkgName)
+			err = repos.Add(pkg.Name)
 		}
 
 		if err != nil {
-			return errors.Wrapf(err, "error adding package %q", pkg.PkgName)
+			return errors.Wrapf(err, "error adding package %q", pkg.Name)
 		}
 	}
 
@@ -215,7 +212,7 @@ func GenerateAll(gen *girgen.Generator, dst string, except []string) []error {
 // GeneratePackages generates the given pkgs list into the given dst directory.
 // It uses WriteNamespace to do so. The namespaces will be generated in
 // parallel. Most external GIR generators should call this.
-func GeneratePackages(gen *girgen.Generator, dst string, pkgs []gendata.Package) []error {
+func GeneratePackages(gen *girgen.Generator, dst string, pkgs []Package) []error {
 	sema := semaphore.NewWeighted(int64(runtime.GOMAXPROCS(-1)))
 
 	var wg sync.WaitGroup
@@ -259,9 +256,9 @@ func GeneratePackages(gen *girgen.Generator, dst string, pkgs []gendata.Package)
 			}
 		}
 
-		repo := repos.FromPkg(pkg.PkgName)
+		repo := repos.FromPkg(pkg.Name)
 		if repo == nil {
-			return []error{fmt.Errorf("package %q not found", pkg.PkgName)}
+			return []error{fmt.Errorf("package %q not found", pkg.Name)}
 		}
 
 		for _, namespace := range repo.Namespaces {

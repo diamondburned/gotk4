@@ -1,77 +1,25 @@
 package main
 
 import (
-	"flag"
-	"log"
-	"os"
-
 	"github.com/diamondburned/gotk4/gir/cmd/gir_generate/gendata"
-	"github.com/diamondburned/gotk4/gir/cmd/gir_generate/genutil"
-	"github.com/diamondburned/gotk4/gir/girgen"
-	"github.com/diamondburned/gotk4/gir/girgen/logger"
+	"github.com/diamondburned/gotk4/gir/cmd/gir_generate/genmain"
 )
-
-const module = "github.com/diamondburned/gotk4/pkg"
-
-var (
-	output  string
-	verbose bool
-	listPkg bool
-	cgoLink bool
-)
-
-func init() {
-	flag.StringVar(&output, "o", "", "output directory to mkdir in")
-	flag.BoolVar(&verbose, "v", verbose, "log verbosely (debug mode)")
-	flag.BoolVar(&listPkg, "l", listPkg, "only list packages and exit")
-	flag.BoolVar(&cgoLink, "cgo-link", cgoLink, "generate everything to link using cgo instead of girepository")
-	flag.Parse()
-
-	if !listPkg && output == "" {
-		log.Fatalln("Missing -o output directory.")
-	}
-
-	if verbose {
-		girgen.DefaultOpts.LogLevel = logger.Debug
-	}
-}
 
 func main() {
-	repos := genutil.MustLoadPackages(gendata.Packages)
-	genutil.PrintAddedPkgs(repos)
-
-	if listPkg {
-		return
-	}
-
-	gen := girgen.NewGenerator(repos, genutil.ModulePath(module, gendata.ImportOverrides))
-	gen.Logger = log.New(os.Stderr, "girgen: ", log.Lmsgprefix)
-	gen.ApplyPreprocessors(gendata.Preprocessors)
-	gen.AddPostprocessors(gendata.Postprocessors)
-	gen.AddFilters(gendata.Filters)
-	gen.AddProcessConverters(gendata.ConversionProcessors)
-
-	if !cgoLink {
-		gen.DynamicLinkNamespaces(gendata.DynamicLinkNamespaces)
-	}
-
-	if err := genutil.CleanDirectory(output, gendata.PkgExceptions); err != nil {
-		log.Fatalln("failed to clean output directory:", err)
-	}
-
-	if errors := genutil.GenerateAll(gen, output, gendata.GenerateExceptions); len(errors) > 0 {
-		for _, err := range errors {
-			log.Println("generation error:", err)
-		}
-		os.Exit(1)
-	}
-
-	if err := genutil.AppendGoFiles(output, gendata.Appends); err != nil {
-		log.Fatalln("failed to append files post-generation:", err)
-	}
-
-	finalFiles := [][]string{gendata.PkgExceptions, gendata.PkgGenerated}
-	if err := genutil.EnsureDirectory(output, finalFiles...); err != nil {
-		log.Fatalln("error verifying generation:", err)
-	}
+	// This stays ugly just because it's the main gotk4 package with exposed
+	// gendata. Don't actually do this; just make a global genmain.Data instead.
+	genmain.Run(genmain.Data{
+		Module:                "github.com/diamondburned/gotk4/pkg",
+		Packages:              gendata.Packages,
+		ImportOverrides:       gendata.ImportOverrides,
+		PkgExceptions:         gendata.PkgExceptions,
+		GenerateExceptions:    gendata.GenerateExceptions,
+		PkgGenerated:          gendata.PkgGenerated,
+		Preprocessors:         gendata.Preprocessors,
+		Postprocessors:        gendata.Postprocessors,
+		ExtraGoContents:       gendata.ExtraGoContents,
+		Filters:               gendata.Filters,
+		ProcessConverters:     gendata.ConversionProcessors,
+		DynamicLinkNamespaces: gendata.DynamicLinkNamespaces,
+	})
 }

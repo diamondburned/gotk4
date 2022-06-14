@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/cmd/gir_generate/genmain"
 	"github.com/diamondburned/gotk4/gir/girgen"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	. "github.com/diamondburned/gotk4/gir/girgen/types"
@@ -78,22 +79,22 @@ var ImportOverrides = map[string]string{}
 
 // Packages lists pkg-config packages and optionally the namespaces to be
 // generated. If the list of namespaces is nil, then everything is generated.
-var Packages = []Package{
-	{"gobject-introspection-1.0", []string{
+var Packages = []genmain.Package{
+	{Name: "gobject-introspection-1.0", Namespaces: []string{
 		"GLib-2",
 		"GObject-2",
 		"Gio-2",
 		"cairo-1",
 	}},
-	{"gdk-pixbuf-2.0", nil},
-	{"graphene-1.0", nil},
-	{"atk", nil},
-	{"pango", []string{
+	{Name: "gdk-pixbuf-2.0"},
+	{Name: "graphene-1.0"},
+	{Name: "atk"},
+	{Name: "pango", Namespaces: []string{
 		"Pango-1",
 		"PangoCairo-1",
 	}},
-	{"gtk4", nil},     // includes Gdk
-	{"gtk+-3.0", nil}, // includes Gdk
+	{Name: "gtk4"},     // includes Gdk
+	{Name: "gtk+-3.0"}, // includes Gdk
 }
 
 // DynamicLinkNamespaces lists namespaces that should be generated directly
@@ -1004,9 +1005,10 @@ var Postprocessors = map[string][]girgen.Postprocessor{
 	"Gtk-4":  {ImportGError, GtkNewDialog, GtkNewMessageDialog, GtkLockOSThread},
 }
 
-// Appends contains the contents of files that are appended into generated
-// outputs. It is used to add custom implementations of missing functions.
-var Appends = map[string]string{
+// ExtraGoContents contains the contents of files that are appended into
+// generated outputs. It is used to add custom implementations of missing
+// functions.
+var ExtraGoContents = map[string]string{
 	"gtk/v3/gtk.go": `
 		// Init binds to the gtk_init() function. Argument parsing is not
 		// supported.

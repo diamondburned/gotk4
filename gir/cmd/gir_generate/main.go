@@ -17,12 +17,14 @@ var (
 	output  string
 	verbose bool
 	listPkg bool
+	cgoLink bool
 )
 
 func init() {
 	flag.StringVar(&output, "o", "", "output directory to mkdir in")
 	flag.BoolVar(&verbose, "v", verbose, "log verbosely (debug mode)")
 	flag.BoolVar(&listPkg, "l", listPkg, "only list packages and exit")
+	flag.BoolVar(&cgoLink, "cgo-link", cgoLink, "generate everything to link using cgo instead of girepository")
 	flag.Parse()
 
 	if !listPkg && output == "" {
@@ -48,7 +50,10 @@ func main() {
 	gen.AddPostprocessors(gendata.Postprocessors)
 	gen.AddFilters(gendata.Filters)
 	gen.AddProcessConverters(gendata.ConversionProcessors)
-	gen.DynamicLinkNamespaces(gendata.DynamicLinkNamespaces)
+
+	if !cgoLink {
+		gen.DynamicLinkNamespaces(gendata.DynamicLinkNamespaces)
+	}
 
 	if err := genutil.CleanDirectory(output, gendata.PkgExceptions); err != nil {
 		log.Fatalln("failed to clean output directory:", err)

@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
-	"github.com/diamondburned/gotk4/gir/cmd/gir_generate/genmain"
+	"github.com/diamondburned/gotk4/gir/cmd/gir-generate/genmain"
 	"github.com/diamondburned/gotk4/gir/girgen"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	. "github.com/diamondburned/gotk4/gir/girgen/types"

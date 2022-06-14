@@ -59,12 +59,11 @@ func classInitCellRendererTexter(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkCellRendererTextClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkCellRendererTextClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "CellRendererTextClass")
 
 	if _, ok := goval.(interface{ Edited(path, newText string) }); ok {
-		pclass.edited = (*[0]byte)(C._gotk4_gtk3_CellRendererTextClass_edited)
+		o := pclass.StructFieldOffset("edited")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellRendererTextClass_edited)
 	}
 }
 

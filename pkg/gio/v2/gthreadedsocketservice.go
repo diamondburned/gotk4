@@ -67,14 +67,13 @@ func classInitThreadedSocketServicer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GThreadedSocketServiceClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GThreadedSocketServiceClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "ThreadedSocketServiceClass")
 
 	if _, ok := goval.(interface {
 		Run(connection *SocketConnection, sourceObject *coreglib.Object) bool
 	}); ok {
-		pclass.run = (*[0]byte)(C._gotk4_gio2_ThreadedSocketServiceClass_run)
+		o := pclass.StructFieldOffset("run")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ThreadedSocketServiceClass_run)
 	}
 }
 

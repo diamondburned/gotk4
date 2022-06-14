@@ -88,10 +88,10 @@ type ToolSheller interface {
 var _ ToolSheller = (*ToolShell)(nil)
 
 func ifaceInitToolSheller(gifacePtr, data C.gpointer) {
-	iface := (*C.GtkToolShellIface)(unsafe.Pointer(gifacePtr))
-	iface.get_text_alignment = (*[0]byte)(C._gotk4_gtk3_ToolShellIface_get_text_alignment)
-	iface.get_text_size_group = (*[0]byte)(C._gotk4_gtk3_ToolShellIface_get_text_size_group)
-	iface.rebuild_menu = (*[0]byte)(C._gotk4_gtk3_ToolShellIface_rebuild_menu)
+	iface := girepository.MustFind("Gtk", "ToolShellIface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_text_alignment"))) = unsafe.Pointer(C._gotk4_gtk3_ToolShellIface_get_text_alignment)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_text_size_group"))) = unsafe.Pointer(C._gotk4_gtk3_ToolShellIface_get_text_size_group)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("rebuild_menu"))) = unsafe.Pointer(C._gotk4_gtk3_ToolShellIface_rebuild_menu)
 }
 
 //export _gotk4_gtk3_ToolShellIface_get_text_alignment

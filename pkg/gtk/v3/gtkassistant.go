@@ -183,24 +183,26 @@ func classInitAssistanter(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkAssistantClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkAssistantClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "AssistantClass")
 
 	if _, ok := goval.(interface{ Apply() }); ok {
-		pclass.apply = (*[0]byte)(C._gotk4_gtk3_AssistantClass_apply)
+		o := pclass.StructFieldOffset("apply")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_AssistantClass_apply)
 	}
 
 	if _, ok := goval.(interface{ Cancel() }); ok {
-		pclass.cancel = (*[0]byte)(C._gotk4_gtk3_AssistantClass_cancel)
+		o := pclass.StructFieldOffset("cancel")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_AssistantClass_cancel)
 	}
 
 	if _, ok := goval.(interface{ Close() }); ok {
-		pclass.close = (*[0]byte)(C._gotk4_gtk3_AssistantClass_close)
+		o := pclass.StructFieldOffset("close")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_AssistantClass_close)
 	}
 
 	if _, ok := goval.(interface{ Prepare(page Widgetter) }); ok {
-		pclass.prepare = (*[0]byte)(C._gotk4_gtk3_AssistantClass_prepare)
+		o := pclass.StructFieldOffset("prepare")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_AssistantClass_prepare)
 	}
 }
 

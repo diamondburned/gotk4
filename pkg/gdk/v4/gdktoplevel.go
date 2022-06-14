@@ -222,10 +222,6 @@ func (t ToplevelState) Has(other ToplevelState) bool {
 	return (t & other) == other
 }
 
-// ToplevelOverrider contains methods that are overridable.
-type ToplevelOverrider interface {
-}
-
 // Toplevel: GdkToplevel is a freestanding toplevel surface.
 //
 // The GdkToplevel interface provides useful APIs for interacting with the
@@ -285,9 +281,6 @@ type Topleveller interface {
 }
 
 var _ Topleveller = (*Toplevel)(nil)
-
-func ifaceInitTopleveller(gifacePtr, data C.gpointer) {
-}
 
 func wrapToplevel(obj *coreglib.Object) *Toplevel {
 	return &Toplevel{

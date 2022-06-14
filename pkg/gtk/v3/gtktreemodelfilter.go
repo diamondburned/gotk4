@@ -255,20 +255,20 @@ func classInitTreeModelFilterer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkTreeModelFilterClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkTreeModelFilterClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "TreeModelFilterClass")
 
 	if _, ok := goval.(interface {
 		Modify(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int32)
 	}); ok {
-		pclass.modify = (*[0]byte)(C._gotk4_gtk3_TreeModelFilterClass_modify)
+		o := pclass.StructFieldOffset("modify")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TreeModelFilterClass_modify)
 	}
 
 	if _, ok := goval.(interface {
 		Visible(childModel TreeModeller, iter *TreeIter) bool
 	}); ok {
-		pclass.visible = (*[0]byte)(C._gotk4_gtk3_TreeModelFilterClass_visible)
+		o := pclass.StructFieldOffset("visible")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TreeModelFilterClass_visible)
 	}
 }
 

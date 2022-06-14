@@ -946,18 +946,18 @@ func classInitRCStyler(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkRcStyleClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkRcStyleClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "RcStyleClass")
 
 	if _, ok := goval.(interface{ Merge(src *RCStyle) }); ok {
-		pclass.merge = (*[0]byte)(C._gotk4_gtk3_RcStyleClass_merge)
+		o := pclass.StructFieldOffset("merge")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_RcStyleClass_merge)
 	}
 
 	if _, ok := goval.(interface {
 		Parse(settings *Settings, scanner *glib.Scanner) uint32
 	}); ok {
-		pclass.parse = (*[0]byte)(C._gotk4_gtk3_RcStyleClass_parse)
+		o := pclass.StructFieldOffset("parse")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_RcStyleClass_parse)
 	}
 }
 

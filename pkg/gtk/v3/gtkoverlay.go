@@ -86,14 +86,13 @@ func classInitOverlayer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkOverlayClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkOverlayClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "OverlayClass")
 
 	if _, ok := goval.(interface {
 		ChildPosition(widget Widgetter, allocation *Allocation) bool
 	}); ok {
-		pclass.get_child_position = (*[0]byte)(C._gotk4_gtk3_OverlayClass_get_child_position)
+		o := pclass.StructFieldOffset("get_child_position")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_OverlayClass_get_child_position)
 	}
 }
 

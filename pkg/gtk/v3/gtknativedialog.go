@@ -90,20 +90,21 @@ func classInitNativeDialogger(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkNativeDialogClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkNativeDialogClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "NativeDialogClass")
 
 	if _, ok := goval.(interface{ Hide() }); ok {
-		pclass.hide = (*[0]byte)(C._gotk4_gtk3_NativeDialogClass_hide)
+		o := pclass.StructFieldOffset("hide")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_NativeDialogClass_hide)
 	}
 
 	if _, ok := goval.(interface{ Response(responseId int32) }); ok {
-		pclass.response = (*[0]byte)(C._gotk4_gtk3_NativeDialogClass_response)
+		o := pclass.StructFieldOffset("response")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_NativeDialogClass_response)
 	}
 
 	if _, ok := goval.(interface{ Show() }); ok {
-		pclass.show = (*[0]byte)(C._gotk4_gtk3_NativeDialogClass_show)
+		o := pclass.StructFieldOffset("show")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_NativeDialogClass_show)
 	}
 }
 

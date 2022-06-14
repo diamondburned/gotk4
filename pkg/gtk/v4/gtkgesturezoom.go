@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// GestureZoomOverrider contains methods that are overridable.
-type GestureZoomOverrider interface {
-}
-
 // GestureZoom: GtkGestureZoom is a GtkGesture for 2-finger pinch/zoom gestures.
 //
 // Whenever the distance between both tracked sequences changes, the
@@ -41,14 +37,6 @@ type GestureZoom struct {
 var (
 	_ Gesturer = (*GestureZoom)(nil)
 )
-
-func classInitGestureZoomer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapGestureZoom(obj *coreglib.Object) *GestureZoom {
 	return &GestureZoom{

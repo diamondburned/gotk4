@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// EventControllerLegacyOverrider contains methods that are overridable.
-type EventControllerLegacyOverrider interface {
-}
-
 // EventControllerLegacy: GtkEventControllerLegacy is an event controller that
 // provides raw access to the event stream.
 //
@@ -42,14 +38,6 @@ type EventControllerLegacy struct {
 var (
 	_ EventControllerer = (*EventControllerLegacy)(nil)
 )
-
-func classInitEventControllerLegacier(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapEventControllerLegacy(obj *coreglib.Object) *EventControllerLegacy {
 	return &EventControllerLegacy{

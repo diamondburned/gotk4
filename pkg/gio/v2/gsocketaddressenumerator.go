@@ -111,20 +111,20 @@ func classInitSocketAddressEnumeratorrer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GSocketAddressEnumeratorClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GSocketAddressEnumeratorClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "SocketAddressEnumeratorClass")
 
 	if _, ok := goval.(interface {
 		Next(ctx context.Context) (SocketAddresser, error)
 	}); ok {
-		pclass.next = (*[0]byte)(C._gotk4_gio2_SocketAddressEnumeratorClass_next)
+		o := pclass.StructFieldOffset("next")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_SocketAddressEnumeratorClass_next)
 	}
 
 	if _, ok := goval.(interface {
 		NextFinish(result AsyncResulter) (SocketAddresser, error)
 	}); ok {
-		pclass.next_finish = (*[0]byte)(C._gotk4_gio2_SocketAddressEnumeratorClass_next_finish)
+		o := pclass.StructFieldOffset("next_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_SocketAddressEnumeratorClass_next_finish)
 	}
 }
 

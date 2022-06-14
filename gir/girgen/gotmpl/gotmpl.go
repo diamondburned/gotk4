@@ -3,6 +3,7 @@
 package gotmpl
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"path/filepath"
@@ -28,6 +29,7 @@ func NewGoTemplate(block string) *template.Template {
 		"KebabToGo":      strcases.KebabToGo,
 		"SnakeToGo":      strcases.SnakeToGo,
 		"FirstLetter":    strcases.FirstLetter,
+		"CGoField":       strcases.CGoField,
 
 		"GoDoc":            cmt.GoDoc,
 		"Synopsis":         cmt.Synopsis,
@@ -37,7 +39,9 @@ func NewGoTemplate(block string) *template.Template {
 		"ParagraphIndent":  cmt.ParagraphIndent,
 		"TrailingNewLine":  cmt.TrailingNewLine,
 
-		"Quote": strconv.Quote,
+		"Quote": func(strs ...interface{}) string {
+			return strconv.Quote(fmt.Sprint(strs...))
+		},
 	})
 	t = template.Must(t.Parse(block))
 	return t

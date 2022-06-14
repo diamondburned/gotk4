@@ -82,20 +82,21 @@ func classInitRanger(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkRangeClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkRangeClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "RangeClass")
 
 	if _, ok := goval.(interface{ AdjustBounds(newValue float64) }); ok {
-		pclass.adjust_bounds = (*[0]byte)(C._gotk4_gtk3_RangeClass_adjust_bounds)
+		o := pclass.StructFieldOffset("adjust_bounds")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_RangeClass_adjust_bounds)
 	}
 
 	if _, ok := goval.(interface{ RangeBorder(border_ *Border) }); ok {
-		pclass.get_range_border = (*[0]byte)(C._gotk4_gtk3_RangeClass_get_range_border)
+		o := pclass.StructFieldOffset("get_range_border")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_RangeClass_get_range_border)
 	}
 
 	if _, ok := goval.(interface{ ValueChanged() }); ok {
-		pclass.value_changed = (*[0]byte)(C._gotk4_gtk3_RangeClass_value_changed)
+		o := pclass.StructFieldOffset("value_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_RangeClass_value_changed)
 	}
 }
 

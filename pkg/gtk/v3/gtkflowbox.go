@@ -231,32 +231,36 @@ func classInitFlowBoxer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkFlowBoxClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkFlowBoxClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "FlowBoxClass")
 
 	if _, ok := goval.(interface{ ActivateCursorChild() }); ok {
-		pclass.activate_cursor_child = (*[0]byte)(C._gotk4_gtk3_FlowBoxClass_activate_cursor_child)
+		o := pclass.StructFieldOffset("activate_cursor_child")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_FlowBoxClass_activate_cursor_child)
 	}
 
 	if _, ok := goval.(interface{ ChildActivated(child *FlowBoxChild) }); ok {
-		pclass.child_activated = (*[0]byte)(C._gotk4_gtk3_FlowBoxClass_child_activated)
+		o := pclass.StructFieldOffset("child_activated")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_FlowBoxClass_child_activated)
 	}
 
 	if _, ok := goval.(interface{ SelectAll() }); ok {
-		pclass.select_all = (*[0]byte)(C._gotk4_gtk3_FlowBoxClass_select_all)
+		o := pclass.StructFieldOffset("select_all")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_FlowBoxClass_select_all)
 	}
 
 	if _, ok := goval.(interface{ SelectedChildrenChanged() }); ok {
-		pclass.selected_children_changed = (*[0]byte)(C._gotk4_gtk3_FlowBoxClass_selected_children_changed)
+		o := pclass.StructFieldOffset("selected_children_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_FlowBoxClass_selected_children_changed)
 	}
 
 	if _, ok := goval.(interface{ ToggleCursorChild() }); ok {
-		pclass.toggle_cursor_child = (*[0]byte)(C._gotk4_gtk3_FlowBoxClass_toggle_cursor_child)
+		o := pclass.StructFieldOffset("toggle_cursor_child")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_FlowBoxClass_toggle_cursor_child)
 	}
 
 	if _, ok := goval.(interface{ UnselectAll() }); ok {
-		pclass.unselect_all = (*[0]byte)(C._gotk4_gtk3_FlowBoxClass_unselect_all)
+		o := pclass.StructFieldOffset("unselect_all")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_FlowBoxClass_unselect_all)
 	}
 }
 
@@ -1179,12 +1183,11 @@ func classInitFlowBoxChilder(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkFlowBoxChildClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkFlowBoxChildClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "FlowBoxChildClass")
 
 	if _, ok := goval.(interface{ Activate() }); ok {
-		pclass.activate = (*[0]byte)(C._gotk4_gtk3_FlowBoxChildClass_activate)
+		o := pclass.StructFieldOffset("activate")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_FlowBoxChildClass_activate)
 	}
 }
 

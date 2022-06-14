@@ -117,14 +117,13 @@ func classInitActionGrouper(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkActionGroupClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkActionGroupClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "ActionGroupClass")
 
 	if _, ok := goval.(interface {
 		Action(actionName string) *Action
 	}); ok {
-		pclass.get_action = (*[0]byte)(C._gotk4_gtk3_ActionGroupClass_get_action)
+		o := pclass.StructFieldOffset("get_action")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ActionGroupClass_get_action)
 	}
 }
 

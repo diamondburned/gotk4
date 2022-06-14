@@ -105,32 +105,36 @@ func classInitButtonner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkButtonClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkButtonClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "ButtonClass")
 
 	if _, ok := goval.(interface{ Activate() }); ok {
-		pclass.activate = (*[0]byte)(C._gotk4_gtk3_ButtonClass_activate)
+		o := pclass.StructFieldOffset("activate")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ButtonClass_activate)
 	}
 
 	if _, ok := goval.(interface{ Clicked() }); ok {
-		pclass.clicked = (*[0]byte)(C._gotk4_gtk3_ButtonClass_clicked)
+		o := pclass.StructFieldOffset("clicked")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ButtonClass_clicked)
 	}
 
 	if _, ok := goval.(interface{ Enter() }); ok {
-		pclass.enter = (*[0]byte)(C._gotk4_gtk3_ButtonClass_enter)
+		o := pclass.StructFieldOffset("enter")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ButtonClass_enter)
 	}
 
 	if _, ok := goval.(interface{ Leave() }); ok {
-		pclass.leave = (*[0]byte)(C._gotk4_gtk3_ButtonClass_leave)
+		o := pclass.StructFieldOffset("leave")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ButtonClass_leave)
 	}
 
 	if _, ok := goval.(interface{ Pressed() }); ok {
-		pclass.pressed = (*[0]byte)(C._gotk4_gtk3_ButtonClass_pressed)
+		o := pclass.StructFieldOffset("pressed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ButtonClass_pressed)
 	}
 
 	if _, ok := goval.(interface{ Released() }); ok {
-		pclass.released = (*[0]byte)(C._gotk4_gtk3_ButtonClass_released)
+		o := pclass.StructFieldOffset("released")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ButtonClass_released)
 	}
 }
 

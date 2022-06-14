@@ -65,20 +65,21 @@ func classInitAccessibler(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkAccessibleClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkAccessibleClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "AccessibleClass")
 
 	if _, ok := goval.(interface{ ConnectWidgetDestroyed() }); ok {
-		pclass.connect_widget_destroyed = (*[0]byte)(C._gotk4_gtk3_AccessibleClass_connect_widget_destroyed)
+		o := pclass.StructFieldOffset("connect_widget_destroyed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_AccessibleClass_connect_widget_destroyed)
 	}
 
 	if _, ok := goval.(interface{ WidgetSet() }); ok {
-		pclass.widget_set = (*[0]byte)(C._gotk4_gtk3_AccessibleClass_widget_set)
+		o := pclass.StructFieldOffset("widget_set")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_AccessibleClass_widget_set)
 	}
 
 	if _, ok := goval.(interface{ WidgetUnset() }); ok {
-		pclass.widget_unset = (*[0]byte)(C._gotk4_gtk3_AccessibleClass_widget_unset)
+		o := pclass.StructFieldOffset("widget_unset")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_AccessibleClass_widget_unset)
 	}
 }
 

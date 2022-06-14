@@ -168,12 +168,11 @@ func classInitDrawingAreaer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkDrawingAreaClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkDrawingAreaClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "DrawingAreaClass")
 
 	if _, ok := goval.(interface{ Resize(width, height int32) }); ok {
-		pclass.resize = (*[0]byte)(C._gotk4_gtk4_DrawingAreaClass_resize)
+		o := pclass.StructFieldOffset("resize")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_DrawingAreaClass_resize)
 	}
 }
 

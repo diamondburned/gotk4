@@ -132,32 +132,34 @@ func classInitFileEnumeratorrer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GFileEnumeratorClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GFileEnumeratorClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "FileEnumeratorClass")
 
 	if _, ok := goval.(interface {
 		CloseFinish(result AsyncResulter) error
 	}); ok {
-		pclass.close_finish = (*[0]byte)(C._gotk4_gio2_FileEnumeratorClass_close_finish)
+		o := pclass.StructFieldOffset("close_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileEnumeratorClass_close_finish)
 	}
 
 	if _, ok := goval.(interface {
 		CloseFn(ctx context.Context) error
 	}); ok {
-		pclass.close_fn = (*[0]byte)(C._gotk4_gio2_FileEnumeratorClass_close_fn)
+		o := pclass.StructFieldOffset("close_fn")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileEnumeratorClass_close_fn)
 	}
 
 	if _, ok := goval.(interface {
 		NextFile(ctx context.Context) (*FileInfo, error)
 	}); ok {
-		pclass.next_file = (*[0]byte)(C._gotk4_gio2_FileEnumeratorClass_next_file)
+		o := pclass.StructFieldOffset("next_file")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileEnumeratorClass_next_file)
 	}
 
 	if _, ok := goval.(interface {
 		NextFilesFinish(result AsyncResulter) ([]*FileInfo, error)
 	}); ok {
-		pclass.next_files_finish = (*[0]byte)(C._gotk4_gio2_FileEnumeratorClass_next_files_finish)
+		o := pclass.StructFieldOffset("next_files_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileEnumeratorClass_next_files_finish)
 	}
 }
 

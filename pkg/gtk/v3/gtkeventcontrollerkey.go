@@ -27,10 +27,6 @@ func init() {
 	})
 }
 
-// EventControllerKeyOverrider contains methods that are overridable.
-type EventControllerKeyOverrider interface {
-}
-
 // EventControllerKey is an event controller meant for situations where you need
 // access to key events.
 //
@@ -43,14 +39,6 @@ type EventControllerKey struct {
 var (
 	_ EventControllerer = (*EventControllerKey)(nil)
 )
-
-func classInitEventControllerKeyer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapEventControllerKey(obj *coreglib.Object) *EventControllerKey {
 	return &EventControllerKey{

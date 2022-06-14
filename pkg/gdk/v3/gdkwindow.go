@@ -899,26 +899,27 @@ func classInitWindower(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GdkWindowClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GdkWindowClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gdk", "WindowClass")
 
 	if _, ok := goval.(interface {
 		CreateSurface(width, height int32) *cairo.Surface
 	}); ok {
-		pclass.create_surface = (*[0]byte)(C._gotk4_gdk3_WindowClass_create_surface)
+		o := pclass.StructFieldOffset("create_surface")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gdk3_WindowClass_create_surface)
 	}
 
 	if _, ok := goval.(interface {
 		FromEmbedder(embedderX, embedderY float64, offscreenX, offscreenY *float64)
 	}); ok {
-		pclass.from_embedder = (*[0]byte)(C._gotk4_gdk3_WindowClass_from_embedder)
+		o := pclass.StructFieldOffset("from_embedder")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gdk3_WindowClass_from_embedder)
 	}
 
 	if _, ok := goval.(interface {
 		ToEmbedder(offscreenX, offscreenY float64, embedderX, embedderY *float64)
 	}); ok {
-		pclass.to_embedder = (*[0]byte)(C._gotk4_gdk3_WindowClass_to_embedder)
+		o := pclass.StructFieldOffset("to_embedder")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gdk3_WindowClass_to_embedder)
 	}
 }
 

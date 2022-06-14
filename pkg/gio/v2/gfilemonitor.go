@@ -75,12 +75,11 @@ func classInitFileMonitorrer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GFileMonitorClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GFileMonitorClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "FileMonitorClass")
 
 	if _, ok := goval.(interface{ Cancel() bool }); ok {
-		pclass.cancel = (*[0]byte)(C._gotk4_gio2_FileMonitorClass_cancel)
+		o := pclass.StructFieldOffset("cancel")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileMonitorClass_cancel)
 	}
 }
 

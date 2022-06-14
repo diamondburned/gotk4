@@ -65,16 +65,16 @@ func classInitTLSPassworder(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GTlsPasswordClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GTlsPasswordClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "TlsPasswordClass")
 
 	if _, ok := goval.(interface{ DefaultWarning() string }); ok {
-		pclass.get_default_warning = (*[0]byte)(C._gotk4_gio2_TlsPasswordClass_get_default_warning)
+		o := pclass.StructFieldOffset("get_default_warning")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_TlsPasswordClass_get_default_warning)
 	}
 
 	if _, ok := goval.(interface{ Value(length *uint) *byte }); ok {
-		pclass.get_value = (*[0]byte)(C._gotk4_gio2_TlsPasswordClass_get_value)
+		o := pclass.StructFieldOffset("get_value")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_TlsPasswordClass_get_value)
 	}
 }
 

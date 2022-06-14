@@ -108,24 +108,26 @@ func classInitSocketControlMessager(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GSocketControlMessageClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GSocketControlMessageClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "SocketControlMessageClass")
 
 	if _, ok := goval.(interface{ Level() int32 }); ok {
-		pclass.get_level = (*[0]byte)(C._gotk4_gio2_SocketControlMessageClass_get_level)
+		o := pclass.StructFieldOffset("get_level")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_SocketControlMessageClass_get_level)
 	}
 
 	if _, ok := goval.(interface{ Size() uint }); ok {
-		pclass.get_size = (*[0]byte)(C._gotk4_gio2_SocketControlMessageClass_get_size)
+		o := pclass.StructFieldOffset("get_size")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_SocketControlMessageClass_get_size)
 	}
 
 	if _, ok := goval.(interface{ Type() int32 }); ok {
-		pclass.get_type = (*[0]byte)(C._gotk4_gio2_SocketControlMessageClass_get_type)
+		o := pclass.StructFieldOffset("get_type")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_SocketControlMessageClass_get_type)
 	}
 
 	if _, ok := goval.(interface{ Serialize(data unsafe.Pointer) }); ok {
-		pclass.serialize = (*[0]byte)(C._gotk4_gio2_SocketControlMessageClass_serialize)
+		o := pclass.StructFieldOffset("serialize")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_SocketControlMessageClass_serialize)
 	}
 }
 

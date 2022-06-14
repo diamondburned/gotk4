@@ -163,18 +163,18 @@ func classInitGLAreaer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkGLAreaClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkGLAreaClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "GLAreaClass")
 
 	if _, ok := goval.(interface {
 		Render(context gdk.GLContexter) bool
 	}); ok {
-		pclass.render = (*[0]byte)(C._gotk4_gtk4_GLAreaClass_render)
+		o := pclass.StructFieldOffset("render")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_GLAreaClass_render)
 	}
 
 	if _, ok := goval.(interface{ Resize(width, height int32) }); ok {
-		pclass.resize = (*[0]byte)(C._gotk4_gtk4_GLAreaClass_resize)
+		o := pclass.StructFieldOffset("resize")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_GLAreaClass_resize)
 	}
 }
 

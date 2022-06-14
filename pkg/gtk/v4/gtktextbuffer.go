@@ -195,82 +195,95 @@ func classInitTextBufferer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkTextBufferClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkTextBufferClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "TextBufferClass")
 
 	if _, ok := goval.(interface {
 		ApplyTag(tag *TextTag, start, end *TextIter)
 	}); ok {
-		pclass.apply_tag = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_apply_tag)
+		o := pclass.StructFieldOffset("apply_tag")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_TextBufferClass_apply_tag)
 	}
 
 	if _, ok := goval.(interface{ BeginUserAction() }); ok {
-		pclass.begin_user_action = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_begin_user_action)
+		o := pclass.StructFieldOffset("begin_user_action")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_TextBufferClass_begin_user_action)
 	}
 
 	if _, ok := goval.(interface{ Changed() }); ok {
-		pclass.changed = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_changed)
+		o := pclass.StructFieldOffset("changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_TextBufferClass_changed)
 	}
 
 	if _, ok := goval.(interface{ DeleteRange(start, end *TextIter) }); ok {
-		pclass.delete_range = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_delete_range)
+		o := pclass.StructFieldOffset("delete_range")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_TextBufferClass_delete_range)
 	}
 
 	if _, ok := goval.(interface{ EndUserAction() }); ok {
-		pclass.end_user_action = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_end_user_action)
+		o := pclass.StructFieldOffset("end_user_action")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_TextBufferClass_end_user_action)
 	}
 
 	if _, ok := goval.(interface {
 		InsertChildAnchor(iter *TextIter, anchor *TextChildAnchor)
 	}); ok {
-		pclass.insert_child_anchor = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_insert_child_anchor)
+		o := pclass.StructFieldOffset("insert_child_anchor")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_TextBufferClass_insert_child_anchor)
 	}
 
 	if _, ok := goval.(interface {
 		InsertPaintable(iter *TextIter, paintable gdk.Paintabler)
 	}); ok {
-		pclass.insert_paintable = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_insert_paintable)
+		o := pclass.StructFieldOffset("insert_paintable")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_TextBufferClass_insert_paintable)
 	}
 
 	if _, ok := goval.(interface {
 		InsertText(pos *TextIter, newText string, newTextLength int32)
 	}); ok {
-		pclass.insert_text = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_insert_text)
+		o := pclass.StructFieldOffset("insert_text")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_TextBufferClass_insert_text)
 	}
 
 	if _, ok := goval.(interface{ MarkDeleted(mark *TextMark) }); ok {
-		pclass.mark_deleted = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_mark_deleted)
+		o := pclass.StructFieldOffset("mark_deleted")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_TextBufferClass_mark_deleted)
 	}
 
 	if _, ok := goval.(interface {
 		MarkSet(location *TextIter, mark *TextMark)
 	}); ok {
-		pclass.mark_set = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_mark_set)
+		o := pclass.StructFieldOffset("mark_set")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_TextBufferClass_mark_set)
 	}
 
 	if _, ok := goval.(interface{ ModifiedChanged() }); ok {
-		pclass.modified_changed = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_modified_changed)
+		o := pclass.StructFieldOffset("modified_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_TextBufferClass_modified_changed)
 	}
 
 	if _, ok := goval.(interface {
 		PasteDone(clipboard *gdk.Clipboard)
 	}); ok {
-		pclass.paste_done = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_paste_done)
+		o := pclass.StructFieldOffset("paste_done")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_TextBufferClass_paste_done)
 	}
 
 	if _, ok := goval.(interface{ Redo() }); ok {
-		pclass.redo = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_redo)
+		o := pclass.StructFieldOffset("redo")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_TextBufferClass_redo)
 	}
 
 	if _, ok := goval.(interface {
 		RemoveTag(tag *TextTag, start, end *TextIter)
 	}); ok {
-		pclass.remove_tag = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_remove_tag)
+		o := pclass.StructFieldOffset("remove_tag")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_TextBufferClass_remove_tag)
 	}
 
 	if _, ok := goval.(interface{ Undo() }); ok {
-		pclass.undo = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_undo)
+		o := pclass.StructFieldOffset("undo")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_TextBufferClass_undo)
 	}
 }
 

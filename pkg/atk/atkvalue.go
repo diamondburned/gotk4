@@ -364,17 +364,17 @@ type Valueer interface {
 var _ Valueer = (*Value)(nil)
 
 func ifaceInitValueer(gifacePtr, data C.gpointer) {
-	iface := (*C.AtkValueIface)(unsafe.Pointer(gifacePtr))
-	iface.get_current_value = (*[0]byte)(C._gotk4_atk1_ValueIface_get_current_value)
-	iface.get_increment = (*[0]byte)(C._gotk4_atk1_ValueIface_get_increment)
-	iface.get_maximum_value = (*[0]byte)(C._gotk4_atk1_ValueIface_get_maximum_value)
-	iface.get_minimum_increment = (*[0]byte)(C._gotk4_atk1_ValueIface_get_minimum_increment)
-	iface.get_minimum_value = (*[0]byte)(C._gotk4_atk1_ValueIface_get_minimum_value)
-	iface.get_range = (*[0]byte)(C._gotk4_atk1_ValueIface_get_range)
-	iface.get_sub_ranges = (*[0]byte)(C._gotk4_atk1_ValueIface_get_sub_ranges)
-	iface.get_value_and_text = (*[0]byte)(C._gotk4_atk1_ValueIface_get_value_and_text)
-	iface.set_current_value = (*[0]byte)(C._gotk4_atk1_ValueIface_set_current_value)
-	iface.set_value = (*[0]byte)(C._gotk4_atk1_ValueIface_set_value)
+	iface := girepository.MustFind("Atk", "ValueIface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_current_value"))) = unsafe.Pointer(C._gotk4_atk1_ValueIface_get_current_value)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_increment"))) = unsafe.Pointer(C._gotk4_atk1_ValueIface_get_increment)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_maximum_value"))) = unsafe.Pointer(C._gotk4_atk1_ValueIface_get_maximum_value)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_minimum_increment"))) = unsafe.Pointer(C._gotk4_atk1_ValueIface_get_minimum_increment)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_minimum_value"))) = unsafe.Pointer(C._gotk4_atk1_ValueIface_get_minimum_value)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_range"))) = unsafe.Pointer(C._gotk4_atk1_ValueIface_get_range)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_sub_ranges"))) = unsafe.Pointer(C._gotk4_atk1_ValueIface_get_sub_ranges)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_value_and_text"))) = unsafe.Pointer(C._gotk4_atk1_ValueIface_get_value_and_text)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("set_current_value"))) = unsafe.Pointer(C._gotk4_atk1_ValueIface_set_current_value)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("set_value"))) = unsafe.Pointer(C._gotk4_atk1_ValueIface_set_value)
 }
 
 //export _gotk4_atk1_ValueIface_get_current_value

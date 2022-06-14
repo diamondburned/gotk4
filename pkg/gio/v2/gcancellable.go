@@ -53,12 +53,11 @@ func classInitCancellabler(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GCancellableClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GCancellableClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "CancellableClass")
 
 	if _, ok := goval.(interface{ Cancelled() }); ok {
-		pclass.cancelled = (*[0]byte)(C._gotk4_gio2_CancellableClass_cancelled)
+		o := pclass.StructFieldOffset("cancelled")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_CancellableClass_cancelled)
 	}
 }
 

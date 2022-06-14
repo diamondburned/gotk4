@@ -136,28 +136,30 @@ func classInitCellAreaContexter(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkCellAreaContextClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkCellAreaContextClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "CellAreaContextClass")
 
 	if _, ok := goval.(interface{ Allocate(width, height int32) }); ok {
-		pclass.allocate = (*[0]byte)(C._gotk4_gtk4_CellAreaContextClass_allocate)
+		o := pclass.StructFieldOffset("allocate")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_CellAreaContextClass_allocate)
 	}
 
 	if _, ok := goval.(interface {
 		PreferredHeightForWidth(width int32) (minimumHeight, naturalHeight int32)
 	}); ok {
-		pclass.get_preferred_height_for_width = (*[0]byte)(C._gotk4_gtk4_CellAreaContextClass_get_preferred_height_for_width)
+		o := pclass.StructFieldOffset("get_preferred_height_for_width")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_CellAreaContextClass_get_preferred_height_for_width)
 	}
 
 	if _, ok := goval.(interface {
 		PreferredWidthForHeight(height int32) (minimumWidth, naturalWidth int32)
 	}); ok {
-		pclass.get_preferred_width_for_height = (*[0]byte)(C._gotk4_gtk4_CellAreaContextClass_get_preferred_width_for_height)
+		o := pclass.StructFieldOffset("get_preferred_width_for_height")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_CellAreaContextClass_get_preferred_width_for_height)
 	}
 
 	if _, ok := goval.(interface{ Reset() }); ok {
-		pclass.reset = (*[0]byte)(C._gotk4_gtk4_CellAreaContextClass_reset)
+		o := pclass.StructFieldOffset("reset")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_CellAreaContextClass_reset)
 	}
 }
 

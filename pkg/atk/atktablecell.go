@@ -120,12 +120,12 @@ type TableCeller interface {
 var _ TableCeller = (*TableCell)(nil)
 
 func ifaceInitTableCeller(gifacePtr, data C.gpointer) {
-	iface := (*C.AtkTableCellIface)(unsafe.Pointer(gifacePtr))
-	iface.get_column_span = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_column_span)
-	iface.get_position = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_position)
-	iface.get_row_column_span = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_row_column_span)
-	iface.get_row_span = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_row_span)
-	iface.get_table = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_table)
+	iface := girepository.MustFind("Atk", "TableCellIface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_column_span"))) = unsafe.Pointer(C._gotk4_atk1_TableCellIface_get_column_span)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_position"))) = unsafe.Pointer(C._gotk4_atk1_TableCellIface_get_position)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_row_column_span"))) = unsafe.Pointer(C._gotk4_atk1_TableCellIface_get_row_column_span)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_row_span"))) = unsafe.Pointer(C._gotk4_atk1_TableCellIface_get_row_span)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_table"))) = unsafe.Pointer(C._gotk4_atk1_TableCellIface_get_table)
 }
 
 //export _gotk4_atk1_TableCellIface_get_column_span

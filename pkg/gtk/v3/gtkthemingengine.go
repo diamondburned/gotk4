@@ -185,86 +185,97 @@ func classInitThemingEnginer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkThemingEngineClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkThemingEngineClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "ThemingEngineClass")
 
 	if _, ok := goval.(interface {
 		RenderActivity(cr *cairo.Context, x, y, width, height float64)
 	}); ok {
-		pclass.render_activity = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_activity)
+		o := pclass.StructFieldOffset("render_activity")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ThemingEngineClass_render_activity)
 	}
 
 	if _, ok := goval.(interface {
 		RenderArrow(cr *cairo.Context, angle, x, y, size float64)
 	}); ok {
-		pclass.render_arrow = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_arrow)
+		o := pclass.StructFieldOffset("render_arrow")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ThemingEngineClass_render_arrow)
 	}
 
 	if _, ok := goval.(interface {
 		RenderBackground(cr *cairo.Context, x, y, width, height float64)
 	}); ok {
-		pclass.render_background = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_background)
+		o := pclass.StructFieldOffset("render_background")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ThemingEngineClass_render_background)
 	}
 
 	if _, ok := goval.(interface {
 		RenderCheck(cr *cairo.Context, x, y, width, height float64)
 	}); ok {
-		pclass.render_check = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_check)
+		o := pclass.StructFieldOffset("render_check")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ThemingEngineClass_render_check)
 	}
 
 	if _, ok := goval.(interface {
 		RenderExpander(cr *cairo.Context, x, y, width, height float64)
 	}); ok {
-		pclass.render_expander = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_expander)
+		o := pclass.StructFieldOffset("render_expander")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ThemingEngineClass_render_expander)
 	}
 
 	if _, ok := goval.(interface {
 		RenderFocus(cr *cairo.Context, x, y, width, height float64)
 	}); ok {
-		pclass.render_focus = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_focus)
+		o := pclass.StructFieldOffset("render_focus")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ThemingEngineClass_render_focus)
 	}
 
 	if _, ok := goval.(interface {
 		RenderFrame(cr *cairo.Context, x, y, width, height float64)
 	}); ok {
-		pclass.render_frame = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_frame)
+		o := pclass.StructFieldOffset("render_frame")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ThemingEngineClass_render_frame)
 	}
 
 	if _, ok := goval.(interface {
 		RenderHandle(cr *cairo.Context, x, y, width, height float64)
 	}); ok {
-		pclass.render_handle = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_handle)
+		o := pclass.StructFieldOffset("render_handle")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ThemingEngineClass_render_handle)
 	}
 
 	if _, ok := goval.(interface {
 		RenderIcon(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, x, y float64)
 	}); ok {
-		pclass.render_icon = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_icon)
+		o := pclass.StructFieldOffset("render_icon")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ThemingEngineClass_render_icon)
 	}
 
 	if _, ok := goval.(interface {
 		RenderIconSurface(cr *cairo.Context, surface *cairo.Surface, x, y float64)
 	}); ok {
-		pclass.render_icon_surface = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_icon_surface)
+		o := pclass.StructFieldOffset("render_icon_surface")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ThemingEngineClass_render_icon_surface)
 	}
 
 	if _, ok := goval.(interface {
 		RenderLayout(cr *cairo.Context, x, y float64, layout *pango.Layout)
 	}); ok {
-		pclass.render_layout = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_layout)
+		o := pclass.StructFieldOffset("render_layout")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ThemingEngineClass_render_layout)
 	}
 
 	if _, ok := goval.(interface {
 		RenderLine(cr *cairo.Context, x0, y0, x1, y1 float64)
 	}); ok {
-		pclass.render_line = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_line)
+		o := pclass.StructFieldOffset("render_line")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ThemingEngineClass_render_line)
 	}
 
 	if _, ok := goval.(interface {
 		RenderOption(cr *cairo.Context, x, y, width, height float64)
 	}); ok {
-		pclass.render_option = (*[0]byte)(C._gotk4_gtk3_ThemingEngineClass_render_option)
+		o := pclass.StructFieldOffset("render_option")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ThemingEngineClass_render_option)
 	}
 }
 

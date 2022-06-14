@@ -147,32 +147,36 @@ func classInitActioner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkActionClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkActionClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "ActionClass")
 
 	if _, ok := goval.(interface{ Activate() }); ok {
-		pclass.activate = (*[0]byte)(C._gotk4_gtk3_ActionClass_activate)
+		o := pclass.StructFieldOffset("activate")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ActionClass_activate)
 	}
 
 	if _, ok := goval.(interface{ ConnectProxy(proxy Widgetter) }); ok {
-		pclass.connect_proxy = (*[0]byte)(C._gotk4_gtk3_ActionClass_connect_proxy)
+		o := pclass.StructFieldOffset("connect_proxy")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ActionClass_connect_proxy)
 	}
 
 	if _, ok := goval.(interface{ CreateMenu() Widgetter }); ok {
-		pclass.create_menu = (*[0]byte)(C._gotk4_gtk3_ActionClass_create_menu)
+		o := pclass.StructFieldOffset("create_menu")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ActionClass_create_menu)
 	}
 
 	if _, ok := goval.(interface{ CreateMenuItem() Widgetter }); ok {
-		pclass.create_menu_item = (*[0]byte)(C._gotk4_gtk3_ActionClass_create_menu_item)
+		o := pclass.StructFieldOffset("create_menu_item")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ActionClass_create_menu_item)
 	}
 
 	if _, ok := goval.(interface{ CreateToolItem() Widgetter }); ok {
-		pclass.create_tool_item = (*[0]byte)(C._gotk4_gtk3_ActionClass_create_tool_item)
+		o := pclass.StructFieldOffset("create_tool_item")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ActionClass_create_tool_item)
 	}
 
 	if _, ok := goval.(interface{ DisconnectProxy(proxy Widgetter) }); ok {
-		pclass.disconnect_proxy = (*[0]byte)(C._gotk4_gtk3_ActionClass_disconnect_proxy)
+		o := pclass.StructFieldOffset("disconnect_proxy")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ActionClass_disconnect_proxy)
 	}
 }
 

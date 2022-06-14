@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// RootOverrider contains methods that are overridable.
-type RootOverrider interface {
-}
-
 // Root: GtkRoot is the interface implemented by all widgets that can act as a
 // toplevel widget.
 //
@@ -66,9 +62,6 @@ type Rooter interface {
 }
 
 var _ Rooter = (*Root)(nil)
-
-func ifaceInitRooter(gifacePtr, data C.gpointer) {
-}
 
 func wrapRoot(obj *coreglib.Object) *Root {
 	return &Root{

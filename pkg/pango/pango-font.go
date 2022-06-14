@@ -436,38 +436,42 @@ func classInitFonter(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.PangoFontClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.PangoFontClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Pango", "FontClass")
 
 	if _, ok := goval.(interface{ Describe() *FontDescription }); ok {
-		pclass.describe = (*[0]byte)(C._gotk4_pango1_FontClass_describe)
+		o := pclass.StructFieldOffset("describe")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontClass_describe)
 	}
 
 	if _, ok := goval.(interface{ DescribeAbsolute() *FontDescription }); ok {
-		pclass.describe_absolute = (*[0]byte)(C._gotk4_pango1_FontClass_describe_absolute)
+		o := pclass.StructFieldOffset("describe_absolute")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontClass_describe_absolute)
 	}
 
 	if _, ok := goval.(interface {
 		Coverage(language *Language) *Coverage
 	}); ok {
-		pclass.get_coverage = (*[0]byte)(C._gotk4_pango1_FontClass_get_coverage)
+		o := pclass.StructFieldOffset("get_coverage")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontClass_get_coverage)
 	}
 
 	if _, ok := goval.(interface{ FontMap() FontMapper }); ok {
-		pclass.get_font_map = (*[0]byte)(C._gotk4_pango1_FontClass_get_font_map)
+		o := pclass.StructFieldOffset("get_font_map")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontClass_get_font_map)
 	}
 
 	if _, ok := goval.(interface {
 		GlyphExtents(glyph Glyph) (inkRect, logicalRect *Rectangle)
 	}); ok {
-		pclass.get_glyph_extents = (*[0]byte)(C._gotk4_pango1_FontClass_get_glyph_extents)
+		o := pclass.StructFieldOffset("get_glyph_extents")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontClass_get_glyph_extents)
 	}
 
 	if _, ok := goval.(interface {
 		Metrics(language *Language) *FontMetrics
 	}); ok {
-		pclass.get_metrics = (*[0]byte)(C._gotk4_pango1_FontClass_get_metrics)
+		o := pclass.StructFieldOffset("get_metrics")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontClass_get_metrics)
 	}
 }
 
@@ -993,28 +997,31 @@ func classInitFontFacer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.PangoFontFaceClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.PangoFontFaceClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Pango", "FontFaceClass")
 
 	if _, ok := goval.(interface{ Describe() *FontDescription }); ok {
-		pclass.describe = (*[0]byte)(C._gotk4_pango1_FontFaceClass_describe)
+		o := pclass.StructFieldOffset("describe")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontFaceClass_describe)
 	}
 
 	if _, ok := goval.(interface{ FaceName() string }); ok {
-		pclass.get_face_name = (*[0]byte)(C._gotk4_pango1_FontFaceClass_get_face_name)
+		o := pclass.StructFieldOffset("get_face_name")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontFaceClass_get_face_name)
 	}
 
 	if _, ok := goval.(interface{ Family() FontFamilier }); ok {
-		pclass.get_family = (*[0]byte)(C._gotk4_pango1_FontFaceClass_get_family)
+		o := pclass.StructFieldOffset("get_family")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontFaceClass_get_family)
 	}
 
 	if _, ok := goval.(interface{ IsSynthesized() bool }); ok {
-		pclass.is_synthesized = (*[0]byte)(C._gotk4_pango1_FontFaceClass_is_synthesized)
+		o := pclass.StructFieldOffset("is_synthesized")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontFaceClass_is_synthesized)
 	}
 
 	if _, ok := goval.(interface{ ListSizes() []int32 }); ok {
-		pclass.list_sizes = (*[0]byte)(C._gotk4_pango1_FontFaceClass_list_sizes)
+		o := pclass.StructFieldOffset("list_sizes")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontFaceClass_list_sizes)
 	}
 }
 
@@ -1371,28 +1378,31 @@ func classInitFontFamilier(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.PangoFontFamilyClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.PangoFontFamilyClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Pango", "FontFamilyClass")
 
 	if _, ok := goval.(interface{ Face(name string) FontFacer }); ok {
-		pclass.get_face = (*[0]byte)(C._gotk4_pango1_FontFamilyClass_get_face)
+		o := pclass.StructFieldOffset("get_face")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontFamilyClass_get_face)
 	}
 
 	if _, ok := goval.(interface{ Name() string }); ok {
-		pclass.get_name = (*[0]byte)(C._gotk4_pango1_FontFamilyClass_get_name)
+		o := pclass.StructFieldOffset("get_name")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontFamilyClass_get_name)
 	}
 
 	if _, ok := goval.(interface{ IsMonospace() bool }); ok {
-		pclass.is_monospace = (*[0]byte)(C._gotk4_pango1_FontFamilyClass_is_monospace)
+		o := pclass.StructFieldOffset("is_monospace")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontFamilyClass_is_monospace)
 	}
 
 	if _, ok := goval.(interface{ IsVariable() bool }); ok {
-		pclass.is_variable = (*[0]byte)(C._gotk4_pango1_FontFamilyClass_is_variable)
+		o := pclass.StructFieldOffset("is_variable")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontFamilyClass_is_variable)
 	}
 
 	if _, ok := goval.(interface{ ListFaces() []FontFacer }); ok {
-		pclass.list_faces = (*[0]byte)(C._gotk4_pango1_FontFamilyClass_list_faces)
+		o := pclass.StructFieldOffset("list_faces")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontFamilyClass_list_faces)
 	}
 }
 

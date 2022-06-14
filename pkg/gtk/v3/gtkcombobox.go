@@ -104,16 +104,16 @@ func classInitComboBoxer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkComboBoxClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkComboBoxClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "ComboBoxClass")
 
 	if _, ok := goval.(interface{ Changed() }); ok {
-		pclass.changed = (*[0]byte)(C._gotk4_gtk3_ComboBoxClass_changed)
+		o := pclass.StructFieldOffset("changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ComboBoxClass_changed)
 	}
 
 	if _, ok := goval.(interface{ FormatEntryText(path string) string }); ok {
-		pclass.format_entry_text = (*[0]byte)(C._gotk4_gtk3_ComboBoxClass_format_entry_text)
+		o := pclass.StructFieldOffset("format_entry_text")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ComboBoxClass_format_entry_text)
 	}
 }
 

@@ -412,6 +412,11 @@ func (res *TypeFindResult) IsIntrospectable() bool {
 	return res.Type.(isIntrospectabler).IsIntrospectable()
 }
 
+// MustFindGIR generates a girepository.MustFind call for the TypeFindResult.
+func (res *TypeFindResult) MustFindGIR() string {
+	return fmt.Sprintf("girepository.MustFind(%q, %q)", res.Namespace.Name, res.Name())
+}
+
 // FindInclude returns the namespace that the given namespace includes. It
 // resolves imports recursively. This function is primarily used to ensure that
 // proper versions are imported.

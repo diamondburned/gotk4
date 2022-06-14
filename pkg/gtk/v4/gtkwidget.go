@@ -632,72 +632,85 @@ func classInitWidgetter(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkWidgetClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkWidgetClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "WidgetClass")
 
 	if _, ok := goval.(interface{ Contains(x, y float64) bool }); ok {
-		pclass.contains = (*[0]byte)(C._gotk4_gtk4_WidgetClass_contains)
+		o := pclass.StructFieldOffset("contains")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_WidgetClass_contains)
 	}
 
 	if _, ok := goval.(interface{ GrabFocus() bool }); ok {
-		pclass.grab_focus = (*[0]byte)(C._gotk4_gtk4_WidgetClass_grab_focus)
+		o := pclass.StructFieldOffset("grab_focus")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_WidgetClass_grab_focus)
 	}
 
 	if _, ok := goval.(interface{ Hide() }); ok {
-		pclass.hide = (*[0]byte)(C._gotk4_gtk4_WidgetClass_hide)
+		o := pclass.StructFieldOffset("hide")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_WidgetClass_hide)
 	}
 
 	if _, ok := goval.(interface{ Map() }); ok {
-		pclass._map = (*[0]byte)(C._gotk4_gtk4_WidgetClass_map)
+		o := pclass.StructFieldOffset("map")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_WidgetClass_map)
 	}
 
 	if _, ok := goval.(interface{ MnemonicActivate(groupCycling bool) bool }); ok {
-		pclass.mnemonic_activate = (*[0]byte)(C._gotk4_gtk4_WidgetClass_mnemonic_activate)
+		o := pclass.StructFieldOffset("mnemonic_activate")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_WidgetClass_mnemonic_activate)
 	}
 
 	if _, ok := goval.(interface {
 		QueryTooltip(x, y int32, keyboardTooltip bool, tooltip *Tooltip) bool
 	}); ok {
-		pclass.query_tooltip = (*[0]byte)(C._gotk4_gtk4_WidgetClass_query_tooltip)
+		o := pclass.StructFieldOffset("query_tooltip")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_WidgetClass_query_tooltip)
 	}
 
 	if _, ok := goval.(interface{ Realize() }); ok {
-		pclass.realize = (*[0]byte)(C._gotk4_gtk4_WidgetClass_realize)
+		o := pclass.StructFieldOffset("realize")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_WidgetClass_realize)
 	}
 
 	if _, ok := goval.(interface{ Root() }); ok {
-		pclass.root = (*[0]byte)(C._gotk4_gtk4_WidgetClass_root)
+		o := pclass.StructFieldOffset("root")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_WidgetClass_root)
 	}
 
 	if _, ok := goval.(interface{ SetFocusChild(child Widgetter) }); ok {
-		pclass.set_focus_child = (*[0]byte)(C._gotk4_gtk4_WidgetClass_set_focus_child)
+		o := pclass.StructFieldOffset("set_focus_child")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_WidgetClass_set_focus_child)
 	}
 
 	if _, ok := goval.(interface{ Show() }); ok {
-		pclass.show = (*[0]byte)(C._gotk4_gtk4_WidgetClass_show)
+		o := pclass.StructFieldOffset("show")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_WidgetClass_show)
 	}
 
 	if _, ok := goval.(interface {
 		SizeAllocate(width, height, baseline int32)
 	}); ok {
-		pclass.size_allocate = (*[0]byte)(C._gotk4_gtk4_WidgetClass_size_allocate)
+		o := pclass.StructFieldOffset("size_allocate")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_WidgetClass_size_allocate)
 	}
 
 	if _, ok := goval.(interface{ Snapshot(snapshot *Snapshot) }); ok {
-		pclass.snapshot = (*[0]byte)(C._gotk4_gtk4_WidgetClass_snapshot)
+		o := pclass.StructFieldOffset("snapshot")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_WidgetClass_snapshot)
 	}
 
 	if _, ok := goval.(interface{ Unmap() }); ok {
-		pclass.unmap = (*[0]byte)(C._gotk4_gtk4_WidgetClass_unmap)
+		o := pclass.StructFieldOffset("unmap")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_WidgetClass_unmap)
 	}
 
 	if _, ok := goval.(interface{ Unrealize() }); ok {
-		pclass.unrealize = (*[0]byte)(C._gotk4_gtk4_WidgetClass_unrealize)
+		o := pclass.StructFieldOffset("unrealize")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_WidgetClass_unrealize)
 	}
 
 	if _, ok := goval.(interface{ Unroot() }); ok {
-		pclass.unroot = (*[0]byte)(C._gotk4_gtk4_WidgetClass_unroot)
+		o := pclass.StructFieldOffset("unroot")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_WidgetClass_unroot)
 	}
 }
 

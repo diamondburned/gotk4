@@ -298,48 +298,53 @@ func classInitCellRendererer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkCellRendererClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkCellRendererClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "CellRendererClass")
 
 	if _, ok := goval.(interface{ EditingCanceled() }); ok {
-		pclass.editing_canceled = (*[0]byte)(C._gotk4_gtk3_CellRendererClass_editing_canceled)
+		o := pclass.StructFieldOffset("editing_canceled")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellRendererClass_editing_canceled)
 	}
 
 	if _, ok := goval.(interface {
 		EditingStarted(editable CellEditabler, path string)
 	}); ok {
-		pclass.editing_started = (*[0]byte)(C._gotk4_gtk3_CellRendererClass_editing_started)
+		o := pclass.StructFieldOffset("editing_started")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellRendererClass_editing_started)
 	}
 
 	if _, ok := goval.(interface {
 		PreferredHeight(widget Widgetter) (minimumSize, naturalSize int32)
 	}); ok {
-		pclass.get_preferred_height = (*[0]byte)(C._gotk4_gtk3_CellRendererClass_get_preferred_height)
+		o := pclass.StructFieldOffset("get_preferred_height")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellRendererClass_get_preferred_height)
 	}
 
 	if _, ok := goval.(interface {
 		PreferredHeightForWidth(widget Widgetter, width int32) (minimumHeight, naturalHeight int32)
 	}); ok {
-		pclass.get_preferred_height_for_width = (*[0]byte)(C._gotk4_gtk3_CellRendererClass_get_preferred_height_for_width)
+		o := pclass.StructFieldOffset("get_preferred_height_for_width")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellRendererClass_get_preferred_height_for_width)
 	}
 
 	if _, ok := goval.(interface {
 		PreferredWidth(widget Widgetter) (minimumSize, naturalSize int32)
 	}); ok {
-		pclass.get_preferred_width = (*[0]byte)(C._gotk4_gtk3_CellRendererClass_get_preferred_width)
+		o := pclass.StructFieldOffset("get_preferred_width")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellRendererClass_get_preferred_width)
 	}
 
 	if _, ok := goval.(interface {
 		PreferredWidthForHeight(widget Widgetter, height int32) (minimumWidth, naturalWidth int32)
 	}); ok {
-		pclass.get_preferred_width_for_height = (*[0]byte)(C._gotk4_gtk3_CellRendererClass_get_preferred_width_for_height)
+		o := pclass.StructFieldOffset("get_preferred_width_for_height")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellRendererClass_get_preferred_width_for_height)
 	}
 
 	if _, ok := goval.(interface {
 		Size(widget Widgetter, cellArea *gdk.Rectangle) (xOffset, yOffset, width, height int32)
 	}); ok {
-		pclass.get_size = (*[0]byte)(C._gotk4_gtk3_CellRendererClass_get_size)
+		o := pclass.StructFieldOffset("get_size")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellRendererClass_get_size)
 	}
 }
 

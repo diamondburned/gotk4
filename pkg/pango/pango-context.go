@@ -98,10 +98,6 @@ func Itemize(context *Context, text string, startIndex, length int32, attrs *Att
 	return _list
 }
 
-// ContextOverrider contains methods that are overridable.
-type ContextOverrider interface {
-}
-
 // Context: PangoContext stores global information used to control the
 // itemization process.
 //
@@ -118,14 +114,6 @@ type Context struct {
 var (
 	_ coreglib.Objector = (*Context)(nil)
 )
-
-func classInitContexter(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapContext(obj *coreglib.Object) *Context {
 	return &Context{

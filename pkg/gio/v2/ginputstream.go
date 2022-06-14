@@ -137,38 +137,41 @@ func classInitInputStreamer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GInputStreamClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GInputStreamClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "InputStreamClass")
 
 	if _, ok := goval.(interface {
 		CloseFinish(result AsyncResulter) error
 	}); ok {
-		pclass.close_finish = (*[0]byte)(C._gotk4_gio2_InputStreamClass_close_finish)
+		o := pclass.StructFieldOffset("close_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_InputStreamClass_close_finish)
 	}
 
 	if _, ok := goval.(interface {
 		CloseFn(ctx context.Context) error
 	}); ok {
-		pclass.close_fn = (*[0]byte)(C._gotk4_gio2_InputStreamClass_close_fn)
+		o := pclass.StructFieldOffset("close_fn")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_InputStreamClass_close_fn)
 	}
 
 	if _, ok := goval.(interface {
 		ReadFinish(result AsyncResulter) (int, error)
 	}); ok {
-		pclass.read_finish = (*[0]byte)(C._gotk4_gio2_InputStreamClass_read_finish)
+		o := pclass.StructFieldOffset("read_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_InputStreamClass_read_finish)
 	}
 
 	if _, ok := goval.(interface {
 		Skip(ctx context.Context, count uint) (int, error)
 	}); ok {
-		pclass.skip = (*[0]byte)(C._gotk4_gio2_InputStreamClass_skip)
+		o := pclass.StructFieldOffset("skip")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_InputStreamClass_skip)
 	}
 
 	if _, ok := goval.(interface {
 		SkipFinish(result AsyncResulter) (int, error)
 	}); ok {
-		pclass.skip_finish = (*[0]byte)(C._gotk4_gio2_InputStreamClass_skip_finish)
+		o := pclass.StructFieldOffset("skip_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_InputStreamClass_skip_finish)
 	}
 }
 

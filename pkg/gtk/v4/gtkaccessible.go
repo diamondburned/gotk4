@@ -23,10 +23,6 @@ func init() {
 	})
 }
 
-// AccessibleOverrider contains methods that are overridable.
-type AccessibleOverrider interface {
-}
-
 // Accessible: GtkAccessible is an interface for describing UI elements for
 // Assistive Technologies.
 //
@@ -64,9 +60,6 @@ type Accessibler interface {
 }
 
 var _ Accessibler = (*Accessible)(nil)
-
-func ifaceInitAccessibler(gifacePtr, data C.gpointer) {
-}
 
 func wrapAccessible(obj *coreglib.Object) *Accessible {
 	return &Accessible{

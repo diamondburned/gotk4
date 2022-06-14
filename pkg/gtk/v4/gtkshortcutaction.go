@@ -148,10 +148,6 @@ func _gotk4_gtk4_ShortcutFunc(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) (cret
 	return cret
 }
 
-// ActivateActionOverrider contains methods that are overridable.
-type ActivateActionOverrider interface {
-}
-
 // ActivateAction: GtkShortcutAction that calls gtk_widget_activate().
 type ActivateAction struct {
 	_ [0]func() // equal guard
@@ -161,14 +157,6 @@ type ActivateAction struct {
 var (
 	_ ShortcutActioner = (*ActivateAction)(nil)
 )
-
-func classInitActivateActioner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapActivateAction(obj *coreglib.Object) *ActivateAction {
 	return &ActivateAction{
@@ -202,10 +190,6 @@ func ActivateActionGet() *ActivateAction {
 	return _activateAction
 }
 
-// CallbackActionOverrider contains methods that are overridable.
-type CallbackActionOverrider interface {
-}
-
 // CallbackAction: GtkShortcutAction that invokes a callback.
 type CallbackAction struct {
 	_ [0]func() // equal guard
@@ -215,14 +199,6 @@ type CallbackAction struct {
 var (
 	_ ShortcutActioner = (*CallbackAction)(nil)
 )
-
-func classInitCallbackActioner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapCallbackAction(obj *coreglib.Object) *CallbackAction {
 	return &CallbackAction{
@@ -268,10 +244,6 @@ func NewCallbackAction(callback ShortcutFunc) *CallbackAction {
 	return _callbackAction
 }
 
-// MnemonicActionOverrider contains methods that are overridable.
-type MnemonicActionOverrider interface {
-}
-
 // MnemonicAction: GtkShortcutAction that calls gtk_widget_mnemonic_activate().
 type MnemonicAction struct {
 	_ [0]func() // equal guard
@@ -281,14 +253,6 @@ type MnemonicAction struct {
 var (
 	_ ShortcutActioner = (*MnemonicAction)(nil)
 )
-
-func classInitMnemonicActioner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapMnemonicAction(obj *coreglib.Object) *MnemonicAction {
 	return &MnemonicAction{
@@ -322,10 +286,6 @@ func MnemonicActionGet() *MnemonicAction {
 	return _mnemonicAction
 }
 
-// NamedActionOverrider contains methods that are overridable.
-type NamedActionOverrider interface {
-}
-
 // NamedAction: GtkShortcutAction that activates an action by name.
 type NamedAction struct {
 	_ [0]func() // equal guard
@@ -335,14 +295,6 @@ type NamedAction struct {
 var (
 	_ ShortcutActioner = (*NamedAction)(nil)
 )
-
-func classInitNamedActioner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapNamedAction(obj *coreglib.Object) *NamedAction {
 	return &NamedAction{
@@ -412,10 +364,6 @@ func (self *NamedAction) ActionName() string {
 	return _utf8
 }
 
-// NothingActionOverrider contains methods that are overridable.
-type NothingActionOverrider interface {
-}
-
 // NothingAction: GtkShortcutAction that does nothing.
 type NothingAction struct {
 	_ [0]func() // equal guard
@@ -425,14 +373,6 @@ type NothingAction struct {
 var (
 	_ ShortcutActioner = (*NothingAction)(nil)
 )
-
-func classInitNothingActioner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapNothingAction(obj *coreglib.Object) *NothingAction {
 	return &NothingAction{
@@ -463,10 +403,6 @@ func NothingActionGet() *NothingAction {
 	_nothingAction = wrapNothingAction(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _nothingAction
-}
-
-// ShortcutActionOverrider contains methods that are overridable.
-type ShortcutActionOverrider interface {
 }
 
 // ShortcutAction: GtkShortcutAction encodes an action that can be triggered by
@@ -515,14 +451,6 @@ type ShortcutActioner interface {
 }
 
 var _ ShortcutActioner = (*ShortcutAction)(nil)
-
-func classInitShortcutActioner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapShortcutAction(obj *coreglib.Object) *ShortcutAction {
 	return &ShortcutAction{
@@ -615,10 +543,6 @@ func (self *ShortcutAction) String() string {
 	return _utf8
 }
 
-// SignalActionOverrider contains methods that are overridable.
-type SignalActionOverrider interface {
-}
-
 // SignalAction: GtkShortcutAction that emits a signal.
 //
 // Signals that are used in this way are referred to as keybinding signals, and
@@ -631,14 +555,6 @@ type SignalAction struct {
 var (
 	_ ShortcutActioner = (*SignalAction)(nil)
 )
-
-func classInitSignalActioner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapSignalAction(obj *coreglib.Object) *SignalAction {
 	return &SignalAction{

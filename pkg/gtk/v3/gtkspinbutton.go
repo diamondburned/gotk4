@@ -199,24 +199,26 @@ func classInitSpinButtonner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkSpinButtonClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkSpinButtonClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "SpinButtonClass")
 
 	if _, ok := goval.(interface{ Input(newValue *float64) int32 }); ok {
-		pclass.input = (*[0]byte)(C._gotk4_gtk3_SpinButtonClass_input)
+		o := pclass.StructFieldOffset("input")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_SpinButtonClass_input)
 	}
 
 	if _, ok := goval.(interface{ Output() int32 }); ok {
-		pclass.output = (*[0]byte)(C._gotk4_gtk3_SpinButtonClass_output)
+		o := pclass.StructFieldOffset("output")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_SpinButtonClass_output)
 	}
 
 	if _, ok := goval.(interface{ ValueChanged() }); ok {
-		pclass.value_changed = (*[0]byte)(C._gotk4_gtk3_SpinButtonClass_value_changed)
+		o := pclass.StructFieldOffset("value_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_SpinButtonClass_value_changed)
 	}
 
 	if _, ok := goval.(interface{ Wrapped() }); ok {
-		pclass.wrapped = (*[0]byte)(C._gotk4_gtk3_SpinButtonClass_wrapped)
+		o := pclass.StructFieldOffset("wrapped")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_SpinButtonClass_wrapped)
 	}
 }
 

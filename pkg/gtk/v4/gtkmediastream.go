@@ -139,34 +139,38 @@ func classInitMediaStreamer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkMediaStreamClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkMediaStreamClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "MediaStreamClass")
 
 	if _, ok := goval.(interface{ Pause() }); ok {
-		pclass.pause = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_pause)
+		o := pclass.StructFieldOffset("pause")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_MediaStreamClass_pause)
 	}
 
 	if _, ok := goval.(interface{ Play() bool }); ok {
-		pclass.play = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_play)
+		o := pclass.StructFieldOffset("play")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_MediaStreamClass_play)
 	}
 
 	if _, ok := goval.(interface{ Realize(surface gdk.Surfacer) }); ok {
-		pclass.realize = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_realize)
+		o := pclass.StructFieldOffset("realize")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_MediaStreamClass_realize)
 	}
 
 	if _, ok := goval.(interface{ Seek(timestamp int64) }); ok {
-		pclass.seek = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_seek)
+		o := pclass.StructFieldOffset("seek")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_MediaStreamClass_seek)
 	}
 
 	if _, ok := goval.(interface{ Unrealize(surface gdk.Surfacer) }); ok {
-		pclass.unrealize = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_unrealize)
+		o := pclass.StructFieldOffset("unrealize")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_MediaStreamClass_unrealize)
 	}
 
 	if _, ok := goval.(interface {
 		UpdateAudio(muted bool, volume float64)
 	}); ok {
-		pclass.update_audio = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_update_audio)
+		o := pclass.StructFieldOffset("update_audio")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_MediaStreamClass_update_audio)
 	}
 }
 

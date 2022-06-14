@@ -429,6 +429,17 @@ func (g *Generator) checkTypeStruct(girName string) {
 		return
 	}
 
+	record, ok := result.Type.(*gir.Record)
+	if !ok {
+		g.Logln(logger.Skip, "type-struct skipped since not *gir.Record")
+		return
+	}
+
+	if g.gen.LinkMode() == types.RuntimeLinkMode && record.Disguised {
+		g.Logln(logger.Skip, "type-struct skipped since disgused type record in runtime link mode")
+		return
+	}
+
 	g.GLibTypeStruct = newTypeStruct(g, result)
 }
 

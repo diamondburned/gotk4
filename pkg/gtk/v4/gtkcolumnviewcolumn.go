@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// ColumnViewColumnOverrider contains methods that are overridable.
-type ColumnViewColumnOverrider interface {
-}
-
 // ColumnViewColumn: GtkColumnViewColumn represents the columns being added to
 // GtkColumnView.
 //
@@ -50,14 +46,6 @@ type ColumnViewColumn struct {
 var (
 	_ coreglib.Objector = (*ColumnViewColumn)(nil)
 )
-
-func classInitColumnViewColumner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapColumnViewColumn(obj *coreglib.Object) *ColumnViewColumn {
 	return &ColumnViewColumn{

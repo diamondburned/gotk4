@@ -153,16 +153,16 @@ type Buildabler interface {
 var _ Buildabler = (*Buildable)(nil)
 
 func ifaceInitBuildabler(gifacePtr, data C.gpointer) {
-	iface := (*C.GtkBuildableIface)(unsafe.Pointer(gifacePtr))
-	iface.add_child = (*[0]byte)(C._gotk4_gtk4_BuildableIface_add_child)
-	iface.custom_finished = (*[0]byte)(C._gotk4_gtk4_BuildableIface_custom_finished)
-	iface.custom_tag_end = (*[0]byte)(C._gotk4_gtk4_BuildableIface_custom_tag_end)
-	iface.custom_tag_start = (*[0]byte)(C._gotk4_gtk4_BuildableIface_custom_tag_start)
-	iface.get_id = (*[0]byte)(C._gotk4_gtk4_BuildableIface_get_id)
-	iface.get_internal_child = (*[0]byte)(C._gotk4_gtk4_BuildableIface_get_internal_child)
-	iface.parser_finished = (*[0]byte)(C._gotk4_gtk4_BuildableIface_parser_finished)
-	iface.set_buildable_property = (*[0]byte)(C._gotk4_gtk4_BuildableIface_set_buildable_property)
-	iface.set_id = (*[0]byte)(C._gotk4_gtk4_BuildableIface_set_id)
+	iface := girepository.MustFind("Gtk", "BuildableIface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("add_child"))) = unsafe.Pointer(C._gotk4_gtk4_BuildableIface_add_child)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("custom_finished"))) = unsafe.Pointer(C._gotk4_gtk4_BuildableIface_custom_finished)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("custom_tag_end"))) = unsafe.Pointer(C._gotk4_gtk4_BuildableIface_custom_tag_end)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("custom_tag_start"))) = unsafe.Pointer(C._gotk4_gtk4_BuildableIface_custom_tag_start)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_id"))) = unsafe.Pointer(C._gotk4_gtk4_BuildableIface_get_id)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_internal_child"))) = unsafe.Pointer(C._gotk4_gtk4_BuildableIface_get_internal_child)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("parser_finished"))) = unsafe.Pointer(C._gotk4_gtk4_BuildableIface_parser_finished)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("set_buildable_property"))) = unsafe.Pointer(C._gotk4_gtk4_BuildableIface_set_buildable_property)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("set_id"))) = unsafe.Pointer(C._gotk4_gtk4_BuildableIface_set_id)
 }
 
 //export _gotk4_gtk4_BuildableIface_add_child

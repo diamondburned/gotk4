@@ -106,11 +106,11 @@ type Hypertexter interface {
 var _ Hypertexter = (*Hypertext)(nil)
 
 func ifaceInitHypertexter(gifacePtr, data C.gpointer) {
-	iface := (*C.AtkHypertextIface)(unsafe.Pointer(gifacePtr))
-	iface.get_link = (*[0]byte)(C._gotk4_atk1_HypertextIface_get_link)
-	iface.get_link_index = (*[0]byte)(C._gotk4_atk1_HypertextIface_get_link_index)
-	iface.get_n_links = (*[0]byte)(C._gotk4_atk1_HypertextIface_get_n_links)
-	iface.link_selected = (*[0]byte)(C._gotk4_atk1_HypertextIface_link_selected)
+	iface := girepository.MustFind("Atk", "HypertextIface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_link"))) = unsafe.Pointer(C._gotk4_atk1_HypertextIface_get_link)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_link_index"))) = unsafe.Pointer(C._gotk4_atk1_HypertextIface_get_link_index)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_n_links"))) = unsafe.Pointer(C._gotk4_atk1_HypertextIface_get_n_links)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("link_selected"))) = unsafe.Pointer(C._gotk4_atk1_HypertextIface_link_selected)
 }
 
 //export _gotk4_atk1_HypertextIface_get_link

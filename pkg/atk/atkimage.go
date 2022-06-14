@@ -114,11 +114,11 @@ type Imager interface {
 var _ Imager = (*Image)(nil)
 
 func ifaceInitImager(gifacePtr, data C.gpointer) {
-	iface := (*C.AtkImageIface)(unsafe.Pointer(gifacePtr))
-	iface.get_image_description = (*[0]byte)(C._gotk4_atk1_ImageIface_get_image_description)
-	iface.get_image_locale = (*[0]byte)(C._gotk4_atk1_ImageIface_get_image_locale)
-	iface.get_image_size = (*[0]byte)(C._gotk4_atk1_ImageIface_get_image_size)
-	iface.set_image_description = (*[0]byte)(C._gotk4_atk1_ImageIface_set_image_description)
+	iface := girepository.MustFind("Atk", "ImageIface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_image_description"))) = unsafe.Pointer(C._gotk4_atk1_ImageIface_get_image_description)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_image_locale"))) = unsafe.Pointer(C._gotk4_atk1_ImageIface_get_image_locale)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_image_size"))) = unsafe.Pointer(C._gotk4_atk1_ImageIface_get_image_size)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("set_image_description"))) = unsafe.Pointer(C._gotk4_atk1_ImageIface_set_image_description)
 }
 
 //export _gotk4_atk1_ImageIface_get_image_description

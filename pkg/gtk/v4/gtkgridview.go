@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// GridViewOverrider contains methods that are overridable.
-type GridViewOverrider interface {
-}
-
 // GridView: GtkGridView presents a large dynamic grid of items.
 //
 // GtkGridView uses its factory to generate one child widget for each visible
@@ -71,14 +67,6 @@ type GridView struct {
 var (
 	_ ListBaser = (*GridView)(nil)
 )
-
-func classInitGridViewer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapGridView(obj *coreglib.Object) *GridView {
 	return &GridView{

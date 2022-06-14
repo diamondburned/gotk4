@@ -24,10 +24,6 @@ func init() {
 	})
 }
 
-// X11VisualOverrider contains methods that are overridable.
-type X11VisualOverrider interface {
-}
-
 type X11Visual struct {
 	_ [0]func() // equal guard
 	gdk.Visual
@@ -36,14 +32,6 @@ type X11Visual struct {
 var (
 	_ coreglib.Objector = (*X11Visual)(nil)
 )
-
-func classInitX11Visualer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapX11Visual(obj *coreglib.Object) *X11Visual {
 	return &X11Visual{

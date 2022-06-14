@@ -68,12 +68,11 @@ func classInitRadioMenuItemmer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkRadioMenuItemClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkRadioMenuItemClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "RadioMenuItemClass")
 
 	if _, ok := goval.(interface{ GroupChanged() }); ok {
-		pclass.group_changed = (*[0]byte)(C._gotk4_gtk3_RadioMenuItemClass_group_changed)
+		o := pclass.StructFieldOffset("group_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_RadioMenuItemClass_group_changed)
 	}
 }
 

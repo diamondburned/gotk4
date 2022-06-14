@@ -23,7 +23,7 @@ import "C"
 type TextBufferDeserializeFunc func(registerBuffer, contentBuffer *TextBuffer, iter *TextIter, data []byte, createTags bool) (_goerr error)
 
 //export _gotk4_gtk3_TextBufferDeserializeFunc
-func _gotk4_gtk3_TextBufferDeserializeFunc(arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.void, arg5 C.gsize, arg6 C.gboolean, arg7 C.gpointer, _cerr **C.GError) (cret C.gboolean) {
+func _gotk4_gtk3_TextBufferDeserializeFunc(arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.guint8, arg5 C.gsize, arg6 C.gboolean, arg7 C.gpointer, _cerr **C.GError) (cret C.gboolean) {
 	var fn TextBufferDeserializeFunc
 	{
 		v := gbox.Get(uintptr(arg7))

@@ -134,28 +134,30 @@ func classInitIOStreamer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GIOStreamClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GIOStreamClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "IOStreamClass")
 
 	if _, ok := goval.(interface {
 		CloseFinish(result AsyncResulter) error
 	}); ok {
-		pclass.close_finish = (*[0]byte)(C._gotk4_gio2_IOStreamClass_close_finish)
+		o := pclass.StructFieldOffset("close_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_IOStreamClass_close_finish)
 	}
 
 	if _, ok := goval.(interface {
 		CloseFn(ctx context.Context) error
 	}); ok {
-		pclass.close_fn = (*[0]byte)(C._gotk4_gio2_IOStreamClass_close_fn)
+		o := pclass.StructFieldOffset("close_fn")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_IOStreamClass_close_fn)
 	}
 
 	if _, ok := goval.(interface{ InputStream() InputStreamer }); ok {
-		pclass.get_input_stream = (*[0]byte)(C._gotk4_gio2_IOStreamClass_get_input_stream)
+		o := pclass.StructFieldOffset("get_input_stream")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_IOStreamClass_get_input_stream)
 	}
 
 	if _, ok := goval.(interface{ OutputStream() OutputStreamer }); ok {
-		pclass.get_output_stream = (*[0]byte)(C._gotk4_gio2_IOStreamClass_get_output_stream)
+		o := pclass.StructFieldOffset("get_output_stream")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_IOStreamClass_get_output_stream)
 	}
 }
 

@@ -1168,12 +1168,11 @@ func classInitListBoxRower(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkListBoxRowClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkListBoxRowClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "ListBoxRowClass")
 
 	if _, ok := goval.(interface{ Activate() }); ok {
-		pclass.activate = (*[0]byte)(C._gotk4_gtk4_ListBoxRowClass_activate)
+		o := pclass.StructFieldOffset("activate")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_ListBoxRowClass_activate)
 	}
 }
 

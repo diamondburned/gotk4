@@ -219,15 +219,15 @@ type Actioner interface {
 var _ Actioner = (*Action)(nil)
 
 func ifaceInitActioner(gifacePtr, data C.gpointer) {
-	iface := (*C.GActionInterface)(unsafe.Pointer(gifacePtr))
-	iface.activate = (*[0]byte)(C._gotk4_gio2_ActionInterface_activate)
-	iface.change_state = (*[0]byte)(C._gotk4_gio2_ActionInterface_change_state)
-	iface.get_enabled = (*[0]byte)(C._gotk4_gio2_ActionInterface_get_enabled)
-	iface.get_name = (*[0]byte)(C._gotk4_gio2_ActionInterface_get_name)
-	iface.get_parameter_type = (*[0]byte)(C._gotk4_gio2_ActionInterface_get_parameter_type)
-	iface.get_state = (*[0]byte)(C._gotk4_gio2_ActionInterface_get_state)
-	iface.get_state_hint = (*[0]byte)(C._gotk4_gio2_ActionInterface_get_state_hint)
-	iface.get_state_type = (*[0]byte)(C._gotk4_gio2_ActionInterface_get_state_type)
+	iface := girepository.MustFind("Gio", "ActionInterface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("activate"))) = unsafe.Pointer(C._gotk4_gio2_ActionInterface_activate)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("change_state"))) = unsafe.Pointer(C._gotk4_gio2_ActionInterface_change_state)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_enabled"))) = unsafe.Pointer(C._gotk4_gio2_ActionInterface_get_enabled)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_name"))) = unsafe.Pointer(C._gotk4_gio2_ActionInterface_get_name)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_parameter_type"))) = unsafe.Pointer(C._gotk4_gio2_ActionInterface_get_parameter_type)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_state"))) = unsafe.Pointer(C._gotk4_gio2_ActionInterface_get_state)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_state_hint"))) = unsafe.Pointer(C._gotk4_gio2_ActionInterface_get_state_hint)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_state_type"))) = unsafe.Pointer(C._gotk4_gio2_ActionInterface_get_state_type)
 }
 
 //export _gotk4_gio2_ActionInterface_activate

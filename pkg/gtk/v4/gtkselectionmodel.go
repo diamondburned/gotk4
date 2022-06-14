@@ -267,16 +267,16 @@ type SelectionModeller interface {
 var _ SelectionModeller = (*SelectionModel)(nil)
 
 func ifaceInitSelectionModeller(gifacePtr, data C.gpointer) {
-	iface := (*C.GtkSelectionModelInterface)(unsafe.Pointer(gifacePtr))
-	iface.get_selection_in_range = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_get_selection_in_range)
-	iface.is_selected = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_is_selected)
-	iface.select_all = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_select_all)
-	iface.select_item = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_select_item)
-	iface.select_range = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_select_range)
-	iface.set_selection = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_set_selection)
-	iface.unselect_all = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_unselect_all)
-	iface.unselect_item = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_unselect_item)
-	iface.unselect_range = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_unselect_range)
+	iface := girepository.MustFind("Gtk", "SelectionModelInterface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_selection_in_range"))) = unsafe.Pointer(C._gotk4_gtk4_SelectionModelInterface_get_selection_in_range)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("is_selected"))) = unsafe.Pointer(C._gotk4_gtk4_SelectionModelInterface_is_selected)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("select_all"))) = unsafe.Pointer(C._gotk4_gtk4_SelectionModelInterface_select_all)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("select_item"))) = unsafe.Pointer(C._gotk4_gtk4_SelectionModelInterface_select_item)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("select_range"))) = unsafe.Pointer(C._gotk4_gtk4_SelectionModelInterface_select_range)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("set_selection"))) = unsafe.Pointer(C._gotk4_gtk4_SelectionModelInterface_set_selection)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("unselect_all"))) = unsafe.Pointer(C._gotk4_gtk4_SelectionModelInterface_unselect_all)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("unselect_item"))) = unsafe.Pointer(C._gotk4_gtk4_SelectionModelInterface_unselect_item)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("unselect_range"))) = unsafe.Pointer(C._gotk4_gtk4_SelectionModelInterface_unselect_range)
 }
 
 //export _gotk4_gtk4_SelectionModelInterface_get_selection_in_range

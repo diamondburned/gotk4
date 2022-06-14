@@ -24,10 +24,6 @@ func init() {
 	})
 }
 
-// ThemedIconOverrider contains methods that are overridable.
-type ThemedIconOverrider interface {
-}
-
 // ThemedIcon is an implementation of #GIcon that supports icon themes. Icon
 // contains a list of all of the icons present in an icon theme, so that icons
 // can be looked up quickly. Icon does not provide actual pixmaps for icons,
@@ -44,14 +40,6 @@ type ThemedIcon struct {
 var (
 	_ coreglib.Objector = (*ThemedIcon)(nil)
 )
-
-func classInitThemedIconner(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapThemedIcon(obj *coreglib.Object) *ThemedIcon {
 	return &ThemedIcon{

@@ -475,54 +475,61 @@ func classInitPrintOperationer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkPrintOperationClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkPrintOperationClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "PrintOperationClass")
 
 	if _, ok := goval.(interface{ BeginPrint(context *PrintContext) }); ok {
-		pclass.begin_print = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_begin_print)
+		o := pclass.StructFieldOffset("begin_print")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_PrintOperationClass_begin_print)
 	}
 
 	if _, ok := goval.(interface{ CustomWidgetApply(widget Widgetter) }); ok {
-		pclass.custom_widget_apply = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_custom_widget_apply)
+		o := pclass.StructFieldOffset("custom_widget_apply")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_PrintOperationClass_custom_widget_apply)
 	}
 
 	if _, ok := goval.(interface {
 		DrawPage(context *PrintContext, pageNr int32)
 	}); ok {
-		pclass.draw_page = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_draw_page)
+		o := pclass.StructFieldOffset("draw_page")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_PrintOperationClass_draw_page)
 	}
 
 	if _, ok := goval.(interface{ EndPrint(context *PrintContext) }); ok {
-		pclass.end_print = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_end_print)
+		o := pclass.StructFieldOffset("end_print")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_PrintOperationClass_end_print)
 	}
 
 	if _, ok := goval.(interface {
 		Paginate(context *PrintContext) bool
 	}); ok {
-		pclass.paginate = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_paginate)
+		o := pclass.StructFieldOffset("paginate")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_PrintOperationClass_paginate)
 	}
 
 	if _, ok := goval.(interface {
 		Preview(preview PrintOperationPreviewer, context *PrintContext, parent *Window) bool
 	}); ok {
-		pclass.preview = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_preview)
+		o := pclass.StructFieldOffset("preview")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_PrintOperationClass_preview)
 	}
 
 	if _, ok := goval.(interface {
 		RequestPageSetup(context *PrintContext, pageNr int32, setup *PageSetup)
 	}); ok {
-		pclass.request_page_setup = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_request_page_setup)
+		o := pclass.StructFieldOffset("request_page_setup")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_PrintOperationClass_request_page_setup)
 	}
 
 	if _, ok := goval.(interface{ StatusChanged() }); ok {
-		pclass.status_changed = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_status_changed)
+		o := pclass.StructFieldOffset("status_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_PrintOperationClass_status_changed)
 	}
 
 	if _, ok := goval.(interface {
 		UpdateCustomWidget(widget Widgetter, setup *PageSetup, settings *PrintSettings)
 	}); ok {
-		pclass.update_custom_widget = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_update_custom_widget)
+		o := pclass.StructFieldOffset("update_custom_widget")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_PrintOperationClass_update_custom_widget)
 	}
 }
 

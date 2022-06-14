@@ -78,16 +78,16 @@ func classInitHandleBoxer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkHandleBoxClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkHandleBoxClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "HandleBoxClass")
 
 	if _, ok := goval.(interface{ ChildAttached(child Widgetter) }); ok {
-		pclass.child_attached = (*[0]byte)(C._gotk4_gtk3_HandleBoxClass_child_attached)
+		o := pclass.StructFieldOffset("child_attached")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_HandleBoxClass_child_attached)
 	}
 
 	if _, ok := goval.(interface{ ChildDetached(child Widgetter) }); ok {
-		pclass.child_detached = (*[0]byte)(C._gotk4_gtk3_HandleBoxClass_child_detached)
+		o := pclass.StructFieldOffset("child_detached")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_HandleBoxClass_child_detached)
 	}
 }
 

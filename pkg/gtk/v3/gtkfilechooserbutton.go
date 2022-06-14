@@ -84,12 +84,11 @@ func classInitFileChooserButtonner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkFileChooserButtonClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkFileChooserButtonClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "FileChooserButtonClass")
 
 	if _, ok := goval.(interface{ FileSet() }); ok {
-		pclass.file_set = (*[0]byte)(C._gotk4_gtk3_FileChooserButtonClass_file_set)
+		o := pclass.StructFieldOffset("file_set")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_FileChooserButtonClass_file_set)
 	}
 }
 

@@ -93,10 +93,10 @@ type ColorChooserer interface {
 var _ ColorChooserer = (*ColorChooser)(nil)
 
 func ifaceInitColorChooserer(gifacePtr, data C.gpointer) {
-	iface := (*C.GtkColorChooserInterface)(unsafe.Pointer(gifacePtr))
-	iface.color_activated = (*[0]byte)(C._gotk4_gtk4_ColorChooserInterface_color_activated)
-	iface.get_rgba = (*[0]byte)(C._gotk4_gtk4_ColorChooserInterface_get_rgba)
-	iface.set_rgba = (*[0]byte)(C._gotk4_gtk4_ColorChooserInterface_set_rgba)
+	iface := girepository.MustFind("Gtk", "ColorChooserInterface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("color_activated"))) = unsafe.Pointer(C._gotk4_gtk4_ColorChooserInterface_color_activated)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_rgba"))) = unsafe.Pointer(C._gotk4_gtk4_ColorChooserInterface_get_rgba)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("set_rgba"))) = unsafe.Pointer(C._gotk4_gtk4_ColorChooserInterface_set_rgba)
 }
 
 //export _gotk4_gtk4_ColorChooserInterface_color_activated

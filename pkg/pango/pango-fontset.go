@@ -158,20 +158,21 @@ func classInitFontsetter(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.PangoFontsetClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.PangoFontsetClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Pango", "FontsetClass")
 
 	if _, ok := goval.(interface{ Font(wc uint32) Fonter }); ok {
-		pclass.get_font = (*[0]byte)(C._gotk4_pango1_FontsetClass_get_font)
+		o := pclass.StructFieldOffset("get_font")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontsetClass_get_font)
 	}
 
 	if _, ok := goval.(interface{ Language() *Language }); ok {
-		pclass.get_language = (*[0]byte)(C._gotk4_pango1_FontsetClass_get_language)
+		o := pclass.StructFieldOffset("get_language")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontsetClass_get_language)
 	}
 
 	if _, ok := goval.(interface{ Metrics() *FontMetrics }); ok {
-		pclass.get_metrics = (*[0]byte)(C._gotk4_pango1_FontsetClass_get_metrics)
+		o := pclass.StructFieldOffset("get_metrics")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontsetClass_get_metrics)
 	}
 }
 
@@ -336,10 +337,6 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 	return _fontMetrics
 }
 
-// FontsetSimpleOverrider contains methods that are overridable.
-type FontsetSimpleOverrider interface {
-}
-
 // FontsetSimple: PangoFontsetSimple is a implementation of the abstract
 // PangoFontset base class as an array of fonts.
 //
@@ -353,14 +350,6 @@ type FontsetSimple struct {
 var (
 	_ Fontsetter = (*FontsetSimple)(nil)
 )
-
-func classInitFontsetSimpler(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapFontsetSimple(obj *coreglib.Object) *FontsetSimple {
 	return &FontsetSimple{

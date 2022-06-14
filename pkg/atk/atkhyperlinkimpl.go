@@ -84,8 +84,8 @@ type HyperlinkImpler interface {
 var _ HyperlinkImpler = (*HyperlinkImpl)(nil)
 
 func ifaceInitHyperlinkImpler(gifacePtr, data C.gpointer) {
-	iface := (*C.AtkHyperlinkImplIface)(unsafe.Pointer(gifacePtr))
-	iface.get_hyperlink = (*[0]byte)(C._gotk4_atk1_HyperlinkImplIface_get_hyperlink)
+	iface := girepository.MustFind("Atk", "HyperlinkImplIface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_hyperlink"))) = unsafe.Pointer(C._gotk4_atk1_HyperlinkImplIface_get_hyperlink)
 }
 
 //export _gotk4_atk1_HyperlinkImplIface_get_hyperlink

@@ -98,10 +98,10 @@ type ActionMapper interface {
 var _ ActionMapper = (*ActionMap)(nil)
 
 func ifaceInitActionMapper(gifacePtr, data C.gpointer) {
-	iface := (*C.GActionMapInterface)(unsafe.Pointer(gifacePtr))
-	iface.add_action = (*[0]byte)(C._gotk4_gio2_ActionMapInterface_add_action)
-	iface.lookup_action = (*[0]byte)(C._gotk4_gio2_ActionMapInterface_lookup_action)
-	iface.remove_action = (*[0]byte)(C._gotk4_gio2_ActionMapInterface_remove_action)
+	iface := girepository.MustFind("Gio", "ActionMapInterface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("add_action"))) = unsafe.Pointer(C._gotk4_gio2_ActionMapInterface_add_action)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("lookup_action"))) = unsafe.Pointer(C._gotk4_gio2_ActionMapInterface_lookup_action)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("remove_action"))) = unsafe.Pointer(C._gotk4_gio2_ActionMapInterface_remove_action)
 }
 
 //export _gotk4_gio2_ActionMapInterface_add_action

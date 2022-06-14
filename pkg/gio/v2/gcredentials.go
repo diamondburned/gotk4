@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// CredentialsOverrider contains methods that are overridable.
-type CredentialsOverrider interface {
-}
-
 // Credentials type is a reference-counted wrapper for native credentials. This
 // information is typically used for identifying, authenticating and authorizing
 // other processes.
@@ -67,14 +63,6 @@ type Credentials struct {
 var (
 	_ coreglib.Objector = (*Credentials)(nil)
 )
-
-func classInitCredentialser(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapCredentials(obj *coreglib.Object) *Credentials {
 	return &Credentials{

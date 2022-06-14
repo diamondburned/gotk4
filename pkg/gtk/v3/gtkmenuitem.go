@@ -114,36 +114,41 @@ func classInitMenuItemmer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkMenuItemClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkMenuItemClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "MenuItemClass")
 
 	if _, ok := goval.(interface{ Activate() }); ok {
-		pclass.activate = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_activate)
+		o := pclass.StructFieldOffset("activate")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuItemClass_activate)
 	}
 
 	if _, ok := goval.(interface{ ActivateItem() }); ok {
-		pclass.activate_item = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_activate_item)
+		o := pclass.StructFieldOffset("activate_item")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuItemClass_activate_item)
 	}
 
 	if _, ok := goval.(interface{ Deselect() }); ok {
-		pclass.deselect = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_deselect)
+		o := pclass.StructFieldOffset("deselect")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuItemClass_deselect)
 	}
 
 	if _, ok := goval.(interface{ Label() string }); ok {
-		pclass.get_label = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_get_label)
+		o := pclass.StructFieldOffset("get_label")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuItemClass_get_label)
 	}
 
 	if _, ok := goval.(interface{ Select() }); ok {
-		pclass._select = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_select)
+		o := pclass.StructFieldOffset("select")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuItemClass_select)
 	}
 
 	if _, ok := goval.(interface{ SetLabel(label string) }); ok {
-		pclass.set_label = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_set_label)
+		o := pclass.StructFieldOffset("set_label")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuItemClass_set_label)
 	}
 
 	if _, ok := goval.(interface{ ToggleSizeAllocate(allocation int32) }); ok {
-		pclass.toggle_size_allocate = (*[0]byte)(C._gotk4_gtk3_MenuItemClass_toggle_size_allocate)
+		o := pclass.StructFieldOffset("toggle_size_allocate")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuItemClass_toggle_size_allocate)
 	}
 }
 

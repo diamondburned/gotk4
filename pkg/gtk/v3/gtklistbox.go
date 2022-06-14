@@ -262,36 +262,41 @@ func classInitListBoxer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkListBoxClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkListBoxClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "ListBoxClass")
 
 	if _, ok := goval.(interface{ ActivateCursorRow() }); ok {
-		pclass.activate_cursor_row = (*[0]byte)(C._gotk4_gtk3_ListBoxClass_activate_cursor_row)
+		o := pclass.StructFieldOffset("activate_cursor_row")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ListBoxClass_activate_cursor_row)
 	}
 
 	if _, ok := goval.(interface{ RowActivated(row *ListBoxRow) }); ok {
-		pclass.row_activated = (*[0]byte)(C._gotk4_gtk3_ListBoxClass_row_activated)
+		o := pclass.StructFieldOffset("row_activated")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ListBoxClass_row_activated)
 	}
 
 	if _, ok := goval.(interface{ RowSelected(row *ListBoxRow) }); ok {
-		pclass.row_selected = (*[0]byte)(C._gotk4_gtk3_ListBoxClass_row_selected)
+		o := pclass.StructFieldOffset("row_selected")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ListBoxClass_row_selected)
 	}
 
 	if _, ok := goval.(interface{ SelectAll() }); ok {
-		pclass.select_all = (*[0]byte)(C._gotk4_gtk3_ListBoxClass_select_all)
+		o := pclass.StructFieldOffset("select_all")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ListBoxClass_select_all)
 	}
 
 	if _, ok := goval.(interface{ SelectedRowsChanged() }); ok {
-		pclass.selected_rows_changed = (*[0]byte)(C._gotk4_gtk3_ListBoxClass_selected_rows_changed)
+		o := pclass.StructFieldOffset("selected_rows_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ListBoxClass_selected_rows_changed)
 	}
 
 	if _, ok := goval.(interface{ ToggleCursorRow() }); ok {
-		pclass.toggle_cursor_row = (*[0]byte)(C._gotk4_gtk3_ListBoxClass_toggle_cursor_row)
+		o := pclass.StructFieldOffset("toggle_cursor_row")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ListBoxClass_toggle_cursor_row)
 	}
 
 	if _, ok := goval.(interface{ UnselectAll() }); ok {
-		pclass.unselect_all = (*[0]byte)(C._gotk4_gtk3_ListBoxClass_unselect_all)
+		o := pclass.StructFieldOffset("unselect_all")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ListBoxClass_unselect_all)
 	}
 }
 
@@ -1176,12 +1181,11 @@ func classInitListBoxRower(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkListBoxRowClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkListBoxRowClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "ListBoxRowClass")
 
 	if _, ok := goval.(interface{ Activate() }); ok {
-		pclass.activate = (*[0]byte)(C._gotk4_gtk3_ListBoxRowClass_activate)
+		o := pclass.StructFieldOffset("activate")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ListBoxRowClass_activate)
 	}
 }
 

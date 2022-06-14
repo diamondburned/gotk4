@@ -176,36 +176,41 @@ func classInitIconViewer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkIconViewClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkIconViewClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "IconViewClass")
 
 	if _, ok := goval.(interface{ ActivateCursorItem() bool }); ok {
-		pclass.activate_cursor_item = (*[0]byte)(C._gotk4_gtk3_IconViewClass_activate_cursor_item)
+		o := pclass.StructFieldOffset("activate_cursor_item")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IconViewClass_activate_cursor_item)
 	}
 
 	if _, ok := goval.(interface{ ItemActivated(path *TreePath) }); ok {
-		pclass.item_activated = (*[0]byte)(C._gotk4_gtk3_IconViewClass_item_activated)
+		o := pclass.StructFieldOffset("item_activated")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IconViewClass_item_activated)
 	}
 
 	if _, ok := goval.(interface{ SelectAll() }); ok {
-		pclass.select_all = (*[0]byte)(C._gotk4_gtk3_IconViewClass_select_all)
+		o := pclass.StructFieldOffset("select_all")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IconViewClass_select_all)
 	}
 
 	if _, ok := goval.(interface{ SelectCursorItem() }); ok {
-		pclass.select_cursor_item = (*[0]byte)(C._gotk4_gtk3_IconViewClass_select_cursor_item)
+		o := pclass.StructFieldOffset("select_cursor_item")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IconViewClass_select_cursor_item)
 	}
 
 	if _, ok := goval.(interface{ SelectionChanged() }); ok {
-		pclass.selection_changed = (*[0]byte)(C._gotk4_gtk3_IconViewClass_selection_changed)
+		o := pclass.StructFieldOffset("selection_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IconViewClass_selection_changed)
 	}
 
 	if _, ok := goval.(interface{ ToggleCursorItem() }); ok {
-		pclass.toggle_cursor_item = (*[0]byte)(C._gotk4_gtk3_IconViewClass_toggle_cursor_item)
+		o := pclass.StructFieldOffset("toggle_cursor_item")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IconViewClass_toggle_cursor_item)
 	}
 
 	if _, ok := goval.(interface{ UnselectAll() }); ok {
-		pclass.unselect_all = (*[0]byte)(C._gotk4_gtk3_IconViewClass_unselect_all)
+		o := pclass.StructFieldOffset("unselect_all")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IconViewClass_unselect_all)
 	}
 }
 

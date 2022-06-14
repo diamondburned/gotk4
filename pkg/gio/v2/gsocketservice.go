@@ -76,14 +76,13 @@ func classInitSocketServicer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GSocketServiceClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GSocketServiceClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "SocketServiceClass")
 
 	if _, ok := goval.(interface {
 		Incoming(connection *SocketConnection, sourceObject *coreglib.Object) bool
 	}); ok {
-		pclass.incoming = (*[0]byte)(C._gotk4_gio2_SocketServiceClass_incoming)
+		o := pclass.StructFieldOffset("incoming")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_SocketServiceClass_incoming)
 	}
 }
 

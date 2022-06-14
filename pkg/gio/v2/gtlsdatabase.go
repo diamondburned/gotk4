@@ -144,32 +144,34 @@ func classInitTLSDatabaser(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GTlsDatabaseClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GTlsDatabaseClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "TlsDatabaseClass")
 
 	if _, ok := goval.(interface {
 		CreateCertificateHandle(certificate TLSCertificater) string
 	}); ok {
-		pclass.create_certificate_handle = (*[0]byte)(C._gotk4_gio2_TlsDatabaseClass_create_certificate_handle)
+		o := pclass.StructFieldOffset("create_certificate_handle")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_TlsDatabaseClass_create_certificate_handle)
 	}
 
 	if _, ok := goval.(interface {
 		LookupCertificateForHandleFinish(result AsyncResulter) (TLSCertificater, error)
 	}); ok {
-		pclass.lookup_certificate_for_handle_finish = (*[0]byte)(C._gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle_finish)
+		o := pclass.StructFieldOffset("lookup_certificate_for_handle_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle_finish)
 	}
 
 	if _, ok := goval.(interface {
 		LookupCertificateIssuerFinish(result AsyncResulter) (TLSCertificater, error)
 	}); ok {
-		pclass.lookup_certificate_issuer_finish = (*[0]byte)(C._gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer_finish)
+		o := pclass.StructFieldOffset("lookup_certificate_issuer_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer_finish)
 	}
 
 	if _, ok := goval.(interface {
 		LookupCertificatesIssuedByFinish(result AsyncResulter) ([]TLSCertificater, error)
 	}); ok {
-		pclass.lookup_certificates_issued_by_finish = (*[0]byte)(C._gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish)
+		o := pclass.StructFieldOffset("lookup_certificates_issued_by_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish)
 	}
 }
 

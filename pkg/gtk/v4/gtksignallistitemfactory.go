@@ -27,10 +27,6 @@ func init() {
 	})
 }
 
-// SignalListItemFactoryOverrider contains methods that are overridable.
-type SignalListItemFactoryOverrider interface {
-}
-
 // SignalListItemFactory: GtkSignalListItemFactory is a GtkListItemFactory that
 // emits signals to to manage listitems.
 //
@@ -79,14 +75,6 @@ type SignalListItemFactory struct {
 var (
 	_ coreglib.Objector = (*SignalListItemFactory)(nil)
 )
-
-func classInitSignalListItemFactorier(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapSignalListItemFactory(obj *coreglib.Object) *SignalListItemFactory {
 	return &SignalListItemFactory{

@@ -1357,30 +1357,32 @@ func classInitAppLaunchContexter(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GAppLaunchContextClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GAppLaunchContextClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "AppLaunchContextClass")
 
 	if _, ok := goval.(interface {
 		Display(info AppInfor, files []Filer) string
 	}); ok {
-		pclass.get_display = (*[0]byte)(C._gotk4_gio2_AppLaunchContextClass_get_display)
+		o := pclass.StructFieldOffset("get_display")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_AppLaunchContextClass_get_display)
 	}
 
 	if _, ok := goval.(interface {
 		StartupNotifyID(info AppInfor, files []Filer) string
 	}); ok {
-		pclass.get_startup_notify_id = (*[0]byte)(C._gotk4_gio2_AppLaunchContextClass_get_startup_notify_id)
+		o := pclass.StructFieldOffset("get_startup_notify_id")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_AppLaunchContextClass_get_startup_notify_id)
 	}
 
 	if _, ok := goval.(interface{ LaunchFailed(startupNotifyId string) }); ok {
-		pclass.launch_failed = (*[0]byte)(C._gotk4_gio2_AppLaunchContextClass_launch_failed)
+		o := pclass.StructFieldOffset("launch_failed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_AppLaunchContextClass_launch_failed)
 	}
 
 	if _, ok := goval.(interface {
 		Launched(info AppInfor, platformData *glib.Variant)
 	}); ok {
-		pclass.launched = (*[0]byte)(C._gotk4_gio2_AppLaunchContextClass_launched)
+		o := pclass.StructFieldOffset("launched")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_AppLaunchContextClass_launched)
 	}
 }
 

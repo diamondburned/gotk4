@@ -131,42 +131,48 @@ func classInitMenuSheller(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkMenuShellClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkMenuShellClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "MenuShellClass")
 
 	if _, ok := goval.(interface{ ActivateCurrent(forceHide bool) }); ok {
-		pclass.activate_current = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_activate_current)
+		o := pclass.StructFieldOffset("activate_current")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuShellClass_activate_current)
 	}
 
 	if _, ok := goval.(interface{ Cancel() }); ok {
-		pclass.cancel = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_cancel)
+		o := pclass.StructFieldOffset("cancel")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuShellClass_cancel)
 	}
 
 	if _, ok := goval.(interface{ Deactivate() }); ok {
-		pclass.deactivate = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_deactivate)
+		o := pclass.StructFieldOffset("deactivate")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuShellClass_deactivate)
 	}
 
 	if _, ok := goval.(interface{ PopupDelay() int32 }); ok {
-		pclass.get_popup_delay = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_get_popup_delay)
+		o := pclass.StructFieldOffset("get_popup_delay")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuShellClass_get_popup_delay)
 	}
 
 	if _, ok := goval.(interface {
 		Insert(child Widgetter, position int32)
 	}); ok {
-		pclass.insert = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_insert)
+		o := pclass.StructFieldOffset("insert")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuShellClass_insert)
 	}
 
 	if _, ok := goval.(interface{ MoveSelected(distance int32) bool }); ok {
-		pclass.move_selected = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_move_selected)
+		o := pclass.StructFieldOffset("move_selected")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuShellClass_move_selected)
 	}
 
 	if _, ok := goval.(interface{ SelectItem(menuItem Widgetter) }); ok {
-		pclass.select_item = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_select_item)
+		o := pclass.StructFieldOffset("select_item")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuShellClass_select_item)
 	}
 
 	if _, ok := goval.(interface{ SelectionDone() }); ok {
-		pclass.selection_done = (*[0]byte)(C._gotk4_gtk3_MenuShellClass_selection_done)
+		o := pclass.StructFieldOffset("selection_done")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_MenuShellClass_selection_done)
 	}
 }
 

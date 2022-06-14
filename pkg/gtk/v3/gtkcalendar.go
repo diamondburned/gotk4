@@ -195,36 +195,41 @@ func classInitCalendarrer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkCalendarClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkCalendarClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "CalendarClass")
 
 	if _, ok := goval.(interface{ DaySelected() }); ok {
-		pclass.day_selected = (*[0]byte)(C._gotk4_gtk3_CalendarClass_day_selected)
+		o := pclass.StructFieldOffset("day_selected")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CalendarClass_day_selected)
 	}
 
 	if _, ok := goval.(interface{ DaySelectedDoubleClick() }); ok {
-		pclass.day_selected_double_click = (*[0]byte)(C._gotk4_gtk3_CalendarClass_day_selected_double_click)
+		o := pclass.StructFieldOffset("day_selected_double_click")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CalendarClass_day_selected_double_click)
 	}
 
 	if _, ok := goval.(interface{ MonthChanged() }); ok {
-		pclass.month_changed = (*[0]byte)(C._gotk4_gtk3_CalendarClass_month_changed)
+		o := pclass.StructFieldOffset("month_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CalendarClass_month_changed)
 	}
 
 	if _, ok := goval.(interface{ NextMonth() }); ok {
-		pclass.next_month = (*[0]byte)(C._gotk4_gtk3_CalendarClass_next_month)
+		o := pclass.StructFieldOffset("next_month")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CalendarClass_next_month)
 	}
 
 	if _, ok := goval.(interface{ NextYear() }); ok {
-		pclass.next_year = (*[0]byte)(C._gotk4_gtk3_CalendarClass_next_year)
+		o := pclass.StructFieldOffset("next_year")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CalendarClass_next_year)
 	}
 
 	if _, ok := goval.(interface{ PrevMonth() }); ok {
-		pclass.prev_month = (*[0]byte)(C._gotk4_gtk3_CalendarClass_prev_month)
+		o := pclass.StructFieldOffset("prev_month")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CalendarClass_prev_month)
 	}
 
 	if _, ok := goval.(interface{ PrevYear() }); ok {
-		pclass.prev_year = (*[0]byte)(C._gotk4_gtk3_CalendarClass_prev_year)
+		o := pclass.StructFieldOffset("prev_year")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CalendarClass_prev_year)
 	}
 }
 

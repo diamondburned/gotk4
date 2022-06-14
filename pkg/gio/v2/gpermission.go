@@ -141,32 +141,34 @@ func classInitPermissioner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GPermissionClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GPermissionClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "PermissionClass")
 
 	if _, ok := goval.(interface {
 		Acquire(ctx context.Context) error
 	}); ok {
-		pclass.acquire = (*[0]byte)(C._gotk4_gio2_PermissionClass_acquire)
+		o := pclass.StructFieldOffset("acquire")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_PermissionClass_acquire)
 	}
 
 	if _, ok := goval.(interface {
 		AcquireFinish(result AsyncResulter) error
 	}); ok {
-		pclass.acquire_finish = (*[0]byte)(C._gotk4_gio2_PermissionClass_acquire_finish)
+		o := pclass.StructFieldOffset("acquire_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_PermissionClass_acquire_finish)
 	}
 
 	if _, ok := goval.(interface {
 		Release(ctx context.Context) error
 	}); ok {
-		pclass.release = (*[0]byte)(C._gotk4_gio2_PermissionClass_release)
+		o := pclass.StructFieldOffset("release")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_PermissionClass_release)
 	}
 
 	if _, ok := goval.(interface {
 		ReleaseFinish(result AsyncResulter) error
 	}); ok {
-		pclass.release_finish = (*[0]byte)(C._gotk4_gio2_PermissionClass_release_finish)
+		o := pclass.StructFieldOffset("release_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_PermissionClass_release_finish)
 	}
 }
 

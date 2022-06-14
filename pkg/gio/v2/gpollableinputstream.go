@@ -113,10 +113,10 @@ type PollableInputStreamer interface {
 var _ PollableInputStreamer = (*PollableInputStream)(nil)
 
 func ifaceInitPollableInputStreamer(gifacePtr, data C.gpointer) {
-	iface := (*C.GPollableInputStreamInterface)(unsafe.Pointer(gifacePtr))
-	iface.can_poll = (*[0]byte)(C._gotk4_gio2_PollableInputStreamInterface_can_poll)
-	iface.create_source = (*[0]byte)(C._gotk4_gio2_PollableInputStreamInterface_create_source)
-	iface.is_readable = (*[0]byte)(C._gotk4_gio2_PollableInputStreamInterface_is_readable)
+	iface := girepository.MustFind("Gio", "PollableInputStreamInterface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("can_poll"))) = unsafe.Pointer(C._gotk4_gio2_PollableInputStreamInterface_can_poll)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("create_source"))) = unsafe.Pointer(C._gotk4_gio2_PollableInputStreamInterface_create_source)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("is_readable"))) = unsafe.Pointer(C._gotk4_gio2_PollableInputStreamInterface_is_readable)
 }
 
 //export _gotk4_gio2_PollableInputStreamInterface_can_poll

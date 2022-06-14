@@ -18,7 +18,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // extern void _gotk4_gio2_DBusProxyClass_g_signal(void*, void*, void*, void*);
-// extern void _gotk4_gio2_DBusProxy_ConnectGPropertiesChanged(gpointer, void*, void, guintptr);
+// extern void _gotk4_gio2_DBusProxy_ConnectGPropertiesChanged(gpointer, void*, void**, guintptr);
 // extern void _gotk4_gio2_DBusProxy_ConnectGSignal(gpointer, void*, void*, void*, guintptr);
 import "C"
 
@@ -98,14 +98,13 @@ func classInitDBusProxier(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GDBusProxyClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GDBusProxyClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "DBusProxyClass")
 
 	if _, ok := goval.(interface {
 		GSignal(senderName, signalName string, parameters *glib.Variant)
 	}); ok {
-		pclass.g_signal = (*[0]byte)(C._gotk4_gio2_DBusProxyClass_g_signal)
+		o := pclass.StructFieldOffset("g_signal")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_DBusProxyClass_g_signal)
 	}
 }
 
@@ -154,7 +153,7 @@ func marshalDBusProxy(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gio2_DBusProxy_ConnectGPropertiesChanged
-func _gotk4_gio2_DBusProxy_ConnectGPropertiesChanged(arg0 C.gpointer, arg1 *C.void, arg2 C.void, arg3 C.guintptr) {
+func _gotk4_gio2_DBusProxy_ConnectGPropertiesChanged(arg0 C.gpointer, arg1 *C.void, arg2 **C.void, arg3 C.guintptr) {
 	var f func(changedProperties *glib.Variant, invalidatedProperties []string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))

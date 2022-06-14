@@ -72,16 +72,16 @@ func classInitMediaFiler(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkMediaFileClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkMediaFileClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "MediaFileClass")
 
 	if _, ok := goval.(interface{ Close() }); ok {
-		pclass.close = (*[0]byte)(C._gotk4_gtk4_MediaFileClass_close)
+		o := pclass.StructFieldOffset("close")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_MediaFileClass_close)
 	}
 
 	if _, ok := goval.(interface{ Open() }); ok {
-		pclass.open = (*[0]byte)(C._gotk4_gtk4_MediaFileClass_open)
+		o := pclass.StructFieldOffset("open")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_MediaFileClass_open)
 	}
 }
 

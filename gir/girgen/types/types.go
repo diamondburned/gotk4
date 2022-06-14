@@ -340,7 +340,14 @@ func AnyTypeCGo(any gir.AnyType) string {
 func AnyTypeC(any gir.AnyType) string {
 	switch {
 	case any.Array != nil:
-		return CTypeFallback(any.Array.CType, any.Array.Name)
+		if any.Array.CType != "" {
+			return CTypeFallback(any.Array.CType, any.Array.Name)
+		}
+		innerType := AnyTypeC(gir.AnyType{Type: any.Array.Type})
+		if any.Array.FixedSize > 0 {
+			return fmt.Sprintf("%s[%d]", innerType, any.Array.FixedSize)
+		}
+		return innerType + "*"
 	case any.Type != nil:
 		return CTypeFallback(any.Type.CType, any.Type.Name)
 	default:
@@ -355,12 +362,16 @@ func AnyTypeIsPtr(any gir.AnyType) bool {
 
 // AnyTypeCPrimitive converts AnyType to a C primitive type.
 func AnyTypeCPrimitive(gen FileGenerator, any gir.AnyType) string {
-	cType := AnyTypeC(any)
-
 	switch {
 	case any.Array != nil:
-		return MoveCPtr(cType, "void")
+		innerType := AnyTypeCPrimitive(gen, gir.AnyType{Type: any.Array.Type})
+		if any.Array.FixedSize > 0 {
+			return fmt.Sprintf("%s[%d]", innerType, any.Array.FixedSize)
+		}
+		return innerType + "*"
 	case any.Type != nil:
+		cType := AnyTypeC(any)
+
 		if prim := CTypeToPrimitive(cType); prim != "" {
 			return prim
 		}
@@ -383,7 +394,8 @@ func CTypeToPrimitive(cType string) string {
 	// resolveType. We probably can't make the C callback header generator use
 	// the type converter, so we'll have to keep them in sync.
 
-	if cType == "gpointer" || cType == "gconstpointer" {
+	switch cType {
+	case "gpointer", "gconstpointer":
 		return "gpointer"
 	}
 

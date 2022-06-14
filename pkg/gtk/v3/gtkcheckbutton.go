@@ -68,12 +68,11 @@ func classInitCheckButtonner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkCheckButtonClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkCheckButtonClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "CheckButtonClass")
 
 	if _, ok := goval.(interface{ DrawIndicator(cr *cairo.Context) }); ok {
-		pclass.draw_indicator = (*[0]byte)(C._gotk4_gtk3_CheckButtonClass_draw_indicator)
+		o := pclass.StructFieldOffset("draw_indicator")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CheckButtonClass_draw_indicator)
 	}
 }
 

@@ -438,44 +438,50 @@ func classInitUIManagerer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkUIManagerClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkUIManagerClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "UIManagerClass")
 
 	if _, ok := goval.(interface{ ActionsChanged() }); ok {
-		pclass.actions_changed = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_actions_changed)
+		o := pclass.StructFieldOffset("actions_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_UIManagerClass_actions_changed)
 	}
 
 	if _, ok := goval.(interface{ AddWidget(widget Widgetter) }); ok {
-		pclass.add_widget = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_add_widget)
+		o := pclass.StructFieldOffset("add_widget")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_UIManagerClass_add_widget)
 	}
 
 	if _, ok := goval.(interface {
 		ConnectProxy(action *Action, proxy Widgetter)
 	}); ok {
-		pclass.connect_proxy = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_connect_proxy)
+		o := pclass.StructFieldOffset("connect_proxy")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_UIManagerClass_connect_proxy)
 	}
 
 	if _, ok := goval.(interface {
 		DisconnectProxy(action *Action, proxy Widgetter)
 	}); ok {
-		pclass.disconnect_proxy = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_disconnect_proxy)
+		o := pclass.StructFieldOffset("disconnect_proxy")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_UIManagerClass_disconnect_proxy)
 	}
 
 	if _, ok := goval.(interface{ Action(path string) *Action }); ok {
-		pclass.get_action = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_get_action)
+		o := pclass.StructFieldOffset("get_action")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_UIManagerClass_get_action)
 	}
 
 	if _, ok := goval.(interface{ Widget(path string) Widgetter }); ok {
-		pclass.get_widget = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_get_widget)
+		o := pclass.StructFieldOffset("get_widget")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_UIManagerClass_get_widget)
 	}
 
 	if _, ok := goval.(interface{ PostActivate(action *Action) }); ok {
-		pclass.post_activate = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_post_activate)
+		o := pclass.StructFieldOffset("post_activate")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_UIManagerClass_post_activate)
 	}
 
 	if _, ok := goval.(interface{ PreActivate(action *Action) }); ok {
-		pclass.pre_activate = (*[0]byte)(C._gotk4_gtk3_UIManagerClass_pre_activate)
+		o := pclass.StructFieldOffset("pre_activate")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_UIManagerClass_pre_activate)
 	}
 }
 

@@ -130,9 +130,9 @@ type ListModeller interface {
 var _ ListModeller = (*ListModel)(nil)
 
 func ifaceInitListModeller(gifacePtr, data C.gpointer) {
-	iface := (*C.GListModelInterface)(unsafe.Pointer(gifacePtr))
-	iface.get_item = (*[0]byte)(C._gotk4_gio2_ListModelInterface_get_item)
-	iface.get_n_items = (*[0]byte)(C._gotk4_gio2_ListModelInterface_get_n_items)
+	iface := girepository.MustFind("Gio", "ListModelInterface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_item"))) = unsafe.Pointer(C._gotk4_gio2_ListModelInterface_get_item)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_n_items"))) = unsafe.Pointer(C._gotk4_gio2_ListModelInterface_get_n_items)
 }
 
 //export _gotk4_gio2_ListModelInterface_get_item

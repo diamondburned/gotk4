@@ -28,10 +28,6 @@ func init() {
 	})
 }
 
-// ConstraintTargetOverrider contains methods that are overridable.
-type ConstraintTargetOverrider interface {
-}
-
 // ConstraintTarget: GtkConstraintTarget interface is implemented by objects
 // that can be used as source or target in GtkConstraints.
 //
@@ -56,9 +52,6 @@ type ConstraintTargetter interface {
 }
 
 var _ ConstraintTargetter = (*ConstraintTarget)(nil)
-
-func ifaceInitConstraintTargetter(gifacePtr, data C.gpointer) {
-}
 
 func wrapConstraintTarget(obj *coreglib.Object) *ConstraintTarget {
 	return &ConstraintTarget{

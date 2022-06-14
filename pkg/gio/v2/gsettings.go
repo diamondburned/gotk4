@@ -21,7 +21,7 @@ import (
 // extern gboolean _gotk4_gio2_SettingsClass_change_event(void*, void*, gint);
 // extern gboolean _gotk4_gio2_SettingsClass_writable_change_event(void*, guint32);
 // extern gboolean _gotk4_gio2_SettingsGetMapping(void*, void*, gpointer);
-// extern gboolean _gotk4_gio2_Settings_ConnectChangeEvent(gpointer, void, gint, guintptr);
+// extern gboolean _gotk4_gio2_Settings_ConnectChangeEvent(gpointer, guint32*, gint, guintptr);
 // extern gboolean _gotk4_gio2_Settings_ConnectWritableChangeEvent(gpointer, guint, guintptr);
 // extern void _gotk4_gio2_SettingsClass_changed(void*, void*);
 // extern void _gotk4_gio2_SettingsClass_writable_changed(void*, void*);
@@ -538,26 +538,28 @@ func classInitSettingser(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GSettingsClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GSettingsClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "SettingsClass")
 
 	if _, ok := goval.(interface {
 		ChangeEvent(keys *glib.Quark, nKeys int32) bool
 	}); ok {
-		pclass.change_event = (*[0]byte)(C._gotk4_gio2_SettingsClass_change_event)
+		o := pclass.StructFieldOffset("change_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_SettingsClass_change_event)
 	}
 
 	if _, ok := goval.(interface{ Changed(key string) }); ok {
-		pclass.changed = (*[0]byte)(C._gotk4_gio2_SettingsClass_changed)
+		o := pclass.StructFieldOffset("changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_SettingsClass_changed)
 	}
 
 	if _, ok := goval.(interface{ WritableChangeEvent(key glib.Quark) bool }); ok {
-		pclass.writable_change_event = (*[0]byte)(C._gotk4_gio2_SettingsClass_writable_change_event)
+		o := pclass.StructFieldOffset("writable_change_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_SettingsClass_writable_change_event)
 	}
 
 	if _, ok := goval.(interface{ WritableChanged(key string) }); ok {
-		pclass.writable_changed = (*[0]byte)(C._gotk4_gio2_SettingsClass_writable_changed)
+		o := pclass.StructFieldOffset("writable_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_SettingsClass_writable_changed)
 	}
 }
 
@@ -636,7 +638,7 @@ func marshalSettings(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gio2_Settings_ConnectChangeEvent
-func _gotk4_gio2_Settings_ConnectChangeEvent(arg0 C.gpointer, arg1 C.void, arg2 C.gint, arg3 C.guintptr) (cret C.gboolean) {
+func _gotk4_gio2_Settings_ConnectChangeEvent(arg0 C.gpointer, arg1 *C.guint32, arg2 C.gint, arg3 C.guintptr) (cret C.gboolean) {
 	var f func(keys []glib.Quark) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))

@@ -53,12 +53,11 @@ func classInitPlugger(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.AtkPlugClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.AtkPlugClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Atk", "PlugClass")
 
 	if _, ok := goval.(interface{ ObjectID() string }); ok {
-		pclass.get_object_id = (*[0]byte)(C._gotk4_atk1_PlugClass_get_object_id)
+		o := pclass.StructFieldOffset("get_object_id")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_PlugClass_get_object_id)
 	}
 }
 

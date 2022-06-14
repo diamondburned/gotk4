@@ -186,16 +186,16 @@ func classInitApplicationer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkApplicationClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkApplicationClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "ApplicationClass")
 
 	if _, ok := goval.(interface{ WindowAdded(window *Window) }); ok {
-		pclass.window_added = (*[0]byte)(C._gotk4_gtk4_ApplicationClass_window_added)
+		o := pclass.StructFieldOffset("window_added")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_ApplicationClass_window_added)
 	}
 
 	if _, ok := goval.(interface{ WindowRemoved(window *Window) }); ok {
-		pclass.window_removed = (*[0]byte)(C._gotk4_gtk4_ApplicationClass_window_removed)
+		o := pclass.StructFieldOffset("window_removed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_ApplicationClass_window_removed)
 	}
 }
 

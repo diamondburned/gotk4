@@ -87,18 +87,18 @@ func classInitSocketAddresser(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GSocketAddressClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GSocketAddressClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "SocketAddressClass")
 
 	if _, ok := goval.(interface{ NativeSize() int }); ok {
-		pclass.get_native_size = (*[0]byte)(C._gotk4_gio2_SocketAddressClass_get_native_size)
+		o := pclass.StructFieldOffset("get_native_size")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_SocketAddressClass_get_native_size)
 	}
 
 	if _, ok := goval.(interface {
 		ToNative(dest unsafe.Pointer, destlen uint) error
 	}); ok {
-		pclass.to_native = (*[0]byte)(C._gotk4_gio2_SocketAddressClass_to_native)
+		o := pclass.StructFieldOffset("to_native")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_SocketAddressClass_to_native)
 	}
 }
 

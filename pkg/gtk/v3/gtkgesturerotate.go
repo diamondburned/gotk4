@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// GestureRotateOverrider contains methods that are overridable.
-type GestureRotateOverrider interface {
-}
-
 // GestureRotate is a Gesture implementation able to recognize 2-finger
 // rotations, whenever the angle between both handled sequences changes, the
 // GestureRotate::angle-changed signal is emitted.
@@ -40,14 +36,6 @@ type GestureRotate struct {
 var (
 	_ Gesturer = (*GestureRotate)(nil)
 )
-
-func classInitGestureRotater(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapGestureRotate(obj *coreglib.Object) *GestureRotate {
 	return &GestureRotate{

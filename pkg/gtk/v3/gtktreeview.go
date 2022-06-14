@@ -495,76 +495,88 @@ func classInitTreeViewer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkTreeViewClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkTreeViewClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "TreeViewClass")
 
 	if _, ok := goval.(interface{ ColumnsChanged() }); ok {
-		pclass.columns_changed = (*[0]byte)(C._gotk4_gtk3_TreeViewClass_columns_changed)
+		o := pclass.StructFieldOffset("columns_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TreeViewClass_columns_changed)
 	}
 
 	if _, ok := goval.(interface{ CursorChanged() }); ok {
-		pclass.cursor_changed = (*[0]byte)(C._gotk4_gtk3_TreeViewClass_cursor_changed)
+		o := pclass.StructFieldOffset("cursor_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TreeViewClass_cursor_changed)
 	}
 
 	if _, ok := goval.(interface {
 		ExpandCollapseCursorRow(logical, expand, openAll bool) bool
 	}); ok {
-		pclass.expand_collapse_cursor_row = (*[0]byte)(C._gotk4_gtk3_TreeViewClass_expand_collapse_cursor_row)
+		o := pclass.StructFieldOffset("expand_collapse_cursor_row")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TreeViewClass_expand_collapse_cursor_row)
 	}
 
 	if _, ok := goval.(interface {
 		RowActivated(path *TreePath, column *TreeViewColumn)
 	}); ok {
-		pclass.row_activated = (*[0]byte)(C._gotk4_gtk3_TreeViewClass_row_activated)
+		o := pclass.StructFieldOffset("row_activated")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TreeViewClass_row_activated)
 	}
 
 	if _, ok := goval.(interface {
 		RowCollapsed(iter *TreeIter, path *TreePath)
 	}); ok {
-		pclass.row_collapsed = (*[0]byte)(C._gotk4_gtk3_TreeViewClass_row_collapsed)
+		o := pclass.StructFieldOffset("row_collapsed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TreeViewClass_row_collapsed)
 	}
 
 	if _, ok := goval.(interface {
 		RowExpanded(iter *TreeIter, path *TreePath)
 	}); ok {
-		pclass.row_expanded = (*[0]byte)(C._gotk4_gtk3_TreeViewClass_row_expanded)
+		o := pclass.StructFieldOffset("row_expanded")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TreeViewClass_row_expanded)
 	}
 
 	if _, ok := goval.(interface{ SelectAll() bool }); ok {
-		pclass.select_all = (*[0]byte)(C._gotk4_gtk3_TreeViewClass_select_all)
+		o := pclass.StructFieldOffset("select_all")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TreeViewClass_select_all)
 	}
 
 	if _, ok := goval.(interface{ SelectCursorParent() bool }); ok {
-		pclass.select_cursor_parent = (*[0]byte)(C._gotk4_gtk3_TreeViewClass_select_cursor_parent)
+		o := pclass.StructFieldOffset("select_cursor_parent")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TreeViewClass_select_cursor_parent)
 	}
 
 	if _, ok := goval.(interface{ SelectCursorRow(startEditing bool) bool }); ok {
-		pclass.select_cursor_row = (*[0]byte)(C._gotk4_gtk3_TreeViewClass_select_cursor_row)
+		o := pclass.StructFieldOffset("select_cursor_row")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TreeViewClass_select_cursor_row)
 	}
 
 	if _, ok := goval.(interface{ StartInteractiveSearch() bool }); ok {
-		pclass.start_interactive_search = (*[0]byte)(C._gotk4_gtk3_TreeViewClass_start_interactive_search)
+		o := pclass.StructFieldOffset("start_interactive_search")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TreeViewClass_start_interactive_search)
 	}
 
 	if _, ok := goval.(interface {
 		TestCollapseRow(iter *TreeIter, path *TreePath) bool
 	}); ok {
-		pclass.test_collapse_row = (*[0]byte)(C._gotk4_gtk3_TreeViewClass_test_collapse_row)
+		o := pclass.StructFieldOffset("test_collapse_row")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TreeViewClass_test_collapse_row)
 	}
 
 	if _, ok := goval.(interface {
 		TestExpandRow(iter *TreeIter, path *TreePath) bool
 	}); ok {
-		pclass.test_expand_row = (*[0]byte)(C._gotk4_gtk3_TreeViewClass_test_expand_row)
+		o := pclass.StructFieldOffset("test_expand_row")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TreeViewClass_test_expand_row)
 	}
 
 	if _, ok := goval.(interface{ ToggleCursorRow() bool }); ok {
-		pclass.toggle_cursor_row = (*[0]byte)(C._gotk4_gtk3_TreeViewClass_toggle_cursor_row)
+		o := pclass.StructFieldOffset("toggle_cursor_row")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TreeViewClass_toggle_cursor_row)
 	}
 
 	if _, ok := goval.(interface{ UnselectAll() bool }); ok {
-		pclass.unselect_all = (*[0]byte)(C._gotk4_gtk3_TreeViewClass_unselect_all)
+		o := pclass.StructFieldOffset("unselect_all")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TreeViewClass_unselect_all)
 	}
 }
 

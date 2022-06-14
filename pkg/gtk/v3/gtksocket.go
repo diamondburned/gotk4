@@ -101,16 +101,16 @@ func classInitSocketter(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkSocketClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkSocketClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "SocketClass")
 
 	if _, ok := goval.(interface{ PlugAdded() }); ok {
-		pclass.plug_added = (*[0]byte)(C._gotk4_gtk3_SocketClass_plug_added)
+		o := pclass.StructFieldOffset("plug_added")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_SocketClass_plug_added)
 	}
 
 	if _, ok := goval.(interface{ PlugRemoved() bool }); ok {
-		pclass.plug_removed = (*[0]byte)(C._gotk4_gtk3_SocketClass_plug_removed)
+		o := pclass.StructFieldOffset("plug_removed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_SocketClass_plug_removed)
 	}
 }
 

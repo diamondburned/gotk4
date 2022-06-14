@@ -67,16 +67,16 @@ func classInitMiscer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.AtkMiscClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.AtkMiscClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Atk", "MiscClass")
 
 	if _, ok := goval.(interface{ ThreadsEnter() }); ok {
-		pclass.threads_enter = (*[0]byte)(C._gotk4_atk1_MiscClass_threads_enter)
+		o := pclass.StructFieldOffset("threads_enter")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_MiscClass_threads_enter)
 	}
 
 	if _, ok := goval.(interface{ ThreadsLeave() }); ok {
-		pclass.threads_leave = (*[0]byte)(C._gotk4_atk1_MiscClass_threads_leave)
+		o := pclass.StructFieldOffset("threads_leave")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_MiscClass_threads_leave)
 	}
 }
 

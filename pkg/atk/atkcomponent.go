@@ -215,14 +215,14 @@ type Componenter interface {
 var _ Componenter = (*Component)(nil)
 
 func ifaceInitComponenter(gifacePtr, data C.gpointer) {
-	iface := (*C.AtkComponentIface)(unsafe.Pointer(gifacePtr))
-	iface.bounds_changed = (*[0]byte)(C._gotk4_atk1_ComponentIface_bounds_changed)
-	iface.get_alpha = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_alpha)
-	iface.get_mdi_zorder = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_mdi_zorder)
-	iface.get_size = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_size)
-	iface.grab_focus = (*[0]byte)(C._gotk4_atk1_ComponentIface_grab_focus)
-	iface.remove_focus_handler = (*[0]byte)(C._gotk4_atk1_ComponentIface_remove_focus_handler)
-	iface.set_size = (*[0]byte)(C._gotk4_atk1_ComponentIface_set_size)
+	iface := girepository.MustFind("Atk", "ComponentIface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("bounds_changed"))) = unsafe.Pointer(C._gotk4_atk1_ComponentIface_bounds_changed)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_alpha"))) = unsafe.Pointer(C._gotk4_atk1_ComponentIface_get_alpha)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_mdi_zorder"))) = unsafe.Pointer(C._gotk4_atk1_ComponentIface_get_mdi_zorder)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_size"))) = unsafe.Pointer(C._gotk4_atk1_ComponentIface_get_size)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("grab_focus"))) = unsafe.Pointer(C._gotk4_atk1_ComponentIface_grab_focus)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("remove_focus_handler"))) = unsafe.Pointer(C._gotk4_atk1_ComponentIface_remove_focus_handler)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("set_size"))) = unsafe.Pointer(C._gotk4_atk1_ComponentIface_set_size)
 }
 
 //export _gotk4_atk1_ComponentIface_bounds_changed

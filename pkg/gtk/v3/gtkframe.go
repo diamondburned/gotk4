@@ -91,12 +91,11 @@ func classInitFramer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkFrameClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkFrameClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "FrameClass")
 
 	if _, ok := goval.(interface{ ComputeChildAllocation(allocation *Allocation) }); ok {
-		pclass.compute_child_allocation = (*[0]byte)(C._gotk4_gtk3_FrameClass_compute_child_allocation)
+		o := pclass.StructFieldOffset("compute_child_allocation")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_FrameClass_compute_child_allocation)
 	}
 }
 

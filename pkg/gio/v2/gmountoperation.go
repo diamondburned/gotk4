@@ -18,7 +18,7 @@ import (
 // extern void _gotk4_gio2_MountOperationClass_ask_question(void*, void*, void**);
 // extern void _gotk4_gio2_MountOperationClass_show_unmount_progress(void*, void*, gint64, gint64);
 // extern void _gotk4_gio2_MountOperation_ConnectAborted(gpointer, guintptr);
-// extern void _gotk4_gio2_MountOperation_ConnectAskQuestion(gpointer, void*, void, guintptr);
+// extern void _gotk4_gio2_MountOperation_ConnectAskQuestion(gpointer, void*, void**, guintptr);
 // extern void _gotk4_gio2_MountOperation_ConnectShowUnmountProgress(gpointer, void*, gint64, gint64, guintptr);
 import "C"
 
@@ -87,24 +87,25 @@ func classInitMountOperationer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GMountOperationClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GMountOperationClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "MountOperationClass")
 
 	if _, ok := goval.(interface{ Aborted() }); ok {
-		pclass.aborted = (*[0]byte)(C._gotk4_gio2_MountOperationClass_aborted)
+		o := pclass.StructFieldOffset("aborted")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_MountOperationClass_aborted)
 	}
 
 	if _, ok := goval.(interface {
 		AskQuestion(message string, choices []string)
 	}); ok {
-		pclass.ask_question = (*[0]byte)(C._gotk4_gio2_MountOperationClass_ask_question)
+		o := pclass.StructFieldOffset("ask_question")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_MountOperationClass_ask_question)
 	}
 
 	if _, ok := goval.(interface {
 		ShowUnmountProgress(message string, timeLeft, bytesLeft int64)
 	}); ok {
-		pclass.show_unmount_progress = (*[0]byte)(C._gotk4_gio2_MountOperationClass_show_unmount_progress)
+		o := pclass.StructFieldOffset("show_unmount_progress")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_MountOperationClass_show_unmount_progress)
 	}
 }
 
@@ -198,7 +199,7 @@ func (op *MountOperation) ConnectAborted(f func()) coreglib.SignalHandle {
 }
 
 //export _gotk4_gio2_MountOperation_ConnectAskQuestion
-func _gotk4_gio2_MountOperation_ConnectAskQuestion(arg0 C.gpointer, arg1 *C.void, arg2 C.void, arg3 C.guintptr) {
+func _gotk4_gio2_MountOperation_ConnectAskQuestion(arg0 C.gpointer, arg1 *C.void, arg2 **C.void, arg3 C.guintptr) {
 	var f func(message string, choices []string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))

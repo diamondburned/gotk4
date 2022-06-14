@@ -114,20 +114,20 @@ func classInitBufferedInputStreamer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GBufferedInputStreamClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GBufferedInputStreamClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "BufferedInputStreamClass")
 
 	if _, ok := goval.(interface {
 		Fill(ctx context.Context, count int) (int, error)
 	}); ok {
-		pclass.fill = (*[0]byte)(C._gotk4_gio2_BufferedInputStreamClass_fill)
+		o := pclass.StructFieldOffset("fill")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_BufferedInputStreamClass_fill)
 	}
 
 	if _, ok := goval.(interface {
 		FillFinish(result AsyncResulter) (int, error)
 	}); ok {
-		pclass.fill_finish = (*[0]byte)(C._gotk4_gio2_BufferedInputStreamClass_fill_finish)
+		o := pclass.StructFieldOffset("fill_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_BufferedInputStreamClass_fill_finish)
 	}
 }
 

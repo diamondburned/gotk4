@@ -180,76 +180,91 @@ func classInitVolumeMonitorrer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GVolumeMonitorClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GVolumeMonitorClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "VolumeMonitorClass")
 
 	if _, ok := goval.(interface{ DriveChanged(drive Driver) }); ok {
-		pclass.drive_changed = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_drive_changed)
+		o := pclass.StructFieldOffset("drive_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VolumeMonitorClass_drive_changed)
 	}
 
 	if _, ok := goval.(interface{ DriveConnected(drive Driver) }); ok {
-		pclass.drive_connected = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_drive_connected)
+		o := pclass.StructFieldOffset("drive_connected")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VolumeMonitorClass_drive_connected)
 	}
 
 	if _, ok := goval.(interface{ DriveDisconnected(drive Driver) }); ok {
-		pclass.drive_disconnected = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_drive_disconnected)
+		o := pclass.StructFieldOffset("drive_disconnected")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VolumeMonitorClass_drive_disconnected)
 	}
 
 	if _, ok := goval.(interface{ DriveEjectButton(drive Driver) }); ok {
-		pclass.drive_eject_button = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_drive_eject_button)
+		o := pclass.StructFieldOffset("drive_eject_button")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VolumeMonitorClass_drive_eject_button)
 	}
 
 	if _, ok := goval.(interface{ DriveStopButton(drive Driver) }); ok {
-		pclass.drive_stop_button = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_drive_stop_button)
+		o := pclass.StructFieldOffset("drive_stop_button")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VolumeMonitorClass_drive_stop_button)
 	}
 
 	if _, ok := goval.(interface{ ConnectedDrives() []*Drive }); ok {
-		pclass.get_connected_drives = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_get_connected_drives)
+		o := pclass.StructFieldOffset("get_connected_drives")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VolumeMonitorClass_get_connected_drives)
 	}
 
 	if _, ok := goval.(interface{ MountForUUID(uuid string) *Mount }); ok {
-		pclass.get_mount_for_uuid = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid)
+		o := pclass.StructFieldOffset("get_mount_for_uuid")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid)
 	}
 
 	if _, ok := goval.(interface{ Mounts() []*Mount }); ok {
-		pclass.get_mounts = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_get_mounts)
+		o := pclass.StructFieldOffset("get_mounts")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VolumeMonitorClass_get_mounts)
 	}
 
 	if _, ok := goval.(interface{ VolumeForUUID(uuid string) *Volume }); ok {
-		pclass.get_volume_for_uuid = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid)
+		o := pclass.StructFieldOffset("get_volume_for_uuid")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid)
 	}
 
 	if _, ok := goval.(interface{ Volumes() []*Volume }); ok {
-		pclass.get_volumes = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_get_volumes)
+		o := pclass.StructFieldOffset("get_volumes")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VolumeMonitorClass_get_volumes)
 	}
 
 	if _, ok := goval.(interface{ MountAdded(mount Mounter) }); ok {
-		pclass.mount_added = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_mount_added)
+		o := pclass.StructFieldOffset("mount_added")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VolumeMonitorClass_mount_added)
 	}
 
 	if _, ok := goval.(interface{ MountChanged(mount Mounter) }); ok {
-		pclass.mount_changed = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_mount_changed)
+		o := pclass.StructFieldOffset("mount_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VolumeMonitorClass_mount_changed)
 	}
 
 	if _, ok := goval.(interface{ MountPreUnmount(mount Mounter) }); ok {
-		pclass.mount_pre_unmount = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_mount_pre_unmount)
+		o := pclass.StructFieldOffset("mount_pre_unmount")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VolumeMonitorClass_mount_pre_unmount)
 	}
 
 	if _, ok := goval.(interface{ MountRemoved(mount Mounter) }); ok {
-		pclass.mount_removed = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_mount_removed)
+		o := pclass.StructFieldOffset("mount_removed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VolumeMonitorClass_mount_removed)
 	}
 
 	if _, ok := goval.(interface{ VolumeAdded(volume Volumer) }); ok {
-		pclass.volume_added = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_volume_added)
+		o := pclass.StructFieldOffset("volume_added")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VolumeMonitorClass_volume_added)
 	}
 
 	if _, ok := goval.(interface{ VolumeChanged(volume Volumer) }); ok {
-		pclass.volume_changed = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_volume_changed)
+		o := pclass.StructFieldOffset("volume_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VolumeMonitorClass_volume_changed)
 	}
 
 	if _, ok := goval.(interface{ VolumeRemoved(volume Volumer) }); ok {
-		pclass.volume_removed = (*[0]byte)(C._gotk4_gio2_VolumeMonitorClass_volume_removed)
+		o := pclass.StructFieldOffset("volume_removed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VolumeMonitorClass_volume_removed)
 	}
 }
 

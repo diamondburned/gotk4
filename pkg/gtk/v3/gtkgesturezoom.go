@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// GestureZoomOverrider contains methods that are overridable.
-type GestureZoomOverrider interface {
-}
-
 // GestureZoom is a Gesture implementation able to recognize pinch/zoom
 // gestures, whenever the distance between both tracked sequences changes, the
 // GestureZoom::scale-changed signal is emitted to report the scale factor.
@@ -40,14 +36,6 @@ type GestureZoom struct {
 var (
 	_ Gesturer = (*GestureZoom)(nil)
 )
-
-func classInitGestureZoomer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapGestureZoom(obj *coreglib.Object) *GestureZoom {
 	return &GestureZoom{

@@ -26,10 +26,6 @@ func init() {
 	})
 }
 
-// GestureLongPressOverrider contains methods that are overridable.
-type GestureLongPressOverrider interface {
-}
-
 // GestureLongPress is a Gesture implementation able to recognize long presses,
 // triggering the GestureLongPress::pressed after the timeout is exceeded.
 //
@@ -44,14 +40,6 @@ type GestureLongPress struct {
 var (
 	_ Gesturer = (*GestureLongPress)(nil)
 )
-
-func classInitGestureLongPresser(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapGestureLongPress(obj *coreglib.Object) *GestureLongPress {
 	return &GestureLongPress{

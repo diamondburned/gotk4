@@ -97,10 +97,10 @@ type CellEditabler interface {
 var _ CellEditabler = (*CellEditable)(nil)
 
 func ifaceInitCellEditabler(gifacePtr, data C.gpointer) {
-	iface := (*C.GtkCellEditableIface)(unsafe.Pointer(gifacePtr))
-	iface.editing_done = (*[0]byte)(C._gotk4_gtk4_CellEditableIface_editing_done)
-	iface.remove_widget = (*[0]byte)(C._gotk4_gtk4_CellEditableIface_remove_widget)
-	iface.start_editing = (*[0]byte)(C._gotk4_gtk4_CellEditableIface_start_editing)
+	iface := girepository.MustFind("Gtk", "CellEditableIface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("editing_done"))) = unsafe.Pointer(C._gotk4_gtk4_CellEditableIface_editing_done)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("remove_widget"))) = unsafe.Pointer(C._gotk4_gtk4_CellEditableIface_remove_widget)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("start_editing"))) = unsafe.Pointer(C._gotk4_gtk4_CellEditableIface_start_editing)
 }
 
 //export _gotk4_gtk4_CellEditableIface_editing_done

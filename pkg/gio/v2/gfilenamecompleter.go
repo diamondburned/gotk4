@@ -51,12 +51,11 @@ func classInitFilenameCompleterer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GFilenameCompleterClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GFilenameCompleterClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "FilenameCompleterClass")
 
 	if _, ok := goval.(interface{ GotCompletionData() }); ok {
-		pclass.got_completion_data = (*[0]byte)(C._gotk4_gio2_FilenameCompleterClass_got_completion_data)
+		o := pclass.StructFieldOffset("got_completion_data")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FilenameCompleterClass_got_completion_data)
 	}
 }
 

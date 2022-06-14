@@ -192,9 +192,9 @@ type TreeDragDester interface {
 var _ TreeDragDester = (*TreeDragDest)(nil)
 
 func ifaceInitTreeDragDester(gifacePtr, data C.gpointer) {
-	iface := (*C.GtkTreeDragDestIface)(unsafe.Pointer(gifacePtr))
-	iface.drag_data_received = (*[0]byte)(C._gotk4_gtk3_TreeDragDestIface_drag_data_received)
-	iface.row_drop_possible = (*[0]byte)(C._gotk4_gtk3_TreeDragDestIface_row_drop_possible)
+	iface := girepository.MustFind("Gtk", "TreeDragDestIface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("drag_data_received"))) = unsafe.Pointer(C._gotk4_gtk3_TreeDragDestIface_drag_data_received)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("row_drop_possible"))) = unsafe.Pointer(C._gotk4_gtk3_TreeDragDestIface_row_drop_possible)
 }
 
 //export _gotk4_gtk3_TreeDragDestIface_drag_data_received
@@ -397,10 +397,10 @@ type TreeDragSourcer interface {
 var _ TreeDragSourcer = (*TreeDragSource)(nil)
 
 func ifaceInitTreeDragSourcer(gifacePtr, data C.gpointer) {
-	iface := (*C.GtkTreeDragSourceIface)(unsafe.Pointer(gifacePtr))
-	iface.drag_data_delete = (*[0]byte)(C._gotk4_gtk3_TreeDragSourceIface_drag_data_delete)
-	iface.drag_data_get = (*[0]byte)(C._gotk4_gtk3_TreeDragSourceIface_drag_data_get)
-	iface.row_draggable = (*[0]byte)(C._gotk4_gtk3_TreeDragSourceIface_row_draggable)
+	iface := girepository.MustFind("Gtk", "TreeDragSourceIface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("drag_data_delete"))) = unsafe.Pointer(C._gotk4_gtk3_TreeDragSourceIface_drag_data_delete)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("drag_data_get"))) = unsafe.Pointer(C._gotk4_gtk3_TreeDragSourceIface_drag_data_get)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("row_draggable"))) = unsafe.Pointer(C._gotk4_gtk3_TreeDragSourceIface_row_draggable)
 }
 
 //export _gotk4_gtk3_TreeDragSourceIface_drag_data_delete

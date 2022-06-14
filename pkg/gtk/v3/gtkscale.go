@@ -140,20 +140,21 @@ func classInitScaler(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkScaleClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkScaleClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "ScaleClass")
 
 	if _, ok := goval.(interface{ DrawValue() }); ok {
-		pclass.draw_value = (*[0]byte)(C._gotk4_gtk3_ScaleClass_draw_value)
+		o := pclass.StructFieldOffset("draw_value")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ScaleClass_draw_value)
 	}
 
 	if _, ok := goval.(interface{ FormatValue(value float64) string }); ok {
-		pclass.format_value = (*[0]byte)(C._gotk4_gtk3_ScaleClass_format_value)
+		o := pclass.StructFieldOffset("format_value")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ScaleClass_format_value)
 	}
 
 	if _, ok := goval.(interface{ LayoutOffsets() (x, y int32) }); ok {
-		pclass.get_layout_offsets = (*[0]byte)(C._gotk4_gtk3_ScaleClass_get_layout_offsets)
+		o := pclass.StructFieldOffset("get_layout_offsets")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ScaleClass_get_layout_offsets)
 	}
 }
 

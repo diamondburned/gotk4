@@ -295,11 +295,6 @@ func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
 		generateFunctions(v.Name, v.Functions)
 	}
 	for _, v := range n.current.Namespace.Records {
-		if n.LinkMode() == types.RuntimeLinkMode {
-			// Just generate all records in C.
-			c := n.CHeaderFile()
-			c.Header().AddCBlock(generators.GenerateCPrimitiveRecord(n, &v))
-		}
 		if !generators.GenerateRecord(n, &v) {
 			n.logIfSkipped(false, "record "+v.Name)
 			continue

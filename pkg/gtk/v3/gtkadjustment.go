@@ -68,16 +68,16 @@ func classInitAdjustmenter(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkAdjustmentClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkAdjustmentClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "AdjustmentClass")
 
 	if _, ok := goval.(interface{ Changed() }); ok {
-		pclass.changed = (*[0]byte)(C._gotk4_gtk3_AdjustmentClass_changed)
+		o := pclass.StructFieldOffset("changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_AdjustmentClass_changed)
 	}
 
 	if _, ok := goval.(interface{ ValueChanged() }); ok {
-		pclass.value_changed = (*[0]byte)(C._gotk4_gtk3_AdjustmentClass_value_changed)
+		o := pclass.StructFieldOffset("value_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_AdjustmentClass_value_changed)
 	}
 }
 

@@ -161,10 +161,6 @@ func (i IconLookupFlags) Has(other IconLookupFlags) bool {
 	return (i & other) == other
 }
 
-// IconInfoOverrider contains methods that are overridable.
-type IconInfoOverrider interface {
-}
-
 // IconInfo contains information found when looking up an icon in an icon theme.
 type IconInfo struct {
 	_ [0]func() // equal guard
@@ -174,14 +170,6 @@ type IconInfo struct {
 var (
 	_ coreglib.Objector = (*IconInfo)(nil)
 )
-
-func classInitIconInfor(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapIconInfo(obj *coreglib.Object) *IconInfo {
 	return &IconInfo{
@@ -1120,12 +1108,11 @@ func classInitIconThemer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkIconThemeClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkIconThemeClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "IconThemeClass")
 
 	if _, ok := goval.(interface{ Changed() }); ok {
-		pclass.changed = (*[0]byte)(C._gotk4_gtk3_IconThemeClass_changed)
+		o := pclass.StructFieldOffset("changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IconThemeClass_changed)
 	}
 }
 

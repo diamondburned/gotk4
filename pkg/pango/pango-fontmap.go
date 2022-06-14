@@ -141,38 +141,42 @@ func classInitFontMapper(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.PangoFontMapClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.PangoFontMapClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Pango", "FontMapClass")
 
 	if _, ok := goval.(interface{ Changed() }); ok {
-		pclass.changed = (*[0]byte)(C._gotk4_pango1_FontMapClass_changed)
+		o := pclass.StructFieldOffset("changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontMapClass_changed)
 	}
 
 	if _, ok := goval.(interface {
 		Family(name string) FontFamilier
 	}); ok {
-		pclass.get_family = (*[0]byte)(C._gotk4_pango1_FontMapClass_get_family)
+		o := pclass.StructFieldOffset("get_family")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontMapClass_get_family)
 	}
 
 	if _, ok := goval.(interface{ Serial() uint32 }); ok {
-		pclass.get_serial = (*[0]byte)(C._gotk4_pango1_FontMapClass_get_serial)
+		o := pclass.StructFieldOffset("get_serial")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontMapClass_get_serial)
 	}
 
 	if _, ok := goval.(interface{ ListFamilies() []FontFamilier }); ok {
-		pclass.list_families = (*[0]byte)(C._gotk4_pango1_FontMapClass_list_families)
+		o := pclass.StructFieldOffset("list_families")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontMapClass_list_families)
 	}
 
 	if _, ok := goval.(interface {
 		LoadFont(context *Context, desc *FontDescription) Fonter
 	}); ok {
-		pclass.load_font = (*[0]byte)(C._gotk4_pango1_FontMapClass_load_font)
+		o := pclass.StructFieldOffset("load_font")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontMapClass_load_font)
 	}
 
 	if _, ok := goval.(interface {
 		LoadFontset(context *Context, desc *FontDescription, language *Language) Fontsetter
 	}); ok {
-		pclass.load_fontset = (*[0]byte)(C._gotk4_pango1_FontMapClass_load_fontset)
+		o := pclass.StructFieldOffset("load_fontset")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_FontMapClass_load_fontset)
 	}
 }
 

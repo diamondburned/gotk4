@@ -119,40 +119,45 @@ func classInitContentProviderer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GdkContentProviderClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GdkContentProviderClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gdk", "ContentProviderClass")
 
 	if _, ok := goval.(interface{ AttachClipboard(clipboard *Clipboard) }); ok {
-		pclass.attach_clipboard = (*[0]byte)(C._gotk4_gdk4_ContentProviderClass_attach_clipboard)
+		o := pclass.StructFieldOffset("attach_clipboard")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gdk4_ContentProviderClass_attach_clipboard)
 	}
 
 	if _, ok := goval.(interface{ ContentChanged() }); ok {
-		pclass.content_changed = (*[0]byte)(C._gotk4_gdk4_ContentProviderClass_content_changed)
+		o := pclass.StructFieldOffset("content_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gdk4_ContentProviderClass_content_changed)
 	}
 
 	if _, ok := goval.(interface{ DetachClipboard(clipboard *Clipboard) }); ok {
-		pclass.detach_clipboard = (*[0]byte)(C._gotk4_gdk4_ContentProviderClass_detach_clipboard)
+		o := pclass.StructFieldOffset("detach_clipboard")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gdk4_ContentProviderClass_detach_clipboard)
 	}
 
 	if _, ok := goval.(interface {
 		Value(value *coreglib.Value) error
 	}); ok {
-		pclass.get_value = (*[0]byte)(C._gotk4_gdk4_ContentProviderClass_get_value)
+		o := pclass.StructFieldOffset("get_value")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gdk4_ContentProviderClass_get_value)
 	}
 
 	if _, ok := goval.(interface{ RefFormats() *ContentFormats }); ok {
-		pclass.ref_formats = (*[0]byte)(C._gotk4_gdk4_ContentProviderClass_ref_formats)
+		o := pclass.StructFieldOffset("ref_formats")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gdk4_ContentProviderClass_ref_formats)
 	}
 
 	if _, ok := goval.(interface{ RefStorableFormats() *ContentFormats }); ok {
-		pclass.ref_storable_formats = (*[0]byte)(C._gotk4_gdk4_ContentProviderClass_ref_storable_formats)
+		o := pclass.StructFieldOffset("ref_storable_formats")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gdk4_ContentProviderClass_ref_storable_formats)
 	}
 
 	if _, ok := goval.(interface {
 		WriteMIMETypeFinish(result gio.AsyncResulter) error
 	}); ok {
-		pclass.write_mime_type_finish = (*[0]byte)(C._gotk4_gdk4_ContentProviderClass_write_mime_type_finish)
+		o := pclass.StructFieldOffset("write_mime_type_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gdk4_ContentProviderClass_write_mime_type_finish)
 	}
 }
 

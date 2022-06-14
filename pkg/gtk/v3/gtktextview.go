@@ -237,44 +237,51 @@ func classInitTextViewer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkTextViewClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkTextViewClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "TextViewClass")
 
 	if _, ok := goval.(interface{ Backspace() }); ok {
-		pclass.backspace = (*[0]byte)(C._gotk4_gtk3_TextViewClass_backspace)
+		o := pclass.StructFieldOffset("backspace")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TextViewClass_backspace)
 	}
 
 	if _, ok := goval.(interface{ CopyClipboard() }); ok {
-		pclass.copy_clipboard = (*[0]byte)(C._gotk4_gtk3_TextViewClass_copy_clipboard)
+		o := pclass.StructFieldOffset("copy_clipboard")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TextViewClass_copy_clipboard)
 	}
 
 	if _, ok := goval.(interface{ CutClipboard() }); ok {
-		pclass.cut_clipboard = (*[0]byte)(C._gotk4_gtk3_TextViewClass_cut_clipboard)
+		o := pclass.StructFieldOffset("cut_clipboard")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TextViewClass_cut_clipboard)
 	}
 
 	if _, ok := goval.(interface{ InsertAtCursor(str string) }); ok {
-		pclass.insert_at_cursor = (*[0]byte)(C._gotk4_gtk3_TextViewClass_insert_at_cursor)
+		o := pclass.StructFieldOffset("insert_at_cursor")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TextViewClass_insert_at_cursor)
 	}
 
 	if _, ok := goval.(interface{ InsertEmoji() }); ok {
-		pclass.insert_emoji = (*[0]byte)(C._gotk4_gtk3_TextViewClass_insert_emoji)
+		o := pclass.StructFieldOffset("insert_emoji")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TextViewClass_insert_emoji)
 	}
 
 	if _, ok := goval.(interface{ PasteClipboard() }); ok {
-		pclass.paste_clipboard = (*[0]byte)(C._gotk4_gtk3_TextViewClass_paste_clipboard)
+		o := pclass.StructFieldOffset("paste_clipboard")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TextViewClass_paste_clipboard)
 	}
 
 	if _, ok := goval.(interface{ PopulatePopup(popup Widgetter) }); ok {
-		pclass.populate_popup = (*[0]byte)(C._gotk4_gtk3_TextViewClass_populate_popup)
+		o := pclass.StructFieldOffset("populate_popup")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TextViewClass_populate_popup)
 	}
 
 	if _, ok := goval.(interface{ SetAnchor() }); ok {
-		pclass.set_anchor = (*[0]byte)(C._gotk4_gtk3_TextViewClass_set_anchor)
+		o := pclass.StructFieldOffset("set_anchor")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TextViewClass_set_anchor)
 	}
 
 	if _, ok := goval.(interface{ ToggleOverwrite() }); ok {
-		pclass.toggle_overwrite = (*[0]byte)(C._gotk4_gtk3_TextViewClass_toggle_overwrite)
+		o := pclass.StructFieldOffset("toggle_overwrite")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TextViewClass_toggle_overwrite)
 	}
 }
 

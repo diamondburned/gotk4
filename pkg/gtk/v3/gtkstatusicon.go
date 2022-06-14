@@ -134,46 +134,51 @@ func classInitStatusIconner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkStatusIconClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkStatusIconClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "StatusIconClass")
 
 	if _, ok := goval.(interface{ Activate() }); ok {
-		pclass.activate = (*[0]byte)(C._gotk4_gtk3_StatusIconClass_activate)
+		o := pclass.StructFieldOffset("activate")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_StatusIconClass_activate)
 	}
 
 	if _, ok := goval.(interface {
 		ButtonPressEvent(event *gdk.EventButton) bool
 	}); ok {
-		pclass.button_press_event = (*[0]byte)(C._gotk4_gtk3_StatusIconClass_button_press_event)
+		o := pclass.StructFieldOffset("button_press_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_StatusIconClass_button_press_event)
 	}
 
 	if _, ok := goval.(interface {
 		ButtonReleaseEvent(event *gdk.EventButton) bool
 	}); ok {
-		pclass.button_release_event = (*[0]byte)(C._gotk4_gtk3_StatusIconClass_button_release_event)
+		o := pclass.StructFieldOffset("button_release_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_StatusIconClass_button_release_event)
 	}
 
 	if _, ok := goval.(interface {
 		PopupMenu(button, activateTime uint32)
 	}); ok {
-		pclass.popup_menu = (*[0]byte)(C._gotk4_gtk3_StatusIconClass_popup_menu)
+		o := pclass.StructFieldOffset("popup_menu")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_StatusIconClass_popup_menu)
 	}
 
 	if _, ok := goval.(interface {
 		QueryTooltip(x, y int32, keyboardMode bool, tooltip *Tooltip) bool
 	}); ok {
-		pclass.query_tooltip = (*[0]byte)(C._gotk4_gtk3_StatusIconClass_query_tooltip)
+		o := pclass.StructFieldOffset("query_tooltip")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_StatusIconClass_query_tooltip)
 	}
 
 	if _, ok := goval.(interface {
 		ScrollEvent(event *gdk.EventScroll) bool
 	}); ok {
-		pclass.scroll_event = (*[0]byte)(C._gotk4_gtk3_StatusIconClass_scroll_event)
+		o := pclass.StructFieldOffset("scroll_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_StatusIconClass_scroll_event)
 	}
 
 	if _, ok := goval.(interface{ SizeChanged(size int32) bool }); ok {
-		pclass.size_changed = (*[0]byte)(C._gotk4_gtk3_StatusIconClass_size_changed)
+		o := pclass.StructFieldOffset("size_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_StatusIconClass_size_changed)
 	}
 }
 

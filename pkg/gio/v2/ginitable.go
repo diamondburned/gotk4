@@ -121,8 +121,8 @@ type Initabler interface {
 var _ Initabler = (*Initable)(nil)
 
 func ifaceInitInitabler(gifacePtr, data C.gpointer) {
-	iface := (*C.GInitableIface)(unsafe.Pointer(gifacePtr))
-	iface.init = (*[0]byte)(C._gotk4_gio2_InitableIface_init)
+	iface := girepository.MustFind("Gio", "InitableIface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("init"))) = unsafe.Pointer(C._gotk4_gio2_InitableIface_init)
 }
 
 //export _gotk4_gio2_InitableIface_init

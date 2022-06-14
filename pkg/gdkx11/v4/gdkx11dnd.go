@@ -24,10 +24,6 @@ func init() {
 	})
 }
 
-// X11DragOverrider contains methods that are overridable.
-type X11DragOverrider interface {
-}
-
 type X11Drag struct {
 	_ [0]func() // equal guard
 	gdk.Drag
@@ -36,14 +32,6 @@ type X11Drag struct {
 var (
 	_ gdk.Dragger = (*X11Drag)(nil)
 )
-
-func classInitX11Dragger(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapX11Drag(obj *coreglib.Object) *X11Drag {
 	return &X11Drag{

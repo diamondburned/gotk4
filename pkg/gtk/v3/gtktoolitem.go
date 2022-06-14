@@ -70,16 +70,16 @@ func classInitToolItemmer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkToolItemClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkToolItemClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "ToolItemClass")
 
 	if _, ok := goval.(interface{ CreateMenuProxy() bool }); ok {
-		pclass.create_menu_proxy = (*[0]byte)(C._gotk4_gtk3_ToolItemClass_create_menu_proxy)
+		o := pclass.StructFieldOffset("create_menu_proxy")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ToolItemClass_create_menu_proxy)
 	}
 
 	if _, ok := goval.(interface{ ToolbarReconfigured() }); ok {
-		pclass.toolbar_reconfigured = (*[0]byte)(C._gotk4_gtk3_ToolItemClass_toolbar_reconfigured)
+		o := pclass.StructFieldOffset("toolbar_reconfigured")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ToolItemClass_toolbar_reconfigured)
 	}
 }
 

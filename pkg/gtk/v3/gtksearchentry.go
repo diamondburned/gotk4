@@ -84,24 +84,26 @@ func classInitSearchEntrier(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkSearchEntryClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkSearchEntryClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "SearchEntryClass")
 
 	if _, ok := goval.(interface{ NextMatch() }); ok {
-		pclass.next_match = (*[0]byte)(C._gotk4_gtk3_SearchEntryClass_next_match)
+		o := pclass.StructFieldOffset("next_match")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_SearchEntryClass_next_match)
 	}
 
 	if _, ok := goval.(interface{ PreviousMatch() }); ok {
-		pclass.previous_match = (*[0]byte)(C._gotk4_gtk3_SearchEntryClass_previous_match)
+		o := pclass.StructFieldOffset("previous_match")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_SearchEntryClass_previous_match)
 	}
 
 	if _, ok := goval.(interface{ SearchChanged() }); ok {
-		pclass.search_changed = (*[0]byte)(C._gotk4_gtk3_SearchEntryClass_search_changed)
+		o := pclass.StructFieldOffset("search_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_SearchEntryClass_search_changed)
 	}
 
 	if _, ok := goval.(interface{ StopSearch() }); ok {
-		pclass.stop_search = (*[0]byte)(C._gotk4_gtk3_SearchEntryClass_stop_search)
+		o := pclass.StructFieldOffset("stop_search")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_SearchEntryClass_stop_search)
 	}
 }
 

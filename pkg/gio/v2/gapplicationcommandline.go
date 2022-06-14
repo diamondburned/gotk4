@@ -142,20 +142,21 @@ func classInitApplicationCommandLiner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GApplicationCommandLineClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GApplicationCommandLineClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "ApplicationCommandLineClass")
 
 	if _, ok := goval.(interface{ Stdin() InputStreamer }); ok {
-		pclass.get_stdin = (*[0]byte)(C._gotk4_gio2_ApplicationCommandLineClass_get_stdin)
+		o := pclass.StructFieldOffset("get_stdin")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ApplicationCommandLineClass_get_stdin)
 	}
 
 	if _, ok := goval.(interface{ PrintLiteral(message string) }); ok {
-		pclass.print_literal = (*[0]byte)(C._gotk4_gio2_ApplicationCommandLineClass_print_literal)
+		o := pclass.StructFieldOffset("print_literal")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ApplicationCommandLineClass_print_literal)
 	}
 
 	if _, ok := goval.(interface{ PrinterrLiteral(message string) }); ok {
-		pclass.printerr_literal = (*[0]byte)(C._gotk4_gio2_ApplicationCommandLineClass_printerr_literal)
+		o := pclass.StructFieldOffset("printerr_literal")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ApplicationCommandLineClass_printerr_literal)
 	}
 }
 

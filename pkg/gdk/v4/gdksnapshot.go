@@ -23,10 +23,6 @@ func init() {
 	})
 }
 
-// SnapshotOverrider contains methods that are overridable.
-type SnapshotOverrider interface {
-}
-
 // Snapshot: base type for snapshot operations.
 //
 // The subclass of GdkSnapshot used by GTK is gtk.Snapshot.
@@ -49,14 +45,6 @@ type Snapshotter interface {
 }
 
 var _ Snapshotter = (*Snapshot)(nil)
-
-func classInitSnapshotter(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapSnapshot(obj *coreglib.Object) *Snapshot {
 	return &Snapshot{

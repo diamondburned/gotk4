@@ -100,12 +100,11 @@ func classInitLevelBarrer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkLevelBarClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkLevelBarClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "LevelBarClass")
 
 	if _, ok := goval.(interface{ OffsetChanged(name string) }); ok {
-		pclass.offset_changed = (*[0]byte)(C._gotk4_gtk3_LevelBarClass_offset_changed)
+		o := pclass.StructFieldOffset("offset_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_LevelBarClass_offset_changed)
 	}
 }
 

@@ -100,8 +100,8 @@ type TLSClientConnectioner interface {
 var _ TLSClientConnectioner = (*TLSClientConnection)(nil)
 
 func ifaceInitTLSClientConnectioner(gifacePtr, data C.gpointer) {
-	iface := (*C.GTlsClientConnectionInterface)(unsafe.Pointer(gifacePtr))
-	iface.copy_session_state = (*[0]byte)(C._gotk4_gio2_TlsClientConnectionInterface_copy_session_state)
+	iface := girepository.MustFind("Gio", "TlsClientConnectionInterface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("copy_session_state"))) = unsafe.Pointer(C._gotk4_gio2_TlsClientConnectionInterface_copy_session_state)
 }
 
 //export _gotk4_gio2_TlsClientConnectionInterface_copy_session_state

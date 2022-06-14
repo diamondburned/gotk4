@@ -160,32 +160,35 @@ func classInitEntryCompletioner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkEntryCompletionClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkEntryCompletionClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "EntryCompletionClass")
 
 	if _, ok := goval.(interface{ ActionActivated(index_ int32) }); ok {
-		pclass.action_activated = (*[0]byte)(C._gotk4_gtk3_EntryCompletionClass_action_activated)
+		o := pclass.StructFieldOffset("action_activated")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_EntryCompletionClass_action_activated)
 	}
 
 	if _, ok := goval.(interface {
 		CursorOnMatch(model TreeModeller, iter *TreeIter) bool
 	}); ok {
-		pclass.cursor_on_match = (*[0]byte)(C._gotk4_gtk3_EntryCompletionClass_cursor_on_match)
+		o := pclass.StructFieldOffset("cursor_on_match")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_EntryCompletionClass_cursor_on_match)
 	}
 
 	if _, ok := goval.(interface{ InsertPrefix(prefix string) bool }); ok {
-		pclass.insert_prefix = (*[0]byte)(C._gotk4_gtk3_EntryCompletionClass_insert_prefix)
+		o := pclass.StructFieldOffset("insert_prefix")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_EntryCompletionClass_insert_prefix)
 	}
 
 	if _, ok := goval.(interface {
 		MatchSelected(model TreeModeller, iter *TreeIter) bool
 	}); ok {
-		pclass.match_selected = (*[0]byte)(C._gotk4_gtk3_EntryCompletionClass_match_selected)
+		o := pclass.StructFieldOffset("match_selected")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_EntryCompletionClass_match_selected)
 	}
 
 	if _, ok := goval.(interface{ NoMatches() }); ok {
-		pclass.no_matches = (*[0]byte)(C._gotk4_gtk3_EntryCompletionClass_no_matches)
+		o := pclass.StructFieldOffset("no_matches")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_EntryCompletionClass_no_matches)
 	}
 }
 

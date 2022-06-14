@@ -268,12 +268,12 @@ type Paintabler interface {
 var _ Paintabler = (*Paintable)(nil)
 
 func ifaceInitPaintabler(gifacePtr, data C.gpointer) {
-	iface := (*C.GdkPaintableInterface)(unsafe.Pointer(gifacePtr))
-	iface.get_current_image = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_get_current_image)
-	iface.get_intrinsic_aspect_ratio = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_get_intrinsic_aspect_ratio)
-	iface.get_intrinsic_height = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_get_intrinsic_height)
-	iface.get_intrinsic_width = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_get_intrinsic_width)
-	iface.snapshot = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_snapshot)
+	iface := girepository.MustFind("Gdk", "PaintableInterface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_current_image"))) = unsafe.Pointer(C._gotk4_gdk4_PaintableInterface_get_current_image)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_intrinsic_aspect_ratio"))) = unsafe.Pointer(C._gotk4_gdk4_PaintableInterface_get_intrinsic_aspect_ratio)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_intrinsic_height"))) = unsafe.Pointer(C._gotk4_gdk4_PaintableInterface_get_intrinsic_height)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_intrinsic_width"))) = unsafe.Pointer(C._gotk4_gdk4_PaintableInterface_get_intrinsic_width)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("snapshot"))) = unsafe.Pointer(C._gotk4_gdk4_PaintableInterface_snapshot)
 }
 
 //export _gotk4_gdk4_PaintableInterface_get_current_image

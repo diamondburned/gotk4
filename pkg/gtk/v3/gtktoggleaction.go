@@ -53,12 +53,11 @@ func classInitToggleActioner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkToggleActionClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkToggleActionClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "ToggleActionClass")
 
 	if _, ok := goval.(interface{ Toggled() }); ok {
-		pclass.toggled = (*[0]byte)(C._gotk4_gtk3_ToggleActionClass_toggled)
+		o := pclass.StructFieldOffset("toggled")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ToggleActionClass_toggled)
 	}
 }
 

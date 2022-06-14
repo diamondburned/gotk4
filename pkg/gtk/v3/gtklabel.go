@@ -79,20 +79,21 @@ func classInitLabeller(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkLabelClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkLabelClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "LabelClass")
 
 	if _, ok := goval.(interface{ ActivateLink(uri string) bool }); ok {
-		pclass.activate_link = (*[0]byte)(C._gotk4_gtk3_LabelClass_activate_link)
+		o := pclass.StructFieldOffset("activate_link")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_LabelClass_activate_link)
 	}
 
 	if _, ok := goval.(interface{ CopyClipboard() }); ok {
-		pclass.copy_clipboard = (*[0]byte)(C._gotk4_gtk3_LabelClass_copy_clipboard)
+		o := pclass.StructFieldOffset("copy_clipboard")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_LabelClass_copy_clipboard)
 	}
 
 	if _, ok := goval.(interface{ PopulatePopup(menu *Menu) }); ok {
-		pclass.populate_popup = (*[0]byte)(C._gotk4_gtk3_LabelClass_populate_popup)
+		o := pclass.StructFieldOffset("populate_popup")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_LabelClass_populate_popup)
 	}
 }
 

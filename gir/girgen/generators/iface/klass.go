@@ -8,7 +8,6 @@ import (
 	"github.com/diamondburned/gotk4/gir/girgen/generators/callback"
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
 	"github.com/diamondburned/gotk4/gir/girgen/pen"
-	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 )
 
@@ -36,14 +35,8 @@ type TypeStructMethod struct {
 }
 
 func newTypeStruct(g *Generator, result *gir.TypeFindResult) *TypeStruct {
-	record, ok := result.Type.(*gir.Record)
-	if !ok {
-		g.Logln(logger.Skip, "type-struct skipped since not *gir.Record")
-		return nil
-	}
-
 	ts := &TypeStruct{
-		Record: record,
+		Record: result.Type.(*gir.Record),
 		ns:     result.NamespaceFindResult,
 		igen:   g,
 	}
@@ -91,11 +84,6 @@ func (ts *TypeStruct) newTypeStructMethod(virtual *gir.VirtualMethod, vmethod *M
 	method := TypeStructMethod{
 		FieldName: field.Name,
 		Go:        vmethod,
-	}
-
-	_, isKeyword := strcases.GoKeywords[method.FieldName]
-	if isKeyword {
-		method.FieldName = "_" + method.FieldName
 	}
 
 	method.Header.NeedsExternGLib()

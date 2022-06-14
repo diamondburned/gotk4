@@ -123,32 +123,35 @@ func classInitFileOutputStreamer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GFileOutputStreamClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GFileOutputStreamClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "FileOutputStreamClass")
 
 	if _, ok := goval.(interface{ CanSeek() bool }); ok {
-		pclass.can_seek = (*[0]byte)(C._gotk4_gio2_FileOutputStreamClass_can_seek)
+		o := pclass.StructFieldOffset("can_seek")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileOutputStreamClass_can_seek)
 	}
 
 	if _, ok := goval.(interface{ CanTruncate() bool }); ok {
-		pclass.can_truncate = (*[0]byte)(C._gotk4_gio2_FileOutputStreamClass_can_truncate)
+		o := pclass.StructFieldOffset("can_truncate")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileOutputStreamClass_can_truncate)
 	}
 
 	if _, ok := goval.(interface{ ETag() string }); ok {
-		pclass.get_etag = (*[0]byte)(C._gotk4_gio2_FileOutputStreamClass_get_etag)
+		o := pclass.StructFieldOffset("get_etag")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileOutputStreamClass_get_etag)
 	}
 
 	if _, ok := goval.(interface {
 		QueryInfo(ctx context.Context, attributes string) (*FileInfo, error)
 	}); ok {
-		pclass.query_info = (*[0]byte)(C._gotk4_gio2_FileOutputStreamClass_query_info)
+		o := pclass.StructFieldOffset("query_info")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileOutputStreamClass_query_info)
 	}
 
 	if _, ok := goval.(interface {
 		QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
 	}); ok {
-		pclass.query_info_finish = (*[0]byte)(C._gotk4_gio2_FileOutputStreamClass_query_info_finish)
+		o := pclass.StructFieldOffset("query_info_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileOutputStreamClass_query_info_finish)
 	}
 }
 

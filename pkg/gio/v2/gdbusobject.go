@@ -107,12 +107,12 @@ type DBusObjector interface {
 var _ DBusObjector = (*DBusObject)(nil)
 
 func ifaceInitDBusObjector(gifacePtr, data C.gpointer) {
-	iface := (*C.GDBusObjectIface)(unsafe.Pointer(gifacePtr))
-	iface.get_interface = (*[0]byte)(C._gotk4_gio2_DBusObjectIface_get_interface)
-	iface.get_interfaces = (*[0]byte)(C._gotk4_gio2_DBusObjectIface_get_interfaces)
-	iface.get_object_path = (*[0]byte)(C._gotk4_gio2_DBusObjectIface_get_object_path)
-	iface.interface_added = (*[0]byte)(C._gotk4_gio2_DBusObjectIface_interface_added)
-	iface.interface_removed = (*[0]byte)(C._gotk4_gio2_DBusObjectIface_interface_removed)
+	iface := girepository.MustFind("Gio", "DBusObjectIface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_interface"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectIface_get_interface)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_interfaces"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectIface_get_interfaces)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_object_path"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectIface_get_object_path)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("interface_added"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectIface_interface_added)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("interface_removed"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectIface_interface_removed)
 }
 
 //export _gotk4_gio2_DBusObjectIface_get_interface

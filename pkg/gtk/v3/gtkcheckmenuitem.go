@@ -70,16 +70,16 @@ func classInitCheckMenuItemmer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkCheckMenuItemClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkCheckMenuItemClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "CheckMenuItemClass")
 
 	if _, ok := goval.(interface{ DrawIndicator(cr *cairo.Context) }); ok {
-		pclass.draw_indicator = (*[0]byte)(C._gotk4_gtk3_CheckMenuItemClass_draw_indicator)
+		o := pclass.StructFieldOffset("draw_indicator")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CheckMenuItemClass_draw_indicator)
 	}
 
 	if _, ok := goval.(interface{ Toggled() }); ok {
-		pclass.toggled = (*[0]byte)(C._gotk4_gtk3_CheckMenuItemClass_toggled)
+		o := pclass.StructFieldOffset("toggled")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CheckMenuItemClass_toggled)
 	}
 }
 

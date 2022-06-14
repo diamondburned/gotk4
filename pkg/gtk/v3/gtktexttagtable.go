@@ -103,22 +103,23 @@ func classInitTextTagTabler(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkTextTagTableClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkTextTagTableClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "TextTagTableClass")
 
 	if _, ok := goval.(interface{ TagAdded(tag *TextTag) }); ok {
-		pclass.tag_added = (*[0]byte)(C._gotk4_gtk3_TextTagTableClass_tag_added)
+		o := pclass.StructFieldOffset("tag_added")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TextTagTableClass_tag_added)
 	}
 
 	if _, ok := goval.(interface {
 		TagChanged(tag *TextTag, sizeChanged bool)
 	}); ok {
-		pclass.tag_changed = (*[0]byte)(C._gotk4_gtk3_TextTagTableClass_tag_changed)
+		o := pclass.StructFieldOffset("tag_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TextTagTableClass_tag_changed)
 	}
 
 	if _, ok := goval.(interface{ TagRemoved(tag *TextTag) }); ok {
-		pclass.tag_removed = (*[0]byte)(C._gotk4_gtk3_TextTagTableClass_tag_removed)
+		o := pclass.StructFieldOffset("tag_removed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TextTagTableClass_tag_removed)
 	}
 }
 

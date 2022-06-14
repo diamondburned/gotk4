@@ -120,10 +120,10 @@ type Iconner interface {
 var _ Iconner = (*Icon)(nil)
 
 func ifaceInitIconner(gifacePtr, data C.gpointer) {
-	iface := (*C.GIconIface)(unsafe.Pointer(gifacePtr))
-	iface.equal = (*[0]byte)(C._gotk4_gio2_IconIface_equal)
-	iface.hash = (*[0]byte)(C._gotk4_gio2_IconIface_hash)
-	iface.serialize = (*[0]byte)(C._gotk4_gio2_IconIface_serialize)
+	iface := girepository.MustFind("Gio", "IconIface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("equal"))) = unsafe.Pointer(C._gotk4_gio2_IconIface_equal)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("hash"))) = unsafe.Pointer(C._gotk4_gio2_IconIface_hash)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("serialize"))) = unsafe.Pointer(C._gotk4_gio2_IconIface_serialize)
 }
 
 //export _gotk4_gio2_IconIface_equal

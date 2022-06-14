@@ -280,54 +280,60 @@ func classInitResolverer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GResolverClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GResolverClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "ResolverClass")
 
 	if _, ok := goval.(interface {
 		LookupByAddress(ctx context.Context, address *InetAddress) (string, error)
 	}); ok {
-		pclass.lookup_by_address = (*[0]byte)(C._gotk4_gio2_ResolverClass_lookup_by_address)
+		o := pclass.StructFieldOffset("lookup_by_address")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ResolverClass_lookup_by_address)
 	}
 
 	if _, ok := goval.(interface {
 		LookupByAddressFinish(result AsyncResulter) (string, error)
 	}); ok {
-		pclass.lookup_by_address_finish = (*[0]byte)(C._gotk4_gio2_ResolverClass_lookup_by_address_finish)
+		o := pclass.StructFieldOffset("lookup_by_address_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ResolverClass_lookup_by_address_finish)
 	}
 
 	if _, ok := goval.(interface {
 		LookupByName(ctx context.Context, hostname string) ([]*InetAddress, error)
 	}); ok {
-		pclass.lookup_by_name = (*[0]byte)(C._gotk4_gio2_ResolverClass_lookup_by_name)
+		o := pclass.StructFieldOffset("lookup_by_name")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ResolverClass_lookup_by_name)
 	}
 
 	if _, ok := goval.(interface {
 		LookupByNameFinish(result AsyncResulter) ([]*InetAddress, error)
 	}); ok {
-		pclass.lookup_by_name_finish = (*[0]byte)(C._gotk4_gio2_ResolverClass_lookup_by_name_finish)
+		o := pclass.StructFieldOffset("lookup_by_name_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ResolverClass_lookup_by_name_finish)
 	}
 
 	if _, ok := goval.(interface {
 		LookupByNameWithFlagsFinish(result AsyncResulter) ([]*InetAddress, error)
 	}); ok {
-		pclass.lookup_by_name_with_flags_finish = (*[0]byte)(C._gotk4_gio2_ResolverClass_lookup_by_name_with_flags_finish)
+		o := pclass.StructFieldOffset("lookup_by_name_with_flags_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ResolverClass_lookup_by_name_with_flags_finish)
 	}
 
 	if _, ok := goval.(interface {
 		LookupRecordsFinish(result AsyncResulter) ([]*glib.Variant, error)
 	}); ok {
-		pclass.lookup_records_finish = (*[0]byte)(C._gotk4_gio2_ResolverClass_lookup_records_finish)
+		o := pclass.StructFieldOffset("lookup_records_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ResolverClass_lookup_records_finish)
 	}
 
 	if _, ok := goval.(interface {
 		LookupServiceFinish(result AsyncResulter) ([]*SrvTarget, error)
 	}); ok {
-		pclass.lookup_service_finish = (*[0]byte)(C._gotk4_gio2_ResolverClass_lookup_service_finish)
+		o := pclass.StructFieldOffset("lookup_service_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ResolverClass_lookup_service_finish)
 	}
 
 	if _, ok := goval.(interface{ Reload() }); ok {
-		pclass.reload = (*[0]byte)(C._gotk4_gio2_ResolverClass_reload)
+		o := pclass.StructFieldOffset("reload")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ResolverClass_reload)
 	}
 }
 

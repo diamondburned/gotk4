@@ -128,38 +128,42 @@ func classInitEntryBufferer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkEntryBufferClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkEntryBufferClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "EntryBufferClass")
 
 	if _, ok := goval.(interface {
 		DeleteText(position, nChars uint32) uint32
 	}); ok {
-		pclass.delete_text = (*[0]byte)(C._gotk4_gtk3_EntryBufferClass_delete_text)
+		o := pclass.StructFieldOffset("delete_text")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_EntryBufferClass_delete_text)
 	}
 
 	if _, ok := goval.(interface{ DeletedText(position, nChars uint32) }); ok {
-		pclass.deleted_text = (*[0]byte)(C._gotk4_gtk3_EntryBufferClass_deleted_text)
+		o := pclass.StructFieldOffset("deleted_text")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_EntryBufferClass_deleted_text)
 	}
 
 	if _, ok := goval.(interface{ Length() uint32 }); ok {
-		pclass.get_length = (*[0]byte)(C._gotk4_gtk3_EntryBufferClass_get_length)
+		o := pclass.StructFieldOffset("get_length")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_EntryBufferClass_get_length)
 	}
 
 	if _, ok := goval.(interface{ Text(nBytes *uint) string }); ok {
-		pclass.get_text = (*[0]byte)(C._gotk4_gtk3_EntryBufferClass_get_text)
+		o := pclass.StructFieldOffset("get_text")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_EntryBufferClass_get_text)
 	}
 
 	if _, ok := goval.(interface {
 		InsertText(position uint32, chars string, nChars uint32) uint32
 	}); ok {
-		pclass.insert_text = (*[0]byte)(C._gotk4_gtk3_EntryBufferClass_insert_text)
+		o := pclass.StructFieldOffset("insert_text")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_EntryBufferClass_insert_text)
 	}
 
 	if _, ok := goval.(interface {
 		InsertedText(position uint32, chars string, nChars uint32)
 	}); ok {
-		pclass.inserted_text = (*[0]byte)(C._gotk4_gtk3_EntryBufferClass_inserted_text)
+		o := pclass.StructFieldOffset("inserted_text")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_EntryBufferClass_inserted_text)
 	}
 }
 

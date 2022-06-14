@@ -61,12 +61,11 @@ func classInitInetAddresser(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GInetAddressClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GInetAddressClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "InetAddressClass")
 
 	if _, ok := goval.(interface{ String() string }); ok {
-		pclass.to_string = (*[0]byte)(C._gotk4_gio2_InetAddressClass_to_string)
+		o := pclass.StructFieldOffset("to_string")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_InetAddressClass_to_string)
 	}
 }
 

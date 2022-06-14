@@ -39,6 +39,18 @@ var recordNeedCDeclSuffixes = []string{
 	"Class",
 }
 
+// RecordIsTypeStruct returns true if the record is a record specifically made
+// to implement a class or interface. It is exposed as an implementation detail
+// for GLib's type system.
+func RecordIsTypeStruct(name string) bool {
+	for _, suffix := range recordNeedCDeclSuffixes {
+		if strings.HasSuffix(name, suffix) {
+			return true
+		}
+	}
+	return false
+}
+
 var recordTmpl = gotmpl.NewGoTemplate(`
 	{{ $impl := UnexportPascal .GoName }}
 

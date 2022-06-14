@@ -94,16 +94,16 @@ func classInitShortcutsWindower(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkShortcutsWindowClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkShortcutsWindowClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "ShortcutsWindowClass")
 
 	if _, ok := goval.(interface{ Close() }); ok {
-		pclass.close = (*[0]byte)(C._gotk4_gtk3_ShortcutsWindowClass_close)
+		o := pclass.StructFieldOffset("close")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ShortcutsWindowClass_close)
 	}
 
 	if _, ok := goval.(interface{ Search() }); ok {
-		pclass.search = (*[0]byte)(C._gotk4_gtk3_ShortcutsWindowClass_search)
+		o := pclass.StructFieldOffset("search")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ShortcutsWindowClass_search)
 	}
 }
 

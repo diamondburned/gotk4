@@ -162,42 +162,48 @@ func classInitVFSer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GVfsClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GVfsClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "VfsClass")
 
 	if _, ok := goval.(interface {
 		AddWritableNamespaces(list *FileAttributeInfoList)
 	}); ok {
-		pclass.add_writable_namespaces = (*[0]byte)(C._gotk4_gio2_VfsClass_add_writable_namespaces)
+		o := pclass.StructFieldOffset("add_writable_namespaces")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VfsClass_add_writable_namespaces)
 	}
 
 	if _, ok := goval.(interface{ FileForPath(path string) *File }); ok {
-		pclass.get_file_for_path = (*[0]byte)(C._gotk4_gio2_VfsClass_get_file_for_path)
+		o := pclass.StructFieldOffset("get_file_for_path")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VfsClass_get_file_for_path)
 	}
 
 	if _, ok := goval.(interface{ FileForURI(uri string) *File }); ok {
-		pclass.get_file_for_uri = (*[0]byte)(C._gotk4_gio2_VfsClass_get_file_for_uri)
+		o := pclass.StructFieldOffset("get_file_for_uri")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VfsClass_get_file_for_uri)
 	}
 
 	if _, ok := goval.(interface{ SupportedURISchemes() []string }); ok {
-		pclass.get_supported_uri_schemes = (*[0]byte)(C._gotk4_gio2_VfsClass_get_supported_uri_schemes)
+		o := pclass.StructFieldOffset("get_supported_uri_schemes")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VfsClass_get_supported_uri_schemes)
 	}
 
 	if _, ok := goval.(interface{ IsActive() bool }); ok {
-		pclass.is_active = (*[0]byte)(C._gotk4_gio2_VfsClass_is_active)
+		o := pclass.StructFieldOffset("is_active")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VfsClass_is_active)
 	}
 
 	if _, ok := goval.(interface{ LocalFileMoved(source, dest string) }); ok {
-		pclass.local_file_moved = (*[0]byte)(C._gotk4_gio2_VfsClass_local_file_moved)
+		o := pclass.StructFieldOffset("local_file_moved")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VfsClass_local_file_moved)
 	}
 
 	if _, ok := goval.(interface{ LocalFileRemoved(filename string) }); ok {
-		pclass.local_file_removed = (*[0]byte)(C._gotk4_gio2_VfsClass_local_file_removed)
+		o := pclass.StructFieldOffset("local_file_removed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VfsClass_local_file_removed)
 	}
 
 	if _, ok := goval.(interface{ ParseName(parseName string) *File }); ok {
-		pclass.parse_name = (*[0]byte)(C._gotk4_gio2_VfsClass_parse_name)
+		o := pclass.StructFieldOffset("parse_name")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_VfsClass_parse_name)
 	}
 }
 

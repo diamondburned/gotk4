@@ -66,12 +66,11 @@ func classInitPlugger(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkPlugClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkPlugClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "PlugClass")
 
 	if _, ok := goval.(interface{ Embedded() }); ok {
-		pclass.embedded = (*[0]byte)(C._gotk4_gtk3_PlugClass_embedded)
+		o := pclass.StructFieldOffset("embedded")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_PlugClass_embedded)
 	}
 }
 

@@ -29,10 +29,6 @@ func init() {
 	})
 }
 
-// RendererOverrider contains methods that are overridable.
-type RendererOverrider interface {
-}
-
 // Renderer: GskRenderer is a class that renders a scene graph defined via a
 // tree of gsk.RenderNode instances.
 //
@@ -61,14 +57,6 @@ type Rendererer interface {
 }
 
 var _ Rendererer = (*Renderer)(nil)
-
-func classInitRendererer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapRenderer(obj *coreglib.Object) *Renderer {
 	return &Renderer{

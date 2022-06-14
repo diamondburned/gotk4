@@ -136,11 +136,11 @@ type Actionabler interface {
 var _ Actionabler = (*Actionable)(nil)
 
 func ifaceInitActionabler(gifacePtr, data C.gpointer) {
-	iface := (*C.GtkActionableInterface)(unsafe.Pointer(gifacePtr))
-	iface.get_action_name = (*[0]byte)(C._gotk4_gtk4_ActionableInterface_get_action_name)
-	iface.get_action_target_value = (*[0]byte)(C._gotk4_gtk4_ActionableInterface_get_action_target_value)
-	iface.set_action_name = (*[0]byte)(C._gotk4_gtk4_ActionableInterface_set_action_name)
-	iface.set_action_target_value = (*[0]byte)(C._gotk4_gtk4_ActionableInterface_set_action_target_value)
+	iface := girepository.MustFind("Gtk", "ActionableInterface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_action_name"))) = unsafe.Pointer(C._gotk4_gtk4_ActionableInterface_get_action_name)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_action_target_value"))) = unsafe.Pointer(C._gotk4_gtk4_ActionableInterface_get_action_target_value)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("set_action_name"))) = unsafe.Pointer(C._gotk4_gtk4_ActionableInterface_set_action_name)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("set_action_target_value"))) = unsafe.Pointer(C._gotk4_gtk4_ActionableInterface_set_action_target_value)
 }
 
 //export _gotk4_gtk4_ActionableInterface_get_action_name

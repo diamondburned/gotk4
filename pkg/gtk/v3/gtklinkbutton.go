@@ -72,12 +72,11 @@ func classInitLinkButtonner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkLinkButtonClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkLinkButtonClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "LinkButtonClass")
 
 	if _, ok := goval.(interface{ ActivateLink() bool }); ok {
-		pclass.activate_link = (*[0]byte)(C._gotk4_gtk3_LinkButtonClass_activate_link)
+		o := pclass.StructFieldOffset("activate_link")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_LinkButtonClass_activate_link)
 	}
 }
 

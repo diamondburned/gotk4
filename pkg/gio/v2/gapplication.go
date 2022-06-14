@@ -248,80 +248,92 @@ func classInitApplicationer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GApplicationClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GApplicationClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "ApplicationClass")
 
 	if _, ok := goval.(interface{ Activate() }); ok {
-		pclass.activate = (*[0]byte)(C._gotk4_gio2_ApplicationClass_activate)
+		o := pclass.StructFieldOffset("activate")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ApplicationClass_activate)
 	}
 
 	if _, ok := goval.(interface {
 		AddPlatformData(builder *glib.VariantBuilder)
 	}); ok {
-		pclass.add_platform_data = (*[0]byte)(C._gotk4_gio2_ApplicationClass_add_platform_data)
+		o := pclass.StructFieldOffset("add_platform_data")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ApplicationClass_add_platform_data)
 	}
 
 	if _, ok := goval.(interface {
 		AfterEmit(platformData *glib.Variant)
 	}); ok {
-		pclass.after_emit = (*[0]byte)(C._gotk4_gio2_ApplicationClass_after_emit)
+		o := pclass.StructFieldOffset("after_emit")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ApplicationClass_after_emit)
 	}
 
 	if _, ok := goval.(interface {
 		BeforeEmit(platformData *glib.Variant)
 	}); ok {
-		pclass.before_emit = (*[0]byte)(C._gotk4_gio2_ApplicationClass_before_emit)
+		o := pclass.StructFieldOffset("before_emit")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ApplicationClass_before_emit)
 	}
 
 	if _, ok := goval.(interface {
 		CommandLine(commandLine *ApplicationCommandLine) int32
 	}); ok {
-		pclass.command_line = (*[0]byte)(C._gotk4_gio2_ApplicationClass_command_line)
+		o := pclass.StructFieldOffset("command_line")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ApplicationClass_command_line)
 	}
 
 	if _, ok := goval.(interface {
 		DBusRegister(connection *DBusConnection, objectPath string) error
 	}); ok {
-		pclass.dbus_register = (*[0]byte)(C._gotk4_gio2_ApplicationClass_dbus_register)
+		o := pclass.StructFieldOffset("dbus_register")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ApplicationClass_dbus_register)
 	}
 
 	if _, ok := goval.(interface {
 		DBusUnregister(connection *DBusConnection, objectPath string)
 	}); ok {
-		pclass.dbus_unregister = (*[0]byte)(C._gotk4_gio2_ApplicationClass_dbus_unregister)
+		o := pclass.StructFieldOffset("dbus_unregister")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ApplicationClass_dbus_unregister)
 	}
 
 	if _, ok := goval.(interface {
 		HandleLocalOptions(options *glib.VariantDict) int32
 	}); ok {
-		pclass.handle_local_options = (*[0]byte)(C._gotk4_gio2_ApplicationClass_handle_local_options)
+		o := pclass.StructFieldOffset("handle_local_options")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ApplicationClass_handle_local_options)
 	}
 
 	if _, ok := goval.(interface{ NameLost() bool }); ok {
-		pclass.name_lost = (*[0]byte)(C._gotk4_gio2_ApplicationClass_name_lost)
+		o := pclass.StructFieldOffset("name_lost")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ApplicationClass_name_lost)
 	}
 
 	if _, ok := goval.(interface {
 		Open(files []Filer, hint string)
 	}); ok {
-		pclass.open = (*[0]byte)(C._gotk4_gio2_ApplicationClass_open)
+		o := pclass.StructFieldOffset("open")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ApplicationClass_open)
 	}
 
 	if _, ok := goval.(interface{ QuitMainloop() }); ok {
-		pclass.quit_mainloop = (*[0]byte)(C._gotk4_gio2_ApplicationClass_quit_mainloop)
+		o := pclass.StructFieldOffset("quit_mainloop")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ApplicationClass_quit_mainloop)
 	}
 
 	if _, ok := goval.(interface{ RunMainloop() }); ok {
-		pclass.run_mainloop = (*[0]byte)(C._gotk4_gio2_ApplicationClass_run_mainloop)
+		o := pclass.StructFieldOffset("run_mainloop")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ApplicationClass_run_mainloop)
 	}
 
 	if _, ok := goval.(interface{ Shutdown() }); ok {
-		pclass.shutdown = (*[0]byte)(C._gotk4_gio2_ApplicationClass_shutdown)
+		o := pclass.StructFieldOffset("shutdown")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ApplicationClass_shutdown)
 	}
 
 	if _, ok := goval.(interface{ Startup() }); ok {
-		pclass.startup = (*[0]byte)(C._gotk4_gio2_ApplicationClass_startup)
+		o := pclass.StructFieldOffset("startup")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_ApplicationClass_startup)
 	}
 }
 

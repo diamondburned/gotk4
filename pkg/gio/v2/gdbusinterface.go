@@ -87,10 +87,10 @@ type DBusInterfacer interface {
 var _ DBusInterfacer = (*DBusInterface)(nil)
 
 func ifaceInitDBusInterfacer(gifacePtr, data C.gpointer) {
-	iface := (*C.GDBusInterfaceIface)(unsafe.Pointer(gifacePtr))
-	iface.dup_object = (*[0]byte)(C._gotk4_gio2_DBusInterfaceIface_dup_object)
-	iface.get_info = (*[0]byte)(C._gotk4_gio2_DBusInterfaceIface_get_info)
-	iface.set_object = (*[0]byte)(C._gotk4_gio2_DBusInterfaceIface_set_object)
+	iface := girepository.MustFind("Gio", "DBusInterfaceIface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("dup_object"))) = unsafe.Pointer(C._gotk4_gio2_DBusInterfaceIface_dup_object)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_info"))) = unsafe.Pointer(C._gotk4_gio2_DBusInterfaceIface_get_info)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("set_object"))) = unsafe.Pointer(C._gotk4_gio2_DBusInterfaceIface_set_object)
 }
 
 //export _gotk4_gio2_DBusInterfaceIface_dup_object

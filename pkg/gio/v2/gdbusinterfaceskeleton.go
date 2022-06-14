@@ -97,26 +97,28 @@ func classInitDBusInterfaceSkeletonner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GDBusInterfaceSkeletonClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GDBusInterfaceSkeletonClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "DBusInterfaceSkeletonClass")
 
 	if _, ok := goval.(interface{ Flush() }); ok {
-		pclass.flush = (*[0]byte)(C._gotk4_gio2_DBusInterfaceSkeletonClass_flush)
+		o := pclass.StructFieldOffset("flush")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_DBusInterfaceSkeletonClass_flush)
 	}
 
 	if _, ok := goval.(interface {
 		GAuthorizeMethod(invocation *DBusMethodInvocation) bool
 	}); ok {
-		pclass.g_authorize_method = (*[0]byte)(C._gotk4_gio2_DBusInterfaceSkeletonClass_g_authorize_method)
+		o := pclass.StructFieldOffset("g_authorize_method")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_DBusInterfaceSkeletonClass_g_authorize_method)
 	}
 
 	if _, ok := goval.(interface{ Info() *DBusInterfaceInfo }); ok {
-		pclass.get_info = (*[0]byte)(C._gotk4_gio2_DBusInterfaceSkeletonClass_get_info)
+		o := pclass.StructFieldOffset("get_info")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_DBusInterfaceSkeletonClass_get_info)
 	}
 
 	if _, ok := goval.(interface{ Properties() *glib.Variant }); ok {
-		pclass.get_properties = (*[0]byte)(C._gotk4_gio2_DBusInterfaceSkeletonClass_get_properties)
+		o := pclass.StructFieldOffset("get_properties")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_DBusInterfaceSkeletonClass_get_properties)
 	}
 }
 

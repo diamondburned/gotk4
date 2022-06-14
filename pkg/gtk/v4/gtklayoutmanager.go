@@ -134,28 +134,30 @@ func classInitLayoutManagerer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkLayoutManagerClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkLayoutManagerClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "LayoutManagerClass")
 
 	if _, ok := goval.(interface {
 		Allocate(widget Widgetter, width, height, baseline int32)
 	}); ok {
-		pclass.allocate = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_allocate)
+		o := pclass.StructFieldOffset("allocate")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_LayoutManagerClass_allocate)
 	}
 
 	if _, ok := goval.(interface {
 		CreateLayoutChild(widget, forChild Widgetter) LayoutChilder
 	}); ok {
-		pclass.create_layout_child = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_create_layout_child)
+		o := pclass.StructFieldOffset("create_layout_child")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_LayoutManagerClass_create_layout_child)
 	}
 
 	if _, ok := goval.(interface{ Root() }); ok {
-		pclass.root = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_root)
+		o := pclass.StructFieldOffset("root")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_LayoutManagerClass_root)
 	}
 
 	if _, ok := goval.(interface{ Unroot() }); ok {
-		pclass.unroot = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_unroot)
+		o := pclass.StructFieldOffset("unroot")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_LayoutManagerClass_unroot)
 	}
 }
 

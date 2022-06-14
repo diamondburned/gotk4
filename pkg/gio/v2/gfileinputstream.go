@@ -95,24 +95,25 @@ func classInitFileInputStreamer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GFileInputStreamClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GFileInputStreamClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "FileInputStreamClass")
 
 	if _, ok := goval.(interface{ CanSeek() bool }); ok {
-		pclass.can_seek = (*[0]byte)(C._gotk4_gio2_FileInputStreamClass_can_seek)
+		o := pclass.StructFieldOffset("can_seek")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileInputStreamClass_can_seek)
 	}
 
 	if _, ok := goval.(interface {
 		QueryInfo(ctx context.Context, attributes string) (*FileInfo, error)
 	}); ok {
-		pclass.query_info = (*[0]byte)(C._gotk4_gio2_FileInputStreamClass_query_info)
+		o := pclass.StructFieldOffset("query_info")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileInputStreamClass_query_info)
 	}
 
 	if _, ok := goval.(interface {
 		QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
 	}); ok {
-		pclass.query_info_finish = (*[0]byte)(C._gotk4_gio2_FileInputStreamClass_query_info_finish)
+		o := pclass.StructFieldOffset("query_info_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_FileInputStreamClass_query_info_finish)
 	}
 }
 

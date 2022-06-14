@@ -142,14 +142,13 @@ func classInitMenuAttributeIterer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GMenuAttributeIterClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GMenuAttributeIterClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "MenuAttributeIterClass")
 
 	if _, ok := goval.(interface {
 		Next() (string, *glib.Variant, bool)
 	}); ok {
-		pclass.get_next = (*[0]byte)(C._gotk4_gio2_MenuAttributeIterClass_get_next)
+		o := pclass.StructFieldOffset("get_next")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_MenuAttributeIterClass_get_next)
 	}
 }
 
@@ -394,14 +393,13 @@ func classInitMenuLinkIterer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GMenuLinkIterClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GMenuLinkIterClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "MenuLinkIterClass")
 
 	if _, ok := goval.(interface {
 		Next() (string, MenuModeller, bool)
 	}); ok {
-		pclass.get_next = (*[0]byte)(C._gotk4_gio2_MenuLinkIterClass_get_next)
+		o := pclass.StructFieldOffset("get_next")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_MenuLinkIterClass_get_next)
 	}
 }
 
@@ -869,52 +867,58 @@ func classInitMenuModeller(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GMenuModelClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GMenuModelClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "MenuModelClass")
 
 	if _, ok := goval.(interface {
 		ItemAttributeValue(itemIndex int32, attribute string, expectedType *glib.VariantType) *glib.Variant
 	}); ok {
-		pclass.get_item_attribute_value = (*[0]byte)(C._gotk4_gio2_MenuModelClass_get_item_attribute_value)
+		o := pclass.StructFieldOffset("get_item_attribute_value")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_MenuModelClass_get_item_attribute_value)
 	}
 
 	if _, ok := goval.(interface {
 		ItemAttributes(itemIndex int32) map[string]*glib.Variant
 	}); ok {
-		pclass.get_item_attributes = (*[0]byte)(C._gotk4_gio2_MenuModelClass_get_item_attributes)
+		o := pclass.StructFieldOffset("get_item_attributes")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_MenuModelClass_get_item_attributes)
 	}
 
 	if _, ok := goval.(interface {
 		ItemLink(itemIndex int32, link string) MenuModeller
 	}); ok {
-		pclass.get_item_link = (*[0]byte)(C._gotk4_gio2_MenuModelClass_get_item_link)
+		o := pclass.StructFieldOffset("get_item_link")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_MenuModelClass_get_item_link)
 	}
 
 	if _, ok := goval.(interface {
 		ItemLinks(itemIndex int32) map[string]MenuModeller
 	}); ok {
-		pclass.get_item_links = (*[0]byte)(C._gotk4_gio2_MenuModelClass_get_item_links)
+		o := pclass.StructFieldOffset("get_item_links")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_MenuModelClass_get_item_links)
 	}
 
 	if _, ok := goval.(interface{ NItems() int32 }); ok {
-		pclass.get_n_items = (*[0]byte)(C._gotk4_gio2_MenuModelClass_get_n_items)
+		o := pclass.StructFieldOffset("get_n_items")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_MenuModelClass_get_n_items)
 	}
 
 	if _, ok := goval.(interface{ IsMutable() bool }); ok {
-		pclass.is_mutable = (*[0]byte)(C._gotk4_gio2_MenuModelClass_is_mutable)
+		o := pclass.StructFieldOffset("is_mutable")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_MenuModelClass_is_mutable)
 	}
 
 	if _, ok := goval.(interface {
 		IterateItemAttributes(itemIndex int32) MenuAttributeIterer
 	}); ok {
-		pclass.iterate_item_attributes = (*[0]byte)(C._gotk4_gio2_MenuModelClass_iterate_item_attributes)
+		o := pclass.StructFieldOffset("iterate_item_attributes")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_MenuModelClass_iterate_item_attributes)
 	}
 
 	if _, ok := goval.(interface {
 		IterateItemLinks(itemIndex int32) MenuLinkIterer
 	}); ok {
-		pclass.iterate_item_links = (*[0]byte)(C._gotk4_gio2_MenuModelClass_iterate_item_links)
+		o := pclass.StructFieldOffset("iterate_item_links")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_MenuModelClass_iterate_item_links)
 	}
 }
 

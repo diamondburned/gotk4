@@ -185,44 +185,51 @@ func classInitHyperlinker(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.AtkHyperlinkClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.AtkHyperlinkClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Atk", "HyperlinkClass")
 
 	if _, ok := goval.(interface{ EndIndex() int32 }); ok {
-		pclass.get_end_index = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_end_index)
+		o := pclass.StructFieldOffset("get_end_index")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_HyperlinkClass_get_end_index)
 	}
 
 	if _, ok := goval.(interface{ NAnchors() int32 }); ok {
-		pclass.get_n_anchors = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_n_anchors)
+		o := pclass.StructFieldOffset("get_n_anchors")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_HyperlinkClass_get_n_anchors)
 	}
 
 	if _, ok := goval.(interface{ GetObject(i int32) *ObjectClass }); ok {
-		pclass.get_object = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_object)
+		o := pclass.StructFieldOffset("get_object")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_HyperlinkClass_get_object)
 	}
 
 	if _, ok := goval.(interface{ StartIndex() int32 }); ok {
-		pclass.get_start_index = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_start_index)
+		o := pclass.StructFieldOffset("get_start_index")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_HyperlinkClass_get_start_index)
 	}
 
 	if _, ok := goval.(interface{ URI(i int32) string }); ok {
-		pclass.get_uri = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_uri)
+		o := pclass.StructFieldOffset("get_uri")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_HyperlinkClass_get_uri)
 	}
 
 	if _, ok := goval.(interface{ IsSelectedLink() bool }); ok {
-		pclass.is_selected_link = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_is_selected_link)
+		o := pclass.StructFieldOffset("is_selected_link")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_HyperlinkClass_is_selected_link)
 	}
 
 	if _, ok := goval.(interface{ IsValid() bool }); ok {
-		pclass.is_valid = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_is_valid)
+		o := pclass.StructFieldOffset("is_valid")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_HyperlinkClass_is_valid)
 	}
 
 	if _, ok := goval.(interface{ LinkActivated() }); ok {
-		pclass.link_activated = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_link_activated)
+		o := pclass.StructFieldOffset("link_activated")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_HyperlinkClass_link_activated)
 	}
 
 	if _, ok := goval.(interface{ LinkState() uint32 }); ok {
-		pclass.link_state = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_link_state)
+		o := pclass.StructFieldOffset("link_state")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_HyperlinkClass_link_state)
 	}
 }
 

@@ -69,9 +69,9 @@ type ShortcutManagerer interface {
 var _ ShortcutManagerer = (*ShortcutManager)(nil)
 
 func ifaceInitShortcutManagerer(gifacePtr, data C.gpointer) {
-	iface := (*C.GtkShortcutManagerInterface)(unsafe.Pointer(gifacePtr))
-	iface.add_controller = (*[0]byte)(C._gotk4_gtk4_ShortcutManagerInterface_add_controller)
-	iface.remove_controller = (*[0]byte)(C._gotk4_gtk4_ShortcutManagerInterface_remove_controller)
+	iface := girepository.MustFind("Gtk", "ShortcutManagerInterface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("add_controller"))) = unsafe.Pointer(C._gotk4_gtk4_ShortcutManagerInterface_add_controller)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("remove_controller"))) = unsafe.Pointer(C._gotk4_gtk4_ShortcutManagerInterface_remove_controller)
 }
 
 //export _gotk4_gtk4_ShortcutManagerInterface_add_controller

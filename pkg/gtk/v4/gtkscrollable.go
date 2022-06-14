@@ -102,8 +102,8 @@ type Scrollabler interface {
 var _ Scrollabler = (*Scrollable)(nil)
 
 func ifaceInitScrollabler(gifacePtr, data C.gpointer) {
-	iface := (*C.GtkScrollableInterface)(unsafe.Pointer(gifacePtr))
-	iface.get_border = (*[0]byte)(C._gotk4_gtk4_ScrollableInterface_get_border)
+	iface := girepository.MustFind("Gtk", "ScrollableInterface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_border"))) = unsafe.Pointer(C._gotk4_gtk4_ScrollableInterface_get_border)
 }
 
 //export _gotk4_gtk4_ScrollableInterface_get_border

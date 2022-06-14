@@ -218,28 +218,31 @@ func classInitWindower(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkWindowClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkWindowClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "WindowClass")
 
 	if _, ok := goval.(interface{ ActivateDefault() }); ok {
-		pclass.activate_default = (*[0]byte)(C._gotk4_gtk3_WindowClass_activate_default)
+		o := pclass.StructFieldOffset("activate_default")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WindowClass_activate_default)
 	}
 
 	if _, ok := goval.(interface{ ActivateFocus() }); ok {
-		pclass.activate_focus = (*[0]byte)(C._gotk4_gtk3_WindowClass_activate_focus)
+		o := pclass.StructFieldOffset("activate_focus")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WindowClass_activate_focus)
 	}
 
 	if _, ok := goval.(interface{ EnableDebugging(toggle bool) bool }); ok {
-		pclass.enable_debugging = (*[0]byte)(C._gotk4_gtk3_WindowClass_enable_debugging)
+		o := pclass.StructFieldOffset("enable_debugging")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WindowClass_enable_debugging)
 	}
 
 	if _, ok := goval.(interface{ KeysChanged() }); ok {
-		pclass.keys_changed = (*[0]byte)(C._gotk4_gtk3_WindowClass_keys_changed)
+		o := pclass.StructFieldOffset("keys_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WindowClass_keys_changed)
 	}
 
 	if _, ok := goval.(interface{ SetFocus(focus Widgetter) }); ok {
-		pclass.set_focus = (*[0]byte)(C._gotk4_gtk3_WindowClass_set_focus)
+		o := pclass.StructFieldOffset("set_focus")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WindowClass_set_focus)
 	}
 }
 

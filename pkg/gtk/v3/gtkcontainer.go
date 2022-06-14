@@ -307,34 +307,38 @@ func classInitContainerer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkContainerClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkContainerClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "ContainerClass")
 
 	if _, ok := goval.(interface{ Add(widget Widgetter) }); ok {
-		pclass.add = (*[0]byte)(C._gotk4_gtk3_ContainerClass_add)
+		o := pclass.StructFieldOffset("add")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ContainerClass_add)
 	}
 
 	if _, ok := goval.(interface{ CheckResize() }); ok {
-		pclass.check_resize = (*[0]byte)(C._gotk4_gtk3_ContainerClass_check_resize)
+		o := pclass.StructFieldOffset("check_resize")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ContainerClass_check_resize)
 	}
 
 	if _, ok := goval.(interface{ CompositeName(child Widgetter) string }); ok {
-		pclass.composite_name = (*[0]byte)(C._gotk4_gtk3_ContainerClass_composite_name)
+		o := pclass.StructFieldOffset("composite_name")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ContainerClass_composite_name)
 	}
 
 	if _, ok := goval.(interface {
 		PathForChild(child Widgetter) *WidgetPath
 	}); ok {
-		pclass.get_path_for_child = (*[0]byte)(C._gotk4_gtk3_ContainerClass_get_path_for_child)
+		o := pclass.StructFieldOffset("get_path_for_child")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ContainerClass_get_path_for_child)
 	}
 
 	if _, ok := goval.(interface{ Remove(widget Widgetter) }); ok {
-		pclass.remove = (*[0]byte)(C._gotk4_gtk3_ContainerClass_remove)
+		o := pclass.StructFieldOffset("remove")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ContainerClass_remove)
 	}
 
 	if _, ok := goval.(interface{ SetFocusChild(child Widgetter) }); ok {
-		pclass.set_focus_child = (*[0]byte)(C._gotk4_gtk3_ContainerClass_set_focus_child)
+		o := pclass.StructFieldOffset("set_focus_child")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ContainerClass_set_focus_child)
 	}
 }
 

@@ -110,20 +110,20 @@ func classInitTLSConnectioner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GTlsConnectionClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GTlsConnectionClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "TlsConnectionClass")
 
 	if _, ok := goval.(interface {
 		Handshake(ctx context.Context) error
 	}); ok {
-		pclass.handshake = (*[0]byte)(C._gotk4_gio2_TlsConnectionClass_handshake)
+		o := pclass.StructFieldOffset("handshake")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_TlsConnectionClass_handshake)
 	}
 
 	if _, ok := goval.(interface {
 		HandshakeFinish(result AsyncResulter) error
 	}); ok {
-		pclass.handshake_finish = (*[0]byte)(C._gotk4_gio2_TlsConnectionClass_handshake_finish)
+		o := pclass.StructFieldOffset("handshake_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_TlsConnectionClass_handshake_finish)
 	}
 }
 

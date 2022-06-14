@@ -77,12 +77,11 @@ func classInitAppChooserButtonner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkAppChooserButtonClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkAppChooserButtonClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "AppChooserButtonClass")
 
 	if _, ok := goval.(interface{ CustomItemActivated(itemName string) }); ok {
-		pclass.custom_item_activated = (*[0]byte)(C._gotk4_gtk3_AppChooserButtonClass_custom_item_activated)
+		o := pclass.StructFieldOffset("custom_item_activated")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_AppChooserButtonClass_custom_item_activated)
 	}
 }
 

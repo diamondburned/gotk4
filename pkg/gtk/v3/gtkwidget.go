@@ -1025,372 +1025,438 @@ func classInitWidgetter(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkWidgetClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkWidgetClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "WidgetClass")
 
 	if _, ok := goval.(interface{ AdjustBaselineAllocation(baseline *int32) }); ok {
-		pclass.adjust_baseline_allocation = (*[0]byte)(C._gotk4_gtk3_WidgetClass_adjust_baseline_allocation)
+		o := pclass.StructFieldOffset("adjust_baseline_allocation")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_adjust_baseline_allocation)
 	}
 
 	if _, ok := goval.(interface {
 		AdjustBaselineRequest(minimumBaseline, naturalBaseline *int32)
 	}); ok {
-		pclass.adjust_baseline_request = (*[0]byte)(C._gotk4_gtk3_WidgetClass_adjust_baseline_request)
+		o := pclass.StructFieldOffset("adjust_baseline_request")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_adjust_baseline_request)
 	}
 
 	if _, ok := goval.(interface {
 		ButtonPressEvent(event *gdk.EventButton) bool
 	}); ok {
-		pclass.button_press_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_button_press_event)
+		o := pclass.StructFieldOffset("button_press_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_button_press_event)
 	}
 
 	if _, ok := goval.(interface {
 		ButtonReleaseEvent(event *gdk.EventButton) bool
 	}); ok {
-		pclass.button_release_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_button_release_event)
+		o := pclass.StructFieldOffset("button_release_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_button_release_event)
 	}
 
 	if _, ok := goval.(interface{ CanActivateAccel(signalId uint32) bool }); ok {
-		pclass.can_activate_accel = (*[0]byte)(C._gotk4_gtk3_WidgetClass_can_activate_accel)
+		o := pclass.StructFieldOffset("can_activate_accel")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_can_activate_accel)
 	}
 
 	if _, ok := goval.(interface{ CompositedChanged() }); ok {
-		pclass.composited_changed = (*[0]byte)(C._gotk4_gtk3_WidgetClass_composited_changed)
+		o := pclass.StructFieldOffset("composited_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_composited_changed)
 	}
 
 	if _, ok := goval.(interface {
 		ConfigureEvent(event *gdk.EventConfigure) bool
 	}); ok {
-		pclass.configure_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_configure_event)
+		o := pclass.StructFieldOffset("configure_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_configure_event)
 	}
 
 	if _, ok := goval.(interface {
 		DamageEvent(event *gdk.EventExpose) bool
 	}); ok {
-		pclass.damage_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_damage_event)
+		o := pclass.StructFieldOffset("damage_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_damage_event)
 	}
 
 	if _, ok := goval.(interface {
 		DeleteEvent(event *gdk.EventAny) bool
 	}); ok {
-		pclass.delete_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_delete_event)
+		o := pclass.StructFieldOffset("delete_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_delete_event)
 	}
 
 	if _, ok := goval.(interface{ Destroy() }); ok {
-		pclass.destroy = (*[0]byte)(C._gotk4_gtk3_WidgetClass_destroy)
+		o := pclass.StructFieldOffset("destroy")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_destroy)
 	}
 
 	if _, ok := goval.(interface {
 		DestroyEvent(event *gdk.EventAny) bool
 	}); ok {
-		pclass.destroy_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_destroy_event)
+		o := pclass.StructFieldOffset("destroy_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_destroy_event)
 	}
 
 	if _, ok := goval.(interface {
 		DragBegin(context *gdk.DragContext)
 	}); ok {
-		pclass.drag_begin = (*[0]byte)(C._gotk4_gtk3_WidgetClass_drag_begin)
+		o := pclass.StructFieldOffset("drag_begin")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_drag_begin)
 	}
 
 	if _, ok := goval.(interface {
 		DragDataDelete(context *gdk.DragContext)
 	}); ok {
-		pclass.drag_data_delete = (*[0]byte)(C._gotk4_gtk3_WidgetClass_drag_data_delete)
+		o := pclass.StructFieldOffset("drag_data_delete")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_drag_data_delete)
 	}
 
 	if _, ok := goval.(interface {
 		DragDataGet(context *gdk.DragContext, selectionData *SelectionData, info, time_ uint32)
 	}); ok {
-		pclass.drag_data_get = (*[0]byte)(C._gotk4_gtk3_WidgetClass_drag_data_get)
+		o := pclass.StructFieldOffset("drag_data_get")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_drag_data_get)
 	}
 
 	if _, ok := goval.(interface {
 		DragDataReceived(context *gdk.DragContext, x, y int32, selectionData *SelectionData, info, time_ uint32)
 	}); ok {
-		pclass.drag_data_received = (*[0]byte)(C._gotk4_gtk3_WidgetClass_drag_data_received)
+		o := pclass.StructFieldOffset("drag_data_received")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_drag_data_received)
 	}
 
 	if _, ok := goval.(interface {
 		DragDrop(context *gdk.DragContext, x, y int32, time_ uint32) bool
 	}); ok {
-		pclass.drag_drop = (*[0]byte)(C._gotk4_gtk3_WidgetClass_drag_drop)
+		o := pclass.StructFieldOffset("drag_drop")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_drag_drop)
 	}
 
 	if _, ok := goval.(interface {
 		DragEnd(context *gdk.DragContext)
 	}); ok {
-		pclass.drag_end = (*[0]byte)(C._gotk4_gtk3_WidgetClass_drag_end)
+		o := pclass.StructFieldOffset("drag_end")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_drag_end)
 	}
 
 	if _, ok := goval.(interface {
 		DragLeave(context *gdk.DragContext, time_ uint32)
 	}); ok {
-		pclass.drag_leave = (*[0]byte)(C._gotk4_gtk3_WidgetClass_drag_leave)
+		o := pclass.StructFieldOffset("drag_leave")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_drag_leave)
 	}
 
 	if _, ok := goval.(interface {
 		DragMotion(context *gdk.DragContext, x, y int32, time_ uint32) bool
 	}); ok {
-		pclass.drag_motion = (*[0]byte)(C._gotk4_gtk3_WidgetClass_drag_motion)
+		o := pclass.StructFieldOffset("drag_motion")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_drag_motion)
 	}
 
 	if _, ok := goval.(interface{ Draw(cr *cairo.Context) bool }); ok {
-		pclass.draw = (*[0]byte)(C._gotk4_gtk3_WidgetClass_draw)
+		o := pclass.StructFieldOffset("draw")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_draw)
 	}
 
 	if _, ok := goval.(interface {
 		EnterNotifyEvent(event *gdk.EventCrossing) bool
 	}); ok {
-		pclass.enter_notify_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_enter_notify_event)
+		o := pclass.StructFieldOffset("enter_notify_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_enter_notify_event)
 	}
 
 	if _, ok := goval.(interface{ Event(event *gdk.Event) bool }); ok {
-		pclass.event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_event)
+		o := pclass.StructFieldOffset("event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_event)
 	}
 
 	if _, ok := goval.(interface {
 		FocusInEvent(event *gdk.EventFocus) bool
 	}); ok {
-		pclass.focus_in_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_focus_in_event)
+		o := pclass.StructFieldOffset("focus_in_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_focus_in_event)
 	}
 
 	if _, ok := goval.(interface {
 		FocusOutEvent(event *gdk.EventFocus) bool
 	}); ok {
-		pclass.focus_out_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_focus_out_event)
+		o := pclass.StructFieldOffset("focus_out_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_focus_out_event)
 	}
 
 	if _, ok := goval.(interface{ Accessible() *atk.ObjectClass }); ok {
-		pclass.get_accessible = (*[0]byte)(C._gotk4_gtk3_WidgetClass_get_accessible)
+		o := pclass.StructFieldOffset("get_accessible")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_get_accessible)
 	}
 
 	if _, ok := goval.(interface {
 		PreferredHeight() (minimumHeight, naturalHeight int32)
 	}); ok {
-		pclass.get_preferred_height = (*[0]byte)(C._gotk4_gtk3_WidgetClass_get_preferred_height)
+		o := pclass.StructFieldOffset("get_preferred_height")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_get_preferred_height)
 	}
 
 	if _, ok := goval.(interface {
 		PreferredHeightAndBaselineForWidth(width int32) (minimumHeight, naturalHeight, minimumBaseline, naturalBaseline int32)
 	}); ok {
-		pclass.get_preferred_height_and_baseline_for_width = (*[0]byte)(C._gotk4_gtk3_WidgetClass_get_preferred_height_and_baseline_for_width)
+		o := pclass.StructFieldOffset("get_preferred_height_and_baseline_for_width")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_get_preferred_height_and_baseline_for_width)
 	}
 
 	if _, ok := goval.(interface {
 		PreferredHeightForWidth(width int32) (minimumHeight, naturalHeight int32)
 	}); ok {
-		pclass.get_preferred_height_for_width = (*[0]byte)(C._gotk4_gtk3_WidgetClass_get_preferred_height_for_width)
+		o := pclass.StructFieldOffset("get_preferred_height_for_width")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_get_preferred_height_for_width)
 	}
 
 	if _, ok := goval.(interface {
 		PreferredWidth() (minimumWidth, naturalWidth int32)
 	}); ok {
-		pclass.get_preferred_width = (*[0]byte)(C._gotk4_gtk3_WidgetClass_get_preferred_width)
+		o := pclass.StructFieldOffset("get_preferred_width")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_get_preferred_width)
 	}
 
 	if _, ok := goval.(interface {
 		PreferredWidthForHeight(height int32) (minimumWidth, naturalWidth int32)
 	}); ok {
-		pclass.get_preferred_width_for_height = (*[0]byte)(C._gotk4_gtk3_WidgetClass_get_preferred_width_for_height)
+		o := pclass.StructFieldOffset("get_preferred_width_for_height")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_get_preferred_width_for_height)
 	}
 
 	if _, ok := goval.(interface {
 		GrabBrokenEvent(event *gdk.EventGrabBroken) bool
 	}); ok {
-		pclass.grab_broken_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_grab_broken_event)
+		o := pclass.StructFieldOffset("grab_broken_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_grab_broken_event)
 	}
 
 	if _, ok := goval.(interface{ GrabFocus() }); ok {
-		pclass.grab_focus = (*[0]byte)(C._gotk4_gtk3_WidgetClass_grab_focus)
+		o := pclass.StructFieldOffset("grab_focus")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_grab_focus)
 	}
 
 	if _, ok := goval.(interface{ GrabNotify(wasGrabbed bool) }); ok {
-		pclass.grab_notify = (*[0]byte)(C._gotk4_gtk3_WidgetClass_grab_notify)
+		o := pclass.StructFieldOffset("grab_notify")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_grab_notify)
 	}
 
 	if _, ok := goval.(interface{ Hide() }); ok {
-		pclass.hide = (*[0]byte)(C._gotk4_gtk3_WidgetClass_hide)
+		o := pclass.StructFieldOffset("hide")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_hide)
 	}
 
 	if _, ok := goval.(interface {
 		HierarchyChanged(previousToplevel Widgetter)
 	}); ok {
-		pclass.hierarchy_changed = (*[0]byte)(C._gotk4_gtk3_WidgetClass_hierarchy_changed)
+		o := pclass.StructFieldOffset("hierarchy_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_hierarchy_changed)
 	}
 
 	if _, ok := goval.(interface {
 		KeyPressEvent(event *gdk.EventKey) bool
 	}); ok {
-		pclass.key_press_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_key_press_event)
+		o := pclass.StructFieldOffset("key_press_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_key_press_event)
 	}
 
 	if _, ok := goval.(interface {
 		KeyReleaseEvent(event *gdk.EventKey) bool
 	}); ok {
-		pclass.key_release_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_key_release_event)
+		o := pclass.StructFieldOffset("key_release_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_key_release_event)
 	}
 
 	if _, ok := goval.(interface {
 		LeaveNotifyEvent(event *gdk.EventCrossing) bool
 	}); ok {
-		pclass.leave_notify_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_leave_notify_event)
+		o := pclass.StructFieldOffset("leave_notify_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_leave_notify_event)
 	}
 
 	if _, ok := goval.(interface{ Map() }); ok {
-		pclass._map = (*[0]byte)(C._gotk4_gtk3_WidgetClass_map)
+		o := pclass.StructFieldOffset("map")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_map)
 	}
 
 	if _, ok := goval.(interface {
 		MapEvent(event *gdk.EventAny) bool
 	}); ok {
-		pclass.map_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_map_event)
+		o := pclass.StructFieldOffset("map_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_map_event)
 	}
 
 	if _, ok := goval.(interface{ MnemonicActivate(groupCycling bool) bool }); ok {
-		pclass.mnemonic_activate = (*[0]byte)(C._gotk4_gtk3_WidgetClass_mnemonic_activate)
+		o := pclass.StructFieldOffset("mnemonic_activate")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_mnemonic_activate)
 	}
 
 	if _, ok := goval.(interface {
 		MotionNotifyEvent(event *gdk.EventMotion) bool
 	}); ok {
-		pclass.motion_notify_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_motion_notify_event)
+		o := pclass.StructFieldOffset("motion_notify_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_motion_notify_event)
 	}
 
 	if _, ok := goval.(interface {
 		ParentSet(previousParent Widgetter)
 	}); ok {
-		pclass.parent_set = (*[0]byte)(C._gotk4_gtk3_WidgetClass_parent_set)
+		o := pclass.StructFieldOffset("parent_set")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_parent_set)
 	}
 
 	if _, ok := goval.(interface{ PopupMenu() bool }); ok {
-		pclass.popup_menu = (*[0]byte)(C._gotk4_gtk3_WidgetClass_popup_menu)
+		o := pclass.StructFieldOffset("popup_menu")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_popup_menu)
 	}
 
 	if _, ok := goval.(interface {
 		PropertyNotifyEvent(event *gdk.EventProperty) bool
 	}); ok {
-		pclass.property_notify_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_property_notify_event)
+		o := pclass.StructFieldOffset("property_notify_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_property_notify_event)
 	}
 
 	if _, ok := goval.(interface {
 		ProximityInEvent(event *gdk.EventProximity) bool
 	}); ok {
-		pclass.proximity_in_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_proximity_in_event)
+		o := pclass.StructFieldOffset("proximity_in_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_proximity_in_event)
 	}
 
 	if _, ok := goval.(interface {
 		ProximityOutEvent(event *gdk.EventProximity) bool
 	}); ok {
-		pclass.proximity_out_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_proximity_out_event)
+		o := pclass.StructFieldOffset("proximity_out_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_proximity_out_event)
 	}
 
 	if _, ok := goval.(interface {
 		QueryTooltip(x, y int32, keyboardTooltip bool, tooltip *Tooltip) bool
 	}); ok {
-		pclass.query_tooltip = (*[0]byte)(C._gotk4_gtk3_WidgetClass_query_tooltip)
+		o := pclass.StructFieldOffset("query_tooltip")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_query_tooltip)
 	}
 
 	if _, ok := goval.(interface{ QueueDrawRegion(region *cairo.Region) }); ok {
-		pclass.queue_draw_region = (*[0]byte)(C._gotk4_gtk3_WidgetClass_queue_draw_region)
+		o := pclass.StructFieldOffset("queue_draw_region")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_queue_draw_region)
 	}
 
 	if _, ok := goval.(interface{ Realize() }); ok {
-		pclass.realize = (*[0]byte)(C._gotk4_gtk3_WidgetClass_realize)
+		o := pclass.StructFieldOffset("realize")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_realize)
 	}
 
 	if _, ok := goval.(interface {
 		ScreenChanged(previousScreen *gdk.Screen)
 	}); ok {
-		pclass.screen_changed = (*[0]byte)(C._gotk4_gtk3_WidgetClass_screen_changed)
+		o := pclass.StructFieldOffset("screen_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_screen_changed)
 	}
 
 	if _, ok := goval.(interface {
 		ScrollEvent(event *gdk.EventScroll) bool
 	}); ok {
-		pclass.scroll_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_scroll_event)
+		o := pclass.StructFieldOffset("scroll_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_scroll_event)
 	}
 
 	if _, ok := goval.(interface {
 		SelectionClearEvent(event *gdk.EventSelection) bool
 	}); ok {
-		pclass.selection_clear_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_selection_clear_event)
+		o := pclass.StructFieldOffset("selection_clear_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_selection_clear_event)
 	}
 
 	if _, ok := goval.(interface {
 		SelectionGet(selectionData *SelectionData, info, time_ uint32)
 	}); ok {
-		pclass.selection_get = (*[0]byte)(C._gotk4_gtk3_WidgetClass_selection_get)
+		o := pclass.StructFieldOffset("selection_get")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_selection_get)
 	}
 
 	if _, ok := goval.(interface {
 		SelectionNotifyEvent(event *gdk.EventSelection) bool
 	}); ok {
-		pclass.selection_notify_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_selection_notify_event)
+		o := pclass.StructFieldOffset("selection_notify_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_selection_notify_event)
 	}
 
 	if _, ok := goval.(interface {
 		SelectionReceived(selectionData *SelectionData, time_ uint32)
 	}); ok {
-		pclass.selection_received = (*[0]byte)(C._gotk4_gtk3_WidgetClass_selection_received)
+		o := pclass.StructFieldOffset("selection_received")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_selection_received)
 	}
 
 	if _, ok := goval.(interface {
 		SelectionRequestEvent(event *gdk.EventSelection) bool
 	}); ok {
-		pclass.selection_request_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_selection_request_event)
+		o := pclass.StructFieldOffset("selection_request_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_selection_request_event)
 	}
 
 	if _, ok := goval.(interface{ Show() }); ok {
-		pclass.show = (*[0]byte)(C._gotk4_gtk3_WidgetClass_show)
+		o := pclass.StructFieldOffset("show")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_show)
 	}
 
 	if _, ok := goval.(interface{ ShowAll() }); ok {
-		pclass.show_all = (*[0]byte)(C._gotk4_gtk3_WidgetClass_show_all)
+		o := pclass.StructFieldOffset("show_all")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_show_all)
 	}
 
 	if _, ok := goval.(interface{ SizeAllocate(allocation *Allocation) }); ok {
-		pclass.size_allocate = (*[0]byte)(C._gotk4_gtk3_WidgetClass_size_allocate)
+		o := pclass.StructFieldOffset("size_allocate")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_size_allocate)
 	}
 
 	if _, ok := goval.(interface{ StyleSet(previousStyle *Style) }); ok {
-		pclass.style_set = (*[0]byte)(C._gotk4_gtk3_WidgetClass_style_set)
+		o := pclass.StructFieldOffset("style_set")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_style_set)
 	}
 
 	if _, ok := goval.(interface{ StyleUpdated() }); ok {
-		pclass.style_updated = (*[0]byte)(C._gotk4_gtk3_WidgetClass_style_updated)
+		o := pclass.StructFieldOffset("style_updated")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_style_updated)
 	}
 
 	if _, ok := goval.(interface {
 		TouchEvent(event *gdk.EventTouch) bool
 	}); ok {
-		pclass.touch_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_touch_event)
+		o := pclass.StructFieldOffset("touch_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_touch_event)
 	}
 
 	if _, ok := goval.(interface{ Unmap() }); ok {
-		pclass.unmap = (*[0]byte)(C._gotk4_gtk3_WidgetClass_unmap)
+		o := pclass.StructFieldOffset("unmap")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_unmap)
 	}
 
 	if _, ok := goval.(interface {
 		UnmapEvent(event *gdk.EventAny) bool
 	}); ok {
-		pclass.unmap_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_unmap_event)
+		o := pclass.StructFieldOffset("unmap_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_unmap_event)
 	}
 
 	if _, ok := goval.(interface{ Unrealize() }); ok {
-		pclass.unrealize = (*[0]byte)(C._gotk4_gtk3_WidgetClass_unrealize)
+		o := pclass.StructFieldOffset("unrealize")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_unrealize)
 	}
 
 	if _, ok := goval.(interface {
 		VisibilityNotifyEvent(event *gdk.EventVisibility) bool
 	}); ok {
-		pclass.visibility_notify_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_visibility_notify_event)
+		o := pclass.StructFieldOffset("visibility_notify_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_visibility_notify_event)
 	}
 
 	if _, ok := goval.(interface {
 		WindowStateEvent(event *gdk.EventWindowState) bool
 	}); ok {
-		pclass.window_state_event = (*[0]byte)(C._gotk4_gtk3_WidgetClass_window_state_event)
+		o := pclass.StructFieldOffset("window_state_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_WidgetClass_window_state_event)
 	}
 }
 

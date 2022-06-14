@@ -131,11 +131,11 @@ type StreamableContenter interface {
 var _ StreamableContenter = (*StreamableContent)(nil)
 
 func ifaceInitStreamableContenter(gifacePtr, data C.gpointer) {
-	iface := (*C.AtkStreamableContentIface)(unsafe.Pointer(gifacePtr))
-	iface.get_mime_type = (*[0]byte)(C._gotk4_atk1_StreamableContentIface_get_mime_type)
-	iface.get_n_mime_types = (*[0]byte)(C._gotk4_atk1_StreamableContentIface_get_n_mime_types)
-	iface.get_stream = (*[0]byte)(C._gotk4_atk1_StreamableContentIface_get_stream)
-	iface.get_uri = (*[0]byte)(C._gotk4_atk1_StreamableContentIface_get_uri)
+	iface := girepository.MustFind("Atk", "StreamableContentIface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_mime_type"))) = unsafe.Pointer(C._gotk4_atk1_StreamableContentIface_get_mime_type)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_n_mime_types"))) = unsafe.Pointer(C._gotk4_atk1_StreamableContentIface_get_n_mime_types)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_stream"))) = unsafe.Pointer(C._gotk4_atk1_StreamableContentIface_get_stream)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_uri"))) = unsafe.Pointer(C._gotk4_atk1_StreamableContentIface_get_uri)
 }
 
 //export _gotk4_atk1_StreamableContentIface_get_mime_type

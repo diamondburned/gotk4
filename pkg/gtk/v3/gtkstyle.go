@@ -116,24 +116,26 @@ func classInitStyler(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkStyleClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkStyleClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "StyleClass")
 
 	if _, ok := goval.(interface{ Copy(src *Style) }); ok {
-		pclass.copy = (*[0]byte)(C._gotk4_gtk3_StyleClass_copy)
+		o := pclass.StructFieldOffset("copy")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_StyleClass_copy)
 	}
 
 	if _, ok := goval.(interface{ InitFromRC(rcStyle *RCStyle) }); ok {
-		pclass.init_from_rc = (*[0]byte)(C._gotk4_gtk3_StyleClass_init_from_rc)
+		o := pclass.StructFieldOffset("init_from_rc")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_StyleClass_init_from_rc)
 	}
 
 	if _, ok := goval.(interface{ Realize() }); ok {
-		pclass.realize = (*[0]byte)(C._gotk4_gtk3_StyleClass_realize)
+		o := pclass.StructFieldOffset("realize")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_StyleClass_realize)
 	}
 
 	if _, ok := goval.(interface{ Unrealize() }); ok {
-		pclass.unrealize = (*[0]byte)(C._gotk4_gtk3_StyleClass_unrealize)
+		o := pclass.StructFieldOffset("unrealize")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_StyleClass_unrealize)
 	}
 }
 

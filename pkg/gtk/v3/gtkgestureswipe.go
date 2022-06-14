@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// GestureSwipeOverrider contains methods that are overridable.
-type GestureSwipeOverrider interface {
-}
-
 // GestureSwipe is a Gesture implementation able to recognize swipes, after a
 // press/move/.../move/release sequence happens, the GestureSwipe::swipe signal
 // will be emitted, providing the velocity and directionality of the sequence at
@@ -47,14 +43,6 @@ type GestureSwipe struct {
 var (
 	_ Gesturer = (*GestureSwipe)(nil)
 )
-
-func classInitGestureSwiper(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapGestureSwipe(obj *coreglib.Object) *GestureSwipe {
 	return &GestureSwipe{

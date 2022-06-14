@@ -75,14 +75,13 @@ func classInitTextTagger(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkTextTagClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkTextTagClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "TextTagClass")
 
 	if _, ok := goval.(interface {
 		Event(eventObject *coreglib.Object, event *gdk.Event, iter *TextIter) bool
 	}); ok {
-		pclass.event = (*[0]byte)(C._gotk4_gtk3_TextTagClass_event)
+		o := pclass.StructFieldOffset("event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_TextTagClass_event)
 	}
 }
 

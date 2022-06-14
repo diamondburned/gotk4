@@ -25,10 +25,6 @@ func init() {
 	})
 }
 
-// WaylandDisplayOverrider contains methods that are overridable.
-type WaylandDisplayOverrider interface {
-}
-
 // WaylandDisplay: wayland implementation of GdkDisplay.
 //
 // Beyond the regular gdk.Display API, the Wayland implementation provides
@@ -46,14 +42,6 @@ type WaylandDisplay struct {
 var (
 	_ coreglib.Objector = (*WaylandDisplay)(nil)
 )
-
-func classInitWaylandDisplayer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapWaylandDisplay(obj *coreglib.Object) *WaylandDisplay {
 	return &WaylandDisplay{

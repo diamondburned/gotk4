@@ -180,46 +180,51 @@ func classInitNotebooker(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkNotebookClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkNotebookClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "NotebookClass")
 
 	if _, ok := goval.(interface{ ChangeCurrentPage(offset int32) bool }); ok {
-		pclass.change_current_page = (*[0]byte)(C._gotk4_gtk3_NotebookClass_change_current_page)
+		o := pclass.StructFieldOffset("change_current_page")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_NotebookClass_change_current_page)
 	}
 
 	if _, ok := goval.(interface {
 		InsertPage(child, tabLabel, menuLabel Widgetter, position int32) int32
 	}); ok {
-		pclass.insert_page = (*[0]byte)(C._gotk4_gtk3_NotebookClass_insert_page)
+		o := pclass.StructFieldOffset("insert_page")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_NotebookClass_insert_page)
 	}
 
 	if _, ok := goval.(interface {
 		PageAdded(child Widgetter, pageNum uint32)
 	}); ok {
-		pclass.page_added = (*[0]byte)(C._gotk4_gtk3_NotebookClass_page_added)
+		o := pclass.StructFieldOffset("page_added")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_NotebookClass_page_added)
 	}
 
 	if _, ok := goval.(interface {
 		PageRemoved(child Widgetter, pageNum uint32)
 	}); ok {
-		pclass.page_removed = (*[0]byte)(C._gotk4_gtk3_NotebookClass_page_removed)
+		o := pclass.StructFieldOffset("page_removed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_NotebookClass_page_removed)
 	}
 
 	if _, ok := goval.(interface {
 		PageReordered(child Widgetter, pageNum uint32)
 	}); ok {
-		pclass.page_reordered = (*[0]byte)(C._gotk4_gtk3_NotebookClass_page_reordered)
+		o := pclass.StructFieldOffset("page_reordered")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_NotebookClass_page_reordered)
 	}
 
 	if _, ok := goval.(interface{ SelectPage(moveFocus bool) bool }); ok {
-		pclass.select_page = (*[0]byte)(C._gotk4_gtk3_NotebookClass_select_page)
+		o := pclass.StructFieldOffset("select_page")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_NotebookClass_select_page)
 	}
 
 	if _, ok := goval.(interface {
 		SwitchPage(page Widgetter, pageNum uint32)
 	}); ok {
-		pclass.switch_page = (*[0]byte)(C._gotk4_gtk3_NotebookClass_switch_page)
+		o := pclass.StructFieldOffset("switch_page")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_NotebookClass_switch_page)
 	}
 }
 

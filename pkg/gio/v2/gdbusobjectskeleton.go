@@ -62,14 +62,13 @@ func classInitDBusObjectSkeletonner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GDBusObjectSkeletonClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GDBusObjectSkeletonClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "DBusObjectSkeletonClass")
 
 	if _, ok := goval.(interface {
 		AuthorizeMethod(interface_ DBusInterfaceSkeletonner, invocation *DBusMethodInvocation) bool
 	}); ok {
-		pclass.authorize_method = (*[0]byte)(C._gotk4_gio2_DBusObjectSkeletonClass_authorize_method)
+		o := pclass.StructFieldOffset("authorize_method")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_DBusObjectSkeletonClass_authorize_method)
 	}
 }
 

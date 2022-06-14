@@ -26,10 +26,6 @@ func init() {
 	})
 }
 
-// GestureSingleOverrider contains methods that are overridable.
-type GestureSingleOverrider interface {
-}
-
 // GestureSingle is a subclass of Gesture, optimized (although not restricted)
 // for dealing with mouse and single-touch gestures. Under interaction, these
 // gestures stick to the first interacting sequence, which is accessible through
@@ -50,14 +46,6 @@ type GestureSingle struct {
 var (
 	_ Gesturer = (*GestureSingle)(nil)
 )
-
-func classInitGestureSingler(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapGestureSingle(obj *coreglib.Object) *GestureSingle {
 	return &GestureSingle{

@@ -159,14 +159,13 @@ func classInitFilterer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkFilterClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkFilterClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "FilterClass")
 
 	if _, ok := goval.(interface {
 		Match(item *coreglib.Object) bool
 	}); ok {
-		pclass.match = (*[0]byte)(C._gotk4_gtk4_FilterClass_match)
+		o := pclass.StructFieldOffset("match")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk4_FilterClass_match)
 	}
 }
 

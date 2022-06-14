@@ -24,10 +24,6 @@ func init() {
 	})
 }
 
-// EmojiChooserOverrider contains methods that are overridable.
-type EmojiChooserOverrider interface {
-}
-
 // EmojiChooser: GtkEmojiChooser is used by text widgets such as GtkEntry or
 // GtkTextView to let users insert Emoji characters.
 //
@@ -62,14 +58,6 @@ var (
 	_ Widgetter         = (*EmojiChooser)(nil)
 	_ coreglib.Objector = (*EmojiChooser)(nil)
 )
-
-func classInitEmojiChooserer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapEmojiChooser(obj *coreglib.Object) *EmojiChooser {
 	return &EmojiChooser{

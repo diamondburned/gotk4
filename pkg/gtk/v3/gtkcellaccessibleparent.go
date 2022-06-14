@@ -106,15 +106,15 @@ type CellAccessibleParenter interface {
 var _ CellAccessibleParenter = (*CellAccessibleParent)(nil)
 
 func ifaceInitCellAccessibleParenter(gifacePtr, data C.gpointer) {
-	iface := (*C.GtkCellAccessibleParentIface)(unsafe.Pointer(gifacePtr))
-	iface.activate = (*[0]byte)(C._gotk4_gtk3_CellAccessibleParentIface_activate)
-	iface.edit = (*[0]byte)(C._gotk4_gtk3_CellAccessibleParentIface_edit)
-	iface.expand_collapse = (*[0]byte)(C._gotk4_gtk3_CellAccessibleParentIface_expand_collapse)
-	iface.get_cell_area = (*[0]byte)(C._gotk4_gtk3_CellAccessibleParentIface_get_cell_area)
-	iface.get_cell_position = (*[0]byte)(C._gotk4_gtk3_CellAccessibleParentIface_get_cell_position)
-	iface.get_child_index = (*[0]byte)(C._gotk4_gtk3_CellAccessibleParentIface_get_child_index)
-	iface.grab_focus = (*[0]byte)(C._gotk4_gtk3_CellAccessibleParentIface_grab_focus)
-	iface.update_relationset = (*[0]byte)(C._gotk4_gtk3_CellAccessibleParentIface_update_relationset)
+	iface := girepository.MustFind("Gtk", "CellAccessibleParentIface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("activate"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_activate)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("edit"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_edit)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("expand_collapse"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_expand_collapse)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_cell_area"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_get_cell_area)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_cell_position"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_get_cell_position)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_child_index"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_get_child_index)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("grab_focus"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_grab_focus)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("update_relationset"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_update_relationset)
 }
 
 //export _gotk4_gtk3_CellAccessibleParentIface_activate

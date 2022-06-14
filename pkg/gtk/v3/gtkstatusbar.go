@@ -95,20 +95,20 @@ func classInitStatusbarrer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkStatusbarClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkStatusbarClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "StatusbarClass")
 
 	if _, ok := goval.(interface {
 		TextPopped(contextId uint32, text string)
 	}); ok {
-		pclass.text_popped = (*[0]byte)(C._gotk4_gtk3_StatusbarClass_text_popped)
+		o := pclass.StructFieldOffset("text_popped")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_StatusbarClass_text_popped)
 	}
 
 	if _, ok := goval.(interface {
 		TextPushed(contextId uint32, text string)
 	}); ok {
-		pclass.text_pushed = (*[0]byte)(C._gotk4_gtk3_StatusbarClass_text_pushed)
+		o := pclass.StructFieldOffset("text_pushed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_StatusbarClass_text_pushed)
 	}
 }
 

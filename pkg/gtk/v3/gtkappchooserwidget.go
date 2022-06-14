@@ -88,22 +88,23 @@ func classInitAppChooserWidgetter(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkAppChooserWidgetClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkAppChooserWidgetClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "AppChooserWidgetClass")
 
 	if _, ok := goval.(interface{ ApplicationActivated(appInfo gio.AppInfor) }); ok {
-		pclass.application_activated = (*[0]byte)(C._gotk4_gtk3_AppChooserWidgetClass_application_activated)
+		o := pclass.StructFieldOffset("application_activated")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_AppChooserWidgetClass_application_activated)
 	}
 
 	if _, ok := goval.(interface{ ApplicationSelected(appInfo gio.AppInfor) }); ok {
-		pclass.application_selected = (*[0]byte)(C._gotk4_gtk3_AppChooserWidgetClass_application_selected)
+		o := pclass.StructFieldOffset("application_selected")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_AppChooserWidgetClass_application_selected)
 	}
 
 	if _, ok := goval.(interface {
 		PopulatePopup(menu *Menu, appInfo gio.AppInfor)
 	}); ok {
-		pclass.populate_popup = (*[0]byte)(C._gotk4_gtk3_AppChooserWidgetClass_populate_popup)
+		o := pclass.StructFieldOffset("populate_popup")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_AppChooserWidgetClass_populate_popup)
 	}
 }
 

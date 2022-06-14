@@ -148,50 +148,55 @@ func classInitOutputStreamer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GOutputStreamClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GOutputStreamClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gio", "OutputStreamClass")
 
 	if _, ok := goval.(interface {
 		CloseFinish(result AsyncResulter) error
 	}); ok {
-		pclass.close_finish = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_close_finish)
+		o := pclass.StructFieldOffset("close_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_OutputStreamClass_close_finish)
 	}
 
 	if _, ok := goval.(interface {
 		CloseFn(ctx context.Context) error
 	}); ok {
-		pclass.close_fn = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_close_fn)
+		o := pclass.StructFieldOffset("close_fn")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_OutputStreamClass_close_fn)
 	}
 
 	if _, ok := goval.(interface {
 		Flush(ctx context.Context) error
 	}); ok {
-		pclass.flush = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_flush)
+		o := pclass.StructFieldOffset("flush")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_OutputStreamClass_flush)
 	}
 
 	if _, ok := goval.(interface {
 		FlushFinish(result AsyncResulter) error
 	}); ok {
-		pclass.flush_finish = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_flush_finish)
+		o := pclass.StructFieldOffset("flush_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_OutputStreamClass_flush_finish)
 	}
 
 	if _, ok := goval.(interface {
 		SpliceFinish(result AsyncResulter) (int, error)
 	}); ok {
-		pclass.splice_finish = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_splice_finish)
+		o := pclass.StructFieldOffset("splice_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_OutputStreamClass_splice_finish)
 	}
 
 	if _, ok := goval.(interface {
 		WriteFinish(result AsyncResulter) (int, error)
 	}); ok {
-		pclass.write_finish = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_write_finish)
+		o := pclass.StructFieldOffset("write_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_OutputStreamClass_write_finish)
 	}
 
 	if _, ok := goval.(interface {
 		WritevFinish(result AsyncResulter) (uint, error)
 	}); ok {
-		pclass.writev_finish = (*[0]byte)(C._gotk4_gio2_OutputStreamClass_writev_finish)
+		o := pclass.StructFieldOffset("writev_finish")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gio2_OutputStreamClass_writev_finish)
 	}
 }
 

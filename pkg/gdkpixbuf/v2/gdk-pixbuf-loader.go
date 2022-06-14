@@ -117,8 +117,6 @@ func classInitPixbufLoaderer(gclassPtr, data C.gpointer) {
 
 	goval := gbox.Get(uintptr(data))
 	pclass := (*C.GdkPixbufLoaderClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GdkPixbufLoaderClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
 	if _, ok := goval.(interface{ AreaPrepared() }); ok {
 		pclass.area_prepared = (*[0]byte)(C._gotk4_gdkpixbuf2_PixbufLoaderClass_area_prepared)

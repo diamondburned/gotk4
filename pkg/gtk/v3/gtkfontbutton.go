@@ -61,12 +61,11 @@ func classInitFontButtonner(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkFontButtonClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkFontButtonClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "FontButtonClass")
 
 	if _, ok := goval.(interface{ FontSet() }); ok {
-		pclass.font_set = (*[0]byte)(C._gotk4_gtk3_FontButtonClass_font_set)
+		o := pclass.StructFieldOffset("font_set")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_FontButtonClass_font_set)
 	}
 }
 

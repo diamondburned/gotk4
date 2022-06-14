@@ -98,24 +98,43 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 
 		{{ if .GLibTypeStruct.Methods }}
 		goval := gbox.Get(uintptr(data))
-		pclass := (*C.{{ .GLibTypeStruct.CType }})(unsafe.Pointer(gclassPtr))
-		// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-		// pclass := (*C.{{ .GLibTypeStruct.CType }})(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
 
-		{{ range .GLibTypeStruct.Methods }}
-		if _, ok := goval.(interface{ {{ .Go.Name }}{{ .Go.Tail }} }); ok {
-			pclass.{{ .FieldName }} = (*[0]byte)(C.{{ .C.Name }})
-		}
+		{{- if .IsRuntimeLinkMode }}
+			pclass := girepository.MustFind({{ Quote .Root.Namespace.Name }}, {{ Quote .GLibTypeStruct.Record.Name }})
+
+			{{ range .GLibTypeStruct.Methods }}
+			if _, ok := goval.(interface{ {{ .Go.Name }}{{ .Go.Tail }} }); ok {
+				o := pclass.StructFieldOffset({{ Quote .FieldName }})
+				*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C.{{ .C.Name }})
+			}
+			{{ end -}}
+		{{- else }}
+			pclass := (*C.{{ .GLibTypeStruct.CType }})(unsafe.Pointer(gclassPtr))
+
+			{{ range .GLibTypeStruct.Methods }}
+			if _, ok := goval.(interface{ {{ .Go.Name }}{{ .Go.Tail }} }); ok {
+				pclass.{{ CGoField .FieldName }} = (*[0]byte)(C.{{ .C.Name }})
+			}
+			{{ end -}}
 		{{ end -}}
 		{{ end -}}
 	}
 	{{ else }}
 	func ifaceInit{{ .InterfaceName }}(gifacePtr, data C.gpointer) {
 		{{- if .GLibTypeStruct.Methods }}
-		iface := (*C.{{ .GLibTypeStruct.CType }})(unsafe.Pointer(gifacePtr))
-		{{- range .GLibTypeStruct.Methods }}
-		iface.{{ .FieldName }} = (*[0]byte)(C.{{ .C.Name }})
+
+		{{- if .IsRuntimeLinkMode}}
+			iface := girepository.MustFind({{ Quote .Root.Namespace.Name }}, {{ Quote .GLibTypeStruct.Record.Name }})
+			{{- range .GLibTypeStruct.Methods}}
+			*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset({{ Quote .FieldName }}))) = unsafe.Pointer(C.{{ .C.Name }})
+			{{- end }}
+		{{- else }}
+			iface := (*C.{{ .GLibTypeStruct.CType }})(unsafe.Pointer(gifacePtr))
+			{{- range .GLibTypeStruct.Methods }}
+			iface.{{ CGoField .FieldName }} = (*[0]byte)(C.{{ .C.Name }})
+			{{- end }}
 		{{- end }}
+
 		{{- end }}
 	}
 	{{ end }}
@@ -206,6 +225,8 @@ type ifacegenData struct {
 	*ifacegen.Generator
 	ImplInterfaces []string
 	HasMarshaler   bool
+
+	gen FileGeneratorWriter
 }
 
 func (d ifacegenData) Recv() string {
@@ -216,6 +237,10 @@ func (d ifacegenData) Recv() string {
 		return d.Virtuals[0].Recv
 	}
 	return "v"
+}
+
+func (d ifacegenData) IsRuntimeLinkMode() bool {
+	return d.gen.LinkMode() == types.RuntimeLinkMode
 }
 
 func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generator) {
@@ -232,12 +257,17 @@ func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generato
 	// These conditions should follow what's in the template.
 	if igen.IsClass() && igen.GLibTypeStruct != nil && len(igen.GLibTypeStruct.Methods) > 0 {
 		writer.Header().ImportCore("gbox")
+
+		if gen.LinkMode() == types.RuntimeLinkMode {
+			writer.Header().ImportCore("girepository")
+		}
 	}
 
 	data := ifacegenData{
 		Generator:      igen,
 		ImplInterfaces: igen.ImplInterfaces(),
 		HasMarshaler:   false,
+		gen:            gen,
 	}
 
 	if igen.GLibGetType != "" && !types.FilterCType(gen, igen.GLibGetType) {

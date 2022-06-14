@@ -24,10 +24,6 @@ func init() {
 	})
 }
 
-// X11DeviceManagerXI2Overrider contains methods that are overridable.
-type X11DeviceManagerXI2Overrider interface {
-}
-
 type X11DeviceManagerXI2 struct {
 	_ [0]func() // equal guard
 	X11DeviceManagerCore
@@ -36,14 +32,6 @@ type X11DeviceManagerXI2 struct {
 var (
 	_ gdk.DeviceManagerer = (*X11DeviceManagerXI2)(nil)
 )
-
-func classInitX11DeviceManagerXI2er(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapX11DeviceManagerXI2(obj *coreglib.Object) *X11DeviceManagerXI2 {
 	return &X11DeviceManagerXI2{

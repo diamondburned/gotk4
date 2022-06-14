@@ -1069,92 +1069,110 @@ func classInitObjectClasser(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.AtkObjectClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.AtkObjectClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Atk", "ObjectClass")
 
 	if _, ok := goval.(interface{ ActiveDescendantChanged(child *unsafe.Pointer) }); ok {
-		pclass.active_descendant_changed = (*[0]byte)(C._gotk4_atk1_ObjectClass_active_descendant_changed)
+		o := pclass.StructFieldOffset("active_descendant_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_active_descendant_changed)
 	}
 
 	if _, ok := goval.(interface {
 		ChildrenChanged(changeIndex uint32, changedChild unsafe.Pointer)
 	}); ok {
-		pclass.children_changed = (*[0]byte)(C._gotk4_atk1_ObjectClass_children_changed)
+		o := pclass.StructFieldOffset("children_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_children_changed)
 	}
 
 	if _, ok := goval.(interface{ FocusEvent(focusIn bool) }); ok {
-		pclass.focus_event = (*[0]byte)(C._gotk4_atk1_ObjectClass_focus_event)
+		o := pclass.StructFieldOffset("focus_event")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_focus_event)
 	}
 
 	if _, ok := goval.(interface{ Description() string }); ok {
-		pclass.get_description = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_description)
+		o := pclass.StructFieldOffset("get_description")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_get_description)
 	}
 
 	if _, ok := goval.(interface{ IndexInParent() int32 }); ok {
-		pclass.get_index_in_parent = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_index_in_parent)
+		o := pclass.StructFieldOffset("get_index_in_parent")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_get_index_in_parent)
 	}
 
 	if _, ok := goval.(interface{ MDIZOrder() int32 }); ok {
-		pclass.get_mdi_zorder = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_mdi_zorder)
+		o := pclass.StructFieldOffset("get_mdi_zorder")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_get_mdi_zorder)
 	}
 
 	if _, ok := goval.(interface{ NChildren() int32 }); ok {
-		pclass.get_n_children = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_n_children)
+		o := pclass.StructFieldOffset("get_n_children")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_get_n_children)
 	}
 
 	if _, ok := goval.(interface{ Name() string }); ok {
-		pclass.get_name = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_name)
+		o := pclass.StructFieldOffset("get_name")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_get_name)
 	}
 
 	if _, ok := goval.(interface{ ObjectLocale() string }); ok {
-		pclass.get_object_locale = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_object_locale)
+		o := pclass.StructFieldOffset("get_object_locale")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_get_object_locale)
 	}
 
 	if _, ok := goval.(interface{ Parent() *ObjectClass }); ok {
-		pclass.get_parent = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_parent)
+		o := pclass.StructFieldOffset("get_parent")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_get_parent)
 	}
 
 	if _, ok := goval.(interface{ Initialize(data unsafe.Pointer) }); ok {
-		pclass.initialize = (*[0]byte)(C._gotk4_atk1_ObjectClass_initialize)
+		o := pclass.StructFieldOffset("initialize")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_initialize)
 	}
 
 	if _, ok := goval.(interface{ PropertyChange(values *PropertyValues) }); ok {
-		pclass.property_change = (*[0]byte)(C._gotk4_atk1_ObjectClass_property_change)
+		o := pclass.StructFieldOffset("property_change")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_property_change)
 	}
 
 	if _, ok := goval.(interface{ RefRelationSet() *RelationSet }); ok {
-		pclass.ref_relation_set = (*[0]byte)(C._gotk4_atk1_ObjectClass_ref_relation_set)
+		o := pclass.StructFieldOffset("ref_relation_set")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_ref_relation_set)
 	}
 
 	if _, ok := goval.(interface{ RefStateSet() *StateSet }); ok {
-		pclass.ref_state_set = (*[0]byte)(C._gotk4_atk1_ObjectClass_ref_state_set)
+		o := pclass.StructFieldOffset("ref_state_set")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_ref_state_set)
 	}
 
 	if _, ok := goval.(interface{ RemovePropertyChangeHandler(handlerId uint32) }); ok {
-		pclass.remove_property_change_handler = (*[0]byte)(C._gotk4_atk1_ObjectClass_remove_property_change_handler)
+		o := pclass.StructFieldOffset("remove_property_change_handler")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_remove_property_change_handler)
 	}
 
 	if _, ok := goval.(interface{ SetDescription(description string) }); ok {
-		pclass.set_description = (*[0]byte)(C._gotk4_atk1_ObjectClass_set_description)
+		o := pclass.StructFieldOffset("set_description")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_set_description)
 	}
 
 	if _, ok := goval.(interface{ SetName(name string) }); ok {
-		pclass.set_name = (*[0]byte)(C._gotk4_atk1_ObjectClass_set_name)
+		o := pclass.StructFieldOffset("set_name")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_set_name)
 	}
 
 	if _, ok := goval.(interface{ SetParent(parent *ObjectClass) }); ok {
-		pclass.set_parent = (*[0]byte)(C._gotk4_atk1_ObjectClass_set_parent)
+		o := pclass.StructFieldOffset("set_parent")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_set_parent)
 	}
 
 	if _, ok := goval.(interface {
 		StateChange(name string, stateSet bool)
 	}); ok {
-		pclass.state_change = (*[0]byte)(C._gotk4_atk1_ObjectClass_state_change)
+		o := pclass.StructFieldOffset("state_change")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_state_change)
 	}
 
 	if _, ok := goval.(interface{ VisibleDataChanged() }); ok {
-		pclass.visible_data_changed = (*[0]byte)(C._gotk4_atk1_ObjectClass_visible_data_changed)
+		o := pclass.StructFieldOffset("visible_data_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_atk1_ObjectClass_visible_data_changed)
 	}
 }
 

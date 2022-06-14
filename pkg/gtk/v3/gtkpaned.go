@@ -119,28 +119,31 @@ func classInitPanedder(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkPanedClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkPanedClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "PanedClass")
 
 	if _, ok := goval.(interface{ AcceptPosition() bool }); ok {
-		pclass.accept_position = (*[0]byte)(C._gotk4_gtk3_PanedClass_accept_position)
+		o := pclass.StructFieldOffset("accept_position")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_PanedClass_accept_position)
 	}
 
 	if _, ok := goval.(interface{ CancelPosition() bool }); ok {
-		pclass.cancel_position = (*[0]byte)(C._gotk4_gtk3_PanedClass_cancel_position)
+		o := pclass.StructFieldOffset("cancel_position")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_PanedClass_cancel_position)
 	}
 
 	if _, ok := goval.(interface{ CycleChildFocus(reverse bool) bool }); ok {
-		pclass.cycle_child_focus = (*[0]byte)(C._gotk4_gtk3_PanedClass_cycle_child_focus)
+		o := pclass.StructFieldOffset("cycle_child_focus")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_PanedClass_cycle_child_focus)
 	}
 
 	if _, ok := goval.(interface{ CycleHandleFocus(reverse bool) bool }); ok {
-		pclass.cycle_handle_focus = (*[0]byte)(C._gotk4_gtk3_PanedClass_cycle_handle_focus)
+		o := pclass.StructFieldOffset("cycle_handle_focus")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_PanedClass_cycle_handle_focus)
 	}
 
 	if _, ok := goval.(interface{ ToggleHandleFocus() bool }); ok {
-		pclass.toggle_handle_focus = (*[0]byte)(C._gotk4_gtk3_PanedClass_toggle_handle_focus)
+		o := pclass.StructFieldOffset("toggle_handle_focus")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_PanedClass_toggle_handle_focus)
 	}
 }
 

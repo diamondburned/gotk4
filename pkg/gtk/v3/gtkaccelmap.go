@@ -26,10 +26,6 @@ func init() {
 	})
 }
 
-// AccelMapOverrider contains methods that are overridable.
-type AccelMapOverrider interface {
-}
-
 // AccelMap: accelerator maps are used to define runtime configurable
 // accelerators. Functions for manipulating them are are usually used by higher
 // level convenience mechanisms like UIManager and are thus considered
@@ -93,14 +89,6 @@ type AccelMap struct {
 var (
 	_ coreglib.Objector = (*AccelMap)(nil)
 )
-
-func classInitAccelMapper(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapAccelMap(obj *coreglib.Object) *AccelMap {
 	return &AccelMap{

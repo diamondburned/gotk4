@@ -26,10 +26,6 @@ func init() {
 	})
 }
 
-// BuilderListItemFactoryOverrider contains methods that are overridable.
-type BuilderListItemFactoryOverrider interface {
-}
-
 // BuilderListItemFactory: GtkBuilderListItemFactory is a GtkListItemFactory
 // that creates widgets by instantiating GtkBuilder UI templates.
 //
@@ -60,14 +56,6 @@ type BuilderListItemFactory struct {
 var (
 	_ coreglib.Objector = (*BuilderListItemFactory)(nil)
 )
-
-func classInitBuilderListItemFactorier(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapBuilderListItemFactory(obj *coreglib.Object) *BuilderListItemFactory {
 	return &BuilderListItemFactory{

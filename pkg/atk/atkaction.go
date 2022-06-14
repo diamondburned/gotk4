@@ -204,14 +204,14 @@ type Actioner interface {
 var _ Actioner = (*Action)(nil)
 
 func ifaceInitActioner(gifacePtr, data C.gpointer) {
-	iface := (*C.AtkActionIface)(unsafe.Pointer(gifacePtr))
-	iface.do_action = (*[0]byte)(C._gotk4_atk1_ActionIface_do_action)
-	iface.get_description = (*[0]byte)(C._gotk4_atk1_ActionIface_get_description)
-	iface.get_keybinding = (*[0]byte)(C._gotk4_atk1_ActionIface_get_keybinding)
-	iface.get_localized_name = (*[0]byte)(C._gotk4_atk1_ActionIface_get_localized_name)
-	iface.get_n_actions = (*[0]byte)(C._gotk4_atk1_ActionIface_get_n_actions)
-	iface.get_name = (*[0]byte)(C._gotk4_atk1_ActionIface_get_name)
-	iface.set_description = (*[0]byte)(C._gotk4_atk1_ActionIface_set_description)
+	iface := girepository.MustFind("Atk", "ActionIface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("do_action"))) = unsafe.Pointer(C._gotk4_atk1_ActionIface_do_action)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_description"))) = unsafe.Pointer(C._gotk4_atk1_ActionIface_get_description)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_keybinding"))) = unsafe.Pointer(C._gotk4_atk1_ActionIface_get_keybinding)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_localized_name"))) = unsafe.Pointer(C._gotk4_atk1_ActionIface_get_localized_name)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_n_actions"))) = unsafe.Pointer(C._gotk4_atk1_ActionIface_get_n_actions)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_name"))) = unsafe.Pointer(C._gotk4_atk1_ActionIface_get_name)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("set_description"))) = unsafe.Pointer(C._gotk4_atk1_ActionIface_set_description)
 }
 
 //export _gotk4_atk1_ActionIface_do_action

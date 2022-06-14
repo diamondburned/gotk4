@@ -23,10 +23,6 @@ func init() {
 	})
 }
 
-// CairoRendererOverrider contains methods that are overridable.
-type CairoRendererOverrider interface {
-}
-
 // CairoRenderer: GSK renderer that is using cairo.
 //
 // Since it is using cairo, this renderer cannot support 3D transformations.
@@ -38,14 +34,6 @@ type CairoRenderer struct {
 var (
 	_ Rendererer = (*CairoRenderer)(nil)
 )
-
-func classInitCairoRendererer(gclassPtr, data C.gpointer) {
-	C.g_type_class_add_private(gclassPtr, C.gsize(unsafe.Sizeof(uintptr(0))))
-
-	goffset := C.g_type_class_get_instance_private_offset(gclassPtr)
-	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
-
-}
 
 func wrapCairoRenderer(obj *coreglib.Object) *CairoRenderer {
 	return &CairoRenderer{

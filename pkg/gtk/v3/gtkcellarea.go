@@ -461,60 +461,68 @@ func classInitCellAreaer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkCellAreaClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkCellAreaClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "CellAreaClass")
 
 	if _, ok := goval.(interface{ Add(renderer CellRendererer) }); ok {
-		pclass.add = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_add)
+		o := pclass.StructFieldOffset("add")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaClass_add)
 	}
 
 	if _, ok := goval.(interface {
 		ApplyAttributes(treeModel TreeModeller, iter *TreeIter, isExpander, isExpanded bool)
 	}); ok {
-		pclass.apply_attributes = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_apply_attributes)
+		o := pclass.StructFieldOffset("apply_attributes")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaClass_apply_attributes)
 	}
 
 	if _, ok := goval.(interface {
 		CopyContext(context *CellAreaContext) *CellAreaContext
 	}); ok {
-		pclass.copy_context = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_copy_context)
+		o := pclass.StructFieldOffset("copy_context")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaClass_copy_context)
 	}
 
 	if _, ok := goval.(interface{ CreateContext() *CellAreaContext }); ok {
-		pclass.create_context = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_create_context)
+		o := pclass.StructFieldOffset("create_context")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaClass_create_context)
 	}
 
 	if _, ok := goval.(interface {
 		PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight, naturalHeight int32)
 	}); ok {
-		pclass.get_preferred_height = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_get_preferred_height)
+		o := pclass.StructFieldOffset("get_preferred_height")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaClass_get_preferred_height)
 	}
 
 	if _, ok := goval.(interface {
 		PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int32) (minimumHeight, naturalHeight int32)
 	}); ok {
-		pclass.get_preferred_height_for_width = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_get_preferred_height_for_width)
+		o := pclass.StructFieldOffset("get_preferred_height_for_width")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaClass_get_preferred_height_for_width)
 	}
 
 	if _, ok := goval.(interface {
 		PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth, naturalWidth int32)
 	}); ok {
-		pclass.get_preferred_width = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_get_preferred_width)
+		o := pclass.StructFieldOffset("get_preferred_width")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaClass_get_preferred_width)
 	}
 
 	if _, ok := goval.(interface {
 		PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int32) (minimumWidth, naturalWidth int32)
 	}); ok {
-		pclass.get_preferred_width_for_height = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_get_preferred_width_for_height)
+		o := pclass.StructFieldOffset("get_preferred_width_for_height")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaClass_get_preferred_width_for_height)
 	}
 
 	if _, ok := goval.(interface{ IsActivatable() bool }); ok {
-		pclass.is_activatable = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_is_activatable)
+		o := pclass.StructFieldOffset("is_activatable")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaClass_is_activatable)
 	}
 
 	if _, ok := goval.(interface{ Remove(renderer CellRendererer) }); ok {
-		pclass.remove = (*[0]byte)(C._gotk4_gtk3_CellAreaClass_remove)
+		o := pclass.StructFieldOffset("remove")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_CellAreaClass_remove)
 	}
 }
 

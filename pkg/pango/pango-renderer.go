@@ -194,50 +194,56 @@ func classInitRendererer(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.PangoRendererClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.PangoRendererClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Pango", "RendererClass")
 
 	if _, ok := goval.(interface{ Begin() }); ok {
-		pclass.begin = (*[0]byte)(C._gotk4_pango1_RendererClass_begin)
+		o := pclass.StructFieldOffset("begin")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_RendererClass_begin)
 	}
 
 	if _, ok := goval.(interface {
 		DrawErrorUnderline(x, y, width, height int32)
 	}); ok {
-		pclass.draw_error_underline = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_error_underline)
+		o := pclass.StructFieldOffset("draw_error_underline")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_RendererClass_draw_error_underline)
 	}
 
 	if _, ok := goval.(interface {
 		DrawGlyph(font Fonter, glyph Glyph, x, y float64)
 	}); ok {
-		pclass.draw_glyph = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_glyph)
+		o := pclass.StructFieldOffset("draw_glyph")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_RendererClass_draw_glyph)
 	}
 
 	if _, ok := goval.(interface {
 		DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int32)
 	}); ok {
-		pclass.draw_glyph_item = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_glyph_item)
+		o := pclass.StructFieldOffset("draw_glyph_item")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_RendererClass_draw_glyph_item)
 	}
 
 	if _, ok := goval.(interface {
 		DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int32)
 	}); ok {
-		pclass.draw_glyphs = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_glyphs)
+		o := pclass.StructFieldOffset("draw_glyphs")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_RendererClass_draw_glyphs)
 	}
 
 	if _, ok := goval.(interface {
 		DrawShape(attr *AttrShape, x, y int32)
 	}); ok {
-		pclass.draw_shape = (*[0]byte)(C._gotk4_pango1_RendererClass_draw_shape)
+		o := pclass.StructFieldOffset("draw_shape")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_RendererClass_draw_shape)
 	}
 
 	if _, ok := goval.(interface{ End() }); ok {
-		pclass.end = (*[0]byte)(C._gotk4_pango1_RendererClass_end)
+		o := pclass.StructFieldOffset("end")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_RendererClass_end)
 	}
 
 	if _, ok := goval.(interface{ PrepareRun(run *LayoutRun) }); ok {
-		pclass.prepare_run = (*[0]byte)(C._gotk4_pango1_RendererClass_prepare_run)
+		o := pclass.StructFieldOffset("prepare_run")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_pango1_RendererClass_prepare_run)
 	}
 }
 

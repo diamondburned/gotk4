@@ -264,80 +264,94 @@ func classInitIMContexter(gclassPtr, data C.gpointer) {
 	*(*C.gpointer)(unsafe.Add(unsafe.Pointer(gclassPtr), goffset)) = data
 
 	goval := gbox.Get(uintptr(data))
-	pclass := (*C.GtkIMContextClass)(unsafe.Pointer(gclassPtr))
-	// gclass := (*C.GTypeClass)(unsafe.Pointer(gclassPtr))
-	// pclass := (*C.GtkIMContextClass)(unsafe.Pointer(C.g_type_class_peek_parent(gclass)))
+	pclass := girepository.MustFind("Gtk", "IMContextClass")
 
 	if _, ok := goval.(interface{ Commit(str string) }); ok {
-		pclass.commit = (*[0]byte)(C._gotk4_gtk3_IMContextClass_commit)
+		o := pclass.StructFieldOffset("commit")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IMContextClass_commit)
 	}
 
 	if _, ok := goval.(interface {
 		DeleteSurrounding(offset, nChars int32) bool
 	}); ok {
-		pclass.delete_surrounding = (*[0]byte)(C._gotk4_gtk3_IMContextClass_delete_surrounding)
+		o := pclass.StructFieldOffset("delete_surrounding")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IMContextClass_delete_surrounding)
 	}
 
 	if _, ok := goval.(interface {
 		FilterKeypress(event *gdk.EventKey) bool
 	}); ok {
-		pclass.filter_keypress = (*[0]byte)(C._gotk4_gtk3_IMContextClass_filter_keypress)
+		o := pclass.StructFieldOffset("filter_keypress")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IMContextClass_filter_keypress)
 	}
 
 	if _, ok := goval.(interface{ FocusIn() }); ok {
-		pclass.focus_in = (*[0]byte)(C._gotk4_gtk3_IMContextClass_focus_in)
+		o := pclass.StructFieldOffset("focus_in")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IMContextClass_focus_in)
 	}
 
 	if _, ok := goval.(interface{ FocusOut() }); ok {
-		pclass.focus_out = (*[0]byte)(C._gotk4_gtk3_IMContextClass_focus_out)
+		o := pclass.StructFieldOffset("focus_out")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IMContextClass_focus_out)
 	}
 
 	if _, ok := goval.(interface {
 		PreeditString() (string, *pango.AttrList, int32)
 	}); ok {
-		pclass.get_preedit_string = (*[0]byte)(C._gotk4_gtk3_IMContextClass_get_preedit_string)
+		o := pclass.StructFieldOffset("get_preedit_string")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IMContextClass_get_preedit_string)
 	}
 
 	if _, ok := goval.(interface{ Surrounding() (string, int32, bool) }); ok {
-		pclass.get_surrounding = (*[0]byte)(C._gotk4_gtk3_IMContextClass_get_surrounding)
+		o := pclass.StructFieldOffset("get_surrounding")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IMContextClass_get_surrounding)
 	}
 
 	if _, ok := goval.(interface{ PreeditChanged() }); ok {
-		pclass.preedit_changed = (*[0]byte)(C._gotk4_gtk3_IMContextClass_preedit_changed)
+		o := pclass.StructFieldOffset("preedit_changed")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IMContextClass_preedit_changed)
 	}
 
 	if _, ok := goval.(interface{ PreeditEnd() }); ok {
-		pclass.preedit_end = (*[0]byte)(C._gotk4_gtk3_IMContextClass_preedit_end)
+		o := pclass.StructFieldOffset("preedit_end")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IMContextClass_preedit_end)
 	}
 
 	if _, ok := goval.(interface{ PreeditStart() }); ok {
-		pclass.preedit_start = (*[0]byte)(C._gotk4_gtk3_IMContextClass_preedit_start)
+		o := pclass.StructFieldOffset("preedit_start")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IMContextClass_preedit_start)
 	}
 
 	if _, ok := goval.(interface{ Reset() }); ok {
-		pclass.reset = (*[0]byte)(C._gotk4_gtk3_IMContextClass_reset)
+		o := pclass.StructFieldOffset("reset")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IMContextClass_reset)
 	}
 
 	if _, ok := goval.(interface{ RetrieveSurrounding() bool }); ok {
-		pclass.retrieve_surrounding = (*[0]byte)(C._gotk4_gtk3_IMContextClass_retrieve_surrounding)
+		o := pclass.StructFieldOffset("retrieve_surrounding")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IMContextClass_retrieve_surrounding)
 	}
 
 	if _, ok := goval.(interface{ SetClientWindow(window gdk.Windower) }); ok {
-		pclass.set_client_window = (*[0]byte)(C._gotk4_gtk3_IMContextClass_set_client_window)
+		o := pclass.StructFieldOffset("set_client_window")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IMContextClass_set_client_window)
 	}
 
 	if _, ok := goval.(interface{ SetCursorLocation(area *gdk.Rectangle) }); ok {
-		pclass.set_cursor_location = (*[0]byte)(C._gotk4_gtk3_IMContextClass_set_cursor_location)
+		o := pclass.StructFieldOffset("set_cursor_location")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IMContextClass_set_cursor_location)
 	}
 
 	if _, ok := goval.(interface {
 		SetSurrounding(text string, len, cursorIndex int32)
 	}); ok {
-		pclass.set_surrounding = (*[0]byte)(C._gotk4_gtk3_IMContextClass_set_surrounding)
+		o := pclass.StructFieldOffset("set_surrounding")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IMContextClass_set_surrounding)
 	}
 
 	if _, ok := goval.(interface{ SetUsePreedit(usePreedit bool) }); ok {
-		pclass.set_use_preedit = (*[0]byte)(C._gotk4_gtk3_IMContextClass_set_use_preedit)
+		o := pclass.StructFieldOffset("set_use_preedit")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_IMContextClass_set_use_preedit)
 	}
 }
 

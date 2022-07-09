@@ -17,13 +17,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkcellview.go.
-var GTypeCellView = coreglib.Type(C.gtk_cell_view_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCellView, F: marshalCellView},
-	})
+// GTypeCellView returns the GType for the type CellView.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCellView() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CellView").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCellView)
+	return gtype
 }
 
 // CellView: widget displaying a single row of a GtkTreeModel

@@ -21,17 +21,26 @@ import (
 // extern gboolean _gotk4_gtk3_Toolbar_ConnectPopupContextMenu(gpointer, gint, gint, gint, guintptr);
 import "C"
 
-// glib.Type values for gtktoolbar.go.
-var (
-	GTypeToolbarSpaceStyle = coreglib.Type(C.gtk_toolbar_space_style_get_type())
-	GTypeToolbar           = coreglib.Type(C.gtk_toolbar_get_type())
-)
+// GTypeToolbarSpaceStyle returns the GType for the type ToolbarSpaceStyle.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeToolbarSpaceStyle() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ToolbarSpaceStyle").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalToolbarSpaceStyle)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeToolbarSpaceStyle, F: marshalToolbarSpaceStyle},
-		{T: GTypeToolbar, F: marshalToolbar},
-	})
+// GTypeToolbar returns the GType for the type Toolbar.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeToolbar() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Toolbar").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalToolbar)
+	return gtype
 }
 
 // ToolbarSpaceStyle: whether spacers are vertical lines or just blank.

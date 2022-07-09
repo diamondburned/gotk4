@@ -21,13 +21,15 @@ import (
 // extern void _gotk4_gio2_SocketListenerClass_changed(void*);
 import "C"
 
-// glib.Type values for gsocketlistener.go.
-var GTypeSocketListener = coreglib.Type(C.g_socket_listener_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSocketListener, F: marshalSocketListener},
-	})
+// GTypeSocketListener returns the GType for the type SocketListener.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSocketListener() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "SocketListener").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSocketListener)
+	return gtype
 }
 
 // SocketListenerOverrider contains methods that are overridable.

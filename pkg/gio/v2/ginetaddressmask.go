@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for ginetaddressmask.go.
-var GTypeInetAddressMask = coreglib.Type(C.g_inet_address_mask_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeInetAddressMask, F: marshalInetAddressMask},
-	})
+// GTypeInetAddressMask returns the GType for the type InetAddressMask.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeInetAddressMask() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "InetAddressMask").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalInetAddressMask)
+	return gtype
 }
 
 // InetAddressMaskOverrider contains methods that are overridable.

@@ -41,13 +41,15 @@ import (
 // extern void _gotk4_gtk3_IMContext_ConnectPreeditStart(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkimcontext.go.
-var GTypeIMContext = coreglib.Type(C.gtk_im_context_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeIMContext, F: marshalIMContext},
-	})
+// GTypeIMContext returns the GType for the type IMContext.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeIMContext() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "IMContext").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalIMContext)
+	return gtype
 }
 
 // IMContextOverrider contains methods that are overridable.

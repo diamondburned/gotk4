@@ -19,13 +19,15 @@ import (
 // extern void _gotk4_gio2_DBusInterfaceIface_set_object(void*, void*);
 import "C"
 
-// glib.Type values for gdbusinterface.go.
-var GTypeDBusInterface = coreglib.Type(C.g_dbus_interface_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeDBusInterface, F: marshalDBusInterface},
-	})
+// GTypeDBusInterface returns the GType for the type DBusInterface.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusInterface() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusInterface").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusInterface)
+	return gtype
 }
 
 // DBusInterfaceOverrider contains methods that are overridable.

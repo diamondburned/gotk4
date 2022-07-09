@@ -20,13 +20,15 @@ import (
 // extern void _gotk4_gtk4_CellAreaContextClass_reset(void*);
 import "C"
 
-// glib.Type values for gtkcellareacontext.go.
-var GTypeCellAreaContext = coreglib.Type(C.gtk_cell_area_context_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCellAreaContext, F: marshalCellAreaContext},
-	})
+// GTypeCellAreaContext returns the GType for the type CellAreaContext.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCellAreaContext() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CellAreaContext").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCellAreaContext)
+	return gtype
 }
 
 // CellAreaContextOverrider contains methods that are overridable.

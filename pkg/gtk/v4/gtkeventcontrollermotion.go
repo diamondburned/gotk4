@@ -18,13 +18,15 @@ import (
 // extern void _gotk4_gtk4_EventControllerMotion_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
-// glib.Type values for gtkeventcontrollermotion.go.
-var GTypeEventControllerMotion = coreglib.Type(C.gtk_event_controller_motion_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeEventControllerMotion, F: marshalEventControllerMotion},
-	})
+// GTypeEventControllerMotion returns the GType for the type EventControllerMotion.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeEventControllerMotion() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "EventControllerMotion").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalEventControllerMotion)
+	return gtype
 }
 
 // EventControllerMotion: GtkEventControllerMotion is an event controller

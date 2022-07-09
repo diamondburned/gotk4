@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkappchooserdialog.go.
-var GTypeAppChooserDialog = coreglib.Type(C.gtk_app_chooser_dialog_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeAppChooserDialog, F: marshalAppChooserDialog},
-	})
+// GTypeAppChooserDialog returns the GType for the type AppChooserDialog.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAppChooserDialog() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "AppChooserDialog").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAppChooserDialog)
+	return gtype
 }
 
 // AppChooserDialog: GtkAppChooserDialog shows a GtkAppChooserWidget inside a

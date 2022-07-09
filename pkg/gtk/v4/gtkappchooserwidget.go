@@ -18,13 +18,15 @@ import (
 // extern void _gotk4_gtk4_AppChooserWidget_ConnectApplicationSelected(gpointer, void*, guintptr);
 import "C"
 
-// glib.Type values for gtkappchooserwidget.go.
-var GTypeAppChooserWidget = coreglib.Type(C.gtk_app_chooser_widget_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeAppChooserWidget, F: marshalAppChooserWidget},
-	})
+// GTypeAppChooserWidget returns the GType for the type AppChooserWidget.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAppChooserWidget() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "AppChooserWidget").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAppChooserWidget)
+	return gtype
 }
 
 // AppChooserWidget: GtkAppChooserWidget is a widget for selecting applications.

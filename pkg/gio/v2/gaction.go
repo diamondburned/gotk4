@@ -26,13 +26,15 @@ import (
 // extern void _gotk4_gio2_ActionInterface_change_state(void*, void*);
 import "C"
 
-// glib.Type values for gaction.go.
-var GTypeAction = coreglib.Type(C.g_action_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeAction, F: marshalAction},
-	})
+// GTypeAction returns the GType for the type Action.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAction() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "Action").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAction)
+	return gtype
 }
 
 // ActionOverrider contains methods that are overridable.

@@ -27,13 +27,15 @@ import (
 // extern void _gotk4_gtk3_FileChooserWidget_ConnectUpFolder(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkfilechooserwidget.go.
-var GTypeFileChooserWidget = coreglib.Type(C.gtk_file_chooser_widget_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeFileChooserWidget, F: marshalFileChooserWidget},
-	})
+// GTypeFileChooserWidget returns the GType for the type FileChooserWidget.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFileChooserWidget() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "FileChooserWidget").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFileChooserWidget)
+	return gtype
 }
 
 // FileChooserWidgetOverrider contains methods that are overridable.

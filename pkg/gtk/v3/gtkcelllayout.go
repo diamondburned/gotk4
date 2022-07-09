@@ -27,13 +27,15 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// glib.Type values for gtkcelllayout.go.
-var GTypeCellLayout = coreglib.Type(C.gtk_cell_layout_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCellLayout, F: marshalCellLayout},
-	})
+// GTypeCellLayout returns the GType for the type CellLayout.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCellLayout() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CellLayout").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCellLayout)
+	return gtype
 }
 
 // CellLayoutDataFunc: function which should set the value of cell_layout’s cell

@@ -22,13 +22,15 @@ import (
 // extern void _gotk4_gdk4_Surface_ConnectLeaveMonitor(gpointer, void*, guintptr);
 import "C"
 
-// glib.Type values for gdksurface.go.
-var GTypeSurface = coreglib.Type(C.gdk_surface_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSurface, F: marshalSurface},
-	})
+// GTypeSurface returns the GType for the type Surface.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSurface() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "Surface").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSurface)
+	return gtype
 }
 
 // Surface: GdkSurface is a rectangular region on the screen.

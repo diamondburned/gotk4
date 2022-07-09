@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkstatusbaraccessible.go.
-var GTypeStatusbarAccessible = coreglib.Type(C.gtk_statusbar_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeStatusbarAccessible, F: marshalStatusbarAccessible},
-	})
+// GTypeStatusbarAccessible returns the GType for the type StatusbarAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeStatusbarAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "StatusbarAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalStatusbarAccessible)
+	return gtype
 }
 
 // StatusbarAccessibleOverrider contains methods that are overridable.

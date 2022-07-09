@@ -17,13 +17,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkeventcontroller.go.
-var GTypeEventController = coreglib.Type(C.gtk_event_controller_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeEventController, F: marshalEventController},
-	})
+// GTypeEventController returns the GType for the type EventController.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeEventController() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "EventController").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalEventController)
+	return gtype
 }
 
 // EventController is a base, low-level implementation for event controllers.

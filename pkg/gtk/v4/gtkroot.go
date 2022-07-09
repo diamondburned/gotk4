@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkroot.go.
-var GTypeRoot = coreglib.Type(C.gtk_root_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeRoot, F: marshalRoot},
-	})
+// GTypeRoot returns the GType for the type Root.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRoot() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Root").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRoot)
+	return gtype
 }
 
 // Root: GtkRoot is the interface implemented by all widgets that can act as a

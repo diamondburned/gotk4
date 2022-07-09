@@ -20,13 +20,15 @@ import (
 // extern void _gotk4_gtk3_Plug_ConnectEmbedded(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkplug.go.
-var GTypePlug = coreglib.Type(C.gtk_plug_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypePlug, F: marshalPlug},
-	})
+// GTypePlug returns the GType for the type Plug.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePlug() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Plug").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPlug)
+	return gtype
 }
 
 // PlugOverrider contains methods that are overridable.

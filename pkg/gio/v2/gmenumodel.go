@@ -29,19 +29,37 @@ import (
 // extern void _gotk4_gio2_MenuModel_ConnectItemsChanged(gpointer, gint, gint, gint, guintptr);
 import "C"
 
-// glib.Type values for gmenumodel.go.
-var (
-	GTypeMenuAttributeIter = coreglib.Type(C.g_menu_attribute_iter_get_type())
-	GTypeMenuLinkIter      = coreglib.Type(C.g_menu_link_iter_get_type())
-	GTypeMenuModel         = coreglib.Type(C.g_menu_model_get_type())
-)
+// GTypeMenuAttributeIter returns the GType for the type MenuAttributeIter.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMenuAttributeIter() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "MenuAttributeIter").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMenuAttributeIter)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeMenuAttributeIter, F: marshalMenuAttributeIter},
-		{T: GTypeMenuLinkIter, F: marshalMenuLinkIter},
-		{T: GTypeMenuModel, F: marshalMenuModel},
-	})
+// GTypeMenuLinkIter returns the GType for the type MenuLinkIter.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMenuLinkIter() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "MenuLinkIter").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMenuLinkIter)
+	return gtype
+}
+
+// GTypeMenuModel returns the GType for the type MenuModel.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMenuModel() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "MenuModel").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMenuModel)
+	return gtype
 }
 
 // MENU_ATTRIBUTE_ACTION: menu item attribute which holds the action name of the

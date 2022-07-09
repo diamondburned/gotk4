@@ -15,27 +15,81 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gskenums.go.
-var (
-	GTypeBlendMode          = coreglib.Type(C.gsk_blend_mode_get_type())
-	GTypeCorner             = coreglib.Type(C.gsk_corner_get_type())
-	GTypeGLUniformType      = coreglib.Type(C.gsk_gl_uniform_type_get_type())
-	GTypeRenderNodeType     = coreglib.Type(C.gsk_render_node_type_get_type())
-	GTypeScalingFilter      = coreglib.Type(C.gsk_scaling_filter_get_type())
-	GTypeSerializationError = coreglib.Type(C.gsk_serialization_error_get_type())
-	GTypeTransformCategory  = coreglib.Type(C.gsk_transform_category_get_type())
-)
+// GTypeBlendMode returns the GType for the type BlendMode.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeBlendMode() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gsk", "BlendMode").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalBlendMode)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeBlendMode, F: marshalBlendMode},
-		{T: GTypeCorner, F: marshalCorner},
-		{T: GTypeGLUniformType, F: marshalGLUniformType},
-		{T: GTypeRenderNodeType, F: marshalRenderNodeType},
-		{T: GTypeScalingFilter, F: marshalScalingFilter},
-		{T: GTypeSerializationError, F: marshalSerializationError},
-		{T: GTypeTransformCategory, F: marshalTransformCategory},
-	})
+// GTypeCorner returns the GType for the type Corner.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCorner() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gsk", "Corner").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCorner)
+	return gtype
+}
+
+// GTypeGLUniformType returns the GType for the type GLUniformType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeGLUniformType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gsk", "GLUniformType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalGLUniformType)
+	return gtype
+}
+
+// GTypeRenderNodeType returns the GType for the type RenderNodeType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRenderNodeType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gsk", "RenderNodeType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRenderNodeType)
+	return gtype
+}
+
+// GTypeScalingFilter returns the GType for the type ScalingFilter.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeScalingFilter() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gsk", "ScalingFilter").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalScalingFilter)
+	return gtype
+}
+
+// GTypeSerializationError returns the GType for the type SerializationError.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSerializationError() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gsk", "SerializationError").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSerializationError)
+	return gtype
+}
+
+// GTypeTransformCategory returns the GType for the type TransformCategory.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTransformCategory() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gsk", "TransformCategory").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTransformCategory)
+	return gtype
 }
 
 // BlendMode: blend modes available for render nodes.

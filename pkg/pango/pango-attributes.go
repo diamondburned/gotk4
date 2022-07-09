@@ -22,29 +22,92 @@ import (
 // extern gboolean _gotk4_pango1_AttrFilterFunc(void*, gpointer);
 import "C"
 
-// glib.Type values for pango-attributes.go.
-var (
-	GTypeAttrType     = coreglib.Type(C.pango_attr_type_get_type())
-	GTypeOverline     = coreglib.Type(C.pango_overline_get_type())
-	GTypeUnderline    = coreglib.Type(C.pango_underline_get_type())
-	GTypeShowFlags    = coreglib.Type(C.pango_show_flags_get_type())
-	GTypeAttrIterator = coreglib.Type(C.pango_attr_iterator_get_type())
-	GTypeAttrList     = coreglib.Type(C.pango_attr_list_get_type())
-	GTypeAttribute    = coreglib.Type(C.pango_attribute_get_type())
-	GTypeColor        = coreglib.Type(C.pango_color_get_type())
-)
+// GTypeAttrType returns the GType for the type AttrType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAttrType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "AttrType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAttrType)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeAttrType, F: marshalAttrType},
-		{T: GTypeOverline, F: marshalOverline},
-		{T: GTypeUnderline, F: marshalUnderline},
-		{T: GTypeShowFlags, F: marshalShowFlags},
-		{T: GTypeAttrIterator, F: marshalAttrIterator},
-		{T: GTypeAttrList, F: marshalAttrList},
-		{T: GTypeAttribute, F: marshalAttribute},
-		{T: GTypeColor, F: marshalColor},
-	})
+// GTypeOverline returns the GType for the type Overline.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeOverline() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "Overline").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalOverline)
+	return gtype
+}
+
+// GTypeUnderline returns the GType for the type Underline.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeUnderline() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "Underline").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalUnderline)
+	return gtype
+}
+
+// GTypeShowFlags returns the GType for the type ShowFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeShowFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "ShowFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalShowFlags)
+	return gtype
+}
+
+// GTypeAttrIterator returns the GType for the type AttrIterator.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAttrIterator() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "AttrIterator").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAttrIterator)
+	return gtype
+}
+
+// GTypeAttrList returns the GType for the type AttrList.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAttrList() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "AttrList").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAttrList)
+	return gtype
+}
+
+// GTypeAttribute returns the GType for the type Attribute.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAttribute() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "Attribute").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAttribute)
+	return gtype
+}
+
+// GTypeColor returns the GType for the type Color.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeColor() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "Color").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalColor)
+	return gtype
 }
 
 // ATTR_INDEX_FROM_TEXT_BEGINNING: value for start_index in PangoAttribute that

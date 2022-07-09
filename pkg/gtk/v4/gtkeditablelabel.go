@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkeditablelabel.go.
-var GTypeEditableLabel = coreglib.Type(C.gtk_editable_label_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeEditableLabel, F: marshalEditableLabel},
-	})
+// GTypeEditableLabel returns the GType for the type EditableLabel.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeEditableLabel() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "EditableLabel").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalEditableLabel)
+	return gtype
 }
 
 // EditableLabelOverrider contains methods that are overridable.

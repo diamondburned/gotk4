@@ -17,13 +17,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gfileinfo.go.
-var GTypeFileInfo = coreglib.Type(C.g_file_info_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeFileInfo, F: marshalFileInfo},
-	})
+// GTypeFileInfo returns the GType for the type FileInfo.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFileInfo() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "FileInfo").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFileInfo)
+	return gtype
 }
 
 // FILE_ATTRIBUTE_ACCESS_CAN_DELETE: key in the "access" namespace for checking

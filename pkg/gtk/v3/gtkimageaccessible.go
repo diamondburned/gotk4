@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkimageaccessible.go.
-var GTypeImageAccessible = coreglib.Type(C.gtk_image_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeImageAccessible, F: marshalImageAccessible},
-	})
+// GTypeImageAccessible returns the GType for the type ImageAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeImageAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ImageAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalImageAccessible)
+	return gtype
 }
 
 // ImageAccessibleOverrider contains methods that are overridable.

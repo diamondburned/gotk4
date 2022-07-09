@@ -35,19 +35,37 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// glib.Type values for gtkrecentchooser.go.
-var (
-	GTypeRecentChooserError = coreglib.Type(C.gtk_recent_chooser_error_get_type())
-	GTypeRecentSortType     = coreglib.Type(C.gtk_recent_sort_type_get_type())
-	GTypeRecentChooser      = coreglib.Type(C.gtk_recent_chooser_get_type())
-)
+// GTypeRecentChooserError returns the GType for the type RecentChooserError.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRecentChooserError() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "RecentChooserError").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRecentChooserError)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeRecentChooserError, F: marshalRecentChooserError},
-		{T: GTypeRecentSortType, F: marshalRecentSortType},
-		{T: GTypeRecentChooser, F: marshalRecentChooser},
-	})
+// GTypeRecentSortType returns the GType for the type RecentSortType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRecentSortType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "RecentSortType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRecentSortType)
+	return gtype
+}
+
+// GTypeRecentChooser returns the GType for the type RecentChooser.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRecentChooser() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "RecentChooser").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRecentChooser)
+	return gtype
 }
 
 // RecentChooserError: these identify the various errors that can occur while

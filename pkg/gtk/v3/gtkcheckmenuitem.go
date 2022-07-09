@@ -21,13 +21,15 @@ import (
 // extern void _gotk4_gtk3_CheckMenuItem_ConnectToggled(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkcheckmenuitem.go.
-var GTypeCheckMenuItem = coreglib.Type(C.gtk_check_menu_item_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCheckMenuItem, F: marshalCheckMenuItem},
-	})
+// GTypeCheckMenuItem returns the GType for the type CheckMenuItem.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCheckMenuItem() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CheckMenuItem").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCheckMenuItem)
+	return gtype
 }
 
 // CheckMenuItemOverrider contains methods that are overridable.

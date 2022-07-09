@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkplugaccessible.go.
-var GTypePlugAccessible = coreglib.Type(C.gtk_plug_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypePlugAccessible, F: marshalPlugAccessible},
-	})
+// GTypePlugAccessible returns the GType for the type PlugAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePlugAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "PlugAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPlugAccessible)
+	return gtype
 }
 
 // PlugAccessibleOverrider contains methods that are overridable.

@@ -14,13 +14,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdkx11devicemanager-xi2.go.
-var GTypeX11DeviceManagerXI2 = coreglib.Type(C.gdk_x11_device_manager_xi2_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeX11DeviceManagerXI2, F: marshalX11DeviceManagerXI2},
-	})
+// GTypeX11DeviceManagerXI2 returns the GType for the type X11DeviceManagerXI2.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeX11DeviceManagerXI2() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("GdkX11", "X11DeviceManagerXI2").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalX11DeviceManagerXI2)
+	return gtype
 }
 
 type X11DeviceManagerXI2 struct {

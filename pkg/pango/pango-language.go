@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for pango-language.go.
-var GTypeLanguage = coreglib.Type(C.pango_language_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeLanguage, F: marshalLanguage},
-	})
+// GTypeLanguage returns the GType for the type Language.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeLanguage() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "Language").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalLanguage)
+	return gtype
 }
 
 // Language: PangoLanguage structure is used to represent a language.

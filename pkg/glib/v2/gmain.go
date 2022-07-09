@@ -18,19 +18,37 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// glib.Type values for gmain.go.
-var (
-	GTypeMainContext = coreglib.Type(C.g_main_context_get_type())
-	GTypeMainLoop    = coreglib.Type(C.g_main_loop_get_type())
-	GTypeSource      = coreglib.Type(C.g_source_get_type())
-)
+// GTypeMainContext returns the GType for the type MainContext.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMainContext() coreglib.Type {
+	gtype := coreglib.Type(C.g_main_context_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMainContext)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeMainContext, F: marshalMainContext},
-		{T: GTypeMainLoop, F: marshalMainLoop},
-		{T: GTypeSource, F: marshalSource},
-	})
+// GTypeMainLoop returns the GType for the type MainLoop.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMainLoop() coreglib.Type {
+	gtype := coreglib.Type(C.g_main_loop_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMainLoop)
+	return gtype
+}
+
+// GTypeSource returns the GType for the type Source.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSource() coreglib.Type {
+	gtype := coreglib.Type(C.g_source_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSource)
+	return gtype
 }
 
 // PRIORITY_DEFAULT: use this for default priority event sources.

@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtktypes.go.
-var GTypeBitset = coreglib.Type(C.gtk_bitset_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeBitset, F: marshalBitset},
-	})
+// GTypeBitset returns the GType for the type Bitset.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeBitset() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Bitset").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalBitset)
+	return gtype
 }
 
 // Bitset: GtkBitset represents a set of unsigned integers.

@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkiconfactory.go.
-var GTypeIconFactory = coreglib.Type(C.gtk_icon_factory_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeIconFactory, F: marshalIconFactory},
-	})
+// GTypeIconFactory returns the GType for the type IconFactory.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeIconFactory() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "IconFactory").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalIconFactory)
+	return gtype
 }
 
 // IconFactoryOverrider contains methods that are overridable.

@@ -17,13 +17,15 @@ import (
 // extern void _gotk4_gtk4_PasswordEntry_ConnectActivate(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkpasswordentry.go.
-var GTypePasswordEntry = coreglib.Type(C.gtk_password_entry_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypePasswordEntry, F: marshalPasswordEntry},
-	})
+// GTypePasswordEntry returns the GType for the type PasswordEntry.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePasswordEntry() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "PasswordEntry").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPasswordEntry)
+	return gtype
 }
 
 // PasswordEntry: GtkPasswordEntry is an entry that has been tailored for

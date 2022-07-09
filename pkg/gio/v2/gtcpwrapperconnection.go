@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtcpwrapperconnection.go.
-var GTypeTCPWrapperConnection = coreglib.Type(C.g_tcp_wrapper_connection_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTCPWrapperConnection, F: marshalTCPWrapperConnection},
-	})
+// GTypeTCPWrapperConnection returns the GType for the type TCPWrapperConnection.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTCPWrapperConnection() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "TcpWrapperConnection").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTCPWrapperConnection)
+	return gtype
 }
 
 // TCPWrapperConnectionOverrider contains methods that are overridable.

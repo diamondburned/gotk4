@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkfilechoosernative.go.
-var GTypeFileChooserNative = coreglib.Type(C.gtk_file_chooser_native_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeFileChooserNative, F: marshalFileChooserNative},
-	})
+// GTypeFileChooserNative returns the GType for the type FileChooserNative.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFileChooserNative() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "FileChooserNative").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFileChooserNative)
+	return gtype
 }
 
 // FileChooserNativeOverrider contains methods that are overridable.

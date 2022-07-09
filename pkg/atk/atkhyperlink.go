@@ -28,17 +28,26 @@ import (
 // extern void _gotk4_atk1_Hyperlink_ConnectLinkActivated(gpointer, guintptr);
 import "C"
 
-// glib.Type values for atkhyperlink.go.
-var (
-	GTypeHyperlinkStateFlags = coreglib.Type(C.atk_hyperlink_state_flags_get_type())
-	GTypeHyperlink           = coreglib.Type(C.atk_hyperlink_get_type())
-)
+// GTypeHyperlinkStateFlags returns the GType for the type HyperlinkStateFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeHyperlinkStateFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "HyperlinkStateFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalHyperlinkStateFlags)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeHyperlinkStateFlags, F: marshalHyperlinkStateFlags},
-		{T: GTypeHyperlink, F: marshalHyperlink},
-	})
+// GTypeHyperlink returns the GType for the type Hyperlink.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeHyperlink() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "Hyperlink").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalHyperlink)
+	return gtype
 }
 
 // HyperlinkStateFlags describes the type of link.

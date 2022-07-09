@@ -21,13 +21,15 @@ import (
 // extern void _gotk4_gio2_Cancellable_ConnectCancelled(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gcancellable.go.
-var GTypeCancellable = coreglib.Type(C.g_cancellable_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCancellable, F: marshalCancellable},
-	})
+// GTypeCancellable returns the GType for the type Cancellable.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCancellable() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "Cancellable").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCancellable)
+	return gtype
 }
 
 // CancellableOverrider contains methods that are overridable.

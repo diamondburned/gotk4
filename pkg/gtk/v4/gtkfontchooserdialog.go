@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkfontchooserdialog.go.
-var GTypeFontChooserDialog = coreglib.Type(C.gtk_font_chooser_dialog_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeFontChooserDialog, F: marshalFontChooserDialog},
-	})
+// GTypeFontChooserDialog returns the GType for the type FontChooserDialog.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFontChooserDialog() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "FontChooserDialog").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFontChooserDialog)
+	return gtype
 }
 
 // FontChooserDialog: GtkFontChooserDialog widget is a dialog for selecting a

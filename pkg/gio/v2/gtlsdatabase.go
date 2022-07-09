@@ -22,13 +22,15 @@ import (
 // extern gchar* _gotk4_gio2_TlsDatabaseClass_create_certificate_handle(void*, void*);
 import "C"
 
-// glib.Type values for gtlsdatabase.go.
-var GTypeTLSDatabase = coreglib.Type(C.g_tls_database_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTLSDatabase, F: marshalTLSDatabase},
-	})
+// GTypeTLSDatabase returns the GType for the type TLSDatabase.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTLSDatabase() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsDatabase").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTLSDatabase)
+	return gtype
 }
 
 // TLS_DATABASE_PURPOSE_AUTHENTICATE_CLIENT: purpose used to verify the client

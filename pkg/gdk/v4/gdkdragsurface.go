@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdkdragsurface.go.
-var GTypeDragSurface = coreglib.Type(C.gdk_drag_surface_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeDragSurface, F: marshalDragSurface},
-	})
+// GTypeDragSurface returns the GType for the type DragSurface.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDragSurface() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "DragSurface").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDragSurface)
+	return gtype
 }
 
 // DragSurface is an interface for surfaces used during DND.

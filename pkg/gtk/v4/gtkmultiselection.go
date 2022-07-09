@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkmultiselection.go.
-var GTypeMultiSelection = coreglib.Type(C.gtk_multi_selection_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeMultiSelection, F: marshalMultiSelection},
-	})
+// GTypeMultiSelection returns the GType for the type MultiSelection.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMultiSelection() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "MultiSelection").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMultiSelection)
+	return gtype
 }
 
 // MultiSelectionOverrider contains methods that are overridable.

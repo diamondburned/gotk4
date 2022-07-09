@@ -29,35 +29,125 @@ import (
 // extern void _gotk4_gdk3_Window_ConnectMovedToRect(gpointer, gpointer, gpointer, gboolean, gboolean, guintptr);
 import "C"
 
-// glib.Type values for gdkwindow.go.
-var (
-	GTypeFullscreenMode       = coreglib.Type(C.gdk_fullscreen_mode_get_type())
-	GTypeGravity              = coreglib.Type(C.gdk_gravity_get_type())
-	GTypeWindowEdge           = coreglib.Type(C.gdk_window_edge_get_type())
-	GTypeWindowType           = coreglib.Type(C.gdk_window_type_get_type())
-	GTypeWindowWindowClass    = coreglib.Type(C.gdk_window_window_class_get_type())
-	GTypeAnchorHints          = coreglib.Type(C.gdk_anchor_hints_get_type())
-	GTypeWMDecoration         = coreglib.Type(C.gdk_wm_decoration_get_type())
-	GTypeWMFunction           = coreglib.Type(C.gdk_wm_function_get_type())
-	GTypeWindowAttributesType = coreglib.Type(C.gdk_window_attributes_type_get_type())
-	GTypeWindowHints          = coreglib.Type(C.gdk_window_hints_get_type())
-	GTypeWindow               = coreglib.Type(C.gdk_window_get_type())
-)
+// GTypeFullscreenMode returns the GType for the type FullscreenMode.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFullscreenMode() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "FullscreenMode").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFullscreenMode)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeFullscreenMode, F: marshalFullscreenMode},
-		{T: GTypeGravity, F: marshalGravity},
-		{T: GTypeWindowEdge, F: marshalWindowEdge},
-		{T: GTypeWindowType, F: marshalWindowType},
-		{T: GTypeWindowWindowClass, F: marshalWindowWindowClass},
-		{T: GTypeAnchorHints, F: marshalAnchorHints},
-		{T: GTypeWMDecoration, F: marshalWMDecoration},
-		{T: GTypeWMFunction, F: marshalWMFunction},
-		{T: GTypeWindowAttributesType, F: marshalWindowAttributesType},
-		{T: GTypeWindowHints, F: marshalWindowHints},
-		{T: GTypeWindow, F: marshalWindow},
-	})
+// GTypeGravity returns the GType for the type Gravity.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeGravity() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "Gravity").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalGravity)
+	return gtype
+}
+
+// GTypeWindowEdge returns the GType for the type WindowEdge.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeWindowEdge() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "WindowEdge").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalWindowEdge)
+	return gtype
+}
+
+// GTypeWindowType returns the GType for the type WindowType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeWindowType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "WindowType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalWindowType)
+	return gtype
+}
+
+// GTypeWindowWindowClass returns the GType for the type WindowWindowClass.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeWindowWindowClass() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "WindowWindowClass").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalWindowWindowClass)
+	return gtype
+}
+
+// GTypeAnchorHints returns the GType for the type AnchorHints.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAnchorHints() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "AnchorHints").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAnchorHints)
+	return gtype
+}
+
+// GTypeWMDecoration returns the GType for the type WMDecoration.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeWMDecoration() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "WMDecoration").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalWMDecoration)
+	return gtype
+}
+
+// GTypeWMFunction returns the GType for the type WMFunction.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeWMFunction() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "WMFunction").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalWMFunction)
+	return gtype
+}
+
+// GTypeWindowAttributesType returns the GType for the type WindowAttributesType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeWindowAttributesType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "WindowAttributesType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalWindowAttributesType)
+	return gtype
+}
+
+// GTypeWindowHints returns the GType for the type WindowHints.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeWindowHints() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "WindowHints").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalWindowHints)
+	return gtype
+}
+
+// GTypeWindow returns the GType for the type Window.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeWindow() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "Window").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalWindow)
+	return gtype
 }
 
 // FullscreenMode indicates which monitor (in a multi-head setup) a window

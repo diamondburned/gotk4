@@ -33,17 +33,26 @@ import (
 // extern void _gotk4_gio2_Resolver_ConnectReload(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gresolver.go.
-var (
-	GTypeResolverNameLookupFlags = coreglib.Type(C.g_resolver_name_lookup_flags_get_type())
-	GTypeResolver                = coreglib.Type(C.g_resolver_get_type())
-)
+// GTypeResolverNameLookupFlags returns the GType for the type ResolverNameLookupFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeResolverNameLookupFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "ResolverNameLookupFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalResolverNameLookupFlags)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeResolverNameLookupFlags, F: marshalResolverNameLookupFlags},
-		{T: GTypeResolver, F: marshalResolver},
-	})
+// GTypeResolver returns the GType for the type Resolver.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeResolver() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "Resolver").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalResolver)
+	return gtype
 }
 
 // ResolverNameLookupFlags flags to modify lookup behavior.

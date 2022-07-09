@@ -18,13 +18,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gkeyfile.go.
-var GTypeKeyFile = coreglib.Type(C.g_key_file_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeKeyFile, F: marshalKeyFile},
-	})
+// GTypeKeyFile returns the GType for the type KeyFile.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeKeyFile() coreglib.Type {
+	gtype := coreglib.Type(C.g_key_file_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalKeyFile)
+	return gtype
 }
 
 // KEY_FILE_DESKTOP_GROUP: name of the main group of a desktop entry file, as

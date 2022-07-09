@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkmenushellaccessible.go.
-var GTypeMenuShellAccessible = coreglib.Type(C.gtk_menu_shell_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeMenuShellAccessible, F: marshalMenuShellAccessible},
-	})
+// GTypeMenuShellAccessible returns the GType for the type MenuShellAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMenuShellAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "MenuShellAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMenuShellAccessible)
+	return gtype
 }
 
 // MenuShellAccessibleOverrider contains methods that are overridable.

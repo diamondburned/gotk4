@@ -20,13 +20,15 @@ import (
 // extern void _gotk4_gtk4_LayoutManagerClass_unroot(void*);
 import "C"
 
-// glib.Type values for gtklayoutmanager.go.
-var GTypeLayoutManager = coreglib.Type(C.gtk_layout_manager_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeLayoutManager, F: marshalLayoutManager},
-	})
+// GTypeLayoutManager returns the GType for the type LayoutManager.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeLayoutManager() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "LayoutManager").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalLayoutManager)
+	return gtype
 }
 
 // LayoutManagerOverrider contains methods that are overridable.

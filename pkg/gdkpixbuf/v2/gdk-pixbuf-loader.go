@@ -26,13 +26,15 @@ import (
 // extern void _gotk4_gdkpixbuf2_PixbufLoader_ConnectSizePrepared(gpointer, gint, gint, guintptr);
 import "C"
 
-// glib.Type values for gdk-pixbuf-loader.go.
-var GTypePixbufLoader = coreglib.Type(C.gdk_pixbuf_loader_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypePixbufLoader, F: marshalPixbufLoader},
-	})
+// GTypePixbufLoader returns the GType for the type PixbufLoader.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePixbufLoader() coreglib.Type {
+	gtype := coreglib.Type(C.gdk_pixbuf_loader_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPixbufLoader)
+	return gtype
 }
 
 // PixbufLoaderOverrider contains methods that are overridable.

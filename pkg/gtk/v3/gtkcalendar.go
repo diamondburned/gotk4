@@ -35,17 +35,26 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// glib.Type values for gtkcalendar.go.
-var (
-	GTypeCalendarDisplayOptions = coreglib.Type(C.gtk_calendar_display_options_get_type())
-	GTypeCalendar               = coreglib.Type(C.gtk_calendar_get_type())
-)
+// GTypeCalendarDisplayOptions returns the GType for the type CalendarDisplayOptions.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCalendarDisplayOptions() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CalendarDisplayOptions").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCalendarDisplayOptions)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCalendarDisplayOptions, F: marshalCalendarDisplayOptions},
-		{T: GTypeCalendar, F: marshalCalendar},
-	})
+// GTypeCalendar returns the GType for the type Calendar.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCalendar() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Calendar").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCalendar)
+	return gtype
 }
 
 // CalendarDisplayOptions: these options can be used to influence the display

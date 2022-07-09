@@ -21,17 +21,26 @@ import (
 // extern void _gotk4_gtk3_Menu_ConnectPoppedUp(gpointer, gpointer, gpointer, gboolean, gboolean, guintptr);
 import "C"
 
-// glib.Type values for gtkmenu.go.
-var (
-	GTypeArrowPlacement = coreglib.Type(C.gtk_arrow_placement_get_type())
-	GTypeMenu           = coreglib.Type(C.gtk_menu_get_type())
-)
+// GTypeArrowPlacement returns the GType for the type ArrowPlacement.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeArrowPlacement() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ArrowPlacement").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalArrowPlacement)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeArrowPlacement, F: marshalArrowPlacement},
-		{T: GTypeMenu, F: marshalMenu},
-	})
+// GTypeMenu returns the GType for the type Menu.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMenu() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Menu").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMenu)
+	return gtype
 }
 
 // ArrowPlacement: used to specify the placement of scroll arrows in scrolling

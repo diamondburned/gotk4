@@ -17,25 +17,70 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for pango-layout.go.
-var (
-	GTypeAlignment     = coreglib.Type(C.pango_alignment_get_type())
-	GTypeEllipsizeMode = coreglib.Type(C.pango_ellipsize_mode_get_type())
-	GTypeWrapMode      = coreglib.Type(C.pango_wrap_mode_get_type())
-	GTypeLayout        = coreglib.Type(C.pango_layout_get_type())
-	GTypeLayoutIter    = coreglib.Type(C.pango_layout_iter_get_type())
-	GTypeLayoutLine    = coreglib.Type(C.pango_layout_line_get_type())
-)
+// GTypeAlignment returns the GType for the type Alignment.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAlignment() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "Alignment").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAlignment)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeAlignment, F: marshalAlignment},
-		{T: GTypeEllipsizeMode, F: marshalEllipsizeMode},
-		{T: GTypeWrapMode, F: marshalWrapMode},
-		{T: GTypeLayout, F: marshalLayout},
-		{T: GTypeLayoutIter, F: marshalLayoutIter},
-		{T: GTypeLayoutLine, F: marshalLayoutLine},
-	})
+// GTypeEllipsizeMode returns the GType for the type EllipsizeMode.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeEllipsizeMode() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "EllipsizeMode").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalEllipsizeMode)
+	return gtype
+}
+
+// GTypeWrapMode returns the GType for the type WrapMode.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeWrapMode() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "WrapMode").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalWrapMode)
+	return gtype
+}
+
+// GTypeLayout returns the GType for the type Layout.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeLayout() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "Layout").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalLayout)
+	return gtype
+}
+
+// GTypeLayoutIter returns the GType for the type LayoutIter.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeLayoutIter() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "LayoutIter").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalLayoutIter)
+	return gtype
+}
+
+// GTypeLayoutLine returns the GType for the type LayoutLine.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeLayoutLine() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "LayoutLine").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalLayoutLine)
+	return gtype
 }
 
 // LayoutRun: PangoLayoutRun represents a single run within a PangoLayoutLine.

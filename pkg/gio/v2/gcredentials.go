@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gcredentials.go.
-var GTypeCredentials = coreglib.Type(C.g_credentials_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCredentials, F: marshalCredentials},
-	})
+// GTypeCredentials returns the GType for the type Credentials.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCredentials() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "Credentials").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCredentials)
+	return gtype
 }
 
 // Credentials type is a reference-counted wrapper for native credentials. This

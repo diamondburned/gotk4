@@ -17,13 +17,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdkcontentdeserializer.go.
-var GTypeContentDeserializer = coreglib.Type(C.gdk_content_deserializer_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeContentDeserializer, F: marshalContentDeserializer},
-	})
+// GTypeContentDeserializer returns the GType for the type ContentDeserializer.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeContentDeserializer() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "ContentDeserializer").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalContentDeserializer)
+	return gtype
 }
 
 // ContentDeserializeFinish finishes a content deserialization operation.

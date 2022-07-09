@@ -17,13 +17,15 @@ import (
 // extern gchar* _gotk4_gio2_InetAddressClass_to_string(void*);
 import "C"
 
-// glib.Type values for ginetaddress.go.
-var GTypeInetAddress = coreglib.Type(C.g_inet_address_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeInetAddress, F: marshalInetAddress},
-	})
+// GTypeInetAddress returns the GType for the type InetAddress.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeInetAddress() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "InetAddress").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalInetAddress)
+	return gtype
 }
 
 // InetAddressOverrider contains methods that are overridable.

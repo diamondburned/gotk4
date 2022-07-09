@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkspinneraccessible.go.
-var GTypeSpinnerAccessible = coreglib.Type(C.gtk_spinner_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSpinnerAccessible, F: marshalSpinnerAccessible},
-	})
+// GTypeSpinnerAccessible returns the GType for the type SpinnerAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSpinnerAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "SpinnerAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSpinnerAccessible)
+	return gtype
 }
 
 // SpinnerAccessibleOverrider contains methods that are overridable.

@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtktreeviewaccessible.go.
-var GTypeTreeViewAccessible = coreglib.Type(C.gtk_tree_view_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTreeViewAccessible, F: marshalTreeViewAccessible},
-	})
+// GTypeTreeViewAccessible returns the GType for the type TreeViewAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTreeViewAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TreeViewAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTreeViewAccessible)
+	return gtype
 }
 
 // TreeViewAccessibleOverrider contains methods that are overridable.

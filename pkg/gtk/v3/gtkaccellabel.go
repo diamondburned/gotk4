@@ -17,13 +17,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkaccellabel.go.
-var GTypeAccelLabel = coreglib.Type(C.gtk_accel_label_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeAccelLabel, F: marshalAccelLabel},
-	})
+// GTypeAccelLabel returns the GType for the type AccelLabel.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAccelLabel() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "AccelLabel").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAccelLabel)
+	return gtype
 }
 
 // AccelLabelOverrider contains methods that are overridable.

@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdkwaylanddevice.go.
-var GTypeWaylandDevice = coreglib.Type(C.gdk_wayland_device_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeWaylandDevice, F: marshalWaylandDevice},
-	})
+// GTypeWaylandDevice returns the GType for the type WaylandDevice.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeWaylandDevice() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("GdkWayland", "WaylandDevice").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalWaylandDevice)
+	return gtype
 }
 
 // WaylandDevice: wayland implementation of GdkDevice.

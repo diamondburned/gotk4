@@ -16,17 +16,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkstringfilter.go.
-var (
-	GTypeStringFilterMatchMode = coreglib.Type(C.gtk_string_filter_match_mode_get_type())
-	GTypeStringFilter          = coreglib.Type(C.gtk_string_filter_get_type())
-)
+// GTypeStringFilterMatchMode returns the GType for the type StringFilterMatchMode.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeStringFilterMatchMode() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "StringFilterMatchMode").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalStringFilterMatchMode)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeStringFilterMatchMode, F: marshalStringFilterMatchMode},
-		{T: GTypeStringFilter, F: marshalStringFilter},
-	})
+// GTypeStringFilter returns the GType for the type StringFilter.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeStringFilter() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "StringFilter").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalStringFilter)
+	return gtype
 }
 
 // StringFilterMatchMode specifies how search strings are matched inside text.

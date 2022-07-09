@@ -19,13 +19,15 @@ import (
 // extern gboolean _gotk4_gio2_InitableIface_init(void*, void*, GError**);
 import "C"
 
-// glib.Type values for ginitable.go.
-var GTypeInitable = coreglib.Type(C.g_initable_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeInitable, F: marshalInitable},
-	})
+// GTypeInitable returns the GType for the type Initable.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeInitable() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "Initable").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalInitable)
+	return gtype
 }
 
 // InitableOverrider contains methods that are overridable.

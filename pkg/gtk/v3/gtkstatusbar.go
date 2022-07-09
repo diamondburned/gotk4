@@ -21,13 +21,15 @@ import (
 // extern void _gotk4_gtk3_Statusbar_ConnectTextPushed(gpointer, guint, void*, guintptr);
 import "C"
 
-// glib.Type values for gtkstatusbar.go.
-var GTypeStatusbar = coreglib.Type(C.gtk_statusbar_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeStatusbar, F: marshalStatusbar},
-	})
+// GTypeStatusbar returns the GType for the type Statusbar.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeStatusbar() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Statusbar").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalStatusbar)
+	return gtype
 }
 
 // StatusbarOverrider contains methods that are overridable.

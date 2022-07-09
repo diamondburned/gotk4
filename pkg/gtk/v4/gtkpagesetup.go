@@ -18,13 +18,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkpagesetup.go.
-var GTypePageSetup = coreglib.Type(C.gtk_page_setup_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypePageSetup, F: marshalPageSetup},
-	})
+// GTypePageSetup returns the GType for the type PageSetup.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePageSetup() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "PageSetup").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPageSetup)
+	return gtype
 }
 
 // PageSetup: GtkPageSetup object stores the page size, orientation and margins.

@@ -22,13 +22,15 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 import "C"
 
-// glib.Type values for gsocketaddressenumerator.go.
-var GTypeSocketAddressEnumerator = coreglib.Type(C.g_socket_address_enumerator_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSocketAddressEnumerator, F: marshalSocketAddressEnumerator},
-	})
+// GTypeSocketAddressEnumerator returns the GType for the type SocketAddressEnumerator.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSocketAddressEnumerator() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "SocketAddressEnumerator").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSocketAddressEnumerator)
+	return gtype
 }
 
 // SocketAddressEnumeratorOverrider contains methods that are overridable.

@@ -16,19 +16,37 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkmultifilter.go.
-var (
-	GTypeAnyFilter   = coreglib.Type(C.gtk_any_filter_get_type())
-	GTypeEveryFilter = coreglib.Type(C.gtk_every_filter_get_type())
-	GTypeMultiFilter = coreglib.Type(C.gtk_multi_filter_get_type())
-)
+// GTypeAnyFilter returns the GType for the type AnyFilter.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAnyFilter() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "AnyFilter").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAnyFilter)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeAnyFilter, F: marshalAnyFilter},
-		{T: GTypeEveryFilter, F: marshalEveryFilter},
-		{T: GTypeMultiFilter, F: marshalMultiFilter},
-	})
+// GTypeEveryFilter returns the GType for the type EveryFilter.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeEveryFilter() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "EveryFilter").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalEveryFilter)
+	return gtype
+}
+
+// GTypeMultiFilter returns the GType for the type MultiFilter.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMultiFilter() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "MultiFilter").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMultiFilter)
+	return gtype
 }
 
 // AnyFilter: GtkAnyFilter matches an item when at least one of its filters

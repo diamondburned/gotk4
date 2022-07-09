@@ -15,17 +15,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdkmemorytexture.go.
-var (
-	GTypeMemoryFormat  = coreglib.Type(C.gdk_memory_format_get_type())
-	GTypeMemoryTexture = coreglib.Type(C.gdk_memory_texture_get_type())
-)
+// GTypeMemoryFormat returns the GType for the type MemoryFormat.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMemoryFormat() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "MemoryFormat").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMemoryFormat)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeMemoryFormat, F: marshalMemoryFormat},
-		{T: GTypeMemoryTexture, F: marshalMemoryTexture},
-	})
+// GTypeMemoryTexture returns the GType for the type MemoryTexture.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMemoryTexture() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "MemoryTexture").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMemoryTexture)
+	return gtype
 }
 
 // MemoryFormat: GdkMemoryFormat describes a format that bytes can have in

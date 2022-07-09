@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdkgltexture.go.
-var GTypeGLTexture = coreglib.Type(C.gdk_gl_texture_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeGLTexture, F: marshalGLTexture},
-	})
+// GTypeGLTexture returns the GType for the type GLTexture.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeGLTexture() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "GLTexture").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalGLTexture)
+	return gtype
 }
 
 // GLTexture: gdkTexture representing a GL texture object.

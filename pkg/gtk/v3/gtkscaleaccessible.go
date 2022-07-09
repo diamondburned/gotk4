@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkscaleaccessible.go.
-var GTypeScaleAccessible = coreglib.Type(C.gtk_scale_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeScaleAccessible, F: marshalScaleAccessible},
-	})
+// GTypeScaleAccessible returns the GType for the type ScaleAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeScaleAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ScaleAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalScaleAccessible)
+	return gtype
 }
 
 // ScaleAccessibleOverrider contains methods that are overridable.

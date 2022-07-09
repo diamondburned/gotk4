@@ -18,17 +18,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkcsssection.go.
-var (
-	GTypeCSSSectionType = coreglib.Type(C.gtk_css_section_type_get_type())
-	GTypeCSSSection     = coreglib.Type(C.gtk_css_section_get_type())
-)
+// GTypeCSSSectionType returns the GType for the type CSSSectionType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCSSSectionType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CssSectionType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCSSSectionType)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCSSSectionType, F: marshalCSSSectionType},
-		{T: GTypeCSSSection, F: marshalCSSSection},
-	})
+// GTypeCSSSection returns the GType for the type CSSSection.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCSSSection() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CssSection").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCSSSection)
+	return gtype
 }
 
 // CSSSectionType: different types of sections indicate parts of a CSS document

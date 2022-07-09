@@ -16,17 +16,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdkdevicepad.go.
-var (
-	GTypeDevicePadFeature = coreglib.Type(C.gdk_device_pad_feature_get_type())
-	GTypeDevicePad        = coreglib.Type(C.gdk_device_pad_get_type())
-)
+// GTypeDevicePadFeature returns the GType for the type DevicePadFeature.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDevicePadFeature() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "DevicePadFeature").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDevicePadFeature)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeDevicePadFeature, F: marshalDevicePadFeature},
-		{T: GTypeDevicePad, F: marshalDevicePad},
-	})
+// GTypeDevicePad returns the GType for the type DevicePad.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDevicePad() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "DevicePad").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDevicePad)
+	return gtype
 }
 
 // DevicePadFeature: pad feature.

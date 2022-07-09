@@ -24,13 +24,15 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 import "C"
 
-// glib.Type values for gdkclipboard.go.
-var GTypeClipboard = coreglib.Type(C.gdk_clipboard_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeClipboard, F: marshalClipboard},
-	})
+// GTypeClipboard returns the GType for the type Clipboard.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeClipboard() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "Clipboard").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalClipboard)
+	return gtype
 }
 
 // Clipboard: GdkClipboard object represents data shared between applications or

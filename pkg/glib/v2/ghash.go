@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for ghash.go.
-var GTypeHashTable = coreglib.Type(C.g_hash_table_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeHashTable, F: marshalHashTable},
-	})
+// GTypeHashTable returns the GType for the type HashTable.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeHashTable() coreglib.Type {
+	gtype := coreglib.Type(C.g_hash_table_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalHashTable)
+	return gtype
 }
 
 // HRFunc specifies the type of the function passed to

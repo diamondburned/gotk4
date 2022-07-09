@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for pango-item.go.
-var GTypeItem = coreglib.Type(C.pango_item_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeItem, F: marshalItem},
-	})
+// GTypeItem returns the GType for the type Item.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeItem() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "Item").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalItem)
+	return gtype
 }
 
 // ANALYSIS_FLAG_CENTERED_BASELINE: whether the segment should be shifted to

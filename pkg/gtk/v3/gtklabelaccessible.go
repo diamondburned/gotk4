@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtklabelaccessible.go.
-var GTypeLabelAccessible = coreglib.Type(C.gtk_label_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeLabelAccessible, F: marshalLabelAccessible},
-	})
+// GTypeLabelAccessible returns the GType for the type LabelAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeLabelAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "LabelAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalLabelAccessible)
+	return gtype
 }
 
 // LabelAccessibleOverrider contains methods that are overridable.

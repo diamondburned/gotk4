@@ -14,13 +14,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkcellrendererspinner.go.
-var GTypeCellRendererSpinner = coreglib.Type(C.gtk_cell_renderer_spinner_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCellRendererSpinner, F: marshalCellRendererSpinner},
-	})
+// GTypeCellRendererSpinner returns the GType for the type CellRendererSpinner.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCellRendererSpinner() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CellRendererSpinner").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCellRendererSpinner)
+	return gtype
 }
 
 // CellRendererSpinnerOverrider contains methods that are overridable.

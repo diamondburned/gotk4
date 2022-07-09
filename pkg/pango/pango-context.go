@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for pango-context.go.
-var GTypeContext = coreglib.Type(C.pango_context_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeContext, F: marshalContext},
-	})
+// GTypeContext returns the GType for the type Context.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeContext() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "Context").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalContext)
+	return gtype
 }
 
 // Itemize breaks a piece of text into segments with consistent directional

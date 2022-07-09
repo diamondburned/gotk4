@@ -18,19 +18,37 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkselection.go.
-var (
-	GTypeTargetFlags = coreglib.Type(C.gtk_target_flags_get_type())
-	GTypeTargetEntry = coreglib.Type(C.gtk_target_entry_get_type())
-	GTypeTargetList  = coreglib.Type(C.gtk_target_list_get_type())
-)
+// GTypeTargetFlags returns the GType for the type TargetFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTargetFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TargetFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTargetFlags)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTargetFlags, F: marshalTargetFlags},
-		{T: GTypeTargetEntry, F: marshalTargetEntry},
-		{T: GTypeTargetList, F: marshalTargetList},
-	})
+// GTypeTargetEntry returns the GType for the type TargetEntry.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTargetEntry() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TargetEntry").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTargetEntry)
+	return gtype
+}
+
+// GTypeTargetList returns the GType for the type TargetList.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTargetList() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TargetList").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTargetList)
+	return gtype
 }
 
 // TargetFlags enumeration is used to specify constraints on a TargetEntry.

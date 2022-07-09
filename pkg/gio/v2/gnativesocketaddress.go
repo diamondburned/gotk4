@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gnativesocketaddress.go.
-var GTypeNativeSocketAddress = coreglib.Type(C.g_native_socket_address_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeNativeSocketAddress, F: marshalNativeSocketAddress},
-	})
+// GTypeNativeSocketAddress returns the GType for the type NativeSocketAddress.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeNativeSocketAddress() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "NativeSocketAddress").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalNativeSocketAddress)
+	return gtype
 }
 
 // NativeSocketAddressOverrider contains methods that are overridable.

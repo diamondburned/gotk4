@@ -16,13 +16,15 @@ import (
 // extern void _gotk4_gtk4_CellRendererToggle_ConnectToggled(gpointer, void*, guintptr);
 import "C"
 
-// glib.Type values for gtkcellrenderertoggle.go.
-var GTypeCellRendererToggle = coreglib.Type(C.gtk_cell_renderer_toggle_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCellRendererToggle, F: marshalCellRendererToggle},
-	})
+// GTypeCellRendererToggle returns the GType for the type CellRendererToggle.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCellRendererToggle() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CellRendererToggle").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCellRendererToggle)
+	return gtype
 }
 
 // CellRendererToggle renders a toggle button in a cell

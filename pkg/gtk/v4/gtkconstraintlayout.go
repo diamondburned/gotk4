@@ -18,17 +18,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkconstraintlayout.go.
-var (
-	GTypeConstraintLayout      = coreglib.Type(C.gtk_constraint_layout_get_type())
-	GTypeConstraintLayoutChild = coreglib.Type(C.gtk_constraint_layout_child_get_type())
-)
+// GTypeConstraintLayout returns the GType for the type ConstraintLayout.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeConstraintLayout() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ConstraintLayout").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalConstraintLayout)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeConstraintLayout, F: marshalConstraintLayout},
-		{T: GTypeConstraintLayoutChild, F: marshalConstraintLayoutChild},
-	})
+// GTypeConstraintLayoutChild returns the GType for the type ConstraintLayoutChild.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeConstraintLayoutChild() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ConstraintLayoutChild").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalConstraintLayoutChild)
+	return gtype
 }
 
 // ConstraintLayoutOverrider contains methods that are overridable.

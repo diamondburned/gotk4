@@ -20,13 +20,15 @@ import (
 // extern void _gotk4_gtk4_MediaFileClass_open(void*);
 import "C"
 
-// glib.Type values for gtkmediafile.go.
-var GTypeMediaFile = coreglib.Type(C.gtk_media_file_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeMediaFile, F: marshalMediaFile},
-	})
+// GTypeMediaFile returns the GType for the type MediaFile.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMediaFile() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "MediaFile").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMediaFile)
+	return gtype
 }
 
 const MEDIA_FILE_EXTENSION_POINT_NAME = "gtk-media-file"

@@ -18,17 +18,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtk.go.
-var (
-	GTypeEditableProperties = coreglib.Type(C.gtk_editable_properties_get_type())
-	GTypeDebugFlags         = coreglib.Type(C.gtk_debug_flags_get_type())
-)
+// GTypeEditableProperties returns the GType for the type EditableProperties.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeEditableProperties() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "EditableProperties").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalEditableProperties)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeEditableProperties, F: marshalEditableProperties},
-		{T: GTypeDebugFlags, F: marshalDebugFlags},
-	})
+// GTypeDebugFlags returns the GType for the type DebugFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDebugFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "DebugFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDebugFlags)
+	return gtype
 }
 
 func init() {

@@ -20,17 +20,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkfilefilter.go.
-var (
-	GTypeFileFilterFlags = coreglib.Type(C.gtk_file_filter_flags_get_type())
-	GTypeFileFilter      = coreglib.Type(C.gtk_file_filter_get_type())
-)
+// GTypeFileFilterFlags returns the GType for the type FileFilterFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFileFilterFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "FileFilterFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFileFilterFlags)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeFileFilterFlags, F: marshalFileFilterFlags},
-		{T: GTypeFileFilter, F: marshalFileFilter},
-	})
+// GTypeFileFilter returns the GType for the type FileFilter.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFileFilter() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "FileFilter").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFileFilter)
+	return gtype
 }
 
 // FileFilterFlags: these flags indicate what parts of a FileFilterInfo struct

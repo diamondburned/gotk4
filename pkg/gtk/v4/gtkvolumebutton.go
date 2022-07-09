@@ -14,13 +14,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkvolumebutton.go.
-var GTypeVolumeButton = coreglib.Type(C.gtk_volume_button_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeVolumeButton, F: marshalVolumeButton},
-	})
+// GTypeVolumeButton returns the GType for the type VolumeButton.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeVolumeButton() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "VolumeButton").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalVolumeButton)
+	return gtype
 }
 
 // VolumeButton: GtkVolumeButton is a GtkScaleButton subclass tailored for

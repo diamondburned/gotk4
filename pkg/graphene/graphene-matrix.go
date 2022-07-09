@@ -15,13 +15,15 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
-// glib.Type values for graphene-matrix.go.
-var GTypeMatrix = coreglib.Type(C.graphene_matrix_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeMatrix, F: marshalMatrix},
-	})
+// GTypeMatrix returns the GType for the type Matrix.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMatrix() coreglib.Type {
+	gtype := coreglib.Type(C.graphene_matrix_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMatrix)
+	return gtype
 }
 
 // Matrix: structure capable of holding a 4x4 matrix.

@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for pango-direction.go.
-var GTypeDirection = coreglib.Type(C.pango_direction_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeDirection, F: marshalDirection},
-	})
+// GTypeDirection returns the GType for the type Direction.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDirection() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "Direction").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDirection)
+	return gtype
 }
 
 // Direction: PangoDirection represents a direction in the Unicode bidirectional

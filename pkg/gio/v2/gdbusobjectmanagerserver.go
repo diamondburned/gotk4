@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdbusobjectmanagerserver.go.
-var GTypeDBusObjectManagerServer = coreglib.Type(C.g_dbus_object_manager_server_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeDBusObjectManagerServer, F: marshalDBusObjectManagerServer},
-	})
+// GTypeDBusObjectManagerServer returns the GType for the type DBusObjectManagerServer.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusObjectManagerServer() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusObjectManagerServer").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusObjectManagerServer)
+	return gtype
 }
 
 // DBusObjectManagerServerOverrider contains methods that are overridable.

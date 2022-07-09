@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkseparatormenuitem.go.
-var GTypeSeparatorMenuItem = coreglib.Type(C.gtk_separator_menu_item_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSeparatorMenuItem, F: marshalSeparatorMenuItem},
-	})
+// GTypeSeparatorMenuItem returns the GType for the type SeparatorMenuItem.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSeparatorMenuItem() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "SeparatorMenuItem").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSeparatorMenuItem)
+	return gtype
 }
 
 // SeparatorMenuItemOverrider contains methods that are overridable.

@@ -15,17 +15,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkconstraint.go.
-var (
-	GTypeConstraintTarget = coreglib.Type(C.gtk_constraint_target_get_type())
-	GTypeConstraint       = coreglib.Type(C.gtk_constraint_get_type())
-)
+// GTypeConstraintTarget returns the GType for the type ConstraintTarget.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeConstraintTarget() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ConstraintTarget").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalConstraintTarget)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeConstraintTarget, F: marshalConstraintTarget},
-		{T: GTypeConstraint, F: marshalConstraint},
-	})
+// GTypeConstraint returns the GType for the type Constraint.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeConstraint() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Constraint").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalConstraint)
+	return gtype
 }
 
 // ConstraintTarget: GtkConstraintTarget interface is implemented by objects

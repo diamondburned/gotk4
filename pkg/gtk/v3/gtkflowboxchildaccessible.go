@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkflowboxchildaccessible.go.
-var GTypeFlowBoxChildAccessible = coreglib.Type(C.gtk_flow_box_child_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeFlowBoxChildAccessible, F: marshalFlowBoxChildAccessible},
-	})
+// GTypeFlowBoxChildAccessible returns the GType for the type FlowBoxChildAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFlowBoxChildAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "FlowBoxChildAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFlowBoxChildAccessible)
+	return gtype
 }
 
 // FlowBoxChildAccessibleOverrider contains methods that are overridable.

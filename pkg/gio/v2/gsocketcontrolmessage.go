@@ -20,13 +20,15 @@ import (
 // extern void _gotk4_gio2_SocketControlMessageClass_serialize(void*, gpointer);
 import "C"
 
-// glib.Type values for gsocketcontrolmessage.go.
-var GTypeSocketControlMessage = coreglib.Type(C.g_socket_control_message_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSocketControlMessage, F: marshalSocketControlMessage},
-	})
+// GTypeSocketControlMessage returns the GType for the type SocketControlMessage.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSocketControlMessage() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "SocketControlMessage").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSocketControlMessage)
+	return gtype
 }
 
 // SocketControlMessageOverrider contains methods that are overridable.

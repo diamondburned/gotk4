@@ -17,13 +17,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkinvisible.go.
-var GTypeInvisible = coreglib.Type(C.gtk_invisible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeInvisible, F: marshalInvisible},
-	})
+// GTypeInvisible returns the GType for the type Invisible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeInvisible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Invisible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalInvisible)
+	return gtype
 }
 
 // InvisibleOverrider contains methods that are overridable.

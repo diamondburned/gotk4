@@ -30,13 +30,15 @@ import (
 // extern void _gotk4_gtk3_MenuItem_ConnectToggleSizeRequest(gpointer, gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkmenuitem.go.
-var GTypeMenuItem = coreglib.Type(C.gtk_menu_item_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeMenuItem, F: marshalMenuItem},
-	})
+// GTypeMenuItem returns the GType for the type MenuItem.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMenuItem() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "MenuItem").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMenuItem)
+	return gtype
 }
 
 // MenuItemOverrider contains methods that are overridable.

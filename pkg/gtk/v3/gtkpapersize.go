@@ -18,13 +18,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkpapersize.go.
-var GTypePaperSize = coreglib.Type(C.gtk_paper_size_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypePaperSize, F: marshalPaperSize},
-	})
+// GTypePaperSize returns the GType for the type PaperSize.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePaperSize() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "PaperSize").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPaperSize)
+	return gtype
 }
 
 // PAPER_NAME_A3: name for the A3 paper size.

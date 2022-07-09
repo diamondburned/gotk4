@@ -17,13 +17,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtlscertificate.go.
-var GTypeTLSCertificate = coreglib.Type(C.g_tls_certificate_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTLSCertificate, F: marshalTLSCertificate},
-	})
+// GTypeTLSCertificate returns the GType for the type TLSCertificate.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTLSCertificate() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsCertificate").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTLSCertificate)
+	return gtype
 }
 
 // TLSCertificateOverrider contains methods that are overridable.

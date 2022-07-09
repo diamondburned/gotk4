@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkcolumnviewcolumn.go.
-var GTypeColumnViewColumn = coreglib.Type(C.gtk_column_view_column_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeColumnViewColumn, F: marshalColumnViewColumn},
-	})
+// GTypeColumnViewColumn returns the GType for the type ColumnViewColumn.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeColumnViewColumn() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ColumnViewColumn").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalColumnViewColumn)
+	return gtype
 }
 
 // ColumnViewColumn: GtkColumnViewColumn represents the columns being added to

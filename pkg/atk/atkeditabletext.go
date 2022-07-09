@@ -21,13 +21,15 @@ import (
 // extern void _gotk4_atk1_EditableTextIface_set_text_contents(void*, void*);
 import "C"
 
-// glib.Type values for atkeditabletext.go.
-var GTypeEditableText = coreglib.Type(C.atk_editable_text_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeEditableText, F: marshalEditableText},
-	})
+// GTypeEditableText returns the GType for the type EditableText.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeEditableText() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "EditableText").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalEditableText)
+	return gtype
 }
 
 // EditableTextOverrider contains methods that are overridable.

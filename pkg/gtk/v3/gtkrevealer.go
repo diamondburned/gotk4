@@ -17,17 +17,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkrevealer.go.
-var (
-	GTypeRevealerTransitionType = coreglib.Type(C.gtk_revealer_transition_type_get_type())
-	GTypeRevealer               = coreglib.Type(C.gtk_revealer_get_type())
-)
+// GTypeRevealerTransitionType returns the GType for the type RevealerTransitionType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRevealerTransitionType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "RevealerTransitionType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRevealerTransitionType)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeRevealerTransitionType, F: marshalRevealerTransitionType},
-		{T: GTypeRevealer, F: marshalRevealer},
-	})
+// GTypeRevealer returns the GType for the type Revealer.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRevealer() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Revealer").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRevealer)
+	return gtype
 }
 
 // RevealerTransitionType: these enumeration values describe the possible

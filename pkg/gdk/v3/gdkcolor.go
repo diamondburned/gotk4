@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdkcolor.go.
-var GTypeColor = coreglib.Type(C.gdk_color_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeColor, F: marshalColor},
-	})
+// GTypeColor returns the GType for the type Color.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeColor() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "Color").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalColor)
+	return gtype
 }
 
 // Color is used to describe a color, similar to the XColor struct used in the

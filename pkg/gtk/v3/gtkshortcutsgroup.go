@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkshortcutsgroup.go.
-var GTypeShortcutsGroup = coreglib.Type(C.gtk_shortcuts_group_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeShortcutsGroup, F: marshalShortcutsGroup},
-	})
+// GTypeShortcutsGroup returns the GType for the type ShortcutsGroup.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeShortcutsGroup() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ShortcutsGroup").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalShortcutsGroup)
+	return gtype
 }
 
 // ShortcutsGroup represents a group of related keyboard shortcuts or gestures.

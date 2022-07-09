@@ -20,13 +20,15 @@ import (
 // extern void _gotk4_atk1_Hypertext_ConnectLinkSelected(gpointer, gint, guintptr);
 import "C"
 
-// glib.Type values for atkhypertext.go.
-var GTypeHypertext = coreglib.Type(C.atk_hypertext_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeHypertext, F: marshalHypertext},
-	})
+// GTypeHypertext returns the GType for the type Hypertext.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeHypertext() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "Hypertext").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalHypertext)
+	return gtype
 }
 
 // HypertextOverrider contains methods that are overridable.

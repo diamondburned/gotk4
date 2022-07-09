@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for pango-matrix.go.
-var GTypeMatrix = coreglib.Type(C.pango_matrix_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeMatrix, F: marshalMatrix},
-	})
+// GTypeMatrix returns the GType for the type Matrix.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMatrix() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "Matrix").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMatrix)
+	return gtype
 }
 
 // Matrix: PangoMatrix specifies a transformation between user-space and device

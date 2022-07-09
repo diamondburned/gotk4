@@ -21,19 +21,37 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for giotypes.go.
-var (
-	GTypeFileAttributeMatcher = coreglib.Type(C.g_file_attribute_matcher_get_type())
-	GTypeResource             = coreglib.Type(C.g_resource_get_type())
-	GTypeSrvTarget            = coreglib.Type(C.g_srv_target_get_type())
-)
+// GTypeFileAttributeMatcher returns the GType for the type FileAttributeMatcher.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFileAttributeMatcher() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "FileAttributeMatcher").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFileAttributeMatcher)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeFileAttributeMatcher, F: marshalFileAttributeMatcher},
-		{T: GTypeResource, F: marshalResource},
-		{T: GTypeSrvTarget, F: marshalSrvTarget},
-	})
+// GTypeResource returns the GType for the type Resource.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeResource() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "Resource").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalResource)
+	return gtype
+}
+
+// GTypeSrvTarget returns the GType for the type SrvTarget.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSrvTarget() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "SrvTarget").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSrvTarget)
+	return gtype
 }
 
 // AsyncReadyCallback: type definition for a function that will be called back

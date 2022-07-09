@@ -17,19 +17,37 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkscrolledwindow.go.
-var (
-	GTypeCornerType     = coreglib.Type(C.gtk_corner_type_get_type())
-	GTypePolicyType     = coreglib.Type(C.gtk_policy_type_get_type())
-	GTypeScrolledWindow = coreglib.Type(C.gtk_scrolled_window_get_type())
-)
+// GTypeCornerType returns the GType for the type CornerType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCornerType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CornerType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCornerType)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCornerType, F: marshalCornerType},
-		{T: GTypePolicyType, F: marshalPolicyType},
-		{T: GTypeScrolledWindow, F: marshalScrolledWindow},
-	})
+// GTypePolicyType returns the GType for the type PolicyType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePolicyType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "PolicyType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPolicyType)
+	return gtype
+}
+
+// GTypeScrolledWindow returns the GType for the type ScrolledWindow.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeScrolledWindow() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ScrolledWindow").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalScrolledWindow)
+	return gtype
 }
 
 // CornerType specifies which corner a child widget should be placed in when

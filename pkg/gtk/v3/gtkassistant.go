@@ -31,17 +31,26 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// glib.Type values for gtkassistant.go.
-var (
-	GTypeAssistantPageType = coreglib.Type(C.gtk_assistant_page_type_get_type())
-	GTypeAssistant         = coreglib.Type(C.gtk_assistant_get_type())
-)
+// GTypeAssistantPageType returns the GType for the type AssistantPageType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAssistantPageType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "AssistantPageType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAssistantPageType)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeAssistantPageType, F: marshalAssistantPageType},
-		{T: GTypeAssistant, F: marshalAssistant},
-	})
+// GTypeAssistant returns the GType for the type Assistant.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAssistant() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Assistant").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAssistant)
+	return gtype
 }
 
 // AssistantPageType: enum for determining the page role inside the Assistant.

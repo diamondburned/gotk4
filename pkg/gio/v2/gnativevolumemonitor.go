@@ -14,13 +14,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gnativevolumemonitor.go.
-var GTypeNativeVolumeMonitor = coreglib.Type(C.g_native_volume_monitor_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeNativeVolumeMonitor, F: marshalNativeVolumeMonitor},
-	})
+// GTypeNativeVolumeMonitor returns the GType for the type NativeVolumeMonitor.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeNativeVolumeMonitor() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "NativeVolumeMonitor").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalNativeVolumeMonitor)
+	return gtype
 }
 
 const NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME = "gio-native-volume-monitor"

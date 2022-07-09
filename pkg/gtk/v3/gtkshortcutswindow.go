@@ -20,13 +20,15 @@ import (
 // extern void _gotk4_gtk3_ShortcutsWindow_ConnectSearch(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkshortcutswindow.go.
-var GTypeShortcutsWindow = coreglib.Type(C.gtk_shortcuts_window_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeShortcutsWindow, F: marshalShortcutsWindow},
-	})
+// GTypeShortcutsWindow returns the GType for the type ShortcutsWindow.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeShortcutsWindow() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ShortcutsWindow").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalShortcutsWindow)
+	return gtype
 }
 
 // ShortcutsWindowOverrider contains methods that are overridable.

@@ -1,6 +1,8 @@
 package generators
 
 import (
+	"fmt"
+
 	"github.com/diamondburned/gotk4/gir/girgen/cmt"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/pen"
@@ -61,3 +63,33 @@ func (s stubFileGeneratorWriter) CHeaderFile() FileWriter              { return 
 
 func (s stubFileWriter) Header() *file.Header { return file.NoopHeader }
 func (s stubFileWriter) Pen() *pen.Pen        { return pen.NoopPen }
+
+type GeneratedGType struct {
+	Header  file.Header
+	GetType string
+}
+
+func GenerateGType(gen FileGeneratorWriter, name, glibGetType string) (GeneratedGType, bool) {
+	var gtype GeneratedGType
+
+	if glibGetType == "" || types.FilterCType(gen, glibGetType) {
+		return gtype, false
+	}
+
+	switch gen.LinkMode() {
+	case types.DynamicLinkMode:
+		gtype.GetType = glibGetType
+
+	case types.RuntimeLinkMode:
+		gtype.Header.ImportCore("girepository")
+		gtype.GetType = fmt.Sprintf(
+			`girepository.MustFind(%q, %q).RegisteredGType()`,
+			gen.Namespace().Namespace.Name, name,
+		)
+
+	default:
+		panic("unreachable")
+	}
+
+	return gtype, true
+}

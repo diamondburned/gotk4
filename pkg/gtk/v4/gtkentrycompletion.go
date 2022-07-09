@@ -23,13 +23,15 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// glib.Type values for gtkentrycompletion.go.
-var GTypeEntryCompletion = coreglib.Type(C.gtk_entry_completion_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeEntryCompletion, F: marshalEntryCompletion},
-	})
+// GTypeEntryCompletion returns the GType for the type EntryCompletion.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeEntryCompletion() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "EntryCompletion").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalEntryCompletion)
+	return gtype
 }
 
 // EntryCompletionMatchFunc: function which decides whether the row indicated by

@@ -29,17 +29,26 @@ import (
 // extern void _gotk4_gio2_Settings_ConnectWritableChanged(gpointer, void*, guintptr);
 import "C"
 
-// glib.Type values for gsettings.go.
-var (
-	GTypeSettingsBindFlags = coreglib.Type(C.g_settings_bind_flags_get_type())
-	GTypeSettings          = coreglib.Type(C.g_settings_get_type())
-)
+// GTypeSettingsBindFlags returns the GType for the type SettingsBindFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSettingsBindFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "SettingsBindFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSettingsBindFlags)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSettingsBindFlags, F: marshalSettingsBindFlags},
-		{T: GTypeSettings, F: marshalSettings},
-	})
+// GTypeSettings returns the GType for the type Settings.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSettings() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "Settings").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSettings)
+	return gtype
 }
 
 // SettingsBindFlags flags used when creating a binding. These flags determine

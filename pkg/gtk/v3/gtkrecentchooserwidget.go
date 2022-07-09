@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkrecentchooserwidget.go.
-var GTypeRecentChooserWidget = coreglib.Type(C.gtk_recent_chooser_widget_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeRecentChooserWidget, F: marshalRecentChooserWidget},
-	})
+// GTypeRecentChooserWidget returns the GType for the type RecentChooserWidget.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRecentChooserWidget() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "RecentChooserWidget").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRecentChooserWidget)
+	return gtype
 }
 
 // RecentChooserWidgetOverrider contains methods that are overridable.

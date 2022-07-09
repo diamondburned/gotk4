@@ -21,13 +21,15 @@ import (
 // extern void _gotk4_gtk4_SearchEntry_ConnectStopSearch(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtksearchentry.go.
-var GTypeSearchEntry = coreglib.Type(C.gtk_search_entry_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSearchEntry, F: marshalSearchEntry},
-	})
+// GTypeSearchEntry returns the GType for the type SearchEntry.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSearchEntry() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "SearchEntry").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSearchEntry)
+	return gtype
 }
 
 // SearchEntry: GtkSearchEntry is an entry widget that has been tailored for use

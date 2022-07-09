@@ -18,17 +18,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gregex.go.
-var (
-	GTypeMatchInfo = coreglib.Type(C.g_match_info_get_type())
-	GTypeRegex     = coreglib.Type(C.g_regex_get_type())
-)
+// GTypeMatchInfo returns the GType for the type MatchInfo.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMatchInfo() coreglib.Type {
+	gtype := coreglib.Type(C.g_match_info_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMatchInfo)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeMatchInfo, F: marshalMatchInfo},
-		{T: GTypeRegex, F: marshalRegex},
-	})
+// GTypeRegex returns the GType for the type Regex.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRegex() coreglib.Type {
+	gtype := coreglib.Type(C.g_regex_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRegex)
+	return gtype
 }
 
 // RegexError: error codes returned by regular expressions functions.

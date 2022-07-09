@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtktextmark.go.
-var GTypeTextMark = coreglib.Type(C.gtk_text_mark_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTextMark, F: marshalTextMark},
-	})
+// GTypeTextMark returns the GType for the type TextMark.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTextMark() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TextMark").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTextMark)
+	return gtype
 }
 
 // TextMarkOverrider contains methods that are overridable.

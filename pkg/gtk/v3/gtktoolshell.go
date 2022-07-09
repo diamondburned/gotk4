@@ -19,13 +19,15 @@ import (
 // extern void _gotk4_gtk3_ToolShellIface_rebuild_menu(void*);
 import "C"
 
-// glib.Type values for gtktoolshell.go.
-var GTypeToolShell = coreglib.Type(C.gtk_tool_shell_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeToolShell, F: marshalToolShell},
-	})
+// GTypeToolShell returns the GType for the type ToolShell.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeToolShell() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ToolShell").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalToolShell)
+	return gtype
 }
 
 // ToolShellOverrider contains methods that are overridable.

@@ -31,17 +31,26 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// glib.Type values for gtkflowbox.go.
-var (
-	GTypeFlowBox      = coreglib.Type(C.gtk_flow_box_get_type())
-	GTypeFlowBoxChild = coreglib.Type(C.gtk_flow_box_child_get_type())
-)
+// GTypeFlowBox returns the GType for the type FlowBox.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFlowBox() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "FlowBox").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFlowBox)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeFlowBox, F: marshalFlowBox},
-		{T: GTypeFlowBoxChild, F: marshalFlowBoxChild},
-	})
+// GTypeFlowBoxChild returns the GType for the type FlowBoxChild.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFlowBoxChild() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "FlowBoxChild").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFlowBoxChild)
+	return gtype
 }
 
 // FlowBoxCreateWidgetFunc: called for flow boxes that are bound to a

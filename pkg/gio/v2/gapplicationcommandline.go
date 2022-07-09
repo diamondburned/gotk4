@@ -21,13 +21,15 @@ import (
 // extern void _gotk4_gio2_ApplicationCommandLineClass_printerr_literal(void*, void*);
 import "C"
 
-// glib.Type values for gapplicationcommandline.go.
-var GTypeApplicationCommandLine = coreglib.Type(C.g_application_command_line_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeApplicationCommandLine, F: marshalApplicationCommandLine},
-	})
+// GTypeApplicationCommandLine returns the GType for the type ApplicationCommandLine.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeApplicationCommandLine() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "ApplicationCommandLine").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalApplicationCommandLine)
+	return gtype
 }
 
 // ApplicationCommandLineOverrider contains methods that are overridable.

@@ -17,13 +17,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtktoplevelaccessible.go.
-var GTypeToplevelAccessible = coreglib.Type(C.gtk_toplevel_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeToplevelAccessible, F: marshalToplevelAccessible},
-	})
+// GTypeToplevelAccessible returns the GType for the type ToplevelAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeToplevelAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ToplevelAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalToplevelAccessible)
+	return gtype
 }
 
 // ToplevelAccessibleOverrider contains methods that are overridable.

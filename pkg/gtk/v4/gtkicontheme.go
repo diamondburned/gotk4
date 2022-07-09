@@ -20,21 +20,48 @@ import (
 // extern void _gotk4_gtk4_IconTheme_ConnectChanged(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkicontheme.go.
-var (
-	GTypeIconThemeError  = coreglib.Type(C.gtk_icon_theme_error_get_type())
-	GTypeIconLookupFlags = coreglib.Type(C.gtk_icon_lookup_flags_get_type())
-	GTypeIconPaintable   = coreglib.Type(C.gtk_icon_paintable_get_type())
-	GTypeIconTheme       = coreglib.Type(C.gtk_icon_theme_get_type())
-)
+// GTypeIconThemeError returns the GType for the type IconThemeError.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeIconThemeError() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "IconThemeError").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalIconThemeError)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeIconThemeError, F: marshalIconThemeError},
-		{T: GTypeIconLookupFlags, F: marshalIconLookupFlags},
-		{T: GTypeIconPaintable, F: marshalIconPaintable},
-		{T: GTypeIconTheme, F: marshalIconTheme},
-	})
+// GTypeIconLookupFlags returns the GType for the type IconLookupFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeIconLookupFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "IconLookupFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalIconLookupFlags)
+	return gtype
+}
+
+// GTypeIconPaintable returns the GType for the type IconPaintable.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeIconPaintable() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "IconPaintable").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalIconPaintable)
+	return gtype
+}
+
+// GTypeIconTheme returns the GType for the type IconTheme.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeIconTheme() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "IconTheme").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalIconTheme)
+	return gtype
 }
 
 // IconThemeError: error codes for GtkIconTheme operations.

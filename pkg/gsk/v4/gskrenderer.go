@@ -20,13 +20,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gskrenderer.go.
-var GTypeRenderer = coreglib.Type(C.gsk_renderer_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeRenderer, F: marshalRenderer},
-	})
+// GTypeRenderer returns the GType for the type Renderer.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRenderer() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gsk", "Renderer").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRenderer)
+	return gtype
 }
 
 // Renderer: GskRenderer is a class that renders a scene graph defined via a

@@ -16,13 +16,15 @@ import (
 // extern AtkHyperlink* _gotk4_atk1_HyperlinkImplIface_get_hyperlink(void*);
 import "C"
 
-// glib.Type values for atkhyperlinkimpl.go.
-var GTypeHyperlinkImpl = coreglib.Type(C.atk_hyperlink_impl_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeHyperlinkImpl, F: marshalHyperlinkImpl},
-	})
+// GTypeHyperlinkImpl returns the GType for the type HyperlinkImpl.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeHyperlinkImpl() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "HyperlinkImpl").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalHyperlinkImpl)
+	return gtype
 }
 
 // HyperlinkImplOverrider contains methods that are overridable.

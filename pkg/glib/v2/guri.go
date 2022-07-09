@@ -18,13 +18,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for guri.go.
-var GTypeURI = coreglib.Type(C.g_uri_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeURI, F: marshalURI},
-	})
+// GTypeURI returns the GType for the type URI.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeURI() coreglib.Type {
+	gtype := coreglib.Type(C.g_uri_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalURI)
+	return gtype
 }
 
 // URI_RESERVED_CHARS_GENERIC_DELIMITERS: generic delimiters characters as

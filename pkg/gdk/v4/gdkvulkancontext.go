@@ -16,13 +16,15 @@ import (
 // extern void _gotk4_gdk4_VulkanContext_ConnectImagesUpdated(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gdkvulkancontext.go.
-var GTypeVulkanContext = coreglib.Type(C.gdk_vulkan_context_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeVulkanContext, F: marshalVulkanContext},
-	})
+// GTypeVulkanContext returns the GType for the type VulkanContext.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeVulkanContext() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "VulkanContext").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalVulkanContext)
+	return gtype
 }
 
 // VulkanContext: GdkVulkanContext is an object representing the

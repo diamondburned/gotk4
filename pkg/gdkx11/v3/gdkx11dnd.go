@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdkx11dnd.go.
-var GTypeX11DragContext = coreglib.Type(C.gdk_x11_drag_context_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeX11DragContext, F: marshalX11DragContext},
-	})
+// GTypeX11DragContext returns the GType for the type X11DragContext.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeX11DragContext() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("GdkX11", "X11DragContext").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalX11DragContext)
+	return gtype
 }
 
 type X11DragContext struct {

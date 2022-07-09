@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtktreemodelsort.go.
-var GTypeTreeModelSort = coreglib.Type(C.gtk_tree_model_sort_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTreeModelSort, F: marshalTreeModelSort},
-	})
+// GTypeTreeModelSort returns the GType for the type TreeModelSort.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTreeModelSort() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TreeModelSort").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTreeModelSort)
+	return gtype
 }
 
 // TreeModelSortOverrider contains methods that are overridable.

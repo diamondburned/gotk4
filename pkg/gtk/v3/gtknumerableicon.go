@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtknumerableicon.go.
-var GTypeNumerableIcon = coreglib.Type(C.gtk_numerable_icon_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeNumerableIcon, F: marshalNumerableIcon},
-	})
+// GTypeNumerableIcon returns the GType for the type NumerableIcon.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeNumerableIcon() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "NumerableIcon").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalNumerableIcon)
+	return gtype
 }
 
 // NumerableIconOverrider contains methods that are overridable.

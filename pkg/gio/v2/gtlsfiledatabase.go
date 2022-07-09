@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtlsfiledatabase.go.
-var GTypeTLSFileDatabase = coreglib.Type(C.g_tls_file_database_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTLSFileDatabase, F: marshalTLSFileDatabase},
-	})
+// GTypeTLSFileDatabase returns the GType for the type TLSFileDatabase.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTLSFileDatabase() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsFileDatabase").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTLSFileDatabase)
+	return gtype
 }
 
 // TLSFileDatabaseOverrider contains methods that are overridable.

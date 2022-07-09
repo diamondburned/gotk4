@@ -30,13 +30,15 @@ import (
 // extern void _gotk4_gtk3_Container_ConnectSetFocusChild(gpointer, void*, guintptr);
 import "C"
 
-// glib.Type values for gtkcontainer.go.
-var GTypeContainer = coreglib.Type(C.gtk_container_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeContainer, F: marshalContainer},
-	})
+// GTypeContainer returns the GType for the type Container.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeContainer() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Container").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalContainer)
+	return gtype
 }
 
 // ContainerOverrider contains methods that are overridable.

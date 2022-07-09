@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdkwaylandglcontext.go.
-var GTypeWaylandGLContext = coreglib.Type(C.gdk_wayland_gl_context_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeWaylandGLContext, F: marshalWaylandGLContext},
-	})
+// GTypeWaylandGLContext returns the GType for the type WaylandGLContext.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeWaylandGLContext() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("GdkWayland", "WaylandGLContext").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalWaylandGLContext)
+	return gtype
 }
 
 // WaylandGLContext: wayland implementation of GdkGLContext.

@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkhscrollbar.go.
-var GTypeHScrollbar = coreglib.Type(C.gtk_hscrollbar_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeHScrollbar, F: marshalHScrollbar},
-	})
+// GTypeHScrollbar returns the GType for the type HScrollbar.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeHScrollbar() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "HScrollbar").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalHScrollbar)
+	return gtype
 }
 
 // HScrollbarOverrider contains methods that are overridable.

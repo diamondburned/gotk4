@@ -18,19 +18,37 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gsettingsschema.go.
-var (
-	GTypeSettingsSchema       = coreglib.Type(C.g_settings_schema_get_type())
-	GTypeSettingsSchemaKey    = coreglib.Type(C.g_settings_schema_key_get_type())
-	GTypeSettingsSchemaSource = coreglib.Type(C.g_settings_schema_source_get_type())
-)
+// GTypeSettingsSchema returns the GType for the type SettingsSchema.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSettingsSchema() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "SettingsSchema").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSettingsSchema)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSettingsSchema, F: marshalSettingsSchema},
-		{T: GTypeSettingsSchemaKey, F: marshalSettingsSchemaKey},
-		{T: GTypeSettingsSchemaSource, F: marshalSettingsSchemaSource},
-	})
+// GTypeSettingsSchemaKey returns the GType for the type SettingsSchemaKey.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSettingsSchemaKey() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "SettingsSchemaKey").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSettingsSchemaKey)
+	return gtype
+}
+
+// GTypeSettingsSchemaSource returns the GType for the type SettingsSchemaSource.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSettingsSchemaSource() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "SettingsSchemaSource").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSettingsSchemaSource)
+	return gtype
 }
 
 // SettingsSchema and Schema APIs provide a mechanism for advanced control over

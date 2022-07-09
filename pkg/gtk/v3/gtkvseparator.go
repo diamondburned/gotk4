@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkvseparator.go.
-var GTypeVSeparator = coreglib.Type(C.gtk_vseparator_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeVSeparator, F: marshalVSeparator},
-	})
+// GTypeVSeparator returns the GType for the type VSeparator.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeVSeparator() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "VSeparator").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalVSeparator)
+	return gtype
 }
 
 // VSeparatorOverrider contains methods that are overridable.

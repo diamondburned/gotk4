@@ -17,17 +17,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for pango-tabs.go.
-var (
-	GTypeTabAlign = coreglib.Type(C.pango_tab_align_get_type())
-	GTypeTabArray = coreglib.Type(C.pango_tab_array_get_type())
-)
+// GTypeTabAlign returns the GType for the type TabAlign.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTabAlign() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "TabAlign").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTabAlign)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTabAlign, F: marshalTabAlign},
-		{T: GTypeTabArray, F: marshalTabArray},
-	})
+// GTypeTabArray returns the GType for the type TabArray.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTabArray() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "TabArray").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTabArray)
+	return gtype
 }
 
 // TabAlign: PangoTabAlign specifies where a tab stop appears relative to the

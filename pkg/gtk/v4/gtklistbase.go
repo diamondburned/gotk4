@@ -14,13 +14,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtklistbase.go.
-var GTypeListBase = coreglib.Type(C.gtk_list_base_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeListBase, F: marshalListBase},
-	})
+// GTypeListBase returns the GType for the type ListBase.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeListBase() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ListBase").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalListBase)
+	return gtype
 }
 
 // ListBase: GtkListBase is the abstract base class for GTK's list widgets.

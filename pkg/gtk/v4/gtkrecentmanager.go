@@ -23,19 +23,37 @@ import (
 // extern void _gotk4_gtk4_RecentManager_ConnectChanged(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkrecentmanager.go.
-var (
-	GTypeRecentManagerError = coreglib.Type(C.gtk_recent_manager_error_get_type())
-	GTypeRecentManager      = coreglib.Type(C.gtk_recent_manager_get_type())
-	GTypeRecentInfo         = coreglib.Type(C.gtk_recent_info_get_type())
-)
+// GTypeRecentManagerError returns the GType for the type RecentManagerError.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRecentManagerError() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "RecentManagerError").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRecentManagerError)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeRecentManagerError, F: marshalRecentManagerError},
-		{T: GTypeRecentManager, F: marshalRecentManager},
-		{T: GTypeRecentInfo, F: marshalRecentInfo},
-	})
+// GTypeRecentManager returns the GType for the type RecentManager.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRecentManager() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "RecentManager").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRecentManager)
+	return gtype
+}
+
+// GTypeRecentInfo returns the GType for the type RecentInfo.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRecentInfo() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "RecentInfo").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRecentInfo)
+	return gtype
 }
 
 // RecentManagerError: error codes for RecentManager operations.

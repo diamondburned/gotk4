@@ -15,13 +15,15 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
-// glib.Type values for graphene-frustum.go.
-var GTypeFrustum = coreglib.Type(C.graphene_frustum_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeFrustum, F: marshalFrustum},
-	})
+// GTypeFrustum returns the GType for the type Frustum.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFrustum() coreglib.Type {
+	gtype := coreglib.Type(C.graphene_frustum_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFrustum)
+	return gtype
 }
 
 // Frustum: 3D volume delimited by 2D clip planes.

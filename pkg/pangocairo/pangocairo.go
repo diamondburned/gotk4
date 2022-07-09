@@ -22,17 +22,26 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// glib.Type values for pangocairo.go.
-var (
-	GTypeFont    = coreglib.Type(C.pango_cairo_font_get_type())
-	GTypeFontMap = coreglib.Type(C.pango_cairo_font_map_get_type())
-)
+// GTypeFont returns the GType for the type Font.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFont() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("PangoCairo", "Font").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFont)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeFont, F: marshalFont},
-		{T: GTypeFontMap, F: marshalFontMap},
-	})
+// GTypeFontMap returns the GType for the type FontMap.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFontMap() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("PangoCairo", "FontMap").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFontMap)
+	return gtype
 }
 
 func init() {

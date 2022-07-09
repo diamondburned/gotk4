@@ -18,17 +18,26 @@ import (
 // extern void _gotk4_gdk3_Monitor_ConnectInvalidate(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gdkmonitor.go.
-var (
-	GTypeSubpixelLayout = coreglib.Type(C.gdk_subpixel_layout_get_type())
-	GTypeMonitor        = coreglib.Type(C.gdk_monitor_get_type())
-)
+// GTypeSubpixelLayout returns the GType for the type SubpixelLayout.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSubpixelLayout() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "SubpixelLayout").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSubpixelLayout)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSubpixelLayout, F: marshalSubpixelLayout},
-		{T: GTypeMonitor, F: marshalMonitor},
-	})
+// GTypeMonitor returns the GType for the type Monitor.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMonitor() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "Monitor").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMonitor)
+	return gtype
 }
 
 // SubpixelLayout: this enumeration describes how the red, green and blue

@@ -16,6 +16,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 var repository = C.g_irepository_get_default()
@@ -151,6 +152,7 @@ func Find(namespace, name string) *Info {
 	})
 }
 
+// String formats the type Info as a string describing its name.
 func (i *Info) String() string {
 	if i == nil {
 		return "<nil>"
@@ -160,6 +162,11 @@ func (i *Info) String() string {
 	infoType := C.g_info_type_to_string(C.g_base_info_get_type(baseInfo))
 
 	return fmt.Sprintf("%s %s", C.GoString(infoType), i.keys.String())
+}
+
+// RegisteredGType returns the GType of the type belonging to this Info.
+func (i *Info) RegisteredGType() coreglib.Type {
+	return coreglib.Type(C.g_registered_type_info_get_g_type((*C.GIRegisteredTypeInfo)(i.info)))
 }
 
 // StructFieldOffset gets the offset of the field for the record that is i.

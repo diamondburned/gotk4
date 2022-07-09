@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdkapplaunchcontext.go.
-var GTypeAppLaunchContext = coreglib.Type(C.gdk_app_launch_context_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeAppLaunchContext, F: marshalAppLaunchContext},
-	})
+// GTypeAppLaunchContext returns the GType for the type AppLaunchContext.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAppLaunchContext() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "AppLaunchContext").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAppLaunchContext)
+	return gtype
 }
 
 // AppLaunchContext: GdkAppLaunchContext handles launching an application in a

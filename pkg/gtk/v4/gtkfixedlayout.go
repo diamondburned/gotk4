@@ -17,17 +17,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkfixedlayout.go.
-var (
-	GTypeFixedLayout      = coreglib.Type(C.gtk_fixed_layout_get_type())
-	GTypeFixedLayoutChild = coreglib.Type(C.gtk_fixed_layout_child_get_type())
-)
+// GTypeFixedLayout returns the GType for the type FixedLayout.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFixedLayout() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "FixedLayout").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFixedLayout)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeFixedLayout, F: marshalFixedLayout},
-		{T: GTypeFixedLayoutChild, F: marshalFixedLayoutChild},
-	})
+// GTypeFixedLayoutChild returns the GType for the type FixedLayoutChild.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFixedLayoutChild() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "FixedLayoutChild").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFixedLayoutChild)
+	return gtype
 }
 
 // FixedLayoutOverrider contains methods that are overridable.

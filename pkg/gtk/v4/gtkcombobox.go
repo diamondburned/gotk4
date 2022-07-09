@@ -26,13 +26,15 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// glib.Type values for gtkcombobox.go.
-var GTypeComboBox = coreglib.Type(C.gtk_combo_box_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeComboBox, F: marshalComboBox},
-	})
+// GTypeComboBox returns the GType for the type ComboBox.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeComboBox() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ComboBox").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalComboBox)
+	return gtype
 }
 
 // ComboBoxOverrider contains methods that are overridable.

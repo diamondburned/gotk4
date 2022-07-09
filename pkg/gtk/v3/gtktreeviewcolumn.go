@@ -23,17 +23,26 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// glib.Type values for gtktreeviewcolumn.go.
-var (
-	GTypeTreeViewColumnSizing = coreglib.Type(C.gtk_tree_view_column_sizing_get_type())
-	GTypeTreeViewColumn       = coreglib.Type(C.gtk_tree_view_column_get_type())
-)
+// GTypeTreeViewColumnSizing returns the GType for the type TreeViewColumnSizing.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTreeViewColumnSizing() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TreeViewColumnSizing").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTreeViewColumnSizing)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTreeViewColumnSizing, F: marshalTreeViewColumnSizing},
-		{T: GTypeTreeViewColumn, F: marshalTreeViewColumn},
-	})
+// GTypeTreeViewColumn returns the GType for the type TreeViewColumn.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTreeViewColumn() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TreeViewColumn").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTreeViewColumn)
+	return gtype
 }
 
 // TreeViewColumnSizing: sizing method the column uses to determine its width.

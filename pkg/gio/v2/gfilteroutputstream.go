@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gfilteroutputstream.go.
-var GTypeFilterOutputStream = coreglib.Type(C.g_filter_output_stream_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeFilterOutputStream, F: marshalFilterOutputStream},
-	})
+// GTypeFilterOutputStream returns the GType for the type FilterOutputStream.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFilterOutputStream() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "FilterOutputStream").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFilterOutputStream)
+	return gtype
 }
 
 // FilterOutputStreamOverrider contains methods that are overridable.

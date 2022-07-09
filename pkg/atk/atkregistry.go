@@ -14,13 +14,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for atkregistry.go.
-var GTypeRegistry = coreglib.Type(C.atk_registry_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeRegistry, F: marshalRegistry},
-	})
+// GTypeRegistry returns the GType for the type Registry.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRegistry() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "Registry").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRegistry)
+	return gtype
 }
 
 // GetDefaultRegistry gets a default implementation of the ObjectFactory/type

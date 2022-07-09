@@ -20,13 +20,15 @@ import (
 // extern void _gotk4_gtk3_AppChooserButton_ConnectCustomItemActivated(gpointer, void*, guintptr);
 import "C"
 
-// glib.Type values for gtkappchooserbutton.go.
-var GTypeAppChooserButton = coreglib.Type(C.gtk_app_chooser_button_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeAppChooserButton, F: marshalAppChooserButton},
-	})
+// GTypeAppChooserButton returns the GType for the type AppChooserButton.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAppChooserButton() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "AppChooserButton").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAppChooserButton)
+	return gtype
 }
 
 // AppChooserButtonOverrider contains methods that are overridable.

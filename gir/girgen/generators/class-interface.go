@@ -270,9 +270,9 @@ func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generato
 		gen:            gen,
 	}
 
-	if igen.GLibGetType != "" && !types.FilterCType(gen, igen.GLibGetType) {
+	if gtype, ok := GenerateGType(gen, igen.Name, igen.GLibGetType); ok {
 		data.HasMarshaler = true
-		writer.Header().AddMarshaler(igen.GLibGetType, igen.StructName)
+		writer.Header().AddMarshaler(gtype.GetType, igen.StructName)
 	}
 
 	writer.Pen().WriteTmpl(classInterfaceTmpl, data)

@@ -42,23 +42,59 @@ import (
 // extern void _gotk4_gtk4_TreeModel_ConnectRowsReordered(gpointer, void*, void*, gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtktreemodel.go.
-var (
-	GTypeTreeModelFlags   = coreglib.Type(C.gtk_tree_model_flags_get_type())
-	GTypeTreeModel        = coreglib.Type(C.gtk_tree_model_get_type())
-	GTypeTreeIter         = coreglib.Type(C.gtk_tree_iter_get_type())
-	GTypeTreePath         = coreglib.Type(C.gtk_tree_path_get_type())
-	GTypeTreeRowReference = coreglib.Type(C.gtk_tree_row_reference_get_type())
-)
+// GTypeTreeModelFlags returns the GType for the type TreeModelFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTreeModelFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TreeModelFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTreeModelFlags)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTreeModelFlags, F: marshalTreeModelFlags},
-		{T: GTypeTreeModel, F: marshalTreeModel},
-		{T: GTypeTreeIter, F: marshalTreeIter},
-		{T: GTypeTreePath, F: marshalTreePath},
-		{T: GTypeTreeRowReference, F: marshalTreeRowReference},
-	})
+// GTypeTreeModel returns the GType for the type TreeModel.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTreeModel() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TreeModel").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTreeModel)
+	return gtype
+}
+
+// GTypeTreeIter returns the GType for the type TreeIter.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTreeIter() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TreeIter").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTreeIter)
+	return gtype
+}
+
+// GTypeTreePath returns the GType for the type TreePath.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTreePath() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TreePath").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTreePath)
+	return gtype
+}
+
+// GTypeTreeRowReference returns the GType for the type TreeRowReference.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTreeRowReference() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TreeRowReference").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTreeRowReference)
+	return gtype
 }
 
 // TreeModelFlags: these flags indicate various properties of a TreeModel.

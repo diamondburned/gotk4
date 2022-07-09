@@ -19,13 +19,15 @@ import (
 // extern void _gotk4_gtk4_DragSource_ConnectDragEnd(gpointer, void*, gboolean, guintptr);
 import "C"
 
-// glib.Type values for gtkdragsource.go.
-var GTypeDragSource = coreglib.Type(C.gtk_drag_source_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeDragSource, F: marshalDragSource},
-	})
+// GTypeDragSource returns the GType for the type DragSource.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDragSource() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "DragSource").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDragSource)
+	return gtype
 }
 
 // DragSource: GtkDragSource is an event controller to initiate Drag-And-Drop

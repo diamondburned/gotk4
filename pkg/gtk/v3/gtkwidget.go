@@ -148,19 +148,37 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// glib.Type values for gtkwidget.go.
-var (
-	GTypeWidgetHelpType = coreglib.Type(C.gtk_widget_help_type_get_type())
-	GTypeWidget         = coreglib.Type(C.gtk_widget_get_type())
-	GTypeRequisition    = coreglib.Type(C.gtk_requisition_get_type())
-)
+// GTypeWidgetHelpType returns the GType for the type WidgetHelpType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeWidgetHelpType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "WidgetHelpType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalWidgetHelpType)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeWidgetHelpType, F: marshalWidgetHelpType},
-		{T: GTypeWidget, F: marshalWidget},
-		{T: GTypeRequisition, F: marshalRequisition},
-	})
+// GTypeWidget returns the GType for the type Widget.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeWidget() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Widget").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalWidget)
+	return gtype
+}
+
+// GTypeRequisition returns the GType for the type Requisition.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRequisition() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Requisition").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRequisition)
+	return gtype
 }
 
 // Allocation of a widget represents region which has been allocated to the

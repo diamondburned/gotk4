@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkbooleancellaccessible.go.
-var GTypeBooleanCellAccessible = coreglib.Type(C.gtk_boolean_cell_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeBooleanCellAccessible, F: marshalBooleanCellAccessible},
-	})
+// GTypeBooleanCellAccessible returns the GType for the type BooleanCellAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeBooleanCellAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "BooleanCellAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalBooleanCellAccessible)
+	return gtype
 }
 
 // BooleanCellAccessibleOverrider contains methods that are overridable.

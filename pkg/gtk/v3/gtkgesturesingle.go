@@ -17,13 +17,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkgesturesingle.go.
-var GTypeGestureSingle = coreglib.Type(C.gtk_gesture_single_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeGestureSingle, F: marshalGestureSingle},
-	})
+// GTypeGestureSingle returns the GType for the type GestureSingle.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeGestureSingle() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "GestureSingle").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalGestureSingle)
+	return gtype
 }
 
 // GestureSingle is a subclass of Gesture, optimized (although not restricted)

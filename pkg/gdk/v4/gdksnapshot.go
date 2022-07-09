@@ -14,13 +14,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdksnapshot.go.
-var GTypeSnapshot = coreglib.Type(C.gdk_snapshot_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSnapshot, F: marshalSnapshot},
-	})
+// GTypeSnapshot returns the GType for the type Snapshot.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSnapshot() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "Snapshot").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSnapshot)
+	return gtype
 }
 
 // Snapshot: base type for snapshot operations.

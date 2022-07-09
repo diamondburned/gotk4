@@ -18,17 +18,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkpopovermenu.go.
-var (
-	GTypePopoverMenuFlags = coreglib.Type(C.gtk_popover_menu_flags_get_type())
-	GTypePopoverMenu      = coreglib.Type(C.gtk_popover_menu_get_type())
-)
+// GTypePopoverMenuFlags returns the GType for the type PopoverMenuFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePopoverMenuFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "PopoverMenuFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPopoverMenuFlags)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypePopoverMenuFlags, F: marshalPopoverMenuFlags},
-		{T: GTypePopoverMenu, F: marshalPopoverMenu},
-	})
+// GTypePopoverMenu returns the GType for the type PopoverMenu.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePopoverMenu() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "PopoverMenu").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPopoverMenu)
+	return gtype
 }
 
 // PopoverMenuFlags flags that affect how popover menus are created from a menu

@@ -23,17 +23,26 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
-// glib.Type values for gdk-pixbuf-animation.go.
-var (
-	GTypePixbufAnimation     = coreglib.Type(C.gdk_pixbuf_animation_get_type())
-	GTypePixbufAnimationIter = coreglib.Type(C.gdk_pixbuf_animation_iter_get_type())
-)
+// GTypePixbufAnimation returns the GType for the type PixbufAnimation.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePixbufAnimation() coreglib.Type {
+	gtype := coreglib.Type(C.gdk_pixbuf_animation_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPixbufAnimation)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypePixbufAnimation, F: marshalPixbufAnimation},
-		{T: GTypePixbufAnimationIter, F: marshalPixbufAnimationIter},
-	})
+// GTypePixbufAnimationIter returns the GType for the type PixbufAnimationIter.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePixbufAnimationIter() coreglib.Type {
+	gtype := coreglib.Type(C.gdk_pixbuf_animation_iter_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPixbufAnimationIter)
+	return gtype
 }
 
 // PixbufAnimation: opaque object representing an animation.

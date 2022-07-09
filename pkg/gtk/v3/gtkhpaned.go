@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkhpaned.go.
-var GTypeHPaned = coreglib.Type(C.gtk_hpaned_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeHPaned, F: marshalHPaned},
-	})
+// GTypeHPaned returns the GType for the type HPaned.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeHPaned() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "HPaned").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalHPaned)
+	return gtype
 }
 
 // HPanedOverrider contains methods that are overridable.

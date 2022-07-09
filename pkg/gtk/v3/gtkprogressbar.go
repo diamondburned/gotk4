@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkprogressbar.go.
-var GTypeProgressBar = coreglib.Type(C.gtk_progress_bar_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeProgressBar, F: marshalProgressBar},
-	})
+// GTypeProgressBar returns the GType for the type ProgressBar.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeProgressBar() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ProgressBar").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalProgressBar)
+	return gtype
 }
 
 // ProgressBarOverrider contains methods that are overridable.

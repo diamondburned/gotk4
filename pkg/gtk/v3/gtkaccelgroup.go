@@ -19,17 +19,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkaccelgroup.go.
-var (
-	GTypeAccelFlags = coreglib.Type(C.gtk_accel_flags_get_type())
-	GTypeAccelGroup = coreglib.Type(C.gtk_accel_group_get_type())
-)
+// GTypeAccelFlags returns the GType for the type AccelFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAccelFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "AccelFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAccelFlags)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeAccelFlags, F: marshalAccelFlags},
-		{T: GTypeAccelGroup, F: marshalAccelGroup},
-	})
+// GTypeAccelGroup returns the GType for the type AccelGroup.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAccelGroup() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "AccelGroup").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAccelGroup)
+	return gtype
 }
 
 // AccelFlags: accelerator flags used with gtk_accel_group_connect().

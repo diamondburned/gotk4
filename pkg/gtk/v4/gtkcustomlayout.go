@@ -14,13 +14,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkcustomlayout.go.
-var GTypeCustomLayout = coreglib.Type(C.gtk_custom_layout_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCustomLayout, F: marshalCustomLayout},
-	})
+// GTypeCustomLayout returns the GType for the type CustomLayout.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCustomLayout() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CustomLayout").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCustomLayout)
+	return gtype
 }
 
 // CustomLayoutOverrider contains methods that are overridable.

@@ -14,13 +14,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkorientable.go.
-var GTypeOrientable = coreglib.Type(C.gtk_orientable_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeOrientable, F: marshalOrientable},
-	})
+// GTypeOrientable returns the GType for the type Orientable.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeOrientable() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Orientable").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalOrientable)
+	return gtype
 }
 
 // OrientableOverrider contains methods that are overridable.

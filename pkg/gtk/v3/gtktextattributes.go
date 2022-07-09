@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtktextattributes.go.
-var GTypeTextAttributes = coreglib.Type(C.gtk_text_attributes_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTextAttributes, F: marshalTextAttributes},
-	})
+// GTypeTextAttributes returns the GType for the type TextAttributes.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTextAttributes() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TextAttributes").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTextAttributes)
+	return gtype
 }
 
 // TextAppearance: instance of this type is always passed by reference.

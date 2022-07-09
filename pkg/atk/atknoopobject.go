@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for atknoopobject.go.
-var GTypeNoOpObject = coreglib.Type(C.atk_no_op_object_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeNoOpObject, F: marshalNoOpObject},
-	})
+// GTypeNoOpObject returns the GType for the type NoOpObject.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeNoOpObject() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "NoOpObject").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalNoOpObject)
+	return gtype
 }
 
 // NoOpObjectOverrider contains methods that are overridable.

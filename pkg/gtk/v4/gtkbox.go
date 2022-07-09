@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkbox.go.
-var GTypeBox = coreglib.Type(C.gtk_box_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeBox, F: marshalBox},
-	})
+// GTypeBox returns the GType for the type Box.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeBox() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Box").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalBox)
+	return gtype
 }
 
 // BoxOverrider contains methods that are overridable.

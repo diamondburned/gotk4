@@ -34,13 +34,15 @@ import (
 // extern void _gotk4_gio2_ActionGroup_ConnectActionStateChanged(gpointer, void*, void*, guintptr);
 import "C"
 
-// glib.Type values for gactiongroup.go.
-var GTypeActionGroup = coreglib.Type(C.g_action_group_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeActionGroup, F: marshalActionGroup},
-	})
+// GTypeActionGroup returns the GType for the type ActionGroup.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeActionGroup() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "ActionGroup").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalActionGroup)
+	return gtype
 }
 
 // ActionGroup represents a group of actions. Actions can be used to expose

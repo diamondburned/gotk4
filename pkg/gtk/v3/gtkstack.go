@@ -17,17 +17,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkstack.go.
-var (
-	GTypeStackTransitionType = coreglib.Type(C.gtk_stack_transition_type_get_type())
-	GTypeStack               = coreglib.Type(C.gtk_stack_get_type())
-)
+// GTypeStackTransitionType returns the GType for the type StackTransitionType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeStackTransitionType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "StackTransitionType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalStackTransitionType)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeStackTransitionType, F: marshalStackTransitionType},
-		{T: GTypeStack, F: marshalStack},
-	})
+// GTypeStack returns the GType for the type Stack.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeStack() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Stack").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalStack)
+	return gtype
 }
 
 // StackTransitionType: these enumeration values describe the possible

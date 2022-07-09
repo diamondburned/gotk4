@@ -26,13 +26,15 @@ import (
 // extern void _gotk4_gio2_DtlsConnectionInterface_set_advertised_protocols(void*, void**);
 import "C"
 
-// glib.Type values for gdtlsconnection.go.
-var GTypeDTLSConnection = coreglib.Type(C.g_dtls_connection_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeDTLSConnection, F: marshalDTLSConnection},
-	})
+// GTypeDTLSConnection returns the GType for the type DTLSConnection.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDTLSConnection() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DtlsConnection").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDTLSConnection)
+	return gtype
 }
 
 // DTLSConnection is the base DTLS connection class type, which wraps a Based

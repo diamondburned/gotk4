@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtree.go.
-var GTypeTree = coreglib.Type(C.g_tree_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTree, F: marshalTree},
-	})
+// GTypeTree returns the GType for the type Tree.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTree() coreglib.Type {
+	gtype := coreglib.Type(C.g_tree_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTree)
+	return gtype
 }
 
 // Tree struct is an opaque data structure representing a [balanced binary

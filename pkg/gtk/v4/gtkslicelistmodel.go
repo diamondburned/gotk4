@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkslicelistmodel.go.
-var GTypeSliceListModel = coreglib.Type(C.gtk_slice_list_model_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSliceListModel, F: marshalSliceListModel},
-	})
+// GTypeSliceListModel returns the GType for the type SliceListModel.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSliceListModel() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "SliceListModel").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSliceListModel)
+	return gtype
 }
 
 // SliceListModelOverrider contains methods that are overridable.

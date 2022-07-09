@@ -20,13 +20,15 @@ import (
 // extern void _gotk4_gtk3_GestureStylus_ConnectUp(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
-// glib.Type values for gtkgesturestylus.go.
-var GTypeGestureStylus = coreglib.Type(C.gtk_gesture_stylus_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeGestureStylus, F: marshalGestureStylus},
-	})
+// GTypeGestureStylus returns the GType for the type GestureStylus.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeGestureStylus() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "GestureStylus").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalGestureStylus)
+	return gtype
 }
 
 // GestureStylus is a Gesture implementation specific to stylus input. The

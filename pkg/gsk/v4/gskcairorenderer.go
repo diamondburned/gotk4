@@ -14,13 +14,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gskcairorenderer.go.
-var GTypeCairoRenderer = coreglib.Type(C.gsk_cairo_renderer_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCairoRenderer, F: marshalCairoRenderer},
-	})
+// GTypeCairoRenderer returns the GType for the type CairoRenderer.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCairoRenderer() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gsk", "CairoRenderer").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCairoRenderer)
+	return gtype
 }
 
 // CairoRenderer: GSK renderer that is using cairo.

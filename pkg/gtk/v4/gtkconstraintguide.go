@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkconstraintguide.go.
-var GTypeConstraintGuide = coreglib.Type(C.gtk_constraint_guide_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeConstraintGuide, F: marshalConstraintGuide},
-	})
+// GTypeConstraintGuide returns the GType for the type ConstraintGuide.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeConstraintGuide() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ConstraintGuide").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalConstraintGuide)
+	return gtype
 }
 
 // ConstraintGuideOverrider contains methods that are overridable.

@@ -23,13 +23,15 @@ import (
 // extern void _gotk4_gtk3_CellEditable_ConnectRemoveWidget(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkcelleditable.go.
-var GTypeCellEditable = coreglib.Type(C.gtk_cell_editable_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCellEditable, F: marshalCellEditable},
-	})
+// GTypeCellEditable returns the GType for the type CellEditable.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCellEditable() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CellEditable").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCellEditable)
+	return gtype
 }
 
 // CellEditableOverrider contains methods that are overridable.

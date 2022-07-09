@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdkx11visual.go.
-var GTypeX11Visual = coreglib.Type(C.gdk_x11_visual_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeX11Visual, F: marshalX11Visual},
-	})
+// GTypeX11Visual returns the GType for the type X11Visual.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeX11Visual() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("GdkX11", "X11Visual").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalX11Visual)
+	return gtype
 }
 
 type X11Visual struct {

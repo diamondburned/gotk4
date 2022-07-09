@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gemblem.go.
-var GTypeEmblem = coreglib.Type(C.g_emblem_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeEmblem, F: marshalEmblem},
-	})
+// GTypeEmblem returns the GType for the type Emblem.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeEmblem() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "Emblem").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalEmblem)
+	return gtype
 }
 
 // Emblem is an implementation of #GIcon that supports having an emblem, which

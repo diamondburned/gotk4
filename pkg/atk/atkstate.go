@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for atkstate.go.
-var GTypeStateType = coreglib.Type(C.atk_state_type_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeStateType, F: marshalStateType},
-	})
+// GTypeStateType returns the GType for the type StateType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeStateType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "StateType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalStateType)
+	return gtype
 }
 
 type State = uint64

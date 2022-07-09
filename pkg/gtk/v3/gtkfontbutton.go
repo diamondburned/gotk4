@@ -19,13 +19,15 @@ import (
 // extern void _gotk4_gtk3_FontButton_ConnectFontSet(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkfontbutton.go.
-var GTypeFontButton = coreglib.Type(C.gtk_font_button_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeFontButton, F: marshalFontButton},
-	})
+// GTypeFontButton returns the GType for the type FontButton.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFontButton() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "FontButton").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFontButton)
+	return gtype
 }
 
 // FontButtonOverrider contains methods that are overridable.

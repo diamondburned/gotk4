@@ -33,19 +33,37 @@ import (
 // extern void _gotk4_gtk3_Window_ConnectSetFocus(gpointer, void*, guintptr);
 import "C"
 
-// glib.Type values for gtkwindow.go.
-var (
-	GTypeWindowPosition = coreglib.Type(C.gtk_window_position_get_type())
-	GTypeWindowType     = coreglib.Type(C.gtk_window_type_get_type())
-	GTypeWindow         = coreglib.Type(C.gtk_window_get_type())
-)
+// GTypeWindowPosition returns the GType for the type WindowPosition.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeWindowPosition() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "WindowPosition").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalWindowPosition)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeWindowPosition, F: marshalWindowPosition},
-		{T: GTypeWindowType, F: marshalWindowType},
-		{T: GTypeWindow, F: marshalWindow},
-	})
+// GTypeWindowType returns the GType for the type WindowType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeWindowType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "WindowType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalWindowType)
+	return gtype
+}
+
+// GTypeWindow returns the GType for the type Window.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeWindow() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Window").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalWindow)
+	return gtype
 }
 
 // WindowPosition: window placement can be influenced using this enumeration.

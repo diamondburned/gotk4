@@ -23,13 +23,15 @@ import (
 // extern void _gotk4_gio2_DBusObject_ConnectInterfaceRemoved(gpointer, void*, guintptr);
 import "C"
 
-// glib.Type values for gdbusobject.go.
-var GTypeDBusObject = coreglib.Type(C.g_dbus_object_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeDBusObject, F: marshalDBusObject},
-	})
+// GTypeDBusObject returns the GType for the type DBusObject.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusObject() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusObject").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusObject)
+	return gtype
 }
 
 // DBusObjectOverrider contains methods that are overridable.

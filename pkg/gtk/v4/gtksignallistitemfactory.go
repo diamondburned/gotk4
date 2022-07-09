@@ -18,13 +18,15 @@ import (
 // extern void _gotk4_gtk4_SignalListItemFactory_ConnectUnbind(gpointer, void*, guintptr);
 import "C"
 
-// glib.Type values for gtksignallistitemfactory.go.
-var GTypeSignalListItemFactory = coreglib.Type(C.gtk_signal_list_item_factory_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSignalListItemFactory, F: marshalSignalListItemFactory},
-	})
+// GTypeSignalListItemFactory returns the GType for the type SignalListItemFactory.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSignalListItemFactory() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "SignalListItemFactory").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSignalListItemFactory)
+	return gtype
 }
 
 // SignalListItemFactory: GtkSignalListItemFactory is a GtkListItemFactory that

@@ -25,19 +25,37 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
-// glib.Type values for gdk-pixbuf-core.go.
-var (
-	GTypeColorspace      = coreglib.Type(C.gdk_colorspace_get_type())
-	GTypePixbufAlphaMode = coreglib.Type(C.gdk_pixbuf_alpha_mode_get_type())
-	GTypePixbufError     = coreglib.Type(C.gdk_pixbuf_error_get_type())
-)
+// GTypeColorspace returns the GType for the type Colorspace.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeColorspace() coreglib.Type {
+	gtype := coreglib.Type(C.gdk_colorspace_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalColorspace)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeColorspace, F: marshalColorspace},
-		{T: GTypePixbufAlphaMode, F: marshalPixbufAlphaMode},
-		{T: GTypePixbufError, F: marshalPixbufError},
-	})
+// GTypePixbufAlphaMode returns the GType for the type PixbufAlphaMode.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePixbufAlphaMode() coreglib.Type {
+	gtype := coreglib.Type(C.gdk_pixbuf_alpha_mode_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPixbufAlphaMode)
+	return gtype
+}
+
+// GTypePixbufError returns the GType for the type PixbufError.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePixbufError() coreglib.Type {
+	gtype := coreglib.Type(C.gdk_pixbuf_error_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPixbufError)
+	return gtype
 }
 
 // Colorspace: this enumeration defines the color spaces that are supported by

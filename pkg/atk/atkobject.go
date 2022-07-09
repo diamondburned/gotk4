@@ -44,21 +44,48 @@ import (
 // extern void _gotk4_atk1_Object_ConnectVisibleDataChanged(gpointer, guintptr);
 import "C"
 
-// glib.Type values for atkobject.go.
-var (
-	GTypeLayer            = coreglib.Type(C.atk_layer_get_type())
-	GTypeRole             = coreglib.Type(C.atk_role_get_type())
-	GTypeImplementorIface = coreglib.Type(C.atk_implementor_get_type())
-	GTypeObjectClass      = coreglib.Type(C.atk_object_get_type())
-)
+// GTypeLayer returns the GType for the type Layer.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeLayer() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "Layer").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalLayer)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeLayer, F: marshalLayer},
-		{T: GTypeRole, F: marshalRole},
-		{T: GTypeImplementorIface, F: marshalImplementorIface},
-		{T: GTypeObjectClass, F: marshalObjectClass},
-	})
+// GTypeRole returns the GType for the type Role.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRole() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "Role").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRole)
+	return gtype
+}
+
+// GTypeImplementorIface returns the GType for the type ImplementorIface.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeImplementorIface() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "ImplementorIface").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalImplementorIface)
+	return gtype
+}
+
+// GTypeObjectClass returns the GType for the type ObjectClass.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeObjectClass() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "Object").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalObjectClass)
+	return gtype
 }
 
 // AttributeSet: this is a singly-linked list (a List) of Attribute. It is used

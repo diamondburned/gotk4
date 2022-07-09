@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkrecentaction.go.
-var GTypeRecentAction = coreglib.Type(C.gtk_recent_action_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeRecentAction, F: marshalRecentAction},
-	})
+// GTypeRecentAction returns the GType for the type RecentAction.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRecentAction() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "RecentAction").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRecentAction)
+	return gtype
 }
 
 // RecentActionOverrider contains methods that are overridable.

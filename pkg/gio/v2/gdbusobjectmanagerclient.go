@@ -22,13 +22,15 @@ import (
 // extern void _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxySignal(gpointer, void*, void*, void*, void*, void*, guintptr);
 import "C"
 
-// glib.Type values for gdbusobjectmanagerclient.go.
-var GTypeDBusObjectManagerClient = coreglib.Type(C.g_dbus_object_manager_client_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeDBusObjectManagerClient, F: marshalDBusObjectManagerClient},
-	})
+// GTypeDBusObjectManagerClient returns the GType for the type DBusObjectManagerClient.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusObjectManagerClient() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusObjectManagerClient").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusObjectManagerClient)
+	return gtype
 }
 
 // DBusObjectManagerClientOverrider contains methods that are overridable.

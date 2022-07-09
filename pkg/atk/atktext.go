@@ -37,25 +37,70 @@ import (
 // extern void _gotk4_atk1_Text_ConnectTextSelectionChanged(gpointer, guintptr);
 import "C"
 
-// glib.Type values for atktext.go.
-var (
-	GTypeTextAttribute   = coreglib.Type(C.atk_text_attribute_get_type())
-	GTypeTextBoundary    = coreglib.Type(C.atk_text_boundary_get_type())
-	GTypeTextClipType    = coreglib.Type(C.atk_text_clip_type_get_type())
-	GTypeTextGranularity = coreglib.Type(C.atk_text_granularity_get_type())
-	GTypeText            = coreglib.Type(C.atk_text_get_type())
-	GTypeTextRange       = coreglib.Type(C.atk_text_range_get_type())
-)
+// GTypeTextAttribute returns the GType for the type TextAttribute.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTextAttribute() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "TextAttribute").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTextAttribute)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTextAttribute, F: marshalTextAttribute},
-		{T: GTypeTextBoundary, F: marshalTextBoundary},
-		{T: GTypeTextClipType, F: marshalTextClipType},
-		{T: GTypeTextGranularity, F: marshalTextGranularity},
-		{T: GTypeText, F: marshalText},
-		{T: GTypeTextRange, F: marshalTextRange},
-	})
+// GTypeTextBoundary returns the GType for the type TextBoundary.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTextBoundary() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "TextBoundary").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTextBoundary)
+	return gtype
+}
+
+// GTypeTextClipType returns the GType for the type TextClipType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTextClipType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "TextClipType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTextClipType)
+	return gtype
+}
+
+// GTypeTextGranularity returns the GType for the type TextGranularity.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTextGranularity() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "TextGranularity").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTextGranularity)
+	return gtype
+}
+
+// GTypeText returns the GType for the type Text.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeText() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "Text").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalText)
+	return gtype
+}
+
+// GTypeTextRange returns the GType for the type TextRange.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTextRange() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "TextRange").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTextRange)
+	return gtype
 }
 
 // TextAttribute describes the text attributes supported.

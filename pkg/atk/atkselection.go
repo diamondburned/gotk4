@@ -24,13 +24,15 @@ import (
 // extern void _gotk4_atk1_Selection_ConnectSelectionChanged(gpointer, guintptr);
 import "C"
 
-// glib.Type values for atkselection.go.
-var GTypeSelection = coreglib.Type(C.atk_selection_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSelection, F: marshalSelection},
-	})
+// GTypeSelection returns the GType for the type Selection.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSelection() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "Selection").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSelection)
+	return gtype
 }
 
 // SelectionOverrider contains methods that are overridable.

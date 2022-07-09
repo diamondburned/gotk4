@@ -19,13 +19,15 @@ import (
 // extern gssize _gotk4_gio2_SocketAddressClass_get_native_size(void*);
 import "C"
 
-// glib.Type values for gsocketaddress.go.
-var GTypeSocketAddress = coreglib.Type(C.g_socket_address_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSocketAddress, F: marshalSocketAddress},
-	})
+// GTypeSocketAddress returns the GType for the type SocketAddress.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSocketAddress() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "SocketAddress").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSocketAddress)
+	return gtype
 }
 
 // SocketAddressOverrider contains methods that are overridable.

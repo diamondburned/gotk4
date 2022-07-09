@@ -22,17 +22,26 @@ import (
 // extern void _gotk4_gdk4_Seat_ConnectToolRemoved(gpointer, void*, guintptr);
 import "C"
 
-// glib.Type values for gdkseat.go.
-var (
-	GTypeSeatCapabilities = coreglib.Type(C.gdk_seat_capabilities_get_type())
-	GTypeSeat             = coreglib.Type(C.gdk_seat_get_type())
-)
+// GTypeSeatCapabilities returns the GType for the type SeatCapabilities.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSeatCapabilities() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "SeatCapabilities").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSeatCapabilities)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSeatCapabilities, F: marshalSeatCapabilities},
-		{T: GTypeSeat, F: marshalSeat},
-	})
+// GTypeSeat returns the GType for the type Seat.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSeat() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "Seat").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSeat)
+	return gtype
 }
 
 // SeatCapabilities flags describing the seat capabilities.

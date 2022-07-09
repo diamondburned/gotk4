@@ -44,13 +44,15 @@ import (
 // extern void _gotk4_gio2_Mount_ConnectUnmounted(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gmount.go.
-var GTypeMount = coreglib.Type(C.g_mount_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeMount, F: marshalMount},
-	})
+// GTypeMount returns the GType for the type Mount.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMount() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "Mount").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMount)
+	return gtype
 }
 
 // Mount interface represents user-visible mounts. Note, when porting from

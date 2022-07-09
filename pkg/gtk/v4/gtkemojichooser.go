@@ -15,13 +15,15 @@ import (
 // extern void _gotk4_gtk4_EmojiChooser_ConnectEmojiPicked(gpointer, void*, guintptr);
 import "C"
 
-// glib.Type values for gtkemojichooser.go.
-var GTypeEmojiChooser = coreglib.Type(C.gtk_emoji_chooser_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeEmojiChooser, F: marshalEmojiChooser},
-	})
+// GTypeEmojiChooser returns the GType for the type EmojiChooser.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeEmojiChooser() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "EmojiChooser").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalEmojiChooser)
+	return gtype
 }
 
 // EmojiChooser: GtkEmojiChooser is used by text widgets such as GtkEntry or

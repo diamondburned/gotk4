@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkwindowaccessible.go.
-var GTypeWindowAccessible = coreglib.Type(C.gtk_window_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeWindowAccessible, F: marshalWindowAccessible},
-	})
+// GTypeWindowAccessible returns the GType for the type WindowAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeWindowAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "WindowAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalWindowAccessible)
+	return gtype
 }
 
 // WindowAccessibleOverrider contains methods that are overridable.

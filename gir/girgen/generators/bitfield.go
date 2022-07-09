@@ -113,10 +113,12 @@ func GenerateBitfield(gen FileGeneratorWriter, bitfield *gir.Bitfield) bool {
 		gen:      gen,
 	}
 
-	if bitfield.GLibGetType != "" && !types.FilterCType(gen, bitfield.GLibGetType) {
+	if gtype, ok := GenerateGType(gen, bitfield.Name, bitfield.GLibGetType); ok {
 		data.Marshaler = true
-		writer.Header().NeedsExternGLib()
-		writer.Header().AddMarshaler(bitfield.GLibGetType, goName)
+		writer.Header().AddMarshaler(gtype.GetType, goName)
+	}
+
+	if bitfield.GLibGetType != "" && !types.FilterCType(gen, bitfield.GLibGetType) {
 	}
 
 	// Need this for String().

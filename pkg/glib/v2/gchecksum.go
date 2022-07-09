@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gchecksum.go.
-var GTypeChecksum = coreglib.Type(C.g_checksum_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeChecksum, F: marshalChecksum},
-	})
+// GTypeChecksum returns the GType for the type Checksum.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeChecksum() coreglib.Type {
+	gtype := coreglib.Type(C.g_checksum_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalChecksum)
+	return gtype
 }
 
 // ChecksumType: hashing algorithm to be used by #GChecksum when performing the

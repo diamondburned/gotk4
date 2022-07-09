@@ -18,19 +18,37 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for atkutil.go.
-var (
-	GTypeCoordType    = coreglib.Type(C.atk_coord_type_get_type())
-	GTypeKeyEventType = coreglib.Type(C.atk_key_event_type_get_type())
-	GTypeUtil         = coreglib.Type(C.atk_util_get_type())
-)
+// GTypeCoordType returns the GType for the type CoordType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCoordType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "CoordType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCoordType)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCoordType, F: marshalCoordType},
-		{T: GTypeKeyEventType, F: marshalKeyEventType},
-		{T: GTypeUtil, F: marshalUtil},
-	})
+// GTypeKeyEventType returns the GType for the type KeyEventType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeKeyEventType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "KeyEventType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalKeyEventType)
+	return gtype
+}
+
+// GTypeUtil returns the GType for the type Util.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeUtil() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "Util").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalUtil)
+	return gtype
 }
 
 // CoordType specifies how xy coordinates are to be interpreted. Used by

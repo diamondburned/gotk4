@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdkdrawingcontext.go.
-var GTypeDrawingContext = coreglib.Type(C.gdk_drawing_context_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeDrawingContext, F: marshalDrawingContext},
-	})
+// GTypeDrawingContext returns the GType for the type DrawingContext.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDrawingContext() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "DrawingContext").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDrawingContext)
+	return gtype
 }
 
 // DrawingContext is an object that represents the current drawing state of a

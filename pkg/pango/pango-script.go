@@ -17,17 +17,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for pango-script.go.
-var (
-	GTypeScript     = coreglib.Type(C.pango_script_get_type())
-	GTypeScriptIter = coreglib.Type(C.pango_script_iter_get_type())
-)
+// GTypeScript returns the GType for the type Script.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeScript() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "Script").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalScript)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeScript, F: marshalScript},
-		{T: GTypeScriptIter, F: marshalScriptIter},
-	})
+// GTypeScriptIter returns the GType for the type ScriptIter.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeScriptIter() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "ScriptIter").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalScriptIter)
+	return gtype
 }
 
 // Script: PangoScript enumeration identifies different writing systems.

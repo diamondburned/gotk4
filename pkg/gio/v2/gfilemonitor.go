@@ -17,13 +17,15 @@ import (
 // extern gboolean _gotk4_gio2_FileMonitorClass_cancel(void*);
 import "C"
 
-// glib.Type values for gfilemonitor.go.
-var GTypeFileMonitor = coreglib.Type(C.g_file_monitor_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeFileMonitor, F: marshalFileMonitor},
-	})
+// GTypeFileMonitor returns the GType for the type FileMonitor.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFileMonitor() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "FileMonitor").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFileMonitor)
+	return gtype
 }
 
 // FileMonitorOverrider contains methods that are overridable.

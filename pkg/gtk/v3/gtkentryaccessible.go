@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkentryaccessible.go.
-var GTypeEntryAccessible = coreglib.Type(C.gtk_entry_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeEntryAccessible, F: marshalEntryAccessible},
-	})
+// GTypeEntryAccessible returns the GType for the type EntryAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeEntryAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "EntryAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalEntryAccessible)
+	return gtype
 }
 
 // EntryAccessibleOverrider contains methods that are overridable.

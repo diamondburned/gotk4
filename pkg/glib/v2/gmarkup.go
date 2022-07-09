@@ -18,13 +18,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gmarkup.go.
-var GTypeMarkupParseContext = coreglib.Type(C.g_markup_parse_context_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeMarkupParseContext, F: marshalMarkupParseContext},
-	})
+// GTypeMarkupParseContext returns the GType for the type MarkupParseContext.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMarkupParseContext() coreglib.Type {
+	gtype := coreglib.Type(C.g_markup_parse_context_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMarkupParseContext)
+	return gtype
 }
 
 // MarkupError: error codes returned by markup parsing.

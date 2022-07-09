@@ -20,13 +20,15 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 import "C"
 
-// glib.Type values for gsocketconnection.go.
-var GTypeSocketConnection = coreglib.Type(C.g_socket_connection_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSocketConnection, F: marshalSocketConnection},
-	})
+// GTypeSocketConnection returns the GType for the type SocketConnection.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSocketConnection() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "SocketConnection").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSocketConnection)
+	return gtype
 }
 
 // ConnectionFactoryCreateConnection creates a Connection subclass of the right

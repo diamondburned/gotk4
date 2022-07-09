@@ -20,13 +20,15 @@ import (
 // extern void _gotk4_gtk4_CheckButton_ConnectToggled(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkcheckbutton.go.
-var GTypeCheckButton = coreglib.Type(C.gtk_check_button_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCheckButton, F: marshalCheckButton},
-	})
+// GTypeCheckButton returns the GType for the type CheckButton.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCheckButton() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CheckButton").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCheckButton)
+	return gtype
 }
 
 // CheckButtonOverrider contains methods that are overridable.

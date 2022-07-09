@@ -15,13 +15,15 @@ import (
 // extern gboolean _gotk4_gtk4_ShortcutsSection_ConnectChangeCurrentPage(gpointer, gint, guintptr);
 import "C"
 
-// glib.Type values for gtkshortcutssection.go.
-var GTypeShortcutsSection = coreglib.Type(C.gtk_shortcuts_section_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeShortcutsSection, F: marshalShortcutsSection},
-	})
+// GTypeShortcutsSection returns the GType for the type ShortcutsSection.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeShortcutsSection() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ShortcutsSection").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalShortcutsSection)
+	return gtype
 }
 
 // ShortcutsSection: GtkShortcutsSection collects all the keyboard shortcuts and

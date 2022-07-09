@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtktextcellaccessible.go.
-var GTypeTextCellAccessible = coreglib.Type(C.gtk_text_cell_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTextCellAccessible, F: marshalTextCellAccessible},
-	})
+// GTypeTextCellAccessible returns the GType for the type TextCellAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTextCellAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TextCellAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTextCellAccessible)
+	return gtype
 }
 
 // TextCellAccessibleOverrider contains methods that are overridable.

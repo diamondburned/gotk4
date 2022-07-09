@@ -17,13 +17,15 @@ import (
 // extern gboolean _gotk4_gio2_ThreadedSocketServiceClass_run(void*, void*, void*);
 import "C"
 
-// glib.Type values for gthreadedsocketservice.go.
-var GTypeThreadedSocketService = coreglib.Type(C.g_threaded_socket_service_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeThreadedSocketService, F: marshalThreadedSocketService},
-	})
+// GTypeThreadedSocketService returns the GType for the type ThreadedSocketService.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeThreadedSocketService() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "ThreadedSocketService").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalThreadedSocketService)
+	return gtype
 }
 
 // ThreadedSocketServiceOverrider contains methods that are overridable.

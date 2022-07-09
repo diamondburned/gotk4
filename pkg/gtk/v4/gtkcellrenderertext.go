@@ -18,13 +18,15 @@ import (
 // extern void _gotk4_gtk4_CellRendererText_ConnectEdited(gpointer, void*, void*, guintptr);
 import "C"
 
-// glib.Type values for gtkcellrenderertext.go.
-var GTypeCellRendererText = coreglib.Type(C.gtk_cell_renderer_text_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCellRendererText, F: marshalCellRendererText},
-	})
+// GTypeCellRendererText returns the GType for the type CellRendererText.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCellRendererText() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CellRendererText").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCellRendererText)
+	return gtype
 }
 
 // CellRendererTextOverrider contains methods that are overridable.

@@ -16,13 +16,15 @@ import (
 // extern void _gotk4_gtk4_GridView_ConnectActivate(gpointer, guint, guintptr);
 import "C"
 
-// glib.Type values for gtkgridview.go.
-var GTypeGridView = coreglib.Type(C.gtk_grid_view_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeGridView, F: marshalGridView},
-	})
+// GTypeGridView returns the GType for the type GridView.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeGridView() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "GridView").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalGridView)
+	return gtype
 }
 
 // GridView: GtkGridView presents a large dynamic grid of items.

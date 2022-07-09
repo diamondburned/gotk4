@@ -17,19 +17,37 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gvariant.go.
-var (
-	GTypeVariantBuilder = coreglib.Type(C.g_variant_builder_get_type())
-	GTypeVariantDict    = coreglib.Type(C.g_variant_dict_get_type())
-	GTypeVariant        = coreglib.Type(coreglib.TypeVariant)
-)
+// GTypeVariantBuilder returns the GType for the type VariantBuilder.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeVariantBuilder() coreglib.Type {
+	gtype := coreglib.Type(C.g_variant_builder_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalVariantBuilder)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeVariantBuilder, F: marshalVariantBuilder},
-		{T: GTypeVariantDict, F: marshalVariantDict},
-		{T: GTypeVariant, F: marshalVariant},
-	})
+// GTypeVariantDict returns the GType for the type VariantDict.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeVariantDict() coreglib.Type {
+	gtype := coreglib.Type(C.g_variant_dict_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalVariantDict)
+	return gtype
+}
+
+// GTypeVariant returns the GType for the type Variant.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeVariant() coreglib.Type {
+	gtype := coreglib.Type(coreglib.TypeVariant)
+	coreglib.RegisterGValueMarshaler(gtype, marshalVariant)
+	return gtype
 }
 
 // VariantClass: range of possible top-level types of #GVariant instances.

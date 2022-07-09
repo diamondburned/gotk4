@@ -16,13 +16,15 @@ import (
 // extern void _gotk4_gtk4_ListView_ConnectActivate(gpointer, guint, guintptr);
 import "C"
 
-// glib.Type values for gtklistview.go.
-var GTypeListView = coreglib.Type(C.gtk_list_view_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeListView, F: marshalListView},
-	})
+// GTypeListView returns the GType for the type ListView.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeListView() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ListView").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalListView)
+	return gtype
 }
 
 // ListView: GtkListView presents a large dynamic list of items.

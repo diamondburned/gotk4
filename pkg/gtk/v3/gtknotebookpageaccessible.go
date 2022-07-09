@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtknotebookpageaccessible.go.
-var GTypeNotebookPageAccessible = coreglib.Type(C.gtk_notebook_page_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeNotebookPageAccessible, F: marshalNotebookPageAccessible},
-	})
+// GTypeNotebookPageAccessible returns the GType for the type NotebookPageAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeNotebookPageAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "NotebookPageAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalNotebookPageAccessible)
+	return gtype
 }
 
 // NotebookPageAccessibleOverrider contains methods that are overridable.

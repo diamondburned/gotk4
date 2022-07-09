@@ -22,29 +22,92 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// glib.Type values for gtkshortcutaction.go.
-var (
-	GTypeShortcutActionFlags = coreglib.Type(C.gtk_shortcut_action_flags_get_type())
-	GTypeActivateAction      = coreglib.Type(C.gtk_activate_action_get_type())
-	GTypeCallbackAction      = coreglib.Type(C.gtk_callback_action_get_type())
-	GTypeMnemonicAction      = coreglib.Type(C.gtk_mnemonic_action_get_type())
-	GTypeNamedAction         = coreglib.Type(C.gtk_named_action_get_type())
-	GTypeNothingAction       = coreglib.Type(C.gtk_nothing_action_get_type())
-	GTypeShortcutAction      = coreglib.Type(C.gtk_shortcut_action_get_type())
-	GTypeSignalAction        = coreglib.Type(C.gtk_signal_action_get_type())
-)
+// GTypeShortcutActionFlags returns the GType for the type ShortcutActionFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeShortcutActionFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ShortcutActionFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalShortcutActionFlags)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeShortcutActionFlags, F: marshalShortcutActionFlags},
-		{T: GTypeActivateAction, F: marshalActivateAction},
-		{T: GTypeCallbackAction, F: marshalCallbackAction},
-		{T: GTypeMnemonicAction, F: marshalMnemonicAction},
-		{T: GTypeNamedAction, F: marshalNamedAction},
-		{T: GTypeNothingAction, F: marshalNothingAction},
-		{T: GTypeShortcutAction, F: marshalShortcutAction},
-		{T: GTypeSignalAction, F: marshalSignalAction},
-	})
+// GTypeActivateAction returns the GType for the type ActivateAction.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeActivateAction() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ActivateAction").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalActivateAction)
+	return gtype
+}
+
+// GTypeCallbackAction returns the GType for the type CallbackAction.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCallbackAction() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CallbackAction").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCallbackAction)
+	return gtype
+}
+
+// GTypeMnemonicAction returns the GType for the type MnemonicAction.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMnemonicAction() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "MnemonicAction").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMnemonicAction)
+	return gtype
+}
+
+// GTypeNamedAction returns the GType for the type NamedAction.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeNamedAction() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "NamedAction").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalNamedAction)
+	return gtype
+}
+
+// GTypeNothingAction returns the GType for the type NothingAction.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeNothingAction() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "NothingAction").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalNothingAction)
+	return gtype
+}
+
+// GTypeShortcutAction returns the GType for the type ShortcutAction.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeShortcutAction() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ShortcutAction").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalShortcutAction)
+	return gtype
+}
+
+// GTypeSignalAction returns the GType for the type SignalAction.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSignalAction() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "SignalAction").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSignalAction)
+	return gtype
 }
 
 // ShortcutActionFlags: list of flags that can be passed to action activation.

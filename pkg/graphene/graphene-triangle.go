@@ -15,13 +15,15 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
-// glib.Type values for graphene-triangle.go.
-var GTypeTriangle = coreglib.Type(C.graphene_triangle_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTriangle, F: marshalTriangle},
-	})
+// GTypeTriangle returns the GType for the type Triangle.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTriangle() coreglib.Type {
+	gtype := coreglib.Type(C.graphene_triangle_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTriangle)
+	return gtype
 }
 
 // Triangle: triangle.

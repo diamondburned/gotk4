@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdkproperty.go.
-var GTypePropMode = coreglib.Type(C.gdk_prop_mode_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypePropMode, F: marshalPropMode},
-	})
+// GTypePropMode returns the GType for the type PropMode.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePropMode() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "PropMode").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPropMode)
+	return gtype
 }
 
 // PropMode describes how existing data is combined with new data when using

@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkrenderercellaccessible.go.
-var GTypeRendererCellAccessible = coreglib.Type(C.gtk_renderer_cell_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeRendererCellAccessible, F: marshalRendererCellAccessible},
-	})
+// GTypeRendererCellAccessible returns the GType for the type RendererCellAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRendererCellAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "RendererCellAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRendererCellAccessible)
+	return gtype
 }
 
 // RendererCellAccessibleOverrider contains methods that are overridable.

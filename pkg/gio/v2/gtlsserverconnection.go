@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtlsserverconnection.go.
-var GTypeTLSServerConnection = coreglib.Type(C.g_tls_server_connection_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTLSServerConnection, F: marshalTLSServerConnection},
-	})
+// GTypeTLSServerConnection returns the GType for the type TLSServerConnection.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTLSServerConnection() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsServerConnection").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTLSServerConnection)
+	return gtype
 }
 
 // TLSServerConnectionOverrider contains methods that are overridable.

@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkiconviewaccessible.go.
-var GTypeIconViewAccessible = coreglib.Type(C.gtk_icon_view_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeIconViewAccessible, F: marshalIconViewAccessible},
-	})
+// GTypeIconViewAccessible returns the GType for the type IconViewAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeIconViewAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "IconViewAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalIconViewAccessible)
+	return gtype
 }
 
 // IconViewAccessibleOverrider contains methods that are overridable.

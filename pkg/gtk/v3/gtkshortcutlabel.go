@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkshortcutlabel.go.
-var GTypeShortcutLabel = coreglib.Type(C.gtk_shortcut_label_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeShortcutLabel, F: marshalShortcutLabel},
-	})
+// GTypeShortcutLabel returns the GType for the type ShortcutLabel.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeShortcutLabel() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ShortcutLabel").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalShortcutLabel)
+	return gtype
 }
 
 // ShortcutLabel is a widget that represents a single keyboard shortcut or

@@ -19,21 +19,48 @@ import (
 // extern void _gotk4_gdk3_Device_ConnectToolChanged(gpointer, void*, guintptr);
 import "C"
 
-// glib.Type values for gdkdevice.go.
-var (
-	GTypeDeviceType  = coreglib.Type(C.gdk_device_type_get_type())
-	GTypeInputMode   = coreglib.Type(C.gdk_input_mode_get_type())
-	GTypeInputSource = coreglib.Type(C.gdk_input_source_get_type())
-	GTypeDevice      = coreglib.Type(C.gdk_device_get_type())
-)
+// GTypeDeviceType returns the GType for the type DeviceType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDeviceType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "DeviceType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDeviceType)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeDeviceType, F: marshalDeviceType},
-		{T: GTypeInputMode, F: marshalInputMode},
-		{T: GTypeInputSource, F: marshalInputSource},
-		{T: GTypeDevice, F: marshalDevice},
-	})
+// GTypeInputMode returns the GType for the type InputMode.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeInputMode() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "InputMode").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalInputMode)
+	return gtype
+}
+
+// GTypeInputSource returns the GType for the type InputSource.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeInputSource() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "InputSource").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalInputSource)
+	return gtype
+}
+
+// GTypeDevice returns the GType for the type Device.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDevice() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "Device").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDevice)
+	return gtype
 }
 
 const MAX_TIMECOORD_AXES = 128

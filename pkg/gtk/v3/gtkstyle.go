@@ -26,17 +26,26 @@ import (
 // extern void _gotk4_gtk3_Style_ConnectUnrealize(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkstyle.go.
-var (
-	GTypeExpanderStyle = coreglib.Type(C.gtk_expander_style_get_type())
-	GTypeStyle         = coreglib.Type(C.gtk_style_get_type())
-)
+// GTypeExpanderStyle returns the GType for the type ExpanderStyle.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeExpanderStyle() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ExpanderStyle").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalExpanderStyle)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeExpanderStyle, F: marshalExpanderStyle},
-		{T: GTypeStyle, F: marshalStyle},
-	})
+// GTypeStyle returns the GType for the type Style.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeStyle() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Style").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalStyle)
+	return gtype
 }
 
 // ExpanderStyle: used to specify the style of the expanders drawn by a

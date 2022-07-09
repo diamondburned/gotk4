@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtklistitem.go.
-var GTypeListItem = coreglib.Type(C.gtk_list_item_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeListItem, F: marshalListItem},
-	})
+// GTypeListItem returns the GType for the type ListItem.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeListItem() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ListItem").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalListItem)
+	return gtype
 }
 
 // ListItem: GtkListItem is used by list widgets to represent items in a

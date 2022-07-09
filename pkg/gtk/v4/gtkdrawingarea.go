@@ -21,13 +21,15 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// glib.Type values for gtkdrawingarea.go.
-var GTypeDrawingArea = coreglib.Type(C.gtk_drawing_area_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeDrawingArea, F: marshalDrawingArea},
-	})
+// GTypeDrawingArea returns the GType for the type DrawingArea.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDrawingArea() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "DrawingArea").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDrawingArea)
+	return gtype
 }
 
 // DrawingAreaDrawFunc: whenever drawing_area needs to redraw, this function

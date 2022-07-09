@@ -42,13 +42,15 @@ import (
 // extern void _gotk4_gio2_Application_ConnectStartup(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gapplication.go.
-var GTypeApplication = coreglib.Type(C.g_application_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeApplication, F: marshalApplication},
-	})
+// GTypeApplication returns the GType for the type Application.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeApplication() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "Application").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalApplication)
+	return gtype
 }
 
 // ApplicationOverrider contains methods that are overridable.

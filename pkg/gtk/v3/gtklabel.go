@@ -26,13 +26,15 @@ import (
 // extern void _gotk4_gtk3_Label_ConnectPopulatePopup(gpointer, void*, guintptr);
 import "C"
 
-// glib.Type values for gtklabel.go.
-var GTypeLabel = coreglib.Type(C.gtk_label_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeLabel, F: marshalLabel},
-	})
+// GTypeLabel returns the GType for the type Label.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeLabel() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Label").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalLabel)
+	return gtype
 }
 
 // LabelOverrider contains methods that are overridable.

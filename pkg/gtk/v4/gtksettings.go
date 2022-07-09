@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtksettings.go.
-var GTypeSettings = coreglib.Type(C.gtk_settings_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSettings, F: marshalSettings},
-	})
+// GTypeSettings returns the GType for the type Settings.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSettings() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Settings").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSettings)
+	return gtype
 }
 
 // Settings: GtkSettings provides a mechanism to share global settings between

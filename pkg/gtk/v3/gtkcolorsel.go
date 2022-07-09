@@ -21,13 +21,15 @@ import (
 // extern void _gotk4_gtk3_ColorSelection_ConnectColorChanged(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkcolorsel.go.
-var GTypeColorSelection = coreglib.Type(C.gtk_color_selection_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeColorSelection, F: marshalColorSelection},
-	})
+// GTypeColorSelection returns the GType for the type ColorSelection.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeColorSelection() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ColorSelection").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalColorSelection)
+	return gtype
 }
 
 // ColorSelectionOverrider contains methods that are overridable.

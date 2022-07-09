@@ -21,13 +21,15 @@ import (
 // extern void _gotk4_gtk3_Gesture_ConnectUpdate(gpointer, void*, guintptr);
 import "C"
 
-// glib.Type values for gtkgesture.go.
-var GTypeGesture = coreglib.Type(C.gtk_gesture_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeGesture, F: marshalGesture},
-	})
+// GTypeGesture returns the GType for the type Gesture.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeGesture() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Gesture").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalGesture)
+	return gtype
 }
 
 // Gesture is the base object for gesture recognition, although this object is

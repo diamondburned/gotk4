@@ -18,13 +18,15 @@ import (
 // extern void _gotk4_atk1_MiscClass_threads_leave(void*);
 import "C"
 
-// glib.Type values for atkmisc.go.
-var GTypeMisc = coreglib.Type(C.atk_misc_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeMisc, F: marshalMisc},
-	})
+// GTypeMisc returns the GType for the type Misc.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMisc() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "Misc").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMisc)
+	return gtype
 }
 
 // MiscOverrider contains methods that are overridable.

@@ -20,13 +20,15 @@ import (
 // extern void _gotk4_gtk3_RadioButton_ConnectGroupChanged(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkradiobutton.go.
-var GTypeRadioButton = coreglib.Type(C.gtk_radio_button_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeRadioButton, F: marshalRadioButton},
-	})
+// GTypeRadioButton returns the GType for the type RadioButton.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRadioButton() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "RadioButton").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRadioButton)
+	return gtype
 }
 
 // RadioButtonOverrider contains methods that are overridable.

@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for atkrelation.go.
-var GTypeRelation = coreglib.Type(C.atk_relation_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeRelation, F: marshalRelation},
-	})
+// GTypeRelation returns the GType for the type Relation.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRelation() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "Relation").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRelation)
+	return gtype
 }
 
 // RelationOverrider contains methods that are overridable.

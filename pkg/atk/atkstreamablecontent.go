@@ -21,13 +21,15 @@ import (
 // extern gint _gotk4_atk1_StreamableContentIface_get_n_mime_types(void*);
 import "C"
 
-// glib.Type values for atkstreamablecontent.go.
-var GTypeStreamableContent = coreglib.Type(C.atk_streamable_content_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeStreamableContent, F: marshalStreamableContent},
-	})
+// GTypeStreamableContent returns the GType for the type StreamableContent.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeStreamableContent() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "StreamableContent").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalStreamableContent)
+	return gtype
 }
 
 // StreamableContentOverrider contains methods that are overridable.

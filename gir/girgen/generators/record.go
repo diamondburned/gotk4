@@ -179,10 +179,9 @@ func GenerateRecord(gen FileGeneratorWriter, record *gir.Record) bool {
 
 	writer := FileWriterFromType(gen, record)
 
-	if record.GLibGetType != "" && !types.FilterCType(gen, record.GLibGetType) {
+	if gtype, ok := GenerateGType(gen, recordGen.Name, recordGen.GLibGetType); ok {
 		recordGen.Marshaler = true
-		writer.Header().NeedsExternGLib()
-		writer.Header().AddMarshaler(record.GLibGetType, recordGen.GoName)
+		writer.Header().AddMarshaler(gtype.GetType, recordGen.GoName)
 	}
 
 	writer.Pen().WriteTmpl(recordTmpl, &recordGen)

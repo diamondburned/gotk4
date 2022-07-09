@@ -16,13 +16,15 @@ import (
 // extern void _gotk4_gtk3_CellRendererCombo_ConnectChanged(gpointer, void*, void*, guintptr);
 import "C"
 
-// glib.Type values for gtkcellrenderercombo.go.
-var GTypeCellRendererCombo = coreglib.Type(C.gtk_cell_renderer_combo_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCellRendererCombo, F: marshalCellRendererCombo},
-	})
+// GTypeCellRendererCombo returns the GType for the type CellRendererCombo.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCellRendererCombo() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CellRendererCombo").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCellRendererCombo)
+	return gtype
 }
 
 // CellRendererComboOverrider contains methods that are overridable.

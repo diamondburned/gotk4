@@ -21,13 +21,15 @@ import (
 // extern void _gotk4_gtk3_InfoBar_ConnectResponse(gpointer, gint, guintptr);
 import "C"
 
-// glib.Type values for gtkinfobar.go.
-var GTypeInfoBar = coreglib.Type(C.gtk_info_bar_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeInfoBar, F: marshalInfoBar},
-	})
+// GTypeInfoBar returns the GType for the type InfoBar.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeInfoBar() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "InfoBar").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalInfoBar)
+	return gtype
 }
 
 // InfoBarOverrider contains methods that are overridable.

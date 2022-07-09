@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkshortcutcontroller.go.
-var GTypeShortcutController = coreglib.Type(C.gtk_shortcut_controller_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeShortcutController, F: marshalShortcutController},
-	})
+// GTypeShortcutController returns the GType for the type ShortcutController.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeShortcutController() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ShortcutController").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalShortcutController)
+	return gtype
 }
 
 // ShortcutController: GtkShortcutController is an event controller that manages

@@ -18,13 +18,15 @@ import (
 // extern GtkStyleProperties* _gotk4_gtk3_StyleProviderIface_get_style(void*, void*);
 import "C"
 
-// glib.Type values for gtkstyleprovider.go.
-var GTypeStyleProvider = coreglib.Type(C.gtk_style_provider_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeStyleProvider, F: marshalStyleProvider},
-	})
+// GTypeStyleProvider returns the GType for the type StyleProvider.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeStyleProvider() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "StyleProvider").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalStyleProvider)
+	return gtype
 }
 
 // STYLE_PROVIDER_PRIORITY_APPLICATION: priority that can be used when adding a

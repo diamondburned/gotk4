@@ -17,13 +17,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkaccelmap.go.
-var GTypeAccelMap = coreglib.Type(C.gtk_accel_map_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeAccelMap, F: marshalAccelMap},
-	})
+// GTypeAccelMap returns the GType for the type AccelMap.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAccelMap() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "AccelMap").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAccelMap)
+	return gtype
 }
 
 // AccelMap: accelerator maps are used to define runtime configurable

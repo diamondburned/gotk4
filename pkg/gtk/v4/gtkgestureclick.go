@@ -20,13 +20,15 @@ import (
 // extern void _gotk4_gtk4_GestureClick_ConnectUnpairedRelease(gpointer, gdouble, gdouble, guint, void*, guintptr);
 import "C"
 
-// glib.Type values for gtkgestureclick.go.
-var GTypeGestureClick = coreglib.Type(C.gtk_gesture_click_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeGestureClick, F: marshalGestureClick},
-	})
+// GTypeGestureClick returns the GType for the type GestureClick.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeGestureClick() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "GestureClick").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalGestureClick)
+	return gtype
 }
 
 // GestureClick: GtkGestureClick is a GtkGesture implementation for clicks.

@@ -17,13 +17,15 @@ import (
 // extern void _gotk4_gtk3_CellAccessibleClass_update_cache(void*, gboolean);
 import "C"
 
-// glib.Type values for gtkcellaccessible.go.
-var GTypeCellAccessible = coreglib.Type(C.gtk_cell_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCellAccessible, F: marshalCellAccessible},
-	})
+// GTypeCellAccessible returns the GType for the type CellAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCellAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CellAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCellAccessible)
+	return gtype
 }
 
 // CellAccessibleOverrider contains methods that are overridable.

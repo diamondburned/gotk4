@@ -112,10 +112,9 @@ func GenerateUnion(gen FileGeneratorWriter, union *gir.Union) bool {
 		writer.Header().Import("unsafe")
 	}
 
-	if union.GLibGetType != "" && !types.FilterCType(gen, union.GLibGetType) {
+	if gtype, ok := GenerateGType(gen, union.Name, union.GLibGetType); ok {
 		unionGen.Marshaler = true
-		writer.Header().NeedsExternGLib()
-		writer.Header().AddMarshaler(union.GLibGetType, unionGen.GoName)
+		writer.Header().AddMarshaler(gtype.GetType, unionGen.GoName)
 	}
 
 	writer.Pen().WriteTmpl(unionTmpl, &unionGen)

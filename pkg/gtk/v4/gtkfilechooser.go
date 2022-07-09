@@ -19,19 +19,37 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkfilechooser.go.
-var (
-	GTypeFileChooserAction = coreglib.Type(C.gtk_file_chooser_action_get_type())
-	GTypeFileChooserError  = coreglib.Type(C.gtk_file_chooser_error_get_type())
-	GTypeFileChooser       = coreglib.Type(C.gtk_file_chooser_get_type())
-)
+// GTypeFileChooserAction returns the GType for the type FileChooserAction.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFileChooserAction() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "FileChooserAction").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFileChooserAction)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeFileChooserAction, F: marshalFileChooserAction},
-		{T: GTypeFileChooserError, F: marshalFileChooserError},
-		{T: GTypeFileChooser, F: marshalFileChooser},
-	})
+// GTypeFileChooserError returns the GType for the type FileChooserError.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFileChooserError() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "FileChooserError").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFileChooserError)
+	return gtype
+}
+
+// GTypeFileChooser returns the GType for the type FileChooser.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFileChooser() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "FileChooser").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFileChooser)
+	return gtype
 }
 
 // FileChooserAction describes whether a GtkFileChooser is being used to open

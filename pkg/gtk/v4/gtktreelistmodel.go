@@ -19,17 +19,26 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// glib.Type values for gtktreelistmodel.go.
-var (
-	GTypeTreeListModel = coreglib.Type(C.gtk_tree_list_model_get_type())
-	GTypeTreeListRow   = coreglib.Type(C.gtk_tree_list_row_get_type())
-)
+// GTypeTreeListModel returns the GType for the type TreeListModel.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTreeListModel() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TreeListModel").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTreeListModel)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTreeListModel, F: marshalTreeListModel},
-		{T: GTypeTreeListRow, F: marshalTreeListRow},
-	})
+// GTypeTreeListRow returns the GType for the type TreeListRow.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTreeListRow() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TreeListRow").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTreeListRow)
+	return gtype
 }
 
 // TreeListModelCreateModelFunc: prototype of the function called to create new

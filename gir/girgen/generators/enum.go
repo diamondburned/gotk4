@@ -144,10 +144,9 @@ func GenerateEnum(gen FileGeneratorWriter, enum *gir.Enum) bool {
 		IsIota: true,
 	}
 
-	if enum.GLibGetType != "" && !types.FilterCType(gen, enum.GLibGetType) {
+	if gtype, ok := GenerateGType(gen, enum.Name, enum.GLibGetType); ok {
 		data.Marshaler = true
-		writer.Header().NeedsExternGLib()
-		writer.Header().AddMarshaler(enum.GLibGetType, goName)
+		writer.Header().AddMarshaler(gtype.GetType, goName)
 	}
 
 	for i := 0; i < len(enum.Members); i++ {

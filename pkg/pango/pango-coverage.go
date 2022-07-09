@@ -16,17 +16,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for pango-coverage.go.
-var (
-	GTypeCoverageLevel = coreglib.Type(C.pango_coverage_level_get_type())
-	GTypeCoverage      = coreglib.Type(C.pango_coverage_get_type())
-)
+// GTypeCoverageLevel returns the GType for the type CoverageLevel.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCoverageLevel() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "CoverageLevel").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCoverageLevel)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCoverageLevel, F: marshalCoverageLevel},
-		{T: GTypeCoverage, F: marshalCoverage},
-	})
+// GTypeCoverage returns the GType for the type Coverage.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCoverage() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "Coverage").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCoverage)
+	return gtype
 }
 
 // CoverageLevel: PangoCoverageLevel is used to indicate how well a font can

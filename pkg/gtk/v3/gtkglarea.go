@@ -24,13 +24,15 @@ import (
 // extern void _gotk4_gtk3_GLArea_ConnectResize(gpointer, gint, gint, guintptr);
 import "C"
 
-// glib.Type values for gtkglarea.go.
-var GTypeGLArea = coreglib.Type(C.gtk_gl_area_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeGLArea, F: marshalGLArea},
-	})
+// GTypeGLArea returns the GType for the type GLArea.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeGLArea() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "GLArea").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalGLArea)
+	return gtype
 }
 
 // GLAreaOverrider contains methods that are overridable.

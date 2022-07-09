@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdkglcontext.go.
-var GTypeGLContext = coreglib.Type(C.gdk_gl_context_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeGLContext, F: marshalGLContext},
-	})
+// GTypeGLContext returns the GType for the type GLContext.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeGLContext() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "GLContext").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalGLContext)
+	return gtype
 }
 
 // GLContext: GdkGLContext is an object representing a platform-specific OpenGL

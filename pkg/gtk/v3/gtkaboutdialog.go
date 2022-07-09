@@ -22,17 +22,26 @@ import (
 // extern gboolean _gotk4_gtk3_AboutDialog_ConnectActivateLink(gpointer, void*, guintptr);
 import "C"
 
-// glib.Type values for gtkaboutdialog.go.
-var (
-	GTypeLicense     = coreglib.Type(C.gtk_license_get_type())
-	GTypeAboutDialog = coreglib.Type(C.gtk_about_dialog_get_type())
-)
+// GTypeLicense returns the GType for the type License.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeLicense() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "License").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalLicense)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeLicense, F: marshalLicense},
-		{T: GTypeAboutDialog, F: marshalAboutDialog},
-	})
+// GTypeAboutDialog returns the GType for the type AboutDialog.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAboutDialog() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "AboutDialog").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAboutDialog)
+	return gtype
 }
 
 // License: type of license for an application.

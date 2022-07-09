@@ -21,13 +21,15 @@ import (
 // extern guint _gotk4_gio2_IconIface_hash(void*);
 import "C"
 
-// glib.Type values for gicon.go.
-var GTypeIcon = coreglib.Type(C.g_icon_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeIcon, F: marshalIcon},
-	})
+// GTypeIcon returns the GType for the type Icon.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeIcon() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "Icon").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalIcon)
+	return gtype
 }
 
 // IconOverrider contains methods that are overridable.

@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkboolfilter.go.
-var GTypeBoolFilter = coreglib.Type(C.gtk_bool_filter_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeBoolFilter, F: marshalBoolFilter},
-	})
+// GTypeBoolFilter returns the GType for the type BoolFilter.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeBoolFilter() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "BoolFilter").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalBoolFilter)
+	return gtype
 }
 
 // BoolFilterOverrider contains methods that are overridable.

@@ -17,27 +17,81 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdbusintrospection.go.
-var (
-	GTypeDBusAnnotationInfo = coreglib.Type(C.g_dbus_annotation_info_get_type())
-	GTypeDBusArgInfo        = coreglib.Type(C.g_dbus_arg_info_get_type())
-	GTypeDBusInterfaceInfo  = coreglib.Type(C.g_dbus_interface_info_get_type())
-	GTypeDBusMethodInfo     = coreglib.Type(C.g_dbus_method_info_get_type())
-	GTypeDBusNodeInfo       = coreglib.Type(C.g_dbus_node_info_get_type())
-	GTypeDBusPropertyInfo   = coreglib.Type(C.g_dbus_property_info_get_type())
-	GTypeDBusSignalInfo     = coreglib.Type(C.g_dbus_signal_info_get_type())
-)
+// GTypeDBusAnnotationInfo returns the GType for the type DBusAnnotationInfo.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusAnnotationInfo() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusAnnotationInfo").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusAnnotationInfo)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeDBusAnnotationInfo, F: marshalDBusAnnotationInfo},
-		{T: GTypeDBusArgInfo, F: marshalDBusArgInfo},
-		{T: GTypeDBusInterfaceInfo, F: marshalDBusInterfaceInfo},
-		{T: GTypeDBusMethodInfo, F: marshalDBusMethodInfo},
-		{T: GTypeDBusNodeInfo, F: marshalDBusNodeInfo},
-		{T: GTypeDBusPropertyInfo, F: marshalDBusPropertyInfo},
-		{T: GTypeDBusSignalInfo, F: marshalDBusSignalInfo},
-	})
+// GTypeDBusArgInfo returns the GType for the type DBusArgInfo.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusArgInfo() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusArgInfo").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusArgInfo)
+	return gtype
+}
+
+// GTypeDBusInterfaceInfo returns the GType for the type DBusInterfaceInfo.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusInterfaceInfo() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusInterfaceInfo").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusInterfaceInfo)
+	return gtype
+}
+
+// GTypeDBusMethodInfo returns the GType for the type DBusMethodInfo.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusMethodInfo() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusMethodInfo").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusMethodInfo)
+	return gtype
+}
+
+// GTypeDBusNodeInfo returns the GType for the type DBusNodeInfo.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusNodeInfo() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusNodeInfo").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusNodeInfo)
+	return gtype
+}
+
+// GTypeDBusPropertyInfo returns the GType for the type DBusPropertyInfo.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusPropertyInfo() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusPropertyInfo").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusPropertyInfo)
+	return gtype
+}
+
+// GTypeDBusSignalInfo returns the GType for the type DBusSignalInfo.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusSignalInfo() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusSignalInfo").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusSignalInfo)
+	return gtype
 }
 
 // DBusAnnotationInfo: information about an annotation.

@@ -24,13 +24,15 @@ import (
 // extern void _gotk4_gio2_DBusInterfaceSkeletonClass_flush(void*);
 import "C"
 
-// glib.Type values for gdbusinterfaceskeleton.go.
-var GTypeDBusInterfaceSkeleton = coreglib.Type(C.g_dbus_interface_skeleton_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeDBusInterfaceSkeleton, F: marshalDBusInterfaceSkeleton},
-	})
+// GTypeDBusInterfaceSkeleton returns the GType for the type DBusInterfaceSkeleton.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusInterfaceSkeleton() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusInterfaceSkeleton").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusInterfaceSkeleton)
+	return gtype
 }
 
 // DBusInterfaceSkeletonOverrider contains methods that are overridable.

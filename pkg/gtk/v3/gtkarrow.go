@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkarrow.go.
-var GTypeArrow = coreglib.Type(C.gtk_arrow_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeArrow, F: marshalArrow},
-	})
+// GTypeArrow returns the GType for the type Arrow.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeArrow() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Arrow").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalArrow)
+	return gtype
 }
 
 // ArrowOverrider contains methods that are overridable.

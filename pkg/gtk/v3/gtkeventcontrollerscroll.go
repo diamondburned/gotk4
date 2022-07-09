@@ -20,17 +20,26 @@ import (
 // extern void _gotk4_gtk3_EventControllerScroll_ConnectScrollEnd(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkeventcontrollerscroll.go.
-var (
-	GTypeEventControllerScrollFlags = coreglib.Type(C.gtk_event_controller_scroll_flags_get_type())
-	GTypeEventControllerScroll      = coreglib.Type(C.gtk_event_controller_scroll_get_type())
-)
+// GTypeEventControllerScrollFlags returns the GType for the type EventControllerScrollFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeEventControllerScrollFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "EventControllerScrollFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalEventControllerScrollFlags)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeEventControllerScrollFlags, F: marshalEventControllerScrollFlags},
-		{T: GTypeEventControllerScroll, F: marshalEventControllerScroll},
-	})
+// GTypeEventControllerScroll returns the GType for the type EventControllerScroll.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeEventControllerScroll() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "EventControllerScroll").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalEventControllerScroll)
+	return gtype
 }
 
 // EventControllerScrollFlags describes the behavior of a EventControllerScroll.

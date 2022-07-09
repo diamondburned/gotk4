@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkcomboboxaccessible.go.
-var GTypeComboBoxAccessible = coreglib.Type(C.gtk_combo_box_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeComboBoxAccessible, F: marshalComboBoxAccessible},
-	})
+// GTypeComboBoxAccessible returns the GType for the type ComboBoxAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeComboBoxAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ComboBoxAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalComboBoxAccessible)
+	return gtype
 }
 
 // ComboBoxAccessibleOverrider contains methods that are overridable.

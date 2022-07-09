@@ -20,13 +20,15 @@ import (
 // extern void _gotk4_gtk4_Adjustment_ConnectValueChanged(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkadjustment.go.
-var GTypeAdjustment = coreglib.Type(C.gtk_adjustment_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeAdjustment, F: marshalAdjustment},
-	})
+// GTypeAdjustment returns the GType for the type Adjustment.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAdjustment() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Adjustment").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAdjustment)
+	return gtype
 }
 
 // AdjustmentOverrider contains methods that are overridable.

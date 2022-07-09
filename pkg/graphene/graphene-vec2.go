@@ -15,13 +15,15 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
-// glib.Type values for graphene-vec2.go.
-var GTypeVec2 = coreglib.Type(C.graphene_vec2_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeVec2, F: marshalVec2},
-	})
+// GTypeVec2 returns the GType for the type Vec2.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeVec2() coreglib.Type {
+	gtype := coreglib.Type(C.graphene_vec2_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalVec2)
+	return gtype
 }
 
 // Vec2: structure capable of holding a vector with two dimensions, x and y.

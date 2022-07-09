@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkboxlayout.go.
-var GTypeBoxLayout = coreglib.Type(C.gtk_box_layout_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeBoxLayout, F: marshalBoxLayout},
-	})
+// GTypeBoxLayout returns the GType for the type BoxLayout.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeBoxLayout() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "BoxLayout").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalBoxLayout)
+	return gtype
 }
 
 // BoxLayoutOverrider contains methods that are overridable.

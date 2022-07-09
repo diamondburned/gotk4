@@ -15,13 +15,15 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
-// glib.Type values for graphene-point.go.
-var GTypePoint = coreglib.Type(C.graphene_point_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypePoint, F: marshalPoint},
-	})
+// GTypePoint returns the GType for the type Point.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePoint() coreglib.Type {
+	gtype := coreglib.Type(C.graphene_point_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPoint)
+	return gtype
 }
 
 // Point: point with two coordinates.

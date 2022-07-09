@@ -21,13 +21,15 @@ import (
 // extern void _gotk4_gtk3_ColorButton_ConnectColorSet(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkcolorbutton.go.
-var GTypeColorButton = coreglib.Type(C.gtk_color_button_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeColorButton, F: marshalColorButton},
-	})
+// GTypeColorButton returns the GType for the type ColorButton.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeColorButton() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ColorButton").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalColorButton)
+	return gtype
 }
 
 // ColorButtonOverrider contains methods that are overridable.

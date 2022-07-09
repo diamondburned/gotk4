@@ -18,13 +18,15 @@ import (
 // extern void _gotk4_gtk4_GestureDrag_ConnectDragUpdate(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
-// glib.Type values for gtkgesturedrag.go.
-var GTypeGestureDrag = coreglib.Type(C.gtk_gesture_drag_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeGestureDrag, F: marshalGestureDrag},
-	})
+// GTypeGestureDrag returns the GType for the type GestureDrag.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeGestureDrag() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "GestureDrag").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalGestureDrag)
+	return gtype
 }
 
 // GestureDrag: GtkGestureDrag is a GtkGesture implementation for drags.

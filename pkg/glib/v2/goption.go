@@ -17,13 +17,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for goption.go.
-var GTypeOptionGroup = coreglib.Type(C.g_option_group_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeOptionGroup, F: marshalOptionGroup},
-	})
+// GTypeOptionGroup returns the GType for the type OptionGroup.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeOptionGroup() coreglib.Type {
+	gtype := coreglib.Type(C.g_option_group_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalOptionGroup)
+	return gtype
 }
 
 // OPTION_REMAINING: if a long option in the main group has this name, it is not

@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gmappedfile.go.
-var GTypeMappedFile = coreglib.Type(C.g_mapped_file_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeMappedFile, F: marshalMappedFile},
-	})
+// GTypeMappedFile returns the GType for the type MappedFile.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMappedFile() coreglib.Type {
+	gtype := coreglib.Type(C.g_mapped_file_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMappedFile)
+	return gtype
 }
 
 // MappedFile represents a file mapping created with g_mapped_file_new(). It has

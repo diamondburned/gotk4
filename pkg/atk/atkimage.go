@@ -19,13 +19,15 @@ import (
 // extern void _gotk4_atk1_ImageIface_get_image_size(void*, void*, void*);
 import "C"
 
-// glib.Type values for atkimage.go.
-var GTypeImage = coreglib.Type(C.atk_image_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeImage, F: marshalImage},
-	})
+// GTypeImage returns the GType for the type Image.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeImage() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "Image").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalImage)
+	return gtype
 }
 
 // ImageOverrider contains methods that are overridable.

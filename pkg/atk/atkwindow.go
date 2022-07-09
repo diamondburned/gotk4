@@ -23,13 +23,15 @@ import (
 // extern void _gotk4_atk1_Window_ConnectRestore(gpointer, guintptr);
 import "C"
 
-// glib.Type values for atkwindow.go.
-var GTypeWindow = coreglib.Type(C.atk_window_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeWindow, F: marshalWindow},
-	})
+// GTypeWindow returns the GType for the type Window.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeWindow() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "Window").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalWindow)
+	return gtype
 }
 
 // WindowOverrider contains methods that are overridable.

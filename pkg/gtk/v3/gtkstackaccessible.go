@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkstackaccessible.go.
-var GTypeStackAccessible = coreglib.Type(C.gtk_stack_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeStackAccessible, F: marshalStackAccessible},
-	})
+// GTypeStackAccessible returns the GType for the type StackAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeStackAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "StackAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalStackAccessible)
+	return gtype
 }
 
 // StackAccessibleOverrider contains methods that are overridable.

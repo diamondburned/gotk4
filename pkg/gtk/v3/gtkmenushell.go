@@ -32,13 +32,15 @@ import (
 // extern void _gotk4_gtk3_MenuShell_ConnectSelectionDone(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkmenushell.go.
-var GTypeMenuShell = coreglib.Type(C.gtk_menu_shell_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeMenuShell, F: marshalMenuShell},
-	})
+// GTypeMenuShell returns the GType for the type MenuShell.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMenuShell() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "MenuShell").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMenuShell)
+	return gtype
 }
 
 // MenuShellOverrider contains methods that are overridable.

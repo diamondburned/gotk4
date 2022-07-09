@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gcharsetconverter.go.
-var GTypeCharsetConverter = coreglib.Type(C.g_charset_converter_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCharsetConverter, F: marshalCharsetConverter},
-	})
+// GTypeCharsetConverter returns the GType for the type CharsetConverter.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCharsetConverter() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "CharsetConverter").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCharsetConverter)
+	return gtype
 }
 
 // CharsetConverterOverrider contains methods that are overridable.

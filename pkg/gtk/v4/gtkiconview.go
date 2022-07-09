@@ -27,17 +27,26 @@ import (
 // extern void _gotk4_gtk4_IconView_ConnectUnselectAll(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkiconview.go.
-var (
-	GTypeIconViewDropPosition = coreglib.Type(C.gtk_icon_view_drop_position_get_type())
-	GTypeIconView             = coreglib.Type(C.gtk_icon_view_get_type())
-)
+// GTypeIconViewDropPosition returns the GType for the type IconViewDropPosition.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeIconViewDropPosition() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "IconViewDropPosition").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalIconViewDropPosition)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeIconViewDropPosition, F: marshalIconViewDropPosition},
-		{T: GTypeIconView, F: marshalIconView},
-	})
+// GTypeIconView returns the GType for the type IconView.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeIconView() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "IconView").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalIconView)
+	return gtype
 }
 
 // IconViewDropPosition: enum for determining where a dropped item goes.

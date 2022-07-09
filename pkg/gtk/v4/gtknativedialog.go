@@ -20,13 +20,15 @@ import (
 // extern void _gotk4_gtk4_NativeDialog_ConnectResponse(gpointer, gint, guintptr);
 import "C"
 
-// glib.Type values for gtknativedialog.go.
-var GTypeNativeDialog = coreglib.Type(C.gtk_native_dialog_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeNativeDialog, F: marshalNativeDialog},
-	})
+// GTypeNativeDialog returns the GType for the type NativeDialog.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeNativeDialog() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "NativeDialog").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalNativeDialog)
+	return gtype
 }
 
 // NativeDialogOverrider contains methods that are overridable.

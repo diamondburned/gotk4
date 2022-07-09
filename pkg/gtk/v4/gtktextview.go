@@ -40,21 +40,48 @@ import (
 // extern void _gotk4_gtk4_TextView_ConnectToggleOverwrite(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtktextview.go.
-var (
-	GTypeTextExtendSelection = coreglib.Type(C.gtk_text_extend_selection_get_type())
-	GTypeTextViewLayer       = coreglib.Type(C.gtk_text_view_layer_get_type())
-	GTypeTextWindowType      = coreglib.Type(C.gtk_text_window_type_get_type())
-	GTypeTextView            = coreglib.Type(C.gtk_text_view_get_type())
-)
+// GTypeTextExtendSelection returns the GType for the type TextExtendSelection.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTextExtendSelection() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TextExtendSelection").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTextExtendSelection)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTextExtendSelection, F: marshalTextExtendSelection},
-		{T: GTypeTextViewLayer, F: marshalTextViewLayer},
-		{T: GTypeTextWindowType, F: marshalTextWindowType},
-		{T: GTypeTextView, F: marshalTextView},
-	})
+// GTypeTextViewLayer returns the GType for the type TextViewLayer.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTextViewLayer() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TextViewLayer").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTextViewLayer)
+	return gtype
+}
+
+// GTypeTextWindowType returns the GType for the type TextWindowType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTextWindowType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TextWindowType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTextWindowType)
+	return gtype
+}
+
+// GTypeTextView returns the GType for the type TextView.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTextView() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TextView").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTextView)
+	return gtype
 }
 
 // TEXT_VIEW_PRIORITY_VALIDATE: priority at which the text view validates

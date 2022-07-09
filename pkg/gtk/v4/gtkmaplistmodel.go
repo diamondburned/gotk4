@@ -19,13 +19,15 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// glib.Type values for gtkmaplistmodel.go.
-var GTypeMapListModel = coreglib.Type(C.gtk_map_list_model_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeMapListModel, F: marshalMapListModel},
-	})
+// GTypeMapListModel returns the GType for the type MapListModel.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMapListModel() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "MapListModel").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMapListModel)
+	return gtype
 }
 
 // MapListModelMapFunc: user function that is called to map an item of the

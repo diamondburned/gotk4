@@ -17,13 +17,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkmenubutton.go.
-var GTypeMenuButton = coreglib.Type(C.gtk_menu_button_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeMenuButton, F: marshalMenuButton},
-	})
+// GTypeMenuButton returns the GType for the type MenuButton.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMenuButton() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "MenuButton").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMenuButton)
+	return gtype
 }
 
 // MenuButtonOverrider contains methods that are overridable.

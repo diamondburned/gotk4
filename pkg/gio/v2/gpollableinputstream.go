@@ -22,13 +22,15 @@ import (
 // extern gboolean _gotk4_gio2_PollableInputStreamInterface_is_readable(void*);
 import "C"
 
-// glib.Type values for gpollableinputstream.go.
-var GTypePollableInputStream = coreglib.Type(C.g_pollable_input_stream_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypePollableInputStream, F: marshalPollableInputStream},
-	})
+// GTypePollableInputStream returns the GType for the type PollableInputStream.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePollableInputStream() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "PollableInputStream").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPollableInputStream)
+	return gtype
 }
 
 // PollableInputStreamOverrider contains methods that are overridable.

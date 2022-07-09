@@ -16,13 +16,15 @@ import (
 // extern void _gotk4_gdkx114_X11Screen_ConnectWindowManagerChanged(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gdkx11screen.go.
-var GTypeX11Screen = coreglib.Type(C.gdk_x11_screen_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeX11Screen, F: marshalX11Screen},
-	})
+// GTypeX11Screen returns the GType for the type X11Screen.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeX11Screen() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("GdkX11", "X11Screen").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalX11Screen)
+	return gtype
 }
 
 type X11Screen struct {

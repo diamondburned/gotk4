@@ -20,13 +20,15 @@ import (
 // extern void _gotk4_gtk3_RadioMenuItem_ConnectGroupChanged(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkradiomenuitem.go.
-var GTypeRadioMenuItem = coreglib.Type(C.gtk_radio_menu_item_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeRadioMenuItem, F: marshalRadioMenuItem},
-	})
+// GTypeRadioMenuItem returns the GType for the type RadioMenuItem.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRadioMenuItem() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "RadioMenuItem").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRadioMenuItem)
+	return gtype
 }
 
 // RadioMenuItemOverrider contains methods that are overridable.

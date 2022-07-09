@@ -16,19 +16,37 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkbuilderscope.go.
-var (
-	GTypeBuilderClosureFlags = coreglib.Type(C.gtk_builder_closure_flags_get_type())
-	GTypeBuilderScope        = coreglib.Type(C.gtk_builder_scope_get_type())
-	GTypeBuilderCScope       = coreglib.Type(C.gtk_builder_cscope_get_type())
-)
+// GTypeBuilderClosureFlags returns the GType for the type BuilderClosureFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeBuilderClosureFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "BuilderClosureFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalBuilderClosureFlags)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeBuilderClosureFlags, F: marshalBuilderClosureFlags},
-		{T: GTypeBuilderScope, F: marshalBuilderScope},
-		{T: GTypeBuilderCScope, F: marshalBuilderCScope},
-	})
+// GTypeBuilderScope returns the GType for the type BuilderScope.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeBuilderScope() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "BuilderScope").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalBuilderScope)
+	return gtype
+}
+
+// GTypeBuilderCScope returns the GType for the type BuilderCScope.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeBuilderCScope() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "BuilderCScope").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalBuilderCScope)
+	return gtype
 }
 
 // BuilderClosureFlags: list of flags that can be passed to

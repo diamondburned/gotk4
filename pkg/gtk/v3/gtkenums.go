@@ -16,109 +16,532 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkenums.go.
-var (
-	GTypeAlign              = coreglib.Type(C.gtk_align_get_type())
-	GTypeArrowType          = coreglib.Type(C.gtk_arrow_type_get_type())
-	GTypeBaselinePosition   = coreglib.Type(C.gtk_baseline_position_get_type())
-	GTypeBorderStyle        = coreglib.Type(C.gtk_border_style_get_type())
-	GTypeDeleteType         = coreglib.Type(C.gtk_delete_type_get_type())
-	GTypeDirectionType      = coreglib.Type(C.gtk_direction_type_get_type())
-	GTypeDragResult         = coreglib.Type(C.gtk_drag_result_get_type())
-	GTypeEventSequenceState = coreglib.Type(C.gtk_event_sequence_state_get_type())
-	GTypeIMPreeditStyle     = coreglib.Type(C.gtk_im_preedit_style_get_type())
-	GTypeIMStatusStyle      = coreglib.Type(C.gtk_im_status_style_get_type())
-	GTypeIconSize           = coreglib.Type(C.gtk_icon_size_get_type())
-	GTypeInputPurpose       = coreglib.Type(C.gtk_input_purpose_get_type())
-	GTypeJustification      = coreglib.Type(C.gtk_justification_get_type())
-	GTypeLevelBarMode       = coreglib.Type(C.gtk_level_bar_mode_get_type())
-	GTypeMenuDirectionType  = coreglib.Type(C.gtk_menu_direction_type_get_type())
-	GTypeMessageType        = coreglib.Type(C.gtk_message_type_get_type())
-	GTypeNumberUpLayout     = coreglib.Type(C.gtk_number_up_layout_get_type())
-	GTypeOrientation        = coreglib.Type(C.gtk_orientation_get_type())
-	GTypePackDirection      = coreglib.Type(C.gtk_pack_direction_get_type())
-	GTypePackType           = coreglib.Type(C.gtk_pack_type_get_type())
-	GTypePageOrientation    = coreglib.Type(C.gtk_page_orientation_get_type())
-	GTypePageSet            = coreglib.Type(C.gtk_page_set_get_type())
-	GTypePanDirection       = coreglib.Type(C.gtk_pan_direction_get_type())
-	GTypePopoverConstraint  = coreglib.Type(C.gtk_popover_constraint_get_type())
-	GTypePositionType       = coreglib.Type(C.gtk_position_type_get_type())
-	GTypePrintDuplex        = coreglib.Type(C.gtk_print_duplex_get_type())
-	GTypePrintPages         = coreglib.Type(C.gtk_print_pages_get_type())
-	GTypePrintQuality       = coreglib.Type(C.gtk_print_quality_get_type())
-	GTypePropagationPhase   = coreglib.Type(C.gtk_propagation_phase_get_type())
-	GTypeReliefStyle        = coreglib.Type(C.gtk_relief_style_get_type())
-	GTypeScrollType         = coreglib.Type(C.gtk_scroll_type_get_type())
-	GTypeScrollablePolicy   = coreglib.Type(C.gtk_scrollable_policy_get_type())
-	GTypeSelectionMode      = coreglib.Type(C.gtk_selection_mode_get_type())
-	GTypeSensitivityType    = coreglib.Type(C.gtk_sensitivity_type_get_type())
-	GTypeShadowType         = coreglib.Type(C.gtk_shadow_type_get_type())
-	GTypeSizeGroupMode      = coreglib.Type(C.gtk_size_group_mode_get_type())
-	GTypeSizeRequestMode    = coreglib.Type(C.gtk_size_request_mode_get_type())
-	GTypeSortType           = coreglib.Type(C.gtk_sort_type_get_type())
-	GTypeStateType          = coreglib.Type(C.gtk_state_type_get_type())
-	GTypeTextDirection      = coreglib.Type(C.gtk_text_direction_get_type())
-	GTypeToolbarStyle       = coreglib.Type(C.gtk_toolbar_style_get_type())
-	GTypeTreeViewGridLines  = coreglib.Type(C.gtk_tree_view_grid_lines_get_type())
-	GTypeUnit               = coreglib.Type(C.gtk_unit_get_type())
-	GTypeWrapMode           = coreglib.Type(C.gtk_wrap_mode_get_type())
-	GTypeInputHints         = coreglib.Type(C.gtk_input_hints_get_type())
-	GTypeJunctionSides      = coreglib.Type(C.gtk_junction_sides_get_type())
-	GTypeRegionFlags        = coreglib.Type(C.gtk_region_flags_get_type())
-	GTypeStateFlags         = coreglib.Type(C.gtk_state_flags_get_type())
-)
+// GTypeAlign returns the GType for the type Align.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAlign() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Align").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAlign)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeAlign, F: marshalAlign},
-		{T: GTypeArrowType, F: marshalArrowType},
-		{T: GTypeBaselinePosition, F: marshalBaselinePosition},
-		{T: GTypeBorderStyle, F: marshalBorderStyle},
-		{T: GTypeDeleteType, F: marshalDeleteType},
-		{T: GTypeDirectionType, F: marshalDirectionType},
-		{T: GTypeDragResult, F: marshalDragResult},
-		{T: GTypeEventSequenceState, F: marshalEventSequenceState},
-		{T: GTypeIMPreeditStyle, F: marshalIMPreeditStyle},
-		{T: GTypeIMStatusStyle, F: marshalIMStatusStyle},
-		{T: GTypeIconSize, F: marshalIconSize},
-		{T: GTypeInputPurpose, F: marshalInputPurpose},
-		{T: GTypeJustification, F: marshalJustification},
-		{T: GTypeLevelBarMode, F: marshalLevelBarMode},
-		{T: GTypeMenuDirectionType, F: marshalMenuDirectionType},
-		{T: GTypeMessageType, F: marshalMessageType},
-		{T: GTypeNumberUpLayout, F: marshalNumberUpLayout},
-		{T: GTypeOrientation, F: marshalOrientation},
-		{T: GTypePackDirection, F: marshalPackDirection},
-		{T: GTypePackType, F: marshalPackType},
-		{T: GTypePageOrientation, F: marshalPageOrientation},
-		{T: GTypePageSet, F: marshalPageSet},
-		{T: GTypePanDirection, F: marshalPanDirection},
-		{T: GTypePopoverConstraint, F: marshalPopoverConstraint},
-		{T: GTypePositionType, F: marshalPositionType},
-		{T: GTypePrintDuplex, F: marshalPrintDuplex},
-		{T: GTypePrintPages, F: marshalPrintPages},
-		{T: GTypePrintQuality, F: marshalPrintQuality},
-		{T: GTypePropagationPhase, F: marshalPropagationPhase},
-		{T: GTypeReliefStyle, F: marshalReliefStyle},
-		{T: GTypeScrollType, F: marshalScrollType},
-		{T: GTypeScrollablePolicy, F: marshalScrollablePolicy},
-		{T: GTypeSelectionMode, F: marshalSelectionMode},
-		{T: GTypeSensitivityType, F: marshalSensitivityType},
-		{T: GTypeShadowType, F: marshalShadowType},
-		{T: GTypeSizeGroupMode, F: marshalSizeGroupMode},
-		{T: GTypeSizeRequestMode, F: marshalSizeRequestMode},
-		{T: GTypeSortType, F: marshalSortType},
-		{T: GTypeStateType, F: marshalStateType},
-		{T: GTypeTextDirection, F: marshalTextDirection},
-		{T: GTypeToolbarStyle, F: marshalToolbarStyle},
-		{T: GTypeTreeViewGridLines, F: marshalTreeViewGridLines},
-		{T: GTypeUnit, F: marshalUnit},
-		{T: GTypeWrapMode, F: marshalWrapMode},
-		{T: GTypeInputHints, F: marshalInputHints},
-		{T: GTypeJunctionSides, F: marshalJunctionSides},
-		{T: GTypeRegionFlags, F: marshalRegionFlags},
-		{T: GTypeStateFlags, F: marshalStateFlags},
-	})
+// GTypeArrowType returns the GType for the type ArrowType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeArrowType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ArrowType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalArrowType)
+	return gtype
+}
+
+// GTypeBaselinePosition returns the GType for the type BaselinePosition.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeBaselinePosition() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "BaselinePosition").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalBaselinePosition)
+	return gtype
+}
+
+// GTypeBorderStyle returns the GType for the type BorderStyle.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeBorderStyle() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "BorderStyle").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalBorderStyle)
+	return gtype
+}
+
+// GTypeDeleteType returns the GType for the type DeleteType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDeleteType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "DeleteType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDeleteType)
+	return gtype
+}
+
+// GTypeDirectionType returns the GType for the type DirectionType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDirectionType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "DirectionType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDirectionType)
+	return gtype
+}
+
+// GTypeDragResult returns the GType for the type DragResult.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDragResult() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "DragResult").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDragResult)
+	return gtype
+}
+
+// GTypeEventSequenceState returns the GType for the type EventSequenceState.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeEventSequenceState() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "EventSequenceState").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalEventSequenceState)
+	return gtype
+}
+
+// GTypeIMPreeditStyle returns the GType for the type IMPreeditStyle.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeIMPreeditStyle() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "IMPreeditStyle").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalIMPreeditStyle)
+	return gtype
+}
+
+// GTypeIMStatusStyle returns the GType for the type IMStatusStyle.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeIMStatusStyle() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "IMStatusStyle").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalIMStatusStyle)
+	return gtype
+}
+
+// GTypeIconSize returns the GType for the type IconSize.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeIconSize() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "IconSize").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalIconSize)
+	return gtype
+}
+
+// GTypeInputPurpose returns the GType for the type InputPurpose.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeInputPurpose() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "InputPurpose").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalInputPurpose)
+	return gtype
+}
+
+// GTypeJustification returns the GType for the type Justification.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeJustification() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Justification").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalJustification)
+	return gtype
+}
+
+// GTypeLevelBarMode returns the GType for the type LevelBarMode.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeLevelBarMode() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "LevelBarMode").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalLevelBarMode)
+	return gtype
+}
+
+// GTypeMenuDirectionType returns the GType for the type MenuDirectionType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMenuDirectionType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "MenuDirectionType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMenuDirectionType)
+	return gtype
+}
+
+// GTypeMessageType returns the GType for the type MessageType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMessageType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "MessageType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMessageType)
+	return gtype
+}
+
+// GTypeNumberUpLayout returns the GType for the type NumberUpLayout.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeNumberUpLayout() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "NumberUpLayout").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalNumberUpLayout)
+	return gtype
+}
+
+// GTypeOrientation returns the GType for the type Orientation.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeOrientation() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Orientation").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalOrientation)
+	return gtype
+}
+
+// GTypePackDirection returns the GType for the type PackDirection.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePackDirection() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "PackDirection").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPackDirection)
+	return gtype
+}
+
+// GTypePackType returns the GType for the type PackType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePackType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "PackType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPackType)
+	return gtype
+}
+
+// GTypePageOrientation returns the GType for the type PageOrientation.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePageOrientation() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "PageOrientation").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPageOrientation)
+	return gtype
+}
+
+// GTypePageSet returns the GType for the type PageSet.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePageSet() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "PageSet").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPageSet)
+	return gtype
+}
+
+// GTypePanDirection returns the GType for the type PanDirection.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePanDirection() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "PanDirection").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPanDirection)
+	return gtype
+}
+
+// GTypePopoverConstraint returns the GType for the type PopoverConstraint.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePopoverConstraint() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "PopoverConstraint").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPopoverConstraint)
+	return gtype
+}
+
+// GTypePositionType returns the GType for the type PositionType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePositionType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "PositionType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPositionType)
+	return gtype
+}
+
+// GTypePrintDuplex returns the GType for the type PrintDuplex.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePrintDuplex() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "PrintDuplex").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPrintDuplex)
+	return gtype
+}
+
+// GTypePrintPages returns the GType for the type PrintPages.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePrintPages() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "PrintPages").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPrintPages)
+	return gtype
+}
+
+// GTypePrintQuality returns the GType for the type PrintQuality.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePrintQuality() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "PrintQuality").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPrintQuality)
+	return gtype
+}
+
+// GTypePropagationPhase returns the GType for the type PropagationPhase.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePropagationPhase() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "PropagationPhase").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPropagationPhase)
+	return gtype
+}
+
+// GTypeReliefStyle returns the GType for the type ReliefStyle.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeReliefStyle() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ReliefStyle").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalReliefStyle)
+	return gtype
+}
+
+// GTypeScrollType returns the GType for the type ScrollType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeScrollType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ScrollType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalScrollType)
+	return gtype
+}
+
+// GTypeScrollablePolicy returns the GType for the type ScrollablePolicy.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeScrollablePolicy() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ScrollablePolicy").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalScrollablePolicy)
+	return gtype
+}
+
+// GTypeSelectionMode returns the GType for the type SelectionMode.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSelectionMode() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "SelectionMode").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSelectionMode)
+	return gtype
+}
+
+// GTypeSensitivityType returns the GType for the type SensitivityType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSensitivityType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "SensitivityType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSensitivityType)
+	return gtype
+}
+
+// GTypeShadowType returns the GType for the type ShadowType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeShadowType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ShadowType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalShadowType)
+	return gtype
+}
+
+// GTypeSizeGroupMode returns the GType for the type SizeGroupMode.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSizeGroupMode() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "SizeGroupMode").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSizeGroupMode)
+	return gtype
+}
+
+// GTypeSizeRequestMode returns the GType for the type SizeRequestMode.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSizeRequestMode() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "SizeRequestMode").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSizeRequestMode)
+	return gtype
+}
+
+// GTypeSortType returns the GType for the type SortType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSortType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "SortType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSortType)
+	return gtype
+}
+
+// GTypeStateType returns the GType for the type StateType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeStateType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "StateType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalStateType)
+	return gtype
+}
+
+// GTypeTextDirection returns the GType for the type TextDirection.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTextDirection() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TextDirection").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTextDirection)
+	return gtype
+}
+
+// GTypeToolbarStyle returns the GType for the type ToolbarStyle.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeToolbarStyle() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ToolbarStyle").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalToolbarStyle)
+	return gtype
+}
+
+// GTypeTreeViewGridLines returns the GType for the type TreeViewGridLines.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTreeViewGridLines() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TreeViewGridLines").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTreeViewGridLines)
+	return gtype
+}
+
+// GTypeUnit returns the GType for the type Unit.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeUnit() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Unit").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalUnit)
+	return gtype
+}
+
+// GTypeWrapMode returns the GType for the type WrapMode.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeWrapMode() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "WrapMode").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalWrapMode)
+	return gtype
+}
+
+// GTypeInputHints returns the GType for the type InputHints.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeInputHints() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "InputHints").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalInputHints)
+	return gtype
+}
+
+// GTypeJunctionSides returns the GType for the type JunctionSides.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeJunctionSides() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "JunctionSides").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalJunctionSides)
+	return gtype
+}
+
+// GTypeRegionFlags returns the GType for the type RegionFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRegionFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "RegionFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRegionFlags)
+	return gtype
+}
+
+// GTypeStateFlags returns the GType for the type StateFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeStateFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "StateFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalStateFlags)
+	return gtype
 }
 
 // Align controls how a widget deals with extra space in a single (x or y)

@@ -22,13 +22,15 @@ import (
 // extern void _gotk4_gio2_DBusProxy_ConnectGSignal(gpointer, void*, void*, void*, guintptr);
 import "C"
 
-// glib.Type values for gdbusproxy.go.
-var GTypeDBusProxy = coreglib.Type(C.g_dbus_proxy_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeDBusProxy, F: marshalDBusProxy},
-	})
+// GTypeDBusProxy returns the GType for the type DBusProxy.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusProxy() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusProxy").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusProxy)
+	return gtype
 }
 
 // DBusProxyOverrider contains methods that are overridable.

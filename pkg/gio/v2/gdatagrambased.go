@@ -14,13 +14,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdatagrambased.go.
-var GTypeDatagramBased = coreglib.Type(C.g_datagram_based_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeDatagramBased, F: marshalDatagramBased},
-	})
+// GTypeDatagramBased returns the GType for the type DatagramBased.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDatagramBased() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DatagramBased").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDatagramBased)
+	return gtype
 }
 
 // DatagramBasedOverrider contains methods that are overridable.

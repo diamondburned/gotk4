@@ -17,13 +17,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkradiotoolbutton.go.
-var GTypeRadioToolButton = coreglib.Type(C.gtk_radio_tool_button_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeRadioToolButton, F: marshalRadioToolButton},
-	})
+// GTypeRadioToolButton returns the GType for the type RadioToolButton.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRadioToolButton() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "RadioToolButton").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRadioToolButton)
+	return gtype
 }
 
 // RadioToolButtonOverrider contains methods that are overridable.

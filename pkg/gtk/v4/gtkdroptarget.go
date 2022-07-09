@@ -19,13 +19,15 @@ import (
 // extern void _gotk4_gtk4_DropTarget_ConnectLeave(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkdroptarget.go.
-var GTypeDropTarget = coreglib.Type(C.gtk_drop_target_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeDropTarget, F: marshalDropTarget},
-	})
+// GTypeDropTarget returns the GType for the type DropTarget.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDropTarget() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "DropTarget").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDropTarget)
+	return gtype
 }
 
 // DropTarget: GtkDropTarget is an event controller to receive Drag-and-Drop

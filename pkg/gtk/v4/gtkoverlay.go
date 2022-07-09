@@ -18,13 +18,15 @@ import (
 // extern gboolean _gotk4_gtk4_Overlay_ConnectGetChildPosition(gpointer, void*, void*, guintptr);
 import "C"
 
-// glib.Type values for gtkoverlay.go.
-var GTypeOverlay = coreglib.Type(C.gtk_overlay_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeOverlay, F: marshalOverlay},
-	})
+// GTypeOverlay returns the GType for the type Overlay.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeOverlay() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Overlay").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalOverlay)
+	return gtype
 }
 
 // Overlay: GtkOverlay is a container which contains a single main child, on top

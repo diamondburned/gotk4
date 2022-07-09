@@ -20,13 +20,15 @@ import (
 // extern void _gotk4_gtk3_AccessibleClass_widget_unset(void*);
 import "C"
 
-// glib.Type values for gtkaccessible.go.
-var GTypeAccessible = coreglib.Type(C.gtk_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeAccessible, F: marshalAccessible},
-	})
+// GTypeAccessible returns the GType for the type Accessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Accessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAccessible)
+	return gtype
 }
 
 // AccessibleOverrider contains methods that are overridable.

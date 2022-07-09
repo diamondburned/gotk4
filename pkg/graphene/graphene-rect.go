@@ -15,13 +15,15 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
-// glib.Type values for graphene-rect.go.
-var GTypeRect = coreglib.Type(C.graphene_rect_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeRect, F: marshalRect},
-	})
+// GTypeRect returns the GType for the type Rect.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRect() coreglib.Type {
+	gtype := coreglib.Type(C.graphene_rect_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRect)
+	return gtype
 }
 
 // Rect: location and size of a rectangle region.

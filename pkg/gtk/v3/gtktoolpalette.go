@@ -19,17 +19,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtktoolpalette.go.
-var (
-	GTypeToolPaletteDragTargets = coreglib.Type(C.gtk_tool_palette_drag_targets_get_type())
-	GTypeToolPalette            = coreglib.Type(C.gtk_tool_palette_get_type())
-)
+// GTypeToolPaletteDragTargets returns the GType for the type ToolPaletteDragTargets.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeToolPaletteDragTargets() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ToolPaletteDragTargets").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalToolPaletteDragTargets)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeToolPaletteDragTargets, F: marshalToolPaletteDragTargets},
-		{T: GTypeToolPalette, F: marshalToolPalette},
-	})
+// GTypeToolPalette returns the GType for the type ToolPalette.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeToolPalette() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ToolPalette").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalToolPalette)
+	return gtype
 }
 
 // ToolPaletteDragTargets flags used to specify the supported drag targets.

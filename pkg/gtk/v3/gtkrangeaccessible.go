@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkrangeaccessible.go.
-var GTypeRangeAccessible = coreglib.Type(C.gtk_range_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeRangeAccessible, F: marshalRangeAccessible},
-	})
+// GTypeRangeAccessible returns the GType for the type RangeAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRangeAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "RangeAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRangeAccessible)
+	return gtype
 }
 
 // RangeAccessibleOverrider contains methods that are overridable.

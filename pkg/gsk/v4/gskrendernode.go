@@ -24,13 +24,15 @@ import (
 // extern void _gotk4_gsk4_ParseErrorFunc(void*, void*, void*, gpointer);
 import "C"
 
-// glib.Type values for gskrendernode.go.
-var GTypeRenderNode = coreglib.Type(C.gsk_render_node_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeRenderNode, F: marshalRenderNode},
-	})
+// GTypeRenderNode returns the GType for the type RenderNode.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRenderNode() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gsk", "RenderNode").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRenderNode)
+	return gtype
 }
 
 // ParseErrorFunc: type of callback that is called when an error occurs during

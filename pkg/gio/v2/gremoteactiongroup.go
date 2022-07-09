@@ -19,13 +19,15 @@ import (
 // extern void _gotk4_gio2_RemoteActionGroupInterface_change_action_state_full(void*, void*, void*, void*);
 import "C"
 
-// glib.Type values for gremoteactiongroup.go.
-var GTypeRemoteActionGroup = coreglib.Type(C.g_remote_action_group_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeRemoteActionGroup, F: marshalRemoteActionGroup},
-	})
+// GTypeRemoteActionGroup returns the GType for the type RemoteActionGroup.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRemoteActionGroup() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "RemoteActionGroup").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRemoteActionGroup)
+	return gtype
 }
 
 // RemoteActionGroupOverrider contains methods that are overridable.

@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gnetworkservice.go.
-var GTypeNetworkService = coreglib.Type(C.g_network_service_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeNetworkService, F: marshalNetworkService},
-	})
+// GTypeNetworkService returns the GType for the type NetworkService.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeNetworkService() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "NetworkService").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalNetworkService)
+	return gtype
 }
 
 // NetworkServiceOverrider contains methods that are overridable.

@@ -17,13 +17,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkmenubar.go.
-var GTypeMenuBar = coreglib.Type(C.gtk_menu_bar_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeMenuBar, F: marshalMenuBar},
-	})
+// GTypeMenuBar returns the GType for the type MenuBar.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMenuBar() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "MenuBar").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMenuBar)
+	return gtype
 }
 
 // MenuBarOverrider contains methods that are overridable.

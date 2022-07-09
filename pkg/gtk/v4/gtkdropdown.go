@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkdropdown.go.
-var GTypeDropDown = coreglib.Type(C.gtk_drop_down_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeDropDown, F: marshalDropDown},
-	})
+// GTypeDropDown returns the GType for the type DropDown.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDropDown() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "DropDown").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDropDown)
+	return gtype
 }
 
 // DropDownOverrider contains methods that are overridable.

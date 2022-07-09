@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkbuttonaccessible.go.
-var GTypeButtonAccessible = coreglib.Type(C.gtk_button_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeButtonAccessible, F: marshalButtonAccessible},
-	})
+// GTypeButtonAccessible returns the GType for the type ButtonAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeButtonAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ButtonAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalButtonAccessible)
+	return gtype
 }
 
 // ButtonAccessibleOverrider contains methods that are overridable.

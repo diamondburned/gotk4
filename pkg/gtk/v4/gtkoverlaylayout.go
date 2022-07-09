@@ -15,17 +15,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkoverlaylayout.go.
-var (
-	GTypeOverlayLayout      = coreglib.Type(C.gtk_overlay_layout_get_type())
-	GTypeOverlayLayoutChild = coreglib.Type(C.gtk_overlay_layout_child_get_type())
-)
+// GTypeOverlayLayout returns the GType for the type OverlayLayout.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeOverlayLayout() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "OverlayLayout").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalOverlayLayout)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeOverlayLayout, F: marshalOverlayLayout},
-		{T: GTypeOverlayLayoutChild, F: marshalOverlayLayoutChild},
-	})
+// GTypeOverlayLayoutChild returns the GType for the type OverlayLayoutChild.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeOverlayLayoutChild() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "OverlayLayoutChild").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalOverlayLayoutChild)
+	return gtype
 }
 
 // OverlayLayoutOverrider contains methods that are overridable.

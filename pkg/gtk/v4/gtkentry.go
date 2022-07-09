@@ -22,17 +22,26 @@ import (
 // extern void _gotk4_gtk4_Entry_ConnectActivate(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkentry.go.
-var (
-	GTypeEntryIconPosition = coreglib.Type(C.gtk_entry_icon_position_get_type())
-	GTypeEntry             = coreglib.Type(C.gtk_entry_get_type())
-)
+// GTypeEntryIconPosition returns the GType for the type EntryIconPosition.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeEntryIconPosition() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "EntryIconPosition").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalEntryIconPosition)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeEntryIconPosition, F: marshalEntryIconPosition},
-		{T: GTypeEntry, F: marshalEntry},
-	})
+// GTypeEntry returns the GType for the type Entry.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeEntry() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Entry").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalEntry)
+	return gtype
 }
 
 // EntryIconPosition specifies the side of the entry at which an icon is placed.

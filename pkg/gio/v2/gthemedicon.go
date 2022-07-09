@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gthemedicon.go.
-var GTypeThemedIcon = coreglib.Type(C.g_themed_icon_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeThemedIcon, F: marshalThemedIcon},
-	})
+// GTypeThemedIcon returns the GType for the type ThemedIcon.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeThemedIcon() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "ThemedIcon").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalThemedIcon)
+	return gtype
 }
 
 // ThemedIcon is an implementation of #GIcon that supports icon themes. Icon

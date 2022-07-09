@@ -24,13 +24,15 @@ import (
 // extern void _gotk4_gio2_NetworkMonitor_ConnectNetworkChanged(gpointer, gboolean, guintptr);
 import "C"
 
-// glib.Type values for gnetworkmonitor.go.
-var GTypeNetworkMonitor = coreglib.Type(C.g_network_monitor_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeNetworkMonitor, F: marshalNetworkMonitor},
-	})
+// GTypeNetworkMonitor returns the GType for the type NetworkMonitor.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeNetworkMonitor() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "NetworkMonitor").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalNetworkMonitor)
+	return gtype
 }
 
 // NETWORK_MONITOR_EXTENSION_POINT_NAME: extension point for network status

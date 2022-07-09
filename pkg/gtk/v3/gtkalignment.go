@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkalignment.go.
-var GTypeAlignment = coreglib.Type(C.gtk_alignment_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeAlignment, F: marshalAlignment},
-	})
+// GTypeAlignment returns the GType for the type Alignment.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAlignment() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Alignment").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAlignment)
+	return gtype
 }
 
 // AlignmentOverrider contains methods that are overridable.

@@ -17,13 +17,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkcontainercellaccessible.go.
-var GTypeContainerCellAccessible = coreglib.Type(C.gtk_container_cell_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeContainerCellAccessible, F: marshalContainerCellAccessible},
-	})
+// GTypeContainerCellAccessible returns the GType for the type ContainerCellAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeContainerCellAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ContainerCellAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalContainerCellAccessible)
+	return gtype
 }
 
 // ContainerCellAccessibleOverrider contains methods that are overridable.

@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for glib-2.go.
-var GTypeIOCondition = coreglib.Type(C.g_io_condition_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeIOCondition, F: marshalIOCondition},
-	})
+// GTypeIOCondition returns the GType for the type IOCondition.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeIOCondition() coreglib.Type {
+	gtype := coreglib.Type(C.g_io_condition_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalIOCondition)
+	return gtype
 }
 
 // IOCondition: bitwise combination representing a condition to watch for on an

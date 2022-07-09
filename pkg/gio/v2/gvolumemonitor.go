@@ -46,13 +46,15 @@ import (
 // extern void _gotk4_gio2_VolumeMonitor_ConnectVolumeRemoved(gpointer, void*, guintptr);
 import "C"
 
-// glib.Type values for gvolumemonitor.go.
-var GTypeVolumeMonitor = coreglib.Type(C.g_volume_monitor_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeVolumeMonitor, F: marshalVolumeMonitor},
-	})
+// GTypeVolumeMonitor returns the GType for the type VolumeMonitor.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeVolumeMonitor() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "VolumeMonitor").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalVolumeMonitor)
+	return gtype
 }
 
 // VOLUME_MONITOR_EXTENSION_POINT_NAME: extension point for volume monitor

@@ -19,17 +19,26 @@ import (
 // extern void _gotk4_gdk4_Drag_ConnectDropPerformed(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gdkdrag.go.
-var (
-	GTypeDragCancelReason = coreglib.Type(C.gdk_drag_cancel_reason_get_type())
-	GTypeDrag             = coreglib.Type(C.gdk_drag_get_type())
-)
+// GTypeDragCancelReason returns the GType for the type DragCancelReason.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDragCancelReason() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "DragCancelReason").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDragCancelReason)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeDragCancelReason, F: marshalDragCancelReason},
-		{T: GTypeDrag, F: marshalDrag},
-	})
+// GTypeDrag returns the GType for the type Drag.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDrag() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "Drag").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDrag)
+	return gtype
 }
 
 // DragCancelReason: used in GdkDrag to the reason of a cancelled DND operation.

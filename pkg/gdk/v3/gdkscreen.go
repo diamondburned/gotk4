@@ -20,13 +20,15 @@ import (
 // extern void _gotk4_gdk3_Screen_ConnectSizeChanged(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gdkscreen.go.
-var GTypeScreen = coreglib.Type(C.gdk_screen_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeScreen, F: marshalScreen},
-	})
+// GTypeScreen returns the GType for the type Screen.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeScreen() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "Screen").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalScreen)
+	return gtype
 }
 
 // Screen objects are the GDK representation of the screen on which windows can

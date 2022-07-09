@@ -18,17 +18,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkbuilder.go.
-var (
-	GTypeBuilderError = coreglib.Type(C.gtk_builder_error_get_type())
-	GTypeBuilder      = coreglib.Type(C.gtk_builder_get_type())
-)
+// GTypeBuilderError returns the GType for the type BuilderError.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeBuilderError() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "BuilderError").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalBuilderError)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeBuilderError, F: marshalBuilderError},
-		{T: GTypeBuilder, F: marshalBuilder},
-	})
+// GTypeBuilder returns the GType for the type Builder.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeBuilder() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Builder").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalBuilder)
+	return gtype
 }
 
 // BuilderError: error codes that identify various errors that can occur while

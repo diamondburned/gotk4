@@ -41,17 +41,26 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// glib.Type values for gtklistbox.go.
-var (
-	GTypeListBox    = coreglib.Type(C.gtk_list_box_get_type())
-	GTypeListBoxRow = coreglib.Type(C.gtk_list_box_row_get_type())
-)
+// GTypeListBox returns the GType for the type ListBox.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeListBox() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ListBox").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalListBox)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeListBox, F: marshalListBox},
-		{T: GTypeListBoxRow, F: marshalListBoxRow},
-	})
+// GTypeListBoxRow returns the GType for the type ListBoxRow.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeListBoxRow() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ListBoxRow").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalListBoxRow)
+	return gtype
 }
 
 // ListBoxCreateWidgetFunc: called for list boxes that are bound to a Model with

@@ -14,13 +14,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkcellrendererprogress.go.
-var GTypeCellRendererProgress = coreglib.Type(C.gtk_cell_renderer_progress_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCellRendererProgress, F: marshalCellRendererProgress},
-	})
+// GTypeCellRendererProgress returns the GType for the type CellRendererProgress.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCellRendererProgress() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CellRendererProgress").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCellRendererProgress)
+	return gtype
 }
 
 // CellRendererProgress renders numbers as progress bars

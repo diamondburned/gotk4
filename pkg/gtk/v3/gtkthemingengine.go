@@ -35,13 +35,15 @@ import (
 // extern void _gotk4_gtk3_ThemingEngineClass_render_option(void*, void*, gdouble, gdouble, gdouble, gdouble);
 import "C"
 
-// glib.Type values for gtkthemingengine.go.
-var GTypeThemingEngine = coreglib.Type(C.gtk_theming_engine_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeThemingEngine, F: marshalThemingEngine},
-	})
+// GTypeThemingEngine returns the GType for the type ThemingEngine.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeThemingEngine() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ThemingEngine").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalThemingEngine)
+	return gtype
 }
 
 // ThemingEngineOverrider contains methods that are overridable.

@@ -22,13 +22,15 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 import "C"
 
-// glib.Type values for gtask.go.
-var GTypeTask = coreglib.Type(C.g_task_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTask, F: marshalTask},
-	})
+// GTypeTask returns the GType for the type Task.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTask() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "Task").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTask)
+	return gtype
 }
 
 // Task represents and manages a cancellable "task".

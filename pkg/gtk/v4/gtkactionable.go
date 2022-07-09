@@ -21,13 +21,15 @@ import (
 // extern void _gotk4_gtk4_ActionableInterface_set_action_target_value(void*, void*);
 import "C"
 
-// glib.Type values for gtkactionable.go.
-var GTypeActionable = coreglib.Type(C.gtk_actionable_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeActionable, F: marshalActionable},
-	})
+// GTypeActionable returns the GType for the type Actionable.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeActionable() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Actionable").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalActionable)
+	return gtype
 }
 
 // ActionableOverrider contains methods that are overridable.

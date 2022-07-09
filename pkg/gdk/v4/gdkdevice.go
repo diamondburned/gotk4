@@ -18,17 +18,26 @@ import (
 // extern void _gotk4_gdk4_Device_ConnectToolChanged(gpointer, void*, guintptr);
 import "C"
 
-// glib.Type values for gdkdevice.go.
-var (
-	GTypeInputSource = coreglib.Type(C.gdk_input_source_get_type())
-	GTypeDevice      = coreglib.Type(C.gdk_device_get_type())
-)
+// GTypeInputSource returns the GType for the type InputSource.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeInputSource() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "InputSource").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalInputSource)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeInputSource, F: marshalInputSource},
-		{T: GTypeDevice, F: marshalDevice},
-	})
+// GTypeDevice returns the GType for the type Device.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDevice() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "Device").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDevice)
+	return gtype
 }
 
 // InputSource: enumeration describing the type of an input device in general

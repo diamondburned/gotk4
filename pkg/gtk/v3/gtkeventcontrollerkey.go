@@ -18,13 +18,15 @@ import (
 // extern void _gotk4_gtk3_EventControllerKey_ConnectIMUpdate(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkeventcontrollerkey.go.
-var GTypeEventControllerKey = coreglib.Type(C.gtk_event_controller_key_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeEventControllerKey, F: marshalEventControllerKey},
-	})
+// GTypeEventControllerKey returns the GType for the type EventControllerKey.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeEventControllerKey() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "EventControllerKey").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalEventControllerKey)
+	return gtype
 }
 
 // EventControllerKey is an event controller meant for situations where you need

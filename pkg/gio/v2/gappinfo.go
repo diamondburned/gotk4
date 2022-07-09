@@ -51,17 +51,26 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 import "C"
 
-// glib.Type values for gappinfo.go.
-var (
-	GTypeAppInfo          = coreglib.Type(C.g_app_info_get_type())
-	GTypeAppLaunchContext = coreglib.Type(C.g_app_launch_context_get_type())
-)
+// GTypeAppInfo returns the GType for the type AppInfo.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAppInfo() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "AppInfo").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAppInfo)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeAppInfo, F: marshalAppInfo},
-		{T: GTypeAppLaunchContext, F: marshalAppLaunchContext},
-	})
+// GTypeAppLaunchContext returns the GType for the type AppLaunchContext.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAppLaunchContext() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "AppLaunchContext").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAppLaunchContext)
+	return gtype
 }
 
 // AppInfo and LaunchContext are used for describing and launching applications

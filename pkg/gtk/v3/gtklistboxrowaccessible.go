@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtklistboxrowaccessible.go.
-var GTypeListBoxRowAccessible = coreglib.Type(C.gtk_list_box_row_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeListBoxRowAccessible, F: marshalListBoxRowAccessible},
-	})
+// GTypeListBoxRowAccessible returns the GType for the type ListBoxRowAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeListBoxRowAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ListBoxRowAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalListBoxRowAccessible)
+	return gtype
 }
 
 // ListBoxRowAccessibleOverrider contains methods that are overridable.

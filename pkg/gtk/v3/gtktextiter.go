@@ -23,17 +23,26 @@ import (
 // extern gboolean _gotk4_gtk3_TextCharPredicate(gunichar, gpointer);
 import "C"
 
-// glib.Type values for gtktextiter.go.
-var (
-	GTypeTextSearchFlags = coreglib.Type(C.gtk_text_search_flags_get_type())
-	GTypeTextIter        = coreglib.Type(C.gtk_text_iter_get_type())
-)
+// GTypeTextSearchFlags returns the GType for the type TextSearchFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTextSearchFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TextSearchFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTextSearchFlags)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTextSearchFlags, F: marshalTextSearchFlags},
-		{T: GTypeTextIter, F: marshalTextIter},
-	})
+// GTypeTextIter returns the GType for the type TextIter.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTextIter() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TextIter").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTextIter)
+	return gtype
 }
 
 // TextSearchFlags flags affecting how a search is done.

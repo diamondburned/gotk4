@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gconverterinputstream.go.
-var GTypeConverterInputStream = coreglib.Type(C.g_converter_input_stream_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeConverterInputStream, F: marshalConverterInputStream},
-	})
+// GTypeConverterInputStream returns the GType for the type ConverterInputStream.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeConverterInputStream() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "ConverterInputStream").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalConverterInputStream)
+	return gtype
 }
 
 // ConverterInputStreamOverrider contains methods that are overridable.

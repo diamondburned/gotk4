@@ -19,19 +19,37 @@ import (
 // extern void _gotk4_gtk4_SpinButton_ConnectWrapped(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkspinbutton.go.
-var (
-	GTypeSpinButtonUpdatePolicy = coreglib.Type(C.gtk_spin_button_update_policy_get_type())
-	GTypeSpinType               = coreglib.Type(C.gtk_spin_type_get_type())
-	GTypeSpinButton             = coreglib.Type(C.gtk_spin_button_get_type())
-)
+// GTypeSpinButtonUpdatePolicy returns the GType for the type SpinButtonUpdatePolicy.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSpinButtonUpdatePolicy() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "SpinButtonUpdatePolicy").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSpinButtonUpdatePolicy)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSpinButtonUpdatePolicy, F: marshalSpinButtonUpdatePolicy},
-		{T: GTypeSpinType, F: marshalSpinType},
-		{T: GTypeSpinButton, F: marshalSpinButton},
-	})
+// GTypeSpinType returns the GType for the type SpinType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSpinType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "SpinType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSpinType)
+	return gtype
+}
+
+// GTypeSpinButton returns the GType for the type SpinButton.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSpinButton() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "SpinButton").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSpinButton)
+	return gtype
 }
 
 // INPUT_ERROR: constant to return from a signal handler for the ::input signal

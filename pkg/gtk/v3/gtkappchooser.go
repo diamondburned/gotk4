@@ -17,13 +17,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkappchooser.go.
-var GTypeAppChooser = coreglib.Type(C.gtk_app_chooser_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeAppChooser, F: marshalAppChooser},
-	})
+// GTypeAppChooser returns the GType for the type AppChooser.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAppChooser() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "AppChooser").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAppChooser)
+	return gtype
 }
 
 // AppChooser is an interface that can be implemented by widgets which allow the

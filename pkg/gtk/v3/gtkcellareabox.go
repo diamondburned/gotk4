@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkcellareabox.go.
-var GTypeCellAreaBox = coreglib.Type(C.gtk_cell_area_box_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCellAreaBox, F: marshalCellAreaBox},
-	})
+// GTypeCellAreaBox returns the GType for the type CellAreaBox.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCellAreaBox() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CellAreaBox").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCellAreaBox)
+	return gtype
 }
 
 // CellAreaBoxOverrider contains methods that are overridable.

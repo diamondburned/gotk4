@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdkcursor.go.
-var GTypeCursor = coreglib.Type(C.gdk_cursor_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCursor, F: marshalCursor},
-	})
+// GTypeCursor returns the GType for the type Cursor.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCursor() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "Cursor").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCursor)
+	return gtype
 }
 
 // Cursor: GdkCursor is used to create and destroy cursors.

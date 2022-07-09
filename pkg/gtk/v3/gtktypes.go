@@ -20,21 +20,48 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtktypes.go.
-var (
-	GTypeIconSet       = coreglib.Type(C.gtk_icon_set_get_type())
-	GTypeIconSource    = coreglib.Type(C.gtk_icon_source_get_type())
-	GTypeSelectionData = coreglib.Type(C.gtk_selection_data_get_type())
-	GTypeWidgetPath    = coreglib.Type(C.gtk_widget_path_get_type())
-)
+// GTypeIconSet returns the GType for the type IconSet.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeIconSet() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "IconSet").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalIconSet)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeIconSet, F: marshalIconSet},
-		{T: GTypeIconSource, F: marshalIconSource},
-		{T: GTypeSelectionData, F: marshalSelectionData},
-		{T: GTypeWidgetPath, F: marshalWidgetPath},
-	})
+// GTypeIconSource returns the GType for the type IconSource.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeIconSource() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "IconSource").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalIconSource)
+	return gtype
+}
+
+// GTypeSelectionData returns the GType for the type SelectionData.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSelectionData() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "SelectionData").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSelectionData)
+	return gtype
+}
+
+// GTypeWidgetPath returns the GType for the type WidgetPath.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeWidgetPath() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "WidgetPath").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalWidgetPath)
+	return gtype
 }
 
 // IconSet: instance of this type is always passed by reference.

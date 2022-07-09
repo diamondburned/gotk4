@@ -17,13 +17,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkapplicationwindow.go.
-var GTypeApplicationWindow = coreglib.Type(C.gtk_application_window_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeApplicationWindow, F: marshalApplicationWindow},
-	})
+// GTypeApplicationWindow returns the GType for the type ApplicationWindow.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeApplicationWindow() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ApplicationWindow").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalApplicationWindow)
+	return gtype
 }
 
 // ApplicationWindowOverrider contains methods that are overridable.

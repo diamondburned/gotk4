@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkrecentchooserdialog.go.
-var GTypeRecentChooserDialog = coreglib.Type(C.gtk_recent_chooser_dialog_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeRecentChooserDialog, F: marshalRecentChooserDialog},
-	})
+// GTypeRecentChooserDialog returns the GType for the type RecentChooserDialog.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRecentChooserDialog() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "RecentChooserDialog").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRecentChooserDialog)
+	return gtype
 }
 
 // RecentChooserDialogOverrider contains methods that are overridable.

@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkexpanderaccessible.go.
-var GTypeExpanderAccessible = coreglib.Type(C.gtk_expander_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeExpanderAccessible, F: marshalExpanderAccessible},
-	})
+// GTypeExpanderAccessible returns the GType for the type ExpanderAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeExpanderAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ExpanderAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalExpanderAccessible)
+	return gtype
 }
 
 // ExpanderAccessibleOverrider contains methods that are overridable.

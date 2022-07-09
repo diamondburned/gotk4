@@ -29,19 +29,37 @@ import (
 // extern void _gotk4_gtk3_CellRenderer_ConnectEditingStarted(gpointer, void*, void*, guintptr);
 import "C"
 
-// glib.Type values for gtkcellrenderer.go.
-var (
-	GTypeCellRendererMode  = coreglib.Type(C.gtk_cell_renderer_mode_get_type())
-	GTypeCellRendererState = coreglib.Type(C.gtk_cell_renderer_state_get_type())
-	GTypeCellRenderer      = coreglib.Type(C.gtk_cell_renderer_get_type())
-)
+// GTypeCellRendererMode returns the GType for the type CellRendererMode.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCellRendererMode() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CellRendererMode").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCellRendererMode)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCellRendererMode, F: marshalCellRendererMode},
-		{T: GTypeCellRendererState, F: marshalCellRendererState},
-		{T: GTypeCellRenderer, F: marshalCellRenderer},
-	})
+// GTypeCellRendererState returns the GType for the type CellRendererState.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCellRendererState() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CellRendererState").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCellRendererState)
+	return gtype
+}
+
+// GTypeCellRenderer returns the GType for the type CellRenderer.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCellRenderer() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CellRenderer").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCellRenderer)
+	return gtype
 }
 
 // CellRendererMode identifies how the user can interact with a particular cell.

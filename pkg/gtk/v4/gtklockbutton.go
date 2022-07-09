@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtklockbutton.go.
-var GTypeLockButton = coreglib.Type(C.gtk_lock_button_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeLockButton, F: marshalLockButton},
-	})
+// GTypeLockButton returns the GType for the type LockButton.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeLockButton() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "LockButton").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalLockButton)
+	return gtype
 }
 
 // LockButton: GtkLockButton is a widget to obtain and revoke authorizations

@@ -16,13 +16,15 @@ import (
 // extern void _gotk4_gtk4_LevelBar_ConnectOffsetChanged(gpointer, void*, guintptr);
 import "C"
 
-// glib.Type values for gtklevelbar.go.
-var GTypeLevelBar = coreglib.Type(C.gtk_level_bar_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeLevelBar, F: marshalLevelBar},
-	})
+// GTypeLevelBar returns the GType for the type LevelBar.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeLevelBar() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "LevelBar").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalLevelBar)
+	return gtype
 }
 
 // LEVEL_BAR_OFFSET_FULL: name used for the stock full offset included by

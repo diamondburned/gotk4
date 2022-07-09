@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for atkrange.go.
-var GTypeRange = coreglib.Type(C.atk_range_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeRange, F: marshalRange},
-	})
+// GTypeRange returns the GType for the type Range.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRange() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "Range").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRange)
+	return gtype
 }
 
 // Range are used on Value, in order to represent the full range of a given

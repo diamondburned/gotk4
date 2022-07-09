@@ -16,17 +16,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for pango-glyph-item.go.
-var (
-	GTypeGlyphItem     = coreglib.Type(C.pango_glyph_item_get_type())
-	GTypeGlyphItemIter = coreglib.Type(C.pango_glyph_item_iter_get_type())
-)
+// GTypeGlyphItem returns the GType for the type GlyphItem.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeGlyphItem() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "GlyphItem").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalGlyphItem)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeGlyphItem, F: marshalGlyphItem},
-		{T: GTypeGlyphItemIter, F: marshalGlyphItemIter},
-	})
+// GTypeGlyphItemIter returns the GType for the type GlyphItemIter.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeGlyphItemIter() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "GlyphItemIter").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalGlyphItemIter)
+	return gtype
 }
 
 // GlyphItem: PangoGlyphItem is a pair of a PangoItem and the glyphs resulting

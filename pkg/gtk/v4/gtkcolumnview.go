@@ -17,13 +17,15 @@ import (
 // extern void _gotk4_gtk4_ColumnView_ConnectActivate(gpointer, guint, guintptr);
 import "C"
 
-// glib.Type values for gtkcolumnview.go.
-var GTypeColumnView = coreglib.Type(C.gtk_column_view_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeColumnView, F: marshalColumnView},
-	})
+// GTypeColumnView returns the GType for the type ColumnView.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeColumnView() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ColumnView").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalColumnView)
+	return gtype
 }
 
 // ColumnView: GtkColumnView presents a large dynamic list of items using

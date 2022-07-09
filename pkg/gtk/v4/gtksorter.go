@@ -15,19 +15,37 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtksorter.go.
-var (
-	GTypeSorterChange = coreglib.Type(C.gtk_sorter_change_get_type())
-	GTypeSorterOrder  = coreglib.Type(C.gtk_sorter_order_get_type())
-	GTypeSorter       = coreglib.Type(C.gtk_sorter_get_type())
-)
+// GTypeSorterChange returns the GType for the type SorterChange.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSorterChange() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "SorterChange").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSorterChange)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSorterChange, F: marshalSorterChange},
-		{T: GTypeSorterOrder, F: marshalSorterOrder},
-		{T: GTypeSorter, F: marshalSorter},
-	})
+// GTypeSorterOrder returns the GType for the type SorterOrder.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSorterOrder() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "SorterOrder").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSorterOrder)
+	return gtype
+}
+
+// GTypeSorter returns the GType for the type Sorter.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSorter() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Sorter").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSorter)
+	return gtype
 }
 
 // SorterChange describes changes in a sorter in more detail and allows users to

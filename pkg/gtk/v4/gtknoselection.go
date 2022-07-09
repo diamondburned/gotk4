@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtknoselection.go.
-var GTypeNoSelection = coreglib.Type(C.gtk_no_selection_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeNoSelection, F: marshalNoSelection},
-	})
+// GTypeNoSelection returns the GType for the type NoSelection.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeNoSelection() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "NoSelection").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalNoSelection)
+	return gtype
 }
 
 // NoSelectionOverrider contains methods that are overridable.

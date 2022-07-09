@@ -28,13 +28,15 @@ import (
 // extern gboolean _gotk4_gtk3_Paned_ConnectToggleHandleFocus(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkpaned.go.
-var GTypePaned = coreglib.Type(C.gtk_paned_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypePaned, F: marshalPaned},
-	})
+// GTypePaned returns the GType for the type Paned.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePaned() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Paned").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPaned)
+	return gtype
 }
 
 // PanedOverrider contains methods that are overridable.

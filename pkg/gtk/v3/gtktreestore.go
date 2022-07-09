@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtktreestore.go.
-var GTypeTreeStore = coreglib.Type(C.gtk_tree_store_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTreeStore, F: marshalTreeStore},
-	})
+// GTypeTreeStore returns the GType for the type TreeStore.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTreeStore() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TreeStore").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTreeStore)
+	return gtype
 }
 
 // TreeStoreOverrider contains methods that are overridable.

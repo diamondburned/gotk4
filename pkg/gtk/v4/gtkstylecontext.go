@@ -21,17 +21,26 @@ import (
 // extern void _gotk4_gtk4_StyleContextClass_changed(void*);
 import "C"
 
-// glib.Type values for gtkstylecontext.go.
-var (
-	GTypeStyleContextPrintFlags = coreglib.Type(C.gtk_style_context_print_flags_get_type())
-	GTypeStyleContext           = coreglib.Type(C.gtk_style_context_get_type())
-)
+// GTypeStyleContextPrintFlags returns the GType for the type StyleContextPrintFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeStyleContextPrintFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "StyleContextPrintFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalStyleContextPrintFlags)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeStyleContextPrintFlags, F: marshalStyleContextPrintFlags},
-		{T: GTypeStyleContext, F: marshalStyleContext},
-	})
+// GTypeStyleContext returns the GType for the type StyleContext.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeStyleContext() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "StyleContext").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalStyleContext)
+	return gtype
 }
 
 // StyleContextPrintFlags flags that modify the behavior of

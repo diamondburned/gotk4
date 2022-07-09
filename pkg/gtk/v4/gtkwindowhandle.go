@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkwindowhandle.go.
-var GTypeWindowHandle = coreglib.Type(C.gtk_window_handle_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeWindowHandle, F: marshalWindowHandle},
-	})
+// GTypeWindowHandle returns the GType for the type WindowHandle.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeWindowHandle() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "WindowHandle").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalWindowHandle)
+	return gtype
 }
 
 // WindowHandleOverrider contains methods that are overridable.

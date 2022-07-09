@@ -51,13 +51,15 @@ import (
 // extern void _gotk4_gio2_Drive_ConnectStopButton(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gdrive.go.
-var GTypeDrive = coreglib.Type(C.g_drive_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeDrive, F: marshalDrive},
-	})
+// GTypeDrive returns the GType for the type Drive.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDrive() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "Drive").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDrive)
+	return gtype
 }
 
 // DRIVE_IDENTIFIER_KIND_UNIX_DEVICE: string used to obtain a Unix device path

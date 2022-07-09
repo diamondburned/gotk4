@@ -18,13 +18,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdktexture.go.
-var GTypeTexture = coreglib.Type(C.gdk_texture_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTexture, F: marshalTexture},
-	})
+// GTypeTexture returns the GType for the type Texture.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTexture() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "Texture").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTexture)
+	return gtype
 }
 
 // Texture: GdkTexture is the basic element used to refer to pixel data.

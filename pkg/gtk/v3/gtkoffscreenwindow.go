@@ -19,13 +19,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkoffscreenwindow.go.
-var GTypeOffscreenWindow = coreglib.Type(C.gtk_offscreen_window_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeOffscreenWindow, F: marshalOffscreenWindow},
-	})
+// GTypeOffscreenWindow returns the GType for the type OffscreenWindow.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeOffscreenWindow() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "OffscreenWindow").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalOffscreenWindow)
+	return gtype
 }
 
 // OffscreenWindowOverrider contains methods that are overridable.

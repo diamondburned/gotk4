@@ -36,13 +36,15 @@ import (
 // extern void _gotk4_gio2_Volume_ConnectRemoved(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gvolume.go.
-var GTypeVolume = coreglib.Type(C.g_volume_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeVolume, F: marshalVolume},
-	})
+// GTypeVolume returns the GType for the type Volume.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeVolume() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "Volume").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalVolume)
+	return gtype
 }
 
 // VOLUME_IDENTIFIER_KIND_CLASS: string used to obtain the volume class with

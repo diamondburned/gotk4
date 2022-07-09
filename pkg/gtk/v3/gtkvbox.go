@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkvbox.go.
-var GTypeVBox = coreglib.Type(C.gtk_vbox_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeVBox, F: marshalVBox},
-	})
+// GTypeVBox returns the GType for the type VBox.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeVBox() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "VBox").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalVBox)
+	return gtype
 }
 
 // VBoxOverrider contains methods that are overridable.

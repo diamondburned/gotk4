@@ -17,13 +17,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gmemoryinputstream.go.
-var GTypeMemoryInputStream = coreglib.Type(C.g_memory_input_stream_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeMemoryInputStream, F: marshalMemoryInputStream},
-	})
+// GTypeMemoryInputStream returns the GType for the type MemoryInputStream.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMemoryInputStream() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "MemoryInputStream").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMemoryInputStream)
+	return gtype
 }
 
 // MemoryInputStreamOverrider contains methods that are overridable.

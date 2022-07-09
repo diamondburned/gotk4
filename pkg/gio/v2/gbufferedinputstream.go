@@ -22,13 +22,15 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 import "C"
 
-// glib.Type values for gbufferedinputstream.go.
-var GTypeBufferedInputStream = coreglib.Type(C.g_buffered_input_stream_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeBufferedInputStream, F: marshalBufferedInputStream},
-	})
+// GTypeBufferedInputStream returns the GType for the type BufferedInputStream.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeBufferedInputStream() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "BufferedInputStream").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalBufferedInputStream)
+	return gtype
 }
 
 // BufferedInputStreamOverrider contains methods that are overridable.

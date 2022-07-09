@@ -16,17 +16,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdkdevicetool.go.
-var (
-	GTypeDeviceToolType = coreglib.Type(C.gdk_device_tool_type_get_type())
-	GTypeDeviceTool     = coreglib.Type(C.gdk_device_tool_get_type())
-)
+// GTypeDeviceToolType returns the GType for the type DeviceToolType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDeviceToolType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "DeviceToolType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDeviceToolType)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeDeviceToolType, F: marshalDeviceToolType},
-		{T: GTypeDeviceTool, F: marshalDeviceTool},
-	})
+// GTypeDeviceTool returns the GType for the type DeviceTool.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDeviceTool() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "DeviceTool").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDeviceTool)
+	return gtype
 }
 
 // DeviceToolType indicates the specific type of tool being used being a tablet.

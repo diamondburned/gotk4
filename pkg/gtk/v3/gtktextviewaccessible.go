@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtktextviewaccessible.go.
-var GTypeTextViewAccessible = coreglib.Type(C.gtk_text_view_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTextViewAccessible, F: marshalTextViewAccessible},
-	})
+// GTypeTextViewAccessible returns the GType for the type TextViewAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTextViewAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TextViewAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTextViewAccessible)
+	return gtype
 }
 
 // TextViewAccessibleOverrider contains methods that are overridable.

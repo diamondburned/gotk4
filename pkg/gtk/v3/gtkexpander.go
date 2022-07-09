@@ -19,13 +19,15 @@ import (
 // extern void _gotk4_gtk3_Expander_ConnectActivate(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkexpander.go.
-var GTypeExpander = coreglib.Type(C.gtk_expander_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeExpander, F: marshalExpander},
-	})
+// GTypeExpander returns the GType for the type Expander.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeExpander() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "Expander").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalExpander)
+	return gtype
 }
 
 // ExpanderOverrider contains methods that are overridable.

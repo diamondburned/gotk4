@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkpanedaccessible.go.
-var GTypePanedAccessible = coreglib.Type(C.gtk_paned_accessible_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypePanedAccessible, F: marshalPanedAccessible},
-	})
+// GTypePanedAccessible returns the GType for the type PanedAccessible.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePanedAccessible() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "PanedAccessible").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPanedAccessible)
+	return gtype
 }
 
 // PanedAccessibleOverrider contains methods that are overridable.

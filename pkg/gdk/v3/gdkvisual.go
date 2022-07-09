@@ -17,17 +17,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdkvisual.go.
-var (
-	GTypeVisualType = coreglib.Type(C.gdk_visual_type_get_type())
-	GTypeVisual     = coreglib.Type(C.gdk_visual_get_type())
-)
+// GTypeVisualType returns the GType for the type VisualType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeVisualType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "VisualType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalVisualType)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeVisualType, F: marshalVisualType},
-		{T: GTypeVisual, F: marshalVisual},
-	})
+// GTypeVisual returns the GType for the type Visual.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeVisual() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "Visual").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalVisual)
+	return gtype
 }
 
 // VisualType: set of values that describe the manner in which the pixel values

@@ -19,13 +19,15 @@ import (
 // extern void _gotk4_gdk3_Keymap_ConnectStateChanged(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gdkkeys.go.
-var GTypeKeymap = coreglib.Type(C.gdk_keymap_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeKeymap, F: marshalKeymap},
-	})
+// GTypeKeymap returns the GType for the type Keymap.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeKeymap() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "Keymap").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalKeymap)
+	return gtype
 }
 
 // KeyvalConvertCase obtains the upper- and lower-case versions of the keyval

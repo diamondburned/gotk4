@@ -17,13 +17,15 @@ import (
 // extern void _gotk4_atk1_ObjectFactoryClass_invalidate(void*);
 import "C"
 
-// glib.Type values for atkobjectfactory.go.
-var GTypeObjectFactory = coreglib.Type(C.atk_object_factory_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeObjectFactory, F: marshalObjectFactory},
-	})
+// GTypeObjectFactory returns the GType for the type ObjectFactory.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeObjectFactory() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Atk", "ObjectFactory").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalObjectFactory)
+	return gtype
 }
 
 // ObjectFactoryOverrider contains methods that are overridable.

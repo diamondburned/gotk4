@@ -17,17 +17,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkbbox.go.
-var (
-	GTypeButtonBoxStyle = coreglib.Type(C.gtk_button_box_style_get_type())
-	GTypeButtonBox      = coreglib.Type(C.gtk_button_box_get_type())
-)
+// GTypeButtonBoxStyle returns the GType for the type ButtonBoxStyle.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeButtonBoxStyle() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ButtonBoxStyle").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalButtonBoxStyle)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeButtonBoxStyle, F: marshalButtonBoxStyle},
-		{T: GTypeButtonBox, F: marshalButtonBox},
-	})
+// GTypeButtonBox returns the GType for the type ButtonBox.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeButtonBox() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ButtonBox").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalButtonBox)
+	return gtype
 }
 
 // ButtonBoxStyle: used to dictate the style that a ButtonBox uses to layout the

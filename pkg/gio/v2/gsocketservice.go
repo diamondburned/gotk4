@@ -17,13 +17,15 @@ import (
 // extern gboolean _gotk4_gio2_SocketServiceClass_incoming(void*, void*, void*);
 import "C"
 
-// glib.Type values for gsocketservice.go.
-var GTypeSocketService = coreglib.Type(C.g_socket_service_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSocketService, F: marshalSocketService},
-	})
+// GTypeSocketService returns the GType for the type SocketService.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSocketService() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "SocketService").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSocketService)
+	return gtype
 }
 
 // SocketServiceOverrider contains methods that are overridable.

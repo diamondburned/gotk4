@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for pango-bidi-type.go.
-var GTypeBidiType = coreglib.Type(C.pango_bidi_type_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeBidiType, F: marshalBidiType},
-	})
+// GTypeBidiType returns the GType for the type BidiType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeBidiType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "BidiType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalBidiType)
+	return gtype
 }
 
 // BidiType: PangoBidiType represents the bidirectional character type of a

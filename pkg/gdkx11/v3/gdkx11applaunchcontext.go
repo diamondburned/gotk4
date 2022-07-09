@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdkx11applaunchcontext.go.
-var GTypeX11AppLaunchContext = coreglib.Type(C.gdk_x11_app_launch_context_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeX11AppLaunchContext, F: marshalX11AppLaunchContext},
-	})
+// GTypeX11AppLaunchContext returns the GType for the type X11AppLaunchContext.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeX11AppLaunchContext() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("GdkX11", "X11AppLaunchContext").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalX11AppLaunchContext)
+	return gtype
 }
 
 type X11AppLaunchContext struct {

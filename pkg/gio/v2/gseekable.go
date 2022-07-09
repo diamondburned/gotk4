@@ -17,13 +17,15 @@ import (
 // extern gboolean _gotk4_gio2_SeekableIface_can_truncate(void*);
 import "C"
 
-// glib.Type values for gseekable.go.
-var GTypeSeekable = coreglib.Type(C.g_seekable_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSeekable, F: marshalSeekable},
-	})
+// GTypeSeekable returns the GType for the type Seekable.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSeekable() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "Seekable").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSeekable)
+	return gtype
 }
 
 // SeekableOverrider contains methods that are overridable.

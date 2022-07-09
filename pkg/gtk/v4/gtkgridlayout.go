@@ -15,17 +15,26 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkgridlayout.go.
-var (
-	GTypeGridLayout      = coreglib.Type(C.gtk_grid_layout_get_type())
-	GTypeGridLayoutChild = coreglib.Type(C.gtk_grid_layout_child_get_type())
-)
+// GTypeGridLayout returns the GType for the type GridLayout.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeGridLayout() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "GridLayout").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalGridLayout)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeGridLayout, F: marshalGridLayout},
-		{T: GTypeGridLayoutChild, F: marshalGridLayoutChild},
-	})
+// GTypeGridLayoutChild returns the GType for the type GridLayoutChild.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeGridLayoutChild() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "GridLayoutChild").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalGridLayoutChild)
+	return gtype
 }
 
 // GridLayoutOverrider contains methods that are overridable.

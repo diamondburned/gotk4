@@ -26,13 +26,15 @@ import (
 // extern void _gotk4_gtk3_CellAccessibleParentIface_update_relationset(void*, void*, void*);
 import "C"
 
-// glib.Type values for gtkcellaccessibleparent.go.
-var GTypeCellAccessibleParent = coreglib.Type(C.gtk_cell_accessible_parent_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCellAccessibleParent, F: marshalCellAccessibleParent},
-	})
+// GTypeCellAccessibleParent returns the GType for the type CellAccessibleParent.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCellAccessibleParent() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CellAccessibleParent").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCellAccessibleParent)
+	return gtype
 }
 
 // CellAccessibleParentOverrider contains methods that are overridable.

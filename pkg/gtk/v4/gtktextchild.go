@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtktextchild.go.
-var GTypeTextChildAnchor = coreglib.Type(C.gtk_text_child_anchor_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTextChildAnchor, F: marshalTextChildAnchor},
-	})
+// GTypeTextChildAnchor returns the GType for the type TextChildAnchor.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTextChildAnchor() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "TextChildAnchor").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTextChildAnchor)
+	return gtype
 }
 
 // TextChildAnchorOverrider contains methods that are overridable.

@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkaspectframe.go.
-var GTypeAspectFrame = coreglib.Type(C.gtk_aspect_frame_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeAspectFrame, F: marshalAspectFrame},
-	})
+// GTypeAspectFrame returns the GType for the type AspectFrame.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAspectFrame() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "AspectFrame").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAspectFrame)
+	return gtype
 }
 
 // AspectFrame: GtkAspectFrame preserves the aspect ratio of its child.

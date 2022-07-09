@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gdkpopup.go.
-var GTypePopup = coreglib.Type(C.gdk_popup_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypePopup, F: marshalPopup},
-	})
+// GTypePopup returns the GType for the type Popup.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePopup() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "Popup").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPopup)
+	return gtype
 }
 
 // Popup: GdkPopup is a surface that is attached to another surface.

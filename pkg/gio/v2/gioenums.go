@@ -16,169 +16,862 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gioenums.go.
-var (
-	GTypeBusType                      = coreglib.Type(C.g_bus_type_get_type())
-	GTypeConverterResult              = coreglib.Type(C.g_converter_result_get_type())
-	GTypeCredentialsType              = coreglib.Type(C.g_credentials_type_get_type())
-	GTypeDBusError                    = coreglib.Type(C.g_dbus_error_get_type())
-	GTypeDBusMessageByteOrder         = coreglib.Type(C.g_dbus_message_byte_order_get_type())
-	GTypeDBusMessageHeaderField       = coreglib.Type(C.g_dbus_message_header_field_get_type())
-	GTypeDBusMessageType              = coreglib.Type(C.g_dbus_message_type_get_type())
-	GTypeDataStreamByteOrder          = coreglib.Type(C.g_data_stream_byte_order_get_type())
-	GTypeDataStreamNewlineType        = coreglib.Type(C.g_data_stream_newline_type_get_type())
-	GTypeDriveStartStopType           = coreglib.Type(C.g_drive_start_stop_type_get_type())
-	GTypeEmblemOrigin                 = coreglib.Type(C.g_emblem_origin_get_type())
-	GTypeFileAttributeStatus          = coreglib.Type(C.g_file_attribute_status_get_type())
-	GTypeFileAttributeType            = coreglib.Type(C.g_file_attribute_type_get_type())
-	GTypeFileMonitorEvent             = coreglib.Type(C.g_file_monitor_event_get_type())
-	GTypeFileType                     = coreglib.Type(C.g_file_type_get_type())
-	GTypeFilesystemPreviewType        = coreglib.Type(C.g_filesystem_preview_type_get_type())
-	GTypeIOErrorEnum                  = coreglib.Type(C.g_io_error_enum_get_type())
-	GTypeIOModuleScopeFlags           = coreglib.Type(C.g_io_module_scope_flags_get_type())
-	GTypeMemoryMonitorWarningLevel    = coreglib.Type(C.g_memory_monitor_warning_level_get_type())
-	GTypeMountOperationResult         = coreglib.Type(C.g_mount_operation_result_get_type())
-	GTypeNetworkConnectivity          = coreglib.Type(C.g_network_connectivity_get_type())
-	GTypeNotificationPriority         = coreglib.Type(C.g_notification_priority_get_type())
-	GTypePasswordSave                 = coreglib.Type(C.g_password_save_get_type())
-	GTypePollableReturn               = coreglib.Type(C.g_pollable_return_get_type())
-	GTypeResolverError                = coreglib.Type(C.g_resolver_error_get_type())
-	GTypeResolverRecordType           = coreglib.Type(C.g_resolver_record_type_get_type())
-	GTypeResourceError                = coreglib.Type(C.g_resource_error_get_type())
-	GTypeSocketClientEvent            = coreglib.Type(C.g_socket_client_event_get_type())
-	GTypeSocketFamily                 = coreglib.Type(C.g_socket_family_get_type())
-	GTypeSocketListenerEvent          = coreglib.Type(C.g_socket_listener_event_get_type())
-	GTypeSocketProtocol               = coreglib.Type(C.g_socket_protocol_get_type())
-	GTypeSocketType                   = coreglib.Type(C.g_socket_type_get_type())
-	GTypeTLSAuthenticationMode        = coreglib.Type(C.g_tls_authentication_mode_get_type())
-	GTypeTLSCertificateRequestFlags   = coreglib.Type(C.g_tls_certificate_request_flags_get_type())
-	GTypeTLSChannelBindingError       = coreglib.Type(C.g_tls_channel_binding_error_get_type())
-	GTypeTLSChannelBindingType        = coreglib.Type(C.g_tls_channel_binding_type_get_type())
-	GTypeTLSDatabaseLookupFlags       = coreglib.Type(C.g_tls_database_lookup_flags_get_type())
-	GTypeTLSError                     = coreglib.Type(C.g_tls_error_get_type())
-	GTypeTLSInteractionResult         = coreglib.Type(C.g_tls_interaction_result_get_type())
-	GTypeTLSRehandshakeMode           = coreglib.Type(C.g_tls_rehandshake_mode_get_type())
-	GTypeZlibCompressorFormat         = coreglib.Type(C.g_zlib_compressor_format_get_type())
-	GTypeAppInfoCreateFlags           = coreglib.Type(C.g_app_info_create_flags_get_type())
-	GTypeApplicationFlags             = coreglib.Type(C.g_application_flags_get_type())
-	GTypeAskPasswordFlags             = coreglib.Type(C.g_ask_password_flags_get_type())
-	GTypeBusNameOwnerFlags            = coreglib.Type(C.g_bus_name_owner_flags_get_type())
-	GTypeBusNameWatcherFlags          = coreglib.Type(C.g_bus_name_watcher_flags_get_type())
-	GTypeConverterFlags               = coreglib.Type(C.g_converter_flags_get_type())
-	GTypeDBusCallFlags                = coreglib.Type(C.g_dbus_call_flags_get_type())
-	GTypeDBusCapabilityFlags          = coreglib.Type(C.g_dbus_capability_flags_get_type())
-	GTypeDBusConnectionFlags          = coreglib.Type(C.g_dbus_connection_flags_get_type())
-	GTypeDBusInterfaceSkeletonFlags   = coreglib.Type(C.g_dbus_interface_skeleton_flags_get_type())
-	GTypeDBusMessageFlags             = coreglib.Type(C.g_dbus_message_flags_get_type())
-	GTypeDBusObjectManagerClientFlags = coreglib.Type(C.g_dbus_object_manager_client_flags_get_type())
-	GTypeDBusPropertyInfoFlags        = coreglib.Type(C.g_dbus_property_info_flags_get_type())
-	GTypeDBusProxyFlags               = coreglib.Type(C.g_dbus_proxy_flags_get_type())
-	GTypeDBusSendMessageFlags         = coreglib.Type(C.g_dbus_send_message_flags_get_type())
-	GTypeDBusServerFlags              = coreglib.Type(C.g_dbus_server_flags_get_type())
-	GTypeDBusSignalFlags              = coreglib.Type(C.g_dbus_signal_flags_get_type())
-	GTypeDBusSubtreeFlags             = coreglib.Type(C.g_dbus_subtree_flags_get_type())
-	GTypeDriveStartFlags              = coreglib.Type(C.g_drive_start_flags_get_type())
-	GTypeFileAttributeInfoFlags       = coreglib.Type(C.g_file_attribute_info_flags_get_type())
-	GTypeFileCopyFlags                = coreglib.Type(C.g_file_copy_flags_get_type())
-	GTypeFileCreateFlags              = coreglib.Type(C.g_file_create_flags_get_type())
-	GTypeFileMeasureFlags             = coreglib.Type(C.g_file_measure_flags_get_type())
-	GTypeFileMonitorFlags             = coreglib.Type(C.g_file_monitor_flags_get_type())
-	GTypeFileQueryInfoFlags           = coreglib.Type(C.g_file_query_info_flags_get_type())
-	GTypeIOStreamSpliceFlags          = coreglib.Type(C.g_io_stream_splice_flags_get_type())
-	GTypeMountMountFlags              = coreglib.Type(C.g_mount_mount_flags_get_type())
-	GTypeMountUnmountFlags            = coreglib.Type(C.g_mount_unmount_flags_get_type())
-	GTypeOutputStreamSpliceFlags      = coreglib.Type(C.g_output_stream_splice_flags_get_type())
-	GTypeResourceFlags                = coreglib.Type(C.g_resource_flags_get_type())
-	GTypeResourceLookupFlags          = coreglib.Type(C.g_resource_lookup_flags_get_type())
-	GTypeSocketMsgFlags               = coreglib.Type(C.g_socket_msg_flags_get_type())
-	GTypeSubprocessFlags              = coreglib.Type(C.g_subprocess_flags_get_type())
-	GTypeTestDBusFlags                = coreglib.Type(C.g_test_dbus_flags_get_type())
-	GTypeTLSCertificateFlags          = coreglib.Type(C.g_tls_certificate_flags_get_type())
-	GTypeTLSDatabaseVerifyFlags       = coreglib.Type(C.g_tls_database_verify_flags_get_type())
-	GTypeTLSPasswordFlags             = coreglib.Type(C.g_tls_password_flags_get_type())
-)
+// GTypeBusType returns the GType for the type BusType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeBusType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "BusType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalBusType)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeBusType, F: marshalBusType},
-		{T: GTypeConverterResult, F: marshalConverterResult},
-		{T: GTypeCredentialsType, F: marshalCredentialsType},
-		{T: GTypeDBusError, F: marshalDBusError},
-		{T: GTypeDBusMessageByteOrder, F: marshalDBusMessageByteOrder},
-		{T: GTypeDBusMessageHeaderField, F: marshalDBusMessageHeaderField},
-		{T: GTypeDBusMessageType, F: marshalDBusMessageType},
-		{T: GTypeDataStreamByteOrder, F: marshalDataStreamByteOrder},
-		{T: GTypeDataStreamNewlineType, F: marshalDataStreamNewlineType},
-		{T: GTypeDriveStartStopType, F: marshalDriveStartStopType},
-		{T: GTypeEmblemOrigin, F: marshalEmblemOrigin},
-		{T: GTypeFileAttributeStatus, F: marshalFileAttributeStatus},
-		{T: GTypeFileAttributeType, F: marshalFileAttributeType},
-		{T: GTypeFileMonitorEvent, F: marshalFileMonitorEvent},
-		{T: GTypeFileType, F: marshalFileType},
-		{T: GTypeFilesystemPreviewType, F: marshalFilesystemPreviewType},
-		{T: GTypeIOErrorEnum, F: marshalIOErrorEnum},
-		{T: GTypeIOModuleScopeFlags, F: marshalIOModuleScopeFlags},
-		{T: GTypeMemoryMonitorWarningLevel, F: marshalMemoryMonitorWarningLevel},
-		{T: GTypeMountOperationResult, F: marshalMountOperationResult},
-		{T: GTypeNetworkConnectivity, F: marshalNetworkConnectivity},
-		{T: GTypeNotificationPriority, F: marshalNotificationPriority},
-		{T: GTypePasswordSave, F: marshalPasswordSave},
-		{T: GTypePollableReturn, F: marshalPollableReturn},
-		{T: GTypeResolverError, F: marshalResolverError},
-		{T: GTypeResolverRecordType, F: marshalResolverRecordType},
-		{T: GTypeResourceError, F: marshalResourceError},
-		{T: GTypeSocketClientEvent, F: marshalSocketClientEvent},
-		{T: GTypeSocketFamily, F: marshalSocketFamily},
-		{T: GTypeSocketListenerEvent, F: marshalSocketListenerEvent},
-		{T: GTypeSocketProtocol, F: marshalSocketProtocol},
-		{T: GTypeSocketType, F: marshalSocketType},
-		{T: GTypeTLSAuthenticationMode, F: marshalTLSAuthenticationMode},
-		{T: GTypeTLSCertificateRequestFlags, F: marshalTLSCertificateRequestFlags},
-		{T: GTypeTLSChannelBindingError, F: marshalTLSChannelBindingError},
-		{T: GTypeTLSChannelBindingType, F: marshalTLSChannelBindingType},
-		{T: GTypeTLSDatabaseLookupFlags, F: marshalTLSDatabaseLookupFlags},
-		{T: GTypeTLSError, F: marshalTLSError},
-		{T: GTypeTLSInteractionResult, F: marshalTLSInteractionResult},
-		{T: GTypeTLSRehandshakeMode, F: marshalTLSRehandshakeMode},
-		{T: GTypeZlibCompressorFormat, F: marshalZlibCompressorFormat},
-		{T: GTypeAppInfoCreateFlags, F: marshalAppInfoCreateFlags},
-		{T: GTypeApplicationFlags, F: marshalApplicationFlags},
-		{T: GTypeAskPasswordFlags, F: marshalAskPasswordFlags},
-		{T: GTypeBusNameOwnerFlags, F: marshalBusNameOwnerFlags},
-		{T: GTypeBusNameWatcherFlags, F: marshalBusNameWatcherFlags},
-		{T: GTypeConverterFlags, F: marshalConverterFlags},
-		{T: GTypeDBusCallFlags, F: marshalDBusCallFlags},
-		{T: GTypeDBusCapabilityFlags, F: marshalDBusCapabilityFlags},
-		{T: GTypeDBusConnectionFlags, F: marshalDBusConnectionFlags},
-		{T: GTypeDBusInterfaceSkeletonFlags, F: marshalDBusInterfaceSkeletonFlags},
-		{T: GTypeDBusMessageFlags, F: marshalDBusMessageFlags},
-		{T: GTypeDBusObjectManagerClientFlags, F: marshalDBusObjectManagerClientFlags},
-		{T: GTypeDBusPropertyInfoFlags, F: marshalDBusPropertyInfoFlags},
-		{T: GTypeDBusProxyFlags, F: marshalDBusProxyFlags},
-		{T: GTypeDBusSendMessageFlags, F: marshalDBusSendMessageFlags},
-		{T: GTypeDBusServerFlags, F: marshalDBusServerFlags},
-		{T: GTypeDBusSignalFlags, F: marshalDBusSignalFlags},
-		{T: GTypeDBusSubtreeFlags, F: marshalDBusSubtreeFlags},
-		{T: GTypeDriveStartFlags, F: marshalDriveStartFlags},
-		{T: GTypeFileAttributeInfoFlags, F: marshalFileAttributeInfoFlags},
-		{T: GTypeFileCopyFlags, F: marshalFileCopyFlags},
-		{T: GTypeFileCreateFlags, F: marshalFileCreateFlags},
-		{T: GTypeFileMeasureFlags, F: marshalFileMeasureFlags},
-		{T: GTypeFileMonitorFlags, F: marshalFileMonitorFlags},
-		{T: GTypeFileQueryInfoFlags, F: marshalFileQueryInfoFlags},
-		{T: GTypeIOStreamSpliceFlags, F: marshalIOStreamSpliceFlags},
-		{T: GTypeMountMountFlags, F: marshalMountMountFlags},
-		{T: GTypeMountUnmountFlags, F: marshalMountUnmountFlags},
-		{T: GTypeOutputStreamSpliceFlags, F: marshalOutputStreamSpliceFlags},
-		{T: GTypeResourceFlags, F: marshalResourceFlags},
-		{T: GTypeResourceLookupFlags, F: marshalResourceLookupFlags},
-		{T: GTypeSocketMsgFlags, F: marshalSocketMsgFlags},
-		{T: GTypeSubprocessFlags, F: marshalSubprocessFlags},
-		{T: GTypeTestDBusFlags, F: marshalTestDBusFlags},
-		{T: GTypeTLSCertificateFlags, F: marshalTLSCertificateFlags},
-		{T: GTypeTLSDatabaseVerifyFlags, F: marshalTLSDatabaseVerifyFlags},
-		{T: GTypeTLSPasswordFlags, F: marshalTLSPasswordFlags},
-	})
+// GTypeConverterResult returns the GType for the type ConverterResult.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeConverterResult() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "ConverterResult").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalConverterResult)
+	return gtype
+}
+
+// GTypeCredentialsType returns the GType for the type CredentialsType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCredentialsType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "CredentialsType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCredentialsType)
+	return gtype
+}
+
+// GTypeDBusError returns the GType for the type DBusError.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusError() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusError").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusError)
+	return gtype
+}
+
+// GTypeDBusMessageByteOrder returns the GType for the type DBusMessageByteOrder.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusMessageByteOrder() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusMessageByteOrder").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusMessageByteOrder)
+	return gtype
+}
+
+// GTypeDBusMessageHeaderField returns the GType for the type DBusMessageHeaderField.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusMessageHeaderField() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusMessageHeaderField").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusMessageHeaderField)
+	return gtype
+}
+
+// GTypeDBusMessageType returns the GType for the type DBusMessageType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusMessageType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusMessageType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusMessageType)
+	return gtype
+}
+
+// GTypeDataStreamByteOrder returns the GType for the type DataStreamByteOrder.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDataStreamByteOrder() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DataStreamByteOrder").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDataStreamByteOrder)
+	return gtype
+}
+
+// GTypeDataStreamNewlineType returns the GType for the type DataStreamNewlineType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDataStreamNewlineType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DataStreamNewlineType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDataStreamNewlineType)
+	return gtype
+}
+
+// GTypeDriveStartStopType returns the GType for the type DriveStartStopType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDriveStartStopType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DriveStartStopType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDriveStartStopType)
+	return gtype
+}
+
+// GTypeEmblemOrigin returns the GType for the type EmblemOrigin.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeEmblemOrigin() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "EmblemOrigin").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalEmblemOrigin)
+	return gtype
+}
+
+// GTypeFileAttributeStatus returns the GType for the type FileAttributeStatus.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFileAttributeStatus() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "FileAttributeStatus").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFileAttributeStatus)
+	return gtype
+}
+
+// GTypeFileAttributeType returns the GType for the type FileAttributeType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFileAttributeType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "FileAttributeType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFileAttributeType)
+	return gtype
+}
+
+// GTypeFileMonitorEvent returns the GType for the type FileMonitorEvent.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFileMonitorEvent() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "FileMonitorEvent").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFileMonitorEvent)
+	return gtype
+}
+
+// GTypeFileType returns the GType for the type FileType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFileType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "FileType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFileType)
+	return gtype
+}
+
+// GTypeFilesystemPreviewType returns the GType for the type FilesystemPreviewType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFilesystemPreviewType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "FilesystemPreviewType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFilesystemPreviewType)
+	return gtype
+}
+
+// GTypeIOErrorEnum returns the GType for the type IOErrorEnum.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeIOErrorEnum() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "IOErrorEnum").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalIOErrorEnum)
+	return gtype
+}
+
+// GTypeIOModuleScopeFlags returns the GType for the type IOModuleScopeFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeIOModuleScopeFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "IOModuleScopeFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalIOModuleScopeFlags)
+	return gtype
+}
+
+// GTypeMemoryMonitorWarningLevel returns the GType for the type MemoryMonitorWarningLevel.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMemoryMonitorWarningLevel() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "MemoryMonitorWarningLevel").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMemoryMonitorWarningLevel)
+	return gtype
+}
+
+// GTypeMountOperationResult returns the GType for the type MountOperationResult.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMountOperationResult() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "MountOperationResult").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMountOperationResult)
+	return gtype
+}
+
+// GTypeNetworkConnectivity returns the GType for the type NetworkConnectivity.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeNetworkConnectivity() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "NetworkConnectivity").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalNetworkConnectivity)
+	return gtype
+}
+
+// GTypeNotificationPriority returns the GType for the type NotificationPriority.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeNotificationPriority() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "NotificationPriority").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalNotificationPriority)
+	return gtype
+}
+
+// GTypePasswordSave returns the GType for the type PasswordSave.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePasswordSave() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "PasswordSave").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPasswordSave)
+	return gtype
+}
+
+// GTypePollableReturn returns the GType for the type PollableReturn.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePollableReturn() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "PollableReturn").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPollableReturn)
+	return gtype
+}
+
+// GTypeResolverError returns the GType for the type ResolverError.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeResolverError() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "ResolverError").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalResolverError)
+	return gtype
+}
+
+// GTypeResolverRecordType returns the GType for the type ResolverRecordType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeResolverRecordType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "ResolverRecordType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalResolverRecordType)
+	return gtype
+}
+
+// GTypeResourceError returns the GType for the type ResourceError.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeResourceError() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "ResourceError").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalResourceError)
+	return gtype
+}
+
+// GTypeSocketClientEvent returns the GType for the type SocketClientEvent.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSocketClientEvent() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "SocketClientEvent").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSocketClientEvent)
+	return gtype
+}
+
+// GTypeSocketFamily returns the GType for the type SocketFamily.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSocketFamily() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "SocketFamily").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSocketFamily)
+	return gtype
+}
+
+// GTypeSocketListenerEvent returns the GType for the type SocketListenerEvent.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSocketListenerEvent() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "SocketListenerEvent").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSocketListenerEvent)
+	return gtype
+}
+
+// GTypeSocketProtocol returns the GType for the type SocketProtocol.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSocketProtocol() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "SocketProtocol").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSocketProtocol)
+	return gtype
+}
+
+// GTypeSocketType returns the GType for the type SocketType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSocketType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "SocketType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSocketType)
+	return gtype
+}
+
+// GTypeTLSAuthenticationMode returns the GType for the type TLSAuthenticationMode.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTLSAuthenticationMode() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsAuthenticationMode").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTLSAuthenticationMode)
+	return gtype
+}
+
+// GTypeTLSCertificateRequestFlags returns the GType for the type TLSCertificateRequestFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTLSCertificateRequestFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsCertificateRequestFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTLSCertificateRequestFlags)
+	return gtype
+}
+
+// GTypeTLSChannelBindingError returns the GType for the type TLSChannelBindingError.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTLSChannelBindingError() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsChannelBindingError").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTLSChannelBindingError)
+	return gtype
+}
+
+// GTypeTLSChannelBindingType returns the GType for the type TLSChannelBindingType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTLSChannelBindingType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsChannelBindingType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTLSChannelBindingType)
+	return gtype
+}
+
+// GTypeTLSDatabaseLookupFlags returns the GType for the type TLSDatabaseLookupFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTLSDatabaseLookupFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsDatabaseLookupFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTLSDatabaseLookupFlags)
+	return gtype
+}
+
+// GTypeTLSError returns the GType for the type TLSError.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTLSError() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsError").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTLSError)
+	return gtype
+}
+
+// GTypeTLSInteractionResult returns the GType for the type TLSInteractionResult.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTLSInteractionResult() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsInteractionResult").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTLSInteractionResult)
+	return gtype
+}
+
+// GTypeTLSRehandshakeMode returns the GType for the type TLSRehandshakeMode.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTLSRehandshakeMode() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsRehandshakeMode").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTLSRehandshakeMode)
+	return gtype
+}
+
+// GTypeZlibCompressorFormat returns the GType for the type ZlibCompressorFormat.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeZlibCompressorFormat() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "ZlibCompressorFormat").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalZlibCompressorFormat)
+	return gtype
+}
+
+// GTypeAppInfoCreateFlags returns the GType for the type AppInfoCreateFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAppInfoCreateFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "AppInfoCreateFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAppInfoCreateFlags)
+	return gtype
+}
+
+// GTypeApplicationFlags returns the GType for the type ApplicationFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeApplicationFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "ApplicationFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalApplicationFlags)
+	return gtype
+}
+
+// GTypeAskPasswordFlags returns the GType for the type AskPasswordFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeAskPasswordFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "AskPasswordFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalAskPasswordFlags)
+	return gtype
+}
+
+// GTypeBusNameOwnerFlags returns the GType for the type BusNameOwnerFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeBusNameOwnerFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "BusNameOwnerFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalBusNameOwnerFlags)
+	return gtype
+}
+
+// GTypeBusNameWatcherFlags returns the GType for the type BusNameWatcherFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeBusNameWatcherFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "BusNameWatcherFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalBusNameWatcherFlags)
+	return gtype
+}
+
+// GTypeConverterFlags returns the GType for the type ConverterFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeConverterFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "ConverterFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalConverterFlags)
+	return gtype
+}
+
+// GTypeDBusCallFlags returns the GType for the type DBusCallFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusCallFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusCallFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusCallFlags)
+	return gtype
+}
+
+// GTypeDBusCapabilityFlags returns the GType for the type DBusCapabilityFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusCapabilityFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusCapabilityFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusCapabilityFlags)
+	return gtype
+}
+
+// GTypeDBusConnectionFlags returns the GType for the type DBusConnectionFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusConnectionFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusConnectionFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusConnectionFlags)
+	return gtype
+}
+
+// GTypeDBusInterfaceSkeletonFlags returns the GType for the type DBusInterfaceSkeletonFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusInterfaceSkeletonFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusInterfaceSkeletonFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusInterfaceSkeletonFlags)
+	return gtype
+}
+
+// GTypeDBusMessageFlags returns the GType for the type DBusMessageFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusMessageFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusMessageFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusMessageFlags)
+	return gtype
+}
+
+// GTypeDBusObjectManagerClientFlags returns the GType for the type DBusObjectManagerClientFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusObjectManagerClientFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusObjectManagerClientFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusObjectManagerClientFlags)
+	return gtype
+}
+
+// GTypeDBusPropertyInfoFlags returns the GType for the type DBusPropertyInfoFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusPropertyInfoFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusPropertyInfoFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusPropertyInfoFlags)
+	return gtype
+}
+
+// GTypeDBusProxyFlags returns the GType for the type DBusProxyFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusProxyFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusProxyFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusProxyFlags)
+	return gtype
+}
+
+// GTypeDBusSendMessageFlags returns the GType for the type DBusSendMessageFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusSendMessageFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusSendMessageFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusSendMessageFlags)
+	return gtype
+}
+
+// GTypeDBusServerFlags returns the GType for the type DBusServerFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusServerFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusServerFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusServerFlags)
+	return gtype
+}
+
+// GTypeDBusSignalFlags returns the GType for the type DBusSignalFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusSignalFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusSignalFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusSignalFlags)
+	return gtype
+}
+
+// GTypeDBusSubtreeFlags returns the GType for the type DBusSubtreeFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDBusSubtreeFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DBusSubtreeFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDBusSubtreeFlags)
+	return gtype
+}
+
+// GTypeDriveStartFlags returns the GType for the type DriveStartFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDriveStartFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "DriveStartFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDriveStartFlags)
+	return gtype
+}
+
+// GTypeFileAttributeInfoFlags returns the GType for the type FileAttributeInfoFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFileAttributeInfoFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "FileAttributeInfoFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFileAttributeInfoFlags)
+	return gtype
+}
+
+// GTypeFileCopyFlags returns the GType for the type FileCopyFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFileCopyFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "FileCopyFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFileCopyFlags)
+	return gtype
+}
+
+// GTypeFileCreateFlags returns the GType for the type FileCreateFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFileCreateFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "FileCreateFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFileCreateFlags)
+	return gtype
+}
+
+// GTypeFileMeasureFlags returns the GType for the type FileMeasureFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFileMeasureFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "FileMeasureFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFileMeasureFlags)
+	return gtype
+}
+
+// GTypeFileMonitorFlags returns the GType for the type FileMonitorFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFileMonitorFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "FileMonitorFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFileMonitorFlags)
+	return gtype
+}
+
+// GTypeFileQueryInfoFlags returns the GType for the type FileQueryInfoFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFileQueryInfoFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "FileQueryInfoFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFileQueryInfoFlags)
+	return gtype
+}
+
+// GTypeIOStreamSpliceFlags returns the GType for the type IOStreamSpliceFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeIOStreamSpliceFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "IOStreamSpliceFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalIOStreamSpliceFlags)
+	return gtype
+}
+
+// GTypeMountMountFlags returns the GType for the type MountMountFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMountMountFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "MountMountFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMountMountFlags)
+	return gtype
+}
+
+// GTypeMountUnmountFlags returns the GType for the type MountUnmountFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMountUnmountFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "MountUnmountFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMountUnmountFlags)
+	return gtype
+}
+
+// GTypeOutputStreamSpliceFlags returns the GType for the type OutputStreamSpliceFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeOutputStreamSpliceFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "OutputStreamSpliceFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalOutputStreamSpliceFlags)
+	return gtype
+}
+
+// GTypeResourceFlags returns the GType for the type ResourceFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeResourceFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "ResourceFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalResourceFlags)
+	return gtype
+}
+
+// GTypeResourceLookupFlags returns the GType for the type ResourceLookupFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeResourceLookupFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "ResourceLookupFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalResourceLookupFlags)
+	return gtype
+}
+
+// GTypeSocketMsgFlags returns the GType for the type SocketMsgFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSocketMsgFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "SocketMsgFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSocketMsgFlags)
+	return gtype
+}
+
+// GTypeSubprocessFlags returns the GType for the type SubprocessFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSubprocessFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "SubprocessFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSubprocessFlags)
+	return gtype
+}
+
+// GTypeTestDBusFlags returns the GType for the type TestDBusFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTestDBusFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "TestDBusFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTestDBusFlags)
+	return gtype
+}
+
+// GTypeTLSCertificateFlags returns the GType for the type TLSCertificateFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTLSCertificateFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsCertificateFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTLSCertificateFlags)
+	return gtype
+}
+
+// GTypeTLSDatabaseVerifyFlags returns the GType for the type TLSDatabaseVerifyFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTLSDatabaseVerifyFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsDatabaseVerifyFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTLSDatabaseVerifyFlags)
+	return gtype
+}
+
+// GTypeTLSPasswordFlags returns the GType for the type TLSPasswordFlags.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTLSPasswordFlags() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsPasswordFlags").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTLSPasswordFlags)
+	return gtype
 }
 
 // BusType: enumeration for well-known message buses.

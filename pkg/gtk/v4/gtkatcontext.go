@@ -16,13 +16,15 @@ import (
 // extern void _gotk4_gtk4_ATContext_ConnectStateChange(gpointer, guintptr);
 import "C"
 
-// glib.Type values for gtkatcontext.go.
-var GTypeATContext = coreglib.Type(C.gtk_at_context_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeATContext, F: marshalATContext},
-	})
+// GTypeATContext returns the GType for the type ATContext.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeATContext() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ATContext").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalATContext)
+	return gtype
 }
 
 // ATContext: GtkATContext is an abstract class provided by GTK to communicate

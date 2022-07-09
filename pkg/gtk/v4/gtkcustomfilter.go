@@ -18,13 +18,15 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// glib.Type values for gtkcustomfilter.go.
-var GTypeCustomFilter = coreglib.Type(C.gtk_custom_filter_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeCustomFilter, F: marshalCustomFilter},
-	})
+// GTypeCustomFilter returns the GType for the type CustomFilter.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeCustomFilter() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "CustomFilter").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalCustomFilter)
+	return gtype
 }
 
 // CustomFilterFunc: user function that is called to determine if the item

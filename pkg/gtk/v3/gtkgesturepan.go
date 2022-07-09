@@ -14,13 +14,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkgesturepan.go.
-var GTypeGesturePan = coreglib.Type(C.gtk_gesture_pan_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeGesturePan, F: marshalGesturePan},
-	})
+// GTypeGesturePan returns the GType for the type GesturePan.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeGesturePan() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "GesturePan").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalGesturePan)
+	return gtype
 }
 
 // GesturePan is a Gesture implementation able to recognize pan gestures, those

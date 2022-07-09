@@ -19,17 +19,26 @@ import (
 // }
 import "C"
 
-// glib.Type values for gtkmessagedialog.go.
-var (
-	GTypeButtonsType   = coreglib.Type(C.gtk_buttons_type_get_type())
-	GTypeMessageDialog = coreglib.Type(C.gtk_message_dialog_get_type())
-)
+// GTypeButtonsType returns the GType for the type ButtonsType.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeButtonsType() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ButtonsType").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalButtonsType)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeButtonsType, F: marshalButtonsType},
-		{T: GTypeMessageDialog, F: marshalMessageDialog},
-	})
+// GTypeMessageDialog returns the GType for the type MessageDialog.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeMessageDialog() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "MessageDialog").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalMessageDialog)
+	return gtype
 }
 
 // ButtonsType: prebuilt sets of buttons for GtkDialog.

@@ -29,17 +29,26 @@ import (
 // extern void callbackDelete(gpointer);
 import "C"
 
-// glib.Type values for gtkfontchooser.go.
-var (
-	GTypeFontChooserLevel = coreglib.Type(C.gtk_font_chooser_level_get_type())
-	GTypeFontChooser      = coreglib.Type(C.gtk_font_chooser_get_type())
-)
+// GTypeFontChooserLevel returns the GType for the type FontChooserLevel.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFontChooserLevel() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "FontChooserLevel").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFontChooserLevel)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeFontChooserLevel, F: marshalFontChooserLevel},
-		{T: GTypeFontChooser, F: marshalFontChooser},
-	})
+// GTypeFontChooser returns the GType for the type FontChooser.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFontChooser() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "FontChooser").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFontChooser)
+	return gtype
 }
 
 // FontChooserLevel: this enumeration specifies the granularity of font

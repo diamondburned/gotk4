@@ -35,33 +35,114 @@ import (
 // extern void _gotk4_pango1_FontFamilyClass_list_faces(void*, void***, void*);
 import "C"
 
-// glib.Type values for pango-font.go.
-var (
-	GTypeStretch         = coreglib.Type(C.pango_stretch_get_type())
-	GTypeStyle           = coreglib.Type(C.pango_style_get_type())
-	GTypeVariant         = coreglib.Type(C.pango_variant_get_type())
-	GTypeWeight          = coreglib.Type(C.pango_weight_get_type())
-	GTypeFontMask        = coreglib.Type(C.pango_font_mask_get_type())
-	GTypeFont            = coreglib.Type(C.pango_font_get_type())
-	GTypeFontFace        = coreglib.Type(C.pango_font_face_get_type())
-	GTypeFontFamily      = coreglib.Type(C.pango_font_family_get_type())
-	GTypeFontDescription = coreglib.Type(C.pango_font_description_get_type())
-	GTypeFontMetrics     = coreglib.Type(C.pango_font_metrics_get_type())
-)
+// GTypeStretch returns the GType for the type Stretch.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeStretch() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "Stretch").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalStretch)
+	return gtype
+}
 
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeStretch, F: marshalStretch},
-		{T: GTypeStyle, F: marshalStyle},
-		{T: GTypeVariant, F: marshalVariant},
-		{T: GTypeWeight, F: marshalWeight},
-		{T: GTypeFontMask, F: marshalFontMask},
-		{T: GTypeFont, F: marshalFont},
-		{T: GTypeFontFace, F: marshalFontFace},
-		{T: GTypeFontFamily, F: marshalFontFamily},
-		{T: GTypeFontDescription, F: marshalFontDescription},
-		{T: GTypeFontMetrics, F: marshalFontMetrics},
-	})
+// GTypeStyle returns the GType for the type Style.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeStyle() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "Style").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalStyle)
+	return gtype
+}
+
+// GTypeVariant returns the GType for the type Variant.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeVariant() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "Variant").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalVariant)
+	return gtype
+}
+
+// GTypeWeight returns the GType for the type Weight.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeWeight() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "Weight").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalWeight)
+	return gtype
+}
+
+// GTypeFontMask returns the GType for the type FontMask.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFontMask() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "FontMask").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFontMask)
+	return gtype
+}
+
+// GTypeFont returns the GType for the type Font.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFont() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "Font").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFont)
+	return gtype
+}
+
+// GTypeFontFace returns the GType for the type FontFace.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFontFace() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "FontFace").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFontFace)
+	return gtype
+}
+
+// GTypeFontFamily returns the GType for the type FontFamily.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFontFamily() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "FontFamily").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFontFamily)
+	return gtype
+}
+
+// GTypeFontDescription returns the GType for the type FontDescription.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFontDescription() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "FontDescription").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFontDescription)
+	return gtype
+}
+
+// GTypeFontMetrics returns the GType for the type FontMetrics.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeFontMetrics() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Pango", "FontMetrics").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalFontMetrics)
+	return gtype
 }
 
 // Stretch: enumeration specifying the width of the font relative to other

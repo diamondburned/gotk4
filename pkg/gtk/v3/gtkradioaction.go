@@ -19,13 +19,15 @@ import (
 // extern void _gotk4_gtk3_RadioAction_ConnectChanged(gpointer, void*, guintptr);
 import "C"
 
-// glib.Type values for gtkradioaction.go.
-var GTypeRadioAction = coreglib.Type(C.gtk_radio_action_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeRadioAction, F: marshalRadioAction},
-	})
+// GTypeRadioAction returns the GType for the type RadioAction.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeRadioAction() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "RadioAction").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalRadioAction)
+	return gtype
 }
 
 // RadioActionOverrider contains methods that are overridable.

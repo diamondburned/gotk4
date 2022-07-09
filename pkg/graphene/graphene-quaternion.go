@@ -15,13 +15,15 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
-// glib.Type values for graphene-quaternion.go.
-var GTypeQuaternion = coreglib.Type(C.graphene_quaternion_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeQuaternion, F: marshalQuaternion},
-	})
+// GTypeQuaternion returns the GType for the type Quaternion.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeQuaternion() coreglib.Type {
+	gtype := coreglib.Type(C.graphene_quaternion_get_type())
+	coreglib.RegisterGValueMarshaler(gtype, marshalQuaternion)
+	return gtype
 }
 
 // Quaternion: quaternion.

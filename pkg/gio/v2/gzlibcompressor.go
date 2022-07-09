@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gzlibcompressor.go.
-var GTypeZlibCompressor = coreglib.Type(C.g_zlib_compressor_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeZlibCompressor, F: marshalZlibCompressor},
-	})
+// GTypeZlibCompressor returns the GType for the type ZlibCompressor.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeZlibCompressor() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "ZlibCompressor").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalZlibCompressor)
+	return gtype
 }
 
 // ZlibCompressorOverrider contains methods that are overridable.

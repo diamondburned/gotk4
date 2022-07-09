@@ -23,13 +23,15 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 import "C"
 
-// glib.Type values for gdkdrop.go.
-var GTypeDrop = coreglib.Type(C.gdk_drop_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeDrop, F: marshalDrop},
-	})
+// GTypeDrop returns the GType for the type Drop.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeDrop() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gdk", "Drop").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalDrop)
+	return gtype
 }
 
 // Drop: GdkDrop object represents the target of an ongoing DND operation.

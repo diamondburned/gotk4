@@ -27,13 +27,15 @@ import (
 // extern void _gotk4_gtk4_SelectionModel_ConnectSelectionChanged(gpointer, guint, guint, guintptr);
 import "C"
 
-// glib.Type values for gtkselectionmodel.go.
-var GTypeSelectionModel = coreglib.Type(C.gtk_selection_model_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeSelectionModel, F: marshalSelectionModel},
-	})
+// GTypeSelectionModel returns the GType for the type SelectionModel.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeSelectionModel() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "SelectionModel").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalSelectionModel)
+	return gtype
 }
 
 // SelectionModelOverrider contains methods that are overridable.

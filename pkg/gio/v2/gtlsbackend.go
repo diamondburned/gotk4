@@ -18,13 +18,15 @@ import (
 // extern gboolean _gotk4_gio2_TlsBackendInterface_supports_tls(void*);
 import "C"
 
-// glib.Type values for gtlsbackend.go.
-var GTypeTLSBackend = coreglib.Type(C.g_tls_backend_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeTLSBackend, F: marshalTLSBackend},
-	})
+// GTypeTLSBackend returns the GType for the type TLSBackend.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeTLSBackend() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gio", "TlsBackend").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalTLSBackend)
+	return gtype
 }
 
 // TLS_BACKEND_EXTENSION_POINT_NAME: extension point for TLS functionality via

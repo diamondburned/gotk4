@@ -16,13 +16,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkpopovermenubar.go.
-var GTypePopoverMenuBar = coreglib.Type(C.gtk_popover_menu_bar_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypePopoverMenuBar, F: marshalPopoverMenuBar},
-	})
+// GTypePopoverMenuBar returns the GType for the type PopoverMenuBar.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypePopoverMenuBar() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "PopoverMenuBar").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalPopoverMenuBar)
+	return gtype
 }
 
 // PopoverMenuBar: GtkPopoverMenuBar presents a horizontal bar of items that pop

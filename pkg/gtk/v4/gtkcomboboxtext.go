@@ -15,13 +15,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// glib.Type values for gtkcomboboxtext.go.
-var GTypeComboBoxText = coreglib.Type(C.gtk_combo_box_text_get_type())
-
-func init() {
-	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
-		{T: GTypeComboBoxText, F: marshalComboBoxText},
-	})
+// GTypeComboBoxText returns the GType for the type ComboBoxText.
+//
+// This function has the side effect of registering a GValue marshaler
+// globally. Use this if you need that for any reason. The function is
+// concurrently safe to use.
+func GTypeComboBoxText() coreglib.Type {
+	gtype := coreglib.Type(girepository.MustFind("Gtk", "ComboBoxText").RegisteredGType())
+	coreglib.RegisterGValueMarshaler(gtype, marshalComboBoxText)
+	return gtype
 }
 
 // ComboBoxText: GtkComboBoxText is a simple variant of GtkComboBox for

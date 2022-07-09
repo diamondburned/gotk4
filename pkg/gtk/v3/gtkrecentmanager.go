@@ -19,6 +19,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gtk3_RecentManagerClass_changed(void*);
 // extern void _gotk4_gtk3_RecentManager_ConnectChanged(gpointer, guintptr);
 import "C"
@@ -578,9 +579,9 @@ type recentData struct {
 // resource to be displayed, or NULL;.
 func (r *RecentData) DisplayName() string {
 	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("display_name")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -588,18 +589,18 @@ func (r *RecentData) DisplayName() string {
 // resource, or NULL;.
 func (r *RecentData) Description() string {
 	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("description")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // MIMEType: MIME type of the resource;.
 func (r *RecentData) MIMEType() string {
 	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("mime_type")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -607,9 +608,9 @@ func (r *RecentData) MIMEType() string {
 // resource;.
 func (r *RecentData) AppName() string {
 	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("app_name")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -618,25 +619,25 @@ func (r *RecentData) AppName() string {
 // URI respectively when the command line is retrieved;.
 func (r *RecentData) AppExec() string {
 	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("app_exec")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Groups: vector of strings containing groups names;.
 func (r *RecentData) Groups() []string {
 	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("groups")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v []string // out
 	{
 		var i int
 		var z *C.void
-		for p := valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(valptr, i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]string, i)
 		for i := range src {
 			v[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
@@ -649,12 +650,22 @@ func (r *RecentData) Groups() []string {
 // that have registered it or not.
 func (r *RecentData) IsPrivate() bool {
 	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("is_private")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v bool // out
-	if *(*C.gboolean)(unsafe.Pointer(&valptr)) != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&*valptr)) != 0 {
 		v = true
 	}
 	return v
+}
+
+// IsPrivate: whether this resource should be displayed only by the applications
+// that have registered it or not.
+func (r *RecentData) SetIsPrivate(isPrivate bool) {
+	offset := girepository.MustFind("Gtk", "RecentData").StructFieldOffset("is_private")
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	if isPrivate {
+		*(*C.gboolean)(unsafe.Pointer(&*valptr)) = C.TRUE
+	}
 }
 
 // RecentInfo contains private data only, and should be accessed using the

@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // GTypeAlignment returns the GType for the type Alignment.
@@ -2466,28 +2467,42 @@ func marshalLayoutLine(p uintptr) (interface{}, error) {
 // Layout: layout this line belongs to, might be NULL.
 func (l *LayoutLine) Layout() *Layout {
 	offset := girepository.MustFind("Pango", "LayoutLine").StructFieldOffset("layout")
-	valptr := unsafe.Add(unsafe.Pointer(l), offset)
+	valptr := (*uintptr)(unsafe.Add(l.native, offset))
 	var v *Layout // out
-	v = wrapLayout(coreglib.Take(unsafe.Pointer(valptr)))
+	v = wrapLayout(coreglib.Take(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // StartIndex: start of line as byte index into layout->text.
 func (l *LayoutLine) StartIndex() int32 {
 	offset := girepository.MustFind("Pango", "LayoutLine").StructFieldOffset("start_index")
-	valptr := unsafe.Add(unsafe.Pointer(l), offset)
+	valptr := (*uintptr)(unsafe.Add(l.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Length: length of line in bytes.
 func (l *LayoutLine) Length() int32 {
 	offset := girepository.MustFind("Pango", "LayoutLine").StructFieldOffset("length")
-	valptr := unsafe.Add(unsafe.Pointer(l), offset)
+	valptr := (*uintptr)(unsafe.Add(l.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+// StartIndex: start of line as byte index into layout->text.
+func (l *LayoutLine) SetStartIndex(startIndex int32) {
+	offset := girepository.MustFind("Pango", "LayoutLine").StructFieldOffset("start_index")
+	valptr := (*uintptr)(unsafe.Add(l.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(startIndex)
+}
+
+// Length: length of line in bytes.
+func (l *LayoutLine) SetLength(length int32) {
+	offset := girepository.MustFind("Pango", "LayoutLine").StructFieldOffset("length")
+	valptr := (*uintptr)(unsafe.Add(l.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(length)
 }
 
 // Extents computes the logical and ink extents of a layout line. See

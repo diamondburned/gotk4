@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gdk3_Keymap_ConnectDirectionChanged(gpointer, guintptr);
 // extern void _gotk4_gdk3_Keymap_ConnectKeysChanged(gpointer, guintptr);
 // extern void _gotk4_gdk3_Keymap_ConnectStateChanged(gpointer, guintptr);
@@ -726,31 +727,12 @@ type keymapKey struct {
 	native unsafe.Pointer
 }
 
-// NewKeymapKey creates a new KeymapKey instance from the given
-// fields.
-func NewKeymapKey(keycode uint32, group, level int32) KeymapKey {
-	var f0 C.guint // out
-	f0 = C.guint(keycode)
-	var f1 C.gint // out
-	f1 = C.gint(group)
-	var f2 C.gint // out
-	f2 = C.gint(level)
-
-	v := C.GdkKeymapKey{
-		keycode: f0,
-		group:   f1,
-		level:   f2,
-	}
-
-	return *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer(&v)))
-}
-
 // Keycode: hardware keycode. This is an identifying number for a physical key.
 func (k *KeymapKey) Keycode() uint32 {
 	offset := girepository.MustFind("Gdk", "KeymapKey").StructFieldOffset("keycode")
-	valptr := unsafe.Add(unsafe.Pointer(k), offset)
+	valptr := (*uintptr)(unsafe.Add(k.native, offset))
 	var v uint32 // out
-	v = uint32(*(*C.guint)(unsafe.Pointer(&valptr)))
+	v = uint32(*(*C.guint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
@@ -760,9 +742,9 @@ func (k *KeymapKey) Keycode() uint32 {
 // characters will be printed on the key next to the English characters.
 func (k *KeymapKey) Group() int32 {
 	offset := girepository.MustFind("Gdk", "KeymapKey").StructFieldOffset("group")
-	valptr := unsafe.Add(unsafe.Pointer(k), offset)
+	valptr := (*uintptr)(unsafe.Add(k.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
@@ -774,8 +756,37 @@ func (k *KeymapKey) Group() int32 {
 // though only the uppercase letter is printed.
 func (k *KeymapKey) Level() int32 {
 	offset := girepository.MustFind("Gdk", "KeymapKey").StructFieldOffset("level")
-	valptr := unsafe.Add(unsafe.Pointer(k), offset)
+	valptr := (*uintptr)(unsafe.Add(k.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+// Keycode: hardware keycode. This is an identifying number for a physical key.
+func (k *KeymapKey) SetKeycode(keycode uint32) {
+	offset := girepository.MustFind("Gdk", "KeymapKey").StructFieldOffset("keycode")
+	valptr := (*uintptr)(unsafe.Add(k.native, offset))
+	*(*C.guint)(unsafe.Pointer(&*valptr)) = C.guint(keycode)
+}
+
+// Group indicates movement in a horizontal direction. Usually groups are used
+// for two different languages. In group 0, a key might have two English
+// characters, and in group 1 it might have two Hebrew characters. The Hebrew
+// characters will be printed on the key next to the English characters.
+func (k *KeymapKey) SetGroup(group int32) {
+	offset := girepository.MustFind("Gdk", "KeymapKey").StructFieldOffset("group")
+	valptr := (*uintptr)(unsafe.Add(k.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(group)
+}
+
+// Level indicates which symbol on the key will be used, in a vertical
+// direction. So on a standard US keyboard, the key with the number “1” on it
+// also has the exclamation point ("!") character on it. The level indicates
+// whether to use the “1” or the “!” symbol. The letter keys are considered to
+// have a lowercase letter at level 0, and an uppercase letter at level 1,
+// though only the uppercase letter is printed.
+func (k *KeymapKey) SetLevel(level int32) {
+	offset := girepository.MustFind("Gdk", "KeymapKey").StructFieldOffset("level")
+	valptr := (*uintptr)(unsafe.Add(k.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(level)
 }

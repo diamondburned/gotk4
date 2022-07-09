@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gtk3_InfoBarClass_close(void*);
 // extern void _gotk4_gtk3_InfoBarClass_response(void*, gint);
 // extern void _gotk4_gtk3_InfoBar_ConnectClose(gpointer, guintptr);

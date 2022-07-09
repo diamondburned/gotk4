@@ -13,6 +13,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GtkEditable* _gotk4_gtk4_EditableInterface_get_delegate(void*);
 // extern char* _gotk4_gtk4_EditableInterface_get_text(void*);
 // extern gboolean _gotk4_gtk4_EditableInterface_get_selection_bounds(void*, void*, void*);

@@ -12,6 +12,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // KeyvalConvertCase obtains the upper- and lower-case versions of the keyval

@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // GTypeFileAttributeInfoList returns the GType for the type FileAttributeInfoList.
@@ -77,19 +78,26 @@ func NewFileAttributeInfoList() *FileAttributeInfoList {
 // Infos: array of AttributeInfos.
 func (f *FileAttributeInfoList) Infos() *FileAttributeInfo {
 	offset := girepository.MustFind("Gio", "FileAttributeInfoList").StructFieldOffset("infos")
-	valptr := unsafe.Add(unsafe.Pointer(f), offset)
+	valptr := (*uintptr)(unsafe.Add(f.native, offset))
 	var v *FileAttributeInfo // out
-	v = (*FileAttributeInfo)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	v = (*FileAttributeInfo)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // NInfos: number of values in the array.
 func (f *FileAttributeInfoList) NInfos() int32 {
 	offset := girepository.MustFind("Gio", "FileAttributeInfoList").StructFieldOffset("n_infos")
-	valptr := unsafe.Add(unsafe.Pointer(f), offset)
+	valptr := (*uintptr)(unsafe.Add(f.native, offset))
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+// NInfos: number of values in the array.
+func (f *FileAttributeInfoList) SetNInfos(nInfos int32) {
+	offset := girepository.MustFind("Gio", "FileAttributeInfoList").StructFieldOffset("n_infos")
+	valptr := (*uintptr)(unsafe.Add(f.native, offset))
+	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(nInfos)
 }
 
 // Dup makes a duplicate of a file attribute info list.

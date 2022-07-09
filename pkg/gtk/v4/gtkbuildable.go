@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GObject* _gotk4_gtk4_BuildableIface_get_internal_child(void*, void*, void*);
 // extern char* _gotk4_gtk4_BuildableIface_get_id(void*);
 // extern gboolean _gotk4_gtk4_BuildableIface_custom_tag_start(void*, void*, void*, void*, void*, void*);

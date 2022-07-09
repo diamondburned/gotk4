@@ -17,6 +17,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern PangoCoverage* _gotk4_pango1_FontClass_get_coverage(void*, void*);
 // extern PangoFontDescription* _gotk4_pango1_FontClass_describe(void*);
 // extern PangoFontDescription* _gotk4_pango1_FontClass_describe_absolute(void*);

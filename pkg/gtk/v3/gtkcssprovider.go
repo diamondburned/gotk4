@@ -18,6 +18,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gtk3_CssProviderClass_parsing_error(void*, void*, void*);
 // extern void _gotk4_gtk3_CssProvider_ConnectParsingError(gpointer, void*, void*, guintptr);
 import "C"

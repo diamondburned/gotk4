@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gtk4_ColorChooserInterface_color_activated(void*, void*);
 // extern void _gotk4_gtk4_ColorChooserInterface_get_rgba(void*, void*);
 // extern void _gotk4_gtk4_ColorChooserInterface_set_rgba(void*, void*);

@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GdkContentProvider* _gotk4_gtk4_DragSource_ConnectPrepare(gpointer, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_DragSource_ConnectDragBegin(gpointer, void*, guintptr);
 // extern void _gotk4_gtk4_DragSource_ConnectDragEnd(gpointer, void*, gboolean, guintptr);

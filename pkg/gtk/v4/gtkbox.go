@@ -13,6 +13,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // GTypeBox returns the GType for the type Box.

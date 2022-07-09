@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GtkWidget* _gotk4_gtk4_FlowBoxCreateWidgetFunc(gpointer, gpointer);
 // extern gboolean _gotk4_gtk4_FlowBoxFilterFunc(void*, gpointer);
 // extern int _gotk4_gtk4_FlowBoxSortFunc(void*, void*, gpointer);

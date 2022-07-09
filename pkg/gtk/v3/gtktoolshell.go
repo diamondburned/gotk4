@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GtkSizeGroup* _gotk4_gtk3_ToolShellIface_get_text_size_group(void*);
 // extern gfloat _gotk4_gtk3_ToolShellIface_get_text_alignment(void*);
 // extern void _gotk4_gtk3_ToolShellIface_rebuild_menu(void*);

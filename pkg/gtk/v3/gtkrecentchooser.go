@@ -17,6 +17,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GList* _gotk4_gtk3_RecentChooserIface_get_items(void*);
 // extern GSList* _gotk4_gtk3_RecentChooserIface_list_filters(void*);
 // extern gboolean _gotk4_gtk3_RecentChooserIface_select_uri(void*, void*, GError**);

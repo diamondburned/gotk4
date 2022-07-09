@@ -18,6 +18,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern PangoFontFace* _gotk4_gtk3_FontChooserIface_get_font_face(void*);
 // extern PangoFontFamily* _gotk4_gtk3_FontChooserIface_get_font_family(void*);
 // extern PangoFontMap* _gotk4_gtk3_FontChooserIface_get_font_map(void*);

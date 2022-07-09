@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GdkContentProvider* _gotk4_gtk4_TreeDragSourceIface_drag_data_get(void*, void*);
 // extern gboolean _gotk4_gtk4_TreeDragDestIface_drag_data_received(void*, void*, void*);
 // extern gboolean _gotk4_gtk4_TreeDragDestIface_row_drop_possible(void*, void*, void*);

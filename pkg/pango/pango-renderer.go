@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_pango1_RendererClass_begin(void*);
 // extern void _gotk4_pango1_RendererClass_draw_error_underline(void*, int, int, int, int);
 // extern void _gotk4_pango1_RendererClass_draw_glyph(void*, void*, guint32, double, double);

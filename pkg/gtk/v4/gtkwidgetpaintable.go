@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // GTypeWidgetPaintable returns the GType for the type WidgetPaintable.

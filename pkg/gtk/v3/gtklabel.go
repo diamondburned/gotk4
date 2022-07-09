@@ -17,6 +17,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gtk3_LabelClass_activate_link(void*, void*);
 // extern gboolean _gotk4_gtk3_Label_ConnectActivateLink(gpointer, void*, guintptr);
 // extern void _gotk4_gtk3_LabelClass_copy_clipboard(void*);

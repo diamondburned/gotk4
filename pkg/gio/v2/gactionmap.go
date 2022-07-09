@@ -13,6 +13,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GAction* _gotk4_gio2_ActionMapInterface_lookup_action(void*, void*);
 // extern void _gotk4_gio2_ActionMapInterface_add_action(void*, void*);
 // extern void _gotk4_gio2_ActionMapInterface_remove_action(void*, void*);
@@ -270,9 +271,9 @@ type actionEntry struct {
 // Name: name of the action.
 func (a *ActionEntry) Name() string {
 	offset := girepository.MustFind("Gio", "ActionEntry").StructFieldOffset("name")
-	valptr := unsafe.Add(unsafe.Pointer(a), offset)
+	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -281,9 +282,9 @@ func (a *ActionEntry) Name() string {
 // no parameter).
 func (a *ActionEntry) ParameterType() string {
 	offset := girepository.MustFind("Gio", "ActionEntry").StructFieldOffset("parameter_type")
-	valptr := unsafe.Add(unsafe.Pointer(a), offset)
+	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -293,8 +294,8 @@ func (a *ActionEntry) ParameterType() string {
 // actions should give NULL here.
 func (a *ActionEntry) State() string {
 	offset := girepository.MustFind("Gio", "ActionEntry").StructFieldOffset("state")
-	valptr := unsafe.Add(unsafe.Pointer(a), offset)
+	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }

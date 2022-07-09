@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GtkLayoutChild* _gotk4_gtk4_LayoutManagerClass_create_layout_child(void*, void*, void*);
 // extern void _gotk4_gtk4_LayoutManagerClass_allocate(void*, void*, int, int, int);
 // extern void _gotk4_gtk4_LayoutManagerClass_root(void*);

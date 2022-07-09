@@ -31,19 +31,26 @@ type array struct {
 // Data: pointer to the element data. The data may be moved as elements are
 // added to the #GArray.
 func (a *Array) Data() string {
-	valptr := a.native.data
+	valptr := &a.native.data
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Len: number of elements in the #GArray not including the possible terminating
 // zero element.
 func (a *Array) Len() uint32 {
-	valptr := a.native.len
+	valptr := &a.native.len
 	var v uint32 // out
-	v = uint32(valptr)
+	v = uint32(*valptr)
 	return v
+}
+
+// Len: number of elements in the #GArray not including the possible terminating
+// zero element.
+func (a *Array) SetLen(len uint32) {
+	valptr := &a.native.len
+	*valptr = C.guint(len)
 }
 
 // ByteArray contains the public fields of a GByteArray.
@@ -61,18 +68,24 @@ type byteArray struct {
 // Data: pointer to the element data. The data may be moved as elements are
 // added to the Array.
 func (b *ByteArray) Data() *byte {
-	valptr := b.native.data
+	valptr := &b.native.data
 	var v *byte // out
-	v = (*byte)(unsafe.Pointer(valptr))
+	v = (*byte)(unsafe.Pointer(*valptr))
 	return v
 }
 
 // Len: number of elements in the Array.
 func (b *ByteArray) Len() uint32 {
-	valptr := b.native.len
+	valptr := &b.native.len
 	var v uint32 // out
-	v = uint32(valptr)
+	v = uint32(*valptr)
 	return v
+}
+
+// Len: number of elements in the Array.
+func (b *ByteArray) SetLen(len uint32) {
+	valptr := &b.native.len
+	*valptr = C.guint(len)
 }
 
 // Bytes: simple refcounted data type representing an immutable sequence of zero
@@ -352,18 +365,24 @@ type ptrArray struct {
 // Pdata points to the array of pointers, which may be moved when the array
 // grows.
 func (p *PtrArray) Pdata() *unsafe.Pointer {
-	valptr := p.native.pdata
+	valptr := &p.native.pdata
 	var v *unsafe.Pointer // out
-	v = (*unsafe.Pointer)(unsafe.Pointer(valptr))
+	v = (*unsafe.Pointer)(unsafe.Pointer(*valptr))
 	return v
 }
 
 // Len: number of pointers in the array.
 func (p *PtrArray) Len() uint32 {
-	valptr := p.native.len
+	valptr := &p.native.len
 	var v uint32 // out
-	v = uint32(valptr)
+	v = uint32(*valptr)
 	return v
+}
+
+// Len: number of pointers in the array.
+func (p *PtrArray) SetLen(len uint32) {
+	valptr := &p.native.len
+	*valptr = C.guint(len)
 }
 
 // NewBytesWithGo is similar to NewBytes, except the given Go byte slice

@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // GTypeCoordType returns the GType for the type CoordType.
@@ -371,9 +372,9 @@ type keyEventStruct struct {
 // ATK_KEY_EVENT_RELEASE.
 func (k *KeyEventStruct) Type() int32 {
 	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("type")
-	valptr := unsafe.Add(unsafe.Pointer(k), offset)
+	valptr := (*uintptr)(unsafe.Add(k.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
@@ -383,9 +384,9 @@ func (k *KeyEventStruct) Type() int32 {
 // http://developer.gnome.org/doc/API/2.0/gdk/gdk-Event-Structures.htmlEventKey.
 func (k *KeyEventStruct) State() uint32 {
 	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("state")
-	valptr := unsafe.Add(unsafe.Pointer(k), offset)
+	valptr := (*uintptr)(unsafe.Add(k.native, offset))
 	var v uint32 // out
-	v = uint32(*(*C.guint)(unsafe.Pointer(&valptr)))
+	v = uint32(*(*C.guint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
@@ -393,18 +394,18 @@ func (k *KeyEventStruct) State() uint32 {
 // and X11: see /usr/X11/include/keysymdef.h.
 func (k *KeyEventStruct) Keyval() uint32 {
 	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("keyval")
-	valptr := unsafe.Add(unsafe.Pointer(k), offset)
+	valptr := (*uintptr)(unsafe.Add(k.native, offset))
 	var v uint32 // out
-	v = uint32(*(*C.guint)(unsafe.Pointer(&valptr)))
+	v = uint32(*(*C.guint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Length: length of member #string.
 func (k *KeyEventStruct) Length() int32 {
 	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("length")
-	valptr := unsafe.Add(unsafe.Pointer(k), offset)
+	valptr := (*uintptr)(unsafe.Add(k.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
@@ -415,9 +416,9 @@ func (k *KeyEventStruct) Length() int32 {
 // instance "A". "0", "semicolon", "aacute". Keypad keys have the prefix "KP".
 func (k *KeyEventStruct) String() string {
 	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("string")
-	valptr := unsafe.Add(unsafe.Pointer(k), offset)
+	valptr := (*uintptr)(unsafe.Add(k.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -425,9 +426,9 @@ func (k *KeyEventStruct) String() string {
 // useful.
 func (k *KeyEventStruct) Keycode() uint16 {
 	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("keycode")
-	valptr := unsafe.Add(unsafe.Pointer(k), offset)
+	valptr := (*uintptr)(unsafe.Add(k.native, offset))
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&valptr)))
+	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
@@ -437,8 +438,59 @@ func (k *KeyEventStruct) Keycode() uint16 {
 // another.
 func (k *KeyEventStruct) Timestamp() uint32 {
 	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("timestamp")
-	valptr := unsafe.Add(unsafe.Pointer(k), offset)
+	valptr := (*uintptr)(unsafe.Add(k.native, offset))
 	var v uint32 // out
-	v = uint32(*(*C.guint32)(unsafe.Pointer(&valptr)))
+	v = uint32(*(*C.guint32)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+// Type: atkKeyEventType, generally one of ATK_KEY_EVENT_PRESS or
+// ATK_KEY_EVENT_RELEASE.
+func (k *KeyEventStruct) SetType(typ int32) {
+	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("type")
+	valptr := (*uintptr)(unsafe.Add(k.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(typ)
+}
+
+// State: bitmask representing the state of the modifier keys immediately after
+// the event takes place. The meaning of the bits is currently defined to match
+// the bitmask used by GDK in GdkEventType.state, see
+// http://developer.gnome.org/doc/API/2.0/gdk/gdk-Event-Structures.htmlEventKey.
+func (k *KeyEventStruct) SetState(state uint32) {
+	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("state")
+	valptr := (*uintptr)(unsafe.Add(k.native, offset))
+	*(*C.guint)(unsafe.Pointer(&*valptr)) = C.guint(state)
+}
+
+// Keyval: guint representing a keysym value corresponding to those used by GDK
+// and X11: see /usr/X11/include/keysymdef.h.
+func (k *KeyEventStruct) SetKeyval(keyval uint32) {
+	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("keyval")
+	valptr := (*uintptr)(unsafe.Add(k.native, offset))
+	*(*C.guint)(unsafe.Pointer(&*valptr)) = C.guint(keyval)
+}
+
+// Length: length of member #string.
+func (k *KeyEventStruct) SetLength(length int32) {
+	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("length")
+	valptr := (*uintptr)(unsafe.Add(k.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(length)
+}
+
+// Keycode: raw hardware code that generated the key event. This field is raraly
+// useful.
+func (k *KeyEventStruct) SetKeycode(keycode uint16) {
+	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("keycode")
+	valptr := (*uintptr)(unsafe.Add(k.native, offset))
+	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(keycode)
+}
+
+// Timestamp: timestamp in milliseconds indicating when the event occurred.
+// These timestamps are relative to a starting point which should be considered
+// arbitrary, and only used to compare the dispatch times of events to one
+// another.
+func (k *KeyEventStruct) SetTimestamp(timestamp uint32) {
+	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("timestamp")
+	valptr := (*uintptr)(unsafe.Add(k.native, offset))
+	*(*C.guint32)(unsafe.Pointer(&*valptr)) = C.guint32(timestamp)
 }

@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // GTypeDBusAnnotationInfo returns the GType for the type DBusAnnotationInfo.
@@ -114,27 +115,27 @@ func marshalDBusAnnotationInfo(p uintptr) (interface{}, error) {
 // RefCount: reference count or -1 if statically allocated.
 func (d *DBusAnnotationInfo) RefCount() int32 {
 	offset := girepository.MustFind("Gio", "DBusAnnotationInfo").StructFieldOffset("ref_count")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Key: name of the annotation, e.g. "org.freedesktop.DBus.Deprecated".
 func (d *DBusAnnotationInfo) Key() string {
 	offset := girepository.MustFind("Gio", "DBusAnnotationInfo").StructFieldOffset("key")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Value: value of the annotation.
 func (d *DBusAnnotationInfo) Value() string {
 	offset := girepository.MustFind("Gio", "DBusAnnotationInfo").StructFieldOffset("value")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -142,16 +143,16 @@ func (d *DBusAnnotationInfo) Value() string {
 // BusAnnotationInfo structures or NULL if there are no annotations.
 func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
 	offset := girepository.MustFind("Gio", "DBusAnnotationInfo").StructFieldOffset("annotations")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v []*DBusAnnotationInfo // out
 	{
 		var i int
 		var z *C.void
-		for p := valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(valptr, i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
@@ -165,6 +166,13 @@ func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
 		}
 	}
 	return v
+}
+
+// RefCount: reference count or -1 if statically allocated.
+func (d *DBusAnnotationInfo) SetRefCount(refCount int32) {
+	offset := girepository.MustFind("Gio", "DBusAnnotationInfo").StructFieldOffset("ref_count")
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(refCount)
 }
 
 // DBusAnnotationInfoLookup looks up the value of an annotation.
@@ -236,27 +244,27 @@ func marshalDBusArgInfo(p uintptr) (interface{}, error) {
 // RefCount: reference count or -1 if statically allocated.
 func (d *DBusArgInfo) RefCount() int32 {
 	offset := girepository.MustFind("Gio", "DBusArgInfo").StructFieldOffset("ref_count")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Name of the argument, e.g. unix_user_id.
 func (d *DBusArgInfo) Name() string {
 	offset := girepository.MustFind("Gio", "DBusArgInfo").StructFieldOffset("name")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Signature d-Bus signature of the argument (a single complete type).
 func (d *DBusArgInfo) Signature() string {
 	offset := girepository.MustFind("Gio", "DBusArgInfo").StructFieldOffset("signature")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -264,16 +272,16 @@ func (d *DBusArgInfo) Signature() string {
 // BusAnnotationInfo structures or NULL if there are no annotations.
 func (d *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
 	offset := girepository.MustFind("Gio", "DBusArgInfo").StructFieldOffset("annotations")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v []*DBusAnnotationInfo // out
 	{
 		var i int
 		var z *C.void
-		for p := valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(valptr, i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
@@ -287,6 +295,13 @@ func (d *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
 		}
 	}
 	return v
+}
+
+// RefCount: reference count or -1 if statically allocated.
+func (d *DBusArgInfo) SetRefCount(refCount int32) {
+	offset := girepository.MustFind("Gio", "DBusArgInfo").StructFieldOffset("ref_count")
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(refCount)
 }
 
 // DBusInterfaceInfo: information about a D-Bus interface.
@@ -309,18 +324,18 @@ func marshalDBusInterfaceInfo(p uintptr) (interface{}, error) {
 // RefCount: reference count or -1 if statically allocated.
 func (d *DBusInterfaceInfo) RefCount() int32 {
 	offset := girepository.MustFind("Gio", "DBusInterfaceInfo").StructFieldOffset("ref_count")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Name: name of the D-Bus interface, e.g. "org.freedesktop.DBus.Properties".
 func (d *DBusInterfaceInfo) Name() string {
 	offset := girepository.MustFind("Gio", "DBusInterfaceInfo").StructFieldOffset("name")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -328,16 +343,16 @@ func (d *DBusInterfaceInfo) Name() string {
 // structures or NULL if there are no methods.
 func (d *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
 	offset := girepository.MustFind("Gio", "DBusInterfaceInfo").StructFieldOffset("methods")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v []*DBusMethodInfo // out
 	{
 		var i int
 		var z *C.void
-		for p := valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(valptr, i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusMethodInfo, i)
 		for i := range src {
 			v[i] = (*DBusMethodInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
@@ -357,16 +372,16 @@ func (d *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
 // structures or NULL if there are no signals.
 func (d *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
 	offset := girepository.MustFind("Gio", "DBusInterfaceInfo").StructFieldOffset("signals")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v []*DBusSignalInfo // out
 	{
 		var i int
 		var z *C.void
-		for p := valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(valptr, i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusSignalInfo, i)
 		for i := range src {
 			v[i] = (*DBusSignalInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
@@ -386,16 +401,16 @@ func (d *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
 // structures or NULL if there are no properties.
 func (d *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
 	offset := girepository.MustFind("Gio", "DBusInterfaceInfo").StructFieldOffset("properties")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v []*DBusPropertyInfo // out
 	{
 		var i int
 		var z *C.void
-		for p := valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(valptr, i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusPropertyInfo, i)
 		for i := range src {
 			v[i] = (*DBusPropertyInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
@@ -415,16 +430,16 @@ func (d *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
 // BusAnnotationInfo structures or NULL if there are no annotations.
 func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
 	offset := girepository.MustFind("Gio", "DBusInterfaceInfo").StructFieldOffset("annotations")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v []*DBusAnnotationInfo // out
 	{
 		var i int
 		var z *C.void
-		for p := valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(valptr, i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
@@ -438,6 +453,13 @@ func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
 		}
 	}
 	return v
+}
+
+// RefCount: reference count or -1 if statically allocated.
+func (d *DBusInterfaceInfo) SetRefCount(refCount int32) {
+	offset := girepository.MustFind("Gio", "DBusInterfaceInfo").StructFieldOffset("ref_count")
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(refCount)
 }
 
 // CacheBuild builds a lookup-cache to speed up
@@ -614,18 +636,18 @@ func marshalDBusMethodInfo(p uintptr) (interface{}, error) {
 // RefCount: reference count or -1 if statically allocated.
 func (d *DBusMethodInfo) RefCount() int32 {
 	offset := girepository.MustFind("Gio", "DBusMethodInfo").StructFieldOffset("ref_count")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Name: name of the D-Bus method, e.g. RequestName.
 func (d *DBusMethodInfo) Name() string {
 	offset := girepository.MustFind("Gio", "DBusMethodInfo").StructFieldOffset("name")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -633,16 +655,16 @@ func (d *DBusMethodInfo) Name() string {
 // structures or NULL if there are no in arguments.
 func (d *DBusMethodInfo) InArgs() []*DBusArgInfo {
 	offset := girepository.MustFind("Gio", "DBusMethodInfo").StructFieldOffset("in_args")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v []*DBusArgInfo // out
 	{
 		var i int
 		var z *C.void
-		for p := valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(valptr, i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusArgInfo, i)
 		for i := range src {
 			v[i] = (*DBusArgInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
@@ -662,16 +684,16 @@ func (d *DBusMethodInfo) InArgs() []*DBusArgInfo {
 // structures or NULL if there are no out arguments.
 func (d *DBusMethodInfo) OutArgs() []*DBusArgInfo {
 	offset := girepository.MustFind("Gio", "DBusMethodInfo").StructFieldOffset("out_args")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v []*DBusArgInfo // out
 	{
 		var i int
 		var z *C.void
-		for p := valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(valptr, i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusArgInfo, i)
 		for i := range src {
 			v[i] = (*DBusArgInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
@@ -691,16 +713,16 @@ func (d *DBusMethodInfo) OutArgs() []*DBusArgInfo {
 // BusAnnotationInfo structures or NULL if there are no annotations.
 func (d *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
 	offset := girepository.MustFind("Gio", "DBusMethodInfo").StructFieldOffset("annotations")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v []*DBusAnnotationInfo // out
 	{
 		var i int
 		var z *C.void
-		for p := valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(valptr, i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
@@ -714,6 +736,13 @@ func (d *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
 		}
 	}
 	return v
+}
+
+// RefCount: reference count or -1 if statically allocated.
+func (d *DBusMethodInfo) SetRefCount(refCount int32) {
+	offset := girepository.MustFind("Gio", "DBusMethodInfo").StructFieldOffset("ref_count")
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(refCount)
 }
 
 // DBusNodeInfo: information about nodes in a remote object hierarchy.
@@ -764,9 +793,9 @@ func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
 // RefCount: reference count or -1 if statically allocated.
 func (d *DBusNodeInfo) RefCount() int32 {
 	offset := girepository.MustFind("Gio", "DBusNodeInfo").StructFieldOffset("ref_count")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
@@ -774,9 +803,9 @@ func (d *DBusNodeInfo) RefCount() int32 {
 // path. See the D-Bus specification for more details.
 func (d *DBusNodeInfo) Path() string {
 	offset := girepository.MustFind("Gio", "DBusNodeInfo").StructFieldOffset("path")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -784,16 +813,16 @@ func (d *DBusNodeInfo) Path() string {
 // BusInterfaceInfo structures or NULL if there are no interfaces.
 func (d *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
 	offset := girepository.MustFind("Gio", "DBusNodeInfo").StructFieldOffset("interfaces")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v []*DBusInterfaceInfo // out
 	{
 		var i int
 		var z *C.void
-		for p := valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(valptr, i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusInterfaceInfo, i)
 		for i := range src {
 			v[i] = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
@@ -813,16 +842,16 @@ func (d *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
 // structures or NULL if there are no nodes.
 func (d *DBusNodeInfo) Nodes() []*DBusNodeInfo {
 	offset := girepository.MustFind("Gio", "DBusNodeInfo").StructFieldOffset("nodes")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v []*DBusNodeInfo // out
 	{
 		var i int
 		var z *C.void
-		for p := valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(valptr, i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusNodeInfo, i)
 		for i := range src {
 			v[i] = (*DBusNodeInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
@@ -842,16 +871,16 @@ func (d *DBusNodeInfo) Nodes() []*DBusNodeInfo {
 // BusAnnotationInfo structures or NULL if there are no annotations.
 func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
 	offset := girepository.MustFind("Gio", "DBusNodeInfo").StructFieldOffset("annotations")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v []*DBusAnnotationInfo // out
 	{
 		var i int
 		var z *C.void
-		for p := valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(valptr, i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
@@ -865,6 +894,13 @@ func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
 		}
 	}
 	return v
+}
+
+// RefCount: reference count or -1 if statically allocated.
+func (d *DBusNodeInfo) SetRefCount(refCount int32) {
+	offset := girepository.MustFind("Gio", "DBusNodeInfo").StructFieldOffset("ref_count")
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(refCount)
 }
 
 // LookupInterface looks up information about an interface.
@@ -945,18 +981,18 @@ func marshalDBusSignalInfo(p uintptr) (interface{}, error) {
 // RefCount: reference count or -1 if statically allocated.
 func (d *DBusSignalInfo) RefCount() int32 {
 	offset := girepository.MustFind("Gio", "DBusSignalInfo").StructFieldOffset("ref_count")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Name: name of the D-Bus signal, e.g. "NameOwnerChanged".
 func (d *DBusSignalInfo) Name() string {
 	offset := girepository.MustFind("Gio", "DBusSignalInfo").StructFieldOffset("name")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -964,16 +1000,16 @@ func (d *DBusSignalInfo) Name() string {
 // or NULL if there are no arguments.
 func (d *DBusSignalInfo) Args() []*DBusArgInfo {
 	offset := girepository.MustFind("Gio", "DBusSignalInfo").StructFieldOffset("args")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v []*DBusArgInfo // out
 	{
 		var i int
 		var z *C.void
-		for p := valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(valptr, i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusArgInfo, i)
 		for i := range src {
 			v[i] = (*DBusArgInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
@@ -993,16 +1029,16 @@ func (d *DBusSignalInfo) Args() []*DBusArgInfo {
 // BusAnnotationInfo structures or NULL if there are no annotations.
 func (d *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
 	offset := girepository.MustFind("Gio", "DBusSignalInfo").StructFieldOffset("annotations")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v []*DBusAnnotationInfo // out
 	{
 		var i int
 		var z *C.void
-		for p := valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(valptr, i)
+		src := unsafe.Slice(*valptr, i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
 			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
@@ -1016,4 +1052,11 @@ func (d *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
 		}
 	}
 	return v
+}
+
+// RefCount: reference count or -1 if statically allocated.
+func (d *DBusSignalInfo) SetRefCount(refCount int32) {
+	offset := girepository.MustFind("Gio", "DBusSignalInfo").StructFieldOffset("ref_count")
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(refCount)
 }

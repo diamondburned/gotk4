@@ -18,6 +18,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gtk3_AboutDialogClass_activate_link(void*, void*);
 // extern gboolean _gotk4_gtk3_AboutDialog_ConnectActivateLink(gpointer, void*, guintptr);
 import "C"

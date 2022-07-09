@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gdk4_Surface_ConnectEvent(gpointer, void*, guintptr);
 // extern gboolean _gotk4_gdk4_Surface_ConnectRender(gpointer, void*, guintptr);
 // extern void _gotk4_gdk4_Surface_ConnectEnterMonitor(gpointer, void*, guintptr);

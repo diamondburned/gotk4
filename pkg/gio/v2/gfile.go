@@ -19,6 +19,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GFile* _gotk4_gio2_FileIface_dup(void*);
 // extern GFile* _gotk4_gio2_FileIface_get_child_for_display_name(void*, void*, GError**);
 // extern GFile* _gotk4_gio2_FileIface_get_parent(void*);

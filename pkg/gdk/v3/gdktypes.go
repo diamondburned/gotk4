@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // GTypeAxisUse returns the GType for the type AxisUse.
@@ -952,38 +953,36 @@ type point struct {
 	native unsafe.Pointer
 }
 
-// NewPoint creates a new Point instance from the given
-// fields.
-func NewPoint(x, y int32) Point {
-	var f0 C.gint // out
-	f0 = C.gint(x)
-	var f1 C.gint // out
-	f1 = C.gint(y)
-
-	v := C.GdkPoint{
-		x: f0,
-		y: f1,
-	}
-
-	return *(*Point)(gextras.NewStructNative(unsafe.Pointer(&v)))
-}
-
 // X: x coordinate of the point.
 func (p *Point) X() int32 {
 	offset := girepository.MustFind("Gdk", "Point").StructFieldOffset("x")
-	valptr := unsafe.Add(unsafe.Pointer(p), offset)
+	valptr := (*uintptr)(unsafe.Add(p.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Y: y coordinate of the point.
 func (p *Point) Y() int32 {
 	offset := girepository.MustFind("Gdk", "Point").StructFieldOffset("y")
-	valptr := unsafe.Add(unsafe.Pointer(p), offset)
+	valptr := (*uintptr)(unsafe.Add(p.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+// X: x coordinate of the point.
+func (p *Point) SetX(x int32) {
+	offset := girepository.MustFind("Gdk", "Point").StructFieldOffset("x")
+	valptr := (*uintptr)(unsafe.Add(p.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(x)
+}
+
+// Y: y coordinate of the point.
+func (p *Point) SetY(y int32) {
+	offset := girepository.MustFind("Gdk", "Point").StructFieldOffset("y")
+	valptr := (*uintptr)(unsafe.Add(p.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(y)
 }
 
 // Rectangle defines the position and size of a rectangle. It is identical to
@@ -1004,58 +1003,60 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 	return &Rectangle{&rectangle{(unsafe.Pointer)(b)}}, nil
 }
 
-// NewRectangle creates a new Rectangle instance from the given
-// fields.
-func NewRectangle(x, y, width, height int32) Rectangle {
-	var f0 C.int // out
-	f0 = C.int(x)
-	var f1 C.int // out
-	f1 = C.int(y)
-	var f2 C.int // out
-	f2 = C.int(width)
-	var f3 C.int // out
-	f3 = C.int(height)
-
-	v := C.GdkRectangle{
-		x:      f0,
-		y:      f1,
-		width:  f2,
-		height: f3,
-	}
-
-	return *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer(&v)))
-}
-
 func (r *Rectangle) X() int32 {
 	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("x")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 func (r *Rectangle) Y() int32 {
 	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("y")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 func (r *Rectangle) Width() int32 {
 	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("width")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 func (r *Rectangle) Height() int32 {
 	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("height")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+func (r *Rectangle) SetX(x int32) {
+	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("x")
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(x)
+}
+
+func (r *Rectangle) SetY(y int32) {
+	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("y")
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(y)
+}
+
+func (r *Rectangle) SetWidth(width int32) {
+	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("width")
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(width)
+}
+
+func (r *Rectangle) SetHeight(height int32) {
+	offset := girepository.MustFind("Gdk", "Rectangle").StructFieldOffset("height")
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(height)
 }
 
 // Equal checks if the two given rectangles are equal.

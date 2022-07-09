@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // GTypeMatrix returns the GType for the type Matrix.
@@ -51,86 +52,100 @@ func marshalMatrix(p uintptr) (interface{}, error) {
 	return &Matrix{&matrix{(unsafe.Pointer)(b)}}, nil
 }
 
-// NewMatrix creates a new Matrix instance from the given
-// fields.
-func NewMatrix(xx, xy, yx, yy, x0, y0 float64) Matrix {
-	var f0 C.double // out
-	f0 = C.double(xx)
-	var f1 C.double // out
-	f1 = C.double(xy)
-	var f2 C.double // out
-	f2 = C.double(yx)
-	var f3 C.double // out
-	f3 = C.double(yy)
-	var f4 C.double // out
-	f4 = C.double(x0)
-	var f5 C.double // out
-	f5 = C.double(y0)
-
-	v := C.PangoMatrix{
-		xx: f0,
-		xy: f1,
-		yx: f2,
-		yy: f3,
-		x0: f4,
-		y0: f5,
-	}
-
-	return *(*Matrix)(gextras.NewStructNative(unsafe.Pointer(&v)))
-}
-
 // XX: 1st component of the transformation matrix.
 func (m *Matrix) XX() float64 {
 	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("xx")
-	valptr := unsafe.Add(unsafe.Pointer(m), offset)
+	valptr := (*uintptr)(unsafe.Add(m.native, offset))
 	var v float64 // out
-	v = float64(*(*C.double)(unsafe.Pointer(&valptr)))
+	v = float64(*(*C.double)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // XY: 2nd component of the transformation matrix.
 func (m *Matrix) XY() float64 {
 	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("xy")
-	valptr := unsafe.Add(unsafe.Pointer(m), offset)
+	valptr := (*uintptr)(unsafe.Add(m.native, offset))
 	var v float64 // out
-	v = float64(*(*C.double)(unsafe.Pointer(&valptr)))
+	v = float64(*(*C.double)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // YX: 3rd component of the transformation matrix.
 func (m *Matrix) YX() float64 {
 	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("yx")
-	valptr := unsafe.Add(unsafe.Pointer(m), offset)
+	valptr := (*uintptr)(unsafe.Add(m.native, offset))
 	var v float64 // out
-	v = float64(*(*C.double)(unsafe.Pointer(&valptr)))
+	v = float64(*(*C.double)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // YY: 4th component of the transformation matrix.
 func (m *Matrix) YY() float64 {
 	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("yy")
-	valptr := unsafe.Add(unsafe.Pointer(m), offset)
+	valptr := (*uintptr)(unsafe.Add(m.native, offset))
 	var v float64 // out
-	v = float64(*(*C.double)(unsafe.Pointer(&valptr)))
+	v = float64(*(*C.double)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // X0: x translation.
 func (m *Matrix) X0() float64 {
 	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("x0")
-	valptr := unsafe.Add(unsafe.Pointer(m), offset)
+	valptr := (*uintptr)(unsafe.Add(m.native, offset))
 	var v float64 // out
-	v = float64(*(*C.double)(unsafe.Pointer(&valptr)))
+	v = float64(*(*C.double)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Y0: y translation.
 func (m *Matrix) Y0() float64 {
 	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("y0")
-	valptr := unsafe.Add(unsafe.Pointer(m), offset)
+	valptr := (*uintptr)(unsafe.Add(m.native, offset))
 	var v float64 // out
-	v = float64(*(*C.double)(unsafe.Pointer(&valptr)))
+	v = float64(*(*C.double)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+// XX: 1st component of the transformation matrix.
+func (m *Matrix) SetXX(xx float64) {
+	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("xx")
+	valptr := (*uintptr)(unsafe.Add(m.native, offset))
+	*(*C.double)(unsafe.Pointer(&*valptr)) = C.double(xx)
+}
+
+// XY: 2nd component of the transformation matrix.
+func (m *Matrix) SetXY(xy float64) {
+	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("xy")
+	valptr := (*uintptr)(unsafe.Add(m.native, offset))
+	*(*C.double)(unsafe.Pointer(&*valptr)) = C.double(xy)
+}
+
+// YX: 3rd component of the transformation matrix.
+func (m *Matrix) SetYX(yx float64) {
+	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("yx")
+	valptr := (*uintptr)(unsafe.Add(m.native, offset))
+	*(*C.double)(unsafe.Pointer(&*valptr)) = C.double(yx)
+}
+
+// YY: 4th component of the transformation matrix.
+func (m *Matrix) SetYY(yy float64) {
+	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("yy")
+	valptr := (*uintptr)(unsafe.Add(m.native, offset))
+	*(*C.double)(unsafe.Pointer(&*valptr)) = C.double(yy)
+}
+
+// X0: x translation.
+func (m *Matrix) SetX0(x0 float64) {
+	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("x0")
+	valptr := (*uintptr)(unsafe.Add(m.native, offset))
+	*(*C.double)(unsafe.Pointer(&*valptr)) = C.double(x0)
+}
+
+// Y0: y translation.
+func (m *Matrix) SetY0(y0 float64) {
+	offset := girepository.MustFind("Pango", "Matrix").StructFieldOffset("y0")
+	valptr := (*uintptr)(unsafe.Add(m.native, offset))
+	*(*C.double)(unsafe.Pointer(&*valptr)) = C.double(y0)
 }
 
 // Concat changes the transformation represented by matrix to be the

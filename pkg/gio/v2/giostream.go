@@ -17,6 +17,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GInputStream* _gotk4_gio2_IOStreamClass_get_input_stream(void*);
 // extern GOutputStream* _gotk4_gio2_IOStreamClass_get_output_stream(void*);
 // extern gboolean _gotk4_gio2_IOStreamClass_close_finish(void*, void*, GError**);

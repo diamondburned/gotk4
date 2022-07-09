@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gchar* _gotk4_gio2_InetAddressClass_to_string(void*);
 import "C"
 

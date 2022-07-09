@@ -56,17 +56,17 @@ func marshalRect(p uintptr) (interface{}, error) {
 
 // Origin coordinates of the origin of the rectangle.
 func (r *Rect) Origin() *Point {
-	valptr := r.native.origin
+	valptr := &r.native.origin
 	var v *Point // out
-	v = (*Point)(gextras.NewStructNative(unsafe.Pointer((&valptr))))
+	v = (*Point)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
 	return v
 }
 
 // Size: size of the rectangle.
 func (r *Rect) Size() *Size {
-	valptr := r.native.size
+	valptr := &r.native.size
 	var v *Size // out
-	v = (*Size)(gextras.NewStructNative(unsafe.Pointer((&valptr))))
+	v = (*Size)(gextras.NewStructNative(unsafe.Pointer((&*valptr))))
 	return v
 }
 

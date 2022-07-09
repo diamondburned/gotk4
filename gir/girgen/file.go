@@ -218,6 +218,7 @@ func (f *GoFileGenerator) Generate() ([]byte, error) {
 		fpen.Words("// #cgo pkg-config: gobject-2.0")
 		fpen.Words("// #include <stdlib.h>")
 		fpen.Words("// #include <glib.h>")
+		fpen.Words("// #include <glib-object.h>")
 	}
 
 	if len(f.header.Callbacks) > 0 {

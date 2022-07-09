@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern int _gotk4_gtk4_AssistantPageFunc(int, gpointer);
 // extern void _gotk4_gtk4_Assistant_ConnectApply(gpointer, guintptr);
 // extern void _gotk4_gtk4_Assistant_ConnectCancel(gpointer, guintptr);

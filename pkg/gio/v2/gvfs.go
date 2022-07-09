@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GFile* _gotk4_gio2_VFSFileLookupFunc(void*, void*, gpointer);
 // extern GFile* _gotk4_gio2_VfsClass_get_file_for_path(void*, void*);
 // extern GFile* _gotk4_gio2_VfsClass_get_file_for_uri(void*, void*);

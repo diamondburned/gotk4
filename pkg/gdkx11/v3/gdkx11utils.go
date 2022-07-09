@@ -13,6 +13,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // X11GetParentRelativePattern: used with gdk_window_set_background_pattern() to

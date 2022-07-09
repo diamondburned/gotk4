@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gtk4_EntryCompletionMatchFunc(void*, void*, void*, gpointer);
 // extern gboolean _gotk4_gtk4_EntryCompletion_ConnectCursorOnMatch(gpointer, void*, void*, guintptr);
 // extern gboolean _gotk4_gtk4_EntryCompletion_ConnectInsertPrefix(gpointer, void*, guintptr);

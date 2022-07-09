@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GVariant* _gotk4_gio2_ActionGroupInterface_get_action_state(void*, void*);
 // extern GVariant* _gotk4_gio2_ActionGroupInterface_get_action_state_hint(void*, void*);
 // extern GVariantType* _gotk4_gio2_ActionGroupInterface_get_action_parameter_type(void*, void*);

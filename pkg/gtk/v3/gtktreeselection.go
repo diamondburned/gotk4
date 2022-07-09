@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gtk3_TreeSelectionFunc(void*, void*, void*, gboolean, gpointer);
 // extern void _gotk4_gtk3_TreeSelectionClass_changed(void*);
 // extern void _gotk4_gtk3_TreeSelectionForEachFunc(void*, void*, void*, gpointer);

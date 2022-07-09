@@ -13,6 +13,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GSocketAddressEnumerator* _gotk4_gio2_SocketConnectableIface_enumerate(void*);
 // extern GSocketAddressEnumerator* _gotk4_gio2_SocketConnectableIface_proxy_enumerate(void*);
 // extern gchar* _gotk4_gio2_SocketConnectableIface_to_string(void*);

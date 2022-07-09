@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gtk3_MenuShellClass_move_selected(void*, gint);
 // extern gboolean _gotk4_gtk3_MenuShell_ConnectMoveSelected(gpointer, gint, guintptr);
 // extern gint _gotk4_gtk3_MenuShellClass_get_popup_delay(void*);

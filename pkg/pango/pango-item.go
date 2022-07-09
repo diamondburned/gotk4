@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // GTypeItem returns the GType for the type Item.
@@ -56,28 +57,28 @@ type analysis struct {
 // ShapeEngine: unused.
 func (a *Analysis) ShapeEngine() unsafe.Pointer {
 	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("shape_engine")
-	valptr := unsafe.Add(unsafe.Pointer(a), offset)
+	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(valptr))
+	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
 	return v
 }
 
 // LangEngine: unused.
 func (a *Analysis) LangEngine() unsafe.Pointer {
 	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("lang_engine")
-	valptr := unsafe.Add(unsafe.Pointer(a), offset)
+	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(valptr))
+	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
 	return v
 }
 
 // Font: font for this segment.
 func (a *Analysis) Font() Fonter {
 	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("font")
-	valptr := unsafe.Add(unsafe.Pointer(a), offset)
+	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v Fonter // out
 	{
-		objptr := unsafe.Pointer(valptr)
+		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
 			panic("object of type pango.Fonter is nil")
 		}
@@ -99,46 +100,74 @@ func (a *Analysis) Font() Fonter {
 // Level: bidirectional level for this segment.
 func (a *Analysis) Level() byte {
 	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("level")
-	valptr := unsafe.Add(unsafe.Pointer(a), offset)
+	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v byte // out
-	v = byte(*(*C.guint8)(unsafe.Pointer(&valptr)))
+	v = byte(*(*C.guint8)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Gravity: glyph orientation for this segment (A PangoGravity).
 func (a *Analysis) Gravity() byte {
 	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("gravity")
-	valptr := unsafe.Add(unsafe.Pointer(a), offset)
+	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v byte // out
-	v = byte(*(*C.guint8)(unsafe.Pointer(&valptr)))
+	v = byte(*(*C.guint8)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Flags: boolean flags for this segment (Since: 1.16).
 func (a *Analysis) Flags() byte {
 	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("flags")
-	valptr := unsafe.Add(unsafe.Pointer(a), offset)
+	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v byte // out
-	v = byte(*(*C.guint8)(unsafe.Pointer(&valptr)))
+	v = byte(*(*C.guint8)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Script: detected script for this segment (A PangoScript) (Since: 1.18).
 func (a *Analysis) Script() byte {
 	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("script")
-	valptr := unsafe.Add(unsafe.Pointer(a), offset)
+	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v byte // out
-	v = byte(*(*C.guint8)(unsafe.Pointer(&valptr)))
+	v = byte(*(*C.guint8)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Language: detected language for this segment.
 func (a *Analysis) Language() *Language {
 	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("language")
-	valptr := unsafe.Add(unsafe.Pointer(a), offset)
+	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v *Language // out
-	v = (*Language)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	v = (*Language)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
 	return v
+}
+
+// Level: bidirectional level for this segment.
+func (a *Analysis) SetLevel(level byte) {
+	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("level")
+	valptr := (*uintptr)(unsafe.Add(a.native, offset))
+	*(*C.guint8)(unsafe.Pointer(&*valptr)) = C.guint8(level)
+}
+
+// Gravity: glyph orientation for this segment (A PangoGravity).
+func (a *Analysis) SetGravity(gravity byte) {
+	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("gravity")
+	valptr := (*uintptr)(unsafe.Add(a.native, offset))
+	*(*C.guint8)(unsafe.Pointer(&*valptr)) = C.guint8(gravity)
+}
+
+// Flags: boolean flags for this segment (Since: 1.16).
+func (a *Analysis) SetFlags(flags byte) {
+	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("flags")
+	valptr := (*uintptr)(unsafe.Add(a.native, offset))
+	*(*C.guint8)(unsafe.Pointer(&*valptr)) = C.guint8(flags)
+}
+
+// Script: detected script for this segment (A PangoScript) (Since: 1.18).
+func (a *Analysis) SetScript(script byte) {
+	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("script")
+	valptr := (*uintptr)(unsafe.Add(a.native, offset))
+	*(*C.guint8)(unsafe.Pointer(&*valptr)) = C.guint8(script)
 }
 
 // Item: PangoItem structure stores information about a segment of text.

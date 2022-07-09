@@ -7,7 +7,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -15,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_atk1_TextIface_add_selection(void*, gint, gint);
 // extern gboolean _gotk4_atk1_TextIface_remove_selection(void*, gint);
 // extern gboolean _gotk4_atk1_TextIface_set_caret_offset(void*, gint);
@@ -1392,60 +1392,66 @@ type textRectangle struct {
 	native unsafe.Pointer
 }
 
-// NewTextRectangle creates a new TextRectangle instance from the given
-// fields.
-func NewTextRectangle(x, y, width, height int32) TextRectangle {
-	var f0 C.gint // out
-	f0 = C.gint(x)
-	var f1 C.gint // out
-	f1 = C.gint(y)
-	var f2 C.gint // out
-	f2 = C.gint(width)
-	var f3 C.gint // out
-	f3 = C.gint(height)
-
-	v := C.AtkTextRectangle{
-		x:      f0,
-		y:      f1,
-		width:  f2,
-		height: f3,
-	}
-
-	return *(*TextRectangle)(gextras.NewStructNative(unsafe.Pointer(&v)))
-}
-
 // X: horizontal coordinate of a rectangle.
 func (t *TextRectangle) X() int32 {
 	offset := girepository.MustFind("Atk", "TextRectangle").StructFieldOffset("x")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Y: vertical coordinate of a rectangle.
 func (t *TextRectangle) Y() int32 {
 	offset := girepository.MustFind("Atk", "TextRectangle").StructFieldOffset("y")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Width: width of a rectangle.
 func (t *TextRectangle) Width() int32 {
 	offset := girepository.MustFind("Atk", "TextRectangle").StructFieldOffset("width")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Height: height of a rectangle.
 func (t *TextRectangle) Height() int32 {
 	offset := girepository.MustFind("Atk", "TextRectangle").StructFieldOffset("height")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+// X: horizontal coordinate of a rectangle.
+func (t *TextRectangle) SetX(x int32) {
+	offset := girepository.MustFind("Atk", "TextRectangle").StructFieldOffset("x")
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(x)
+}
+
+// Y: vertical coordinate of a rectangle.
+func (t *TextRectangle) SetY(y int32) {
+	offset := girepository.MustFind("Atk", "TextRectangle").StructFieldOffset("y")
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(y)
+}
+
+// Width: width of a rectangle.
+func (t *TextRectangle) SetWidth(width int32) {
+	offset := girepository.MustFind("Atk", "TextRectangle").StructFieldOffset("width")
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(width)
+}
+
+// Height: height of a rectangle.
+func (t *TextRectangle) SetHeight(height int32) {
+	offset := girepository.MustFind("Atk", "TextRectangle").StructFieldOffset("height")
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(height)
 }

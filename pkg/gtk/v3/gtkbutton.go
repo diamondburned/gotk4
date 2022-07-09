@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gtk3_ButtonClass_activate(void*);
 // extern void _gotk4_gtk3_ButtonClass_clicked(void*);
 // extern void _gotk4_gtk3_ButtonClass_enter(void*);

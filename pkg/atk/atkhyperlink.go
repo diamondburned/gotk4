@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern AtkObject* _gotk4_atk1_HyperlinkClass_get_object(void*, gint);
 // extern gboolean _gotk4_atk1_HyperlinkClass_is_selected_link(void*);
 // extern gboolean _gotk4_atk1_HyperlinkClass_is_valid(void*);

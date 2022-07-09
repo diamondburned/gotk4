@@ -17,6 +17,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gio2_DtlsConnectionInterface_handshake(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_DtlsConnectionInterface_handshake_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_DtlsConnectionInterface_shutdown(void*, gboolean, gboolean, void*, GError**);

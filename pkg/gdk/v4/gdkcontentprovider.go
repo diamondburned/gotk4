@@ -19,6 +19,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GdkContentFormats* _gotk4_gdk4_ContentProviderClass_ref_formats(void*);
 // extern GdkContentFormats* _gotk4_gdk4_ContentProviderClass_ref_storable_formats(void*);
 // extern gboolean _gotk4_gdk4_ContentProviderClass_get_value(void*, void*, GError**);

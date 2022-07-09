@@ -13,6 +13,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern AtkObject* _gotk4_atk1_TableCellIface_get_table(void*);
 // extern gboolean _gotk4_atk1_TableCellIface_get_position(void*, void*, void*);
 // extern gboolean _gotk4_atk1_TableCellIface_get_row_column_span(void*, void*, void*, void*, void*);

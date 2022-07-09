@@ -17,6 +17,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GtkWidgetPath* _gotk4_gtk3_ContainerClass_get_path_for_child(void*, void*);
 // extern gchar* _gotk4_gtk3_ContainerClass_composite_name(void*, void*);
 // extern void _gotk4_gtk3_Callback(void*, gpointer);

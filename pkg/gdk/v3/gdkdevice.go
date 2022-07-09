@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gdk3_Device_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gdk3_Device_ConnectToolChanged(gpointer, void*, guintptr);
 import "C"
@@ -1022,17 +1023,24 @@ type timeCoord struct {
 // Time: timestamp for this event.
 func (t *TimeCoord) Time() uint32 {
 	offset := girepository.MustFind("Gdk", "TimeCoord").StructFieldOffset("time")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v uint32 // out
-	v = uint32(*(*C.guint32)(unsafe.Pointer(&valptr)))
+	v = uint32(*(*C.guint32)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Axes values of the device’s axes.
 func (t *TimeCoord) Axes() [128]float64 {
 	offset := girepository.MustFind("Gdk", "TimeCoord").StructFieldOffset("axes")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v [128]float64 // out
-	v = *(*[128]float64)(unsafe.Pointer(&valptr))
+	v = *(*[128]float64)(unsafe.Pointer(&*valptr))
 	return v
+}
+
+// Time: timestamp for this event.
+func (t *TimeCoord) SetTime(time uint32) {
+	offset := girepository.MustFind("Gdk", "TimeCoord").StructFieldOffset("time")
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	*(*C.guint32)(unsafe.Pointer(&*valptr)) = C.guint32(time)
 }

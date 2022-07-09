@@ -19,6 +19,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_pango1_AttrFilterFunc(void*, gpointer);
 import "C"
 
@@ -2251,50 +2252,52 @@ func marshalColor(p uintptr) (interface{}, error) {
 	return &Color{&color{(unsafe.Pointer)(b)}}, nil
 }
 
-// NewColor creates a new Color instance from the given
-// fields.
-func NewColor(red, green, blue uint16) Color {
-	var f0 C.guint16 // out
-	f0 = C.guint16(red)
-	var f1 C.guint16 // out
-	f1 = C.guint16(green)
-	var f2 C.guint16 // out
-	f2 = C.guint16(blue)
-
-	v := C.PangoColor{
-		red:   f0,
-		green: f1,
-		blue:  f2,
-	}
-
-	return *(*Color)(gextras.NewStructNative(unsafe.Pointer(&v)))
-}
-
 // Red: value of red component.
 func (c *Color) Red() uint16 {
 	offset := girepository.MustFind("Pango", "Color").StructFieldOffset("red")
-	valptr := unsafe.Add(unsafe.Pointer(c), offset)
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&valptr)))
+	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Green: value of green component.
 func (c *Color) Green() uint16 {
 	offset := girepository.MustFind("Pango", "Color").StructFieldOffset("green")
-	valptr := unsafe.Add(unsafe.Pointer(c), offset)
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&valptr)))
+	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Blue: value of blue component.
 func (c *Color) Blue() uint16 {
 	offset := girepository.MustFind("Pango", "Color").StructFieldOffset("blue")
-	valptr := unsafe.Add(unsafe.Pointer(c), offset)
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&valptr)))
+	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+// Red: value of red component.
+func (c *Color) SetRed(red uint16) {
+	offset := girepository.MustFind("Pango", "Color").StructFieldOffset("red")
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
+	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(red)
+}
+
+// Green: value of green component.
+func (c *Color) SetGreen(green uint16) {
+	offset := girepository.MustFind("Pango", "Color").StructFieldOffset("green")
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
+	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(green)
+}
+
+// Blue: value of blue component.
+func (c *Color) SetBlue(blue uint16) {
+	offset := girepository.MustFind("Pango", "Color").StructFieldOffset("blue")
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
+	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(blue)
 }
 
 // Copy creates a copy of src.

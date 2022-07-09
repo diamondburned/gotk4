@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gtk3_TextTagTableClass_tag_added(void*, void*);
 // extern void _gotk4_gtk3_TextTagTableClass_tag_changed(void*, void*, gboolean);
 // extern void _gotk4_gtk3_TextTagTableClass_tag_removed(void*, void*);

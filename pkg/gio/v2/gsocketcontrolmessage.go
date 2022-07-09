@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gsize _gotk4_gio2_SocketControlMessageClass_get_size(void*);
 // extern int _gotk4_gio2_SocketControlMessageClass_get_level(void*);
 // extern int _gotk4_gio2_SocketControlMessageClass_get_type(void*);

@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GDrive* _gotk4_gio2_VolumeIface_get_drive(void*);
 // extern GFile* _gotk4_gio2_VolumeIface_get_activation_root(void*);
 // extern GIcon* _gotk4_gio2_VolumeIface_get_icon(void*);

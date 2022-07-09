@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GInputStream* _gotk4_gio2_ApplicationCommandLineClass_get_stdin(void*);
 // extern void _gotk4_gio2_ApplicationCommandLineClass_print_literal(void*, void*);
 // extern void _gotk4_gio2_ApplicationCommandLineClass_printerr_literal(void*, void*);

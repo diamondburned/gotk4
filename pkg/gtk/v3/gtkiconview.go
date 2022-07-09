@@ -19,6 +19,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gtk3_IconViewClass_activate_cursor_item(void*);
 // extern gboolean _gotk4_gtk3_IconView_ConnectActivateCursorItem(gpointer, guintptr);
 // extern void _gotk4_gtk3_IconViewClass_item_activated(void*, void*);

@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gtk3_ToolbarClass_popup_context_menu(void*, gint, gint, gint);
 // extern gboolean _gotk4_gtk3_Toolbar_ConnectFocusHomeOrEnd(gpointer, gboolean, guintptr);
 // extern gboolean _gotk4_gtk3_Toolbar_ConnectPopupContextMenu(gpointer, gint, gint, gint, guintptr);

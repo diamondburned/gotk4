@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GdkPaintable* _gotk4_gdk4_PaintableInterface_get_current_image(void*);
 // extern double _gotk4_gdk4_PaintableInterface_get_intrinsic_aspect_ratio(void*);
 // extern int _gotk4_gdk4_PaintableInterface_get_intrinsic_height(void*);

@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // GTypeShapeFlags returns the GType for the type ShapeFlags.
@@ -260,27 +261,27 @@ type glyphGeometry struct {
 // Width: logical width to use for the the character.
 func (g *GlyphGeometry) Width() GlyphUnit {
 	offset := girepository.MustFind("Pango", "GlyphGeometry").StructFieldOffset("width")
-	valptr := unsafe.Add(unsafe.Pointer(g), offset)
+	valptr := (*uintptr)(unsafe.Add(g.native, offset))
 	var v GlyphUnit // out
-	v = int32(*(*C.gint32)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint32)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // XOffset: horizontal offset from nominal character position.
 func (g *GlyphGeometry) XOffset() GlyphUnit {
 	offset := girepository.MustFind("Pango", "GlyphGeometry").StructFieldOffset("x_offset")
-	valptr := unsafe.Add(unsafe.Pointer(g), offset)
+	valptr := (*uintptr)(unsafe.Add(g.native, offset))
 	var v GlyphUnit // out
-	v = int32(*(*C.gint32)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint32)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // YOffset: vertical offset from nominal character position.
 func (g *GlyphGeometry) YOffset() GlyphUnit {
 	offset := girepository.MustFind("Pango", "GlyphGeometry").StructFieldOffset("y_offset")
-	valptr := unsafe.Add(unsafe.Pointer(g), offset)
+	valptr := (*uintptr)(unsafe.Add(g.native, offset))
 	var v GlyphUnit // out
-	v = int32(*(*C.gint32)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint32)(unsafe.Pointer(&*valptr)))
 	return v
 }
 

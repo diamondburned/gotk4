@@ -13,6 +13,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern AtkHyperlink* _gotk4_atk1_HypertextIface_get_link(void*, gint);
 // extern gint _gotk4_atk1_HypertextIface_get_link_index(void*, gint);
 // extern gint _gotk4_atk1_HypertextIface_get_n_links(void*);

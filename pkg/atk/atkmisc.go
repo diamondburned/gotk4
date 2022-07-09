@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_atk1_MiscClass_threads_enter(void*);
 // extern void _gotk4_atk1_MiscClass_threads_leave(void*);
 import "C"

@@ -19,6 +19,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gdk4_AsyncReadyCallback(void*, void*, gpointer);
 // extern void _gotk4_gdk4_Clipboard_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);

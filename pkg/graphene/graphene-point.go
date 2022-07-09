@@ -64,18 +64,30 @@ func NewPointAlloc() *Point {
 
 // X coordinate of the point.
 func (p *Point) X() float32 {
-	valptr := p.native.x
+	valptr := &p.native.x
 	var v float32 // out
-	v = float32(valptr)
+	v = float32(*valptr)
 	return v
 }
 
 // Y coordinate of the point.
 func (p *Point) Y() float32 {
-	valptr := p.native.y
+	valptr := &p.native.y
 	var v float32 // out
-	v = float32(valptr)
+	v = float32(*valptr)
 	return v
+}
+
+// X coordinate of the point.
+func (p *Point) SetX(x float32) {
+	valptr := &p.native.x
+	*valptr = C.float(x)
+}
+
+// Y coordinate of the point.
+func (p *Point) SetY(y float32) {
+	valptr := &p.native.y
+	*valptr = C.float(y)
 }
 
 // Distance computes the distance between a and b.

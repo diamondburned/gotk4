@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // GTypeRGBA returns the GType for the type RGBA.
@@ -51,52 +52,30 @@ func marshalRGBA(p uintptr) (interface{}, error) {
 	return &RGBA{&rgbA{(unsafe.Pointer)(b)}}, nil
 }
 
-// NewRGBA creates a new RGBA instance from the given
-// fields.
-func NewRGBA(red, green, blue, alpha float32) RGBA {
-	var f0 C.float // out
-	f0 = C.float(red)
-	var f1 C.float // out
-	f1 = C.float(green)
-	var f2 C.float // out
-	f2 = C.float(blue)
-	var f3 C.float // out
-	f3 = C.float(alpha)
-
-	v := C.GdkRGBA{
-		red:   f0,
-		green: f1,
-		blue:  f2,
-		alpha: f3,
-	}
-
-	return *(*RGBA)(gextras.NewStructNative(unsafe.Pointer(&v)))
-}
-
 // Red: intensity of the red channel from 0.0 to 1.0 inclusive.
 func (r *RGBA) Red() float32 {
 	offset := girepository.MustFind("Gdk", "RGBA").StructFieldOffset("red")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v float32 // out
-	v = float32(*(*C.float)(unsafe.Pointer(&valptr)))
+	v = float32(*(*C.float)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Green: intensity of the green channel from 0.0 to 1.0 inclusive.
 func (r *RGBA) Green() float32 {
 	offset := girepository.MustFind("Gdk", "RGBA").StructFieldOffset("green")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v float32 // out
-	v = float32(*(*C.float)(unsafe.Pointer(&valptr)))
+	v = float32(*(*C.float)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Blue: intensity of the blue channel from 0.0 to 1.0 inclusive.
 func (r *RGBA) Blue() float32 {
 	offset := girepository.MustFind("Gdk", "RGBA").StructFieldOffset("blue")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v float32 // out
-	v = float32(*(*C.float)(unsafe.Pointer(&valptr)))
+	v = float32(*(*C.float)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
@@ -104,10 +83,39 @@ func (r *RGBA) Blue() float32 {
 // opaque.
 func (r *RGBA) Alpha() float32 {
 	offset := girepository.MustFind("Gdk", "RGBA").StructFieldOffset("alpha")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v float32 // out
-	v = float32(*(*C.float)(unsafe.Pointer(&valptr)))
+	v = float32(*(*C.float)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+// Red: intensity of the red channel from 0.0 to 1.0 inclusive.
+func (r *RGBA) SetRed(red float32) {
+	offset := girepository.MustFind("Gdk", "RGBA").StructFieldOffset("red")
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	*(*C.float)(unsafe.Pointer(&*valptr)) = C.float(red)
+}
+
+// Green: intensity of the green channel from 0.0 to 1.0 inclusive.
+func (r *RGBA) SetGreen(green float32) {
+	offset := girepository.MustFind("Gdk", "RGBA").StructFieldOffset("green")
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	*(*C.float)(unsafe.Pointer(&*valptr)) = C.float(green)
+}
+
+// Blue: intensity of the blue channel from 0.0 to 1.0 inclusive.
+func (r *RGBA) SetBlue(blue float32) {
+	offset := girepository.MustFind("Gdk", "RGBA").StructFieldOffset("blue")
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	*(*C.float)(unsafe.Pointer(&*valptr)) = C.float(blue)
+}
+
+// Alpha: opacity of the color from 0.0 for completely translucent to 1.0 for
+// opaque.
+func (r *RGBA) SetAlpha(alpha float32) {
+	offset := girepository.MustFind("Gdk", "RGBA").StructFieldOffset("alpha")
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	*(*C.float)(unsafe.Pointer(&*valptr)) = C.float(alpha)
 }
 
 // Copy makes a copy of a GdkRGBA.

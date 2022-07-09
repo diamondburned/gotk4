@@ -19,6 +19,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gio2_ApplicationClass_dbus_register(void*, void*, void*, GError**);
 // extern gboolean _gotk4_gio2_ApplicationClass_name_lost(void*);
 // extern gboolean _gotk4_gio2_Application_ConnectNameLost(gpointer, guintptr);

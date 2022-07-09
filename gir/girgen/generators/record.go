@@ -76,12 +76,6 @@ var recordTmpl = gotmpl.NewGoTemplate(`
 	// {{ $.Callable.Name }} constructs a struct {{ $.GoName }}.
 	func {{ $.Callable.Name }}{{ $.Callable.Tail }} {{ $.Callable.Block }}
 	{{ end }}
-	{{ else }}
-	{{ with .ManualConstructor }}
-	// New{{ $.GoName }} creates a new {{ $.GoName }} instance from the given
-	// fields.
-	func New{{ $.GoName }}({{ .Fields }}) {{ $.GoName }} {{ .Body }}
-	{{ end }}
 	{{ end }}
 
 	{{ $recv := (FirstLetter $.GoName) }}
@@ -200,10 +194,6 @@ type RecordGenerator struct {
 	Methods []callable.Generator
 	Getters []recordGetter
 	Setters []recordSetter
-
-	// ManualConstructor is the body function of the manually-generated
-	// constructor. Skip if empty.
-	ManualConstructor *RecordConstructor
 
 	// TODO: make a []callableGenerator for constructors
 	Callable callable.Generator
@@ -332,18 +322,13 @@ func (rg *RecordGenerator) getters() {
 	values := make([]typeconv.ConversionValue, 0, len(rg.Fields))
 	fields := make([]string, 0, len(rg.Fields))
 
-	// Do a constructor when the record has none.
-	willDoConstructor := len(rg.Fields) > 0 && len(rg.Record.Constructors) == 0
-
 	for _, field := range rg.Fields {
 		if ignoreField(field) || mustIgnoreAny(rg.gen, field.AnyType) {
 			rg.Logln(logger.Debug, "skipping field", field.Name, "after ignoreField")
-			willDoConstructor = false
 			continue
 		}
 		if types.FilterField(rg.gen, rg.Name, &field) {
 			rg.Logln(logger.Skip, "record", rg.Name, "field", field.Name)
-			willDoConstructor = false
 			continue
 		}
 		// We can't generate bitfield accesses if we're in runtime mode.
@@ -351,18 +336,9 @@ func (rg *RecordGenerator) getters() {
 			continue
 		}
 
-		// Check type for constructor.
-		if willDoConstructor {
-			if field.Type == nil ||
-				types.GIRPrimitiveGo(field.Type.Name) == "" ||
-				types.AnyTypeIsPtr(field.AnyType) {
-
-				// Field is more than a primitive. Skip the constructor.
-				willDoConstructor = false
-			}
-		}
-
-		value := typeconv.NewFieldValue("valptr", "v", field)
+		// Use *valptr instead of valptr, since the generator would generate a
+		// &*valptr with it, effectively nullifying the copying.
+		value := typeconv.NewFieldValue("*valptr", "v", field)
 
 		// Double-check if we have a method with the existing name.
 		if fieldCollides(value.Name) {
@@ -373,10 +349,9 @@ func (rg *RecordGenerator) getters() {
 		values = append(values, value)
 		fields = append(fields, field.Name)
 
-		// Generate a SetX if no methods collide with the name.
-		if field.Writable && !fieldCollides("set_"+value.Name) {
+		if !fieldCollides("set_"+value.Name) && settableField(field) {
 			in := strcases.SnakeToGo(false, field.Name)
-			values = append(values, typeconv.NewFieldSetValue(in, "_valptr", field))
+			values = append(values, typeconv.NewFieldSetValue(in, "*valptr", field))
 			fields = append(fields, field.Name)
 		}
 	}
@@ -389,7 +364,6 @@ func (rg *RecordGenerator) getters() {
 		converted := converter.Convert(i)
 		if converted == nil {
 			rg.Logln(logger.Skip, "record", rg.Name, "field", values[i].Name)
-			willDoConstructor = false
 			continue
 		}
 
@@ -401,24 +375,32 @@ func (rg *RecordGenerator) getters() {
 		// don't have the freeing code separated in typeconv. This is in the
 		// list of things to do.
 
+		file.ApplyHeader(rg, converted)
+
+		b := pen.NewBlock()
+
+		// TODO(diamond): in the future, it might be worth considering the
+		// possibility of generating Go versions of some C structs based on the
+		// GIR schema to avoid having to use StructFieldOffset.
+		//
+		// This way, we can just set by doing (*GoT)(cValue).FieldName. Some
+		// hacks around the type converter may be needed to know the equivalent
+		// Go type.
+
+		// Runtime-link mode assumes a hard-coded valptr name.
+		if rg.gen.LinkMode() == types.RuntimeLinkMode {
+			rg.hdr.ImportCore("girepository")
+			b.Linef("offset := girepository.MustFind(%q, %q).StructFieldOffset(%q)", rg.typ.Namespace.Name, rg.typ.Name(), fields[i])
+			b.Linef("valptr := (*uintptr)(unsafe.Add(%s.native, offset))", recv)
+		} else {
+			b.Linef("valptr := &%s.native.%s", recv, strcases.CGoField(fields[i]))
+		}
+
 		switch converted.Direction {
 		case typeconv.ConvertCToGo: // getter
-			b := pen.NewBlock()
-
-			// Runtime-link mode assumes a hard-coded valptr name.
-			if rg.gen.LinkMode() == types.RuntimeLinkMode {
-				rg.hdr.ImportCore("girepository")
-				b.Linef("offset := girepository.MustFind(%q, %q).StructFieldOffset(%q)", rg.typ.Namespace.Name, rg.typ.Name(), fields[i])
-				b.Linef("valptr := unsafe.Add(unsafe.Pointer(%s), offset)", recv)
-			} else {
-				b.Linef("valptr := %s.native.%s", recv, strcases.CGoField(fields[i]))
-			}
-
 			b.Linef(converted.Out.Declare)
 			b.Linef(converted.Conversion)
 			b.Linef("return v")
-
-			file.ApplyHeader(rg, converted)
 
 			rg.Getters = append(rg.Getters, recordGetter{
 				Name:         strcases.SnakeToGo(true, converted.Name),
@@ -426,22 +408,39 @@ func (rg *RecordGenerator) getters() {
 				Block:        b.String(),
 				InfoElements: info,
 			})
-		}
-		// case typeconv.ConvertGoToC: // setter
-		// 	b := pen.NewBlock()
-		// 	b.Linef(converted.Conversion)
+		case typeconv.ConvertGoToC: // setter
+			b.Linef(converted.Conversion)
 
-		// 	rg.Setters = append(rg.Setters, recordSetter{
-		// 		Name:         strcases.SnakeToGo(true, converted.Name),
-		// 		Param:        converted.InName + " " + converted.In.Type,
-		// 		Block:        b.String(),
-		// 		InfoElements: info,
-		// 	})
-		// }
+			rg.Setters = append(rg.Setters, recordSetter{
+				Name:         strcases.SnakeToGo(true, converted.Name),
+				Param:        converted.InName + " " + converted.In.Type,
+				Block:        b.String(),
+				InfoElements: info,
+			})
+		default:
+			panic("unreachable")
+		}
+	}
+}
+
+func settableField(field gir.Field) bool {
+	if !field.Writable {
+		return false
 	}
 
-	if willDoConstructor {
-		rg.genManualConstructor()
+	if field.Type == nil {
+		return false // probs array
+	}
+
+	if types.CountPtr(field.Type.CType) > 0 {
+		return false // dunno how to allocate
+	}
+
+	switch types.GIRPrimitiveGo(field.Type.Name) {
+	case "guintptr", "string", "":
+		return false
+	default:
+		return true
 	}
 }
 
@@ -450,63 +449,6 @@ func ignoreField(field gir.Field) bool {
 	// For "Bits > 0", we can't safely do this in Go (and probably not CGo
 	// either?) so we're not doing it.
 	return field.Private || field.Bits > 0 || !field.IsReadable()
-}
-
-func (rg *RecordGenerator) genManualConstructor() {
-	params := pen.NewJoints(", ", len(rg.Fields))
-	convts := make([]typeconv.ConversionValue, 0, len(rg.Fields))
-
-	for i, field := range rg.Fields {
-		name := strcases.SnakeToGo(false, field.Name)
-		// Try and coalesce the type, if we can.
-		param := name
-		// We can do this only if the field is not the last one and that the
-		// type matches. When either of those fails, we have to add the type.
-		if i == len(rg.Fields)-1 || field.Type.Name != rg.Fields[i+1].Type.Name {
-			param += " " + types.GIRPrimitiveGo(field.Type.Name)
-		}
-
-		params.Add(param)
-		// always Go to C.
-		convts = append(convts, typeconv.NewFieldSetValue(name, fmt.Sprintf("f%d", i), field))
-	}
-
-	conv := typeconv.NewConverter(rg.gen, &rg.typ, convts)
-	conv.UseLogger(rg)
-
-	results := conv.ConvertAll()
-	if results == nil {
-		rg.ManualConstructor = nil
-		return
-	}
-
-	p := pen.NewBlockSections(512, 512)
-	p.Linef(1, "v := C.%s{", rg.CType)
-
-	for i, result := range results {
-		if result.Direction != typeconv.ConvertGoToC {
-			continue
-		}
-
-		p.Line(0, result.Out.Declare)
-		p.Line(0, result.Conversion)
-		p.Linef(1, "%s: %s,", rg.Fields[i].Name, result.OutName)
-	}
-
-	p.Linef(1, "}")
-	p.Linef(1, "")
-
-	rg.hdr.Import("unsafe")
-	rg.hdr.ImportCore("gextras")
-
-	// No finalizers needed, since the struct is completely allocated on the Go
-	// heap.
-	p.Linef(1, "return *(*%s)(gextras.NewStructNative(unsafe.Pointer(&v)))", rg.GoName)
-
-	rg.ManualConstructor = &RecordConstructor{
-		Fields: params.Join(),
-		Body:   p.String(),
-	}
 }
 
 func (rg *RecordGenerator) CGoPtrType() string {

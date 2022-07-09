@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gtk4_GestureStylus_ConnectDown(gpointer, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_GestureStylus_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_GestureStylus_ConnectProximity(gpointer, gdouble, gdouble, guintptr);

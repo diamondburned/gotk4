@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GtkNotebook* _gotk4_gtk3_Notebook_ConnectCreateWindow(gpointer, void*, gint, gint, guintptr);
 // extern gboolean _gotk4_gtk3_NotebookClass_change_current_page(void*, gint);
 // extern gboolean _gotk4_gtk3_NotebookClass_select_page(void*, gboolean);

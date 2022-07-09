@@ -11,6 +11,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // RequestedSize represents a request of a screen object in a given orientation.
@@ -30,26 +31,40 @@ type requestedSize struct {
 // Data: client pointer.
 func (r *RequestedSize) Data() unsafe.Pointer {
 	offset := girepository.MustFind("Gtk", "RequestedSize").StructFieldOffset("data")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(valptr))
+	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
 	return v
 }
 
 // MinimumSize: minimum size needed for allocation in a given orientation.
 func (r *RequestedSize) MinimumSize() int32 {
 	offset := girepository.MustFind("Gtk", "RequestedSize").StructFieldOffset("minimum_size")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // NaturalSize: natural size for allocation in a given orientation.
 func (r *RequestedSize) NaturalSize() int32 {
 	offset := girepository.MustFind("Gtk", "RequestedSize").StructFieldOffset("natural_size")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+// MinimumSize: minimum size needed for allocation in a given orientation.
+func (r *RequestedSize) SetMinimumSize(minimumSize int32) {
+	offset := girepository.MustFind("Gtk", "RequestedSize").StructFieldOffset("minimum_size")
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(minimumSize)
+}
+
+// NaturalSize: natural size for allocation in a given orientation.
+func (r *RequestedSize) SetNaturalSize(naturalSize int32) {
+	offset := girepository.MustFind("Gtk", "RequestedSize").StructFieldOffset("natural_size")
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(naturalSize)
 }

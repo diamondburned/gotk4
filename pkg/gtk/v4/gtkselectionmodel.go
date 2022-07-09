@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GtkBitset* _gotk4_gtk4_SelectionModelInterface_get_selection_in_range(void*, guint, guint);
 // extern gboolean _gotk4_gtk4_SelectionModelInterface_is_selected(void*, guint);
 // extern gboolean _gotk4_gtk4_SelectionModelInterface_select_all(void*);

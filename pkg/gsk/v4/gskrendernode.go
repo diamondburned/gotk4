@@ -21,6 +21,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gsk4_ParseErrorFunc(void*, void*, void*, gpointer);
 import "C"
 
@@ -2817,74 +2818,84 @@ type parseLocation struct {
 	native unsafe.Pointer
 }
 
-// NewParseLocation creates a new ParseLocation instance from the given
-// fields.
-func NewParseLocation(bytes, chars, lines, lineBytes, lineChars uint) ParseLocation {
-	var f0 C.gsize // out
-	f0 = C.gsize(bytes)
-	var f1 C.gsize // out
-	f1 = C.gsize(chars)
-	var f2 C.gsize // out
-	f2 = C.gsize(lines)
-	var f3 C.gsize // out
-	f3 = C.gsize(lineBytes)
-	var f4 C.gsize // out
-	f4 = C.gsize(lineChars)
-
-	v := C.GskParseLocation{
-		bytes:      f0,
-		chars:      f1,
-		lines:      f2,
-		line_bytes: f3,
-		line_chars: f4,
-	}
-
-	return *(*ParseLocation)(gextras.NewStructNative(unsafe.Pointer(&v)))
-}
-
 // Bytes: offset of the location in the parse buffer, as bytes.
 func (p *ParseLocation) Bytes() uint {
 	offset := girepository.MustFind("Gsk", "ParseLocation").StructFieldOffset("bytes")
-	valptr := unsafe.Add(unsafe.Pointer(p), offset)
+	valptr := (*uintptr)(unsafe.Add(p.native, offset))
 	var v uint // out
-	v = uint(*(*C.gsize)(unsafe.Pointer(&valptr)))
+	v = uint(*(*C.gsize)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Chars: offset of the location in the parse buffer, as characters.
 func (p *ParseLocation) Chars() uint {
 	offset := girepository.MustFind("Gsk", "ParseLocation").StructFieldOffset("chars")
-	valptr := unsafe.Add(unsafe.Pointer(p), offset)
+	valptr := (*uintptr)(unsafe.Add(p.native, offset))
 	var v uint // out
-	v = uint(*(*C.gsize)(unsafe.Pointer(&valptr)))
+	v = uint(*(*C.gsize)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Lines: line of the location in the parse buffer.
 func (p *ParseLocation) Lines() uint {
 	offset := girepository.MustFind("Gsk", "ParseLocation").StructFieldOffset("lines")
-	valptr := unsafe.Add(unsafe.Pointer(p), offset)
+	valptr := (*uintptr)(unsafe.Add(p.native, offset))
 	var v uint // out
-	v = uint(*(*C.gsize)(unsafe.Pointer(&valptr)))
+	v = uint(*(*C.gsize)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // LineBytes: position in the line, as bytes.
 func (p *ParseLocation) LineBytes() uint {
 	offset := girepository.MustFind("Gsk", "ParseLocation").StructFieldOffset("line_bytes")
-	valptr := unsafe.Add(unsafe.Pointer(p), offset)
+	valptr := (*uintptr)(unsafe.Add(p.native, offset))
 	var v uint // out
-	v = uint(*(*C.gsize)(unsafe.Pointer(&valptr)))
+	v = uint(*(*C.gsize)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // LineChars: position in the line, as characters.
 func (p *ParseLocation) LineChars() uint {
 	offset := girepository.MustFind("Gsk", "ParseLocation").StructFieldOffset("line_chars")
-	valptr := unsafe.Add(unsafe.Pointer(p), offset)
+	valptr := (*uintptr)(unsafe.Add(p.native, offset))
 	var v uint // out
-	v = uint(*(*C.gsize)(unsafe.Pointer(&valptr)))
+	v = uint(*(*C.gsize)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+// Bytes: offset of the location in the parse buffer, as bytes.
+func (p *ParseLocation) SetBytes(bytes uint) {
+	offset := girepository.MustFind("Gsk", "ParseLocation").StructFieldOffset("bytes")
+	valptr := (*uintptr)(unsafe.Add(p.native, offset))
+	*(*C.gsize)(unsafe.Pointer(&*valptr)) = C.gsize(bytes)
+}
+
+// Chars: offset of the location in the parse buffer, as characters.
+func (p *ParseLocation) SetChars(chars uint) {
+	offset := girepository.MustFind("Gsk", "ParseLocation").StructFieldOffset("chars")
+	valptr := (*uintptr)(unsafe.Add(p.native, offset))
+	*(*C.gsize)(unsafe.Pointer(&*valptr)) = C.gsize(chars)
+}
+
+// Lines: line of the location in the parse buffer.
+func (p *ParseLocation) SetLines(lines uint) {
+	offset := girepository.MustFind("Gsk", "ParseLocation").StructFieldOffset("lines")
+	valptr := (*uintptr)(unsafe.Add(p.native, offset))
+	*(*C.gsize)(unsafe.Pointer(&*valptr)) = C.gsize(lines)
+}
+
+// LineBytes: position in the line, as bytes.
+func (p *ParseLocation) SetLineBytes(lineBytes uint) {
+	offset := girepository.MustFind("Gsk", "ParseLocation").StructFieldOffset("line_bytes")
+	valptr := (*uintptr)(unsafe.Add(p.native, offset))
+	*(*C.gsize)(unsafe.Pointer(&*valptr)) = C.gsize(lineBytes)
+}
+
+// LineChars: position in the line, as characters.
+func (p *ParseLocation) SetLineChars(lineChars uint) {
+	offset := girepository.MustFind("Gsk", "ParseLocation").StructFieldOffset("line_chars")
+	valptr := (*uintptr)(unsafe.Add(p.native, offset))
+	*(*C.gsize)(unsafe.Pointer(&*valptr)) = C.gsize(lineChars)
 }
 
 // Shadow: shadow parameters in a shadow node.

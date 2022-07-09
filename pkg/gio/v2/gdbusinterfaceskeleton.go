@@ -17,6 +17,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GDBusInterfaceInfo* _gotk4_gio2_DBusInterfaceSkeletonClass_get_info(void*);
 // extern GVariant* _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties(void*);
 // extern gboolean _gotk4_gio2_DBusInterfaceSkeletonClass_g_authorize_method(void*, void*);

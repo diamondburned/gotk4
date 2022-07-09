@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // GTypeAttachOptions returns the GType for the type AttachOptions.
@@ -574,10 +575,10 @@ type tableChild struct {
 
 func (t *TableChild) Widget() Widgetter {
 	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("widget")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v Widgetter // out
 	{
-		objptr := unsafe.Pointer(valptr)
+		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -598,50 +599,86 @@ func (t *TableChild) Widget() Widgetter {
 
 func (t *TableChild) LeftAttach() uint16 {
 	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("left_attach")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&valptr)))
+	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 func (t *TableChild) RightAttach() uint16 {
 	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("right_attach")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&valptr)))
+	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 func (t *TableChild) TopAttach() uint16 {
 	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("top_attach")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&valptr)))
+	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 func (t *TableChild) BottomAttach() uint16 {
 	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("bottom_attach")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&valptr)))
+	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 func (t *TableChild) Xpadding() uint16 {
 	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("xpadding")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&valptr)))
+	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 func (t *TableChild) Ypadding() uint16 {
 	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("ypadding")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&valptr)))
+	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+func (t *TableChild) SetLeftAttach(leftAttach uint16) {
+	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("left_attach")
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(leftAttach)
+}
+
+func (t *TableChild) SetRightAttach(rightAttach uint16) {
+	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("right_attach")
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(rightAttach)
+}
+
+func (t *TableChild) SetTopAttach(topAttach uint16) {
+	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("top_attach")
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(topAttach)
+}
+
+func (t *TableChild) SetBottomAttach(bottomAttach uint16) {
+	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("bottom_attach")
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(bottomAttach)
+}
+
+func (t *TableChild) SetXpadding(xpadding uint16) {
+	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("xpadding")
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(xpadding)
+}
+
+func (t *TableChild) SetYpadding(ypadding uint16) {
+	offset := girepository.MustFind("Gtk", "TableChild").StructFieldOffset("ypadding")
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(ypadding)
 }
 
 // TableRowCol: instance of this type is always passed by reference.
@@ -656,24 +693,42 @@ type tableRowCol struct {
 
 func (t *TableRowCol) Requisition() uint16 {
 	offset := girepository.MustFind("Gtk", "TableRowCol").StructFieldOffset("requisition")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&valptr)))
+	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 func (t *TableRowCol) Allocation() uint16 {
 	offset := girepository.MustFind("Gtk", "TableRowCol").StructFieldOffset("allocation")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&valptr)))
+	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 func (t *TableRowCol) Spacing() uint16 {
 	offset := girepository.MustFind("Gtk", "TableRowCol").StructFieldOffset("spacing")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&valptr)))
+	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+func (t *TableRowCol) SetRequisition(requisition uint16) {
+	offset := girepository.MustFind("Gtk", "TableRowCol").StructFieldOffset("requisition")
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(requisition)
+}
+
+func (t *TableRowCol) SetAllocation(allocation uint16) {
+	offset := girepository.MustFind("Gtk", "TableRowCol").StructFieldOffset("allocation")
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(allocation)
+}
+
+func (t *TableRowCol) SetSpacing(spacing uint16) {
+	offset := girepository.MustFind("Gtk", "TableRowCol").StructFieldOffset("spacing")
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(spacing)
 }

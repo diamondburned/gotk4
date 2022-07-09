@@ -131,44 +131,44 @@ type node struct {
 
 // Data contains the actual data of the node.
 func (n *Node) Data() unsafe.Pointer {
-	valptr := n.native.data
+	valptr := &n.native.data
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(valptr))
+	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
 	return v
 }
 
 // Next points to the node's next sibling (a sibling is another #GNode with the
 // same parent).
 func (n *Node) Next() *Node {
-	valptr := n.native.next
+	valptr := &n.native.next
 	var v *Node // out
-	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Prev points to the node's previous sibling.
 func (n *Node) Prev() *Node {
-	valptr := n.native.prev
+	valptr := &n.native.prev
 	var v *Node // out
-	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Parent points to the parent of the #GNode, or is NULL if the #GNode is the
 // root of the tree.
 func (n *Node) Parent() *Node {
-	valptr := n.native.parent
+	valptr := &n.native.parent
 	var v *Node // out
-	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Children points to the first child of the #GNode. The other children are
 // accessed by using the next pointer of each child.
 func (n *Node) Children() *Node {
-	valptr := n.native.children
+	valptr := &n.native.children
 	var v *Node // out
-	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	v = (*Node)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
 	return v
 }
 

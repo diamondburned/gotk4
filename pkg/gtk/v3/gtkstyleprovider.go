@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GtkIconFactory* _gotk4_gtk3_StyleProviderIface_get_icon_factory(void*, void*);
 // extern GtkStyleProperties* _gotk4_gtk3_StyleProviderIface_get_style(void*, void*);
 import "C"

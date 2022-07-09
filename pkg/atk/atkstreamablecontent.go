@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GIOChannel* _gotk4_atk1_StreamableContentIface_get_stream(void*, void*);
 // extern gchar* _gotk4_atk1_StreamableContentIface_get_mime_type(void*, gint);
 // extern gchar* _gotk4_atk1_StreamableContentIface_get_uri(void*, void*);

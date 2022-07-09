@@ -12,6 +12,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // BINARY_AGE: like gtk_get_binary_age(), but from the headers used at

@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // GTypeBorder returns the GType for the type Border.
@@ -68,37 +69,65 @@ func NewBorder() *Border {
 // Left: width of the left border.
 func (b *Border) Left() int16 {
 	offset := girepository.MustFind("Gtk", "Border").StructFieldOffset("left")
-	valptr := unsafe.Add(unsafe.Pointer(b), offset)
+	valptr := (*uintptr)(unsafe.Add(b.native, offset))
 	var v int16 // out
-	v = int16(*(*C.gint16)(unsafe.Pointer(&valptr)))
+	v = int16(*(*C.gint16)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Right: width of the right border.
 func (b *Border) Right() int16 {
 	offset := girepository.MustFind("Gtk", "Border").StructFieldOffset("right")
-	valptr := unsafe.Add(unsafe.Pointer(b), offset)
+	valptr := (*uintptr)(unsafe.Add(b.native, offset))
 	var v int16 // out
-	v = int16(*(*C.gint16)(unsafe.Pointer(&valptr)))
+	v = int16(*(*C.gint16)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Top: width of the top border.
 func (b *Border) Top() int16 {
 	offset := girepository.MustFind("Gtk", "Border").StructFieldOffset("top")
-	valptr := unsafe.Add(unsafe.Pointer(b), offset)
+	valptr := (*uintptr)(unsafe.Add(b.native, offset))
 	var v int16 // out
-	v = int16(*(*C.gint16)(unsafe.Pointer(&valptr)))
+	v = int16(*(*C.gint16)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Bottom: width of the bottom border.
 func (b *Border) Bottom() int16 {
 	offset := girepository.MustFind("Gtk", "Border").StructFieldOffset("bottom")
-	valptr := unsafe.Add(unsafe.Pointer(b), offset)
+	valptr := (*uintptr)(unsafe.Add(b.native, offset))
 	var v int16 // out
-	v = int16(*(*C.gint16)(unsafe.Pointer(&valptr)))
+	v = int16(*(*C.gint16)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+// Left: width of the left border.
+func (b *Border) SetLeft(left int16) {
+	offset := girepository.MustFind("Gtk", "Border").StructFieldOffset("left")
+	valptr := (*uintptr)(unsafe.Add(b.native, offset))
+	*(*C.gint16)(unsafe.Pointer(&*valptr)) = C.gint16(left)
+}
+
+// Right: width of the right border.
+func (b *Border) SetRight(right int16) {
+	offset := girepository.MustFind("Gtk", "Border").StructFieldOffset("right")
+	valptr := (*uintptr)(unsafe.Add(b.native, offset))
+	*(*C.gint16)(unsafe.Pointer(&*valptr)) = C.gint16(right)
+}
+
+// Top: width of the top border.
+func (b *Border) SetTop(top int16) {
+	offset := girepository.MustFind("Gtk", "Border").StructFieldOffset("top")
+	valptr := (*uintptr)(unsafe.Add(b.native, offset))
+	*(*C.gint16)(unsafe.Pointer(&*valptr)) = C.gint16(top)
+}
+
+// Bottom: width of the bottom border.
+func (b *Border) SetBottom(bottom int16) {
+	offset := girepository.MustFind("Gtk", "Border").StructFieldOffset("bottom")
+	valptr := (*uintptr)(unsafe.Add(b.native, offset))
+	*(*C.gint16)(unsafe.Pointer(&*valptr)) = C.gint16(bottom)
 }
 
 // Copy copies a Border-struct.

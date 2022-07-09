@@ -17,6 +17,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GIOStream* _gotk4_gio2_ProxyInterface_connect(void*, void*, void*, void*, GError**);
 // extern GIOStream* _gotk4_gio2_ProxyInterface_connect_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_ProxyInterface_supports_hostname(void*);

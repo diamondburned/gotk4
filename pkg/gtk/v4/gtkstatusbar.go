@@ -13,6 +13,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gtk4_Statusbar_ConnectTextPopped(gpointer, guint, void*, guintptr);
 // extern void _gotk4_gtk4_Statusbar_ConnectTextPushed(gpointer, guint, void*, guintptr);
 import "C"

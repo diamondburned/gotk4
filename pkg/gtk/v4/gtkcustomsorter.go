@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gint _gotk4_glib2_CompareDataFunc(gpointer, gpointer, gpointer);
 // extern gint _gotk4_gtk4_CompareDataFunc(gpointer, gpointer, gpointer);
 // extern void callbackDelete(gpointer);

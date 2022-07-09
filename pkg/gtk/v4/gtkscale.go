@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern char* _gotk4_gtk4_ScaleFormatValueFunc(void*, double, gpointer);
 // extern void _gotk4_gtk4_ScaleClass_get_layout_offsets(void*, void*, void*);
 // extern void callbackDelete(gpointer);

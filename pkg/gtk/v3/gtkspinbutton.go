@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gtk3_SpinButton_ConnectOutput(gpointer, guintptr);
 // extern gint _gotk4_gtk3_SpinButtonClass_input(void*, void*);
 // extern gint _gotk4_gtk3_SpinButtonClass_output(void*);

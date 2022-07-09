@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GList* _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish(void*, void*, GError**);
 // extern GTlsCertificate* _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle_finish(void*, void*, GError**);
 // extern GTlsCertificate* _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer_finish(void*, void*, GError**);

@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GDBusInterface* _gotk4_gio2_DBusObjectIface_get_interface(void*, void*);
 // extern GList* _gotk4_gio2_DBusObjectIface_get_interfaces(void*);
 // extern gchar* _gotk4_gio2_DBusObjectIface_get_object_path(void*);

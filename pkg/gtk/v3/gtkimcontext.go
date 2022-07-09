@@ -17,6 +17,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gtk3_IMContextClass_delete_surrounding(void*, gint, gint);
 // extern gboolean _gotk4_gtk3_IMContextClass_filter_keypress(void*, void*);
 // extern gboolean _gotk4_gtk3_IMContextClass_get_surrounding(void*, void**, void*);

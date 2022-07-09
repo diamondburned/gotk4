@@ -17,6 +17,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gtk3_PrintOperationClass_paginate(void*, void*);
 // extern gboolean _gotk4_gtk3_PrintOperationClass_preview(void*, void*, void*, void*);
 // extern gboolean _gotk4_gtk3_PrintOperation_ConnectPaginate(gpointer, void*, guintptr);

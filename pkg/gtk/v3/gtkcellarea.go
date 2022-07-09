@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GtkCellAreaContext* _gotk4_gtk3_CellAreaClass_copy_context(void*, void*);
 // extern GtkCellAreaContext* _gotk4_gtk3_CellAreaClass_create_context(void*);
 // extern gboolean _gotk4_gtk3_CellAllocCallback(void*, void*, void*, gpointer);

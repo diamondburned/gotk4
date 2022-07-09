@@ -12,6 +12,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // IsZeroWidth checks if a character that should not be normally rendered.

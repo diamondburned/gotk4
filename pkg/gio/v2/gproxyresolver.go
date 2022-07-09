@@ -17,6 +17,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gio2_ProxyResolverInterface_is_supported(void*);
 // extern gchar** _gotk4_gio2_ProxyResolverInterface_lookup(void*, void*, void*, GError**);
 // extern gchar** _gotk4_gio2_ProxyResolverInterface_lookup_finish(void*, void*, GError**);

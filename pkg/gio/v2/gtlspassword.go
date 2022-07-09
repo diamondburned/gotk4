@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gchar* _gotk4_gio2_TlsPasswordClass_get_default_warning(void*);
 // extern guchar* _gotk4_gio2_TlsPasswordClass_get_value(void*, void*);
 import "C"

@@ -18,6 +18,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gtk3_DialogClass_close(void*);
 // extern void _gotk4_gtk3_DialogClass_response(void*, gint);
 // extern void _gotk4_gtk3_Dialog_ConnectClose(gpointer, guintptr);

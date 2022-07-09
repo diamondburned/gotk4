@@ -13,6 +13,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gtk3_PrintOperationPreviewIface_is_selected(void*, gint);
 // extern void _gotk4_gtk3_PrintOperationPreviewIface_end_preview(void*);
 // extern void _gotk4_gtk3_PrintOperationPreviewIface_got_page_size(void*, void*, void*);

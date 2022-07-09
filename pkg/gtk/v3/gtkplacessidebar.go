@@ -19,6 +19,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gint _gotk4_gtk3_PlacesSidebar_ConnectDragActionAsk(gpointer, gint, guintptr);
 // extern void _gotk4_gtk3_PlacesSidebar_ConnectMount(gpointer, void*, guintptr);
 // extern void _gotk4_gtk3_PlacesSidebar_ConnectPopulatePopup(gpointer, void*, void*, void*, guintptr);

@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern char* _gotk4_gtk4_ComboBoxClass_format_entry_text(void*, void*);
 // extern gboolean _gotk4_gtk4_ComboBox_ConnectPopdown(gpointer, guintptr);
 // extern gboolean _gotk4_gtk4_TreeViewRowSeparatorFunc(void*, void*, gpointer);

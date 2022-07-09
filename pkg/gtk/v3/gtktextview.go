@@ -19,6 +19,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gtk3_TextViewClass_backspace(void*);
 // extern void _gotk4_gtk3_TextViewClass_copy_clipboard(void*);
 // extern void _gotk4_gtk3_TextViewClass_cut_clipboard(void*);

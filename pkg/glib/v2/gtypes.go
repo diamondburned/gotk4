@@ -191,36 +191,32 @@ type timeVal struct {
 	native *C.GTimeVal
 }
 
-// NewTimeVal creates a new TimeVal instance from the given
-// fields.
-func NewTimeVal(tvSec, tvUsec int32) TimeVal {
-	var f0 C.glong // out
-	f0 = C.glong(tvSec)
-	var f1 C.glong // out
-	f1 = C.glong(tvUsec)
-
-	v := C.GTimeVal{
-		tv_sec:  f0,
-		tv_usec: f1,
-	}
-
-	return *(*TimeVal)(gextras.NewStructNative(unsafe.Pointer(&v)))
-}
-
 // TvSec: seconds.
 func (t *TimeVal) TvSec() int32 {
-	valptr := t.native.tv_sec
+	valptr := &t.native.tv_sec
 	var v int32 // out
-	v = int32(valptr)
+	v = int32(*valptr)
 	return v
 }
 
 // TvUsec: microseconds.
 func (t *TimeVal) TvUsec() int32 {
-	valptr := t.native.tv_usec
+	valptr := &t.native.tv_usec
 	var v int32 // out
-	v = int32(valptr)
+	v = int32(*valptr)
 	return v
+}
+
+// TvSec: seconds.
+func (t *TimeVal) SetTvSec(tvSec int32) {
+	valptr := &t.native.tv_sec
+	*valptr = C.glong(tvSec)
+}
+
+// TvUsec: microseconds.
+func (t *TimeVal) SetTvUsec(tvUsec int32) {
+	valptr := &t.native.tv_usec
+	*valptr = C.glong(tvUsec)
 }
 
 // Add adds the given number of microseconds to time_. microseconds can also be

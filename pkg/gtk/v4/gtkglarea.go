@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GdkGLContext* _gotk4_gtk4_GLArea_ConnectCreateContext(gpointer, guintptr);
 // extern gboolean _gotk4_gtk4_GLAreaClass_render(void*, void*);
 // extern gboolean _gotk4_gtk4_GLArea_ConnectRender(gpointer, void*, guintptr);

@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gdk4_Device_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gdk4_Device_ConnectToolChanged(gpointer, void*, guintptr);
 import "C"

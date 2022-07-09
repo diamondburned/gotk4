@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // GTypeGlyphItem returns the GType for the type GlyphItem.
@@ -63,18 +64,18 @@ func marshalGlyphItem(p uintptr) (interface{}, error) {
 // Item: corresponding PangoItem.
 func (g *GlyphItem) Item() *Item {
 	offset := girepository.MustFind("Pango", "GlyphItem").StructFieldOffset("item")
-	valptr := unsafe.Add(unsafe.Pointer(g), offset)
+	valptr := (*uintptr)(unsafe.Add(g.native, offset))
 	var v *Item // out
-	v = (*Item)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	v = (*Item)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Glyphs: corresponding PangoGlyphString.
 func (g *GlyphItem) Glyphs() *GlyphString {
 	offset := girepository.MustFind("Pango", "GlyphItem").StructFieldOffset("glyphs")
-	valptr := unsafe.Add(unsafe.Pointer(g), offset)
+	valptr := (*uintptr)(unsafe.Add(g.native, offset))
 	var v *GlyphString // out
-	v = (*GlyphString)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	v = (*GlyphString)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -285,66 +286,102 @@ func marshalGlyphItemIter(p uintptr) (interface{}, error) {
 
 func (g *GlyphItemIter) GlyphItem() *GlyphItem {
 	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("glyph_item")
-	valptr := unsafe.Add(unsafe.Pointer(g), offset)
+	valptr := (*uintptr)(unsafe.Add(g.native, offset))
 	var v *GlyphItem // out
-	v = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	v = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
 	return v
 }
 
 func (g *GlyphItemIter) Text() string {
 	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("text")
-	valptr := unsafe.Add(unsafe.Pointer(g), offset)
+	valptr := (*uintptr)(unsafe.Add(g.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 func (g *GlyphItemIter) StartGlyph() int32 {
 	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("start_glyph")
-	valptr := unsafe.Add(unsafe.Pointer(g), offset)
+	valptr := (*uintptr)(unsafe.Add(g.native, offset))
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 func (g *GlyphItemIter) StartIndex() int32 {
 	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("start_index")
-	valptr := unsafe.Add(unsafe.Pointer(g), offset)
+	valptr := (*uintptr)(unsafe.Add(g.native, offset))
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 func (g *GlyphItemIter) StartChar() int32 {
 	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("start_char")
-	valptr := unsafe.Add(unsafe.Pointer(g), offset)
+	valptr := (*uintptr)(unsafe.Add(g.native, offset))
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 func (g *GlyphItemIter) EndGlyph() int32 {
 	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("end_glyph")
-	valptr := unsafe.Add(unsafe.Pointer(g), offset)
+	valptr := (*uintptr)(unsafe.Add(g.native, offset))
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 func (g *GlyphItemIter) EndIndex() int32 {
 	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("end_index")
-	valptr := unsafe.Add(unsafe.Pointer(g), offset)
+	valptr := (*uintptr)(unsafe.Add(g.native, offset))
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 func (g *GlyphItemIter) EndChar() int32 {
 	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("end_char")
-	valptr := unsafe.Add(unsafe.Pointer(g), offset)
+	valptr := (*uintptr)(unsafe.Add(g.native, offset))
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+func (g *GlyphItemIter) SetStartGlyph(startGlyph int32) {
+	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("start_glyph")
+	valptr := (*uintptr)(unsafe.Add(g.native, offset))
+	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(startGlyph)
+}
+
+func (g *GlyphItemIter) SetStartIndex(startIndex int32) {
+	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("start_index")
+	valptr := (*uintptr)(unsafe.Add(g.native, offset))
+	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(startIndex)
+}
+
+func (g *GlyphItemIter) SetStartChar(startChar int32) {
+	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("start_char")
+	valptr := (*uintptr)(unsafe.Add(g.native, offset))
+	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(startChar)
+}
+
+func (g *GlyphItemIter) SetEndGlyph(endGlyph int32) {
+	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("end_glyph")
+	valptr := (*uintptr)(unsafe.Add(g.native, offset))
+	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(endGlyph)
+}
+
+func (g *GlyphItemIter) SetEndIndex(endIndex int32) {
+	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("end_index")
+	valptr := (*uintptr)(unsafe.Add(g.native, offset))
+	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(endIndex)
+}
+
+func (g *GlyphItemIter) SetEndChar(endChar int32) {
+	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("end_char")
+	valptr := (*uintptr)(unsafe.Add(g.native, offset))
+	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(endChar)
 }
 
 // Copy: make a shallow copy of an existing PangoGlyphItemIter structure.

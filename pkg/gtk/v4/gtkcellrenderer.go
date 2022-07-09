@@ -17,6 +17,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gtk4_CellRendererClass_editing_canceled(void*);
 // extern void _gotk4_gtk4_CellRendererClass_editing_started(void*, void*, void*);
 // extern void _gotk4_gtk4_CellRendererClass_get_preferred_height(void*, void*, void*, void*);

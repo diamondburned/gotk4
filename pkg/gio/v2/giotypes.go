@@ -19,6 +19,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // GTypeFileAttributeMatcher returns the GType for the type FileAttributeMatcher.
@@ -501,19 +502,26 @@ type inputVector struct {
 // Buffer: pointer to a buffer where data will be written.
 func (i *InputVector) Buffer() unsafe.Pointer {
 	offset := girepository.MustFind("Gio", "InputVector").StructFieldOffset("buffer")
-	valptr := unsafe.Add(unsafe.Pointer(i), offset)
+	valptr := (*uintptr)(unsafe.Add(i.native, offset))
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(valptr))
+	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
 	return v
 }
 
 // Size: available size in buffer.
 func (i *InputVector) Size() uint {
 	offset := girepository.MustFind("Gio", "InputVector").StructFieldOffset("size")
-	valptr := unsafe.Add(unsafe.Pointer(i), offset)
+	valptr := (*uintptr)(unsafe.Add(i.native, offset))
 	var v uint // out
-	v = uint(*(*C.gsize)(unsafe.Pointer(&valptr)))
+	v = uint(*(*C.gsize)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+// Size: available size in buffer.
+func (i *InputVector) SetSize(size uint) {
+	offset := girepository.MustFind("Gio", "InputVector").StructFieldOffset("size")
+	valptr := (*uintptr)(unsafe.Add(i.native, offset))
+	*(*C.gsize)(unsafe.Pointer(&*valptr)) = C.gsize(size)
 }
 
 // OutputMessage: structure used for scatter/gather data output when sending
@@ -551,19 +559,26 @@ type outputVector struct {
 // Buffer: pointer to a buffer of data to read.
 func (o *OutputVector) Buffer() unsafe.Pointer {
 	offset := girepository.MustFind("Gio", "OutputVector").StructFieldOffset("buffer")
-	valptr := unsafe.Add(unsafe.Pointer(o), offset)
+	valptr := (*uintptr)(unsafe.Add(o.native, offset))
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(valptr))
+	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
 	return v
 }
 
 // Size: size of buffer.
 func (o *OutputVector) Size() uint {
 	offset := girepository.MustFind("Gio", "OutputVector").StructFieldOffset("size")
-	valptr := unsafe.Add(unsafe.Pointer(o), offset)
+	valptr := (*uintptr)(unsafe.Add(o.native, offset))
 	var v uint // out
-	v = uint(*(*C.gsize)(unsafe.Pointer(&valptr)))
+	v = uint(*(*C.gsize)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+// Size: size of buffer.
+func (o *OutputVector) SetSize(size uint) {
+	offset := girepository.MustFind("Gio", "OutputVector").StructFieldOffset("size")
+	valptr := (*uintptr)(unsafe.Add(o.native, offset))
+	*(*C.gsize)(unsafe.Pointer(&*valptr)) = C.gsize(size)
 }
 
 // Resource applications and libraries often contain binary or textual data that

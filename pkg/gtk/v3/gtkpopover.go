@@ -18,6 +18,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gtk3_PopoverClass_closed(void*);
 // extern void _gotk4_gtk3_Popover_ConnectClosed(gpointer, guintptr);
 import "C"

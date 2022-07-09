@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern char* _gotk4_gtk4_EntryBufferClass_get_text(void*, void*);
 // extern guint _gotk4_gtk4_EntryBufferClass_delete_text(void*, guint, guint);
 // extern guint _gotk4_gtk4_EntryBufferClass_get_length(void*);

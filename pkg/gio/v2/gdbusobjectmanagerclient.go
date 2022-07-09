@@ -17,6 +17,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal(void*, void*, void*, void*, void*, void*);
 // extern void _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxyPropertiesChanged(gpointer, void*, void*, void*, void**, guintptr);
 // extern void _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxySignal(gpointer, void*, void*, void*, void*, void*, guintptr);

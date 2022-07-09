@@ -13,6 +13,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern AtkObject* _gotk4_atk1_SelectionIface_ref_selection(void*, gint);
 // extern gboolean _gotk4_atk1_SelectionIface_add_selection(void*, gint);
 // extern gboolean _gotk4_atk1_SelectionIface_clear_selection(void*);

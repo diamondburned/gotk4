@@ -19,6 +19,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GAppInfo* _gotk4_gio2_AppInfoIface_dup(void*);
 // extern GIcon* _gotk4_gio2_AppInfoIface_get_icon(void*);
 // extern char* _gotk4_gio2_AppInfoIface_get_commandline(void*);

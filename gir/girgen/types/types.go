@@ -496,11 +496,6 @@ func GIRBuiltinGo(typ string) string {
 // GIRPrimitiveGo returns Go primitive types that can be copied by-value without
 // doing any pointer work. It returns an empty string if there's none.
 func GIRPrimitiveGo(typ string) string {
-	switch typ {
-	case "utf8", "filename":
-		return "gpointer"
-	}
-
 	t, ok := girToBuiltin[typ]
 	if ok {
 		return t

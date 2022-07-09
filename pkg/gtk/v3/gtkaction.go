@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GtkWidget* _gotk4_gtk3_ActionClass_create_menu(void*);
 // extern GtkWidget* _gotk4_gtk3_ActionClass_create_menu_item(void*);
 // extern GtkWidget* _gotk4_gtk3_ActionClass_create_tool_item(void*);

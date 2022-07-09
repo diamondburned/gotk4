@@ -20,6 +20,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gtk3_ThemingEngineClass_render_activity(void*, void*, gdouble, gdouble, gdouble, gdouble);
 // extern void _gotk4_gtk3_ThemingEngineClass_render_arrow(void*, void*, gdouble, gdouble, gdouble, gdouble);
 // extern void _gotk4_gtk3_ThemingEngineClass_render_background(void*, void*, gdouble, gdouble, gdouble, gdouble);

@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // BindingsActivateEvent looks up key bindings for object to find one matching
@@ -95,37 +96,44 @@ type bindingSet struct {
 // SetName: unique name of this binding set.
 func (b *BindingSet) SetName() string {
 	offset := girepository.MustFind("Gtk", "BindingSet").StructFieldOffset("set_name")
-	valptr := unsafe.Add(unsafe.Pointer(b), offset)
+	valptr := (*uintptr)(unsafe.Add(b.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Priority: unused.
 func (b *BindingSet) Priority() int32 {
 	offset := girepository.MustFind("Gtk", "BindingSet").StructFieldOffset("priority")
-	valptr := unsafe.Add(unsafe.Pointer(b), offset)
+	valptr := (*uintptr)(unsafe.Add(b.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Entries: key binding entries in this binding set.
 func (b *BindingSet) Entries() *BindingEntry {
 	offset := girepository.MustFind("Gtk", "BindingSet").StructFieldOffset("entries")
-	valptr := unsafe.Add(unsafe.Pointer(b), offset)
+	valptr := (*uintptr)(unsafe.Add(b.native, offset))
 	var v *BindingEntry // out
-	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Current: implementation detail.
 func (b *BindingSet) Current() *BindingEntry {
 	offset := girepository.MustFind("Gtk", "BindingSet").StructFieldOffset("current")
-	valptr := unsafe.Add(unsafe.Pointer(b), offset)
+	valptr := (*uintptr)(unsafe.Add(b.native, offset))
 	var v *BindingEntry // out
-	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
 	return v
+}
+
+// Priority: unused.
+func (b *BindingSet) SetPriority(priority int32) {
+	offset := girepository.MustFind("Gtk", "BindingSet").StructFieldOffset("priority")
+	valptr := (*uintptr)(unsafe.Add(b.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(priority)
 }
 
 // BindingSetFind: find a binding set by its globally unique name.

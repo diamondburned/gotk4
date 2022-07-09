@@ -5,13 +5,13 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 )
 
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // CSSLocation represents a location in a file or other source of data parsed by
@@ -36,46 +36,21 @@ type cssLocation struct {
 	native unsafe.Pointer
 }
 
-// NewCSSLocation creates a new CSSLocation instance from the given
-// fields.
-func NewCSSLocation(bytes, chars, lines, lineBytes, lineChars uint) CSSLocation {
-	var f0 C.gsize // out
-	f0 = C.gsize(bytes)
-	var f1 C.gsize // out
-	f1 = C.gsize(chars)
-	var f2 C.gsize // out
-	f2 = C.gsize(lines)
-	var f3 C.gsize // out
-	f3 = C.gsize(lineBytes)
-	var f4 C.gsize // out
-	f4 = C.gsize(lineChars)
-
-	v := C.GtkCssLocation{
-		bytes:      f0,
-		chars:      f1,
-		lines:      f2,
-		line_bytes: f3,
-		line_chars: f4,
-	}
-
-	return *(*CSSLocation)(gextras.NewStructNative(unsafe.Pointer(&v)))
-}
-
 // Bytes: number of bytes parsed since the beginning.
 func (c *CSSLocation) Bytes() uint {
 	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("bytes")
-	valptr := unsafe.Add(unsafe.Pointer(c), offset)
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
 	var v uint // out
-	v = uint(*(*C.gsize)(unsafe.Pointer(&valptr)))
+	v = uint(*(*C.gsize)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Chars: number of characters parsed since the beginning.
 func (c *CSSLocation) Chars() uint {
 	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("chars")
-	valptr := unsafe.Add(unsafe.Pointer(c), offset)
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
 	var v uint // out
-	v = uint(*(*C.gsize)(unsafe.Pointer(&valptr)))
+	v = uint(*(*C.gsize)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
@@ -83,26 +58,62 @@ func (c *CSSLocation) Chars() uint {
 // as a line number, you need to add 1 to this.
 func (c *CSSLocation) Lines() uint {
 	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("lines")
-	valptr := unsafe.Add(unsafe.Pointer(c), offset)
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
 	var v uint // out
-	v = uint(*(*C.gsize)(unsafe.Pointer(&valptr)))
+	v = uint(*(*C.gsize)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // LineBytes: number of bytes parsed since the last line break.
 func (c *CSSLocation) LineBytes() uint {
 	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("line_bytes")
-	valptr := unsafe.Add(unsafe.Pointer(c), offset)
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
 	var v uint // out
-	v = uint(*(*C.gsize)(unsafe.Pointer(&valptr)))
+	v = uint(*(*C.gsize)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // LineChars: number of characters parsed since the last line break.
 func (c *CSSLocation) LineChars() uint {
 	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("line_chars")
-	valptr := unsafe.Add(unsafe.Pointer(c), offset)
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
 	var v uint // out
-	v = uint(*(*C.gsize)(unsafe.Pointer(&valptr)))
+	v = uint(*(*C.gsize)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+// Bytes: number of bytes parsed since the beginning.
+func (c *CSSLocation) SetBytes(bytes uint) {
+	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("bytes")
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
+	*(*C.gsize)(unsafe.Pointer(&*valptr)) = C.gsize(bytes)
+}
+
+// Chars: number of characters parsed since the beginning.
+func (c *CSSLocation) SetChars(chars uint) {
+	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("chars")
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
+	*(*C.gsize)(unsafe.Pointer(&*valptr)) = C.gsize(chars)
+}
+
+// Lines: number of full lines that have been parsed If you want to display this
+// as a line number, you need to add 1 to this.
+func (c *CSSLocation) SetLines(lines uint) {
+	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("lines")
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
+	*(*C.gsize)(unsafe.Pointer(&*valptr)) = C.gsize(lines)
+}
+
+// LineBytes: number of bytes parsed since the last line break.
+func (c *CSSLocation) SetLineBytes(lineBytes uint) {
+	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("line_bytes")
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
+	*(*C.gsize)(unsafe.Pointer(&*valptr)) = C.gsize(lineBytes)
+}
+
+// LineChars: number of characters parsed since the last line break.
+func (c *CSSLocation) SetLineChars(lineChars uint) {
+	offset := girepository.MustFind("Gtk", "CssLocation").StructFieldOffset("line_chars")
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
+	*(*C.gsize)(unsafe.Pointer(&*valptr)) = C.gsize(lineChars)
 }

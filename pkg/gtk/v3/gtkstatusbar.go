@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gtk3_StatusbarClass_text_popped(void*, guint, void*);
 // extern void _gotk4_gtk3_StatusbarClass_text_pushed(void*, guint, void*);
 // extern void _gotk4_gtk3_Statusbar_ConnectTextPopped(gpointer, guint, void*, guintptr);

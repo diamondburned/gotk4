@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gtk4_CustomFilterFunc(gpointer, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"

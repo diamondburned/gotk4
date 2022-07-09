@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GList* _gotk4_gtk4_CellLayoutIface_get_cells(void*);
 // extern GtkCellArea* _gotk4_gtk4_CellLayoutIface_get_area(void*);
 // extern void _gotk4_gtk4_CellLayoutDataFunc(void*, void*, void*, void*, gpointer);

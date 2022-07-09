@@ -20,6 +20,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GdkWindow* _gotk4_gdk3_Window_ConnectPickEmbeddedChild(gpointer, gdouble, gdouble, guintptr);
 // extern cairo_surface_t* _gotk4_gdk3_WindowClass_create_surface(void*, gint, gint);
 // extern cairo_surface_t* _gotk4_gdk3_Window_ConnectCreateSurface(gpointer, gint, gint, guintptr);

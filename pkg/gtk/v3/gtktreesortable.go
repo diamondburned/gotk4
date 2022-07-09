@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gtk3_TreeSortableIface_get_sort_column_id(void*, void*, void*);
 // extern gboolean _gotk4_gtk3_TreeSortableIface_has_default_sort_func(void*);
 // extern gint _gotk4_gtk3_TreeIterCompareFunc(void*, void*, void*, gpointer);

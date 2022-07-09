@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gtk3_CellAreaContextClass_allocate(void*, gint, gint);
 // extern void _gotk4_gtk3_CellAreaContextClass_get_preferred_height_for_width(void*, gint, void*, void*);
 // extern void _gotk4_gtk3_CellAreaContextClass_get_preferred_width_for_height(void*, gint, void*, void*);

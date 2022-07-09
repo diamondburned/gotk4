@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GtkAction* _gotk4_gtk3_ActionGroupClass_get_action(void*, void*);
 // extern gchar* _gotk4_gtk3_TranslateFunc(void*, gpointer);
 // extern void _gotk4_gtk3_ActionGroup_ConnectConnectProxy(gpointer, void*, void*, guintptr);
@@ -772,18 +773,18 @@ type actionEntry struct {
 // Name: name of the action.
 func (a *ActionEntry) Name() string {
 	offset := girepository.MustFind("Gtk", "ActionEntry").StructFieldOffset("name")
-	valptr := unsafe.Add(unsafe.Pointer(a), offset)
+	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // StockID: stock id for the action, or the name of an icon from the icon theme.
 func (a *ActionEntry) StockID() string {
 	offset := girepository.MustFind("Gtk", "ActionEntry").StructFieldOffset("stock_id")
-	valptr := unsafe.Add(unsafe.Pointer(a), offset)
+	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -792,9 +793,9 @@ func (a *ActionEntry) StockID() string {
 // the label of the stock item with id stock_id is used.
 func (a *ActionEntry) Label() string {
 	offset := girepository.MustFind("Gtk", "ActionEntry").StructFieldOffset("label")
-	valptr := unsafe.Add(unsafe.Pointer(a), offset)
+	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -802,9 +803,9 @@ func (a *ActionEntry) Label() string {
 // gtk_accelerator_parse().
 func (a *ActionEntry) Accelerator() string {
 	offset := girepository.MustFind("Gtk", "ActionEntry").StructFieldOffset("accelerator")
-	valptr := unsafe.Add(unsafe.Pointer(a), offset)
+	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -812,9 +813,9 @@ func (a *ActionEntry) Accelerator() string {
 // translation, see gtk_action_group_set_translation_domain().
 func (a *ActionEntry) Tooltip() string {
 	offset := girepository.MustFind("Gtk", "ActionEntry").StructFieldOffset("tooltip")
-	valptr := unsafe.Add(unsafe.Pointer(a), offset)
+	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -836,18 +837,18 @@ type radioActionEntry struct {
 // Name: name of the action.
 func (r *RadioActionEntry) Name() string {
 	offset := girepository.MustFind("Gtk", "RadioActionEntry").StructFieldOffset("name")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // StockID: stock id for the action, or the name of an icon from the icon theme.
 func (r *RadioActionEntry) StockID() string {
 	offset := girepository.MustFind("Gtk", "RadioActionEntry").StructFieldOffset("stock_id")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -855,9 +856,9 @@ func (r *RadioActionEntry) StockID() string {
 // translation, see gtk_action_group_set_translation_domain().
 func (r *RadioActionEntry) Label() string {
 	offset := girepository.MustFind("Gtk", "RadioActionEntry").StructFieldOffset("label")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -865,9 +866,9 @@ func (r *RadioActionEntry) Label() string {
 // gtk_accelerator_parse().
 func (r *RadioActionEntry) Accelerator() string {
 	offset := girepository.MustFind("Gtk", "RadioActionEntry").StructFieldOffset("accelerator")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -875,9 +876,9 @@ func (r *RadioActionEntry) Accelerator() string {
 // translation, see gtk_action_group_set_translation_domain().
 func (r *RadioActionEntry) Tooltip() string {
 	offset := girepository.MustFind("Gtk", "RadioActionEntry").StructFieldOffset("tooltip")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -885,10 +886,18 @@ func (r *RadioActionEntry) Tooltip() string {
 // gtk_radio_action_get_current_value().
 func (r *RadioActionEntry) Value() int32 {
 	offset := girepository.MustFind("Gtk", "RadioActionEntry").StructFieldOffset("value")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+// Value: value to set on the radio action. See
+// gtk_radio_action_get_current_value().
+func (r *RadioActionEntry) SetValue(value int32) {
+	offset := girepository.MustFind("Gtk", "RadioActionEntry").StructFieldOffset("value")
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(value)
 }
 
 // ToggleActionEntry structs are used with gtk_action_group_add_toggle_actions()
@@ -909,18 +918,18 @@ type toggleActionEntry struct {
 // Name: name of the action.
 func (t *ToggleActionEntry) Name() string {
 	offset := girepository.MustFind("Gtk", "ToggleActionEntry").StructFieldOffset("name")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // StockID: stock id for the action, or the name of an icon from the icon theme.
 func (t *ToggleActionEntry) StockID() string {
 	offset := girepository.MustFind("Gtk", "ToggleActionEntry").StructFieldOffset("stock_id")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -928,9 +937,9 @@ func (t *ToggleActionEntry) StockID() string {
 // translation, see gtk_action_group_set_translation_domain().
 func (t *ToggleActionEntry) Label() string {
 	offset := girepository.MustFind("Gtk", "ToggleActionEntry").StructFieldOffset("label")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -938,9 +947,9 @@ func (t *ToggleActionEntry) Label() string {
 // gtk_accelerator_parse().
 func (t *ToggleActionEntry) Accelerator() string {
 	offset := girepository.MustFind("Gtk", "ToggleActionEntry").StructFieldOffset("accelerator")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -948,19 +957,28 @@ func (t *ToggleActionEntry) Accelerator() string {
 // translation, see gtk_action_group_set_translation_domain().
 func (t *ToggleActionEntry) Tooltip() string {
 	offset := girepository.MustFind("Gtk", "ToggleActionEntry").StructFieldOffset("tooltip")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // IsActive: initial state of the toggle action.
 func (t *ToggleActionEntry) IsActive() bool {
 	offset := girepository.MustFind("Gtk", "ToggleActionEntry").StructFieldOffset("is_active")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v bool // out
-	if *(*C.gboolean)(unsafe.Pointer(&valptr)) != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&*valptr)) != 0 {
 		v = true
 	}
 	return v
+}
+
+// IsActive: initial state of the toggle action.
+func (t *ToggleActionEntry) SetIsActive(isActive bool) {
+	offset := girepository.MustFind("Gtk", "ToggleActionEntry").StructFieldOffset("is_active")
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	if isActive {
+		*(*C.gboolean)(unsafe.Pointer(&*valptr)) = C.TRUE
+	}
 }

@@ -24,6 +24,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 // extern void _gotk4_gtk3_AsyncReadyCallback(void*, void*, gpointer);
 // extern void _gotk4_gtk3_IconThemeClass_changed(void*);

@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gtk3_PanedClass_accept_position(void*);
 // extern gboolean _gotk4_gtk3_PanedClass_cancel_position(void*);
 // extern gboolean _gotk4_gtk3_PanedClass_cycle_child_focus(void*, gboolean);

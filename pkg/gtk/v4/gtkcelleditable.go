@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gtk4_CellEditableIface_editing_done(void*);
 // extern void _gotk4_gtk4_CellEditableIface_remove_widget(void*);
 // extern void _gotk4_gtk4_CellEditableIface_start_editing(void*, void*);

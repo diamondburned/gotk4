@@ -17,6 +17,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gtk4_PrintSettingsFunc(void*, void*, gpointer);
 import "C"
 
@@ -1530,36 +1531,34 @@ type pageRange struct {
 	native unsafe.Pointer
 }
 
-// NewPageRange creates a new PageRange instance from the given
-// fields.
-func NewPageRange(start, end int32) PageRange {
-	var f0 C.int // out
-	f0 = C.int(start)
-	var f1 C.int // out
-	f1 = C.int(end)
-
-	v := C.GtkPageRange{
-		start: f0,
-		end:   f1,
-	}
-
-	return *(*PageRange)(gextras.NewStructNative(unsafe.Pointer(&v)))
-}
-
 // Start: start of page range.
 func (p *PageRange) Start() int32 {
 	offset := girepository.MustFind("Gtk", "PageRange").StructFieldOffset("start")
-	valptr := unsafe.Add(unsafe.Pointer(p), offset)
+	valptr := (*uintptr)(unsafe.Add(p.native, offset))
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // End: end of page range.
 func (p *PageRange) End() int32 {
 	offset := girepository.MustFind("Gtk", "PageRange").StructFieldOffset("end")
-	valptr := unsafe.Add(unsafe.Pointer(p), offset)
+	valptr := (*uintptr)(unsafe.Add(p.native, offset))
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+// Start: start of page range.
+func (p *PageRange) SetStart(start int32) {
+	offset := girepository.MustFind("Gtk", "PageRange").StructFieldOffset("start")
+	valptr := (*uintptr)(unsafe.Add(p.native, offset))
+	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(start)
+}
+
+// End: end of page range.
+func (p *PageRange) SetEnd(end int32) {
+	offset := girepository.MustFind("Gtk", "PageRange").StructFieldOffset("end")
+	valptr := (*uintptr)(unsafe.Add(p.native, offset))
+	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(end)
 }

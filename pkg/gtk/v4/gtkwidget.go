@@ -22,6 +22,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gtk4_TickCallback(void*, void*, gpointer);
 // extern gboolean _gotk4_gtk4_WidgetClass_contains(void*, double, double);
 // extern gboolean _gotk4_gtk4_WidgetClass_grab_focus(void*);
@@ -5231,19 +5232,33 @@ func NewRequisition() *Requisition {
 // Width widget’s desired width.
 func (r *Requisition) Width() int32 {
 	offset := girepository.MustFind("Gtk", "Requisition").StructFieldOffset("width")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Height widget’s desired height.
 func (r *Requisition) Height() int32 {
 	offset := girepository.MustFind("Gtk", "Requisition").StructFieldOffset("height")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+// Width widget’s desired width.
+func (r *Requisition) SetWidth(width int32) {
+	offset := girepository.MustFind("Gtk", "Requisition").StructFieldOffset("width")
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(width)
+}
+
+// Height widget’s desired height.
+func (r *Requisition) SetHeight(height int32) {
+	offset := girepository.MustFind("Gtk", "Requisition").StructFieldOffset("height")
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(height)
 }
 
 // Copy copies a GtkRequisition.

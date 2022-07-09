@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern AtkRange* _gotk4_atk1_ValueIface_get_range(void*);
 // extern GSList* _gotk4_atk1_ValueIface_get_sub_ranges(void*);
 // extern gboolean _gotk4_atk1_ValueIface_set_current_value(void*, void*);

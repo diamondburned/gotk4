@@ -19,6 +19,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern guint _gotk4_gtk3_RcStyleClass_parse(void*, void*, void*);
 // extern void _gotk4_gtk3_RcStyleClass_merge(void*, void*);
 import "C"
@@ -1100,26 +1101,26 @@ type rcProperty struct {
 // TypeName: quark-ified type identifier.
 func (r *RCProperty) TypeName() glib.Quark {
 	offset := girepository.MustFind("Gtk", "RcProperty").StructFieldOffset("type_name")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v glib.Quark // out
-	v = uint32(*(*C.guint32)(unsafe.Pointer(&valptr)))
+	v = uint32(*(*C.guint32)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // PropertyName: quark-ified property identifier like “GtkScrollbar::spacing”.
 func (r *RCProperty) PropertyName() glib.Quark {
 	offset := girepository.MustFind("Gtk", "RcProperty").StructFieldOffset("property_name")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v glib.Quark // out
-	v = uint32(*(*C.guint32)(unsafe.Pointer(&valptr)))
+	v = uint32(*(*C.guint32)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Origin: field similar to one found in SettingsValue.
 func (r *RCProperty) Origin() string {
 	offset := girepository.MustFind("Gtk", "RcProperty").StructFieldOffset("origin")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }

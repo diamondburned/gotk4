@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // GTypeSettings returns the GType for the type Settings.
@@ -279,8 +280,8 @@ type settingsValue struct {
 // “XProperty” for other sources.
 func (s *SettingsValue) Origin() string {
 	offset := girepository.MustFind("Gtk", "SettingsValue").StructFieldOffset("origin")
-	valptr := unsafe.Add(unsafe.Pointer(s), offset)
+	valptr := (*uintptr)(unsafe.Add(s.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }

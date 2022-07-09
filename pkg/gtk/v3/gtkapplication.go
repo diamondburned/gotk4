@@ -19,6 +19,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gtk3_ApplicationClass_window_added(void*, void*);
 // extern void _gotk4_gtk3_ApplicationClass_window_removed(void*, void*);
 // extern void _gotk4_gtk3_Application_ConnectQueryEnd(gpointer, guintptr);

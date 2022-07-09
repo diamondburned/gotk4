@@ -18,6 +18,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gio2_SettingsClass_change_event(void*, void*, gint);
 // extern gboolean _gotk4_gio2_SettingsClass_writable_change_event(void*, guint32);
 // extern gboolean _gotk4_gio2_SettingsGetMapping(void*, void*, gpointer);

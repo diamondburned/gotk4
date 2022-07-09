@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gchar* _gotk4_gtk3_MenuItemClass_get_label(void*);
 // extern void _gotk4_gtk3_MenuItemClass_activate(void*);
 // extern void _gotk4_gtk3_MenuItemClass_activate_item(void*);

@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gtk4_EventControllerScroll_ConnectScroll(gpointer, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_EventControllerScroll_ConnectDecelerate(gpointer, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_EventControllerScroll_ConnectScrollBegin(gpointer, guintptr);

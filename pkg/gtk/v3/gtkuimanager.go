@@ -18,6 +18,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GtkAction* _gotk4_gtk3_UIManagerClass_get_action(void*, void*);
 // extern GtkWidget* _gotk4_gtk3_UIManagerClass_get_widget(void*, void*);
 // extern void _gotk4_gtk3_UIManagerClass_actions_changed(void*);

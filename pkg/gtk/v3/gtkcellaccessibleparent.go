@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gtk3_CellAccessibleParentIface_grab_focus(void*, void*);
 // extern int _gotk4_gtk3_CellAccessibleParentIface_get_child_index(void*, void*);
 // extern void _gotk4_gtk3_CellAccessibleParentIface_activate(void*, void*);

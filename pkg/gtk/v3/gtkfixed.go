@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // GTypeFixed returns the GType for the type Fixed.
@@ -185,10 +186,10 @@ type fixedChild struct {
 
 func (f *FixedChild) Widget() Widgetter {
 	offset := girepository.MustFind("Gtk", "FixedChild").StructFieldOffset("widget")
-	valptr := unsafe.Add(unsafe.Pointer(f), offset)
+	valptr := (*uintptr)(unsafe.Add(f.native, offset))
 	var v Widgetter // out
 	{
-		objptr := unsafe.Pointer(valptr)
+		objptr := unsafe.Pointer(*valptr)
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -209,16 +210,28 @@ func (f *FixedChild) Widget() Widgetter {
 
 func (f *FixedChild) X() int32 {
 	offset := girepository.MustFind("Gtk", "FixedChild").StructFieldOffset("x")
-	valptr := unsafe.Add(unsafe.Pointer(f), offset)
+	valptr := (*uintptr)(unsafe.Add(f.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 func (f *FixedChild) Y() int32 {
 	offset := girepository.MustFind("Gtk", "FixedChild").StructFieldOffset("y")
-	valptr := unsafe.Add(unsafe.Pointer(f), offset)
+	valptr := (*uintptr)(unsafe.Add(f.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+func (f *FixedChild) SetX(x int32) {
+	offset := girepository.MustFind("Gtk", "FixedChild").StructFieldOffset("x")
+	valptr := (*uintptr)(unsafe.Add(f.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(x)
+}
+
+func (f *FixedChild) SetY(y int32) {
+	offset := girepository.MustFind("Gtk", "FixedChild").StructFieldOffset("y")
+	valptr := (*uintptr)(unsafe.Add(f.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(y)
 }

@@ -17,6 +17,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GtkTreePath* _gotk4_gtk4_TreeModelIface_get_path(void*, void*);
 // extern gboolean _gotk4_gtk4_TreeModelForEachFunc(void*, void*, void*, gpointer);
 // extern gboolean _gotk4_gtk4_TreeModelIface_get_iter(void*, void*, void*);
@@ -1858,37 +1859,44 @@ func marshalTreeIter(p uintptr) (interface{}, error) {
 // Stamp: unique stamp to catch invalid iterators.
 func (t *TreeIter) Stamp() int32 {
 	offset := girepository.MustFind("Gtk", "TreeIter").StructFieldOffset("stamp")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v int32 // out
-	v = int32(*(*C.int)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.int)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // UserData: model-specific data.
 func (t *TreeIter) UserData() unsafe.Pointer {
 	offset := girepository.MustFind("Gtk", "TreeIter").StructFieldOffset("user_data")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(valptr))
+	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
 	return v
 }
 
 // UserData2: model-specific data.
 func (t *TreeIter) UserData2() unsafe.Pointer {
 	offset := girepository.MustFind("Gtk", "TreeIter").StructFieldOffset("user_data2")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(valptr))
+	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
 	return v
 }
 
 // UserData3: model-specific data.
 func (t *TreeIter) UserData3() unsafe.Pointer {
 	offset := girepository.MustFind("Gtk", "TreeIter").StructFieldOffset("user_data3")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(valptr))
+	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
 	return v
+}
+
+// Stamp: unique stamp to catch invalid iterators.
+func (t *TreeIter) SetStamp(stamp int32) {
+	offset := girepository.MustFind("Gtk", "TreeIter").StructFieldOffset("stamp")
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	*(*C.int)(unsafe.Pointer(&*valptr)) = C.int(stamp)
 }
 
 // Copy creates a dynamically allocated tree iterator as a copy of iter.

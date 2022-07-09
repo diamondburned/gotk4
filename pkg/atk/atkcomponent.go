@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_atk1_ComponentIface_grab_focus(void*);
 // extern gboolean _gotk4_atk1_ComponentIface_set_size(void*, gint, gint);
 // extern gdouble _gotk4_atk1_ComponentIface_get_alpha(void*);
@@ -549,60 +550,66 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 	return &Rectangle{&rectangle{(unsafe.Pointer)(b)}}, nil
 }
 
-// NewRectangle creates a new Rectangle instance from the given
-// fields.
-func NewRectangle(x, y, width, height int32) Rectangle {
-	var f0 C.gint // out
-	f0 = C.gint(x)
-	var f1 C.gint // out
-	f1 = C.gint(y)
-	var f2 C.gint // out
-	f2 = C.gint(width)
-	var f3 C.gint // out
-	f3 = C.gint(height)
-
-	v := C.AtkRectangle{
-		x:      f0,
-		y:      f1,
-		width:  f2,
-		height: f3,
-	}
-
-	return *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer(&v)))
-}
-
 // X coordinate of the left side of the rectangle.
 func (r *Rectangle) X() int32 {
 	offset := girepository.MustFind("Atk", "Rectangle").StructFieldOffset("x")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Y coordinate of the top side of the rectangle.
 func (r *Rectangle) Y() int32 {
 	offset := girepository.MustFind("Atk", "Rectangle").StructFieldOffset("y")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Width: width of the rectangle.
 func (r *Rectangle) Width() int32 {
 	offset := girepository.MustFind("Atk", "Rectangle").StructFieldOffset("width")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Height: height of the rectangle.
 func (r *Rectangle) Height() int32 {
 	offset := girepository.MustFind("Atk", "Rectangle").StructFieldOffset("height")
-	valptr := unsafe.Add(unsafe.Pointer(r), offset)
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+// X coordinate of the left side of the rectangle.
+func (r *Rectangle) SetX(x int32) {
+	offset := girepository.MustFind("Atk", "Rectangle").StructFieldOffset("x")
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(x)
+}
+
+// Y coordinate of the top side of the rectangle.
+func (r *Rectangle) SetY(y int32) {
+	offset := girepository.MustFind("Atk", "Rectangle").StructFieldOffset("y")
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(y)
+}
+
+// Width: width of the rectangle.
+func (r *Rectangle) SetWidth(width int32) {
+	offset := girepository.MustFind("Atk", "Rectangle").StructFieldOffset("width")
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(width)
+}
+
+// Height: height of the rectangle.
+func (r *Rectangle) SetHeight(height int32) {
+	offset := girepository.MustFind("Atk", "Rectangle").StructFieldOffset("height")
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(height)
 }

@@ -13,6 +13,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gchar* _gotk4_atk1_DocumentIface_get_document_type(void*);
 // extern gint _gotk4_atk1_DocumentIface_get_current_page_number(void*);
 // extern gint _gotk4_atk1_DocumentIface_get_page_count(void*);

@@ -18,6 +18,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GIcon* _gotk4_gio2_DriveIface_get_icon(void*);
 // extern GIcon* _gotk4_gio2_DriveIface_get_symbolic_icon(void*);
 // extern GList* _gotk4_gio2_DriveIface_get_volumes(void*);

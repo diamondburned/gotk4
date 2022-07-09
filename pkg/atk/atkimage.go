@@ -13,6 +13,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_atk1_ImageIface_set_image_description(void*, void*);
 // extern gchar* _gotk4_atk1_ImageIface_get_image_description(void*);
 // extern gchar* _gotk4_atk1_ImageIface_get_image_locale(void*);

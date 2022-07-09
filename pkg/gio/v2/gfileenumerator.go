@@ -18,6 +18,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GFileInfo* _gotk4_gio2_FileEnumeratorClass_next_file(void*, void*, GError**);
 // extern GList* _gotk4_gio2_FileEnumeratorClass_next_files_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_FileEnumeratorClass_close_finish(void*, void*, GError**);

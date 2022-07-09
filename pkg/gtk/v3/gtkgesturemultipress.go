@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gtk3_GestureMultiPress_ConnectPressed(gpointer, gint, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk3_GestureMultiPress_ConnectReleased(gpointer, gint, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk3_GestureMultiPress_ConnectStopped(gpointer, guintptr);

@@ -17,6 +17,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GFileInfo* _gotk4_gio2_FileOutputStreamClass_query_info(void*, void*, void*, GError**);
 // extern GFileInfo* _gotk4_gio2_FileOutputStreamClass_query_info_finish(void*, void*, GError**);
 // extern char* _gotk4_gio2_FileOutputStreamClass_get_etag(void*);

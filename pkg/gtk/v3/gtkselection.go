@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // GTypeTargetFlags returns the GType for the type TargetFlags.
@@ -180,18 +181,18 @@ func NewTargetEntry(target string, flags uint32, info uint32) *TargetEntry {
 // Target: string representation of the target type.
 func (t *TargetEntry) Target() string {
 	offset := girepository.MustFind("Gtk", "TargetEntry").StructFieldOffset("target")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Flags for DND.
 func (t *TargetEntry) Flags() uint32 {
 	offset := girepository.MustFind("Gtk", "TargetEntry").StructFieldOffset("flags")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v uint32 // out
-	v = uint32(*(*C.guint)(unsafe.Pointer(&valptr)))
+	v = uint32(*(*C.guint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
@@ -200,10 +201,26 @@ func (t *TargetEntry) Flags() uint32 {
 // the target type without extensive string compares.
 func (t *TargetEntry) Info() uint32 {
 	offset := girepository.MustFind("Gtk", "TargetEntry").StructFieldOffset("info")
-	valptr := unsafe.Add(unsafe.Pointer(t), offset)
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v uint32 // out
-	v = uint32(*(*C.guint)(unsafe.Pointer(&valptr)))
+	v = uint32(*(*C.guint)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+// Flags for DND.
+func (t *TargetEntry) SetFlags(flags uint32) {
+	offset := girepository.MustFind("Gtk", "TargetEntry").StructFieldOffset("flags")
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	*(*C.guint)(unsafe.Pointer(&*valptr)) = C.guint(flags)
+}
+
+// Info: application-assigned integer ID which will get passed as a parameter to
+// e.g the Widget::selection-get signal. It allows the application to identify
+// the target type without extensive string compares.
+func (t *TargetEntry) SetInfo(info uint32) {
+	offset := girepository.MustFind("Gtk", "TargetEntry").StructFieldOffset("info")
+	valptr := (*uintptr)(unsafe.Add(t.native, offset))
+	*(*C.guint)(unsafe.Pointer(&*valptr)) = C.guint(info)
 }
 
 // Copy makes a copy of a TargetEntry and its data.

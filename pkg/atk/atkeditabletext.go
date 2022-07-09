@@ -13,6 +13,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_atk1_EditableTextIface_copy_text(void*, gint, gint);
 // extern void _gotk4_atk1_EditableTextIface_cut_text(void*, gint, gint);
 // extern void _gotk4_atk1_EditableTextIface_delete_text(void*, gint, gint);

@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // DBusErrorEncodeGError creates a D-Bus error name to use for error. If error
@@ -312,17 +313,24 @@ type dBusErrorEntry struct {
 // ErrorCode: error code.
 func (d *DBusErrorEntry) ErrorCode() int32 {
 	offset := girepository.MustFind("Gio", "DBusErrorEntry").StructFieldOffset("error_code")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v int32 // out
-	v = int32(*(*C.gint)(unsafe.Pointer(&valptr)))
+	v = int32(*(*C.gint)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // DBusErrorName d-Bus error name to associate with error_code.
 func (d *DBusErrorEntry) DBusErrorName() string {
 	offset := girepository.MustFind("Gio", "DBusErrorEntry").StructFieldOffset("dbus_error_name")
-	valptr := unsafe.Add(unsafe.Pointer(d), offset)
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
+}
+
+// ErrorCode: error code.
+func (d *DBusErrorEntry) SetErrorCode(errorCode int32) {
+	offset := girepository.MustFind("Gio", "DBusErrorEntry").StructFieldOffset("error_code")
+	valptr := (*uintptr)(unsafe.Add(d.native, offset))
+	*(*C.gint)(unsafe.Pointer(&*valptr)) = C.gint(errorCode)
 }

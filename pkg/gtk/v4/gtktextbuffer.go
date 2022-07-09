@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gtk4_TextBufferClass_apply_tag(void*, void*, void*, void*);
 // extern void _gotk4_gtk4_TextBufferClass_begin_user_action(void*);
 // extern void _gotk4_gtk4_TextBufferClass_changed(void*);

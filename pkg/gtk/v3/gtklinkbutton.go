@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gtk3_LinkButtonClass_activate_link(void*);
 // extern gboolean _gotk4_gtk3_LinkButton_ConnectActivateLink(gpointer, guintptr);
 import "C"

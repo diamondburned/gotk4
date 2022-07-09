@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gchar* _gotk4_gtk3_ScaleClass_format_value(void*, gdouble);
 // extern gchar* _gotk4_gtk3_Scale_ConnectFormatValue(gpointer, gdouble, guintptr);
 // extern void _gotk4_gtk3_ScaleClass_draw_value(void*);

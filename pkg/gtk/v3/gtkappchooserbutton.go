@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern void _gotk4_gtk3_AppChooserButtonClass_custom_item_activated(void*, void*);
 // extern void _gotk4_gtk3_AppChooserButton_ConnectCustomItemActivated(gpointer, void*, guintptr);
 import "C"

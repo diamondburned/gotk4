@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // GTypeColor returns the GType for the type Color.
@@ -47,35 +48,13 @@ func marshalColor(p uintptr) (interface{}, error) {
 	return &Color{&color{(unsafe.Pointer)(b)}}, nil
 }
 
-// NewColor creates a new Color instance from the given
-// fields.
-func NewColor(pixel uint32, red, green, blue uint16) Color {
-	var f0 C.guint32 // out
-	f0 = C.guint32(pixel)
-	var f1 C.guint16 // out
-	f1 = C.guint16(red)
-	var f2 C.guint16 // out
-	f2 = C.guint16(green)
-	var f3 C.guint16 // out
-	f3 = C.guint16(blue)
-
-	v := C.GdkColor{
-		pixel: f0,
-		red:   f1,
-		green: f2,
-		blue:  f3,
-	}
-
-	return *(*Color)(gextras.NewStructNative(unsafe.Pointer(&v)))
-}
-
 // Pixel: for allocated colors, the pixel value used to draw this color on the
 // screen. Not used anymore.
 func (c *Color) Pixel() uint32 {
 	offset := girepository.MustFind("Gdk", "Color").StructFieldOffset("pixel")
-	valptr := unsafe.Add(unsafe.Pointer(c), offset)
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
 	var v uint32 // out
-	v = uint32(*(*C.guint32)(unsafe.Pointer(&valptr)))
+	v = uint32(*(*C.guint32)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
@@ -83,28 +62,58 @@ func (c *Color) Pixel() uint32 {
 // 65535 indicating full intensity.
 func (c *Color) Red() uint16 {
 	offset := girepository.MustFind("Gdk", "Color").StructFieldOffset("red")
-	valptr := unsafe.Add(unsafe.Pointer(c), offset)
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&valptr)))
+	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Green: green component of the color.
 func (c *Color) Green() uint16 {
 	offset := girepository.MustFind("Gdk", "Color").StructFieldOffset("green")
-	valptr := unsafe.Add(unsafe.Pointer(c), offset)
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&valptr)))
+	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
 	return v
 }
 
 // Blue: blue component of the color.
 func (c *Color) Blue() uint16 {
 	offset := girepository.MustFind("Gdk", "Color").StructFieldOffset("blue")
-	valptr := unsafe.Add(unsafe.Pointer(c), offset)
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
 	var v uint16 // out
-	v = uint16(*(*C.guint16)(unsafe.Pointer(&valptr)))
+	v = uint16(*(*C.guint16)(unsafe.Pointer(&*valptr)))
 	return v
+}
+
+// Pixel: for allocated colors, the pixel value used to draw this color on the
+// screen. Not used anymore.
+func (c *Color) SetPixel(pixel uint32) {
+	offset := girepository.MustFind("Gdk", "Color").StructFieldOffset("pixel")
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
+	*(*C.guint32)(unsafe.Pointer(&*valptr)) = C.guint32(pixel)
+}
+
+// Red: red component of the color. This is a value between 0 and 65535, with
+// 65535 indicating full intensity.
+func (c *Color) SetRed(red uint16) {
+	offset := girepository.MustFind("Gdk", "Color").StructFieldOffset("red")
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
+	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(red)
+}
+
+// Green: green component of the color.
+func (c *Color) SetGreen(green uint16) {
+	offset := girepository.MustFind("Gdk", "Color").StructFieldOffset("green")
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
+	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(green)
+}
+
+// Blue: blue component of the color.
+func (c *Color) SetBlue(blue uint16) {
+	offset := girepository.MustFind("Gdk", "Color").StructFieldOffset("blue")
+	valptr := (*uintptr)(unsafe.Add(c.native, offset))
+	*(*C.guint16)(unsafe.Pointer(&*valptr)) = C.guint16(blue)
 }
 
 // Copy makes a copy of a Color.

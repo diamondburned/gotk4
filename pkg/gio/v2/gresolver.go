@@ -21,6 +21,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GList* _gotk4_gio2_ResolverClass_lookup_by_name(void*, void*, void*, GError**);
 // extern GList* _gotk4_gio2_ResolverClass_lookup_by_name_finish(void*, void*, GError**);
 // extern GList* _gotk4_gio2_ResolverClass_lookup_by_name_with_flags_finish(void*, void*, GError**);

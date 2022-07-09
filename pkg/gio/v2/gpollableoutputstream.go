@@ -17,6 +17,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GSource* _gotk4_gio2_PollableOutputStreamInterface_create_source(void*, void*);
 // extern gboolean _gotk4_gio2_PollableOutputStreamInterface_can_poll(void*);
 // extern gboolean _gotk4_gio2_PollableOutputStreamInterface_is_writable(void*);

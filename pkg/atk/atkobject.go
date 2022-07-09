@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern AtkObject* _gotk4_atk1_ObjectClass_get_parent(void*);
 // extern AtkRelationSet* _gotk4_atk1_ObjectClass_ref_relation_set(void*);
 // extern AtkStateSet* _gotk4_atk1_ObjectClass_ref_state_set(void*);
@@ -2126,18 +2127,18 @@ type attribute struct {
 // Name: attribute name.
 func (a *Attribute) Name() string {
 	offset := girepository.MustFind("Atk", "Attribute").StructFieldOffset("name")
-	valptr := unsafe.Add(unsafe.Pointer(a), offset)
+	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
 // Value: value of the attribute, represented as a string.
 func (a *Attribute) Value() string {
 	offset := girepository.MustFind("Atk", "Attribute").StructFieldOffset("value")
-	valptr := unsafe.Add(unsafe.Pointer(a), offset)
+	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }
 
@@ -2158,8 +2159,8 @@ type propertyValues struct {
 // PropertyName: name of the ATK property which has changed.
 func (p *PropertyValues) PropertyName() string {
 	offset := girepository.MustFind("Atk", "PropertyValues").StructFieldOffset("property_name")
-	valptr := unsafe.Add(unsafe.Pointer(p), offset)
+	valptr := (*uintptr)(unsafe.Add(p.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
 	return v
 }

@@ -13,6 +13,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GTlsDatabase* _gotk4_gio2_TlsBackendInterface_get_default_database(void*);
 // extern gboolean _gotk4_gio2_TlsBackendInterface_supports_dtls(void*);
 // extern gboolean _gotk4_gio2_TlsBackendInterface_supports_tls(void*);

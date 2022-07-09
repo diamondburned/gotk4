@@ -15,6 +15,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_gtk4_TreeModelFilterClass_visible(void*, void*, void*);
 // extern gboolean _gotk4_gtk4_TreeModelFilterVisibleFunc(void*, void*, gpointer);
 // extern void _gotk4_gtk4_TreeModelFilterClass_modify(void*, void*, void*, void*, int);

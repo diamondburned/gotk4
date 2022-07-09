@@ -64,18 +64,30 @@ func NewSizeAlloc() *Size {
 
 // Width: width.
 func (s *Size) Width() float32 {
-	valptr := s.native.width
+	valptr := &s.native.width
 	var v float32 // out
-	v = float32(valptr)
+	v = float32(*valptr)
 	return v
 }
 
 // Height: height.
 func (s *Size) Height() float32 {
-	valptr := s.native.height
+	valptr := &s.native.height
 	var v float32 // out
-	v = float32(valptr)
+	v = float32(*valptr)
 	return v
+}
+
+// Width: width.
+func (s *Size) SetWidth(width float32) {
+	valptr := &s.native.width
+	*valptr = C.float(width)
+}
+
+// Height: height.
+func (s *Size) SetHeight(height float32) {
+	valptr := &s.native.height
+	*valptr = C.float(height)
 }
 
 // Equal checks whether the two give #graphene_size_t are equal.

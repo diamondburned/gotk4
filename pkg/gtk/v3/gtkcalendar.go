@@ -17,6 +17,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gchar* _gotk4_gtk3_CalendarDetailFunc(void*, guint, guint, guint, gpointer);
 // extern void _gotk4_gtk3_CalendarClass_day_selected(void*);
 // extern void _gotk4_gtk3_CalendarClass_day_selected_double_click(void*);

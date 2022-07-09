@@ -16,6 +16,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GMenuAttributeIter* _gotk4_gio2_MenuModelClass_iterate_item_attributes(void*, gint);
 // extern GMenuLinkIter* _gotk4_gio2_MenuModelClass_iterate_item_links(void*, gint);
 // extern GMenuModel* _gotk4_gio2_MenuModelClass_get_item_link(void*, gint, void*);

@@ -13,6 +13,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gpointer _gotk4_gio2_ListModelInterface_get_item(void*, guint);
 // extern guint _gotk4_gio2_ListModelInterface_get_n_items(void*);
 // extern void _gotk4_gio2_ListModel_ConnectItemsChanged(gpointer, guint, guint, guint, guintptr);

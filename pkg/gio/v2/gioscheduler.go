@@ -9,6 +9,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 import "C"
 
 // IOSchedulerCancelAllJobs cancels all cancellable I/O jobs.

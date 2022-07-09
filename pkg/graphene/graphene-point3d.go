@@ -64,26 +64,44 @@ func NewPoint3DAlloc() *Point3D {
 
 // X coordinate.
 func (p *Point3D) X() float32 {
-	valptr := p.native.x
+	valptr := &p.native.x
 	var v float32 // out
-	v = float32(valptr)
+	v = float32(*valptr)
 	return v
 }
 
 // Y coordinate.
 func (p *Point3D) Y() float32 {
-	valptr := p.native.y
+	valptr := &p.native.y
 	var v float32 // out
-	v = float32(valptr)
+	v = float32(*valptr)
 	return v
 }
 
 // Z coordinate.
 func (p *Point3D) Z() float32 {
-	valptr := p.native.z
+	valptr := &p.native.z
 	var v float32 // out
-	v = float32(valptr)
+	v = float32(*valptr)
 	return v
+}
+
+// X coordinate.
+func (p *Point3D) SetX(x float32) {
+	valptr := &p.native.x
+	*valptr = C.float(x)
+}
+
+// Y coordinate.
+func (p *Point3D) SetY(y float32) {
+	valptr := &p.native.y
+	*valptr = C.float(y)
+}
+
+// Z coordinate.
+func (p *Point3D) SetZ(z float32) {
+	valptr := &p.native.z
+	*valptr = C.float(z)
 }
 
 // Cross computes the cross product of the two given #graphene_point3d_t.

@@ -13,6 +13,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gboolean _gotk4_atk1_ActionIface_do_action(void*, gint);
 // extern gboolean _gotk4_atk1_ActionIface_set_description(void*, gint, void*);
 // extern gchar* _gotk4_atk1_ActionIface_get_description(void*, gint);

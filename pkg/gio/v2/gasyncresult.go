@@ -14,6 +14,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern GObject* _gotk4_gio2_AsyncResultIface_get_source_object(void*);
 // extern gboolean _gotk4_gio2_AsyncResultIface_is_tagged(void*, gpointer);
 // extern gpointer _gotk4_gio2_AsyncResultIface_get_user_data(void*);

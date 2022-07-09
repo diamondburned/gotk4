@@ -18,6 +18,7 @@ import (
 // #cgo pkg-config: gobject-2.0
 // #include <stdlib.h>
 // #include <glib.h>
+// #include <glib-object.h>
 // extern gint _gotk4_gtk3_AssistantPageFunc(gint, gpointer);
 // extern void _gotk4_gtk3_AssistantClass_apply(void*);
 // extern void _gotk4_gtk3_AssistantClass_cancel(void*);

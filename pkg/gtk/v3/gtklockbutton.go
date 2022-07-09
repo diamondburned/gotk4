@@ -143,8 +143,9 @@ func NewLockButton(permission gio.Permissioner) *LockButton {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "LockButton").InvokeMethod("new_LockButton", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "LockButton")
+	_gret := _info.InvokeClassMethod("new_LockButton", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(permission)
 
@@ -166,8 +167,9 @@ func (button *LockButton) Permission() gio.Permissioner {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
-	_gret := girepository.MustFind("Gtk", "LockButton").InvokeMethod("get_permission", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "LockButton")
+	_gret := _info.InvokeClassMethod("get_permission", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
 
@@ -208,7 +210,8 @@ func (button *LockButton) SetPermission(permission gio.Permissioner) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
 	}
 
-	girepository.MustFind("Gtk", "LockButton").InvokeMethod("set_permission", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "LockButton")
+	_info.InvokeClassMethod("set_permission", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(permission)

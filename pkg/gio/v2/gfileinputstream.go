@@ -18,10 +18,10 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GFileInfo* _gotk4_gio2_FileInputStreamClass_query_info(void*, void*, void*, GError**);
-// extern GFileInfo* _gotk4_gio2_FileInputStreamClass_query_info_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_FileInputStreamClass_can_seek(void*);
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void* _gotk4_gio2_FileInputStreamClass_query_info(void*, void*, void*, GError**);
+// extern void* _gotk4_gio2_FileInputStreamClass_query_info_finish(void*, void*, GError**);
 import "C"
 
 // GTypeFileInputStream returns the GType for the type FileInputStream.
@@ -135,7 +135,7 @@ func _gotk4_gio2_FileInputStreamClass_can_seek(arg0 *C.void) (cret C.gboolean) {
 }
 
 //export _gotk4_gio2_FileInputStreamClass_query_info
-func _gotk4_gio2_FileInputStreamClass_query_info(arg0 *C.void, arg1 *C.void, arg2 *C.void, _cerr **C.GError) (cret *C.GFileInfo) {
+func _gotk4_gio2_FileInputStreamClass_query_info(arg0 *C.void, arg1 *C.void, arg2 *C.void, _cerr **C.GError) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		QueryInfo(ctx context.Context, attributes string) (*FileInfo, error)
@@ -161,7 +161,7 @@ func _gotk4_gio2_FileInputStreamClass_query_info(arg0 *C.void, arg1 *C.void, arg
 }
 
 //export _gotk4_gio2_FileInputStreamClass_query_info_finish
-func _gotk4_gio2_FileInputStreamClass_query_info_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.GFileInfo) {
+func _gotk4_gio2_FileInputStreamClass_query_info_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		QueryInfoFinish(result AsyncResulter) (*FileInfo, error)
@@ -241,8 +241,9 @@ func (stream *FileInputStream) QueryInfo(ctx context.Context, attributes string)
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(attributes)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gio", "FileInputStream").InvokeMethod("query_info", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "FileInputStream")
+	_gret := _info.InvokeClassMethod("query_info", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -294,7 +295,8 @@ func (stream *FileInputStream) QueryInfoAsync(ctx context.Context, attributes st
 		_args[5] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "FileInputStream").InvokeMethod("query_info_async", _args[:], nil)
+	_info := girepository.MustFind("Gio", "FileInputStream")
+	_info.InvokeClassMethod("query_info_async", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -319,8 +321,9 @@ func (stream *FileInputStream) QueryInfoFinish(result AsyncResulter) (*FileInfo,
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_gret := girepository.MustFind("Gio", "FileInputStream").InvokeMethod("query_info_finish", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "FileInputStream")
+	_gret := _info.InvokeClassMethod("query_info_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)

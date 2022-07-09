@@ -853,7 +853,8 @@ func (application *Application) Activate() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("activate", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("activate", _args[:], nil)
 
 	runtime.KeepAlive(application)
 }
@@ -892,7 +893,8 @@ func (application *Application) AddOptionGroup(group *glib.OptionGroup) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(group)))
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("add_option_group", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("add_option_group", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(group)
@@ -917,7 +919,8 @@ func (application *Application) BindBusyProperty(object *coreglib.Object, proper
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(property)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("bind_busy_property", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("bind_busy_property", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(object)
@@ -935,8 +938,9 @@ func (application *Application) ApplicationID() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
-	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_application_id", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Application")
+	_gret := _info.InvokeClassMethod("get_application_id", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 
@@ -971,8 +975,9 @@ func (application *Application) DBusConnection() *DBusConnection {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
-	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_dbus_connection", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Application")
+	_gret := _info.InvokeClassMethod("get_dbus_connection", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 
@@ -1010,8 +1015,9 @@ func (application *Application) DBusObjectPath() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
-	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_dbus_object_path", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Application")
+	_gret := _info.InvokeClassMethod("get_dbus_object_path", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 
@@ -1038,8 +1044,9 @@ func (application *Application) InactivityTimeout() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
-	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_inactivity_timeout", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Application")
+	_gret := _info.InvokeClassMethod("get_inactivity_timeout", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 
@@ -1062,8 +1069,9 @@ func (application *Application) IsBusy() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
-	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_is_busy", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Application")
+	_gret := _info.InvokeClassMethod("get_is_busy", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 
@@ -1090,8 +1098,9 @@ func (application *Application) IsRegistered() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
-	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_is_registered", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Application")
+	_gret := _info.InvokeClassMethod("get_is_registered", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 
@@ -1123,8 +1132,9 @@ func (application *Application) IsRemote() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
-	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_is_remote", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Application")
+	_gret := _info.InvokeClassMethod("get_is_remote", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 
@@ -1150,8 +1160,9 @@ func (application *Application) ResourceBasePath() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
-	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("get_resource_base_path", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Application")
+	_gret := _info.InvokeClassMethod("get_resource_base_path", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 
@@ -1176,7 +1187,8 @@ func (application *Application) Hold() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("hold", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("hold", _args[:], nil)
 
 	runtime.KeepAlive(application)
 }
@@ -1195,7 +1207,8 @@ func (application *Application) MarkBusy() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("mark_busy", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("mark_busy", _args[:], nil)
 
 	runtime.KeepAlive(application)
 }
@@ -1236,7 +1249,8 @@ func (application *Application) Open(files []Filer, hint string) {
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(C.CString(hint)))
 	defer C.free(unsafe.Pointer(_args[3]))
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("open", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("open", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(files)
@@ -1260,7 +1274,8 @@ func (application *Application) Quit() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("quit", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("quit", _args[:], nil)
 
 	runtime.KeepAlive(application)
 }
@@ -1308,7 +1323,8 @@ func (application *Application) Register(ctx context.Context) error {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("register", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("register", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(ctx)
@@ -1333,7 +1349,8 @@ func (application *Application) Release() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("release", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("release", _args[:], nil)
 
 	runtime.KeepAlive(application)
 }
@@ -1432,8 +1449,9 @@ func (application *Application) Run(argv []string) int32 {
 		}
 	}
 
-	_gret := girepository.MustFind("Gio", "Application").InvokeMethod("run", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Application")
+	_gret := _info.InvokeClassMethod("run", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(argv)
@@ -1485,7 +1503,8 @@ func (application *Application) SendNotification(id string, notification *Notifi
 	}
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(notification).Native()))
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("send_notification", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("send_notification", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(id)
@@ -1512,7 +1531,8 @@ func (application *Application) SetActionGroup(actionGroup ActionGrouper) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 	}
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("set_action_group", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("set_action_group", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(actionGroup)
@@ -1539,7 +1559,8 @@ func (application *Application) SetApplicationID(applicationId string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("set_application_id", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("set_application_id", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(applicationId)
@@ -1557,7 +1578,8 @@ func (application *Application) SetDefault() {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	}
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("set_default", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("set_default", _args[:], nil)
 
 	runtime.KeepAlive(application)
 }
@@ -1581,7 +1603,8 @@ func (application *Application) SetInactivityTimeout(inactivityTimeout uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(inactivityTimeout)
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("set_inactivity_timeout", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("set_inactivity_timeout", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(inactivityTimeout)
@@ -1606,7 +1629,8 @@ func (application *Application) SetOptionContextDescription(description string) 
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("set_option_context_description", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("set_option_context_description", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(description)
@@ -1634,7 +1658,8 @@ func (application *Application) SetOptionContextParameterString(parameterString 
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("set_option_context_parameter_string", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("set_option_context_parameter_string", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(parameterString)
@@ -1658,7 +1683,8 @@ func (application *Application) SetOptionContextSummary(summary string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("set_option_context_summary", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("set_option_context_summary", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(summary)
@@ -1709,7 +1735,8 @@ func (application *Application) SetResourceBasePath(resourcePath string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("set_resource_base_path", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("set_resource_base_path", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(resourcePath)
@@ -1732,7 +1759,8 @@ func (application *Application) UnbindBusyProperty(object *coreglib.Object, prop
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(property)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("unbind_busy_property", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("unbind_busy_property", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(object)
@@ -1751,7 +1779,8 @@ func (application *Application) UnmarkBusy() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("unmark_busy", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("unmark_busy", _args[:], nil)
 
 	runtime.KeepAlive(application)
 }
@@ -1780,7 +1809,8 @@ func (application *Application) WithdrawNotification(id string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gio", "Application").InvokeMethod("withdraw_notification", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("withdraw_notification", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(id)
@@ -1800,8 +1830,9 @@ func (application *Application) WithdrawNotification(id string) {
 //    - application (optional): default application for this process, or NULL.
 //
 func ApplicationGetDefault() *Application {
-	_gret := girepository.MustFind("Gio", "get_default").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "get_default")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _application *Application // out
 
@@ -1873,8 +1904,9 @@ func ApplicationIDIsValid(applicationId string) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(applicationId)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "id_is_valid").Invoke(_args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "id_is_valid")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(applicationId)
 

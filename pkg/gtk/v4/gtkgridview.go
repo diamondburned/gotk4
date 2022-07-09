@@ -162,8 +162,9 @@ func NewGridView(model SelectionModeller, factory *ListItemFactory) *GridView {
 		C.g_object_ref(C.gpointer(coreglib.InternObject(factory).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "GridView").InvokeMethod("new_GridView", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GridView")
+	_gret := _info.InvokeClassMethod("new_GridView", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(factory)
@@ -187,8 +188,9 @@ func (self *GridView) EnableRubberband() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GridView").InvokeMethod("get_enable_rubberband", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GridView")
+	_gret := _info.InvokeClassMethod("get_enable_rubberband", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -212,8 +214,9 @@ func (self *GridView) Factory() *ListItemFactory {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GridView").InvokeMethod("get_factory", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GridView")
+	_gret := _info.InvokeClassMethod("get_factory", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -237,8 +240,9 @@ func (self *GridView) MaxColumns() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GridView").InvokeMethod("get_max_columns", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GridView")
+	_gret := _info.InvokeClassMethod("get_max_columns", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -260,8 +264,9 @@ func (self *GridView) MinColumns() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GridView").InvokeMethod("get_min_columns", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GridView")
+	_gret := _info.InvokeClassMethod("get_min_columns", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -283,8 +288,9 @@ func (self *GridView) Model() *SelectionModel {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GridView").InvokeMethod("get_model", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GridView")
+	_gret := _info.InvokeClassMethod("get_model", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -309,8 +315,9 @@ func (self *GridView) SingleClickActivate() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GridView").InvokeMethod("get_single_click_activate", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GridView")
+	_gret := _info.InvokeClassMethod("get_single_click_activate", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -338,7 +345,8 @@ func (self *GridView) SetEnableRubberband(enableRubberband bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "GridView").InvokeMethod("set_enable_rubberband", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "GridView")
+	_info.InvokeClassMethod("set_enable_rubberband", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(enableRubberband)
@@ -358,7 +366,8 @@ func (self *GridView) SetFactory(factory *ListItemFactory) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
 	}
 
-	girepository.MustFind("Gtk", "GridView").InvokeMethod("set_factory", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "GridView")
+	_info.InvokeClassMethod("set_factory", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(factory)
@@ -381,7 +390,8 @@ func (self *GridView) SetMaxColumns(maxColumns uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(maxColumns)
 
-	girepository.MustFind("Gtk", "GridView").InvokeMethod("set_max_columns", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "GridView")
+	_info.InvokeClassMethod("set_max_columns", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(maxColumns)
@@ -404,7 +414,8 @@ func (self *GridView) SetMinColumns(minColumns uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(minColumns)
 
-	girepository.MustFind("Gtk", "GridView").InvokeMethod("set_min_columns", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "GridView")
+	_info.InvokeClassMethod("set_min_columns", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(minColumns)
@@ -426,7 +437,8 @@ func (self *GridView) SetModel(model SelectionModeller) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
 
-	girepository.MustFind("Gtk", "GridView").InvokeMethod("set_model", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "GridView")
+	_info.InvokeClassMethod("set_model", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)
@@ -447,7 +459,8 @@ func (self *GridView) SetSingleClickActivate(singleClickActivate bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "GridView").InvokeMethod("set_single_click_activate", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "GridView")
+	_info.InvokeClassMethod("set_single_click_activate", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(singleClickActivate)

@@ -91,8 +91,9 @@ func (gesture *GestureRotate) ConnectAngleChanged(f func(angle, angleDelta float
 //    - gestureRotate: newly created GtkGestureRotate.
 //
 func NewGestureRotate() *GestureRotate {
-	_gret := girepository.MustFind("Gtk", "GestureRotate").InvokeMethod("new_GestureRotate", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureRotate")
+	_gret := _info.InvokeClassMethod("new_GestureRotate", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _gestureRotate *GestureRotate // out
 
@@ -116,8 +117,9 @@ func (gesture *GestureRotate) AngleDelta() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureRotate").InvokeMethod("get_angle_delta", _args[:], nil)
-	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureRotate")
+	_gret := _info.InvokeClassMethod("get_angle_delta", _args[:], nil)
+	_cret := *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)
 

@@ -17,7 +17,6 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GtkWidget* _gotk4_gtk4_ListBoxCreateWidgetFunc(gpointer, gpointer);
 // extern gboolean _gotk4_gtk4_ListBoxFilterFunc(void*, gpointer);
 // extern int _gotk4_gtk4_ListBoxSortFunc(void*, void*, gpointer);
 // extern void _gotk4_gtk4_ListBoxForEachFunc(void*, void*, gpointer);
@@ -32,6 +31,7 @@ import (
 // extern void _gotk4_gtk4_ListBox_ConnectToggleCursorRow(gpointer, guintptr);
 // extern void _gotk4_gtk4_ListBox_ConnectUnselectAll(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
+// extern void* _gotk4_gtk4_ListBoxCreateWidgetFunc(gpointer, gpointer);
 import "C"
 
 // GTypeListBox returns the GType for the type ListBox.
@@ -61,7 +61,7 @@ func GTypeListBoxRow() coreglib.Type {
 type ListBoxCreateWidgetFunc func(item *coreglib.Object) (widget Widgetter)
 
 //export _gotk4_gtk4_ListBoxCreateWidgetFunc
-func _gotk4_gtk4_ListBoxCreateWidgetFunc(arg1 C.gpointer, arg2 C.gpointer) (cret *C.GtkWidget) {
+func _gotk4_gtk4_ListBoxCreateWidgetFunc(arg1 C.gpointer, arg2 C.gpointer) (cret *C.void) {
 	var fn ListBoxCreateWidgetFunc
 	{
 		v := gbox.Get(uintptr(arg2))
@@ -451,8 +451,9 @@ func (box *ListBox) ConnectUnselectAll(f func()) coreglib.SignalHandle {
 //    - listBox: new GtkListBox.
 //
 func NewListBox() *ListBox {
-	_gret := girepository.MustFind("Gtk", "ListBox").InvokeMethod("new_ListBox", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_gret := _info.InvokeClassMethod("new_ListBox", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _listBox *ListBox // out
 
@@ -476,7 +477,8 @@ func (box *ListBox) Append(child Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	girepository.MustFind("Gtk", "ListBox").InvokeMethod("append", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_info.InvokeClassMethod("append", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(child)
@@ -516,7 +518,8 @@ func (box *ListBox) BindModel(model gio.ListModeller, createWidgetFunc ListBoxCr
 		_args[4] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	girepository.MustFind("Gtk", "ListBox").InvokeMethod("bind_model", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_info.InvokeClassMethod("bind_model", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(model)
@@ -541,7 +544,8 @@ func (box *ListBox) DragHighlightRow(row *ListBoxRow) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
 
-	girepository.MustFind("Gtk", "ListBox").InvokeMethod("drag_highlight_row", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_info.InvokeClassMethod("drag_highlight_row", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(row)
@@ -554,7 +558,8 @@ func (box *ListBox) DragUnhighlightRow() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	girepository.MustFind("Gtk", "ListBox").InvokeMethod("drag_unhighlight_row", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_info.InvokeClassMethod("drag_unhighlight_row", _args[:], nil)
 
 	runtime.KeepAlive(box)
 }
@@ -570,8 +575,9 @@ func (box *ListBox) ActivateOnSingleClick() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ListBox").InvokeMethod("get_activate_on_single_click", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_gret := _info.InvokeClassMethod("get_activate_on_single_click", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(box)
 
@@ -596,8 +602,9 @@ func (box *ListBox) Adjustment() *Adjustment {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ListBox").InvokeMethod("get_adjustment", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_gret := _info.InvokeClassMethod("get_adjustment", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(box)
 
@@ -627,8 +634,9 @@ func (box *ListBox) RowAtIndex(index_ int32) *ListBoxRow {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(index_)
 
-	_gret := girepository.MustFind("Gtk", "ListBox").InvokeMethod("get_row_at_index", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_gret := _info.InvokeClassMethod("get_row_at_index", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(index_)
@@ -659,8 +667,9 @@ func (box *ListBox) RowAtY(y int32) *ListBoxRow {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(y)
 
-	_gret := girepository.MustFind("Gtk", "ListBox").InvokeMethod("get_row_at_y", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_gret := _info.InvokeClassMethod("get_row_at_y", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(y)
@@ -688,8 +697,9 @@ func (box *ListBox) SelectedRow() *ListBoxRow {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ListBox").InvokeMethod("get_selected_row", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_gret := _info.InvokeClassMethod("get_selected_row", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(box)
 
@@ -714,8 +724,9 @@ func (box *ListBox) SelectedRows() []*ListBoxRow {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ListBox").InvokeMethod("get_selected_rows", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_gret := _info.InvokeClassMethod("get_selected_rows", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(box)
 
@@ -744,8 +755,9 @@ func (box *ListBox) ShowSeparators() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ListBox").InvokeMethod("get_show_separators", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_gret := _info.InvokeClassMethod("get_show_separators", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(box)
 
@@ -778,7 +790,8 @@ func (box *ListBox) Insert(child Widgetter, position int32) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(position)
 
-	girepository.MustFind("Gtk", "ListBox").InvokeMethod("insert", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_info.InvokeClassMethod("insert", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(child)
@@ -796,7 +809,8 @@ func (box *ListBox) InvalidateFilter() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	girepository.MustFind("Gtk", "ListBox").InvokeMethod("invalidate_filter", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_info.InvokeClassMethod("invalidate_filter", _args[:], nil)
 
 	runtime.KeepAlive(box)
 }
@@ -810,7 +824,8 @@ func (box *ListBox) InvalidateHeaders() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	girepository.MustFind("Gtk", "ListBox").InvokeMethod("invalidate_headers", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_info.InvokeClassMethod("invalidate_headers", _args[:], nil)
 
 	runtime.KeepAlive(box)
 }
@@ -824,7 +839,8 @@ func (box *ListBox) InvalidateSort() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	girepository.MustFind("Gtk", "ListBox").InvokeMethod("invalidate_sort", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_info.InvokeClassMethod("invalidate_sort", _args[:], nil)
 
 	runtime.KeepAlive(box)
 }
@@ -844,7 +860,8 @@ func (box *ListBox) Prepend(child Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	girepository.MustFind("Gtk", "ListBox").InvokeMethod("prepend", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_info.InvokeClassMethod("prepend", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(child)
@@ -862,7 +879,8 @@ func (box *ListBox) Remove(child Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	girepository.MustFind("Gtk", "ListBox").InvokeMethod("remove", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_info.InvokeClassMethod("remove", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(child)
@@ -874,7 +892,8 @@ func (box *ListBox) SelectAll() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	girepository.MustFind("Gtk", "ListBox").InvokeMethod("select_all", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_info.InvokeClassMethod("select_all", _args[:], nil)
 
 	runtime.KeepAlive(box)
 }
@@ -893,7 +912,8 @@ func (box *ListBox) SelectRow(row *ListBoxRow) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
 	}
 
-	girepository.MustFind("Gtk", "ListBox").InvokeMethod("select_row", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_info.InvokeClassMethod("select_row", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(row)
@@ -915,7 +935,8 @@ func (box *ListBox) SelectedForEach(fn ListBoxForEachFunc) {
 	_args[2] = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_args[2]))
 
-	girepository.MustFind("Gtk", "ListBox").InvokeMethod("selected_foreach", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_info.InvokeClassMethod("selected_foreach", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(fn)
@@ -936,7 +957,8 @@ func (box *ListBox) SetActivateOnSingleClick(single bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ListBox").InvokeMethod("set_activate_on_single_click", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_info.InvokeClassMethod("set_activate_on_single_click", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(single)
@@ -963,7 +985,8 @@ func (box *ListBox) SetAdjustment(adjustment *Adjustment) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
 
-	girepository.MustFind("Gtk", "ListBox").InvokeMethod("set_adjustment", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_info.InvokeClassMethod("set_adjustment", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(adjustment)
@@ -996,7 +1019,8 @@ func (box *ListBox) SetFilterFunc(filterFunc ListBoxFilterFunc) {
 		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	girepository.MustFind("Gtk", "ListBox").InvokeMethod("set_filter_func", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_info.InvokeClassMethod("set_filter_func", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(filterFunc)
@@ -1042,7 +1066,8 @@ func (box *ListBox) SetHeaderFunc(updateHeader ListBoxUpdateHeaderFunc) {
 		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	girepository.MustFind("Gtk", "ListBox").InvokeMethod("set_header_func", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_info.InvokeClassMethod("set_header_func", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(updateHeader)
@@ -1063,7 +1088,8 @@ func (box *ListBox) SetPlaceholder(placeholder Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(placeholder).Native()))
 	}
 
-	girepository.MustFind("Gtk", "ListBox").InvokeMethod("set_placeholder", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_info.InvokeClassMethod("set_placeholder", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(placeholder)
@@ -1084,7 +1110,8 @@ func (box *ListBox) SetShowSeparators(showSeparators bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ListBox").InvokeMethod("set_show_separators", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_info.InvokeClassMethod("set_show_separators", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(showSeparators)
@@ -1116,7 +1143,8 @@ func (box *ListBox) SetSortFunc(sortFunc ListBoxSortFunc) {
 		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	girepository.MustFind("Gtk", "ListBox").InvokeMethod("set_sort_func", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_info.InvokeClassMethod("set_sort_func", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(sortFunc)
@@ -1128,7 +1156,8 @@ func (box *ListBox) UnselectAll() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	girepository.MustFind("Gtk", "ListBox").InvokeMethod("unselect_all", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_info.InvokeClassMethod("unselect_all", _args[:], nil)
 
 	runtime.KeepAlive(box)
 }
@@ -1145,7 +1174,8 @@ func (box *ListBox) UnselectRow(row *ListBoxRow) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
 
-	girepository.MustFind("Gtk", "ListBox").InvokeMethod("unselect_row", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBox")
+	_info.InvokeClassMethod("unselect_row", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(row)
@@ -1268,8 +1298,9 @@ func (row *ListBoxRow) ConnectActivate(f func()) coreglib.SignalHandle {
 //    - listBoxRow: new GtkListBoxRow.
 //
 func NewListBoxRow() *ListBoxRow {
-	_gret := girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("new_ListBoxRow", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListBoxRow")
+	_gret := _info.InvokeClassMethod("new_ListBoxRow", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _listBoxRow *ListBoxRow // out
 
@@ -1299,7 +1330,8 @@ func (row *ListBoxRow) Changed() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
 
-	girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("changed", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBoxRow")
+	_info.InvokeClassMethod("changed", _args[:], nil)
 
 	runtime.KeepAlive(row)
 }
@@ -1315,8 +1347,9 @@ func (row *ListBoxRow) Activatable() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("get_activatable", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListBoxRow")
+	_gret := _info.InvokeClassMethod("get_activatable", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(row)
 
@@ -1340,8 +1373,9 @@ func (row *ListBoxRow) Child() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("get_child", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListBoxRow")
+	_gret := _info.InvokeClassMethod("get_child", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(row)
 
@@ -1381,8 +1415,9 @@ func (row *ListBoxRow) Header() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("get_header", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListBoxRow")
+	_gret := _info.InvokeClassMethod("get_header", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(row)
 
@@ -1419,8 +1454,9 @@ func (row *ListBoxRow) Index() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("get_index", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListBoxRow")
+	_gret := _info.InvokeClassMethod("get_index", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(row)
 
@@ -1442,8 +1478,9 @@ func (row *ListBoxRow) Selectable() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("get_selectable", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListBoxRow")
+	_gret := _info.InvokeClassMethod("get_selectable", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(row)
 
@@ -1468,8 +1505,9 @@ func (row *ListBoxRow) IsSelected() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(row).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("is_selected", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListBoxRow")
+	_gret := _info.InvokeClassMethod("is_selected", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(row)
 
@@ -1496,7 +1534,8 @@ func (row *ListBoxRow) SetActivatable(activatable bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("set_activatable", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBoxRow")
+	_info.InvokeClassMethod("set_activatable", _args[:], nil)
 
 	runtime.KeepAlive(row)
 	runtime.KeepAlive(activatable)
@@ -1516,7 +1555,8 @@ func (row *ListBoxRow) SetChild(child Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
 
-	girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("set_child", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBoxRow")
+	_info.InvokeClassMethod("set_child", _args[:], nil)
 
 	runtime.KeepAlive(row)
 	runtime.KeepAlive(child)
@@ -1540,7 +1580,8 @@ func (row *ListBoxRow) SetHeader(header Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(header).Native()))
 	}
 
-	girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("set_header", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBoxRow")
+	_info.InvokeClassMethod("set_header", _args[:], nil)
 
 	runtime.KeepAlive(row)
 	runtime.KeepAlive(header)
@@ -1560,7 +1601,8 @@ func (row *ListBoxRow) SetSelectable(selectable bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ListBoxRow").InvokeMethod("set_selectable", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListBoxRow")
+	_info.InvokeClassMethod("set_selectable", _args[:], nil)
 
 	runtime.KeepAlive(row)
 	runtime.KeepAlive(selectable)

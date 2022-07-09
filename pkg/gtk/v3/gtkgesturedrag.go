@@ -156,8 +156,9 @@ func NewGestureDrag(widget Widgetter) *GestureDrag {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureDrag").InvokeMethod("new_GestureDrag", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureDrag")
+	_gret := _info.InvokeClassMethod("new_GestureDrag", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
 
@@ -184,8 +185,9 @@ func (gesture *GestureDrag) Offset() (x, y float64, ok bool) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureDrag").InvokeMethod("get_offset", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureDrag")
+	_gret := _info.InvokeClassMethod("get_offset", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)
 
@@ -221,8 +223,9 @@ func (gesture *GestureDrag) StartPoint() (x, y float64, ok bool) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureDrag").InvokeMethod("get_start_point", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureDrag")
+	_gret := _info.InvokeClassMethod("get_start_point", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)
 

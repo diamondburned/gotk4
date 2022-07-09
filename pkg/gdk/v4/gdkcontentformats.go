@@ -48,8 +48,9 @@ func InternMIMEType(str string) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gdk", "intern_mime_type").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "intern_mime_type")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
 
@@ -80,7 +81,9 @@ func marshalContentFormatsBuilder(p uintptr) (interface{}, error) {
 
 // NewContentFormatsBuilder constructs a struct ContentFormatsBuilder.
 func NewContentFormatsBuilder() *ContentFormatsBuilder {
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ContentFormatsBuilder")
+	_gret := _info.InvokeRecordMethod("new", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _contentFormatsBuilder *ContentFormatsBuilder // out
 
@@ -108,6 +111,9 @@ func (builder *ContentFormatsBuilder) AddFormats(formats *ContentFormats) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
 
+	_info := girepository.MustFind("Gdk", "ContentFormatsBuilder")
+	_info.InvokeRecordMethod("add_formats", _args[:], nil)
+
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(formats)
 }
@@ -124,6 +130,9 @@ func (builder *ContentFormatsBuilder) AddMIMEType(mimeType string) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_args[1]))
+
+	_info := girepository.MustFind("Gdk", "ContentFormatsBuilder")
+	_info.InvokeRecordMethod("add_mime_type", _args[:], nil)
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(mimeType)
@@ -147,7 +156,9 @@ func (builder *ContentFormatsBuilder) ToFormats() *ContentFormats {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ContentFormatsBuilder")
+	_gret := _info.InvokeRecordMethod("to_formats", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(builder)
 

@@ -214,7 +214,8 @@ func (context *StyleContext) AddClass(className string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(className)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("add_class", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StyleContext")
+	_info.InvokeClassMethod("add_class", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(className)
@@ -246,7 +247,8 @@ func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(priority)
 
-	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("add_provider", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StyleContext")
+	_info.InvokeClassMethod("add_provider", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(provider)
@@ -265,7 +267,8 @@ func (context *StyleContext) Border() *Border {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("get_border", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "StyleContext")
+	_info.InvokeClassMethod("get_border", _args[:], _outs[:])
 
 	runtime.KeepAlive(context)
 
@@ -288,7 +291,8 @@ func (context *StyleContext) Color() *gdk.RGBA {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("get_color", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "StyleContext")
+	_info.InvokeClassMethod("get_color", _args[:], _outs[:])
 
 	runtime.KeepAlive(context)
 
@@ -310,8 +314,9 @@ func (context *StyleContext) Display() *gdk.Display {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StyleContext").InvokeMethod("get_display", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StyleContext")
+	_gret := _info.InvokeClassMethod("get_display", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -339,7 +344,8 @@ func (context *StyleContext) Margin() *Border {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("get_margin", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "StyleContext")
+	_info.InvokeClassMethod("get_margin", _args[:], _outs[:])
 
 	runtime.KeepAlive(context)
 
@@ -362,7 +368,8 @@ func (context *StyleContext) Padding() *Border {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("get_padding", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "StyleContext")
+	_info.InvokeClassMethod("get_padding", _args[:], _outs[:])
 
 	runtime.KeepAlive(context)
 
@@ -384,8 +391,9 @@ func (context *StyleContext) Scale() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StyleContext").InvokeMethod("get_scale", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StyleContext")
+	_gret := _info.InvokeClassMethod("get_scale", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -413,8 +421,9 @@ func (context *StyleContext) HasClass(className string) bool {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(className)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "StyleContext").InvokeMethod("has_class", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StyleContext")
+	_gret := _info.InvokeClassMethod("has_class", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(className)
@@ -447,8 +456,9 @@ func (context *StyleContext) LookupColor(colorName string) (*gdk.RGBA, bool) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(colorName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "StyleContext").InvokeMethod("lookup_color", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StyleContext")
+	_gret := _info.InvokeClassMethod("lookup_color", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(colorName)
@@ -477,7 +487,8 @@ func (context *StyleContext) RemoveClass(className string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(className)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("remove_class", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StyleContext")
+	_info.InvokeClassMethod("remove_class", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(className)
@@ -495,7 +506,8 @@ func (context *StyleContext) RemoveProvider(provider StyleProviderer) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
 
-	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("remove_provider", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StyleContext")
+	_info.InvokeClassMethod("remove_provider", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(provider)
@@ -509,7 +521,8 @@ func (context *StyleContext) Restore() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("restore", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StyleContext")
+	_info.InvokeClassMethod("restore", _args[:], nil)
 
 	runtime.KeepAlive(context)
 }
@@ -527,7 +540,8 @@ func (context *StyleContext) Save() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("save", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StyleContext")
+	_info.InvokeClassMethod("save", _args[:], nil)
 
 	runtime.KeepAlive(context)
 }
@@ -550,7 +564,8 @@ func (context *StyleContext) SetDisplay(display *gdk.Display) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("set_display", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StyleContext")
+	_info.InvokeClassMethod("set_display", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(display)
@@ -568,7 +583,8 @@ func (context *StyleContext) SetScale(scale int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(scale)
 
-	girepository.MustFind("Gtk", "StyleContext").InvokeMethod("set_scale", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StyleContext")
+	_info.InvokeClassMethod("set_scale", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(scale)
@@ -600,7 +616,8 @@ func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProvi
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(priority)
 
-	girepository.MustFind("Gtk", "add_provider_for_display").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "add_provider_for_display")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(provider)
@@ -621,7 +638,8 @@ func StyleContextRemoveProviderForDisplay(display *gdk.Display, provider StylePr
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
 
-	girepository.MustFind("Gtk", "remove_provider_for_display").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "remove_provider_for_display")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(provider)

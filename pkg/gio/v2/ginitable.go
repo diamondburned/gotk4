@@ -210,6 +210,9 @@ func (initable *Initable) Init(ctx context.Context) error {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
+	_info := girepository.MustFind("Gio", "Initable")
+	_info.InvokeIfaceMethod("init", _args[:], nil)
+
 	runtime.KeepAlive(initable)
 	runtime.KeepAlive(ctx)
 

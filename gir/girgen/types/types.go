@@ -148,7 +148,7 @@ func RecordPrintFreeMethod(gen FileGenerator, parent *gir.TypeFindResult, value 
 		p := pen.NewBlock()
 		p.Linef("args := [1]girepository.Argument{(%s)(%s)}",
 			AnyTypeCGoPrimitive(gen, free.Parameters.InstanceParameter.AnyType), value)
-		p.Linef("girepository.MustFind(%q, %q).InvokeMethod(%q, args[:], nil)",
+		p.Linef("girepository.MustFind(%q, %q).InvokeRecordMethod(%q, args[:], nil)",
 			parent.Namespace.Name, rec.Name, "free")
 		return p.String()
 	case DynamicLinkMode:
@@ -164,11 +164,13 @@ func RecordPrintFreeMethod(gen FileGenerator, parent *gir.TypeFindResult, value 
 
 // RecordHasUnref returns the unref method if it has one.
 func RecordHasUnref(record *gir.Record) *gir.Method {
+	// TODO: runtime link mode support
 	return FindMethodName(record.Methods, "unref")
 }
 
 // RecordHasRef returns the ref method if it has one.
 func RecordHasRef(record *gir.Record) *gir.Method {
+	// TODO: runtime link mode support
 	return FindMethodName(record.Methods, "ref")
 }
 

@@ -178,8 +178,9 @@ func NewGestureStylus(widget Widgetter) *GestureStylus {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureStylus").InvokeMethod("new_GestureStylus", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureStylus")
+	_gret := _info.InvokeClassMethod("new_GestureStylus", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
 
@@ -204,8 +205,9 @@ func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureStylus").InvokeMethod("get_device_tool", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureStylus")
+	_gret := _info.InvokeClassMethod("get_device_tool", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)
 

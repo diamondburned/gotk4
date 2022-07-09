@@ -121,8 +121,9 @@ func (self *EventControllerFocus) ConnectLeave(f func()) coreglib.SignalHandle {
 //    - eventControllerFocus: new GtkEventControllerFocus.
 //
 func NewEventControllerFocus() *EventControllerFocus {
-	_gret := girepository.MustFind("Gtk", "EventControllerFocus").InvokeMethod("new_EventControllerFocus", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EventControllerFocus")
+	_gret := _info.InvokeClassMethod("new_EventControllerFocus", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _eventControllerFocus *EventControllerFocus // out
 
@@ -142,8 +143,9 @@ func (self *EventControllerFocus) ContainsFocus() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EventControllerFocus").InvokeMethod("contains_focus", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EventControllerFocus")
+	_gret := _info.InvokeClassMethod("contains_focus", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -167,8 +169,9 @@ func (self *EventControllerFocus) IsFocus() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EventControllerFocus").InvokeMethod("is_focus", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EventControllerFocus")
+	_gret := _info.InvokeClassMethod("is_focus", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 

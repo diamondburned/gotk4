@@ -160,8 +160,9 @@ func (overlay *Overlay) ConnectGetChildPosition(f func(widget Widgetter) (alloca
 //    - overlay: new GtkOverlay object.
 //
 func NewOverlay() *Overlay {
-	_gret := girepository.MustFind("Gtk", "Overlay").InvokeMethod("new_Overlay", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Overlay")
+	_gret := _info.InvokeClassMethod("new_Overlay", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _overlay *Overlay // out
 
@@ -188,7 +189,8 @@ func (overlay *Overlay) AddOverlay(widget Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(overlay).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	girepository.MustFind("Gtk", "Overlay").InvokeMethod("add_overlay", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Overlay")
+	_info.InvokeClassMethod("add_overlay", _args[:], nil)
 
 	runtime.KeepAlive(overlay)
 	runtime.KeepAlive(widget)
@@ -205,8 +207,9 @@ func (overlay *Overlay) Child() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(overlay).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Overlay").InvokeMethod("get_child", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Overlay")
+	_gret := _info.InvokeClassMethod("get_child", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(overlay)
 
@@ -248,8 +251,9 @@ func (overlay *Overlay) ClipOverlay(widget Widgetter) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(overlay).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Overlay").InvokeMethod("get_clip_overlay", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Overlay")
+	_gret := _info.InvokeClassMethod("get_clip_overlay", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(overlay)
 	runtime.KeepAlive(widget)
@@ -280,8 +284,9 @@ func (overlay *Overlay) MeasureOverlay(widget Widgetter) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(overlay).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Overlay").InvokeMethod("get_measure_overlay", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Overlay")
+	_gret := _info.InvokeClassMethod("get_measure_overlay", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(overlay)
 	runtime.KeepAlive(widget)
@@ -308,7 +313,8 @@ func (overlay *Overlay) RemoveOverlay(widget Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(overlay).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	girepository.MustFind("Gtk", "Overlay").InvokeMethod("remove_overlay", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Overlay")
+	_info.InvokeClassMethod("remove_overlay", _args[:], nil)
 
 	runtime.KeepAlive(overlay)
 	runtime.KeepAlive(widget)
@@ -328,7 +334,8 @@ func (overlay *Overlay) SetChild(child Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
 
-	girepository.MustFind("Gtk", "Overlay").InvokeMethod("set_child", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Overlay")
+	_info.InvokeClassMethod("set_child", _args[:], nil)
 
 	runtime.KeepAlive(overlay)
 	runtime.KeepAlive(child)
@@ -350,7 +357,8 @@ func (overlay *Overlay) SetClipOverlay(widget Widgetter, clipOverlay bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Overlay").InvokeMethod("set_clip_overlay", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Overlay")
+	_info.InvokeClassMethod("set_clip_overlay", _args[:], nil)
 
 	runtime.KeepAlive(overlay)
 	runtime.KeepAlive(widget)
@@ -378,7 +386,8 @@ func (overlay *Overlay) SetMeasureOverlay(widget Widgetter, measure bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Overlay").InvokeMethod("set_measure_overlay", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Overlay")
+	_info.InvokeClassMethod("set_measure_overlay", _args[:], nil)
 
 	runtime.KeepAlive(overlay)
 	runtime.KeepAlive(widget)

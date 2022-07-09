@@ -214,8 +214,9 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, er
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	_gret := girepository.MustFind("GdkPixdata", "pixbuf_from_pixdata").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("GdkPixdata", "pixbuf_from_pixdata")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pixdata)
 	runtime.KeepAlive(copyPixels)
@@ -292,6 +293,9 @@ func (pixdata *Pixdata) Deserialize(stream []byte) error {
 		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(&stream[0]))
 	}
 
+	_info := girepository.MustFind("GdkPixdata", "Pixdata")
+	_info.InvokeRecordMethod("deserialize", _args[:], nil)
+
 	runtime.KeepAlive(pixdata)
 	runtime.KeepAlive(stream)
 
@@ -321,7 +325,9 @@ func (pixdata *Pixdata) Serialize() []byte {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(pixdata)))
 
-	_cret = *(**C.guint8)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("GdkPixdata", "Pixdata")
+	_gret := _info.InvokeRecordMethod("serialize", _args[:], _outs[:])
+	_cret := *(**C.guint8)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pixdata)
 

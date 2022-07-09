@@ -288,8 +288,9 @@ func (entry *SearchEntry) ConnectStopSearch(f func()) coreglib.SignalHandle {
 //    - searchEntry: new GtkSearchEntry.
 //
 func NewSearchEntry() *SearchEntry {
-	_gret := girepository.MustFind("Gtk", "SearchEntry").InvokeMethod("new_SearchEntry", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SearchEntry")
+	_gret := _info.InvokeClassMethod("new_SearchEntry", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _searchEntry *SearchEntry // out
 
@@ -309,8 +310,9 @@ func (entry *SearchEntry) KeyCaptureWidget() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 
-	_gret := girepository.MustFind("Gtk", "SearchEntry").InvokeMethod("get_key_capture_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SearchEntry")
+	_gret := _info.InvokeClassMethod("get_key_capture_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
 
@@ -364,7 +366,8 @@ func (entry *SearchEntry) SetKeyCaptureWidget(widget Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
 
-	girepository.MustFind("Gtk", "SearchEntry").InvokeMethod("set_key_capture_widget", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "SearchEntry")
+	_info.InvokeClassMethod("set_key_capture_widget", _args[:], nil)
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(widget)

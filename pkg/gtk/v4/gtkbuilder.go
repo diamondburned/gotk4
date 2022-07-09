@@ -334,8 +334,9 @@ func marshalBuilder(p uintptr) (interface{}, error) {
 //    - builder: new (empty) GtkBuilder object.
 //
 func NewBuilder() *Builder {
-	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("new_Builder", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Builder")
+	_gret := _info.InvokeClassMethod("new_Builder", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _builder *Builder // out
 
@@ -364,8 +365,9 @@ func NewBuilderFromFile(filename string) *Builder {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("new_Builder_from_file", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Builder")
+	_gret := _info.InvokeClassMethod("new_Builder_from_file", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(filename)
 
@@ -395,8 +397,9 @@ func NewBuilderFromResource(resourcePath string) *Builder {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("new_Builder_from_resource", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Builder")
+	_gret := _info.InvokeClassMethod("new_Builder_from_resource", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(resourcePath)
 
@@ -432,8 +435,9 @@ func NewBuilderFromString(str string, length int) *Builder {
 	defer C.free(unsafe.Pointer(_args[0]))
 	*(*C.gssize)(unsafe.Pointer(&_args[1])) = C.gssize(length)
 
-	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("new_Builder_from_string", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Builder")
+	_gret := _info.InvokeClassMethod("new_Builder_from_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
 	runtime.KeepAlive(length)
@@ -473,7 +477,8 @@ func (builder *Builder) AddFromFile(filename string) error {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "Builder").InvokeMethod("add_from_file", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Builder")
+	_info.InvokeClassMethod("add_from_file", _args[:], nil)
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(filename)
@@ -511,7 +516,8 @@ func (builder *Builder) AddFromResource(resourcePath string) error {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "Builder").InvokeMethod("add_from_resource", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Builder")
+	_info.InvokeClassMethod("add_from_resource", _args[:], nil)
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(resourcePath)
@@ -551,7 +557,8 @@ func (builder *Builder) AddFromString(buffer string, length int) error {
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(*C.gssize)(unsafe.Pointer(&_args[2])) = C.gssize(length)
 
-	girepository.MustFind("Gtk", "Builder").InvokeMethod("add_from_string", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Builder")
+	_info.InvokeClassMethod("add_from_string", _args[:], nil)
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(buffer)
@@ -601,7 +608,8 @@ func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) 
 		}
 	}
 
-	girepository.MustFind("Gtk", "Builder").InvokeMethod("add_objects_from_file", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Builder")
+	_info.InvokeClassMethod("add_objects_from_file", _args[:], nil)
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(filename)
@@ -652,7 +660,8 @@ func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []
 		}
 	}
 
-	girepository.MustFind("Gtk", "Builder").InvokeMethod("add_objects_from_resource", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Builder")
+	_info.InvokeClassMethod("add_objects_from_resource", _args[:], nil)
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(resourcePath)
@@ -705,7 +714,8 @@ func (builder *Builder) AddObjectsFromString(buffer string, length int, objectId
 		}
 	}
 
-	girepository.MustFind("Gtk", "Builder").InvokeMethod("add_objects_from_string", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Builder")
+	_info.InvokeClassMethod("add_objects_from_string", _args[:], nil)
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(buffer)
@@ -737,7 +747,8 @@ func (builder *Builder) ExposeObject(name string, object *coreglib.Object) {
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(object.Native()))
 
-	girepository.MustFind("Gtk", "Builder").InvokeMethod("expose_object", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Builder")
+	_info.InvokeClassMethod("expose_object", _args[:], nil)
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(name)
@@ -756,8 +767,9 @@ func (builder *Builder) CurrentObject() *coreglib.Object {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("get_current_object", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Builder")
+	_gret := _info.InvokeClassMethod("get_current_object", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(builder)
 
@@ -791,8 +803,9 @@ func (builder *Builder) GetObject(name string) *coreglib.Object {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("get_object", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Builder")
+	_gret := _info.InvokeClassMethod("get_object", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(name)
@@ -821,8 +834,9 @@ func (builder *Builder) Objects() []*coreglib.Object {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("get_objects", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Builder")
+	_gret := _info.InvokeClassMethod("get_objects", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(builder)
 
@@ -850,8 +864,9 @@ func (builder *Builder) Scope() *BuilderScope {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("get_scope", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Builder")
+	_gret := _info.InvokeClassMethod("get_scope", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(builder)
 
@@ -874,8 +889,9 @@ func (builder *Builder) TranslationDomain() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Builder").InvokeMethod("get_translation_domain", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Builder")
+	_gret := _info.InvokeClassMethod("get_translation_domain", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(builder)
 
@@ -910,7 +926,8 @@ func (builder *Builder) SetCurrentObject(currentObject *coreglib.Object) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(currentObject.Native()))
 	}
 
-	girepository.MustFind("Gtk", "Builder").InvokeMethod("set_current_object", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Builder")
+	_info.InvokeClassMethod("set_current_object", _args[:], nil)
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(currentObject)
@@ -932,7 +949,8 @@ func (builder *Builder) SetScope(scope BuilderScoper) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scope).Native()))
 	}
 
-	girepository.MustFind("Gtk", "Builder").InvokeMethod("set_scope", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Builder")
+	_info.InvokeClassMethod("set_scope", _args[:], nil)
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(scope)
@@ -953,7 +971,8 @@ func (builder *Builder) SetTranslationDomain(domain string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "Builder").InvokeMethod("set_translation_domain", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Builder")
+	_info.InvokeClassMethod("set_translation_domain", _args[:], nil)
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(domain)

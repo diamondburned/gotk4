@@ -150,6 +150,9 @@ func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketC
 	}
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
 
+	_info := girepository.MustFind("Gio", "NetworkMonitor")
+	_info.InvokeIfaceMethod("can_reach", _args[:], nil)
+
 	runtime.KeepAlive(monitor)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(connectable)
@@ -193,6 +196,9 @@ func (monitor *NetworkMonitor) CanReachAsync(ctx context.Context, connectable So
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "NetworkMonitor")
+	_info.InvokeIfaceMethod("can_reach_async", _args[:], nil)
+
 	runtime.KeepAlive(monitor)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(connectable)
@@ -211,6 +217,9 @@ func (monitor *NetworkMonitor) CanReachFinish(result AsyncResulter) error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	_info := girepository.MustFind("Gio", "NetworkMonitor")
+	_info.InvokeIfaceMethod("can_reach_finish", _args[:], nil)
 
 	runtime.KeepAlive(monitor)
 	runtime.KeepAlive(result)
@@ -238,7 +247,9 @@ func (monitor *NetworkMonitor) NetworkAvailable() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "NetworkMonitor")
+	_gret := _info.InvokeIfaceMethod("get_network_available", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(monitor)
 
@@ -263,7 +274,9 @@ func (monitor *NetworkMonitor) NetworkMetered() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "NetworkMonitor")
+	_gret := _info.InvokeIfaceMethod("get_network_metered", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(monitor)
 
@@ -284,8 +297,9 @@ func (monitor *NetworkMonitor) NetworkMetered() bool {
 //      available.
 //
 func NetworkMonitorGetDefault() *NetworkMonitor {
-	_gret := girepository.MustFind("Gio", "get_default").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "get_default")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _networkMonitor *NetworkMonitor // out
 

@@ -111,8 +111,9 @@ func marshalStyleProperties(p uintptr) (interface{}, error) {
 //    - styleProperties: new StyleProperties.
 //
 func NewStyleProperties() *StyleProperties {
-	_gret := girepository.MustFind("Gtk", "StyleProperties").InvokeMethod("new_StyleProperties", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StyleProperties")
+	_gret := _info.InvokeClassMethod("new_StyleProperties", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _styleProperties *StyleProperties // out
 
@@ -129,7 +130,8 @@ func (props *StyleProperties) Clear() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(props).Native()))
 
-	girepository.MustFind("Gtk", "StyleProperties").InvokeMethod("clear", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StyleProperties")
+	_info.InvokeClassMethod("clear", _args[:], nil)
 
 	runtime.KeepAlive(props)
 }
@@ -153,8 +155,9 @@ func (props *StyleProperties) LookupColor(name string) *SymbolicColor {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "StyleProperties").InvokeMethod("lookup_color", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StyleProperties")
+	_gret := _info.InvokeClassMethod("lookup_color", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(props)
 	runtime.KeepAlive(name)
@@ -191,7 +194,8 @@ func (props *StyleProperties) MapColor(name string, color *SymbolicColor) {
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 
-	girepository.MustFind("Gtk", "StyleProperties").InvokeMethod("map_color", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StyleProperties")
+	_info.InvokeClassMethod("map_color", _args[:], nil)
 
 	runtime.KeepAlive(props)
 	runtime.KeepAlive(name)
@@ -218,7 +222,8 @@ func (props *StyleProperties) Merge(propsToMerge *StyleProperties, replace bool)
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "StyleProperties").InvokeMethod("merge", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StyleProperties")
+	_info.InvokeClassMethod("merge", _args[:], nil)
 
 	runtime.KeepAlive(props)
 	runtime.KeepAlive(propsToMerge)
@@ -264,7 +269,9 @@ func NewGradientLinear(x0 float64, y0 float64, x1 float64, y1 float64) *Gradient
 	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(x1)
 	*(*C.gdouble)(unsafe.Pointer(&_args[3])) = C.gdouble(y1)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Gradient")
+	_gret := _info.InvokeRecordMethod("new_linear", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(x0)
 	runtime.KeepAlive(y0)
@@ -295,7 +302,9 @@ func NewGradientRadial(x0 float64, y0 float64, radius0 float64, x1 float64, y1 f
 	*(*C.gdouble)(unsafe.Pointer(&_args[4])) = C.gdouble(y1)
 	*(*C.gdouble)(unsafe.Pointer(&_args[5])) = C.gdouble(radius1)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Gradient")
+	_gret := _info.InvokeRecordMethod("new_radial", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(x0)
 	runtime.KeepAlive(y0)
@@ -333,6 +342,9 @@ func (gradient *Gradient) AddColorStop(offset float64, color *SymbolicColor) {
 	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(offset)
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 
+	_info := girepository.MustFind("Gtk", "Gradient")
+	_info.InvokeRecordMethod("add_color_stop", _args[:], nil)
+
 	runtime.KeepAlive(gradient)
 	runtime.KeepAlive(offset)
 	runtime.KeepAlive(color)
@@ -361,7 +373,9 @@ func (gradient *Gradient) Resolve(props *StyleProperties) (*cairo.Pattern, bool)
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(gradient)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(props).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Gradient")
+	_gret := _info.InvokeRecordMethod("resolve", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gradient)
 	runtime.KeepAlive(props)
@@ -393,7 +407,9 @@ func (gradient *Gradient) ResolveForContext(context *StyleContext) *cairo.Patter
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(gradient)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Gradient")
+	_gret := _info.InvokeRecordMethod("resolve_for_context", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gradient)
 	runtime.KeepAlive(context)
@@ -425,7 +441,9 @@ func (gradient *Gradient) String() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(gradient)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Gradient")
+	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gradient)
 
@@ -472,7 +490,9 @@ func NewSymbolicColorAlpha(color *SymbolicColor, factor float64) *SymbolicColor 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(factor)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SymbolicColor")
+	_gret := _info.InvokeRecordMethod("new_alpha", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(color)
 	runtime.KeepAlive(factor)
@@ -496,7 +516,9 @@ func NewSymbolicColorLiteral(color *gdk.RGBA) *SymbolicColor {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SymbolicColor")
+	_gret := _info.InvokeRecordMethod("new_literal", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(color)
 
@@ -521,7 +543,9 @@ func NewSymbolicColorMix(color1 *SymbolicColor, color2 *SymbolicColor, factor fl
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color2)))
 	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(factor)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SymbolicColor")
+	_gret := _info.InvokeRecordMethod("new_mix", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(color1)
 	runtime.KeepAlive(color2)
@@ -547,7 +571,9 @@ func NewSymbolicColorName(name string) *SymbolicColor {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SymbolicColor")
+	_gret := _info.InvokeRecordMethod("new_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
 
@@ -571,7 +597,9 @@ func NewSymbolicColorShade(color *SymbolicColor, factor float64) *SymbolicColor 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(factor)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SymbolicColor")
+	_gret := _info.InvokeRecordMethod("new_shade", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(color)
 	runtime.KeepAlive(factor)
@@ -597,7 +625,9 @@ func NewSymbolicColorWin32(themeClass string, id int32) *SymbolicColor {
 	defer C.free(unsafe.Pointer(_args[0]))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(id)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SymbolicColor")
+	_gret := _info.InvokeRecordMethod("new_win32", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(themeClass)
 	runtime.KeepAlive(id)
@@ -643,7 +673,9 @@ func (color *SymbolicColor) Resolve(props *StyleProperties) (*gdk.RGBA, bool) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(props).Native()))
 	}
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SymbolicColor")
+	_gret := _info.InvokeRecordMethod("resolve", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(color)
 	runtime.KeepAlive(props)
@@ -676,7 +708,9 @@ func (color *SymbolicColor) String() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SymbolicColor")
+	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(color)
 

@@ -20,35 +20,6 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GFile* _gotk4_gio2_FileIface_dup(void*);
-// extern GFile* _gotk4_gio2_FileIface_get_child_for_display_name(void*, void*, GError**);
-// extern GFile* _gotk4_gio2_FileIface_get_parent(void*);
-// extern GFile* _gotk4_gio2_FileIface_mount_mountable_finish(void*, void*, GError**);
-// extern GFile* _gotk4_gio2_FileIface_resolve_relative_path(void*, void*);
-// extern GFile* _gotk4_gio2_FileIface_set_display_name(void*, void*, void*, GError**);
-// extern GFile* _gotk4_gio2_FileIface_set_display_name_finish(void*, void*, GError**);
-// extern GFileAttributeInfoList* _gotk4_gio2_FileIface_query_settable_attributes(void*, void*, GError**);
-// extern GFileAttributeInfoList* _gotk4_gio2_FileIface_query_writable_namespaces(void*, void*, GError**);
-// extern GFileEnumerator* _gotk4_gio2_FileIface_enumerate_children_finish(void*, void*, GError**);
-// extern GFileIOStream* _gotk4_gio2_FileIface_create_readwrite_finish(void*, void*, GError**);
-// extern GFileIOStream* _gotk4_gio2_FileIface_open_readwrite(void*, void*, GError**);
-// extern GFileIOStream* _gotk4_gio2_FileIface_open_readwrite_finish(void*, void*, GError**);
-// extern GFileIOStream* _gotk4_gio2_FileIface_replace_readwrite_finish(void*, void*, GError**);
-// extern GFileInfo* _gotk4_gio2_FileIface_query_filesystem_info(void*, void*, void*, GError**);
-// extern GFileInfo* _gotk4_gio2_FileIface_query_filesystem_info_finish(void*, void*, GError**);
-// extern GFileInfo* _gotk4_gio2_FileIface_query_info_finish(void*, void*, GError**);
-// extern GFileInputStream* _gotk4_gio2_FileIface_read_finish(void*, void*, GError**);
-// extern GFileOutputStream* _gotk4_gio2_FileIface_append_to_finish(void*, void*, GError**);
-// extern GFileOutputStream* _gotk4_gio2_FileIface_create_finish(void*, void*, GError**);
-// extern GFileOutputStream* _gotk4_gio2_FileIface_replace_finish(void*, void*, GError**);
-// extern GMount* _gotk4_gio2_FileIface_find_enclosing_mount(void*, void*, GError**);
-// extern GMount* _gotk4_gio2_FileIface_find_enclosing_mount_finish(void*, void*, GError**);
-// extern char* _gotk4_gio2_FileIface_get_basename(void*);
-// extern char* _gotk4_gio2_FileIface_get_parse_name(void*);
-// extern char* _gotk4_gio2_FileIface_get_path(void*);
-// extern char* _gotk4_gio2_FileIface_get_relative_path(void*, void*);
-// extern char* _gotk4_gio2_FileIface_get_uri(void*);
-// extern char* _gotk4_gio2_FileIface_get_uri_scheme(void*);
 // extern gboolean _gotk4_gio2_FileIface_copy_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_FileIface_eject_mountable_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_FileIface_eject_mountable_with_operation_finish(void*, void*, GError**);
@@ -70,6 +41,35 @@ import (
 // extern gboolean _gotk4_gio2_FileIface_unmount_mountable_with_operation_finish(void*, void*, GError**);
 // extern guint _gotk4_gio2_FileIface_hash(void*);
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void* _gotk4_gio2_FileIface_append_to_finish(void*, void*, GError**);
+// extern void* _gotk4_gio2_FileIface_create_finish(void*, void*, GError**);
+// extern void* _gotk4_gio2_FileIface_create_readwrite_finish(void*, void*, GError**);
+// extern void* _gotk4_gio2_FileIface_dup(void*);
+// extern void* _gotk4_gio2_FileIface_enumerate_children_finish(void*, void*, GError**);
+// extern void* _gotk4_gio2_FileIface_find_enclosing_mount(void*, void*, GError**);
+// extern void* _gotk4_gio2_FileIface_find_enclosing_mount_finish(void*, void*, GError**);
+// extern void* _gotk4_gio2_FileIface_get_basename(void*);
+// extern void* _gotk4_gio2_FileIface_get_child_for_display_name(void*, void*, GError**);
+// extern void* _gotk4_gio2_FileIface_get_parent(void*);
+// extern void* _gotk4_gio2_FileIface_get_parse_name(void*);
+// extern void* _gotk4_gio2_FileIface_get_path(void*);
+// extern void* _gotk4_gio2_FileIface_get_relative_path(void*, void*);
+// extern void* _gotk4_gio2_FileIface_get_uri(void*);
+// extern void* _gotk4_gio2_FileIface_get_uri_scheme(void*);
+// extern void* _gotk4_gio2_FileIface_mount_mountable_finish(void*, void*, GError**);
+// extern void* _gotk4_gio2_FileIface_open_readwrite(void*, void*, GError**);
+// extern void* _gotk4_gio2_FileIface_open_readwrite_finish(void*, void*, GError**);
+// extern void* _gotk4_gio2_FileIface_query_filesystem_info(void*, void*, void*, GError**);
+// extern void* _gotk4_gio2_FileIface_query_filesystem_info_finish(void*, void*, GError**);
+// extern void* _gotk4_gio2_FileIface_query_info_finish(void*, void*, GError**);
+// extern void* _gotk4_gio2_FileIface_query_settable_attributes(void*, void*, GError**);
+// extern void* _gotk4_gio2_FileIface_query_writable_namespaces(void*, void*, GError**);
+// extern void* _gotk4_gio2_FileIface_read_finish(void*, void*, GError**);
+// extern void* _gotk4_gio2_FileIface_replace_finish(void*, void*, GError**);
+// extern void* _gotk4_gio2_FileIface_replace_readwrite_finish(void*, void*, GError**);
+// extern void* _gotk4_gio2_FileIface_resolve_relative_path(void*, void*);
+// extern void* _gotk4_gio2_FileIface_set_display_name(void*, void*, void*, GError**);
+// extern void* _gotk4_gio2_FileIface_set_display_name_finish(void*, void*, GError**);
 import "C"
 
 // GTypeFile returns the GType for the type File.
@@ -412,7 +412,9 @@ func (file *File) AppendToFinish(res AsyncResulter) (*FileOutputStream, error) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("append_to_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -439,6 +441,9 @@ func (file *File) CopyFinish(res AsyncResulter) error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("copy_finish", _args[:], nil)
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -470,7 +475,9 @@ func (file *File) CreateFinish(res AsyncResulter) (*FileOutputStream, error) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("create_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -504,7 +511,9 @@ func (file *File) CreateReadwriteFinish(res AsyncResulter) (*FileIOStream, error
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("create_readwrite_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -555,6 +564,9 @@ func (file *File) Delete(ctx context.Context) error {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("delete", _args[:], nil)
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
@@ -592,6 +604,9 @@ func (file *File) DeleteAsync(ctx context.Context, ioPriority int32, callback As
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("delete_async", _args[:], nil)
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(ioPriority)
@@ -609,6 +624,9 @@ func (file *File) DeleteFinish(result AsyncResulter) error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("delete_finish", _args[:], nil)
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
@@ -642,7 +660,9 @@ func (file *File) Dup() *File {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("dup", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 
@@ -668,6 +688,9 @@ func (file *File) EjectMountableFinish(result AsyncResulter) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("eject_mountable_finish", _args[:], nil)
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
@@ -692,6 +715,9 @@ func (file *File) EjectMountableWithOperationFinish(result AsyncResulter) error 
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("eject_mountable_with_operation_finish", _args[:], nil)
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
@@ -723,7 +749,9 @@ func (file *File) EnumerateChildrenFinish(res AsyncResulter) (*FileEnumerator, e
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("enumerate_children_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -760,7 +788,9 @@ func (file1 *File) Equal(file2 Filer) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file1).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file2).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("equal", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file1)
 	runtime.KeepAlive(file2)
@@ -803,7 +833,9 @@ func (file *File) FindEnclosingMount(ctx context.Context) (*Mount, error) {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("find_enclosing_mount", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
@@ -848,6 +880,9 @@ func (file *File) FindEnclosingMountAsync(ctx context.Context, ioPriority int32,
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("find_enclosing_mount_async", _args[:], nil)
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(ioPriority)
@@ -872,7 +907,9 @@ func (file *File) FindEnclosingMountFinish(res AsyncResulter) (*Mount, error) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("find_enclosing_mount_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -914,7 +951,9 @@ func (file *File) Basename() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("get_basename", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 
@@ -952,7 +991,9 @@ func (file *File) Child(name string) *File {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("get_child", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(name)
@@ -988,7 +1029,9 @@ func (file *File) ChildForDisplayName(displayName string) (*File, error) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(displayName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("get_child_for_display_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(displayName)
@@ -1019,7 +1062,9 @@ func (file *File) Parent() *File {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("get_parent", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 
@@ -1055,7 +1100,9 @@ func (file *File) ParseName() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("get_parse_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 
@@ -1083,7 +1130,9 @@ func (file *File) Path() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("get_path", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 
@@ -1117,7 +1166,9 @@ func (parent *File) RelativePath(descendant Filer) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(descendant).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("get_relative_path", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(descendant)
@@ -1147,7 +1198,9 @@ func (file *File) URI() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("get_uri", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 
@@ -1182,7 +1235,9 @@ func (file *File) URIScheme() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("get_uri_scheme", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 
@@ -1219,7 +1274,9 @@ func (file *File) HasParent(parent Filer) bool {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("has_parent", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(parent)
@@ -1261,7 +1318,9 @@ func (file *File) HasPrefix(prefix Filer) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(prefix).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("has_prefix", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(prefix)
@@ -1295,7 +1354,9 @@ func (file *File) HasURIScheme(uriScheme string) bool {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uriScheme)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("has_uri_scheme", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(uriScheme)
@@ -1324,7 +1385,9 @@ func (file *File) Hash() uint32 {
 
 	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = C.gpointer(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("hash", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 
@@ -1356,7 +1419,9 @@ func (file *File) IsNative() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("is_native", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 
@@ -1402,7 +1467,9 @@ func (file *File) LoadBytes(ctx context.Context) (string, *glib.Bytes, error) {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("load_bytes", _args[:], _outs[:])
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
@@ -1459,6 +1526,9 @@ func (file *File) LoadBytesAsync(ctx context.Context, callback AsyncReadyCallbac
 		_args[3] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("load_bytes_async", _args[:], nil)
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(callback)
@@ -1492,7 +1562,9 @@ func (file *File) LoadBytesFinish(result AsyncResulter) (string, *glib.Bytes, er
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("load_bytes_finish", _args[:], _outs[:])
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
@@ -1548,6 +1620,9 @@ func (file *File) LoadContents(ctx context.Context) ([]byte, string, error) {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("load_contents", _args[:], _outs[:])
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
@@ -1601,6 +1676,9 @@ func (file *File) LoadContentsAsync(ctx context.Context, callback AsyncReadyCall
 		_args[3] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("load_contents_async", _args[:], nil)
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(callback)
@@ -1628,6 +1706,9 @@ func (file *File) LoadContentsFinish(res AsyncResulter) ([]byte, string, error) 
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("load_contents_finish", _args[:], _outs[:])
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -1671,6 +1752,9 @@ func (file *File) LoadPartialContentsFinish(res AsyncResulter) ([]byte, string, 
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("load_partial_contents_finish", _args[:], _outs[:])
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -1722,6 +1806,9 @@ func (file *File) MakeDirectory(ctx context.Context) error {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("make_directory", _args[:], nil)
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
@@ -1757,6 +1844,9 @@ func (file *File) MakeDirectoryAsync(ctx context.Context, ioPriority int32, call
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("make_directory_async", _args[:], nil)
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(ioPriority)
@@ -1775,6 +1865,9 @@ func (file *File) MakeDirectoryFinish(result AsyncResulter) error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("make_directory_finish", _args[:], nil)
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
@@ -1816,6 +1909,9 @@ func (file *File) MakeDirectoryWithParents(ctx context.Context) error {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("make_directory_with_parents", _args[:], nil)
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
@@ -1852,6 +1948,9 @@ func (file *File) MakeSymbolicLink(ctx context.Context, symlinkValue string) err
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(symlinkValue)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("make_symbolic_link", _args[:], nil)
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(symlinkValue)
@@ -1885,6 +1984,9 @@ func (file *File) MeasureDiskUsageFinish(result AsyncResulter) (diskUsage, numDi
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("measure_disk_usage_finish", _args[:], _outs[:])
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
@@ -1923,6 +2025,9 @@ func (location *File) MountEnclosingVolumeFinish(result AsyncResulter) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(location).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("mount_enclosing_volume_finish", _args[:], nil)
+
 	runtime.KeepAlive(location)
 	runtime.KeepAlive(result)
 
@@ -1955,7 +2060,9 @@ func (file *File) MountMountableFinish(result AsyncResulter) (*File, error) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("mount_mountable_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
@@ -2004,7 +2111,9 @@ func (file *File) OpenReadwrite(ctx context.Context) (*FileIOStream, error) {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("open_readwrite", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
@@ -2049,6 +2158,9 @@ func (file *File) OpenReadwriteAsync(ctx context.Context, ioPriority int32, call
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("open_readwrite_async", _args[:], nil)
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(ioPriority)
@@ -2073,7 +2185,9 @@ func (file *File) OpenReadwriteFinish(res AsyncResulter) (*FileIOStream, error) 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("open_readwrite_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -2106,7 +2220,9 @@ func (file *File) PeekPath() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("peek_path", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 
@@ -2147,6 +2263,9 @@ func (file *File) PollMountable(ctx context.Context, callback AsyncReadyCallback
 		_args[3] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("poll_mountable", _args[:], nil)
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(callback)
@@ -2167,6 +2286,9 @@ func (file *File) PollMountableFinish(result AsyncResulter) error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("poll_mountable_finish", _args[:], nil)
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
@@ -2206,7 +2328,9 @@ func (file *File) QueryDefaultHandler(ctx context.Context) (*AppInfo, error) {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("query_default_handler", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
@@ -2245,6 +2369,9 @@ func (file *File) QueryDefaultHandlerAsync(ctx context.Context, ioPriority int32
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("query_default_handler_async", _args[:], nil)
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(ioPriority)
@@ -2269,7 +2396,9 @@ func (file *File) QueryDefaultHandlerFinish(result AsyncResulter) (*AppInfo, err
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("query_default_handler_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
@@ -2328,7 +2457,9 @@ func (file *File) QueryExists(ctx context.Context) bool {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("query_exists", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
@@ -2387,7 +2518,9 @@ func (file *File) QueryFilesystemInfo(ctx context.Context, attributes string) (*
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(attributes)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("query_filesystem_info", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
@@ -2438,6 +2571,9 @@ func (file *File) QueryFilesystemInfoAsync(ctx context.Context, attributes strin
 		_args[5] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("query_filesystem_info_async", _args[:], nil)
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(attributes)
@@ -2463,7 +2599,9 @@ func (file *File) QueryFilesystemInfoFinish(res AsyncResulter) (*FileInfo, error
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("query_filesystem_info_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -2497,7 +2635,9 @@ func (file *File) QueryInfoFinish(res AsyncResulter) (*FileInfo, error) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("query_info_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -2543,7 +2683,9 @@ func (file *File) QuerySettableAttributes(ctx context.Context) (*FileAttributeIn
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("query_settable_attributes", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
@@ -2592,7 +2734,9 @@ func (file *File) QueryWritableNamespaces(ctx context.Context) (*FileAttributeIn
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("query_writable_namespaces", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
@@ -2645,7 +2789,9 @@ func (file *File) Read(ctx context.Context) (*FileInputStream, error) {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("read", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
@@ -2690,6 +2836,9 @@ func (file *File) ReadAsync(ctx context.Context, ioPriority int32, callback Asyn
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("read_async", _args[:], nil)
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(ioPriority)
@@ -2714,7 +2863,9 @@ func (file *File) ReadFinish(res AsyncResulter) (*FileInputStream, error) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("read_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -2751,6 +2902,9 @@ func (file *File) ReplaceContentsFinish(res AsyncResulter) (string, error) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("replace_contents_finish", _args[:], _outs[:])
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
 
@@ -2786,7 +2940,9 @@ func (file *File) ReplaceFinish(res AsyncResulter) (*FileOutputStream, error) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("replace_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -2820,7 +2976,9 @@ func (file *File) ReplaceReadwriteFinish(res AsyncResulter) (*FileIOStream, erro
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("replace_readwrite_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -2856,7 +3014,9 @@ func (file *File) ResolveRelativePath(relativePath string) *File {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(relativePath)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("resolve_relative_path", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(relativePath)
@@ -2885,6 +3045,9 @@ func (file *File) SetAttributesFinish(result AsyncResulter) (*FileInfo, error) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("set_attributes_finish", _args[:], _outs[:])
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
@@ -2938,7 +3101,9 @@ func (file *File) SetDisplayName(ctx context.Context, displayName string) (*File
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(displayName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("set_display_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
@@ -2987,6 +3152,9 @@ func (file *File) SetDisplayNameAsync(ctx context.Context, displayName string, i
 		_args[5] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("set_display_name_async", _args[:], nil)
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(displayName)
@@ -3011,7 +3179,9 @@ func (file *File) SetDisplayNameFinish(res AsyncResulter) (*File, error) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("set_display_name_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -3043,6 +3213,9 @@ func (file *File) StartMountableFinish(result AsyncResulter) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("start_mountable_finish", _args[:], nil)
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
@@ -3071,6 +3244,9 @@ func (file *File) StopMountableFinish(result AsyncResulter) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("stop_mountable_finish", _args[:], nil)
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
@@ -3097,7 +3273,9 @@ func (file *File) SupportsThreadContexts() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "File")
+	_gret := _info.InvokeIfaceMethod("supports_thread_contexts", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 
@@ -3135,6 +3313,9 @@ func (file *File) Trash(ctx context.Context) error {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("trash", _args[:], nil)
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 
@@ -3170,6 +3351,9 @@ func (file *File) TrashAsync(ctx context.Context, ioPriority int32, callback Asy
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("trash_async", _args[:], nil)
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(ioPriority)
@@ -3188,6 +3372,9 @@ func (file *File) TrashFinish(result AsyncResulter) error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("trash_finish", _args[:], nil)
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
@@ -3219,6 +3406,9 @@ func (file *File) UnmountMountableFinish(result AsyncResulter) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("unmount_mountable_finish", _args[:], nil)
+
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
 
@@ -3246,6 +3436,9 @@ func (file *File) UnmountMountableWithOperationFinish(result AsyncResulter) erro
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	_info := girepository.MustFind("Gio", "File")
+	_info.InvokeIfaceMethod("unmount_mountable_with_operation_finish", _args[:], nil)
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
@@ -3287,8 +3480,9 @@ func NewFileForCommandlineArg(arg string) *File {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(arg)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "new_for_commandline_arg").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "new_for_commandline_arg")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(arg)
 
@@ -3328,8 +3522,9 @@ func NewFileForCommandlineArgAndCwd(arg, cwd string) *File {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(cwd)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gio", "new_for_commandline_arg_and_cwd").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "new_for_commandline_arg_and_cwd")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(arg)
 	runtime.KeepAlive(cwd)
@@ -3361,8 +3556,9 @@ func NewFileForPath(path string) *File {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "new_for_path").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "new_for_path")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 
@@ -3392,8 +3588,9 @@ func NewFileForURI(uri string) *File {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "new_for_uri").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "new_for_uri")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(uri)
 
@@ -3434,8 +3631,9 @@ func NewFileTmp(tmpl string) (*FileIOStream, *File, error) {
 		defer C.free(unsafe.Pointer(_args[0]))
 	}
 
-	_gret := girepository.MustFind("Gio", "new_tmp").Invoke(_args[:], _outs[:])
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "new_tmp")
+	_gret := _info.Invoke(_args[:], _outs[:])
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(tmpl)
 
@@ -3471,8 +3669,9 @@ func FileParseName(parseName string) *File {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(parseName)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "parse_name").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "parse_name")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(parseName)
 

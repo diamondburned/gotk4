@@ -18,9 +18,9 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GInputStream* _gotk4_gio2_LoadableIconIface_load(void*, int, void**, void*, GError**);
-// extern GInputStream* _gotk4_gio2_LoadableIconIface_load_finish(void*, void*, void**, GError**);
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void* _gotk4_gio2_LoadableIconIface_load(void*, int, void**, void*, GError**);
+// extern void* _gotk4_gio2_LoadableIconIface_load_finish(void*, void*, void**, GError**);
 import "C"
 
 // GTypeLoadableIcon returns the GType for the type LoadableIcon.
@@ -99,7 +99,9 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int32) (string, InputSt
 	}
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(size)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "LoadableIcon")
+	_gret := _info.InvokeIfaceMethod("load", _args[:], _outs[:])
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(icon)
 	runtime.KeepAlive(ctx)
@@ -162,6 +164,9 @@ func (icon *LoadableIcon) LoadAsync(ctx context.Context, size int32, callback As
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "LoadableIcon")
+	_info.InvokeIfaceMethod("load_async", _args[:], nil)
+
 	runtime.KeepAlive(icon)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(size)
@@ -188,7 +193,9 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "LoadableIcon")
+	_gret := _info.InvokeIfaceMethod("load_finish", _args[:], _outs[:])
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(icon)
 	runtime.KeepAlive(res)

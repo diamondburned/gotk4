@@ -340,7 +340,8 @@ func (permission *Permission) Acquire(ctx context.Context) error {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	girepository.MustFind("Gio", "Permission").InvokeMethod("acquire", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Permission")
+	_info.InvokeClassMethod("acquire", _args[:], nil)
 
 	runtime.KeepAlive(permission)
 	runtime.KeepAlive(ctx)
@@ -377,7 +378,8 @@ func (permission *Permission) AcquireAsync(ctx context.Context, callback AsyncRe
 		_args[3] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "Permission").InvokeMethod("acquire_async", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Permission")
+	_info.InvokeClassMethod("acquire_async", _args[:], nil)
 
 	runtime.KeepAlive(permission)
 	runtime.KeepAlive(ctx)
@@ -400,7 +402,8 @@ func (permission *Permission) AcquireFinish(result AsyncResulter) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	girepository.MustFind("Gio", "Permission").InvokeMethod("acquire_finish", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Permission")
+	_info.InvokeClassMethod("acquire_finish", _args[:], nil)
 
 	runtime.KeepAlive(permission)
 	runtime.KeepAlive(result)
@@ -427,8 +430,9 @@ func (permission *Permission) Allowed() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
 
-	_gret := girepository.MustFind("Gio", "Permission").InvokeMethod("get_allowed", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Permission")
+	_gret := _info.InvokeClassMethod("get_allowed", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(permission)
 
@@ -454,8 +458,9 @@ func (permission *Permission) CanAcquire() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
 
-	_gret := girepository.MustFind("Gio", "Permission").InvokeMethod("get_can_acquire", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Permission")
+	_gret := _info.InvokeClassMethod("get_can_acquire", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(permission)
 
@@ -481,8 +486,9 @@ func (permission *Permission) CanRelease() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
 
-	_gret := girepository.MustFind("Gio", "Permission").InvokeMethod("get_can_release", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Permission")
+	_gret := _info.InvokeClassMethod("get_can_release", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(permission)
 
@@ -521,7 +527,8 @@ func (permission *Permission) ImplUpdate(allowed, canAcquire, canRelease bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "Permission").InvokeMethod("impl_update", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Permission")
+	_info.InvokeClassMethod("impl_update", _args[:], nil)
 
 	runtime.KeepAlive(permission)
 	runtime.KeepAlive(allowed)
@@ -559,7 +566,8 @@ func (permission *Permission) Release(ctx context.Context) error {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	girepository.MustFind("Gio", "Permission").InvokeMethod("release", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Permission")
+	_info.InvokeClassMethod("release", _args[:], nil)
 
 	runtime.KeepAlive(permission)
 	runtime.KeepAlive(ctx)
@@ -596,7 +604,8 @@ func (permission *Permission) ReleaseAsync(ctx context.Context, callback AsyncRe
 		_args[3] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "Permission").InvokeMethod("release_async", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Permission")
+	_info.InvokeClassMethod("release_async", _args[:], nil)
 
 	runtime.KeepAlive(permission)
 	runtime.KeepAlive(ctx)
@@ -619,7 +628,8 @@ func (permission *Permission) ReleaseFinish(result AsyncResulter) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	girepository.MustFind("Gio", "Permission").InvokeMethod("release_finish", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Permission")
+	_info.InvokeClassMethod("release_finish", _args[:], nil)
 
 	runtime.KeepAlive(permission)
 	runtime.KeepAlive(result)

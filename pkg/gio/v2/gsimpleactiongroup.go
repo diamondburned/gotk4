@@ -76,8 +76,9 @@ func marshalSimpleActionGroup(p uintptr) (interface{}, error) {
 //    - simpleActionGroup: new ActionGroup.
 //
 func NewSimpleActionGroup() *SimpleActionGroup {
-	_gret := girepository.MustFind("Gio", "SimpleActionGroup").InvokeMethod("new_SimpleActionGroup", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SimpleActionGroup")
+	_gret := _info.InvokeClassMethod("new_SimpleActionGroup", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _simpleActionGroup *SimpleActionGroup // out
 
@@ -105,7 +106,8 @@ func (simple *SimpleActionGroup) Insert(action Actioner) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
-	girepository.MustFind("Gio", "SimpleActionGroup").InvokeMethod("insert", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SimpleActionGroup")
+	_info.InvokeClassMethod("insert", _args[:], nil)
 
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(action)
@@ -132,8 +134,9 @@ func (simple *SimpleActionGroup) Lookup(actionName string) *Action {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gio", "SimpleActionGroup").InvokeMethod("lookup", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SimpleActionGroup")
+	_gret := _info.InvokeClassMethod("lookup", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(actionName)
@@ -162,7 +165,8 @@ func (simple *SimpleActionGroup) Remove(actionName string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gio", "SimpleActionGroup").InvokeMethod("remove", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SimpleActionGroup")
+	_info.InvokeClassMethod("remove", _args[:], nil)
 
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(actionName)

@@ -113,8 +113,9 @@ func NewRecentAction(name, label, tooltip, stockId string) *RecentAction {
 		defer C.free(unsafe.Pointer(_args[3]))
 	}
 
-	_gret := girepository.MustFind("Gtk", "RecentAction").InvokeMethod("new_RecentAction", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RecentAction")
+	_gret := _info.InvokeClassMethod("new_RecentAction", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(label)
@@ -168,8 +169,9 @@ func NewRecentActionForManager(name, label, tooltip, stockId string, manager *Re
 		*(**C.void)(unsafe.Pointer(&_args[4])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "RecentAction").InvokeMethod("new_RecentAction_for_manager", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RecentAction")
+	_gret := _info.InvokeClassMethod("new_RecentAction_for_manager", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(label)
@@ -198,8 +200,9 @@ func (action *RecentAction) ShowNumbers() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
-	_gret := girepository.MustFind("Gtk", "RecentAction").InvokeMethod("get_show_numbers", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RecentAction")
+	_gret := _info.InvokeClassMethod("get_show_numbers", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(action)
 
@@ -231,7 +234,8 @@ func (action *RecentAction) SetShowNumbers(showNumbers bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "RecentAction").InvokeMethod("set_show_numbers", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "RecentAction")
+	_info.InvokeClassMethod("set_show_numbers", _args[:], nil)
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(showNumbers)

@@ -79,8 +79,9 @@ func (decompressor *ZlibDecompressor) FileInfo() *FileInfo {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(decompressor).Native()))
 
-	_gret := girepository.MustFind("Gio", "ZlibDecompressor").InvokeMethod("get_file_info", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ZlibDecompressor")
+	_gret := _info.InvokeClassMethod("get_file_info", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(decompressor)
 

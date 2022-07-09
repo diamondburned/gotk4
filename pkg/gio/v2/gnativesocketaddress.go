@@ -81,8 +81,9 @@ func NewNativeSocketAddress(native unsafe.Pointer, len uint) *NativeSocketAddres
 	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = (C.gpointer)(unsafe.Pointer(native))
 	*(*C.gsize)(unsafe.Pointer(&_args[1])) = C.gsize(len)
 
-	_gret := girepository.MustFind("Gio", "NativeSocketAddress").InvokeMethod("new_NativeSocketAddress", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "NativeSocketAddress")
+	_gret := _info.InvokeClassMethod("new_NativeSocketAddress", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(native)
 	runtime.KeepAlive(len)

@@ -93,8 +93,9 @@ func marshalWindowHandle(p uintptr) (interface{}, error) {
 //    - windowHandle: new GtkWindowHandle.
 //
 func NewWindowHandle() *WindowHandle {
-	_gret := girepository.MustFind("Gtk", "WindowHandle").InvokeMethod("new_WindowHandle", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WindowHandle")
+	_gret := _info.InvokeClassMethod("new_WindowHandle", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _windowHandle *WindowHandle // out
 
@@ -114,8 +115,9 @@ func (self *WindowHandle) Child() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "WindowHandle").InvokeMethod("get_child", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WindowHandle")
+	_gret := _info.InvokeClassMethod("get_child", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -155,7 +157,8 @@ func (self *WindowHandle) SetChild(child Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
 
-	girepository.MustFind("Gtk", "WindowHandle").InvokeMethod("set_child", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "WindowHandle")
+	_info.InvokeClassMethod("set_child", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(child)

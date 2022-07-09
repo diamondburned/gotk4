@@ -191,8 +191,9 @@ func (v *GestureClick) ConnectUnpairedRelease(f func(x, y float64, button uint32
 //    - gestureClick: newly created GtkGestureClick.
 //
 func NewGestureClick() *GestureClick {
-	_gret := girepository.MustFind("Gtk", "GestureClick").InvokeMethod("new_GestureClick", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureClick")
+	_gret := _info.InvokeClassMethod("new_GestureClick", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _gestureClick *GestureClick // out
 

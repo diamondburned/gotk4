@@ -209,8 +209,9 @@ func DBusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) st
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gio", "lookup").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "lookup")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(annotations)
 	runtime.KeepAlive(name)
@@ -476,6 +477,9 @@ func (info *DBusInterfaceInfo) CacheBuild() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
 
+	_info := girepository.MustFind("Gio", "DBusInterfaceInfo")
+	_info.InvokeRecordMethod("cache_build", _args[:], nil)
+
 	runtime.KeepAlive(info)
 }
 
@@ -486,6 +490,9 @@ func (info *DBusInterfaceInfo) CacheRelease() {
 	var _args [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+
+	_info := girepository.MustFind("Gio", "DBusInterfaceInfo")
+	_info.InvokeRecordMethod("cache_release", _args[:], nil)
 
 	runtime.KeepAlive(info)
 }
@@ -511,7 +518,9 @@ func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusInterfaceInfo")
+	_gret := _info.InvokeRecordMethod("lookup_method", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(name)
@@ -553,7 +562,9 @@ func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusInterfaceInfo")
+	_gret := _info.InvokeRecordMethod("lookup_property", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(name)
@@ -595,7 +606,9 @@ func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusInterfaceInfo")
+	_gret := _info.InvokeRecordMethod("lookup_signal", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(name)
@@ -769,7 +782,9 @@ func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(xmlData)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusNodeInfo")
+	_gret := _info.InvokeRecordMethod("new_for_xml", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(xmlData)
 
@@ -923,7 +938,9 @@ func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusNodeInfo")
+	_gret := _info.InvokeRecordMethod("lookup_interface", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(name)

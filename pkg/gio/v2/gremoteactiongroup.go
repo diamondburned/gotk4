@@ -215,6 +215,9 @@ func (remote *RemoteActionGroup) ActivateActionFull(actionName string, parameter
 	}
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(platformData)))
 
+	_info := girepository.MustFind("Gio", "RemoteActionGroup")
+	_info.InvokeIfaceMethod("activate_action_full", _args[:], nil)
+
 	runtime.KeepAlive(remote)
 	runtime.KeepAlive(actionName)
 	runtime.KeepAlive(parameter)
@@ -245,6 +248,9 @@ func (remote *RemoteActionGroup) ChangeActionStateFull(actionName string, value,
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(platformData)))
+
+	_info := girepository.MustFind("Gio", "RemoteActionGroup")
+	_info.InvokeIfaceMethod("change_action_state_full", _args[:], nil)
 
 	runtime.KeepAlive(remote)
 	runtime.KeepAlive(actionName)

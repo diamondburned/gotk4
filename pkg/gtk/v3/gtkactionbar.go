@@ -93,8 +93,9 @@ func marshalActionBar(p uintptr) (interface{}, error) {
 //    - actionBar: new ActionBar.
 //
 func NewActionBar() *ActionBar {
-	_gret := girepository.MustFind("Gtk", "ActionBar").InvokeMethod("new_ActionBar", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ActionBar")
+	_gret := _info.InvokeClassMethod("new_ActionBar", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _actionBar *ActionBar // out
 
@@ -114,8 +115,9 @@ func (actionBar *ActionBar) CenterWidget() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ActionBar").InvokeMethod("get_center_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ActionBar")
+	_gret := _info.InvokeClassMethod("get_center_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(actionBar)
 
@@ -154,7 +156,8 @@ func (actionBar *ActionBar) PackEnd(child Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	girepository.MustFind("Gtk", "ActionBar").InvokeMethod("pack_end", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ActionBar")
+	_info.InvokeClassMethod("pack_end", _args[:], nil)
 
 	runtime.KeepAlive(actionBar)
 	runtime.KeepAlive(child)
@@ -173,7 +176,8 @@ func (actionBar *ActionBar) PackStart(child Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionBar).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	girepository.MustFind("Gtk", "ActionBar").InvokeMethod("pack_start", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ActionBar")
+	_info.InvokeClassMethod("pack_start", _args[:], nil)
 
 	runtime.KeepAlive(actionBar)
 	runtime.KeepAlive(child)
@@ -193,7 +197,8 @@ func (actionBar *ActionBar) SetCenterWidget(centerWidget Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(centerWidget).Native()))
 	}
 
-	girepository.MustFind("Gtk", "ActionBar").InvokeMethod("set_center_widget", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ActionBar")
+	_info.InvokeClassMethod("set_center_widget", _args[:], nil)
 
 	runtime.KeepAlive(actionBar)
 	runtime.KeepAlive(centerWidget)

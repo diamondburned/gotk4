@@ -15,5 +15,5 @@ import (
 import "C"
 
 func init() {
-	girepository.Require("Pango", "1.0")
+	girepository.Require("Pango", "1.0", girepository.LoadFlagLazy)
 }

@@ -168,8 +168,9 @@ func NewPadController(group gio.ActionGrouper, pad gdk.Devicer) *PadController {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pad).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "PadController").InvokeMethod("new_PadController", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PadController")
+	_gret := _info.InvokeClassMethod("new_PadController", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(pad)

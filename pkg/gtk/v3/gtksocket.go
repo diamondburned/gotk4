@@ -220,8 +220,9 @@ func (socket_ *Socket) ConnectPlugRemoved(f func() (ok bool)) coreglib.SignalHan
 //    - socket: new Socket.
 //
 func NewSocket() *Socket {
-	_gret := girepository.MustFind("Gtk", "Socket").InvokeMethod("new_Socket", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Socket")
+	_gret := _info.InvokeClassMethod("new_Socket", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _socket *Socket // out
 
@@ -242,8 +243,9 @@ func (socket_ *Socket) PlugWindow() gdk.Windower {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket_).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Socket").InvokeMethod("get_plug_window", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Socket")
+	_gret := _info.InvokeClassMethod("get_plug_window", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket_)
 

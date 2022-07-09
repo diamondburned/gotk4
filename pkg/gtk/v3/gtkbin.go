@@ -111,8 +111,9 @@ func (bin *Bin) Child() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(bin).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Bin").InvokeMethod("get_child", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Bin")
+	_gret := _info.InvokeClassMethod("get_child", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(bin)
 

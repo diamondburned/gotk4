@@ -145,8 +145,9 @@ func NewSocketFromFd(fd int32) (*Socket, error) {
 
 	*(*C.gint)(unsafe.Pointer(&_args[0])) = C.gint(fd)
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("new_Socket_from_fd", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("new_Socket_from_fd", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(fd)
 
@@ -191,8 +192,9 @@ func (socket *Socket) Accept(ctx context.Context) (*Socket, error) {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("accept", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("accept", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
@@ -245,7 +247,8 @@ func (socket *Socket) Bind(address SocketAddresser, allowReuse bool) error {
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "Socket").InvokeMethod("bind", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Socket")
+	_info.InvokeClassMethod("bind", _args[:], nil)
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(address)
@@ -268,7 +271,8 @@ func (socket *Socket) CheckConnectResult() error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 
-	girepository.MustFind("Gio", "Socket").InvokeMethod("check_connect_result", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Socket")
+	_info.InvokeClassMethod("check_connect_result", _args[:], nil)
 
 	runtime.KeepAlive(socket)
 
@@ -312,7 +316,8 @@ func (socket *Socket) Close() error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 
-	girepository.MustFind("Gio", "Socket").InvokeMethod("close", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Socket")
+	_info.InvokeClassMethod("close", _args[:], nil)
 
 	runtime.KeepAlive(socket)
 
@@ -358,7 +363,8 @@ func (socket *Socket) ConnectSocket(ctx context.Context, address SocketAddresser
 	}
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	girepository.MustFind("Gio", "Socket").InvokeMethod("connect", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Socket")
+	_info.InvokeClassMethod("connect", _args[:], nil)
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
@@ -395,8 +401,9 @@ func (socket *Socket) AvailableBytes() int {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_available_bytes", _args[:], nil)
-	_cret = *(*C.gssize)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("get_available_bytes", _args[:], nil)
+	_cret := *(*C.gssize)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 
@@ -419,8 +426,9 @@ func (socket *Socket) Blocking() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_blocking", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("get_blocking", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 
@@ -445,8 +453,9 @@ func (socket *Socket) Broadcast() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_broadcast", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("get_broadcast", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 
@@ -492,8 +501,9 @@ func (socket *Socket) Credentials() (*Credentials, error) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_credentials", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("get_credentials", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 
@@ -522,8 +532,9 @@ func (socket *Socket) Fd() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_fd", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("get_fd", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 
@@ -546,8 +557,9 @@ func (socket *Socket) Keepalive() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_keepalive", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("get_keepalive", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 
@@ -572,8 +584,9 @@ func (socket *Socket) ListenBacklog() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_listen_backlog", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("get_listen_backlog", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 
@@ -598,8 +611,9 @@ func (socket *Socket) LocalAddress() (SocketAddresser, error) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_local_address", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("get_local_address", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 
@@ -643,8 +657,9 @@ func (socket *Socket) MulticastLoopback() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_multicast_loopback", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("get_multicast_loopback", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 
@@ -669,8 +684,9 @@ func (socket *Socket) MulticastTTL() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_multicast_ttl", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("get_multicast_ttl", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 
@@ -711,7 +727,8 @@ func (socket *Socket) Option(level, optname int32) (int32, error) {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(level)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(optname)
 
-	girepository.MustFind("Gio", "Socket").InvokeMethod("get_option", _args[:], _outs[:])
+	_info := girepository.MustFind("Gio", "Socket")
+	_info.InvokeClassMethod("get_option", _args[:], _outs[:])
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(level)
@@ -741,8 +758,9 @@ func (socket *Socket) RemoteAddress() (SocketAddresser, error) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_remote_address", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("get_remote_address", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 
@@ -785,8 +803,9 @@ func (socket *Socket) Timeout() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_timeout", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("get_timeout", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 
@@ -809,8 +828,9 @@ func (socket *Socket) TTL() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("get_ttl", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("get_ttl", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 
@@ -832,8 +852,9 @@ func (socket *Socket) IsClosed() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("is_closed", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("is_closed", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 
@@ -863,8 +884,9 @@ func (socket *Socket) IsConnected() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("is_connected", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("is_connected", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 
@@ -910,7 +932,8 @@ func (socket *Socket) JoinMulticastGroup(group *InetAddress, sourceSpecific bool
 		defer C.free(unsafe.Pointer(_args[3]))
 	}
 
-	girepository.MustFind("Gio", "Socket").InvokeMethod("join_multicast_group", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Socket")
+	_info.InvokeClassMethod("join_multicast_group", _args[:], nil)
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(group)
@@ -961,7 +984,8 @@ func (socket *Socket) JoinMulticastGroupSSM(group, sourceSpecific *InetAddress, 
 		defer C.free(unsafe.Pointer(_args[3]))
 	}
 
-	girepository.MustFind("Gio", "Socket").InvokeMethod("join_multicast_group_ssm", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Socket")
+	_info.InvokeClassMethod("join_multicast_group_ssm", _args[:], nil)
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(group)
@@ -1006,7 +1030,8 @@ func (socket *Socket) LeaveMulticastGroup(group *InetAddress, sourceSpecific boo
 		defer C.free(unsafe.Pointer(_args[3]))
 	}
 
-	girepository.MustFind("Gio", "Socket").InvokeMethod("leave_multicast_group", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Socket")
+	_info.InvokeClassMethod("leave_multicast_group", _args[:], nil)
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(group)
@@ -1049,7 +1074,8 @@ func (socket *Socket) LeaveMulticastGroupSSM(group, sourceSpecific *InetAddress,
 		defer C.free(unsafe.Pointer(_args[3]))
 	}
 
-	girepository.MustFind("Gio", "Socket").InvokeMethod("leave_multicast_group_ssm", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Socket")
+	_info.InvokeClassMethod("leave_multicast_group_ssm", _args[:], nil)
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(group)
@@ -1078,7 +1104,8 @@ func (socket *Socket) Listen() error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 
-	girepository.MustFind("Gio", "Socket").InvokeMethod("listen", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Socket")
+	_info.InvokeClassMethod("listen", _args[:], nil)
 
 	runtime.KeepAlive(socket)
 
@@ -1137,8 +1164,9 @@ func (socket *Socket) Receive(ctx context.Context, buffer []byte) (int, error) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(C.CBytes(buffer))
 	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[1]))))
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("receive", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("receive", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
@@ -1188,8 +1216,9 @@ func (socket *Socket) ReceiveFrom(ctx context.Context, buffer []byte) (SocketAdd
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(C.CBytes(buffer))
 	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[1]))))
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("receive_from", _args[:], _outs[:])
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("receive_from", _args[:], _outs[:])
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
@@ -1255,8 +1284,9 @@ func (socket *Socket) ReceiveWithBlocking(ctx context.Context, buffer []byte, bl
 		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
 	}
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("receive_with_blocking", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("receive_with_blocking", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
@@ -1313,8 +1343,9 @@ func (socket *Socket) Send(ctx context.Context, buffer string) (int, error) {
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[1])))), len(buffer)), buffer)
 	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[1]))))
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("send", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("send", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
@@ -1364,8 +1395,9 @@ func (socket *Socket) SendTo(ctx context.Context, address SocketAddresser, buffe
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[2])))), len(buffer)), buffer)
 	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[2]))))
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("send_to", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("send_to", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
@@ -1415,8 +1447,9 @@ func (socket *Socket) SendWithBlocking(ctx context.Context, buffer string, block
 		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
 	}
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("send_with_blocking", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("send_with_blocking", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ctx)
@@ -1455,7 +1488,8 @@ func (socket *Socket) SetBlocking(blocking bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "Socket").InvokeMethod("set_blocking", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Socket")
+	_info.InvokeClassMethod("set_blocking", _args[:], nil)
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(blocking)
@@ -1476,7 +1510,8 @@ func (socket *Socket) SetBroadcast(broadcast bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "Socket").InvokeMethod("set_broadcast", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Socket")
+	_info.InvokeClassMethod("set_broadcast", _args[:], nil)
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(broadcast)
@@ -1509,7 +1544,8 @@ func (socket *Socket) SetKeepalive(keepalive bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "Socket").InvokeMethod("set_keepalive", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Socket")
+	_info.InvokeClassMethod("set_keepalive", _args[:], nil)
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(keepalive)
@@ -1533,7 +1569,8 @@ func (socket *Socket) SetListenBacklog(backlog int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(backlog)
 
-	girepository.MustFind("Gio", "Socket").InvokeMethod("set_listen_backlog", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Socket")
+	_info.InvokeClassMethod("set_listen_backlog", _args[:], nil)
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(backlog)
@@ -1556,7 +1593,8 @@ func (socket *Socket) SetMulticastLoopback(loopback bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "Socket").InvokeMethod("set_multicast_loopback", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Socket")
+	_info.InvokeClassMethod("set_multicast_loopback", _args[:], nil)
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(loopback)
@@ -1576,7 +1614,8 @@ func (socket *Socket) SetMulticastTTL(ttl uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(ttl)
 
-	girepository.MustFind("Gio", "Socket").InvokeMethod("set_multicast_ttl", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Socket")
+	_info.InvokeClassMethod("set_multicast_ttl", _args[:], nil)
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ttl)
@@ -1605,7 +1644,8 @@ func (socket *Socket) SetOption(level, optname, value int32) error {
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(optname)
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(value)
 
-	girepository.MustFind("Gio", "Socket").InvokeMethod("set_option", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Socket")
+	_info.InvokeClassMethod("set_option", _args[:], nil)
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(level)
@@ -1649,7 +1689,8 @@ func (socket *Socket) SetTimeout(timeout uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(timeout)
 
-	girepository.MustFind("Gio", "Socket").InvokeMethod("set_timeout", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Socket")
+	_info.InvokeClassMethod("set_timeout", _args[:], nil)
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(timeout)
@@ -1668,7 +1709,8 @@ func (socket *Socket) SetTTL(ttl uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(ttl)
 
-	girepository.MustFind("Gio", "Socket").InvokeMethod("set_ttl", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Socket")
+	_info.InvokeClassMethod("set_ttl", _args[:], nil)
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(ttl)
@@ -1705,7 +1747,8 @@ func (socket *Socket) Shutdown(shutdownRead, shutdownWrite bool) error {
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "Socket").InvokeMethod("shutdown", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Socket")
+	_info.InvokeClassMethod("shutdown", _args[:], nil)
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(shutdownRead)
@@ -1738,8 +1781,9 @@ func (socket *Socket) SpeaksIPv4() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 
-	_gret := girepository.MustFind("Gio", "Socket").InvokeMethod("speaks_ipv4", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Socket")
+	_gret := _info.InvokeClassMethod("speaks_ipv4", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(socket)
 

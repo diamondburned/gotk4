@@ -61,7 +61,8 @@ func (self *GLTexture) Release() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	girepository.MustFind("Gdk", "GLTexture").InvokeMethod("release", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "GLTexture")
+	_info.InvokeClassMethod("release", _args[:], nil)
 
 	runtime.KeepAlive(self)
 }

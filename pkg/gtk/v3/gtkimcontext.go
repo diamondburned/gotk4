@@ -785,8 +785,9 @@ func (context *IMContext) DeleteSurrounding(offset, nChars int32) bool {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(offset)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(nChars)
 
-	_gret := girepository.MustFind("Gtk", "IMContext").InvokeMethod("delete_surrounding", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "IMContext")
+	_gret := _info.InvokeClassMethod("delete_surrounding", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(offset)
@@ -819,8 +820,9 @@ func (context *IMContext) FilterKeypress(event *gdk.EventKey) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
 
-	_gret := girepository.MustFind("Gtk", "IMContext").InvokeMethod("filter_keypress", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "IMContext")
+	_gret := _info.InvokeClassMethod("filter_keypress", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(event)
@@ -842,7 +844,8 @@ func (context *IMContext) FocusIn() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	girepository.MustFind("Gtk", "IMContext").InvokeMethod("focus_in", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "IMContext")
+	_info.InvokeClassMethod("focus_in", _args[:], nil)
 
 	runtime.KeepAlive(context)
 }
@@ -855,7 +858,8 @@ func (context *IMContext) FocusOut() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	girepository.MustFind("Gtk", "IMContext").InvokeMethod("focus_out", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "IMContext")
+	_info.InvokeClassMethod("focus_out", _args[:], nil)
 
 	runtime.KeepAlive(context)
 }
@@ -879,7 +883,8 @@ func (context *IMContext) PreeditString() (string, *pango.AttrList, int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	girepository.MustFind("Gtk", "IMContext").InvokeMethod("get_preedit_string", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "IMContext")
+	_info.InvokeClassMethod("get_preedit_string", _args[:], _outs[:])
 
 	runtime.KeepAlive(context)
 
@@ -929,8 +934,9 @@ func (context *IMContext) Surrounding() (string, int32, bool) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gtk", "IMContext").InvokeMethod("get_surrounding", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "IMContext")
+	_gret := _info.InvokeClassMethod("get_surrounding", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -956,7 +962,8 @@ func (context *IMContext) Reset() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	girepository.MustFind("Gtk", "IMContext").InvokeMethod("reset", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "IMContext")
+	_info.InvokeClassMethod("reset", _args[:], nil)
 
 	runtime.KeepAlive(context)
 }
@@ -979,7 +986,8 @@ func (context *IMContext) SetClientWindow(window gdk.Windower) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	}
 
-	girepository.MustFind("Gtk", "IMContext").InvokeMethod("set_client_window", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "IMContext")
+	_info.InvokeClassMethod("set_client_window", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(window)
@@ -998,7 +1006,8 @@ func (context *IMContext) SetCursorLocation(area *gdk.Rectangle) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(area)))
 
-	girepository.MustFind("Gtk", "IMContext").InvokeMethod("set_cursor_location", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "IMContext")
+	_info.InvokeClassMethod("set_cursor_location", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(area)
@@ -1025,7 +1034,8 @@ func (context *IMContext) SetSurrounding(text string, len, cursorIndex int32) {
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(len)
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(cursorIndex)
 
-	girepository.MustFind("Gtk", "IMContext").InvokeMethod("set_surrounding", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "IMContext")
+	_info.InvokeClassMethod("set_surrounding", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(text)
@@ -1050,7 +1060,8 @@ func (context *IMContext) SetUsePreedit(usePreedit bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "IMContext").InvokeMethod("set_use_preedit", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "IMContext")
+	_info.InvokeClassMethod("set_use_preedit", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(usePreedit)

@@ -180,8 +180,9 @@ func NewSocketAddressFromNative(native unsafe.Pointer, len uint) *SocketAddress 
 	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = (C.gpointer)(unsafe.Pointer(native))
 	*(*C.gsize)(unsafe.Pointer(&_args[1])) = C.gsize(len)
 
-	_gret := girepository.MustFind("Gio", "SocketAddress").InvokeMethod("new_SocketAddress_from_native", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketAddress")
+	_gret := _info.InvokeClassMethod("new_SocketAddress_from_native", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(native)
 	runtime.KeepAlive(len)
@@ -205,8 +206,9 @@ func (address *SocketAddress) NativeSize() int {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_gret := girepository.MustFind("Gio", "SocketAddress").InvokeMethod("get_native_size", _args[:], nil)
-	_cret = *(*C.gssize)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketAddress")
+	_gret := _info.InvokeClassMethod("get_native_size", _args[:], nil)
+	_cret := *(*C.gssize)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(address)
 
@@ -238,7 +240,8 @@ func (address *SocketAddress) ToNative(dest unsafe.Pointer, destlen uint) error 
 	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (C.gpointer)(unsafe.Pointer(dest))
 	*(*C.gsize)(unsafe.Pointer(&_args[2])) = C.gsize(destlen)
 
-	girepository.MustFind("Gio", "SocketAddress").InvokeMethod("to_native", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SocketAddress")
+	_info.InvokeClassMethod("to_native", _args[:], nil)
 
 	runtime.KeepAlive(address)
 	runtime.KeepAlive(dest)

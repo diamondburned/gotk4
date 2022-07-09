@@ -74,8 +74,9 @@ func (context *DrawingContext) CairoContext() *cairo.Context {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gdk", "DrawingContext").InvokeMethod("get_cairo_context", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "DrawingContext")
+	_gret := _info.InvokeClassMethod("get_cairo_context", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -101,8 +102,9 @@ func (context *DrawingContext) Clip() *cairo.Region {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gdk", "DrawingContext").InvokeMethod("get_clip", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "DrawingContext")
+	_gret := _info.InvokeClassMethod("get_clip", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -132,8 +134,9 @@ func (context *DrawingContext) Window() Windower {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gdk", "DrawingContext").InvokeMethod("get_window", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "DrawingContext")
+	_gret := _info.InvokeClassMethod("get_window", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -171,8 +174,9 @@ func (context *DrawingContext) IsValid() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gdk", "DrawingContext").InvokeMethod("is_valid", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "DrawingContext")
+	_gret := _info.InvokeClassMethod("is_valid", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 

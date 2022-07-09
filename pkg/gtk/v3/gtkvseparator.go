@@ -90,8 +90,9 @@ func marshalVSeparator(p uintptr) (interface{}, error) {
 //    - vSeparator: new VSeparator.
 //
 func NewVSeparator() *VSeparator {
-	_gret := girepository.MustFind("Gtk", "VSeparator").InvokeMethod("new_VSeparator", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "VSeparator")
+	_gret := _info.InvokeClassMethod("new_VSeparator", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _vSeparator *VSeparator // out
 

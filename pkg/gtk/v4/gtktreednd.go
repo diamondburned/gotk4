@@ -16,11 +16,11 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GdkContentProvider* _gotk4_gtk4_TreeDragSourceIface_drag_data_get(void*, void*);
 // extern gboolean _gotk4_gtk4_TreeDragDestIface_drag_data_received(void*, void*, void*);
 // extern gboolean _gotk4_gtk4_TreeDragDestIface_row_drop_possible(void*, void*, void*);
 // extern gboolean _gotk4_gtk4_TreeDragSourceIface_drag_data_delete(void*, void*);
 // extern gboolean _gotk4_gtk4_TreeDragSourceIface_row_draggable(void*, void*);
+// extern void* _gotk4_gtk4_TreeDragSourceIface_drag_data_get(void*, void*);
 import "C"
 
 // GTypeTreeDragDest returns the GType for the type TreeDragDest.
@@ -63,8 +63,9 @@ func TreeCreateRowDragContent(treeModel TreeModeller, path *TreePath) *gdk.Conte
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
-	_gret := girepository.MustFind("Gtk", "tree_create_row_drag_content").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "tree_create_row_drag_content")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(path)
@@ -103,8 +104,9 @@ func TreeGetRowDragData(value *coreglib.Value) (*TreeModel, *TreePath, bool) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(value.Native()))
 
-	_gret := girepository.MustFind("Gtk", "tree_get_row_drag_data").Invoke(_args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "tree_get_row_drag_data")
+	_gret := _info.Invoke(_args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(value)
 
@@ -122,7 +124,7 @@ func TreeGetRowDragData(value *coreglib.Value) (*TreeModel, *TreePath, bool) {
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -276,7 +278,9 @@ func (dragDest *TreeDragDest) DragDataReceived(dest *TreePath, value *coreglib.V
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(dest)))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(value.Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeDragDest")
+	_gret := _info.InvokeIfaceMethod("drag_data_received", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(dragDest)
 	runtime.KeepAlive(dest)
@@ -313,7 +317,9 @@ func (dragDest *TreeDragDest) RowDropPossible(destPath *TreePath, value *coregli
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(destPath)))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(value.Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeDragDest")
+	_gret := _info.InvokeIfaceMethod("row_drop_possible", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(dragDest)
 	runtime.KeepAlive(destPath)
@@ -428,7 +434,7 @@ func _gotk4_gtk4_TreeDragSourceIface_drag_data_delete(arg0 *C.void, arg1 *C.void
 }
 
 //export _gotk4_gtk4_TreeDragSourceIface_drag_data_get
-func _gotk4_gtk4_TreeDragSourceIface_drag_data_get(arg0 *C.void, arg1 *C.void) (cret *C.GdkContentProvider) {
+func _gotk4_gtk4_TreeDragSourceIface_drag_data_get(arg0 *C.void, arg1 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TreeDragSourceOverrider)
 
@@ -493,7 +499,9 @@ func (dragSource *TreeDragSource) DragDataDelete(path *TreePath) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragSource).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeDragSource")
+	_gret := _info.InvokeIfaceMethod("drag_data_delete", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(dragSource)
 	runtime.KeepAlive(path)
@@ -524,7 +532,9 @@ func (dragSource *TreeDragSource) DragDataGet(path *TreePath) *gdk.ContentProvid
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragSource).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeDragSource")
+	_gret := _info.InvokeIfaceMethod("drag_data_get", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(dragSource)
 	runtime.KeepAlive(path)
@@ -561,7 +571,9 @@ func (dragSource *TreeDragSource) RowDraggable(path *TreePath) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragSource).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeDragSource")
+	_gret := _info.InvokeIfaceMethod("row_draggable", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(dragSource)
 	runtime.KeepAlive(path)

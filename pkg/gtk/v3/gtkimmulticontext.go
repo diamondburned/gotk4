@@ -67,8 +67,9 @@ func marshalIMMulticontext(p uintptr) (interface{}, error) {
 //    - imMulticontext: new IMMulticontext.
 //
 func NewIMMulticontext() *IMMulticontext {
-	_gret := girepository.MustFind("Gtk", "IMMulticontext").InvokeMethod("new_IMMulticontext", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "IMMulticontext")
+	_gret := _info.InvokeClassMethod("new_IMMulticontext", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _imMulticontext *IMMulticontext // out
 
@@ -95,7 +96,8 @@ func (context *IMMulticontext) AppendMenuitems(menushell MenuSheller) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menushell).Native()))
 
-	girepository.MustFind("Gtk", "IMMulticontext").InvokeMethod("append_menuitems", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "IMMulticontext")
+	_info.InvokeClassMethod("append_menuitems", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(menushell)
@@ -112,8 +114,9 @@ func (context *IMMulticontext) ContextID() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gtk", "IMMulticontext").InvokeMethod("get_context_id", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "IMMulticontext")
+	_gret := _info.InvokeClassMethod("get_context_id", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -140,7 +143,8 @@ func (context *IMMulticontext) SetContextID(contextId string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(contextId)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "IMMulticontext").InvokeMethod("set_context_id", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "IMMulticontext")
+	_info.InvokeClassMethod("set_context_id", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(contextId)

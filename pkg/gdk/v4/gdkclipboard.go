@@ -105,8 +105,9 @@ func (clipboard *Clipboard) Content() *ContentProvider {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Clipboard").InvokeMethod("get_content", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Clipboard")
+	_gret := _info.InvokeClassMethod("get_content", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
 
@@ -130,8 +131,9 @@ func (clipboard *Clipboard) Display() *Display {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Clipboard").InvokeMethod("get_display", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Clipboard")
+	_gret := _info.InvokeClassMethod("get_display", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
 
@@ -154,8 +156,9 @@ func (clipboard *Clipboard) Formats() *ContentFormats {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Clipboard").InvokeMethod("get_formats", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Clipboard")
+	_gret := _info.InvokeClassMethod("get_formats", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
 
@@ -190,8 +193,9 @@ func (clipboard *Clipboard) IsLocal() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Clipboard").InvokeMethod("is_local", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Clipboard")
+	_gret := _info.InvokeClassMethod("is_local", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
 
@@ -248,7 +252,8 @@ func (clipboard *Clipboard) ReadAsync(ctx context.Context, mimeTypes []string, i
 		_args[5] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gdk", "Clipboard").InvokeMethod("read_async", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Clipboard")
+	_info.InvokeClassMethod("read_async", _args[:], nil)
 
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(ctx)
@@ -277,8 +282,9 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.In
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Clipboard").InvokeMethod("read_finish", _args[:], _outs[:])
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Clipboard")
+	_gret := _info.InvokeClassMethod("read_finish", _args[:], _outs[:])
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(result)
@@ -342,7 +348,8 @@ func (clipboard *Clipboard) ReadTextAsync(ctx context.Context, callback gio.Asyn
 		_args[3] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gdk", "Clipboard").InvokeMethod("read_text_async", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Clipboard")
+	_info.InvokeClassMethod("read_text_async", _args[:], nil)
 
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(ctx)
@@ -367,8 +374,9 @@ func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, er
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Clipboard").InvokeMethod("read_text_finish", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Clipboard")
+	_gret := _info.InvokeClassMethod("read_text_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(result)
@@ -416,7 +424,8 @@ func (clipboard *Clipboard) ReadTextureAsync(ctx context.Context, callback gio.A
 		_args[3] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gdk", "Clipboard").InvokeMethod("read_texture_async", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Clipboard")
+	_info.InvokeClassMethod("read_texture_async", _args[:], nil)
 
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(ctx)
@@ -441,8 +450,9 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texture
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Clipboard").InvokeMethod("read_texture_finish", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Clipboard")
+	_gret := _info.InvokeClassMethod("read_texture_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(result)
@@ -491,8 +501,9 @@ func (clipboard *Clipboard) ReadValueFinish(result gio.AsyncResulter) (*coreglib
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Clipboard").InvokeMethod("read_value_finish", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Clipboard")
+	_gret := _info.InvokeClassMethod("read_value_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(result)
@@ -537,8 +548,9 @@ func (clipboard *Clipboard) SetContent(provider *ContentProvider) bool {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
 	}
 
-	_gret := girepository.MustFind("Gdk", "Clipboard").InvokeMethod("set_content", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Clipboard")
+	_gret := _info.InvokeClassMethod("set_content", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(provider)
@@ -565,7 +577,8 @@ func (clipboard *Clipboard) SetText(text string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gdk", "Clipboard").InvokeMethod("set_text", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Clipboard")
+	_info.InvokeClassMethod("set_text", _args[:], nil)
 
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(text)
@@ -583,7 +596,8 @@ func (clipboard *Clipboard) SetTexture(texture Texturer) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
 
-	girepository.MustFind("Gdk", "Clipboard").InvokeMethod("set_texture", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Clipboard")
+	_info.InvokeClassMethod("set_texture", _args[:], nil)
 
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(texture)
@@ -601,7 +615,8 @@ func (clipboard *Clipboard) Set(value *coreglib.Value) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(value.Native()))
 
-	girepository.MustFind("Gdk", "Clipboard").InvokeMethod("set_value", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Clipboard")
+	_info.InvokeClassMethod("set_value", _args[:], nil)
 
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(value)
@@ -643,7 +658,8 @@ func (clipboard *Clipboard) StoreAsync(ctx context.Context, ioPriority int32, ca
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gdk", "Clipboard").InvokeMethod("store_async", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Clipboard")
+	_info.InvokeClassMethod("store_async", _args[:], nil)
 
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(ctx)
@@ -665,7 +681,8 @@ func (clipboard *Clipboard) StoreFinish(result gio.AsyncResulter) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	girepository.MustFind("Gdk", "Clipboard").InvokeMethod("store_finish", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Clipboard")
+	_info.InvokeClassMethod("store_finish", _args[:], nil)
 
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(result)

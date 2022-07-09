@@ -206,15 +206,12 @@ func CGoTail(gen types.FileGenerator, g *gir.CallableAttrs) (string, error) {
 	}
 
 	if !types.ReturnIsVoid(g.ReturnValue) {
-		anyType := types.ResolveAnyType(gen, g.ReturnValue.AnyType)
-
-		ctype := types.AnyTypeC(anyType)
-		if ctype == "" {
-			// Try resolving.
-			return "", fmt.Errorf("anyTypeC return is empty")
+		anyTypeCGo := types.ResolveAnyTypeCGo(gen, g.ReturnValue.AnyType)
+		if anyTypeCGo == "" {
+			return "", fmt.Errorf("anyTypeCGo return is empty")
 		}
 
-		callTail += fmt.Sprintf(" (cret %s)", types.AnyTypeCGo(anyType))
+		callTail += fmt.Sprintf(" (cret %s)", anyTypeCGo)
 	}
 
 	return callTail, nil

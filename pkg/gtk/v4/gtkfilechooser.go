@@ -131,8 +131,9 @@ func (f FileChooserError) String() string {
 //    - quark: error quark used for GtkFileChooser errors.
 //
 func FileChooserErrorQuark() glib.Quark {
-	_gret := girepository.MustFind("Gtk", "quark").Invoke(nil, nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "quark")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
@@ -322,6 +323,9 @@ func (chooser *FileChooser) AddChoice(id, label string, options, optionLabels []
 		}
 	}
 
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_info.InvokeIfaceMethod("add_choice", _args[:], nil)
+
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(id)
 	runtime.KeepAlive(label)
@@ -348,6 +352,9 @@ func (chooser *FileChooser) AddFilter(filter *FileFilter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_info.InvokeIfaceMethod("add_filter", _args[:], nil)
+
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(filter)
 }
@@ -364,6 +371,9 @@ func (chooser *FileChooser) AddShortcutFolder(folder gio.Filer) error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(folder).Native()))
+
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_info.InvokeIfaceMethod("add_shortcut_folder", _args[:], nil)
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(folder)
@@ -394,7 +404,9 @@ func (chooser *FileChooser) Choice(id string) string {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_gret := _info.InvokeIfaceMethod("get_choice", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(id)
@@ -417,7 +429,9 @@ func (chooser *FileChooser) CreateFolders() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_gret := _info.InvokeIfaceMethod("get_create_folders", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 
@@ -441,7 +455,9 @@ func (chooser *FileChooser) CurrentFolder() *gio.File {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_gret := _info.InvokeIfaceMethod("get_current_folder", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 
@@ -475,7 +491,9 @@ func (chooser *FileChooser) CurrentName() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_gret := _info.InvokeIfaceMethod("get_current_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 
@@ -504,7 +522,9 @@ func (chooser *FileChooser) File() *gio.File {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_gret := _info.InvokeIfaceMethod("get_file", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 
@@ -534,7 +554,9 @@ func (chooser *FileChooser) Files() *gio.ListModel {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_gret := _info.InvokeIfaceMethod("get_files", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 
@@ -561,7 +583,9 @@ func (chooser *FileChooser) Filter() *FileFilter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_gret := _info.InvokeIfaceMethod("get_filter", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 
@@ -592,7 +616,9 @@ func (chooser *FileChooser) Filters() *gio.ListModel {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_gret := _info.InvokeIfaceMethod("get_filters", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 
@@ -620,7 +646,9 @@ func (chooser *FileChooser) SelectMultiple() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_gret := _info.InvokeIfaceMethod("get_select_multiple", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 
@@ -647,7 +675,9 @@ func (chooser *FileChooser) ShortcutFolders() *gio.ListModel {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_gret := _info.InvokeIfaceMethod("get_shortcut_folders", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 
@@ -677,6 +707,9 @@ func (chooser *FileChooser) RemoveChoice(id string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_info.InvokeIfaceMethod("remove_choice", _args[:], nil)
+
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(id)
 }
@@ -694,6 +727,9 @@ func (chooser *FileChooser) RemoveFilter(filter *FileFilter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_info.InvokeIfaceMethod("remove_filter", _args[:], nil)
+
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(filter)
 }
@@ -710,6 +746,9 @@ func (chooser *FileChooser) RemoveShortcutFolder(folder gio.Filer) error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(folder).Native()))
+
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_info.InvokeIfaceMethod("remove_shortcut_folder", _args[:], nil)
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(folder)
@@ -742,6 +781,9 @@ func (chooser *FileChooser) SetChoice(id, option string) {
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(option)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_info.InvokeIfaceMethod("set_choice", _args[:], nil)
+
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(id)
 	runtime.KeepAlive(option)
@@ -764,6 +806,9 @@ func (chooser *FileChooser) SetCreateFolders(createFolders bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_info.InvokeIfaceMethod("set_create_folders", _args[:], nil)
+
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(createFolders)
 }
@@ -779,6 +824,9 @@ func (chooser *FileChooser) SetCurrentFolder(file gio.Filer) error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_info.InvokeIfaceMethod("set_current_folder", _args[:], nil)
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(file)
@@ -816,6 +864,9 @@ func (chooser *FileChooser) SetCurrentName(name string) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
+
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_info.InvokeIfaceMethod("set_current_name", _args[:], nil)
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(name)
@@ -872,6 +923,9 @@ func (chooser *FileChooser) SetFile(file gio.Filer) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_info.InvokeIfaceMethod("set_file", _args[:], nil)
+
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(file)
 
@@ -904,6 +958,9 @@ func (chooser *FileChooser) SetFilter(filter *FileFilter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_info.InvokeIfaceMethod("set_filter", _args[:], nil)
+
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(filter)
 }
@@ -925,6 +982,9 @@ func (chooser *FileChooser) SetSelectMultiple(selectMultiple bool) {
 	if selectMultiple {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
+
+	_info := girepository.MustFind("Gtk", "FileChooser")
+	_info.InvokeIfaceMethod("set_select_multiple", _args[:], nil)
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(selectMultiple)

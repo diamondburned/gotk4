@@ -171,8 +171,9 @@ func (button *ColorButton) ConnectColorSet(f func()) coreglib.SignalHandle {
 //    - colorButton: new color button.
 //
 func NewColorButton() *ColorButton {
-	_gret := girepository.MustFind("Gtk", "ColorButton").InvokeMethod("new_ColorButton", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ColorButton")
+	_gret := _info.InvokeClassMethod("new_ColorButton", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _colorButton *ColorButton // out
 
@@ -198,8 +199,9 @@ func NewColorButtonWithColor(color *gdk.Color) *ColorButton {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 
-	_gret := girepository.MustFind("Gtk", "ColorButton").InvokeMethod("new_ColorButton_with_color", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ColorButton")
+	_gret := _info.InvokeClassMethod("new_ColorButton_with_color", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(color)
 
@@ -225,8 +227,9 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
 
-	_gret := girepository.MustFind("Gtk", "ColorButton").InvokeMethod("new_ColorButton_with_rgba", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ColorButton")
+	_gret := _info.InvokeClassMethod("new_ColorButton_with_rgba", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(rgba)
 
@@ -250,8 +253,9 @@ func (button *ColorButton) Alpha() uint16 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ColorButton").InvokeMethod("get_alpha", _args[:], nil)
-	_cret = *(*C.guint16)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ColorButton")
+	_gret := _info.InvokeClassMethod("get_alpha", _args[:], nil)
+	_cret := *(*C.guint16)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
 
@@ -276,7 +280,8 @@ func (button *ColorButton) Color() *gdk.Color {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
-	girepository.MustFind("Gtk", "ColorButton").InvokeMethod("get_color", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "ColorButton")
+	_info.InvokeClassMethod("get_color", _args[:], _outs[:])
 
 	runtime.KeepAlive(button)
 
@@ -298,8 +303,9 @@ func (button *ColorButton) Title() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ColorButton").InvokeMethod("get_title", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ColorButton")
+	_gret := _info.InvokeClassMethod("get_title", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
 
@@ -323,8 +329,9 @@ func (button *ColorButton) UseAlpha() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ColorButton").InvokeMethod("get_use_alpha", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ColorButton")
+	_gret := _info.InvokeClassMethod("get_use_alpha", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
 
@@ -351,7 +358,8 @@ func (button *ColorButton) SetAlpha(alpha uint16) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	*(*C.guint16)(unsafe.Pointer(&_args[1])) = C.guint16(alpha)
 
-	girepository.MustFind("Gtk", "ColorButton").InvokeMethod("set_alpha", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ColorButton")
+	_info.InvokeClassMethod("set_alpha", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(alpha)
@@ -371,7 +379,8 @@ func (button *ColorButton) SetColor(color *gdk.Color) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 
-	girepository.MustFind("Gtk", "ColorButton").InvokeMethod("set_color", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ColorButton")
+	_info.InvokeClassMethod("set_color", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(color)
@@ -390,7 +399,8 @@ func (button *ColorButton) SetTitle(title string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "ColorButton").InvokeMethod("set_title", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ColorButton")
+	_info.InvokeClassMethod("set_title", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(title)
@@ -413,7 +423,8 @@ func (button *ColorButton) SetUseAlpha(useAlpha bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ColorButton").InvokeMethod("set_use_alpha", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ColorButton")
+	_info.InvokeClassMethod("set_use_alpha", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(useAlpha)

@@ -143,8 +143,9 @@ func NewTreeModelSortWithModel(childModel TreeModeller) *TreeModelSort {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(childModel).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TreeModelSort").InvokeMethod("new_TreeModelSort_with_model", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModelSort")
+	_gret := _info.InvokeClassMethod("new_TreeModelSort_with_model", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(childModel)
 
@@ -166,7 +167,8 @@ func (treeModelSort *TreeModelSort) ClearCache() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModelSort).Native()))
 
-	girepository.MustFind("Gtk", "TreeModelSort").InvokeMethod("clear_cache", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TreeModelSort")
+	_info.InvokeClassMethod("clear_cache", _args[:], nil)
 
 	runtime.KeepAlive(treeModelSort)
 }
@@ -192,8 +194,9 @@ func (treeModelSort *TreeModelSort) ConvertChildIterToIter(childIter *TreeIter) 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModelSort).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(childIter)))
 
-	_gret := girepository.MustFind("Gtk", "TreeModelSort").InvokeMethod("convert_child_iter_to_iter", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModelSort")
+	_gret := _info.InvokeClassMethod("convert_child_iter_to_iter", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(treeModelSort)
 	runtime.KeepAlive(childIter)
@@ -228,8 +231,9 @@ func (treeModelSort *TreeModelSort) ConvertChildPathToPath(childPath *TreePath) 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModelSort).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(childPath)))
 
-	_gret := girepository.MustFind("Gtk", "TreeModelSort").InvokeMethod("convert_child_path_to_path", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModelSort")
+	_gret := _info.InvokeClassMethod("convert_child_path_to_path", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(treeModelSort)
 	runtime.KeepAlive(childPath)
@@ -243,7 +247,7 @@ func (treeModelSort *TreeModelSort) ConvertChildPathToPath(childPath *TreePath) 
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -270,7 +274,8 @@ func (treeModelSort *TreeModelSort) ConvertIterToChildIter(sortedIter *TreeIter)
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModelSort).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(sortedIter)))
 
-	girepository.MustFind("Gtk", "TreeModelSort").InvokeMethod("convert_iter_to_child_iter", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "TreeModelSort")
+	_info.InvokeClassMethod("convert_iter_to_child_iter", _args[:], _outs[:])
 
 	runtime.KeepAlive(treeModelSort)
 	runtime.KeepAlive(sortedIter)
@@ -302,8 +307,9 @@ func (treeModelSort *TreeModelSort) ConvertPathToChildPath(sortedPath *TreePath)
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModelSort).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(sortedPath)))
 
-	_gret := girepository.MustFind("Gtk", "TreeModelSort").InvokeMethod("convert_path_to_child_path", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModelSort")
+	_gret := _info.InvokeClassMethod("convert_path_to_child_path", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(treeModelSort)
 	runtime.KeepAlive(sortedPath)
@@ -317,7 +323,7 @@ func (treeModelSort *TreeModelSort) ConvertPathToChildPath(sortedPath *TreePath)
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -337,8 +343,9 @@ func (treeModel *TreeModelSort) Model() *TreeModel {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TreeModelSort").InvokeMethod("get_model", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModelSort")
+	_gret := _info.InvokeClassMethod("get_model", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(treeModel)
 
@@ -368,8 +375,9 @@ func (treeModelSort *TreeModelSort) IterIsValid(iter *TreeIter) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModelSort).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_gret := girepository.MustFind("Gtk", "TreeModelSort").InvokeMethod("iter_is_valid", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModelSort")
+	_gret := _info.InvokeClassMethod("iter_is_valid", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(treeModelSort)
 	runtime.KeepAlive(iter)
@@ -392,7 +400,8 @@ func (treeModelSort *TreeModelSort) ResetDefaultSortFunc() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModelSort).Native()))
 
-	girepository.MustFind("Gtk", "TreeModelSort").InvokeMethod("reset_default_sort_func", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TreeModelSort")
+	_info.InvokeClassMethod("reset_default_sort_func", _args[:], nil)
 
 	runtime.KeepAlive(treeModelSort)
 }

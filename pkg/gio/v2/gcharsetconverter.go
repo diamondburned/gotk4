@@ -88,8 +88,9 @@ func NewCharsetConverter(toCharset, fromCharset string) (*CharsetConverter, erro
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(fromCharset)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gio", "CharsetConverter").InvokeMethod("new_CharsetConverter", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "CharsetConverter")
+	_gret := _info.InvokeClassMethod("new_CharsetConverter", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(toCharset)
 	runtime.KeepAlive(fromCharset)
@@ -116,8 +117,9 @@ func (converter *CharsetConverter) NumFallbacks() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(converter).Native()))
 
-	_gret := girepository.MustFind("Gio", "CharsetConverter").InvokeMethod("get_num_fallbacks", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "CharsetConverter")
+	_gret := _info.InvokeClassMethod("get_num_fallbacks", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(converter)
 
@@ -139,8 +141,9 @@ func (converter *CharsetConverter) UseFallback() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(converter).Native()))
 
-	_gret := girepository.MustFind("Gio", "CharsetConverter").InvokeMethod("get_use_fallback", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "CharsetConverter")
+	_gret := _info.InvokeClassMethod("get_use_fallback", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(converter)
 
@@ -167,7 +170,8 @@ func (converter *CharsetConverter) SetUseFallback(useFallback bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "CharsetConverter").InvokeMethod("set_use_fallback", _args[:], nil)
+	_info := girepository.MustFind("Gio", "CharsetConverter")
+	_info.InvokeClassMethod("set_use_fallback", _args[:], nil)
 
 	runtime.KeepAlive(converter)
 	runtime.KeepAlive(useFallback)

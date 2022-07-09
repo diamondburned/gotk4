@@ -36,8 +36,9 @@ import "C"
 //    - context: new Context for the default display.
 //
 func PangoContextGet() *pango.Context {
-	_gret := girepository.MustFind("Gdk", "pango_context_get").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "pango_context_get")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _context *pango.Context // out
 
@@ -78,8 +79,9 @@ func PangoContextGetForDisplay(display *Display) *pango.Context {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_gret := girepository.MustFind("Gdk", "pango_context_get_for_display").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "pango_context_get_for_display")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)
 
@@ -122,8 +124,9 @@ func PangoContextGetForScreen(screen *Screen) *pango.Context {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_gret := girepository.MustFind("Gdk", "pango_context_get_for_screen").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "pango_context_get_for_screen")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)
 

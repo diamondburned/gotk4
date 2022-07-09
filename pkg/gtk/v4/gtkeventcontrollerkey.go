@@ -83,8 +83,9 @@ func (controller *EventControllerKey) ConnectIMUpdate(f func()) coreglib.SignalH
 //    - eventControllerKey: new GtkEventControllerKey.
 //
 func NewEventControllerKey() *EventControllerKey {
-	_gret := girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("new_EventControllerKey", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EventControllerKey")
+	_gret := _info.InvokeClassMethod("new_EventControllerKey", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _eventControllerKey *EventControllerKey // out
 
@@ -113,8 +114,9 @@ func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("forward", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EventControllerKey")
+	_gret := _info.InvokeClassMethod("forward", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(controller)
 	runtime.KeepAlive(widget)
@@ -141,8 +143,9 @@ func (controller *EventControllerKey) Group() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("get_group", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EventControllerKey")
+	_gret := _info.InvokeClassMethod("get_group", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(controller)
 
@@ -164,8 +167,9 @@ func (controller *EventControllerKey) IMContext() IMContexter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("get_im_context", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EventControllerKey")
+	_gret := _info.InvokeClassMethod("get_im_context", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(controller)
 
@@ -204,7 +208,8 @@ func (controller *EventControllerKey) SetIMContext(imContext IMContexter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(imContext).Native()))
 
-	girepository.MustFind("Gtk", "EventControllerKey").InvokeMethod("set_im_context", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "EventControllerKey")
+	_info.InvokeClassMethod("set_im_context", _args[:], nil)
 
 	runtime.KeepAlive(controller)
 	runtime.KeepAlive(imContext)

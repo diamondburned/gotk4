@@ -160,8 +160,9 @@ func NewFrame(label string) *Frame {
 		defer C.free(unsafe.Pointer(_args[0]))
 	}
 
-	_gret := girepository.MustFind("Gtk", "Frame").InvokeMethod("new_Frame", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Frame")
+	_gret := _info.InvokeClassMethod("new_Frame", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(label)
 
@@ -183,8 +184,9 @@ func (frame *Frame) Child() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Frame").InvokeMethod("get_child", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Frame")
+	_gret := _info.InvokeClassMethod("get_child", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(frame)
 
@@ -225,8 +227,9 @@ func (frame *Frame) Label() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Frame").InvokeMethod("get_label", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Frame")
+	_gret := _info.InvokeClassMethod("get_label", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(frame)
 
@@ -250,8 +253,9 @@ func (frame *Frame) LabelAlign() float32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Frame").InvokeMethod("get_label_align", _args[:], nil)
-	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Frame")
+	_gret := _info.InvokeClassMethod("get_label_align", _args[:], nil)
+	_cret := *(*C.float)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(frame)
 
@@ -273,8 +277,9 @@ func (frame *Frame) LabelWidget() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Frame").InvokeMethod("get_label_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Frame")
+	_gret := _info.InvokeClassMethod("get_label_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(frame)
 
@@ -314,7 +319,8 @@ func (frame *Frame) SetChild(child Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
 
-	girepository.MustFind("Gtk", "Frame").InvokeMethod("set_child", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Frame")
+	_info.InvokeClassMethod("set_child", _args[:], nil)
 
 	runtime.KeepAlive(frame)
 	runtime.KeepAlive(child)
@@ -336,7 +342,8 @@ func (frame *Frame) SetLabel(label string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "Frame").InvokeMethod("set_label", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Frame")
+	_info.InvokeClassMethod("set_label", _args[:], nil)
 
 	runtime.KeepAlive(frame)
 	runtime.KeepAlive(label)
@@ -357,7 +364,8 @@ func (frame *Frame) SetLabelAlign(xalign float32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
 	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(xalign)
 
-	girepository.MustFind("Gtk", "Frame").InvokeMethod("set_label_align", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Frame")
+	_info.InvokeClassMethod("set_label_align", _args[:], nil)
 
 	runtime.KeepAlive(frame)
 	runtime.KeepAlive(xalign)
@@ -380,7 +388,8 @@ func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(labelWidget).Native()))
 	}
 
-	girepository.MustFind("Gtk", "Frame").InvokeMethod("set_label_widget", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Frame")
+	_info.InvokeClassMethod("set_label_widget", _args[:], nil)
 
 	runtime.KeepAlive(frame)
 	runtime.KeepAlive(labelWidget)

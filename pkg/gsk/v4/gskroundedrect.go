@@ -57,7 +57,9 @@ func (self *RoundedRect) ContainsPoint(point *graphene.Point) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "RoundedRect")
+	_gret := _info.InvokeRecordMethod("contains_point", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(point)
@@ -88,7 +90,9 @@ func (self *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "RoundedRect")
+	_gret := _info.InvokeRecordMethod("contains_rect", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(rect)
@@ -128,7 +132,9 @@ func (self *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, top
 	*(**C.void)(unsafe.Pointer(&_args[4])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bottomRight)))
 	*(**C.void)(unsafe.Pointer(&_args[5])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bottomLeft)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "RoundedRect")
+	_gret := _info.InvokeRecordMethod("init", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(bounds)
@@ -163,7 +169,9 @@ func (self *RoundedRect) InitCopy(src *RoundedRect) *RoundedRect {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "RoundedRect")
+	_gret := _info.InvokeRecordMethod("init_copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(src)
@@ -194,7 +202,9 @@ func (self *RoundedRect) InitFromRect(bounds *graphene.Rect, radius float32) *Ro
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
 	*(*C.float)(unsafe.Pointer(&_args[2])) = C.float(radius)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "RoundedRect")
+	_gret := _info.InvokeRecordMethod("init_from_rect", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(bounds)
@@ -224,7 +234,9 @@ func (self *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "RoundedRect")
+	_gret := _info.InvokeRecordMethod("intersects_rect", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(rect)
@@ -253,7 +265,9 @@ func (self *RoundedRect) IsRectilinear() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "RoundedRect")
+	_gret := _info.InvokeRecordMethod("is_rectilinear", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -280,7 +294,9 @@ func (self *RoundedRect) Normalize() *RoundedRect {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "RoundedRect")
+	_gret := _info.InvokeRecordMethod("normalize", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -311,7 +327,9 @@ func (self *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
 	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(dx)
 	*(*C.float)(unsafe.Pointer(&_args[2])) = C.float(dy)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "RoundedRect")
+	_gret := _info.InvokeRecordMethod("offset", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(dx)
@@ -353,7 +371,9 @@ func (self *RoundedRect) Shrink(top float32, right float32, bottom float32, left
 	*(*C.float)(unsafe.Pointer(&_args[3])) = C.float(bottom)
 	*(*C.float)(unsafe.Pointer(&_args[4])) = C.float(left)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "RoundedRect")
+	_gret := _info.InvokeRecordMethod("shrink", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(top)

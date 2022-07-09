@@ -211,8 +211,9 @@ func NewAppChooserWidget(contentType string) *AppChooserWidget {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("new_AppChooserWidget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AppChooserWidget")
+	_gret := _info.InvokeClassMethod("new_AppChooserWidget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(contentType)
 
@@ -235,8 +236,9 @@ func (self *AppChooserWidget) DefaultText() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("get_default_text", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AppChooserWidget")
+	_gret := _info.InvokeClassMethod("get_default_text", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -261,8 +263,9 @@ func (self *AppChooserWidget) ShowAll() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("get_show_all", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AppChooserWidget")
+	_gret := _info.InvokeClassMethod("get_show_all", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -287,8 +290,9 @@ func (self *AppChooserWidget) ShowDefault() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("get_show_default", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AppChooserWidget")
+	_gret := _info.InvokeClassMethod("get_show_default", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -313,8 +317,9 @@ func (self *AppChooserWidget) ShowFallback() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("get_show_fallback", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AppChooserWidget")
+	_gret := _info.InvokeClassMethod("get_show_fallback", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -339,8 +344,9 @@ func (self *AppChooserWidget) ShowOther() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("get_show_other", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AppChooserWidget")
+	_gret := _info.InvokeClassMethod("get_show_other", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -365,8 +371,9 @@ func (self *AppChooserWidget) ShowRecommended() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("get_show_recommended", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AppChooserWidget")
+	_gret := _info.InvokeClassMethod("get_show_recommended", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -393,7 +400,8 @@ func (self *AppChooserWidget) SetDefaultText(text string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("set_default_text", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AppChooserWidget")
+	_info.InvokeClassMethod("set_default_text", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(text)
@@ -414,7 +422,8 @@ func (self *AppChooserWidget) SetShowAll(setting bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("set_show_all", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AppChooserWidget")
+	_info.InvokeClassMethod("set_show_all", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
@@ -435,7 +444,8 @@ func (self *AppChooserWidget) SetShowDefault(setting bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("set_show_default", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AppChooserWidget")
+	_info.InvokeClassMethod("set_show_default", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
@@ -456,7 +466,8 @@ func (self *AppChooserWidget) SetShowFallback(setting bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("set_show_fallback", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AppChooserWidget")
+	_info.InvokeClassMethod("set_show_fallback", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
@@ -477,7 +488,8 @@ func (self *AppChooserWidget) SetShowOther(setting bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("set_show_other", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AppChooserWidget")
+	_info.InvokeClassMethod("set_show_other", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
@@ -498,7 +510,8 @@ func (self *AppChooserWidget) SetShowRecommended(setting bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "AppChooserWidget").InvokeMethod("set_show_recommended", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AppChooserWidget")
+	_info.InvokeClassMethod("set_show_recommended", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)

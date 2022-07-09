@@ -122,8 +122,9 @@ func (hsv *HSV) ConnectChanged(f func()) coreglib.SignalHandle {
 //    - hsV: newly-created HSV color selector.
 //
 func NewHSV() *HSV {
-	_gret := girepository.MustFind("Gtk", "HSV").InvokeMethod("new_HSV", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "HSV")
+	_gret := _info.InvokeClassMethod("new_HSV", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _hsV *HSV // out
 
@@ -147,7 +148,8 @@ func (hsv *HSV) Color() (h, s, v float64) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hsv).Native()))
 
-	girepository.MustFind("Gtk", "HSV").InvokeMethod("get_color", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "HSV")
+	_info.InvokeClassMethod("get_color", _args[:], _outs[:])
 
 	runtime.KeepAlive(hsv)
 
@@ -175,7 +177,8 @@ func (hsv *HSV) Metrics() (size, ringWidth int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hsv).Native()))
 
-	girepository.MustFind("Gtk", "HSV").InvokeMethod("get_metrics", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "HSV")
+	_info.InvokeClassMethod("get_metrics", _args[:], _outs[:])
 
 	runtime.KeepAlive(hsv)
 
@@ -204,8 +207,9 @@ func (hsv *HSV) IsAdjusting() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hsv).Native()))
 
-	_gret := girepository.MustFind("Gtk", "HSV").InvokeMethod("is_adjusting", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "HSV")
+	_gret := _info.InvokeClassMethod("is_adjusting", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(hsv)
 
@@ -235,7 +239,8 @@ func (hsv *HSV) SetColor(h, s, v float64) {
 	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(s)
 	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(v)
 
-	girepository.MustFind("Gtk", "HSV").InvokeMethod("set_color", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "HSV")
+	_info.InvokeClassMethod("set_color", _args[:], nil)
 
 	runtime.KeepAlive(hsv)
 	runtime.KeepAlive(h)
@@ -257,7 +262,8 @@ func (hsv *HSV) SetMetrics(size, ringWidth int32) {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(size)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(ringWidth)
 
-	girepository.MustFind("Gtk", "HSV").InvokeMethod("set_metrics", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "HSV")
+	_info.InvokeClassMethod("set_metrics", _args[:], nil)
 
 	runtime.KeepAlive(hsv)
 	runtime.KeepAlive(size)

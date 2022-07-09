@@ -129,8 +129,9 @@ func marshalSocket(p uintptr) (interface{}, error) {
 //    - socket: newly created Socket instance.
 //
 func NewSocket() *Socket {
-	_gret := girepository.MustFind("Atk", "Socket").InvokeMethod("new_Socket", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Socket")
+	_gret := _info.InvokeClassMethod("new_Socket", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _socket *Socket // out
 
@@ -159,7 +160,8 @@ func (obj *Socket) Embed(plugId string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(plugId)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Atk", "Socket").InvokeMethod("embed", _args[:], nil)
+	_info := girepository.MustFind("Atk", "Socket")
+	_info.InvokeClassMethod("embed", _args[:], nil)
 
 	runtime.KeepAlive(obj)
 	runtime.KeepAlive(plugId)
@@ -176,8 +178,9 @@ func (obj *Socket) IsOccupied() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 
-	_gret := girepository.MustFind("Atk", "Socket").InvokeMethod("is_occupied", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Socket")
+	_gret := _info.InvokeClassMethod("is_occupied", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(obj)
 

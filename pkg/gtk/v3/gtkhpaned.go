@@ -92,8 +92,9 @@ func marshalHPaned(p uintptr) (interface{}, error) {
 //    - hPaned: new HPaned.
 //
 func NewHPaned() *HPaned {
-	_gret := girepository.MustFind("Gtk", "HPaned").InvokeMethod("new_HPaned", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "HPaned")
+	_gret := _info.InvokeClassMethod("new_HPaned", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _hPaned *HPaned // out
 

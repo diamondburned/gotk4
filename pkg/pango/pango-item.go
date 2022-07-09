@@ -191,7 +191,9 @@ func marshalItem(p uintptr) (interface{}, error) {
 
 // NewItem constructs a struct Item.
 func NewItem() *Item {
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Item")
+	_gret := _info.InvokeRecordMethod("new", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _item *Item // out
 
@@ -201,7 +203,7 @@ func NewItem() *Item {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Pango", "Item").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Pango", "Item").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -230,6 +232,9 @@ func (item *Item) ApplyAttrs(iter *AttrIterator) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(item)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
+	_info := girepository.MustFind("Pango", "Item")
+	_info.InvokeRecordMethod("apply_attrs", _args[:], nil)
+
 	runtime.KeepAlive(item)
 	runtime.KeepAlive(iter)
 }
@@ -248,7 +253,9 @@ func (item *Item) Copy() *Item {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(item)))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Item")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(item)
 
@@ -261,7 +268,7 @@ func (item *Item) Copy() *Item {
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Pango", "Item").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Pango", "Item").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -299,7 +306,9 @@ func (orig *Item) Split(splitIndex int32, splitOffset int32) *Item {
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(splitIndex)
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(splitOffset)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Item")
+	_gret := _info.InvokeRecordMethod("split", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(orig)
 	runtime.KeepAlive(splitIndex)
@@ -313,7 +322,7 @@ func (orig *Item) Split(splitIndex int32, splitOffset int32) *Item {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Pango", "Item").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Pango", "Item").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)

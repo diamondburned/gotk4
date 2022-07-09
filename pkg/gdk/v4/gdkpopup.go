@@ -87,7 +87,9 @@ func (popup *Popup) Autohide() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Popup")
+	_gret := _info.InvokeIfaceMethod("get_autohide", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(popup)
 
@@ -111,7 +113,9 @@ func (popup *Popup) Parent() Surfacer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Popup")
+	_gret := _info.InvokeIfaceMethod("get_parent", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(popup)
 
@@ -149,7 +153,9 @@ func (popup *Popup) PositionX() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
 
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Popup")
+	_gret := _info.InvokeIfaceMethod("get_position_x", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(popup)
 
@@ -171,7 +177,9 @@ func (popup *Popup) PositionY() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(popup).Native()))
 
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Popup")
+	_gret := _info.InvokeIfaceMethod("get_position_y", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(popup)
 
@@ -216,7 +224,9 @@ func (popup *Popup) Present(width, height int32, layout *PopupLayout) bool {
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(height)
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Popup")
+	_gret := _info.InvokeIfaceMethod("present", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(popup)
 	runtime.KeepAlive(width)

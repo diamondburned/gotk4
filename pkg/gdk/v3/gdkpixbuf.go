@@ -49,8 +49,9 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int3
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(width)
 	*(*C.gint)(unsafe.Pointer(&_args[4])) = C.gint(height)
 
-	_gret := girepository.MustFind("Gdk", "pixbuf_get_from_surface").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "pixbuf_get_from_surface")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(srcX)
@@ -125,8 +126,9 @@ func PixbufGetFromWindow(window Windower, srcX, srcY, width, height int32) *gdkp
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(width)
 	*(*C.gint)(unsafe.Pointer(&_args[4])) = C.gint(height)
 
-	_gret := girepository.MustFind("Gdk", "pixbuf_get_from_window").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "pixbuf_get_from_window")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(srcX)

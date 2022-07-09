@@ -235,7 +235,9 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(attributes)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "FileAttributeMatcher")
+	_gret := _info.InvokeRecordMethod("new", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(attributes)
 
@@ -275,7 +277,9 @@ func (matcher *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(ns)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "FileAttributeMatcher")
+	_gret := _info.InvokeRecordMethod("enumerate_namespace", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(matcher)
 	runtime.KeepAlive(ns)
@@ -301,7 +305,9 @@ func (matcher *FileAttributeMatcher) EnumerateNext() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matcher)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "FileAttributeMatcher")
+	_gret := _info.InvokeRecordMethod("enumerate_next", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(matcher)
 
@@ -333,7 +339,9 @@ func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "FileAttributeMatcher")
+	_gret := _info.InvokeRecordMethod("matches", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(matcher)
 	runtime.KeepAlive(attribute)
@@ -365,7 +373,9 @@ func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "FileAttributeMatcher")
+	_gret := _info.InvokeRecordMethod("matches_only", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(matcher)
 	runtime.KeepAlive(attribute)
@@ -406,7 +416,9 @@ func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *F
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(subtract)))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "FileAttributeMatcher")
+	_gret := _info.InvokeRecordMethod("subtract", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(matcher)
 	runtime.KeepAlive(subtract)
@@ -443,7 +455,9 @@ func (matcher *FileAttributeMatcher) String() string {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matcher)))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "FileAttributeMatcher")
+	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(matcher)
 
@@ -749,7 +763,9 @@ func NewResourceFromData(data *glib.Bytes) (*Resource, error) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(data)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Resource")
+	_gret := _info.InvokeRecordMethod("new_from_data", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(data)
 
@@ -808,7 +824,9 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 	*(*C.guint16)(unsafe.Pointer(&_args[2])) = C.guint16(priority)
 	*(*C.guint16)(unsafe.Pointer(&_args[3])) = C.guint16(weight)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SrvTarget")
+	_gret := _info.InvokeRecordMethod("new", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(hostname)
 	runtime.KeepAlive(port)
@@ -823,7 +841,7 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gio", "SrvTarget").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gio", "SrvTarget").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -842,7 +860,9 @@ func (target *SrvTarget) Copy() *SrvTarget {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SrvTarget")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(target)
 
@@ -854,7 +874,7 @@ func (target *SrvTarget) Copy() *SrvTarget {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gio", "SrvTarget").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gio", "SrvTarget").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -876,7 +896,9 @@ func (target *SrvTarget) Hostname() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SrvTarget")
+	_gret := _info.InvokeRecordMethod("get_hostname", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(target)
 
@@ -898,7 +920,9 @@ func (target *SrvTarget) Port() uint16 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
 
-	_cret = *(*C.guint16)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SrvTarget")
+	_gret := _info.InvokeRecordMethod("get_port", _args[:], nil)
+	_cret := *(*C.guint16)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(target)
 
@@ -921,7 +945,9 @@ func (target *SrvTarget) Priority() uint16 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
 
-	_cret = *(*C.guint16)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SrvTarget")
+	_gret := _info.InvokeRecordMethod("get_priority", _args[:], nil)
+	_cret := *(*C.guint16)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(target)
 
@@ -944,7 +970,9 @@ func (target *SrvTarget) Weight() uint16 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
 
-	_cret = *(*C.guint16)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SrvTarget")
+	_gret := _info.InvokeRecordMethod("get_weight", _args[:], nil)
+	_cret := *(*C.guint16)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(target)
 

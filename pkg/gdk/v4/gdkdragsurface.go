@@ -80,7 +80,9 @@ func (dragSurface *DragSurface) Present(width, height int32) bool {
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(width)
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(height)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "DragSurface")
+	_gret := _info.InvokeIfaceMethod("present", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(dragSurface)
 	runtime.KeepAlive(width)

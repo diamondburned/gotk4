@@ -88,7 +88,9 @@ func (conn *DTLSClientConnection) ServerIdentity() *SocketConnectable {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DtlsClientConnection")
+	_gret := _info.InvokeIfaceMethod("get_server_identity", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(conn)
 
@@ -113,6 +115,9 @@ func (conn *DTLSClientConnection) SetServerIdentity(identity SocketConnectabler)
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(identity).Native()))
+
+	_info := girepository.MustFind("Gio", "DtlsClientConnection")
+	_info.InvokeIfaceMethod("set_server_identity", _args[:], nil)
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(identity)
@@ -139,8 +144,9 @@ func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketC
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(serverIdentity).Native()))
 	}
 
-	_gret := girepository.MustFind("Gio", "new").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "new")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseSocket)
 	runtime.KeepAlive(serverIdentity)

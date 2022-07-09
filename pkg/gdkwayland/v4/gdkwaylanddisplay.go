@@ -70,8 +70,9 @@ func (display *WaylandDisplay) StartupNotificationID() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_gret := girepository.MustFind("GdkWayland", "WaylandDisplay").InvokeMethod("get_startup_notification_id", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("GdkWayland", "WaylandDisplay")
+	_gret := _info.InvokeClassMethod("get_startup_notification_id", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)
 
@@ -102,8 +103,9 @@ func (display *WaylandDisplay) QueryRegistry(global string) bool {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(global)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("GdkWayland", "WaylandDisplay").InvokeMethod("query_registry", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("GdkWayland", "WaylandDisplay")
+	_gret := _info.InvokeClassMethod("query_registry", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(global)
@@ -132,7 +134,8 @@ func (display *WaylandDisplay) SetCursorTheme(name string, size int32) {
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(size)
 
-	girepository.MustFind("GdkWayland", "WaylandDisplay").InvokeMethod("set_cursor_theme", _args[:], nil)
+	_info := girepository.MustFind("GdkWayland", "WaylandDisplay")
+	_info.InvokeClassMethod("set_cursor_theme", _args[:], nil)
 
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(name)
@@ -160,7 +163,8 @@ func (display *WaylandDisplay) SetStartupNotificationID(startupId string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(startupId)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("GdkWayland", "WaylandDisplay").InvokeMethod("set_startup_notification_id", _args[:], nil)
+	_info := girepository.MustFind("GdkWayland", "WaylandDisplay")
+	_info.InvokeClassMethod("set_startup_notification_id", _args[:], nil)
 
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(startupId)

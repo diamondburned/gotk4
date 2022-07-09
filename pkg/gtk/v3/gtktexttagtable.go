@@ -265,8 +265,9 @@ func (table *TextTagTable) ConnectTagRemoved(f func(tag *TextTag)) coreglib.Sign
 //    - textTagTable: new TextTagTable.
 //
 func NewTextTagTable() *TextTagTable {
-	_gret := girepository.MustFind("Gtk", "TextTagTable").InvokeMethod("new_TextTagTable", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextTagTable")
+	_gret := _info.InvokeClassMethod("new_TextTagTable", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _textTagTable *TextTagTable // out
 
@@ -295,8 +296,9 @@ func (table *TextTagTable) Add(tag *TextTag) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextTagTable").InvokeMethod("add", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextTagTable")
+	_gret := _info.InvokeClassMethod("add", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(tag)
@@ -326,7 +328,8 @@ func (table *TextTagTable) ForEach(fn TextTagTableForEach) {
 	_args[2] = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_args[2]))
 
-	girepository.MustFind("Gtk", "TextTagTable").InvokeMethod("foreach", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextTagTable")
+	_info.InvokeClassMethod("foreach", _args[:], nil)
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(fn)
@@ -343,8 +346,9 @@ func (table *TextTagTable) Size() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextTagTable").InvokeMethod("get_size", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextTagTable")
+	_gret := _info.InvokeClassMethod("get_size", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 
@@ -372,8 +376,9 @@ func (table *TextTagTable) Lookup(name string) *TextTag {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "TextTagTable").InvokeMethod("lookup", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextTagTable")
+	_gret := _info.InvokeClassMethod("lookup", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(name)
@@ -401,7 +406,8 @@ func (table *TextTagTable) Remove(tag *TextTag) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 
-	girepository.MustFind("Gtk", "TextTagTable").InvokeMethod("remove", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextTagTable")
+	_info.InvokeClassMethod("remove", _args[:], nil)
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(tag)

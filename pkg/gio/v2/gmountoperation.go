@@ -294,8 +294,9 @@ func (op *MountOperation) ConnectShowUnmountProgress(f func(message string, time
 //    - mountOperation: Operation.
 //
 func NewMountOperation() *MountOperation {
-	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("new_MountOperation", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "MountOperation")
+	_gret := _info.InvokeClassMethod("new_MountOperation", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _mountOperation *MountOperation // out
 
@@ -316,8 +317,9 @@ func (op *MountOperation) Anonymous() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
-	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_anonymous", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "MountOperation")
+	_gret := _info.InvokeClassMethod("get_anonymous", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(op)
 
@@ -342,8 +344,9 @@ func (op *MountOperation) Choice() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
-	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_choice", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "MountOperation")
+	_gret := _info.InvokeClassMethod("get_choice", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(op)
 
@@ -365,8 +368,9 @@ func (op *MountOperation) Domain() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
-	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_domain", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "MountOperation")
+	_gret := _info.InvokeClassMethod("get_domain", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(op)
 
@@ -391,8 +395,9 @@ func (op *MountOperation) IsTcryptHiddenVolume() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
-	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_is_tcrypt_hidden_volume", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "MountOperation")
+	_gret := _info.InvokeClassMethod("get_is_tcrypt_hidden_volume", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(op)
 
@@ -417,8 +422,9 @@ func (op *MountOperation) IsTcryptSystemVolume() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
-	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_is_tcrypt_system_volume", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "MountOperation")
+	_gret := _info.InvokeClassMethod("get_is_tcrypt_system_volume", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(op)
 
@@ -442,8 +448,9 @@ func (op *MountOperation) Password() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
-	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_password", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "MountOperation")
+	_gret := _info.InvokeClassMethod("get_password", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(op)
 
@@ -467,8 +474,9 @@ func (op *MountOperation) Pim() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
-	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_pim", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "MountOperation")
+	_gret := _info.InvokeClassMethod("get_pim", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(op)
 
@@ -490,8 +498,9 @@ func (op *MountOperation) Username() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
-	_gret := girepository.MustFind("Gio", "MountOperation").InvokeMethod("get_username", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "MountOperation")
+	_gret := _info.InvokeClassMethod("get_username", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(op)
 
@@ -519,7 +528,8 @@ func (op *MountOperation) SetAnonymous(anonymous bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_anonymous", _args[:], nil)
+	_info := girepository.MustFind("Gio", "MountOperation")
+	_info.InvokeClassMethod("set_anonymous", _args[:], nil)
 
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(anonymous)
@@ -537,7 +547,8 @@ func (op *MountOperation) SetChoice(choice int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(choice)
 
-	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_choice", _args[:], nil)
+	_info := girepository.MustFind("Gio", "MountOperation")
+	_info.InvokeClassMethod("set_choice", _args[:], nil)
 
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(choice)
@@ -558,7 +569,8 @@ func (op *MountOperation) SetDomain(domain string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_domain", _args[:], nil)
+	_info := girepository.MustFind("Gio", "MountOperation")
+	_info.InvokeClassMethod("set_domain", _args[:], nil)
 
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(domain)
@@ -579,7 +591,8 @@ func (op *MountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_is_tcrypt_hidden_volume", _args[:], nil)
+	_info := girepository.MustFind("Gio", "MountOperation")
+	_info.InvokeClassMethod("set_is_tcrypt_hidden_volume", _args[:], nil)
 
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(hiddenVolume)
@@ -600,7 +613,8 @@ func (op *MountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_is_tcrypt_system_volume", _args[:], nil)
+	_info := girepository.MustFind("Gio", "MountOperation")
+	_info.InvokeClassMethod("set_is_tcrypt_system_volume", _args[:], nil)
 
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(systemVolume)
@@ -621,7 +635,8 @@ func (op *MountOperation) SetPassword(password string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_password", _args[:], nil)
+	_info := girepository.MustFind("Gio", "MountOperation")
+	_info.InvokeClassMethod("set_password", _args[:], nil)
 
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(password)
@@ -639,7 +654,8 @@ func (op *MountOperation) SetPim(pim uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(pim)
 
-	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_pim", _args[:], nil)
+	_info := girepository.MustFind("Gio", "MountOperation")
+	_info.InvokeClassMethod("set_pim", _args[:], nil)
 
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(pim)
@@ -660,7 +676,8 @@ func (op *MountOperation) SetUsername(username string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gio", "MountOperation").InvokeMethod("set_username", _args[:], nil)
+	_info := girepository.MustFind("Gio", "MountOperation")
+	_info.InvokeClassMethod("set_username", _args[:], nil)
 
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(username)

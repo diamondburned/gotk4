@@ -190,8 +190,9 @@ func (dialog *MessageDialog) Image() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MessageDialog").InvokeMethod("get_image", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MessageDialog")
+	_gret := _info.InvokeClassMethod("get_image", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(dialog)
 
@@ -233,8 +234,9 @@ func (messageDialog *MessageDialog) MessageArea() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(messageDialog).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MessageDialog").InvokeMethod("get_message_area", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MessageDialog")
+	_gret := _info.InvokeClassMethod("get_message_area", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(messageDialog)
 
@@ -275,7 +277,8 @@ func (dialog *MessageDialog) SetImage(image Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 
-	girepository.MustFind("Gtk", "MessageDialog").InvokeMethod("set_image", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MessageDialog")
+	_info.InvokeClassMethod("set_image", _args[:], nil)
 
 	runtime.KeepAlive(dialog)
 	runtime.KeepAlive(image)
@@ -295,7 +298,8 @@ func (messageDialog *MessageDialog) SetMarkup(str string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "MessageDialog").InvokeMethod("set_markup", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MessageDialog")
+	_info.InvokeClassMethod("set_markup", _args[:], nil)
 
 	runtime.KeepAlive(messageDialog)
 	runtime.KeepAlive(str)

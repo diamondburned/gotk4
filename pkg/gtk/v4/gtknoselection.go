@@ -89,8 +89,9 @@ func NewNoSelection(model gio.ListModeller) *NoSelection {
 		C.g_object_ref(C.gpointer(coreglib.InternObject(model).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "NoSelection").InvokeMethod("new_NoSelection", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "NoSelection")
+	_gret := _info.InvokeClassMethod("new_NoSelection", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
 
@@ -112,8 +113,9 @@ func (self *NoSelection) Model() *gio.ListModel {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "NoSelection").InvokeMethod("get_model", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "NoSelection")
+	_gret := _info.InvokeClassMethod("get_model", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -145,7 +147,8 @@ func (self *NoSelection) SetModel(model gio.ListModeller) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
 
-	girepository.MustFind("Gtk", "NoSelection").InvokeMethod("set_model", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "NoSelection")
+	_info.InvokeClassMethod("set_model", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)

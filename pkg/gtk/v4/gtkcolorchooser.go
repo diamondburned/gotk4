@@ -188,6 +188,9 @@ func (chooser *ColorChooser) RGBA() *gdk.RGBA {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
+	_info := girepository.MustFind("Gtk", "ColorChooser")
+	_info.InvokeIfaceMethod("get_rgba", _args[:], _outs[:])
+
 	runtime.KeepAlive(chooser)
 
 	var _color *gdk.RGBA // out
@@ -208,7 +211,9 @@ func (chooser *ColorChooser) UseAlpha() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ColorChooser")
+	_gret := _info.InvokeIfaceMethod("get_use_alpha", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 
@@ -233,6 +238,9 @@ func (chooser *ColorChooser) SetRGBA(color *gdk.RGBA) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 
+	_info := girepository.MustFind("Gtk", "ColorChooser")
+	_info.InvokeIfaceMethod("set_rgba", _args[:], nil)
+
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(color)
 }
@@ -251,6 +259,9 @@ func (chooser *ColorChooser) SetUseAlpha(useAlpha bool) {
 	if useAlpha {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
+
+	_info := girepository.MustFind("Gtk", "ColorChooser")
+	_info.InvokeIfaceMethod("set_use_alpha", _args[:], nil)
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(useAlpha)

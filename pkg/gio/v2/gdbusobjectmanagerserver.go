@@ -105,8 +105,9 @@ func NewDBusObjectManagerServer(objectPath string) *DBusObjectManagerServer {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "DBusObjectManagerServer").InvokeMethod("new_DBusObjectManagerServer", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusObjectManagerServer")
+	_gret := _info.InvokeClassMethod("new_DBusObjectManagerServer", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(objectPath)
 
@@ -138,7 +139,8 @@ func (manager *DBusObjectManagerServer) Export(object *DBusObjectSkeleton) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
 
-	girepository.MustFind("Gio", "DBusObjectManagerServer").InvokeMethod("export", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusObjectManagerServer")
+	_info.InvokeClassMethod("export", _args[:], nil)
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(object)
@@ -159,7 +161,8 @@ func (manager *DBusObjectManagerServer) ExportUniquely(object *DBusObjectSkeleto
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
 
-	girepository.MustFind("Gio", "DBusObjectManagerServer").InvokeMethod("export_uniquely", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusObjectManagerServer")
+	_info.InvokeClassMethod("export_uniquely", _args[:], nil)
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(object)
@@ -177,8 +180,9 @@ func (manager *DBusObjectManagerServer) Connection() *DBusConnection {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusObjectManagerServer").InvokeMethod("get_connection", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusObjectManagerServer")
+	_gret := _info.InvokeClassMethod("get_connection", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 
@@ -205,8 +209,9 @@ func (manager *DBusObjectManagerServer) IsExported(object *DBusObjectSkeleton) b
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusObjectManagerServer").InvokeMethod("is_exported", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusObjectManagerServer")
+	_gret := _info.InvokeClassMethod("is_exported", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(object)
@@ -235,7 +240,8 @@ func (manager *DBusObjectManagerServer) SetConnection(connection *DBusConnection
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	}
 
-	girepository.MustFind("Gio", "DBusObjectManagerServer").InvokeMethod("set_connection", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusObjectManagerServer")
+	_info.InvokeClassMethod("set_connection", _args[:], nil)
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(connection)
@@ -262,8 +268,9 @@ func (manager *DBusObjectManagerServer) Unexport(objectPath string) bool {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gio", "DBusObjectManagerServer").InvokeMethod("unexport", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusObjectManagerServer")
+	_gret := _info.InvokeClassMethod("unexport", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(objectPath)

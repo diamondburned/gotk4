@@ -46,8 +46,9 @@ func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuMo
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("export_menu_model", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_gret := _info.InvokeClassMethod("export_menu_model", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(objectPath)
@@ -81,7 +82,8 @@ func (connection *DBusConnection) UnexportMenuModel(exportId uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(exportId)
 
-	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("unexport_menu_model", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_info.InvokeClassMethod("unexport_menu_model", _args[:], nil)
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(exportId)

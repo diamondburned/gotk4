@@ -84,8 +84,9 @@ func marshalContainerCellAccessible(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 func NewContainerCellAccessible() *ContainerCellAccessible {
-	_gret := girepository.MustFind("Gtk", "ContainerCellAccessible").InvokeMethod("new_ContainerCellAccessible", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ContainerCellAccessible")
+	_gret := _info.InvokeClassMethod("new_ContainerCellAccessible", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _containerCellAccessible *ContainerCellAccessible // out
 
@@ -102,7 +103,8 @@ func (container *ContainerCellAccessible) AddChild(child *CellAccessible) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	girepository.MustFind("Gtk", "ContainerCellAccessible").InvokeMethod("add_child", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ContainerCellAccessible")
+	_info.InvokeClassMethod("add_child", _args[:], nil)
 
 	runtime.KeepAlive(container)
 	runtime.KeepAlive(child)
@@ -117,8 +119,9 @@ func (container *ContainerCellAccessible) Children() []*CellAccessible {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ContainerCellAccessible").InvokeMethod("get_children", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ContainerCellAccessible")
+	_gret := _info.InvokeClassMethod("get_children", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(container)
 
@@ -143,7 +146,8 @@ func (container *ContainerCellAccessible) RemoveChild(child *CellAccessible) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	girepository.MustFind("Gtk", "ContainerCellAccessible").InvokeMethod("remove_child", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ContainerCellAccessible")
+	_info.InvokeClassMethod("remove_child", _args[:], nil)
 
 	runtime.KeepAlive(container)
 	runtime.KeepAlive(child)

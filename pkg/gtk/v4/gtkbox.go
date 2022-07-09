@@ -126,7 +126,8 @@ func (box *Box) Append(child Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	girepository.MustFind("Gtk", "Box").InvokeMethod("append", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Box")
+	_info.InvokeClassMethod("append", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(child)
@@ -144,8 +145,9 @@ func (box *Box) Homogeneous() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Box").InvokeMethod("get_homogeneous", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Box")
+	_gret := _info.InvokeClassMethod("get_homogeneous", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(box)
 
@@ -169,8 +171,9 @@ func (box *Box) Spacing() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Box").InvokeMethod("get_spacing", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Box")
+	_gret := _info.InvokeClassMethod("get_spacing", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(box)
 
@@ -200,7 +203,8 @@ func (box *Box) InsertChildAfter(child, sibling Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sibling).Native()))
 	}
 
-	girepository.MustFind("Gtk", "Box").InvokeMethod("insert_child_after", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Box")
+	_info.InvokeClassMethod("insert_child_after", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(child)
@@ -219,7 +223,8 @@ func (box *Box) Prepend(child Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	girepository.MustFind("Gtk", "Box").InvokeMethod("prepend", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Box")
+	_info.InvokeClassMethod("prepend", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(child)
@@ -240,7 +245,8 @@ func (box *Box) Remove(child Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	girepository.MustFind("Gtk", "Box").InvokeMethod("remove", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Box")
+	_info.InvokeClassMethod("remove", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(child)
@@ -265,7 +271,8 @@ func (box *Box) ReorderChildAfter(child, sibling Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sibling).Native()))
 	}
 
-	girepository.MustFind("Gtk", "Box").InvokeMethod("reorder_child_after", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Box")
+	_info.InvokeClassMethod("reorder_child_after", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(child)
@@ -288,7 +295,8 @@ func (box *Box) SetHomogeneous(homogeneous bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Box").InvokeMethod("set_homogeneous", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Box")
+	_info.InvokeClassMethod("set_homogeneous", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(homogeneous)
@@ -306,7 +314,8 @@ func (box *Box) SetSpacing(spacing int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(spacing)
 
-	girepository.MustFind("Gtk", "Box").InvokeMethod("set_spacing", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Box")
+	_info.InvokeClassMethod("set_spacing", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(spacing)

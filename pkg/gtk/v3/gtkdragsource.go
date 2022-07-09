@@ -28,7 +28,8 @@ func (widget *Widget) DragSourceAddImageTargets() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_source_add_image_targets", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Widget")
+	_info.InvokeClassMethod("drag_source_add_image_targets", _args[:], nil)
 
 	runtime.KeepAlive(widget)
 }
@@ -42,7 +43,8 @@ func (widget *Widget) DragSourceAddTextTargets() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_source_add_text_targets", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Widget")
+	_info.InvokeClassMethod("drag_source_add_text_targets", _args[:], nil)
 
 	runtime.KeepAlive(widget)
 }
@@ -56,7 +58,8 @@ func (widget *Widget) DragSourceAddURITargets() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_source_add_uri_targets", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Widget")
+	_info.InvokeClassMethod("drag_source_add_uri_targets", _args[:], nil)
 
 	runtime.KeepAlive(widget)
 }
@@ -73,8 +76,9 @@ func (widget *Widget) DragSourceGetTargetList() *TargetList {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_source_get_target_list", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Widget")
+	_gret := _info.InvokeClassMethod("drag_source_get_target_list", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
 
@@ -107,7 +111,8 @@ func (widget *Widget) DragSourceSetIconGIcon(icon gio.Iconner) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 
-	girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_source_set_icon_gicon", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Widget")
+	_info.InvokeClassMethod("drag_source_set_icon_gicon", _args[:], nil)
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(icon)
@@ -128,7 +133,8 @@ func (widget *Widget) DragSourceSetIconName(iconName string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_source_set_icon_name", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Widget")
+	_info.InvokeClassMethod("drag_source_set_icon_name", _args[:], nil)
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(iconName)
@@ -148,7 +154,8 @@ func (widget *Widget) DragSourceSetIconPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 
-	girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_source_set_icon_pixbuf", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Widget")
+	_info.InvokeClassMethod("drag_source_set_icon_pixbuf", _args[:], nil)
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(pixbuf)
@@ -170,7 +177,8 @@ func (widget *Widget) DragSourceSetIconStock(stockId string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_source_set_icon_stock", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Widget")
+	_info.InvokeClassMethod("drag_source_set_icon_stock", _args[:], nil)
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(stockId)
@@ -192,7 +200,8 @@ func (widget *Widget) DragSourceSetTargetList(targetList *TargetList) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(targetList)))
 	}
 
-	girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_source_set_target_list", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Widget")
+	_info.InvokeClassMethod("drag_source_set_target_list", _args[:], nil)
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(targetList)
@@ -204,7 +213,8 @@ func (widget *Widget) DragSourceUnset() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_source_unset", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Widget")
+	_info.InvokeClassMethod("drag_source_unset", _args[:], nil)
 
 	runtime.KeepAlive(widget)
 }

@@ -109,8 +109,9 @@ func marshalShortcutController(p uintptr) (interface{}, error) {
 //    - shortcutController: newly created shortcut controller.
 //
 func NewShortcutController() *ShortcutController {
-	_gret := girepository.MustFind("Gtk", "ShortcutController").InvokeMethod("new_ShortcutController", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ShortcutController")
+	_gret := _info.InvokeClassMethod("new_ShortcutController", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _shortcutController *ShortcutController // out
 
@@ -139,8 +140,9 @@ func NewShortcutControllerForModel(model gio.ListModeller) *ShortcutController {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ShortcutController").InvokeMethod("new_ShortcutController_for_model", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ShortcutController")
+	_gret := _info.InvokeClassMethod("new_ShortcutController_for_model", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
 
@@ -167,7 +169,8 @@ func (self *ShortcutController) AddShortcut(shortcut *Shortcut) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(shortcut).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(shortcut).Native()))
 
-	girepository.MustFind("Gtk", "ShortcutController").InvokeMethod("add_shortcut", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ShortcutController")
+	_info.InvokeClassMethod("add_shortcut", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(shortcut)
@@ -188,7 +191,8 @@ func (self *ShortcutController) RemoveShortcut(shortcut *Shortcut) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(shortcut).Native()))
 
-	girepository.MustFind("Gtk", "ShortcutController").InvokeMethod("remove_shortcut", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ShortcutController")
+	_info.InvokeClassMethod("remove_shortcut", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(shortcut)

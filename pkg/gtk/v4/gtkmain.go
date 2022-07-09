@@ -33,7 +33,8 @@ const PRIORITY_RESIZE = 110
 //
 // Most programs should not need to call this function.
 func DisableSetlocale() {
-	girepository.MustFind("Gtk", "disable_setlocale").Invoke(nil, nil)
+	_info := girepository.MustFind("Gtk", "disable_setlocale")
+	_info.Invoke(nil, nil)
 }
 
 // GetDefaultLanguage returns the Language for the default language currently in
@@ -49,8 +50,9 @@ func DisableSetlocale() {
 //    - language: default language as a Language, must not be freed.
 //
 func GetDefaultLanguage() *pango.Language {
-	_gret := girepository.MustFind("Gtk", "get_default_language").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "get_default_language")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _language *pango.Language // out
 
@@ -76,7 +78,8 @@ func GetDefaultLanguage() *pango.Language {
 // gtk_init(), but notice that other libraries (e.g. libdbus or gvfs) might do
 // similar things.
 func Init() {
-	girepository.MustFind("Gtk", "init").Invoke(nil, nil)
+	_info := girepository.MustFind("Gtk", "init")
+	_info.Invoke(nil, nil)
 }
 
 // InitCheck: this function does the same work as gtk_init() with only a single
@@ -92,8 +95,9 @@ func Init() {
 //      otherwise.
 //
 func InitCheck() bool {
-	_gret := girepository.MustFind("Gtk", "init_check").Invoke(nil, nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "init_check")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	var _ok bool // out
 
@@ -112,8 +116,9 @@ func InitCheck() bool {
 //    - ok: initialization status.
 //
 func IsInitialized() bool {
-	_gret := girepository.MustFind("Gtk", "is_initialized").Invoke(nil, nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "is_initialized")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	var _ok bool // out
 

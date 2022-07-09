@@ -116,8 +116,9 @@ func NewFontChooserDialog(title string, parent *Window) *FontChooserDialog {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "FontChooserDialog").InvokeMethod("new_FontChooserDialog", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FontChooserDialog")
+	_gret := _info.InvokeClassMethod("new_FontChooserDialog", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(title)
 	runtime.KeepAlive(parent)

@@ -16,7 +16,6 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern gchar* _gotk4_gtk3_MenuItemClass_get_label(void*);
 // extern void _gotk4_gtk3_MenuItemClass_activate(void*);
 // extern void _gotk4_gtk3_MenuItemClass_activate_item(void*);
 // extern void _gotk4_gtk3_MenuItemClass_deselect(void*);
@@ -29,6 +28,7 @@ import (
 // extern void _gotk4_gtk3_MenuItem_ConnectSelect(gpointer, guintptr);
 // extern void _gotk4_gtk3_MenuItem_ConnectToggleSizeAllocate(gpointer, gint, guintptr);
 // extern void _gotk4_gtk3_MenuItem_ConnectToggleSizeRequest(gpointer, gpointer, guintptr);
+// extern void* _gotk4_gtk3_MenuItemClass_get_label(void*);
 import "C"
 
 // GTypeMenuItem returns the GType for the type MenuItem.
@@ -180,7 +180,7 @@ func _gotk4_gtk3_MenuItemClass_deselect(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_MenuItemClass_get_label
-func _gotk4_gtk3_MenuItemClass_get_label(arg0 *C.void) (cret *C.gchar) {
+func _gotk4_gtk3_MenuItemClass_get_label(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Label() string })
 
@@ -406,8 +406,9 @@ func (menuItem *MenuItem) ConnectToggleSizeRequest(f func(object unsafe.Pointer)
 //    - menuItem: newly created MenuItem.
 //
 func NewMenuItem() *MenuItem {
-	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("new_MenuItem", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MenuItem")
+	_gret := _info.InvokeClassMethod("new_MenuItem", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _menuItem *MenuItem // out
 
@@ -432,8 +433,9 @@ func NewMenuItemWithLabel(label string) *MenuItem {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("new_MenuItem_with_label", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MenuItem")
+	_gret := _info.InvokeClassMethod("new_MenuItem_with_label", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(label)
 
@@ -464,8 +466,9 @@ func NewMenuItemWithMnemonic(label string) *MenuItem {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("new_MenuItem_with_mnemonic", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MenuItem")
+	_gret := _info.InvokeClassMethod("new_MenuItem_with_mnemonic", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(label)
 
@@ -482,7 +485,8 @@ func (menuItem *MenuItem) Activate() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 
-	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("activate", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuItem")
+	_info.InvokeClassMethod("activate", _args[:], nil)
 
 	runtime.KeepAlive(menuItem)
 }
@@ -493,7 +497,8 @@ func (menuItem *MenuItem) Deselect() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 
-	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("deselect", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuItem")
+	_info.InvokeClassMethod("deselect", _args[:], nil)
 
 	runtime.KeepAlive(menuItem)
 }
@@ -513,8 +518,9 @@ func (menuItem *MenuItem) AccelPath() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("get_accel_path", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MenuItem")
+	_gret := _info.InvokeClassMethod("get_accel_path", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menuItem)
 
@@ -539,8 +545,9 @@ func (menuItem *MenuItem) Label() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("get_label", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MenuItem")
+	_gret := _info.InvokeClassMethod("get_label", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menuItem)
 
@@ -563,8 +570,9 @@ func (menuItem *MenuItem) ReserveIndicator() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("get_reserve_indicator", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MenuItem")
+	_gret := _info.InvokeClassMethod("get_reserve_indicator", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menuItem)
 
@@ -592,8 +600,9 @@ func (menuItem *MenuItem) RightJustified() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("get_right_justified", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MenuItem")
+	_gret := _info.InvokeClassMethod("get_right_justified", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menuItem)
 
@@ -618,8 +627,9 @@ func (menuItem *MenuItem) Submenu() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("get_submenu", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MenuItem")
+	_gret := _info.InvokeClassMethod("get_submenu", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menuItem)
 
@@ -658,8 +668,9 @@ func (menuItem *MenuItem) UseUnderline() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MenuItem").InvokeMethod("get_use_underline", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MenuItem")
+	_gret := _info.InvokeClassMethod("get_use_underline", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menuItem)
 
@@ -678,7 +689,8 @@ func (menuItem *MenuItem) Select() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 
-	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("select", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuItem")
+	_info.InvokeClassMethod("select", _args[:], nil)
 
 	runtime.KeepAlive(menuItem)
 }
@@ -716,7 +728,8 @@ func (menuItem *MenuItem) SetAccelPath(accelPath string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("set_accel_path", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuItem")
+	_info.InvokeClassMethod("set_accel_path", _args[:], nil)
 
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(accelPath)
@@ -735,7 +748,8 @@ func (menuItem *MenuItem) SetLabel(label string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("set_label", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuItem")
+	_info.InvokeClassMethod("set_label", _args[:], nil)
 
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(label)
@@ -758,7 +772,8 @@ func (menuItem *MenuItem) SetReserveIndicator(reserve bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("set_reserve_indicator", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuItem")
+	_info.InvokeClassMethod("set_reserve_indicator", _args[:], nil)
 
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(reserve)
@@ -786,7 +801,8 @@ func (menuItem *MenuItem) SetRightJustified(rightJustified bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("set_right_justified", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuItem")
+	_info.InvokeClassMethod("set_right_justified", _args[:], nil)
 
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(rightJustified)
@@ -807,7 +823,8 @@ func (menuItem *MenuItem) SetSubmenu(submenu *Menu) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(submenu).Native()))
 	}
 
-	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("set_submenu", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuItem")
+	_info.InvokeClassMethod("set_submenu", _args[:], nil)
 
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(submenu)
@@ -828,7 +845,8 @@ func (menuItem *MenuItem) SetUseUnderline(setting bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("set_use_underline", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuItem")
+	_info.InvokeClassMethod("set_use_underline", _args[:], nil)
 
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(setting)
@@ -847,7 +865,8 @@ func (menuItem *MenuItem) ToggleSizeAllocate(allocation int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(allocation)
 
-	girepository.MustFind("Gtk", "MenuItem").InvokeMethod("toggle_size_allocate", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuItem")
+	_info.InvokeClassMethod("toggle_size_allocate", _args[:], nil)
 
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(allocation)

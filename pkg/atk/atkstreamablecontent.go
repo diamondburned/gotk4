@@ -16,10 +16,10 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GIOChannel* _gotk4_atk1_StreamableContentIface_get_stream(void*, void*);
-// extern gchar* _gotk4_atk1_StreamableContentIface_get_mime_type(void*, gint);
-// extern gchar* _gotk4_atk1_StreamableContentIface_get_uri(void*, void*);
 // extern gint _gotk4_atk1_StreamableContentIface_get_n_mime_types(void*);
+// extern void* _gotk4_atk1_StreamableContentIface_get_mime_type(void*, gint);
+// extern void* _gotk4_atk1_StreamableContentIface_get_stream(void*, void*);
+// extern void* _gotk4_atk1_StreamableContentIface_get_uri(void*, void*);
 import "C"
 
 // GTypeStreamableContent returns the GType for the type StreamableContent.
@@ -142,7 +142,7 @@ func ifaceInitStreamableContenter(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_atk1_StreamableContentIface_get_mime_type
-func _gotk4_atk1_StreamableContentIface_get_mime_type(arg0 *C.void, arg1 C.gint) (cret *C.gchar) {
+func _gotk4_atk1_StreamableContentIface_get_mime_type(arg0 *C.void, arg1 C.gint) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(StreamableContentOverrider)
 
@@ -171,7 +171,7 @@ func _gotk4_atk1_StreamableContentIface_get_n_mime_types(arg0 *C.void) (cret C.g
 }
 
 //export _gotk4_atk1_StreamableContentIface_get_stream
-func _gotk4_atk1_StreamableContentIface_get_stream(arg0 *C.void, arg1 *C.void) (cret *C.GIOChannel) {
+func _gotk4_atk1_StreamableContentIface_get_stream(arg0 *C.void, arg1 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(StreamableContentOverrider)
 
@@ -187,7 +187,7 @@ func _gotk4_atk1_StreamableContentIface_get_stream(arg0 *C.void, arg1 *C.void) (
 }
 
 //export _gotk4_atk1_StreamableContentIface_get_uri
-func _gotk4_atk1_StreamableContentIface_get_uri(arg0 *C.void, arg1 *C.void) (cret *C.gchar) {
+func _gotk4_atk1_StreamableContentIface_get_uri(arg0 *C.void, arg1 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(StreamableContentOverrider)
 
@@ -233,7 +233,9 @@ func (streamable *StreamableContent) MIMEType(i int32) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "StreamableContent")
+	_gret := _info.InvokeIfaceMethod("get_mime_type", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(streamable)
 	runtime.KeepAlive(i)
@@ -256,7 +258,9 @@ func (streamable *StreamableContent) NMIMETypes() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "StreamableContent")
+	_gret := _info.InvokeIfaceMethod("get_n_mime_types", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(streamable)
 
@@ -284,7 +288,9 @@ func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "StreamableContent")
+	_gret := _info.InvokeIfaceMethod("get_stream", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(streamable)
 	runtime.KeepAlive(mimeType)
@@ -327,7 +333,9 @@ func (streamable *StreamableContent) URI(mimeType string) string {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "StreamableContent")
+	_gret := _info.InvokeIfaceMethod("get_uri", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(streamable)
 	runtime.KeepAlive(mimeType)

@@ -21,13 +21,13 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GdkWindow* _gotk4_gdk3_Window_ConnectPickEmbeddedChild(gpointer, gdouble, gdouble, guintptr);
-// extern cairo_surface_t* _gotk4_gdk3_WindowClass_create_surface(void*, gint, gint);
-// extern cairo_surface_t* _gotk4_gdk3_Window_ConnectCreateSurface(gpointer, gint, gint, guintptr);
 // extern gboolean _gotk4_gdk3_WindowChildFunc(void*, gpointer);
 // extern void _gotk4_gdk3_WindowClass_from_embedder(void*, gdouble, gdouble, void*, void*);
 // extern void _gotk4_gdk3_WindowClass_to_embedder(void*, gdouble, gdouble, void*, void*);
 // extern void _gotk4_gdk3_Window_ConnectMovedToRect(gpointer, gpointer, gpointer, gboolean, gboolean, guintptr);
+// extern void* _gotk4_gdk3_WindowClass_create_surface(void*, gint, gint);
+// extern void* _gotk4_gdk3_Window_ConnectCreateSurface(gpointer, gint, gint, guintptr);
+// extern void* _gotk4_gdk3_Window_ConnectPickEmbeddedChild(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
 // GTypeFullscreenMode returns the GType for the type FullscreenMode.
@@ -807,8 +807,9 @@ func _gotk4_gdk3_WindowChildFunc(arg1 *C.void, arg2 C.gpointer) (cret C.gboolean
 //    - window: default root window.
 //
 func GetDefaultRootWindow() Windower {
-	_gret := girepository.MustFind("Gdk", "get_default_root_window").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "get_default_root_window")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _window Windower // out
 
@@ -849,8 +850,9 @@ func OffscreenWindowGetEmbedder(window Windower) Windower {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "offscreen_window_get_embedder").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "offscreen_window_get_embedder")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -893,8 +895,9 @@ func OffscreenWindowGetSurface(window Windower) *cairo.Surface {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "offscreen_window_get_surface").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "offscreen_window_get_surface")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -929,7 +932,8 @@ func OffscreenWindowSetEmbedder(window, embedder Windower) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(embedder).Native()))
 
-	girepository.MustFind("Gdk", "offscreen_window_set_embedder").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gdk", "offscreen_window_set_embedder")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(embedder)
@@ -1015,7 +1019,7 @@ func classInitWindower(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gdk3_WindowClass_create_surface
-func _gotk4_gdk3_WindowClass_create_surface(arg0 *C.void, arg1 C.gint, arg2 C.gint) (cret *C.cairo_surface_t) {
+func _gotk4_gdk3_WindowClass_create_surface(arg0 *C.void, arg1 C.gint, arg2 C.gint) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CreateSurface(width, height int32) *cairo.Surface
@@ -1094,7 +1098,7 @@ func BaseWindow(obj Windower) *Window {
 }
 
 //export _gotk4_gdk3_Window_ConnectCreateSurface
-func _gotk4_gdk3_Window_ConnectCreateSurface(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) (cret *C.cairo_surface_t) {
+func _gotk4_gdk3_Window_ConnectCreateSurface(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) (cret *C.void) {
 	var f func(width, height int32) (surface *cairo.Surface)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -1178,7 +1182,7 @@ func (window *Window) ConnectMovedToRect(f func(flippedRect, finalRect unsafe.Po
 }
 
 //export _gotk4_gdk3_Window_ConnectPickEmbeddedChild
-func _gotk4_gdk3_Window_ConnectPickEmbeddedChild(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) (cret *C.GdkWindow) {
+func _gotk4_gdk3_Window_ConnectPickEmbeddedChild(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) (cret *C.void) {
 	var f func(x, y float64) (window Windower)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -1235,8 +1239,9 @@ func NewWindow(parent Windower, attributes *WindowAttr, attributesMask WindowAtt
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(attributes)))
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(attributesMask)
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("new_Window", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("new_Window", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(attributes)
@@ -1257,7 +1262,8 @@ func (window *Window) Beep() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("beep", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("beep", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -1303,8 +1309,9 @@ func (window *Window) BeginDrawFrame(region *cairo.Region) *DrawingContext {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(region.Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("begin_draw_frame", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("begin_draw_frame", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(region)
@@ -1338,7 +1345,8 @@ func (window *Window) BeginMoveDrag(button, rootX, rootY int32, timestamp uint32
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(rootY)
 	*(*C.guint32)(unsafe.Pointer(&_args[4])) = C.guint32(timestamp)
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("begin_move_drag", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("begin_move_drag", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(button)
@@ -1371,7 +1379,8 @@ func (window *Window) BeginMoveDragForDevice(device Devicer, button, rootX, root
 	*(*C.gint)(unsafe.Pointer(&_args[4])) = C.gint(rootY)
 	*(*C.guint32)(unsafe.Pointer(&_args[5])) = C.guint32(timestamp)
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("begin_move_drag_for_device", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("begin_move_drag_for_device", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(device)
@@ -1397,7 +1406,8 @@ func (window *Window) BeginPaintRect(rectangle *Rectangle) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rectangle)))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("begin_paint_rect", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("begin_paint_rect", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(rectangle)
@@ -1450,7 +1460,8 @@ func (window *Window) BeginPaintRegion(region *cairo.Region) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(region.Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("begin_paint_region", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("begin_paint_region", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(region)
@@ -1464,7 +1475,8 @@ func (window *Window) ConfigureFinished() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("configure_finished", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("configure_finished", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -1505,7 +1517,8 @@ func (window *Window) CoordsFromParent(parentX, parentY float64) (x, y float64) 
 	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(parentX)
 	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(parentY)
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("coords_from_parent", _args[:], _outs[:])
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("coords_from_parent", _args[:], _outs[:])
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(parentX)
@@ -1559,7 +1572,8 @@ func (window *Window) CoordsToParent(x, y float64) (parentX, parentY float64) {
 	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(x)
 	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(y)
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("coords_to_parent", _args[:], _outs[:])
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("coords_to_parent", _args[:], _outs[:])
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(x)
@@ -1596,8 +1610,9 @@ func (window *Window) CreateGLContext() (GLContexter, error) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("create_gl_context", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("create_gl_context", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -1638,7 +1653,8 @@ func (window *Window) Deiconify() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("deiconify", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("deiconify", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -1655,7 +1671,8 @@ func (window *Window) Destroy() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("destroy", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("destroy", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -1668,7 +1685,8 @@ func (window *Window) EnableSynchronizedConfigure() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("enable_synchronized_configure", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("enable_synchronized_configure", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -1691,7 +1709,8 @@ func (window *Window) EndDrawFrame(context *DrawingContext) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("end_draw_frame", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("end_draw_frame", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(context)
@@ -1709,7 +1728,8 @@ func (window *Window) EndPaint() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("end_paint", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("end_paint", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -1730,8 +1750,9 @@ func (window *Window) EnsureNative() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("ensure_native", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("ensure_native", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -1752,7 +1773,8 @@ func (window *Window) Flush() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("flush", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("flush", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -1771,7 +1793,8 @@ func (window *Window) Focus(timestamp uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(timestamp)
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("focus", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("focus", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(timestamp)
@@ -1793,7 +1816,8 @@ func (window *Window) FreezeToplevelUpdatesLibgtkOnly() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("freeze_toplevel_updates_libgtk_only", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("freeze_toplevel_updates_libgtk_only", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -1808,7 +1832,8 @@ func (window *Window) FreezeUpdates() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("freeze_updates", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("freeze_updates", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -1829,7 +1854,8 @@ func (window *Window) Fullscreen() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("fullscreen", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("fullscreen", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -1850,7 +1876,8 @@ func (window *Window) FullscreenOnMonitor(monitor int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(monitor)
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("fullscreen_on_monitor", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("fullscreen_on_monitor", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(monitor)
@@ -1864,7 +1891,8 @@ func (window *Window) GeometryChanged() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("geometry_changed", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("geometry_changed", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -1881,8 +1909,9 @@ func (window *Window) AcceptFocus() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_accept_focus", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_accept_focus", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -1909,8 +1938,9 @@ func (window *Window) BackgroundPattern() *cairo.Pattern {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_background_pattern", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_background_pattern", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -1945,8 +1975,9 @@ func (window *Window) Children() []Windower {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_children", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_children", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -2001,8 +2032,9 @@ func (window *Window) ChildrenWithUserData(userData unsafe.Pointer) []Windower {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (C.gpointer)(unsafe.Pointer(userData))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_children_with_user_data", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_children_with_user_data", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(userData)
@@ -2050,8 +2082,9 @@ func (window *Window) ClipRegion() *cairo.Region {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_clip_region", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_clip_region", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -2084,8 +2117,9 @@ func (window *Window) Composited() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_composited", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_composited", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -2114,8 +2148,9 @@ func (window *Window) Cursor() Cursorrer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_cursor", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_cursor", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -2155,8 +2190,9 @@ func (window *Window) Decorations() (WMDecoration, bool) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_decorations", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_decorations", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -2192,8 +2228,9 @@ func (window *Window) DeviceCursor(device Devicer) Cursorrer {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_device_cursor", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_device_cursor", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(device)
@@ -2245,8 +2282,9 @@ func (window *Window) DevicePosition(device Devicer) (x, y int32, mask ModifierT
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_device_position", _args[:], _outs[:])
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_device_position", _args[:], _outs[:])
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(device)
@@ -2309,8 +2347,9 @@ func (window *Window) DevicePositionDouble(device Devicer) (x, y float64, mask M
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_device_position_double", _args[:], _outs[:])
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_device_position_double", _args[:], _outs[:])
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(device)
@@ -2360,8 +2399,9 @@ func (window *Window) Display() *Display {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_display", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_display", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -2387,8 +2427,9 @@ func (window *Window) EffectiveParent() Windower {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_effective_parent", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_effective_parent", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -2431,8 +2472,9 @@ func (window *Window) EffectiveToplevel() Windower {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_effective_toplevel", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_effective_toplevel", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -2470,8 +2512,9 @@ func (window *Window) EventCompression() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_event_compression", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_event_compression", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -2497,8 +2540,9 @@ func (window *Window) FocusOnMap() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_focus_on_map", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_focus_on_map", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -2523,8 +2567,9 @@ func (window *Window) FrameClock() FrameClocker {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_frame_clock", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_frame_clock", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -2566,7 +2611,8 @@ func (window *Window) FrameExtents() *Rectangle {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("get_frame_extents", _args[:], _outs[:])
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("get_frame_extents", _args[:], _outs[:])
 
 	runtime.KeepAlive(window)
 
@@ -2612,7 +2658,8 @@ func (window *Window) Geometry() (x, y, width, height int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("get_geometry", _args[:], _outs[:])
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("get_geometry", _args[:], _outs[:])
 
 	runtime.KeepAlive(window)
 
@@ -2648,8 +2695,9 @@ func (window *Window) Group() Windower {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_group", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_group", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -2691,8 +2739,9 @@ func (window *Window) Height() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_height", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_height", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -2715,8 +2764,9 @@ func (window *Window) ModalHint() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_modal_hint", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_modal_hint", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -2745,8 +2795,9 @@ func (window *Window) Origin() (x, y, gint int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_origin", _args[:], _outs[:])
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_origin", _args[:], _outs[:])
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -2785,8 +2836,9 @@ func (window *Window) Parent() Windower {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_parent", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_parent", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -2825,8 +2877,9 @@ func (window *Window) PassThrough() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_pass_through", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_pass_through", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -2862,8 +2915,9 @@ func (window *Window) Pointer() (x, y int32, mask ModifierType, ret Windower) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_pointer", _args[:], _outs[:])
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_pointer", _args[:], _outs[:])
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -2919,7 +2973,8 @@ func (window *Window) Position() (x, y int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("get_position", _args[:], _outs[:])
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("get_position", _args[:], _outs[:])
 
 	runtime.KeepAlive(window)
 
@@ -2958,7 +3013,8 @@ func (window *Window) RootCoords(x, y int32) (rootX, rootY int32) {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(x)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(y)
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("get_root_coords", _args[:], _outs[:])
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("get_root_coords", _args[:], _outs[:])
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(x)
@@ -2987,7 +3043,8 @@ func (window *Window) RootOrigin() (x, y int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("get_root_origin", _args[:], _outs[:])
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("get_root_origin", _args[:], _outs[:])
 
 	runtime.KeepAlive(window)
 
@@ -3021,8 +3078,9 @@ func (window *Window) ScaleFactor() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_scale_factor", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_scale_factor", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -3044,8 +3102,9 @@ func (window *Window) Screen() *Screen {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_screen", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_screen", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -3068,8 +3127,9 @@ func (window *Window) SupportMultidevice() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_support_multidevice", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_support_multidevice", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -3101,8 +3161,9 @@ func (window *Window) Toplevel() Windower {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_toplevel", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_toplevel", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -3145,8 +3206,9 @@ func (window *Window) UpdateArea() *cairo.Region {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_update_area", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_update_area", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -3176,7 +3238,8 @@ func (window *Window) UserData() unsafe.Pointer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("get_user_data", _args[:], _outs[:])
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("get_user_data", _args[:], _outs[:])
 
 	runtime.KeepAlive(window)
 
@@ -3202,8 +3265,9 @@ func (window *Window) VisibleRegion() *cairo.Region {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_visible_region", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_visible_region", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -3231,8 +3295,9 @@ func (window *Window) Visual() *Visual {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_visual", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_visual", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -3258,8 +3323,9 @@ func (window *Window) Width() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("get_width", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("get_width", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -3282,8 +3348,9 @@ func (window *Window) HasNative() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("has_native", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("has_native", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -3304,7 +3371,8 @@ func (window *Window) Hide() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("hide", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("hide", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -3319,7 +3387,8 @@ func (window *Window) Iconify() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("iconify", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("iconify", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -3352,7 +3421,8 @@ func (window *Window) InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(offsetX)
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(offsetY)
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("input_shape_combine_region", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("input_shape_combine_region", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(shapeRegion)
@@ -3392,7 +3462,8 @@ func (window *Window) InvalidateMaybeRecurse(region *cairo.Region, childFunc Win
 		defer gbox.Delete(uintptr(_args[3]))
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("invalidate_maybe_recurse", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("invalidate_maybe_recurse", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(region)
@@ -3420,7 +3491,8 @@ func (window *Window) InvalidateRect(rect *Rectangle, invalidateChildren bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("invalidate_rect", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("invalidate_rect", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(rect)
@@ -3458,7 +3530,8 @@ func (window *Window) InvalidateRegion(region *cairo.Region, invalidateChildren 
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("invalidate_region", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("invalidate_region", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(region)
@@ -3476,8 +3549,9 @@ func (window *Window) IsDestroyed() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("is_destroyed", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("is_destroyed", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -3501,8 +3575,9 @@ func (window *Window) IsInputOnly() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("is_input_only", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("is_input_only", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -3526,8 +3601,9 @@ func (window *Window) IsShaped() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("is_shaped", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("is_shaped", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -3553,8 +3629,9 @@ func (window *Window) IsViewable() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("is_viewable", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("is_viewable", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -3579,8 +3656,9 @@ func (window *Window) IsVisible() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("is_visible", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("is_visible", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -3608,7 +3686,8 @@ func (window *Window) Lower() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("lower", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("lower", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -3633,7 +3712,8 @@ func (window *Window) MarkPaintFromClip(cr *cairo.Context) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(cr.Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("mark_paint_from_clip", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("mark_paint_from_clip", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(cr)
@@ -3654,7 +3734,8 @@ func (window *Window) Maximize() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("maximize", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("maximize", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -3671,7 +3752,8 @@ func (window *Window) MergeChildInputShapes() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("merge_child_input_shapes", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("merge_child_input_shapes", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -3687,7 +3769,8 @@ func (window *Window) MergeChildShapes() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("merge_child_shapes", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("merge_child_shapes", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -3712,7 +3795,8 @@ func (window *Window) Move(x, y int32) {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(x)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(y)
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("move", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("move", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(x)
@@ -3739,7 +3823,8 @@ func (window *Window) MoveRegion(region *cairo.Region, dx, dy int32) {
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(dx)
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(dy)
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("move_region", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("move_region", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(region)
@@ -3768,7 +3853,8 @@ func (window *Window) MoveResize(x, y, width, height int32) {
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(width)
 	*(*C.gint)(unsafe.Pointer(&_args[4])) = C.gint(height)
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("move_resize", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("move_resize", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(x)
@@ -3789,8 +3875,9 @@ func (window *Window) PeekChildren() []Windower {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("peek_children", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("peek_children", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -3846,7 +3933,8 @@ func (window *Window) ProcessUpdates(updateChildren bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("process_updates", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("process_updates", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(updateChildren)
@@ -3864,7 +3952,8 @@ func (window *Window) Raise() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("raise", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("raise", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -3875,7 +3964,8 @@ func (window *Window) RegisterDND() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("register_dnd", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("register_dnd", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -3897,7 +3987,8 @@ func (window *Window) Reparent(newParent Windower, x, y int32) {
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(x)
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(y)
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("reparent", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("reparent", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(newParent)
@@ -3926,7 +4017,8 @@ func (window *Window) Resize(width, height int32) {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(width)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(height)
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("resize", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("resize", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(width)
@@ -3960,7 +4052,8 @@ func (window *Window) Restack(sibling Windower, above bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("restack", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("restack", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(sibling)
@@ -3989,7 +4082,8 @@ func (window *Window) Scroll(dx, dy int32) {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(dx)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(dy)
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("scroll", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("scroll", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(dx)
@@ -4014,7 +4108,8 @@ func (window *Window) SetAcceptFocus(acceptFocus bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_accept_focus", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_accept_focus", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(acceptFocus)
@@ -4038,7 +4133,8 @@ func (window *Window) SetBackground(color *Color) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_background", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_background", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(color)
@@ -4067,7 +4163,8 @@ func (window *Window) SetBackgroundPattern(pattern *cairo.Pattern) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(pattern.Native()))
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_background_pattern", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_background_pattern", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(pattern)
@@ -4089,7 +4186,8 @@ func (window *Window) SetBackgroundRGBA(rgba *RGBA) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_background_rgba", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_background_rgba", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(rgba)
@@ -4104,7 +4202,8 @@ func (window *Window) SetChildInputShapes() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_child_input_shapes", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_child_input_shapes", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -4118,7 +4217,8 @@ func (window *Window) SetChildShapes() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_child_shapes", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_child_shapes", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -4157,7 +4257,8 @@ func (window *Window) SetComposited(composited bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_composited", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_composited", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(composited)
@@ -4184,7 +4285,8 @@ func (window *Window) SetCursor(cursor Cursorrer) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_cursor", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_cursor", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(cursor)
@@ -4209,7 +4311,8 @@ func (window *Window) SetDeviceCursor(device Devicer, cursor Cursorrer) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_device_cursor", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_device_cursor", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(device)
@@ -4237,7 +4340,8 @@ func (window *Window) SetEventCompression(eventCompression bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_event_compression", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_event_compression", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(eventCompression)
@@ -4264,7 +4368,8 @@ func (window *Window) SetFocusOnMap(focusOnMap bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_focus_on_map", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_focus_on_map", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(focusOnMap)
@@ -4293,7 +4398,8 @@ func (window *Window) SetGroup(leader Windower) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(leader).Native()))
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_group", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_group", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(leader)
@@ -4324,7 +4430,8 @@ func (window *Window) SetIconList(pixbufs []*gdkpixbuf.Pixbuf) {
 	}
 	defer C.g_list_free(_args[1])
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_icon_list", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_icon_list", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(pixbufs)
@@ -4356,7 +4463,8 @@ func (window *Window) SetIconName(name string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_icon_name", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_icon_name", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(name)
@@ -4383,7 +4491,8 @@ func (window *Window) SetKeepAbove(setting bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_keep_above", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_keep_above", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(setting)
@@ -4410,7 +4519,8 @@ func (window *Window) SetKeepBelow(setting bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_keep_below", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_keep_below", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(setting)
@@ -4435,7 +4545,8 @@ func (window *Window) SetModalHint(modal bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_modal_hint", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_modal_hint", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(modal)
@@ -4470,7 +4581,8 @@ func (window *Window) SetOpacity(opacity float64) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(opacity)
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_opacity", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_opacity", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(opacity)
@@ -4501,7 +4613,8 @@ func (window *Window) SetOpaqueRegion(region *cairo.Region) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(region.Native()))
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_opaque_region", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_opaque_region", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(region)
@@ -4528,7 +4641,8 @@ func (window *Window) SetOverrideRedirect(overrideRedirect bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_override_redirect", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_override_redirect", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(overrideRedirect)
@@ -4564,7 +4678,8 @@ func (window *Window) SetPassThrough(passThrough bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_pass_through", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_pass_through", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(passThrough)
@@ -4593,7 +4708,8 @@ func (window *Window) SetRole(role string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(role)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_role", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_role", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(role)
@@ -4625,7 +4741,8 @@ func (window *Window) SetShadowWidth(left, right, top, bottom int32) {
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(top)
 	*(*C.gint)(unsafe.Pointer(&_args[4])) = C.gint(bottom)
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_shadow_width", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_shadow_width", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(left)
@@ -4653,7 +4770,8 @@ func (window *Window) SetSkipPagerHint(skipsPager bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_skip_pager_hint", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_skip_pager_hint", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(skipsPager)
@@ -4677,7 +4795,8 @@ func (window *Window) SetSkipTaskbarHint(skipsTaskbar bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_skip_taskbar_hint", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_skip_taskbar_hint", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(skipsTaskbar)
@@ -4697,7 +4816,8 @@ func (window *Window) SetStartupID(startupId string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(startupId)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_startup_id", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_startup_id", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(startupId)
@@ -4727,8 +4847,9 @@ func (window *Window) SetStaticGravities(useStatic bool) bool {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("set_static_gravities", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("set_static_gravities", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(useStatic)
@@ -4760,7 +4881,8 @@ func (window *Window) SetSupportMultidevice(supportMultidevice bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_support_multidevice", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_support_multidevice", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(supportMultidevice)
@@ -4783,7 +4905,8 @@ func (window *Window) SetTitle(title string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_title", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_title", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(title)
@@ -4806,7 +4929,8 @@ func (window *Window) SetTransientFor(parent Windower) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_transient_for", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_transient_for", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(parent)
@@ -4826,7 +4950,8 @@ func (window *Window) SetUrgencyHint(urgent bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_urgency_hint", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_urgency_hint", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(urgent)
@@ -4849,7 +4974,8 @@ func (window *Window) SetUserData(userData *coreglib.Object) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = C.gpointer(unsafe.Pointer(userData.Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("set_user_data", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("set_user_data", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(userData)
@@ -4884,7 +5010,8 @@ func (window *Window) ShapeCombineRegion(shapeRegion *cairo.Region, offsetX, off
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(offsetX)
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(offsetY)
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("shape_combine_region", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("shape_combine_region", _args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(shapeRegion)
@@ -4905,7 +5032,8 @@ func (window *Window) Show() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("show", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("show", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -4922,7 +5050,8 @@ func (window *Window) ShowUnraised() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("show_unraised", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("show_unraised", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -4947,8 +5076,9 @@ func (window *Window) ShowWindowMenu(event *Event) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
 
-	_gret := girepository.MustFind("Gdk", "Window").InvokeMethod("show_window_menu", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Window")
+	_gret := _info.InvokeClassMethod("show_window_menu", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(event)
@@ -4976,7 +5106,8 @@ func (window *Window) Stick() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("stick", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("stick", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -4992,7 +5123,8 @@ func (window *Window) ThawToplevelUpdatesLibgtkOnly() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("thaw_toplevel_updates_libgtk_only", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("thaw_toplevel_updates_libgtk_only", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -5003,7 +5135,8 @@ func (window *Window) ThawUpdates() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("thaw_updates", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("thaw_updates", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -5022,7 +5155,8 @@ func (window *Window) Unfullscreen() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("unfullscreen", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("unfullscreen", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -5042,7 +5176,8 @@ func (window *Window) Unmaximize() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("unmaximize", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("unmaximize", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -5054,7 +5189,8 @@ func (window *Window) Unstick() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("unstick", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("unstick", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -5067,7 +5203,8 @@ func (window *Window) Withdraw() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gdk", "Window").InvokeMethod("withdraw", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Window")
+	_info.InvokeClassMethod("withdraw", _args[:], nil)
 
 	runtime.KeepAlive(window)
 }
@@ -5094,8 +5231,9 @@ func (window *Window) Withdraw() {
 func WindowAtPointer() (winX, winY int32, window Windower) {
 	var _outs [2]girepository.Argument
 
-	_gret := girepository.MustFind("Gdk", "at_pointer").Invoke(nil, _outs[:])
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "at_pointer")
+	_gret := _info.Invoke(nil, _outs[:])
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _winX int32      // out
 	var _winY int32      // out
@@ -5133,7 +5271,8 @@ func WindowAtPointer() (winX, winY int32, window Windower) {
 //
 // Deprecated: since version 3.22.
 func WindowProcessAllUpdates() {
-	girepository.MustFind("Gdk", "process_all_updates").Invoke(nil, nil)
+	_info := girepository.MustFind("Gdk", "process_all_updates")
+	_info.Invoke(nil, nil)
 }
 
 // WindowSetDebugUpdates: with update debugging enabled, calls to
@@ -5167,7 +5306,8 @@ func WindowSetDebugUpdates(setting bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[0])) = C.TRUE
 	}
 
-	girepository.MustFind("Gdk", "set_debug_updates").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gdk", "set_debug_updates")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(setting)
 }

@@ -221,8 +221,9 @@ func (conn *TLSConnection) Certificate() TLSCertificater {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
-	_gret := girepository.MustFind("Gio", "TlsConnection").InvokeMethod("get_certificate", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TlsConnection")
+	_gret := _info.InvokeClassMethod("get_certificate", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(conn)
 
@@ -260,8 +261,9 @@ func (conn *TLSConnection) Database() TLSDatabaser {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
-	_gret := girepository.MustFind("Gio", "TlsConnection").InvokeMethod("get_database", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TlsConnection")
+	_gret := _info.InvokeClassMethod("get_database", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(conn)
 
@@ -300,8 +302,9 @@ func (conn *TLSConnection) Interaction() *TLSInteraction {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
-	_gret := girepository.MustFind("Gio", "TlsConnection").InvokeMethod("get_interaction", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TlsConnection")
+	_gret := _info.InvokeClassMethod("get_interaction", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(conn)
 
@@ -331,8 +334,9 @@ func (conn *TLSConnection) NegotiatedProtocol() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
-	_gret := girepository.MustFind("Gio", "TlsConnection").InvokeMethod("get_negotiated_protocol", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TlsConnection")
+	_gret := _info.InvokeClassMethod("get_negotiated_protocol", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(conn)
 
@@ -358,8 +362,9 @@ func (conn *TLSConnection) PeerCertificate() TLSCertificater {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
-	_gret := girepository.MustFind("Gio", "TlsConnection").InvokeMethod("get_peer_certificate", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TlsConnection")
+	_gret := _info.InvokeClassMethod("get_peer_certificate", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(conn)
 
@@ -398,8 +403,9 @@ func (conn *TLSConnection) RequireCloseNotify() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
-	_gret := girepository.MustFind("Gio", "TlsConnection").InvokeMethod("get_require_close_notify", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TlsConnection")
+	_gret := _info.InvokeClassMethod("get_require_close_notify", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(conn)
 
@@ -426,8 +432,9 @@ func (conn *TLSConnection) UseSystemCertDB() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
-	_gret := girepository.MustFind("Gio", "TlsConnection").InvokeMethod("get_use_system_certdb", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TlsConnection")
+	_gret := _info.InvokeClassMethod("get_use_system_certdb", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(conn)
 
@@ -482,7 +489,8 @@ func (conn *TLSConnection) Handshake(ctx context.Context) error {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("handshake", _args[:], nil)
+	_info := girepository.MustFind("Gio", "TlsConnection")
+	_info.InvokeClassMethod("handshake", _args[:], nil)
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(ctx)
@@ -520,7 +528,8 @@ func (conn *TLSConnection) HandshakeAsync(ctx context.Context, ioPriority int32,
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("handshake_async", _args[:], nil)
+	_info := girepository.MustFind("Gio", "TlsConnection")
+	_info.InvokeClassMethod("handshake_async", _args[:], nil)
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(ctx)
@@ -541,7 +550,8 @@ func (conn *TLSConnection) HandshakeFinish(result AsyncResulter) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("handshake_finish", _args[:], nil)
+	_info := girepository.MustFind("Gio", "TlsConnection")
+	_info.InvokeClassMethod("handshake_finish", _args[:], nil)
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(result)
@@ -590,7 +600,8 @@ func (conn *TLSConnection) SetAdvertisedProtocols(protocols []string) {
 		}
 	}
 
-	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("set_advertised_protocols", _args[:], nil)
+	_info := girepository.MustFind("Gio", "TlsConnection")
+	_info.InvokeClassMethod("set_advertised_protocols", _args[:], nil)
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(protocols)
@@ -622,7 +633,8 @@ func (conn *TLSConnection) SetCertificate(certificate TLSCertificater) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(certificate).Native()))
 
-	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("set_certificate", _args[:], nil)
+	_info := girepository.MustFind("Gio", "TlsConnection")
+	_info.InvokeClassMethod("set_certificate", _args[:], nil)
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(certificate)
@@ -648,7 +660,8 @@ func (conn *TLSConnection) SetDatabase(database TLSDatabaser) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(database).Native()))
 	}
 
-	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("set_database", _args[:], nil)
+	_info := girepository.MustFind("Gio", "TlsConnection")
+	_info.InvokeClassMethod("set_database", _args[:], nil)
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(database)
@@ -673,7 +686,8 @@ func (conn *TLSConnection) SetInteraction(interaction *TLSInteraction) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interaction).Native()))
 	}
 
-	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("set_interaction", _args[:], nil)
+	_info := girepository.MustFind("Gio", "TlsConnection")
+	_info.InvokeClassMethod("set_interaction", _args[:], nil)
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(interaction)
@@ -717,7 +731,8 @@ func (conn *TLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("set_require_close_notify", _args[:], nil)
+	_info := girepository.MustFind("Gio", "TlsConnection")
+	_info.InvokeClassMethod("set_require_close_notify", _args[:], nil)
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(requireCloseNotify)
@@ -744,7 +759,8 @@ func (conn *TLSConnection) SetUseSystemCertDB(useSystemCertdb bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "TlsConnection").InvokeMethod("set_use_system_certdb", _args[:], nil)
+	_info := girepository.MustFind("Gio", "TlsConnection")
+	_info.InvokeClassMethod("set_use_system_certdb", _args[:], nil)
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(useSystemCertdb)

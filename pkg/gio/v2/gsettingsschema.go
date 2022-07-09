@@ -107,7 +107,9 @@ func (schema *SettingsSchema) ID() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(schema)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SettingsSchema")
+	_gret := _info.InvokeRecordMethod("get_id", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(schema)
 
@@ -138,7 +140,9 @@ func (schema *SettingsSchema) Key(name string) *SettingsSchemaKey {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SettingsSchema")
+	_gret := _info.InvokeRecordMethod("get_key", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(schema)
 	runtime.KeepAlive(name)
@@ -175,7 +179,9 @@ func (schema *SettingsSchema) Path() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(schema)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SettingsSchema")
+	_gret := _info.InvokeRecordMethod("get_path", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(schema)
 
@@ -205,7 +211,9 @@ func (schema *SettingsSchema) HasKey(name string) bool {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SettingsSchema")
+	_gret := _info.InvokeRecordMethod("has_key", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(schema)
 	runtime.KeepAlive(name)
@@ -232,7 +240,9 @@ func (schema *SettingsSchema) ListChildren() []string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(schema)))
 
-	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SettingsSchema")
+	_gret := _info.InvokeRecordMethod("list_children", _args[:], nil)
+	_cret := *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(schema)
 
@@ -272,7 +282,9 @@ func (schema *SettingsSchema) ListKeys() []string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(schema)))
 
-	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SettingsSchema")
+	_gret := _info.InvokeRecordMethod("list_keys", _args[:], nil)
+	_cret := *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(schema)
 
@@ -329,7 +341,9 @@ func (key *SettingsSchemaKey) DefaultValue() *glib.Variant {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SettingsSchemaKey")
+	_gret := _info.InvokeRecordMethod("get_default_value", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(key)
 
@@ -368,7 +382,9 @@ func (key *SettingsSchemaKey) Description() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SettingsSchemaKey")
+	_gret := _info.InvokeRecordMethod("get_description", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(key)
 
@@ -392,7 +408,9 @@ func (key *SettingsSchemaKey) Name() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SettingsSchemaKey")
+	_gret := _info.InvokeRecordMethod("get_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(key)
 
@@ -447,7 +465,9 @@ func (key *SettingsSchemaKey) Range() *glib.Variant {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SettingsSchemaKey")
+	_gret := _info.InvokeRecordMethod("get_range", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(key)
 
@@ -485,7 +505,9 @@ func (key *SettingsSchemaKey) Summary() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SettingsSchemaKey")
+	_gret := _info.InvokeRecordMethod("get_summary", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(key)
 
@@ -509,7 +531,9 @@ func (key *SettingsSchemaKey) ValueType() *glib.VariantType {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SettingsSchemaKey")
+	_gret := _info.InvokeRecordMethod("get_value_type", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(key)
 
@@ -540,7 +564,9 @@ func (key *SettingsSchemaKey) RangeCheck(value *glib.Variant) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SettingsSchemaKey")
+	_gret := _info.InvokeRecordMethod("range_check", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(key)
 	runtime.KeepAlive(value)
@@ -585,7 +611,9 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SettingsSchemaSource")
+	_gret := _info.InvokeRecordMethod("new_from_directory", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(directory)
 	runtime.KeepAlive(parent)
@@ -637,6 +665,9 @@ func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable 
 	if recursive {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
+
+	_info := girepository.MustFind("Gio", "SettingsSchemaSource")
+	_info.InvokeRecordMethod("list_schemas", _args[:], _outs[:])
 
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(recursive)
@@ -708,7 +739,9 @@ func (source *SettingsSchemaSource) Lookup(schemaId string, recursive bool) *Set
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SettingsSchemaSource")
+	_gret := _info.InvokeRecordMethod("lookup", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(schemaId)
@@ -747,8 +780,9 @@ func (source *SettingsSchemaSource) Lookup(schemaId string, recursive bool) *Set
 //    - settingsSchemaSource (optional): default schema source.
 //
 func SettingsSchemaSourceGetDefault() *SettingsSchemaSource {
-	_gret := girepository.MustFind("Gio", "get_default").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "get_default")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _settingsSchemaSource *SettingsSchemaSource // out
 

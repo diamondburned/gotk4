@@ -385,7 +385,9 @@ func (component *Component) Alpha() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
 
-	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Component")
+	_gret := _info.InvokeIfaceMethod("get_alpha", _args[:], nil)
+	_cret := *(*C.gdouble)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(component)
 
@@ -410,7 +412,9 @@ func (component *Component) MDIZOrder() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Component")
+	_gret := _info.InvokeIfaceMethod("get_mdi_zorder", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(component)
 
@@ -439,6 +443,9 @@ func (component *Component) Size() (width, height int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
 
+	_info := girepository.MustFind("Atk", "Component")
+	_info.InvokeIfaceMethod("get_size", _args[:], _outs[:])
+
 	runtime.KeepAlive(component)
 
 	var _width int32  // out
@@ -465,7 +472,9 @@ func (component *Component) GrabFocus() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Component")
+	_gret := _info.InvokeIfaceMethod("grab_focus", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(component)
 
@@ -495,6 +504,9 @@ func (component *Component) RemoveFocusHandler(handlerId uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(component).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(handlerId)
 
+	_info := girepository.MustFind("Atk", "Component")
+	_info.InvokeIfaceMethod("remove_focus_handler", _args[:], nil)
+
 	runtime.KeepAlive(component)
 	runtime.KeepAlive(handlerId)
 }
@@ -517,7 +529,9 @@ func (component *Component) SetSize(width, height int32) bool {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(width)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(height)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Component")
+	_gret := _info.InvokeIfaceMethod("set_size", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(component)
 	runtime.KeepAlive(width)

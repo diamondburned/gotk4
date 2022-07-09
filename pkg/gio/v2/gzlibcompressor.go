@@ -75,8 +75,9 @@ func (compressor *ZlibCompressor) FileInfo() *FileInfo {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(compressor).Native()))
 
-	_gret := girepository.MustFind("Gio", "ZlibCompressor").InvokeMethod("get_file_info", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ZlibCompressor")
+	_gret := _info.InvokeClassMethod("get_file_info", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(compressor)
 
@@ -110,7 +111,8 @@ func (compressor *ZlibCompressor) SetFileInfo(fileInfo *FileInfo) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fileInfo).Native()))
 	}
 
-	girepository.MustFind("Gio", "ZlibCompressor").InvokeMethod("set_file_info", _args[:], nil)
+	_info := girepository.MustFind("Gio", "ZlibCompressor")
+	_info.InvokeClassMethod("set_file_info", _args[:], nil)
 
 	runtime.KeepAlive(compressor)
 	runtime.KeepAlive(fileInfo)

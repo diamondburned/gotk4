@@ -79,7 +79,8 @@ func (socket *SocketAccessible) Embed(path string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "SocketAccessible").InvokeMethod("embed", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "SocketAccessible")
+	_info.InvokeClassMethod("embed", _args[:], nil)
 
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(path)

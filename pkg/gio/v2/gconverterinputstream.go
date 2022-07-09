@@ -99,8 +99,9 @@ func NewConverterInputStream(baseStream InputStreamer, converter Converterer) *C
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseStream).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(converter).Native()))
 
-	_gret := girepository.MustFind("Gio", "ConverterInputStream").InvokeMethod("new_ConverterInputStream", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ConverterInputStream")
+	_gret := _info.InvokeClassMethod("new_ConverterInputStream", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseStream)
 	runtime.KeepAlive(converter)
@@ -123,8 +124,9 @@ func (converterStream *ConverterInputStream) Converter() *Converter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(converterStream).Native()))
 
-	_gret := girepository.MustFind("Gio", "ConverterInputStream").InvokeMethod("get_converter", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ConverterInputStream")
+	_gret := _info.InvokeClassMethod("get_converter", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(converterStream)
 

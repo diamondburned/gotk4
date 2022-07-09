@@ -64,7 +64,8 @@ func (monitor *X11Monitor) Workarea() *gdk.Rectangle {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
-	girepository.MustFind("GdkX11", "X11Monitor").InvokeMethod("get_workarea", _args[:], _outs[:])
+	_info := girepository.MustFind("GdkX11", "X11Monitor")
+	_info.InvokeClassMethod("get_workarea", _args[:], _outs[:])
 
 	runtime.KeepAlive(monitor)
 

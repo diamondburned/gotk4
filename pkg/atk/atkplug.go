@@ -15,7 +15,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern gchar* _gotk4_atk1_PlugClass_get_object_id(void*);
+// extern void* _gotk4_atk1_PlugClass_get_object_id(void*);
 import "C"
 
 // GTypePlug returns the GType for the type Plug.
@@ -65,7 +65,7 @@ func classInitPlugger(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_atk1_PlugClass_get_object_id
-func _gotk4_atk1_PlugClass_get_object_id(arg0 *C.void) (cret *C.gchar) {
+func _gotk4_atk1_PlugClass_get_object_id(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ObjectID() string })
 
@@ -99,8 +99,9 @@ func marshalPlug(p uintptr) (interface{}, error) {
 //    - plug: newly created Plug.
 //
 func NewPlug() *Plug {
-	_gret := girepository.MustFind("Atk", "Plug").InvokeMethod("new_Plug", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Plug")
+	_gret := _info.InvokeClassMethod("new_Plug", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _plug *Plug // out
 
@@ -126,8 +127,9 @@ func (plug *Plug) ID() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
 
-	_gret := girepository.MustFind("Atk", "Plug").InvokeMethod("get_id", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Plug")
+	_gret := _info.InvokeClassMethod("get_id", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(plug)
 
@@ -159,7 +161,8 @@ func (plug *Plug) SetChild(child *ObjectClass) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	girepository.MustFind("Atk", "Plug").InvokeMethod("set_child", _args[:], nil)
+	_info := girepository.MustFind("Atk", "Plug")
+	_info.InvokeClassMethod("set_child", _args[:], nil)
 
 	runtime.KeepAlive(plug)
 	runtime.KeepAlive(child)

@@ -527,7 +527,8 @@ func (menuShell *MenuShell) ActivateItem(menuItem Widgetter, forceDeactivate boo
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "MenuShell").InvokeMethod("activate_item", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuShell")
+	_info.InvokeClassMethod("activate_item", _args[:], nil)
 
 	runtime.KeepAlive(menuShell)
 	runtime.KeepAlive(menuItem)
@@ -546,7 +547,8 @@ func (menuShell *MenuShell) Append(child *MenuItem) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	girepository.MustFind("Gtk", "MenuShell").InvokeMethod("append", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuShell")
+	_info.InvokeClassMethod("append", _args[:], nil)
 
 	runtime.KeepAlive(menuShell)
 	runtime.KeepAlive(child)
@@ -603,7 +605,8 @@ func (menuShell *MenuShell) BindModel(model gio.MenuModeller, actionNamespace st
 		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "MenuShell").InvokeMethod("bind_model", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuShell")
+	_info.InvokeClassMethod("bind_model", _args[:], nil)
 
 	runtime.KeepAlive(menuShell)
 	runtime.KeepAlive(model)
@@ -617,7 +620,8 @@ func (menuShell *MenuShell) Cancel() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 
-	girepository.MustFind("Gtk", "MenuShell").InvokeMethod("cancel", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuShell")
+	_info.InvokeClassMethod("cancel", _args[:], nil)
 
 	runtime.KeepAlive(menuShell)
 }
@@ -630,7 +634,8 @@ func (menuShell *MenuShell) Deactivate() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 
-	girepository.MustFind("Gtk", "MenuShell").InvokeMethod("deactivate", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuShell")
+	_info.InvokeClassMethod("deactivate", _args[:], nil)
 
 	runtime.KeepAlive(menuShell)
 }
@@ -641,7 +646,8 @@ func (menuShell *MenuShell) Deselect() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 
-	girepository.MustFind("Gtk", "MenuShell").InvokeMethod("deselect", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuShell")
+	_info.InvokeClassMethod("deselect", _args[:], nil)
 
 	runtime.KeepAlive(menuShell)
 }
@@ -660,8 +666,9 @@ func (menuShell *MenuShell) ParentShell() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MenuShell").InvokeMethod("get_parent_shell", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MenuShell")
+	_gret := _info.InvokeClassMethod("get_parent_shell", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menuShell)
 
@@ -699,8 +706,9 @@ func (menuShell *MenuShell) SelectedItem() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MenuShell").InvokeMethod("get_selected_item", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MenuShell")
+	_gret := _info.InvokeClassMethod("get_selected_item", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menuShell)
 
@@ -739,8 +747,9 @@ func (menuShell *MenuShell) TakeFocus() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MenuShell").InvokeMethod("get_take_focus", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MenuShell")
+	_gret := _info.InvokeClassMethod("get_take_focus", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menuShell)
 
@@ -769,7 +778,8 @@ func (menuShell *MenuShell) Insert(child Widgetter, position int32) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(position)
 
-	girepository.MustFind("Gtk", "MenuShell").InvokeMethod("insert", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuShell")
+	_info.InvokeClassMethod("insert", _args[:], nil)
 
 	runtime.KeepAlive(menuShell)
 	runtime.KeepAlive(child)
@@ -788,7 +798,8 @@ func (menuShell *MenuShell) Prepend(child Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	girepository.MustFind("Gtk", "MenuShell").InvokeMethod("prepend", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuShell")
+	_info.InvokeClassMethod("prepend", _args[:], nil)
 
 	runtime.KeepAlive(menuShell)
 	runtime.KeepAlive(child)
@@ -811,7 +822,8 @@ func (menuShell *MenuShell) SelectFirst(searchSensitive bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "MenuShell").InvokeMethod("select_first", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuShell")
+	_info.InvokeClassMethod("select_first", _args[:], nil)
 
 	runtime.KeepAlive(menuShell)
 	runtime.KeepAlive(searchSensitive)
@@ -829,7 +841,8 @@ func (menuShell *MenuShell) SelectItem(menuItem Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuShell).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 
-	girepository.MustFind("Gtk", "MenuShell").InvokeMethod("select_item", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuShell")
+	_info.InvokeClassMethod("select_item", _args[:], nil)
 
 	runtime.KeepAlive(menuShell)
 	runtime.KeepAlive(menuItem)
@@ -873,7 +886,8 @@ func (menuShell *MenuShell) SetTakeFocus(takeFocus bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "MenuShell").InvokeMethod("set_take_focus", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuShell")
+	_info.InvokeClassMethod("set_take_focus", _args[:], nil)
 
 	runtime.KeepAlive(menuShell)
 	runtime.KeepAlive(takeFocus)

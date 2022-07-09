@@ -189,7 +189,9 @@ func (layout *PopupLayout) Copy() *PopupLayout {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "PopupLayout")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -223,7 +225,9 @@ func (layout *PopupLayout) Equal(other *PopupLayout) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "PopupLayout")
+	_gret := _info.InvokeRecordMethod("equal", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(other)
@@ -248,7 +252,9 @@ func (layout *PopupLayout) AnchorRect() *Rectangle {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "PopupLayout")
+	_gret := _info.InvokeRecordMethod("get_anchor_rect", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -271,6 +277,9 @@ func (layout *PopupLayout) Offset() (dx int32, dy int32) {
 	var _outs [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
+
+	_info := girepository.MustFind("Gdk", "PopupLayout")
+	_info.InvokeRecordMethod("get_offset", _args[:], _outs[:])
 
 	runtime.KeepAlive(layout)
 
@@ -297,6 +306,9 @@ func (layout *PopupLayout) ShadowWidth() (left int32, right int32, top int32, bo
 	var _outs [4]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
+
+	_info := girepository.MustFind("Gdk", "PopupLayout")
+	_info.InvokeRecordMethod("get_shadow_width", _args[:], _outs[:])
 
 	runtime.KeepAlive(layout)
 
@@ -325,6 +337,9 @@ func (layout *PopupLayout) SetAnchorRect(anchorRect *Rectangle) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(anchorRect)))
 
+	_info := girepository.MustFind("Gdk", "PopupLayout")
+	_info.InvokeRecordMethod("set_anchor_rect", _args[:], nil)
+
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(anchorRect)
 }
@@ -342,6 +357,9 @@ func (layout *PopupLayout) SetOffset(dx int32, dy int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(dx)
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(dy)
+
+	_info := girepository.MustFind("Gdk", "PopupLayout")
+	_info.InvokeRecordMethod("set_offset", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(dx)
@@ -369,6 +387,9 @@ func (layout *PopupLayout) SetShadowWidth(left int32, right int32, top int32, bo
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(right)
 	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(top)
 	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(bottom)
+
+	_info := girepository.MustFind("Gdk", "PopupLayout")
+	_info.InvokeRecordMethod("set_shadow_width", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(left)

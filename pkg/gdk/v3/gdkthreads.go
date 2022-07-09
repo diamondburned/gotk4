@@ -77,8 +77,9 @@ func ThreadsAddIdle(priority int32, function glib.SourceFunc) uint32 {
 	_args[2] = C.gpointer(gbox.Assign(function))
 	_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
-	_gret := girepository.MustFind("Gdk", "threads_add_idle_full").Invoke(_args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "threads_add_idle_full")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(priority)
 	runtime.KeepAlive(function)
@@ -153,8 +154,9 @@ func ThreadsAddTimeout(priority int32, interval uint32, function glib.SourceFunc
 	_args[3] = C.gpointer(gbox.Assign(function))
 	_args[4] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
-	_gret := girepository.MustFind("Gdk", "threads_add_timeout_full").Invoke(_args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "threads_add_timeout_full")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(priority)
 	runtime.KeepAlive(interval)
@@ -191,8 +193,9 @@ func ThreadsAddTimeoutSeconds(priority int32, interval uint32, function glib.Sou
 	_args[3] = C.gpointer(gbox.Assign(function))
 	_args[4] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
-	_gret := girepository.MustFind("Gdk", "threads_add_timeout_seconds_full").Invoke(_args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "threads_add_timeout_seconds_full")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(priority)
 	runtime.KeepAlive(interval)
@@ -211,7 +214,8 @@ func ThreadsAddTimeoutSeconds(priority int32, interval uint32, function glib.Sou
 //
 // Deprecated: All GDK and GTK+ calls should be made from the main thread.
 func ThreadsEnter() {
-	girepository.MustFind("Gdk", "threads_enter").Invoke(nil, nil)
+	_info := girepository.MustFind("Gdk", "threads_enter")
+	_info.Invoke(nil, nil)
 }
 
 // ThreadsInit initializes GDK so that it can be used from multiple threads in
@@ -222,12 +226,14 @@ func ThreadsEnter() {
 //
 // Deprecated: All GDK and GTK+ calls should be made from the main thread.
 func ThreadsInit() {
-	girepository.MustFind("Gdk", "threads_init").Invoke(nil, nil)
+	_info := girepository.MustFind("Gdk", "threads_init")
+	_info.Invoke(nil, nil)
 }
 
 // ThreadsLeave leaves a critical region begun with gdk_threads_enter().
 //
 // Deprecated: All GDK and GTK+ calls should be made from the main thread.
 func ThreadsLeave() {
-	girepository.MustFind("Gdk", "threads_leave").Invoke(nil, nil)
+	_info := girepository.MustFind("Gdk", "threads_leave")
+	_info.Invoke(nil, nil)
 }

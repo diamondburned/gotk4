@@ -308,8 +308,9 @@ func (seat *Seat) Display() *Display {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Seat").InvokeMethod("get_display", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Seat")
+	_gret := _info.InvokeClassMethod("get_display", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(seat)
 
@@ -332,8 +333,9 @@ func (seat *Seat) Keyboard() Devicer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Seat").InvokeMethod("get_keyboard", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Seat")
+	_gret := _info.InvokeClassMethod("get_keyboard", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(seat)
 
@@ -371,8 +373,9 @@ func (seat *Seat) Pointer() Devicer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Seat").InvokeMethod("get_pointer", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Seat")
+	_gret := _info.InvokeClassMethod("get_pointer", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(seat)
 
@@ -409,8 +412,9 @@ func (seat *Seat) Tools() []*DeviceTool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(seat).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Seat").InvokeMethod("get_tools", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Seat")
+	_gret := _info.InvokeClassMethod("get_tools", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(seat)
 

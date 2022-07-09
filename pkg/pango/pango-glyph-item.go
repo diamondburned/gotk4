@@ -115,7 +115,9 @@ func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) []*GlyphItem
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "GlyphItem")
+	_gret := _info.InvokeRecordMethod("apply_attrs", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(glyphItem)
 	runtime.KeepAlive(text)
@@ -133,7 +135,7 @@ func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) []*GlyphItem
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Pango", "GlyphItem").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Pango", "GlyphItem").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -157,7 +159,9 @@ func (orig *GlyphItem) Copy() *GlyphItem {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(orig)))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "GlyphItem")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(orig)
 
@@ -170,7 +174,7 @@ func (orig *GlyphItem) Copy() *GlyphItem {
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Pango", "GlyphItem").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Pango", "GlyphItem").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -209,7 +213,9 @@ func (orig *GlyphItem) Split(text string, splitIndex int32) *GlyphItem {
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(splitIndex)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "GlyphItem")
+	_gret := _info.InvokeRecordMethod("split", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(orig)
 	runtime.KeepAlive(text)
@@ -223,7 +229,7 @@ func (orig *GlyphItem) Split(text string, splitIndex int32) *GlyphItem {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Pango", "GlyphItem").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Pango", "GlyphItem").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -399,7 +405,9 @@ func (orig *GlyphItemIter) Copy() *GlyphItemIter {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(orig)))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "GlyphItemIter")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(orig)
 
@@ -412,7 +420,7 @@ func (orig *GlyphItemIter) Copy() *GlyphItemIter {
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Pango", "GlyphItemIter").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Pango", "GlyphItemIter").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -443,7 +451,9 @@ func (iter *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "GlyphItemIter")
+	_gret := _info.InvokeRecordMethod("init_end", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(glyphItem)
@@ -480,7 +490,9 @@ func (iter *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "GlyphItemIter")
+	_gret := _info.InvokeRecordMethod("init_start", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(glyphItem)
@@ -509,7 +521,9 @@ func (iter *GlyphItemIter) NextCluster() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "GlyphItemIter")
+	_gret := _info.InvokeRecordMethod("next_cluster", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -535,7 +549,9 @@ func (iter *GlyphItemIter) PrevCluster() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "GlyphItemIter")
+	_gret := _info.InvokeRecordMethod("prev_cluster", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 

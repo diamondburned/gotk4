@@ -192,7 +192,9 @@ func (sortable *TreeSortable) SortColumnID() (int32, SortType, bool) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeSortable")
+	_gret := _info.InvokeIfaceMethod("get_sort_column_id", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sortable)
 
@@ -222,7 +224,9 @@ func (sortable *TreeSortable) HasDefaultSortFunc() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeSortable")
+	_gret := _info.InvokeIfaceMethod("has_default_sort_func", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sortable)
 
@@ -257,6 +261,9 @@ func (sortable *TreeSortable) SetDefaultSortFunc(sortFunc TreeIterCompareFunc) {
 	_args[2] = C.gpointer(gbox.Assign(sortFunc))
 	_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
+	_info := girepository.MustFind("Gtk", "TreeSortable")
+	_info.InvokeIfaceMethod("set_default_sort_func", _args[:], nil)
+
 	runtime.KeepAlive(sortable)
 	runtime.KeepAlive(sortFunc)
 }
@@ -279,6 +286,9 @@ func (sortable *TreeSortable) SetSortFunc(sortColumnId int32, sortFunc TreeIterC
 	_args[3] = C.gpointer(gbox.Assign(sortFunc))
 	_args[4] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
+	_info := girepository.MustFind("Gtk", "TreeSortable")
+	_info.InvokeIfaceMethod("set_sort_func", _args[:], nil)
+
 	runtime.KeepAlive(sortable)
 	runtime.KeepAlive(sortColumnId)
 	runtime.KeepAlive(sortFunc)
@@ -290,6 +300,9 @@ func (sortable *TreeSortable) SortColumnChanged() {
 	var _args [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
+
+	_info := girepository.MustFind("Gtk", "TreeSortable")
+	_info.InvokeIfaceMethod("sort_column_changed", _args[:], nil)
 
 	runtime.KeepAlive(sortable)
 }

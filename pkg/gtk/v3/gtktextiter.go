@@ -163,6 +163,9 @@ func (iter *TextIter) Assign(other *TextIter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
 
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_info.InvokeRecordMethod("assign", _args[:], nil)
+
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(other)
 }
@@ -181,7 +184,9 @@ func (iter *TextIter) BackwardChar() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("backward_char", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -215,7 +220,9 @@ func (iter *TextIter) BackwardChars(count int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("backward_chars", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
@@ -241,7 +248,9 @@ func (iter *TextIter) BackwardCursorPosition() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("backward_cursor_position", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -271,7 +280,9 @@ func (iter *TextIter) BackwardCursorPositions(count int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("backward_cursor_positions", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
@@ -308,7 +319,9 @@ func (iter *TextIter) BackwardFindChar(pred TextCharPredicate, limit *TextIter) 
 		*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(limit)))
 	}
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("backward_find_char", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(pred)
@@ -340,7 +353,9 @@ func (iter *TextIter) BackwardLine() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("backward_line", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -374,7 +389,9 @@ func (iter *TextIter) BackwardLines(count int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("backward_lines", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
@@ -403,7 +420,9 @@ func (iter *TextIter) BackwardSentenceStart() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("backward_sentence_start", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -434,7 +453,9 @@ func (iter *TextIter) BackwardSentenceStarts(count int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("backward_sentence_starts", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
@@ -470,7 +491,9 @@ func (iter *TextIter) BackwardToTagToggle(tag *TextTag) bool {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 	}
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("backward_to_tag_toggle", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(tag)
@@ -496,7 +519,9 @@ func (iter *TextIter) BackwardVisibleCursorPosition() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("backward_visible_cursor_position", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -526,7 +551,9 @@ func (iter *TextIter) BackwardVisibleCursorPositions(count int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("backward_visible_cursor_positions", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
@@ -557,7 +584,9 @@ func (iter *TextIter) BackwardVisibleLine() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("backward_visible_line", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -592,7 +621,9 @@ func (iter *TextIter) BackwardVisibleLines(count int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("backward_visible_lines", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
@@ -621,7 +652,9 @@ func (iter *TextIter) BackwardVisibleWordStart() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("backward_visible_word_start", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -651,7 +684,9 @@ func (iter *TextIter) BackwardVisibleWordStarts(count int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("backward_visible_word_starts", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
@@ -679,7 +714,9 @@ func (iter *TextIter) BackwardWordStart() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("backward_word_start", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -709,7 +746,9 @@ func (iter *TextIter) BackwardWordStarts(count int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("backward_word_starts", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
@@ -750,7 +789,9 @@ func (iter *TextIter) BeginsTag(tag *TextTag) bool {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 	}
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("begins_tag", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(tag)
@@ -786,7 +827,9 @@ func (iter *TextIter) CanInsert(defaultEditability bool) bool {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("can_insert", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(defaultEditability)
@@ -820,7 +863,9 @@ func (lhs *TextIter) Compare(rhs *TextIter) int32 {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(lhs)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rhs)))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("compare", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(lhs)
 	runtime.KeepAlive(rhs)
@@ -845,7 +890,9 @@ func (iter *TextIter) Copy() *TextIter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -857,7 +904,7 @@ func (iter *TextIter) Copy() *TextIter {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "TextIter").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "TextIter").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -893,7 +940,9 @@ func (iter *TextIter) Editable(defaultSetting bool) bool {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("editable", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(defaultSetting)
@@ -924,7 +973,9 @@ func (iter *TextIter) EndsLine() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("ends_line", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -950,7 +1001,9 @@ func (iter *TextIter) EndsSentence() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("ends_sentence", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -988,7 +1041,9 @@ func (iter *TextIter) EndsTag(tag *TextTag) bool {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 	}
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("ends_tag", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(tag)
@@ -1015,7 +1070,9 @@ func (iter *TextIter) EndsWord() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("ends_word", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1047,7 +1104,9 @@ func (lhs *TextIter) Equal(rhs *TextIter) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(lhs)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rhs)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("equal", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(lhs)
 	runtime.KeepAlive(rhs)
@@ -1078,7 +1137,9 @@ func (iter *TextIter) ForwardChar() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("forward_char", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1112,7 +1173,9 @@ func (iter *TextIter) ForwardChars(count int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("forward_chars", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
@@ -1145,7 +1208,9 @@ func (iter *TextIter) ForwardCursorPosition() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("forward_cursor_position", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1175,7 +1240,9 @@ func (iter *TextIter) ForwardCursorPositions(count int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("forward_cursor_positions", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
@@ -1213,7 +1280,9 @@ func (iter *TextIter) ForwardFindChar(pred TextCharPredicate, limit *TextIter) b
 		*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(limit)))
 	}
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("forward_find_char", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(pred)
@@ -1242,7 +1311,9 @@ func (iter *TextIter) ForwardLine() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("forward_line", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1276,7 +1347,9 @@ func (iter *TextIter) ForwardLines(count int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("forward_lines", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
@@ -1304,7 +1377,9 @@ func (iter *TextIter) ForwardSentenceEnd() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("forward_sentence_end", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1335,7 +1410,9 @@ func (iter *TextIter) ForwardSentenceEnds(count int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("forward_sentence_ends", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
@@ -1357,6 +1434,9 @@ func (iter *TextIter) ForwardToEnd() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_info.InvokeRecordMethod("forward_to_end", _args[:], nil)
+
 	runtime.KeepAlive(iter)
 }
 
@@ -1377,7 +1457,9 @@ func (iter *TextIter) ForwardToLineEnd() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("forward_to_line_end", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1412,7 +1494,9 @@ func (iter *TextIter) ForwardToTagToggle(tag *TextTag) bool {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 	}
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("forward_to_tag_toggle", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(tag)
@@ -1438,7 +1522,9 @@ func (iter *TextIter) ForwardVisibleCursorPosition() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("forward_visible_cursor_position", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1468,7 +1554,9 @@ func (iter *TextIter) ForwardVisibleCursorPositions(count int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("forward_visible_cursor_positions", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
@@ -1496,7 +1584,9 @@ func (iter *TextIter) ForwardVisibleLine() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("forward_visible_line", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1530,7 +1620,9 @@ func (iter *TextIter) ForwardVisibleLines(count int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("forward_visible_lines", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
@@ -1558,7 +1650,9 @@ func (iter *TextIter) ForwardVisibleWordEnd() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("forward_visible_word_end", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1588,7 +1682,9 @@ func (iter *TextIter) ForwardVisibleWordEnds(count int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("forward_visible_word_ends", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
@@ -1616,7 +1712,9 @@ func (iter *TextIter) ForwardWordEnd() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("forward_word_end", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1645,7 +1743,9 @@ func (iter *TextIter) ForwardWordEnds(count int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("forward_word_ends", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(count)
@@ -1679,7 +1779,9 @@ func (iter *TextIter) Attributes() (*TextAttributes, bool) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("get_attributes", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1712,7 +1814,9 @@ func (iter *TextIter) Buffer() *TextBuffer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("get_buffer", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1735,7 +1839,9 @@ func (iter *TextIter) BytesInLine() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("get_bytes_in_line", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1762,7 +1868,9 @@ func (iter *TextIter) Char() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gunichar)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("get_char", _args[:], nil)
+	_cret := *(*C.gunichar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1785,7 +1893,9 @@ func (iter *TextIter) CharsInLine() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("get_chars_in_line", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1808,7 +1918,9 @@ func (iter *TextIter) ChildAnchor() *TextChildAnchor {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("get_child_anchor", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1832,7 +1944,9 @@ func (iter *TextIter) Language() *pango.Language {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("get_language", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1861,7 +1975,9 @@ func (iter *TextIter) Line() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("get_line", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1885,7 +2001,9 @@ func (iter *TextIter) LineIndex() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("get_line_index", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1909,7 +2027,9 @@ func (iter *TextIter) LineOffset() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("get_line_offset", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1934,7 +2054,9 @@ func (iter *TextIter) Marks() []*TextMark {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("get_marks", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1965,7 +2087,9 @@ func (iter *TextIter) Offset() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("get_offset", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1988,7 +2112,9 @@ func (iter *TextIter) Pixbuf() *gdkpixbuf.Pixbuf {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("get_pixbuf", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2031,7 +2157,9 @@ func (start *TextIter) Slice(end *TextIter) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("get_slice", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(end)
@@ -2057,7 +2185,9 @@ func (iter *TextIter) Tags() []*TextTag {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("get_tags", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2093,7 +2223,9 @@ func (start *TextIter) Text(end *TextIter) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("get_text", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(end)
@@ -2128,7 +2260,9 @@ func (iter *TextIter) ToggledTags(toggledOn bool) []*TextTag {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("get_toggled_tags", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(toggledOn)
@@ -2159,7 +2293,9 @@ func (iter *TextIter) VisibleLineIndex() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("get_visible_line_index", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2183,7 +2319,9 @@ func (iter *TextIter) VisibleLineOffset() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("get_visible_line_offset", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2212,7 +2350,9 @@ func (start *TextIter) VisibleSlice(end *TextIter) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("get_visible_slice", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(end)
@@ -2243,7 +2383,9 @@ func (start *TextIter) VisibleText(end *TextIter) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("get_visible_text", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(end)
@@ -2274,7 +2416,9 @@ func (iter *TextIter) HasTag(tag *TextTag) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("has_tag", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(tag)
@@ -2307,7 +2451,9 @@ func (iter *TextIter) InRange(start *TextIter, end *TextIter) bool {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("in_range", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(start)
@@ -2337,7 +2483,9 @@ func (iter *TextIter) InsideSentence() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("inside_sentence", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2367,7 +2515,9 @@ func (iter *TextIter) InsideWord() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("inside_word", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2392,7 +2542,9 @@ func (iter *TextIter) IsCursorPosition() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("is_cursor_position", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2418,7 +2570,9 @@ func (iter *TextIter) IsEnd() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("is_end", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2443,7 +2597,9 @@ func (iter *TextIter) IsStart() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("is_start", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2472,6 +2628,9 @@ func (first *TextIter) Order(second *TextIter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(first)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(second)))
 
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_info.InvokeRecordMethod("order", _args[:], nil)
+
 	runtime.KeepAlive(first)
 	runtime.KeepAlive(second)
 }
@@ -2490,6 +2649,9 @@ func (iter *TextIter) SetLine(lineNumber int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(lineNumber)
 
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_info.InvokeRecordMethod("set_line", _args[:], nil)
+
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(lineNumber)
 }
@@ -2507,6 +2669,9 @@ func (iter *TextIter) SetLineIndex(byteOnLine int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(byteOnLine)
+
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_info.InvokeRecordMethod("set_line_index", _args[:], nil)
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(byteOnLine)
@@ -2529,6 +2694,9 @@ func (iter *TextIter) SetLineOffset(charOnLine int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(charOnLine)
 
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_info.InvokeRecordMethod("set_line_offset", _args[:], nil)
+
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(charOnLine)
 }
@@ -2545,6 +2713,9 @@ func (iter *TextIter) SetOffset(charOffset int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(charOffset)
+
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_info.InvokeRecordMethod("set_offset", _args[:], nil)
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(charOffset)
@@ -2564,6 +2735,9 @@ func (iter *TextIter) SetVisibleLineIndex(byteOnLine int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(byteOnLine)
 
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_info.InvokeRecordMethod("set_visible_line_index", _args[:], nil)
+
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(byteOnLine)
 }
@@ -2581,6 +2755,9 @@ func (iter *TextIter) SetVisibleLineOffset(charOnLine int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(charOnLine)
+
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_info.InvokeRecordMethod("set_visible_line_offset", _args[:], nil)
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(charOnLine)
@@ -2600,7 +2777,9 @@ func (iter *TextIter) StartsLine() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("starts_line", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2626,7 +2805,9 @@ func (iter *TextIter) StartsSentence() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("starts_sentence", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2664,7 +2845,9 @@ func (iter *TextIter) StartsTag(tag *TextTag) bool {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 	}
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("starts_tag", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(tag)
@@ -2691,7 +2874,9 @@ func (iter *TextIter) StartsWord() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("starts_word", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2724,7 +2909,9 @@ func (iter *TextIter) TogglesTag(tag *TextTag) bool {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 	}
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextIter")
+	_gret := _info.InvokeRecordMethod("toggles_tag", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(tag)

@@ -142,8 +142,9 @@ func (monitor *Monitor) Connector() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Monitor").InvokeMethod("get_connector", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Monitor")
+	_gret := _info.InvokeClassMethod("get_connector", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(monitor)
 
@@ -167,8 +168,9 @@ func (monitor *Monitor) Display() *Display {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Monitor").InvokeMethod("get_display", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Monitor")
+	_gret := _info.InvokeClassMethod("get_display", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(monitor)
 
@@ -195,7 +197,8 @@ func (monitor *Monitor) Geometry() *Rectangle {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
-	girepository.MustFind("Gdk", "Monitor").InvokeMethod("get_geometry", _args[:], _outs[:])
+	_info := girepository.MustFind("Gdk", "Monitor")
+	_info.InvokeClassMethod("get_geometry", _args[:], _outs[:])
 
 	runtime.KeepAlive(monitor)
 
@@ -217,8 +220,9 @@ func (monitor *Monitor) HeightMm() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Monitor").InvokeMethod("get_height_mm", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Monitor")
+	_gret := _info.InvokeClassMethod("get_height_mm", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(monitor)
 
@@ -245,8 +249,9 @@ func (monitor *Monitor) Manufacturer() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Monitor").InvokeMethod("get_manufacturer", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Monitor")
+	_gret := _info.InvokeClassMethod("get_manufacturer", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(monitor)
 
@@ -270,8 +275,9 @@ func (monitor *Monitor) Model() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Monitor").InvokeMethod("get_model", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Monitor")
+	_gret := _info.InvokeClassMethod("get_model", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(monitor)
 
@@ -297,8 +303,9 @@ func (monitor *Monitor) RefreshRate() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Monitor").InvokeMethod("get_refresh_rate", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Monitor")
+	_gret := _info.InvokeClassMethod("get_refresh_rate", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(monitor)
 
@@ -328,8 +335,9 @@ func (monitor *Monitor) ScaleFactor() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Monitor").InvokeMethod("get_scale_factor", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Monitor")
+	_gret := _info.InvokeClassMethod("get_scale_factor", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(monitor)
 
@@ -351,8 +359,9 @@ func (monitor *Monitor) WidthMm() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Monitor").InvokeMethod("get_width_mm", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Monitor")
+	_gret := _info.InvokeClassMethod("get_width_mm", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(monitor)
 
@@ -377,8 +386,9 @@ func (monitor *Monitor) IsValid() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Monitor").InvokeMethod("is_valid", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Monitor")
+	_gret := _info.InvokeClassMethod("is_valid", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(monitor)
 

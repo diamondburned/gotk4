@@ -40,8 +40,9 @@ func TestCreateSimpleWindow(windowTitle, dialogText string) Widgetter {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(dialogText)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "test_create_simple_window").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "test_create_simple_window")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(windowTitle)
 	runtime.KeepAlive(dialogText)
@@ -93,8 +94,9 @@ func TestFindLabel(widget Widgetter, labelPattern string) Widgetter {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(labelPattern)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "test_find_label").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "test_find_label")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(labelPattern)
@@ -126,7 +128,8 @@ func TestFindLabel(widget Widgetter, labelPattern string) Widgetter {
 // types. This allowes to refer to any of those object types via
 // g_type_from_name() after calling this function.
 func TestRegisterAllTypes() {
-	girepository.MustFind("Gtk", "test_register_all_types").Invoke(nil, nil)
+	_info := girepository.MustFind("Gtk", "test_register_all_types")
+	_info.Invoke(nil, nil)
 }
 
 // TestSliderGetValue: retrive the literal adjustment value for GtkRange based
@@ -150,8 +153,9 @@ func TestSliderGetValue(widget Widgetter) float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_gret := girepository.MustFind("Gtk", "test_slider_get_value").Invoke(_args[:], nil)
-	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "test_slider_get_value")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
 
@@ -180,7 +184,8 @@ func TestSliderSetPerc(widget Widgetter, percentage float64) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(percentage)
 
-	girepository.MustFind("Gtk", "test_slider_set_perc").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "test_slider_set_perc")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(percentage)
@@ -212,8 +217,9 @@ func TestSpinButtonClick(spinner *SpinButton, button uint32, upwards bool) bool 
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
-	_gret := girepository.MustFind("Gtk", "test_spin_button_click").Invoke(_args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "test_spin_button_click")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(spinner)
 	runtime.KeepAlive(button)
@@ -246,8 +252,9 @@ func TestTextGet(widget Widgetter) string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_gret := girepository.MustFind("Gtk", "test_text_get").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "test_text_get")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
 
@@ -276,7 +283,8 @@ func TestTextSet(widget Widgetter, str string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "test_text_set").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "test_text_set")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(str)
@@ -298,7 +306,8 @@ func TestWidgetWaitForDraw(widget Widgetter) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	girepository.MustFind("Gtk", "test_widget_wait_for_draw").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "test_widget_wait_for_draw")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(widget)
 }

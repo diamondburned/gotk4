@@ -100,8 +100,9 @@ func NewWidgetPaintable(widget Widgetter) *WidgetPaintable {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "WidgetPaintable").InvokeMethod("new_WidgetPaintable", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WidgetPaintable")
+	_gret := _info.InvokeClassMethod("new_WidgetPaintable", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
 
@@ -123,8 +124,9 @@ func (self *WidgetPaintable) Widget() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "WidgetPaintable").InvokeMethod("get_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WidgetPaintable")
+	_gret := _info.InvokeClassMethod("get_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -164,7 +166,8 @@ func (self *WidgetPaintable) SetWidget(widget Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
 
-	girepository.MustFind("Gtk", "WidgetPaintable").InvokeMethod("set_widget", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "WidgetPaintable")
+	_info.InvokeClassMethod("set_widget", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(widget)

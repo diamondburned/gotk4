@@ -134,8 +134,9 @@ func NewNoOpObject(obj *coreglib.Object) *NoOpObject {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(obj.Native()))
 
-	_gret := girepository.MustFind("Atk", "NoOpObject").InvokeMethod("new_NoOpObject", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "NoOpObject")
+	_gret := _info.InvokeClassMethod("new_NoOpObject", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(obj)
 

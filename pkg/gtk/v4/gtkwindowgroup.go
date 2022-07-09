@@ -84,8 +84,9 @@ func marshalWindowGroup(p uintptr) (interface{}, error) {
 //    - windowGroup: new GtkWindowGroup.
 //
 func NewWindowGroup() *WindowGroup {
-	_gret := girepository.MustFind("Gtk", "WindowGroup").InvokeMethod("new_WindowGroup", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WindowGroup")
+	_gret := _info.InvokeClassMethod("new_WindowGroup", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _windowGroup *WindowGroup // out
 
@@ -106,7 +107,8 @@ func (windowGroup *WindowGroup) AddWindow(window *Window) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(windowGroup).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gtk", "WindowGroup").InvokeMethod("add_window", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "WindowGroup")
+	_info.InvokeClassMethod("add_window", _args[:], nil)
 
 	runtime.KeepAlive(windowGroup)
 	runtime.KeepAlive(window)
@@ -123,8 +125,9 @@ func (windowGroup *WindowGroup) ListWindows() []*Window {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(windowGroup).Native()))
 
-	_gret := girepository.MustFind("Gtk", "WindowGroup").InvokeMethod("list_windows", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WindowGroup")
+	_gret := _info.InvokeClassMethod("list_windows", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(windowGroup)
 
@@ -153,7 +156,8 @@ func (windowGroup *WindowGroup) RemoveWindow(window *Window) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(windowGroup).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gtk", "WindowGroup").InvokeMethod("remove_window", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "WindowGroup")
+	_info.InvokeClassMethod("remove_window", _args[:], nil)
 
 	runtime.KeepAlive(windowGroup)
 	runtime.KeepAlive(window)

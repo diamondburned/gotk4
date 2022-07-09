@@ -14,11 +14,6 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern AtkObject* _gotk4_atk1_TableIface_get_caption(void*);
-// extern AtkObject* _gotk4_atk1_TableIface_get_column_header(void*, gint);
-// extern AtkObject* _gotk4_atk1_TableIface_get_row_header(void*, gint);
-// extern AtkObject* _gotk4_atk1_TableIface_get_summary(void*);
-// extern AtkObject* _gotk4_atk1_TableIface_ref_at(void*, gint, gint);
 // extern gboolean _gotk4_atk1_TableIface_add_column_selection(void*, gint);
 // extern gboolean _gotk4_atk1_TableIface_add_row_selection(void*, gint);
 // extern gboolean _gotk4_atk1_TableIface_is_column_selected(void*, gint);
@@ -26,8 +21,6 @@ import (
 // extern gboolean _gotk4_atk1_TableIface_is_selected(void*, gint, gint);
 // extern gboolean _gotk4_atk1_TableIface_remove_column_selection(void*, gint);
 // extern gboolean _gotk4_atk1_TableIface_remove_row_selection(void*, gint);
-// extern gchar* _gotk4_atk1_TableIface_get_column_description(void*, gint);
-// extern gchar* _gotk4_atk1_TableIface_get_row_description(void*, gint);
 // extern gint _gotk4_atk1_TableIface_get_column_at_index(void*, gint);
 // extern gint _gotk4_atk1_TableIface_get_column_extent_at(void*, gint, gint);
 // extern gint _gotk4_atk1_TableIface_get_index_at(void*, gint, gint);
@@ -57,6 +50,13 @@ import (
 // extern void _gotk4_atk1_Table_ConnectRowDeleted(gpointer, gint, gint, guintptr);
 // extern void _gotk4_atk1_Table_ConnectRowInserted(gpointer, gint, gint, guintptr);
 // extern void _gotk4_atk1_Table_ConnectRowReordered(gpointer, guintptr);
+// extern void* _gotk4_atk1_TableIface_get_caption(void*);
+// extern void* _gotk4_atk1_TableIface_get_column_description(void*, gint);
+// extern void* _gotk4_atk1_TableIface_get_column_header(void*, gint);
+// extern void* _gotk4_atk1_TableIface_get_row_description(void*, gint);
+// extern void* _gotk4_atk1_TableIface_get_row_header(void*, gint);
+// extern void* _gotk4_atk1_TableIface_get_summary(void*);
+// extern void* _gotk4_atk1_TableIface_ref_at(void*, gint, gint);
 import "C"
 
 // GTypeTable returns the GType for the type Table.
@@ -690,7 +690,7 @@ func _gotk4_atk1_TableIface_column_reordered(arg0 *C.void) {
 }
 
 //export _gotk4_atk1_TableIface_get_caption
-func _gotk4_atk1_TableIface_get_caption(arg0 *C.void) (cret *C.AtkObject) {
+func _gotk4_atk1_TableIface_get_caption(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -720,7 +720,7 @@ func _gotk4_atk1_TableIface_get_column_at_index(arg0 *C.void, arg1 C.gint) (cret
 }
 
 //export _gotk4_atk1_TableIface_get_column_description
-func _gotk4_atk1_TableIface_get_column_description(arg0 *C.void, arg1 C.gint) (cret *C.gchar) {
+func _gotk4_atk1_TableIface_get_column_description(arg0 *C.void, arg1 C.gint) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -755,7 +755,7 @@ func _gotk4_atk1_TableIface_get_column_extent_at(arg0 *C.void, arg1 C.gint, arg2
 }
 
 //export _gotk4_atk1_TableIface_get_column_header
-func _gotk4_atk1_TableIface_get_column_header(arg0 *C.void, arg1 C.gint) (cret *C.AtkObject) {
+func _gotk4_atk1_TableIface_get_column_header(arg0 *C.void, arg1 C.gint) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -831,7 +831,7 @@ func _gotk4_atk1_TableIface_get_row_at_index(arg0 *C.void, arg1 C.gint) (cret C.
 }
 
 //export _gotk4_atk1_TableIface_get_row_description
-func _gotk4_atk1_TableIface_get_row_description(arg0 *C.void, arg1 C.gint) (cret *C.gchar) {
+func _gotk4_atk1_TableIface_get_row_description(arg0 *C.void, arg1 C.gint) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -868,7 +868,7 @@ func _gotk4_atk1_TableIface_get_row_extent_at(arg0 *C.void, arg1 C.gint, arg2 C.
 }
 
 //export _gotk4_atk1_TableIface_get_row_header
-func _gotk4_atk1_TableIface_get_row_header(arg0 *C.void, arg1 C.gint) (cret *C.AtkObject) {
+func _gotk4_atk1_TableIface_get_row_header(arg0 *C.void, arg1 C.gint) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -918,7 +918,7 @@ func _gotk4_atk1_TableIface_get_selected_rows(arg0 *C.void, arg1 **C.void) (cret
 }
 
 //export _gotk4_atk1_TableIface_get_summary
-func _gotk4_atk1_TableIface_get_summary(arg0 *C.void) (cret *C.AtkObject) {
+func _gotk4_atk1_TableIface_get_summary(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -995,7 +995,7 @@ func _gotk4_atk1_TableIface_model_changed(arg0 *C.void) {
 }
 
 //export _gotk4_atk1_TableIface_ref_at
-func _gotk4_atk1_TableIface_ref_at(arg0 *C.void, arg1 C.gint, arg2 C.gint) (cret *C.AtkObject) {
+func _gotk4_atk1_TableIface_ref_at(arg0 *C.void, arg1 C.gint, arg2 C.gint) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableOverrider)
 
@@ -1371,7 +1371,9 @@ func (table *Table) AddColumnSelection(column int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(column)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("add_column_selection", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
@@ -1402,7 +1404,9 @@ func (table *Table) AddRowSelection(row int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("add_row_selection", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
@@ -1428,7 +1432,9 @@ func (table *Table) Caption() *ObjectClass {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("get_caption", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 
@@ -1460,7 +1466,9 @@ func (table *Table) ColumnAtIndex(index_ int32) int32 {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(index_)
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("get_column_at_index", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(index_)
@@ -1490,7 +1498,9 @@ func (table *Table) ColumnDescription(column int32) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(column)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("get_column_description", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
@@ -1522,7 +1532,9 @@ func (table *Table) ColumnExtentAt(row, column int32) int32 {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(column)
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("get_column_extent_at", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
@@ -1553,7 +1565,9 @@ func (table *Table) ColumnHeader(column int32) *ObjectClass {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(column)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("get_column_header", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
@@ -1590,7 +1604,9 @@ func (table *Table) IndexAt(row, column int32) int32 {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(column)
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("get_index_at", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
@@ -1615,7 +1631,9 @@ func (table *Table) NColumns() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("get_n_columns", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 
@@ -1638,7 +1656,9 @@ func (table *Table) NRows() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("get_n_rows", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 
@@ -1668,7 +1688,9 @@ func (table *Table) RowAtIndex(index_ int32) int32 {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(index_)
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("get_row_at_index", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(index_)
@@ -1697,7 +1719,9 @@ func (table *Table) RowDescription(row int32) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("get_row_description", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
@@ -1731,7 +1755,9 @@ func (table *Table) RowExtentAt(row, column int32) int32 {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(column)
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("get_row_extent_at", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
@@ -1761,7 +1787,9 @@ func (table *Table) RowHeader(row int32) *ObjectClass {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("get_row_header", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
@@ -1794,7 +1822,9 @@ func (table *Table) SelectedColumns(selected **int32) int32 {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(***C.void)(unsafe.Pointer(&_args[1])) = (**C.void)(unsafe.Pointer(selected))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("get_selected_columns", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(selected)
@@ -1824,7 +1854,9 @@ func (table *Table) SelectedRows(selected **int32) int32 {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(***C.void)(unsafe.Pointer(&_args[1])) = (**C.void)(unsafe.Pointer(selected))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("get_selected_rows", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(selected)
@@ -1848,7 +1880,9 @@ func (table *Table) Summary() *ObjectClass {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("get_summary", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 
@@ -1877,7 +1911,9 @@ func (table *Table) IsColumnSelected(column int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(column)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("is_column_selected", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
@@ -1909,7 +1945,9 @@ func (table *Table) IsRowSelected(row int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("is_row_selected", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
@@ -1943,7 +1981,9 @@ func (table *Table) IsSelected(row, column int32) bool {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(column)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("is_selected", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
@@ -1977,7 +2017,9 @@ func (table *Table) RefAt(row, column int32) *ObjectClass {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(column)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("ref_at", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
@@ -2007,7 +2049,9 @@ func (table *Table) RemoveColumnSelection(column int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(column)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("remove_column_selection", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
@@ -2038,7 +2082,9 @@ func (table *Table) RemoveRowSelection(row int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Table")
+	_gret := _info.InvokeIfaceMethod("remove_row_selection", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
@@ -2064,6 +2110,9 @@ func (table *Table) SetCaption(caption *ObjectClass) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(caption).Native()))
 
+	_info := girepository.MustFind("Atk", "Table")
+	_info.InvokeIfaceMethod("set_caption", _args[:], nil)
+
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(caption)
 }
@@ -2085,6 +2134,9 @@ func (table *Table) SetColumnDescription(column int32, description string) {
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(description)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
+	_info := girepository.MustFind("Atk", "Table")
+	_info.InvokeIfaceMethod("set_column_description", _args[:], nil)
+
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
 	runtime.KeepAlive(description)
@@ -2103,6 +2155,9 @@ func (table *Table) SetColumnHeader(column int32, header *ObjectClass) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(column)
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(header).Native()))
+
+	_info := girepository.MustFind("Atk", "Table")
+	_info.InvokeIfaceMethod("set_column_header", _args[:], nil)
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
@@ -2125,6 +2180,9 @@ func (table *Table) SetRowDescription(row int32, description string) {
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(description)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
+	_info := girepository.MustFind("Atk", "Table")
+	_info.InvokeIfaceMethod("set_row_description", _args[:], nil)
+
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
 	runtime.KeepAlive(description)
@@ -2144,6 +2202,9 @@ func (table *Table) SetRowHeader(row int32, header *ObjectClass) {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(row)
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(header).Native()))
 
+	_info := girepository.MustFind("Atk", "Table")
+	_info.InvokeIfaceMethod("set_row_header", _args[:], nil)
+
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
 	runtime.KeepAlive(header)
@@ -2160,6 +2221,9 @@ func (table *Table) SetSummary(accessible *ObjectClass) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_info := girepository.MustFind("Atk", "Table")
+	_info.InvokeIfaceMethod("set_summary", _args[:], nil)
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(accessible)

@@ -630,7 +630,9 @@ func NewContentFormats(mimeTypes []string) *ContentFormats {
 		}
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ContentFormats")
+	_gret := _info.InvokeRecordMethod("new", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mimeTypes)
 
@@ -664,7 +666,9 @@ func (formats *ContentFormats) ContainMIMEType(mimeType string) bool {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ContentFormats")
+	_gret := _info.InvokeRecordMethod("contain_mime_type", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(formats)
 	runtime.KeepAlive(mimeType)
@@ -694,7 +698,9 @@ func (formats *ContentFormats) MIMETypes() []string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
 
-	_cret = *(***C.char)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ContentFormats")
+	_gret := _info.InvokeRecordMethod("get_mime_types", _args[:], _outs[:])
+	_cret := *(***C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(formats)
 
@@ -729,7 +735,9 @@ func (first *ContentFormats) Match(second *ContentFormats) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(first)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(second)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ContentFormats")
+	_gret := _info.InvokeRecordMethod("match", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(first)
 	runtime.KeepAlive(second)
@@ -762,7 +770,9 @@ func (first *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(first)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(second)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ContentFormats")
+	_gret := _info.InvokeRecordMethod("match_mime_type", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(first)
 	runtime.KeepAlive(second)
@@ -790,7 +800,9 @@ func (formats *ContentFormats) String() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ContentFormats")
+	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(formats)
 
@@ -819,7 +831,9 @@ func (first *ContentFormats) Union(second *ContentFormats) *ContentFormats {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(first)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(second)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ContentFormats")
+	_gret := _info.InvokeRecordMethod("union", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(first)
 	runtime.KeepAlive(second)
@@ -849,7 +863,9 @@ func (formats *ContentFormats) UnionDeserializeGTypes() *ContentFormats {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ContentFormats")
+	_gret := _info.InvokeRecordMethod("union_deserialize_gtypes", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(formats)
 
@@ -878,7 +894,9 @@ func (formats *ContentFormats) UnionDeserializeMIMETypes() *ContentFormats {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ContentFormats")
+	_gret := _info.InvokeRecordMethod("union_deserialize_mime_types", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(formats)
 
@@ -907,7 +925,9 @@ func (formats *ContentFormats) UnionSerializeGTypes() *ContentFormats {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ContentFormats")
+	_gret := _info.InvokeRecordMethod("union_serialize_gtypes", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(formats)
 
@@ -936,7 +956,9 @@ func (formats *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ContentFormats")
+	_gret := _info.InvokeRecordMethod("union_serialize_mime_types", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(formats)
 
@@ -1142,7 +1164,9 @@ func (rect *Rectangle) ContainsPoint(x int32, y int32) bool {
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(x)
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(y)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Rectangle")
+	_gret := _info.InvokeRecordMethod("contains_point", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(rect)
 	runtime.KeepAlive(x)
@@ -1173,7 +1197,9 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rect1)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rect2)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Rectangle")
+	_gret := _info.InvokeRecordMethod("equal", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(rect1)
 	runtime.KeepAlive(rect2)
@@ -1212,7 +1238,9 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src1)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src2)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Rectangle")
+	_gret := _info.InvokeRecordMethod("intersect", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(src1)
 	runtime.KeepAlive(src2)
@@ -1253,6 +1281,9 @@ func (src1 *Rectangle) Union(src2 *Rectangle) *Rectangle {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src1)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src2)))
+
+	_info := girepository.MustFind("Gdk", "Rectangle")
+	_info.InvokeRecordMethod("union", _args[:], _outs[:])
 
 	runtime.KeepAlive(src1)
 	runtime.KeepAlive(src2)

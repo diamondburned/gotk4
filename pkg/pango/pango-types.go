@@ -62,7 +62,8 @@ func ExtentsToPixels(inclusive, nearest *Rectangle) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(nearest)))
 	}
 
-	girepository.MustFind("Pango", "extents_to_pixels").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Pango", "extents_to_pixels")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(inclusive)
 	runtime.KeepAlive(nearest)
@@ -86,8 +87,9 @@ func UnitsFromDouble(d float64) int32 {
 
 	*(*C.double)(unsafe.Pointer(&_args[0])) = C.double(d)
 
-	_gret := girepository.MustFind("Pango", "units_from_double").Invoke(_args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "units_from_double")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(d)
 
@@ -115,8 +117,9 @@ func UnitsToDouble(i int32) float64 {
 
 	*(*C.int)(unsafe.Pointer(&_args[0])) = C.int(i)
 
-	_gret := girepository.MustFind("Pango", "units_to_double").Invoke(_args[:], nil)
-	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "units_to_double")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(i)
 

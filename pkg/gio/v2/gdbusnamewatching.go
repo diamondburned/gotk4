@@ -88,7 +88,8 @@ func BusUnwatchName(watcherId uint32) {
 
 	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(watcherId)
 
-	girepository.MustFind("Gio", "bus_unwatch_name").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gio", "bus_unwatch_name")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(watcherId)
 }

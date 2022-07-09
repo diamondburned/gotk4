@@ -182,8 +182,9 @@ func NewFileChooserButtonWithDialog(dialog *Dialog) *FileChooserButton {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
 
-	_gret := girepository.MustFind("Gtk", "FileChooserButton").InvokeMethod("new_FileChooserButton_with_dialog", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FileChooserButton")
+	_gret := _info.InvokeClassMethod("new_FileChooserButton_with_dialog", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(dialog)
 
@@ -208,8 +209,9 @@ func (button *FileChooserButton) FocusOnClick() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
-	_gret := girepository.MustFind("Gtk", "FileChooserButton").InvokeMethod("get_focus_on_click", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FileChooserButton")
+	_gret := _info.InvokeClassMethod("get_focus_on_click", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
 
@@ -234,8 +236,9 @@ func (button *FileChooserButton) Title() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
-	_gret := girepository.MustFind("Gtk", "FileChooserButton").InvokeMethod("get_title", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FileChooserButton")
+	_gret := _info.InvokeClassMethod("get_title", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
 
@@ -259,8 +262,9 @@ func (button *FileChooserButton) WidthChars() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
-	_gret := girepository.MustFind("Gtk", "FileChooserButton").InvokeMethod("get_width_chars", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FileChooserButton")
+	_gret := _info.InvokeClassMethod("get_width_chars", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
 
@@ -290,7 +294,8 @@ func (button *FileChooserButton) SetFocusOnClick(focusOnClick bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "FileChooserButton").InvokeMethod("set_focus_on_click", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "FileChooserButton")
+	_info.InvokeClassMethod("set_focus_on_click", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(focusOnClick)
@@ -309,7 +314,8 @@ func (button *FileChooserButton) SetTitle(title string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "FileChooserButton").InvokeMethod("set_title", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "FileChooserButton")
+	_info.InvokeClassMethod("set_title", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(title)
@@ -327,7 +333,8 @@ func (button *FileChooserButton) SetWidthChars(nChars int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(nChars)
 
-	girepository.MustFind("Gtk", "FileChooserButton").InvokeMethod("set_width_chars", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "FileChooserButton")
+	_info.InvokeClassMethod("set_width_chars", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(nChars)

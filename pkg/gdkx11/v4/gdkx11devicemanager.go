@@ -34,8 +34,9 @@ func X11DeviceManagerLookup(deviceManager *X11DeviceManagerXI2, deviceId int32) 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(deviceManager).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(deviceId)
 
-	_gret := girepository.MustFind("GdkX11", "x11_device_manager_lookup").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("GdkX11", "x11_device_manager_lookup")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(deviceManager)
 	runtime.KeepAlive(deviceId)

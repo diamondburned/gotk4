@@ -123,8 +123,9 @@ func marshalRecentChooserMenu(p uintptr) (interface{}, error) {
 //    - recentChooserMenu: new RecentChooserMenu.
 //
 func NewRecentChooserMenu() *RecentChooserMenu {
-	_gret := girepository.MustFind("Gtk", "RecentChooserMenu").InvokeMethod("new_RecentChooserMenu", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RecentChooserMenu")
+	_gret := _info.InvokeClassMethod("new_RecentChooserMenu", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _recentChooserMenu *RecentChooserMenu // out
 
@@ -153,8 +154,9 @@ func NewRecentChooserMenuForManager(manager *RecentManager) *RecentChooserMenu {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	_gret := girepository.MustFind("Gtk", "RecentChooserMenu").InvokeMethod("new_RecentChooserMenu_for_manager", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RecentChooserMenu")
+	_gret := _info.InvokeClassMethod("new_RecentChooserMenu_for_manager", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 
@@ -177,8 +179,9 @@ func (menu *RecentChooserMenu) ShowNumbers() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 
-	_gret := girepository.MustFind("Gtk", "RecentChooserMenu").InvokeMethod("get_show_numbers", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RecentChooserMenu")
+	_gret := _info.InvokeClassMethod("get_show_numbers", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menu)
 
@@ -208,7 +211,8 @@ func (menu *RecentChooserMenu) SetShowNumbers(showNumbers bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "RecentChooserMenu").InvokeMethod("set_show_numbers", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "RecentChooserMenu")
+	_info.InvokeClassMethod("set_show_numbers", _args[:], nil)
 
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(showNumbers)

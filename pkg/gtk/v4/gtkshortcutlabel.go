@@ -80,8 +80,9 @@ func NewShortcutLabel(accelerator string) *ShortcutLabel {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(accelerator)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "ShortcutLabel").InvokeMethod("new_ShortcutLabel", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ShortcutLabel")
+	_gret := _info.InvokeClassMethod("new_ShortcutLabel", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(accelerator)
 
@@ -103,8 +104,9 @@ func (self *ShortcutLabel) Accelerator() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ShortcutLabel").InvokeMethod("get_accelerator", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ShortcutLabel")
+	_gret := _info.InvokeClassMethod("get_accelerator", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -128,8 +130,9 @@ func (self *ShortcutLabel) DisabledText() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ShortcutLabel").InvokeMethod("get_disabled_text", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ShortcutLabel")
+	_gret := _info.InvokeClassMethod("get_disabled_text", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -155,7 +158,8 @@ func (self *ShortcutLabel) SetAccelerator(accelerator string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(accelerator)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "ShortcutLabel").InvokeMethod("set_accelerator", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ShortcutLabel")
+	_info.InvokeClassMethod("set_accelerator", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(accelerator)
@@ -175,7 +179,8 @@ func (self *ShortcutLabel) SetDisabledText(disabledText string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(disabledText)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "ShortcutLabel").InvokeMethod("set_disabled_text", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ShortcutLabel")
+	_info.InvokeClassMethod("set_disabled_text", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(disabledText)

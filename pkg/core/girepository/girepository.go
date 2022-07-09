@@ -203,6 +203,30 @@ func (i *Info) InvokeMethod(name string, in, out []Argument) Argument {
 	return invokeFunc(method, in, out)
 }
 
+// InvokeIfaceMethod invokes the method of this InterfaceInfo with the given name.
+func (i *Info) InvokeIfaceMethod(name string, in, out []Argument) Argument {
+	k := i.keys
+	k[2] = name
+
+	method := findInfo(k, func(ckey infoCKey) unsafe.Pointer {
+		return unsafe.Pointer(C.g_interface_info_find_method((*C.GIInterfaceInfo)(i.info), ckey[2]))
+	})
+
+	return invokeFunc(method, in, out)
+}
+
+// InvokeRecordMethod invokes the method of this StructInfo with the given name.
+func (i *Info) InvokeRecordMethod(name string, in, out []Argument) Argument {
+	k := i.keys
+	k[2] = name
+
+	method := findInfo(k, func(ckey infoCKey) unsafe.Pointer {
+		return unsafe.Pointer(C.g_struct_info_find_method((*C.GIStructInfo)(i.info), ckey[2]))
+	})
+
+	return invokeFunc(method, in, out)
+}
+
 func findInfo(k infoKey, f func(infoCKey) unsafe.Pointer) *Info {
 	infoCache.RLock()
 	info, ok := infoCache.m[k]

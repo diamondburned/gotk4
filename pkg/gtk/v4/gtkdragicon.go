@@ -119,8 +119,9 @@ func (self *DragIcon) Child() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "DragIcon").InvokeMethod("get_child", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "DragIcon")
+	_gret := _info.InvokeClassMethod("get_child", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -160,7 +161,8 @@ func (self *DragIcon) SetChild(child Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
 
-	girepository.MustFind("Gtk", "DragIcon").InvokeMethod("set_child", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "DragIcon")
+	_info.InvokeClassMethod("set_child", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(child)
@@ -189,8 +191,9 @@ func DragIconCreateWidgetForValue(value *coreglib.Value) Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(value.Native()))
 
-	_gret := girepository.MustFind("Gtk", "create_widget_for_value").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "create_widget_for_value")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(value)
 
@@ -233,8 +236,9 @@ func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
 
-	_gret := girepository.MustFind("Gtk", "get_for_drag").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "get_for_drag")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drag)
 
@@ -282,7 +286,8 @@ func DragIconSetFromPaintable(drag gdk.Dragger, paintable gdk.Paintabler, hotX, 
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(hotX)
 	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(hotY)
 
-	girepository.MustFind("Gtk", "set_from_paintable").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "set_from_paintable")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(drag)
 	runtime.KeepAlive(paintable)

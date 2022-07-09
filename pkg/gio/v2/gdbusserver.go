@@ -29,8 +29,9 @@ func (server *DBusServer) ClientAddress() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(server).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusServer").InvokeMethod("get_client_address", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusServer")
+	_gret := _info.InvokeClassMethod("get_client_address", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(server)
 
@@ -52,8 +53,9 @@ func (server *DBusServer) GUID() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(server).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusServer").InvokeMethod("get_guid", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusServer")
+	_gret := _info.InvokeClassMethod("get_guid", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(server)
 
@@ -75,8 +77,9 @@ func (server *DBusServer) IsActive() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(server).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusServer").InvokeMethod("is_active", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusServer")
+	_gret := _info.InvokeClassMethod("is_active", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(server)
 
@@ -95,7 +98,8 @@ func (server *DBusServer) Start() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(server).Native()))
 
-	girepository.MustFind("Gio", "DBusServer").InvokeMethod("start", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusServer")
+	_info.InvokeClassMethod("start", _args[:], nil)
 
 	runtime.KeepAlive(server)
 }
@@ -106,7 +110,8 @@ func (server *DBusServer) Stop() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(server).Native()))
 
-	girepository.MustFind("Gio", "DBusServer").InvokeMethod("stop", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusServer")
+	_info.InvokeClassMethod("stop", _args[:], nil)
 
 	runtime.KeepAlive(server)
 }

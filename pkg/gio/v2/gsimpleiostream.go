@@ -34,8 +34,9 @@ func NewSimpleIOStream(inputStream InputStreamer, outputStream OutputStreamer) *
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(inputStream).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(outputStream).Native()))
 
-	_gret := girepository.MustFind("Gio", "SimpleIOStream").InvokeMethod("new_SimpleIOStream", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SimpleIOStream")
+	_gret := _info.InvokeClassMethod("new_SimpleIOStream", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(inputStream)
 	runtime.KeepAlive(outputStream)

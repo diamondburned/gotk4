@@ -174,8 +174,9 @@ func NewAdjustment(value, lower, upper, stepIncrement, pageIncrement, pageSize f
 	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(pageIncrement)
 	*(*C.double)(unsafe.Pointer(&_args[5])) = C.double(pageSize)
 
-	_gret := girepository.MustFind("Gtk", "Adjustment").InvokeMethod("new_Adjustment", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Adjustment")
+	_gret := _info.InvokeClassMethod("new_Adjustment", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(value)
 	runtime.KeepAlive(lower)
@@ -212,7 +213,8 @@ func (adjustment *Adjustment) ClampPage(lower, upper float64) {
 	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(lower)
 	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(upper)
 
-	girepository.MustFind("Gtk", "Adjustment").InvokeMethod("clamp_page", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Adjustment")
+	_info.InvokeClassMethod("clamp_page", _args[:], nil)
 
 	runtime.KeepAlive(adjustment)
 	runtime.KeepAlive(lower)
@@ -245,7 +247,8 @@ func (adjustment *Adjustment) Configure(value, lower, upper, stepIncrement, page
 	*(*C.double)(unsafe.Pointer(&_args[5])) = C.double(pageIncrement)
 	*(*C.double)(unsafe.Pointer(&_args[6])) = C.double(pageSize)
 
-	girepository.MustFind("Gtk", "Adjustment").InvokeMethod("configure", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Adjustment")
+	_info.InvokeClassMethod("configure", _args[:], nil)
 
 	runtime.KeepAlive(adjustment)
 	runtime.KeepAlive(value)
@@ -267,8 +270,9 @@ func (adjustment *Adjustment) Lower() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Adjustment").InvokeMethod("get_lower", _args[:], nil)
-	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Adjustment")
+	_gret := _info.InvokeClassMethod("get_lower", _args[:], nil)
+	_cret := *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(adjustment)
 
@@ -290,8 +294,9 @@ func (adjustment *Adjustment) MinimumIncrement() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Adjustment").InvokeMethod("get_minimum_increment", _args[:], nil)
-	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Adjustment")
+	_gret := _info.InvokeClassMethod("get_minimum_increment", _args[:], nil)
+	_cret := *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(adjustment)
 
@@ -313,8 +318,9 @@ func (adjustment *Adjustment) PageIncrement() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Adjustment").InvokeMethod("get_page_increment", _args[:], nil)
-	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Adjustment")
+	_gret := _info.InvokeClassMethod("get_page_increment", _args[:], nil)
+	_cret := *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(adjustment)
 
@@ -336,8 +342,9 @@ func (adjustment *Adjustment) PageSize() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Adjustment").InvokeMethod("get_page_size", _args[:], nil)
-	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Adjustment")
+	_gret := _info.InvokeClassMethod("get_page_size", _args[:], nil)
+	_cret := *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(adjustment)
 
@@ -359,8 +366,9 @@ func (adjustment *Adjustment) StepIncrement() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Adjustment").InvokeMethod("get_step_increment", _args[:], nil)
-	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Adjustment")
+	_gret := _info.InvokeClassMethod("get_step_increment", _args[:], nil)
+	_cret := *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(adjustment)
 
@@ -382,8 +390,9 @@ func (adjustment *Adjustment) Upper() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Adjustment").InvokeMethod("get_upper", _args[:], nil)
-	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Adjustment")
+	_gret := _info.InvokeClassMethod("get_upper", _args[:], nil)
+	_cret := *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(adjustment)
 
@@ -405,8 +414,9 @@ func (adjustment *Adjustment) Value() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Adjustment").InvokeMethod("get_value", _args[:], nil)
-	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Adjustment")
+	_gret := _info.InvokeClassMethod("get_value", _args[:], nil)
+	_cret := *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(adjustment)
 
@@ -439,7 +449,8 @@ func (adjustment *Adjustment) SetLower(lower float64) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(lower)
 
-	girepository.MustFind("Gtk", "Adjustment").InvokeMethod("set_lower", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Adjustment")
+	_info.InvokeClassMethod("set_lower", _args[:], nil)
 
 	runtime.KeepAlive(adjustment)
 	runtime.KeepAlive(lower)
@@ -460,7 +471,8 @@ func (adjustment *Adjustment) SetPageIncrement(pageIncrement float64) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(pageIncrement)
 
-	girepository.MustFind("Gtk", "Adjustment").InvokeMethod("set_page_increment", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Adjustment")
+	_info.InvokeClassMethod("set_page_increment", _args[:], nil)
 
 	runtime.KeepAlive(adjustment)
 	runtime.KeepAlive(pageIncrement)
@@ -481,7 +493,8 @@ func (adjustment *Adjustment) SetPageSize(pageSize float64) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(pageSize)
 
-	girepository.MustFind("Gtk", "Adjustment").InvokeMethod("set_page_size", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Adjustment")
+	_info.InvokeClassMethod("set_page_size", _args[:], nil)
 
 	runtime.KeepAlive(adjustment)
 	runtime.KeepAlive(pageSize)
@@ -502,7 +515,8 @@ func (adjustment *Adjustment) SetStepIncrement(stepIncrement float64) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(stepIncrement)
 
-	girepository.MustFind("Gtk", "Adjustment").InvokeMethod("set_step_increment", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Adjustment")
+	_info.InvokeClassMethod("set_step_increment", _args[:], nil)
 
 	runtime.KeepAlive(adjustment)
 	runtime.KeepAlive(stepIncrement)
@@ -526,7 +540,8 @@ func (adjustment *Adjustment) SetUpper(upper float64) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(upper)
 
-	girepository.MustFind("Gtk", "Adjustment").InvokeMethod("set_upper", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Adjustment")
+	_info.InvokeClassMethod("set_upper", _args[:], nil)
 
 	runtime.KeepAlive(adjustment)
 	runtime.KeepAlive(upper)
@@ -551,7 +566,8 @@ func (adjustment *Adjustment) SetValue(value float64) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(value)
 
-	girepository.MustFind("Gtk", "Adjustment").InvokeMethod("set_value", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Adjustment")
+	_info.InvokeClassMethod("set_value", _args[:], nil)
 
 	runtime.KeepAlive(adjustment)
 	runtime.KeepAlive(value)

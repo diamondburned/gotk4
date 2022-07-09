@@ -46,7 +46,7 @@ func GTypeFontMap() coreglib.Type {
 }
 
 func init() {
-	girepository.Require("PangoCairo", "1.0")
+	girepository.Require("PangoCairo", "1.0", girepository.LoadFlagLazy)
 }
 
 // ShapeRendererFunc: function type for rendering attributes of type
@@ -102,8 +102,9 @@ func ContextGetFontOptions(context *pango.Context) *cairo.FontOptions {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("PangoCairo", "context_get_font_options").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("PangoCairo", "context_get_font_options")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -133,8 +134,9 @@ func ContextGetResolution(context *pango.Context) float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("PangoCairo", "context_get_resolution").Invoke(_args[:], nil)
-	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("PangoCairo", "context_get_resolution")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -165,7 +167,8 @@ func ContextSetFontOptions(context *pango.Context, options *cairo.FontOptions) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(options)))
 	}
 
-	girepository.MustFind("PangoCairo", "context_set_font_options").Invoke(_args[:], nil)
+	_info := girepository.MustFind("PangoCairo", "context_set_font_options")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(options)
@@ -190,7 +193,8 @@ func ContextSetResolution(context *pango.Context, dpi float64) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(dpi)
 
-	girepository.MustFind("PangoCairo", "context_set_resolution").Invoke(_args[:], nil)
+	_info := girepository.MustFind("PangoCairo", "context_set_resolution")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(dpi)
@@ -217,7 +221,8 @@ func ContextSetShapeRenderer(context *pango.Context, fn ShapeRendererFunc) {
 		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	girepository.MustFind("PangoCairo", "context_set_shape_renderer").Invoke(_args[:], nil)
+	_info := girepository.MustFind("PangoCairo", "context_set_shape_renderer")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(fn)
@@ -246,8 +251,9 @@ func CreateContext(cr *cairo.Context) *pango.Context {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
 
-	_gret := girepository.MustFind("PangoCairo", "create_context").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("PangoCairo", "create_context")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cr)
 
@@ -289,8 +295,9 @@ func CreateLayout(cr *cairo.Context) *pango.Layout {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
 
-	_gret := girepository.MustFind("PangoCairo", "create_layout").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("PangoCairo", "create_layout")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cr)
 
@@ -330,7 +337,8 @@ func ErrorUnderlinePath(cr *cairo.Context, x, y, width, height float64) {
 	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(width)
 	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(height)
 
-	girepository.MustFind("PangoCairo", "error_underline_path").Invoke(_args[:], nil)
+	_info := girepository.MustFind("PangoCairo", "error_underline_path")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(x)
@@ -358,7 +366,8 @@ func GlyphStringPath(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphSt
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphs)))
 
-	girepository.MustFind("PangoCairo", "glyph_string_path").Invoke(_args[:], nil)
+	_info := girepository.MustFind("PangoCairo", "glyph_string_path")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(font)
@@ -382,7 +391,8 @@ func LayoutLinePath(cr *cairo.Context, line *pango.LayoutLine) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(line)))
 
-	girepository.MustFind("PangoCairo", "layout_line_path").Invoke(_args[:], nil)
+	_info := girepository.MustFind("PangoCairo", "layout_line_path")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(line)
@@ -405,7 +415,8 @@ func LayoutPath(cr *cairo.Context, layout *pango.Layout) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	girepository.MustFind("PangoCairo", "layout_path").Invoke(_args[:], nil)
+	_info := girepository.MustFind("PangoCairo", "layout_path")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(layout)
@@ -435,7 +446,8 @@ func ShowErrorUnderline(cr *cairo.Context, x, y, width, height float64) {
 	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(width)
 	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(height)
 
-	girepository.MustFind("PangoCairo", "show_error_underline").Invoke(_args[:], nil)
+	_info := girepository.MustFind("PangoCairo", "show_error_underline")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(x)
@@ -470,7 +482,8 @@ func ShowGlyphItem(cr *cairo.Context, text string, glyphItem *pango.GlyphItem) {
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphItem)))
 
-	girepository.MustFind("PangoCairo", "show_glyph_item").Invoke(_args[:], nil)
+	_info := girepository.MustFind("PangoCairo", "show_glyph_item")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(text)
@@ -495,7 +508,8 @@ func ShowGlyphString(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphSt
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphs)))
 
-	girepository.MustFind("PangoCairo", "show_glyph_string").Invoke(_args[:], nil)
+	_info := girepository.MustFind("PangoCairo", "show_glyph_string")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(font)
@@ -518,7 +532,8 @@ func ShowLayout(cr *cairo.Context, layout *pango.Layout) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	girepository.MustFind("PangoCairo", "show_layout").Invoke(_args[:], nil)
+	_info := girepository.MustFind("PangoCairo", "show_layout")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(layout)
@@ -540,7 +555,8 @@ func ShowLayoutLine(cr *cairo.Context, line *pango.LayoutLine) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(line)))
 
-	girepository.MustFind("PangoCairo", "show_layout_line").Invoke(_args[:], nil)
+	_info := girepository.MustFind("PangoCairo", "show_layout_line")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(line)
@@ -563,7 +579,8 @@ func UpdateContext(cr *cairo.Context, context *pango.Context) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	girepository.MustFind("PangoCairo", "update_context").Invoke(_args[:], nil)
+	_info := girepository.MustFind("PangoCairo", "update_context")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(context)
@@ -584,7 +601,8 @@ func UpdateLayout(cr *cairo.Context, layout *pango.Layout) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	girepository.MustFind("PangoCairo", "update_layout").Invoke(_args[:], nil)
+	_info := girepository.MustFind("PangoCairo", "update_layout")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(layout)
@@ -685,7 +703,9 @@ func (fontmap *FontMap) Resolution() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
 
-	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("PangoCairo", "FontMap")
+	_gret := _info.InvokeIfaceMethod("get_resolution", _args[:], nil)
+	_cret := *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(fontmap)
 
@@ -717,6 +737,9 @@ func (fontmap *FontMap) SetDefault() {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
 	}
 
+	_info := girepository.MustFind("PangoCairo", "FontMap")
+	_info.InvokeIfaceMethod("set_default", _args[:], nil)
+
 	runtime.KeepAlive(fontmap)
 }
 
@@ -736,6 +759,9 @@ func (fontmap *FontMap) SetResolution(dpi float64) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
 	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(dpi)
+
+	_info := girepository.MustFind("PangoCairo", "FontMap")
+	_info.InvokeIfaceMethod("set_resolution", _args[:], nil)
 
 	runtime.KeepAlive(fontmap)
 	runtime.KeepAlive(dpi)
@@ -761,8 +787,9 @@ func (fontmap *FontMap) SetResolution(dpi float64) {
 //      is owned by Pango and must not be freed.
 //
 func FontMapGetDefault() pango.FontMapper {
-	_gret := girepository.MustFind("PangoCairo", "get_default").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("PangoCairo", "get_default")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _fontMap pango.FontMapper // out
 
@@ -809,8 +836,9 @@ func FontMapGetDefault() pango.FontMapper {
 //      g_object_unref().
 //
 func NewFontMap() pango.FontMapper {
-	_gret := girepository.MustFind("PangoCairo", "new").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("PangoCairo", "new")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _fontMap pango.FontMapper // out
 

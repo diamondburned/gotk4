@@ -18,8 +18,9 @@ import "C"
 // The function returns the following values:
 //
 func CSSParserWarningQuark() glib.Quark {
-	_gret := girepository.MustFind("Gtk", "css_parser_warning_quark").Invoke(nil, nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "css_parser_warning_quark")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 

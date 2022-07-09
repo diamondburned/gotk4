@@ -17,9 +17,9 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GVariant* _gotk4_gio2_IconIface_serialize(void*);
 // extern gboolean _gotk4_gio2_IconIface_equal(void*, void*);
 // extern guint _gotk4_gio2_IconIface_hash(void*);
+// extern void* _gotk4_gio2_IconIface_serialize(void*);
 import "C"
 
 // GTypeIcon returns the GType for the type Icon.
@@ -175,7 +175,7 @@ func _gotk4_gio2_IconIface_hash(arg0 *C.void) (cret C.guint) {
 }
 
 //export _gotk4_gio2_IconIface_serialize
-func _gotk4_gio2_IconIface_serialize(arg0 *C.void) (cret *C.GVariant) {
+func _gotk4_gio2_IconIface_serialize(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(IconOverrider)
 
@@ -218,7 +218,9 @@ func (icon1 *Icon) Equal(icon2 Iconner) bool {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon2).Native()))
 	}
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Icon")
+	_gret := _info.InvokeIfaceMethod("equal", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(icon1)
 	runtime.KeepAlive(icon2)
@@ -248,7 +250,9 @@ func (icon *Icon) Serialize() *glib.Variant {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Icon")
+	_gret := _info.InvokeIfaceMethod("serialize", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(icon)
 
@@ -293,7 +297,9 @@ func (icon *Icon) String() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Icon")
+	_gret := _info.InvokeIfaceMethod("to_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(icon)
 
@@ -323,8 +329,9 @@ func IconDeserialize(value *glib.Variant) *Icon {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
 
-	_gret := girepository.MustFind("Gio", "deserialize").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "deserialize")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(value)
 
@@ -353,8 +360,9 @@ func IconHash(icon unsafe.Pointer) uint32 {
 
 	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = (C.gpointer)(unsafe.Pointer(icon))
 
-	_gret := girepository.MustFind("Gio", "hash").Invoke(_args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "hash")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(icon)
 
@@ -386,8 +394,9 @@ func NewIconForString(str string) (*Icon, error) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "new_for_string").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "new_for_string")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
 

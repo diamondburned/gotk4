@@ -94,8 +94,9 @@ func (self *CairoContext) CairoCreate() *cairo.Context {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gdk", "CairoContext").InvokeMethod("cairo_create", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "CairoContext")
+	_gret := _info.InvokeClassMethod("cairo_create", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 

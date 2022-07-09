@@ -247,6 +247,9 @@ func (text *EditableText) CopyText(startPos, endPos int32) {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(startPos)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(endPos)
 
+	_info := girepository.MustFind("Atk", "EditableText")
+	_info.InvokeIfaceMethod("copy_text", _args[:], nil)
+
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(startPos)
 	runtime.KeepAlive(endPos)
@@ -267,6 +270,9 @@ func (text *EditableText) CutText(startPos, endPos int32) {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(startPos)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(endPos)
 
+	_info := girepository.MustFind("Atk", "EditableText")
+	_info.InvokeIfaceMethod("cut_text", _args[:], nil)
+
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(startPos)
 	runtime.KeepAlive(endPos)
@@ -285,6 +291,9 @@ func (text *EditableText) DeleteText(startPos, endPos int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(startPos)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(endPos)
+
+	_info := girepository.MustFind("Atk", "EditableText")
+	_info.InvokeIfaceMethod("delete_text", _args[:], nil)
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(startPos)
@@ -310,6 +319,9 @@ func (text *EditableText) InsertText(str string, length int32, position *int32) 
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(length)
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(position))
 
+	_info := girepository.MustFind("Atk", "EditableText")
+	_info.InvokeIfaceMethod("insert_text", _args[:], nil)
+
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(str)
 	runtime.KeepAlive(length)
@@ -328,6 +340,9 @@ func (text *EditableText) PasteText(position int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(position)
 
+	_info := girepository.MustFind("Atk", "EditableText")
+	_info.InvokeIfaceMethod("paste_text", _args[:], nil)
+
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(position)
 }
@@ -344,6 +359,9 @@ func (text *EditableText) SetTextContents(str string) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_args[1]))
+
+	_info := girepository.MustFind("Atk", "EditableText")
+	_info.InvokeIfaceMethod("set_text_contents", _args[:], nil)
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(str)

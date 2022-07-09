@@ -639,7 +639,8 @@ func (cell *CellRenderer) Alignment() (xalign, yalign float32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
-	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_alignment", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "CellRenderer")
+	_info.InvokeClassMethod("get_alignment", _args[:], _outs[:])
 
 	runtime.KeepAlive(cell)
 
@@ -671,7 +672,8 @@ func (cell *CellRenderer) FixedSize() (width, height int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
-	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_fixed_size", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "CellRenderer")
+	_info.InvokeClassMethod("get_fixed_size", _args[:], _outs[:])
 
 	runtime.KeepAlive(cell)
 
@@ -699,8 +701,9 @@ func (cell *CellRenderer) IsExpanded() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
-	_gret := girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_is_expanded", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellRenderer")
+	_gret := _info.InvokeClassMethod("get_is_expanded", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cell)
 
@@ -724,8 +727,9 @@ func (cell *CellRenderer) IsExpander() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
-	_gret := girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_is_expander", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellRenderer")
+	_gret := _info.InvokeClassMethod("get_is_expander", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cell)
 
@@ -753,7 +757,8 @@ func (cell *CellRenderer) Padding() (xpad, ypad int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
-	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_padding", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "CellRenderer")
+	_info.InvokeClassMethod("get_padding", _args[:], _outs[:])
 
 	runtime.KeepAlive(cell)
 
@@ -788,7 +793,8 @@ func (cell *CellRenderer) PreferredHeight(widget Widgetter) (minimumSize, natura
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_preferred_height", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "CellRenderer")
+	_info.InvokeClassMethod("get_preferred_height", _args[:], _outs[:])
 
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(widget)
@@ -828,7 +834,8 @@ func (cell *CellRenderer) PreferredHeightForWidth(widget Widgetter, width int32)
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(width)
 
-	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_preferred_height_for_width", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "CellRenderer")
+	_info.InvokeClassMethod("get_preferred_height_for_width", _args[:], _outs[:])
 
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(widget)
@@ -866,7 +873,8 @@ func (cell *CellRenderer) PreferredSize(widget Widgetter) (minimumSize, naturalS
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_preferred_size", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "CellRenderer")
+	_info.InvokeClassMethod("get_preferred_size", _args[:], _outs[:])
 
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(widget)
@@ -902,7 +910,8 @@ func (cell *CellRenderer) PreferredWidth(widget Widgetter) (minimumSize, natural
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_preferred_width", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "CellRenderer")
+	_info.InvokeClassMethod("get_preferred_width", _args[:], _outs[:])
 
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(widget)
@@ -942,7 +951,8 @@ func (cell *CellRenderer) PreferredWidthForHeight(widget Widgetter, height int32
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(height)
 
-	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_preferred_width_for_height", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "CellRenderer")
+	_info.InvokeClassMethod("get_preferred_width_for_height", _args[:], _outs[:])
 
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(widget)
@@ -972,8 +982,9 @@ func (cell *CellRenderer) Sensitive() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
-	_gret := girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_sensitive", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellRenderer")
+	_gret := _info.InvokeClassMethod("get_sensitive", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cell)
 
@@ -997,8 +1008,9 @@ func (cell *CellRenderer) Visible() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
-	_gret := girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("get_visible", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellRenderer")
+	_gret := _info.InvokeClassMethod("get_visible", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cell)
 
@@ -1023,8 +1035,9 @@ func (cell *CellRenderer) IsActivatable() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
-	_gret := girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("is_activatable", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellRenderer")
+	_gret := _info.InvokeClassMethod("is_activatable", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cell)
 
@@ -1051,7 +1064,8 @@ func (cell *CellRenderer) SetAlignment(xalign, yalign float32) {
 	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(xalign)
 	*(*C.float)(unsafe.Pointer(&_args[2])) = C.float(yalign)
 
-	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("set_alignment", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellRenderer")
+	_info.InvokeClassMethod("set_alignment", _args[:], nil)
 
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(xalign)
@@ -1073,7 +1087,8 @@ func (cell *CellRenderer) SetFixedSize(width, height int32) {
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(width)
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(height)
 
-	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("set_fixed_size", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellRenderer")
+	_info.InvokeClassMethod("set_fixed_size", _args[:], nil)
 
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(width)
@@ -1094,7 +1109,8 @@ func (cell *CellRenderer) SetIsExpanded(isExpanded bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("set_is_expanded", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellRenderer")
+	_info.InvokeClassMethod("set_is_expanded", _args[:], nil)
 
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(isExpanded)
@@ -1114,7 +1130,8 @@ func (cell *CellRenderer) SetIsExpander(isExpander bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("set_is_expander", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellRenderer")
+	_info.InvokeClassMethod("set_is_expander", _args[:], nil)
 
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(isExpander)
@@ -1134,7 +1151,8 @@ func (cell *CellRenderer) SetPadding(xpad, ypad int32) {
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(xpad)
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(ypad)
 
-	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("set_padding", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellRenderer")
+	_info.InvokeClassMethod("set_padding", _args[:], nil)
 
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(xpad)
@@ -1155,7 +1173,8 @@ func (cell *CellRenderer) SetSensitive(sensitive bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("set_sensitive", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellRenderer")
+	_info.InvokeClassMethod("set_sensitive", _args[:], nil)
 
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(sensitive)
@@ -1175,7 +1194,8 @@ func (cell *CellRenderer) SetVisible(visible bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("set_visible", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellRenderer")
+	_info.InvokeClassMethod("set_visible", _args[:], nil)
 
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(visible)
@@ -1200,7 +1220,8 @@ func (cell *CellRenderer) StopEditing(canceled bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "CellRenderer").InvokeMethod("stop_editing", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellRenderer")
+	_info.InvokeClassMethod("stop_editing", _args[:], nil)
 
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(canceled)

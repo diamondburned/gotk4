@@ -55,8 +55,9 @@ func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGro
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("export_action_group", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_gret := _info.InvokeClassMethod("export_action_group", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(objectPath)
@@ -90,7 +91,8 @@ func (connection *DBusConnection) UnexportActionGroup(exportId uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(exportId)
 
-	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("unexport_action_group", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_info.InvokeClassMethod("unexport_action_group", _args[:], nil)
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(exportId)

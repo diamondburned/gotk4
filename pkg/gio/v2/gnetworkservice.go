@@ -94,8 +94,9 @@ func NewNetworkService(service, protocol, domain string) *NetworkService {
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(domain)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	_gret := girepository.MustFind("Gio", "NetworkService").InvokeMethod("new_NetworkService", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "NetworkService")
+	_gret := _info.InvokeClassMethod("new_NetworkService", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(service)
 	runtime.KeepAlive(protocol)
@@ -120,8 +121,9 @@ func (srv *NetworkService) Domain() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
 
-	_gret := girepository.MustFind("Gio", "NetworkService").InvokeMethod("get_domain", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "NetworkService")
+	_gret := _info.InvokeClassMethod("get_domain", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(srv)
 
@@ -143,8 +145,9 @@ func (srv *NetworkService) Protocol() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
 
-	_gret := girepository.MustFind("Gio", "NetworkService").InvokeMethod("get_protocol", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "NetworkService")
+	_gret := _info.InvokeClassMethod("get_protocol", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(srv)
 
@@ -167,8 +170,9 @@ func (srv *NetworkService) Scheme() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
 
-	_gret := girepository.MustFind("Gio", "NetworkService").InvokeMethod("get_scheme", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "NetworkService")
+	_gret := _info.InvokeClassMethod("get_scheme", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(srv)
 
@@ -190,8 +194,9 @@ func (srv *NetworkService) Service() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(srv).Native()))
 
-	_gret := girepository.MustFind("Gio", "NetworkService").InvokeMethod("get_service", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "NetworkService")
+	_gret := _info.InvokeClassMethod("get_service", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(srv)
 
@@ -216,7 +221,8 @@ func (srv *NetworkService) SetScheme(scheme string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(scheme)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gio", "NetworkService").InvokeMethod("set_scheme", _args[:], nil)
+	_info := girepository.MustFind("Gio", "NetworkService")
+	_info.InvokeClassMethod("set_scheme", _args[:], nil)
 
 	runtime.KeepAlive(srv)
 	runtime.KeepAlive(scheme)

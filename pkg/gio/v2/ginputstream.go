@@ -360,7 +360,8 @@ func (stream *InputStream) ClearPending() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	girepository.MustFind("Gio", "InputStream").InvokeMethod("clear_pending", _args[:], nil)
+	_info := girepository.MustFind("Gio", "InputStream")
+	_info.InvokeClassMethod("clear_pending", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 }
@@ -403,7 +404,8 @@ func (stream *InputStream) Close(ctx context.Context) error {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	girepository.MustFind("Gio", "InputStream").InvokeMethod("close", _args[:], nil)
+	_info := girepository.MustFind("Gio", "InputStream")
+	_info.InvokeClassMethod("close", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -449,7 +451,8 @@ func (stream *InputStream) CloseAsync(ctx context.Context, ioPriority int32, cal
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "InputStream").InvokeMethod("close_async", _args[:], nil)
+	_info := girepository.MustFind("Gio", "InputStream")
+	_info.InvokeClassMethod("close_async", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -470,7 +473,8 @@ func (stream *InputStream) CloseFinish(result AsyncResulter) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	girepository.MustFind("Gio", "InputStream").InvokeMethod("close_finish", _args[:], nil)
+	_info := girepository.MustFind("Gio", "InputStream")
+	_info.InvokeClassMethod("close_finish", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
@@ -495,8 +499,9 @@ func (stream *InputStream) HasPending() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	_gret := girepository.MustFind("Gio", "InputStream").InvokeMethod("has_pending", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InputStream")
+	_gret := _info.InvokeClassMethod("has_pending", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 
@@ -520,8 +525,9 @@ func (stream *InputStream) IsClosed() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	_gret := girepository.MustFind("Gio", "InputStream").InvokeMethod("is_closed", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InputStream")
+	_gret := _info.InvokeClassMethod("is_closed", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 
@@ -560,7 +566,8 @@ func (stream *InputStream) ReadAllFinish(result AsyncResulter) (uint, error) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	girepository.MustFind("Gio", "InputStream").InvokeMethod("read_all_finish", _args[:], _outs[:])
+	_info := girepository.MustFind("Gio", "InputStream")
+	_info.InvokeClassMethod("read_all_finish", _args[:], _outs[:])
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
@@ -618,8 +625,9 @@ func (stream *InputStream) ReadBytes(ctx context.Context, count uint) (*glib.Byt
 	}
 	*(*C.gsize)(unsafe.Pointer(&_args[1])) = C.gsize(count)
 
-	_gret := girepository.MustFind("Gio", "InputStream").InvokeMethod("read_bytes", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InputStream")
+	_gret := _info.InvokeClassMethod("read_bytes", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -685,7 +693,8 @@ func (stream *InputStream) ReadBytesAsync(ctx context.Context, count uint, ioPri
 		_args[5] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "InputStream").InvokeMethod("read_bytes_async", _args[:], nil)
+	_info := girepository.MustFind("Gio", "InputStream")
+	_info.InvokeClassMethod("read_bytes_async", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -710,8 +719,9 @@ func (stream *InputStream) ReadBytesFinish(result AsyncResulter) (*glib.Bytes, e
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_gret := girepository.MustFind("Gio", "InputStream").InvokeMethod("read_bytes_finish", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InputStream")
+	_gret := _info.InvokeClassMethod("read_bytes_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
@@ -749,8 +759,9 @@ func (stream *InputStream) ReadFinish(result AsyncResulter) (int, error) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_gret := girepository.MustFind("Gio", "InputStream").InvokeMethod("read_finish", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InputStream")
+	_gret := _info.InvokeClassMethod("read_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
@@ -773,7 +784,8 @@ func (stream *InputStream) SetPending() error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	girepository.MustFind("Gio", "InputStream").InvokeMethod("set_pending", _args[:], nil)
+	_info := girepository.MustFind("Gio", "InputStream")
+	_info.InvokeClassMethod("set_pending", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 
@@ -822,8 +834,9 @@ func (stream *InputStream) Skip(ctx context.Context, count uint) (int, error) {
 	}
 	*(*C.gsize)(unsafe.Pointer(&_args[1])) = C.gsize(count)
 
-	_gret := girepository.MustFind("Gio", "InputStream").InvokeMethod("skip", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InputStream")
+	_gret := _info.InvokeClassMethod("skip", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -887,7 +900,8 @@ func (stream *InputStream) SkipAsync(ctx context.Context, count uint, ioPriority
 		_args[5] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "InputStream").InvokeMethod("skip_async", _args[:], nil)
+	_info := girepository.MustFind("Gio", "InputStream")
+	_info.InvokeClassMethod("skip_async", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -912,8 +926,9 @@ func (stream *InputStream) SkipFinish(result AsyncResulter) (int, error) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_gret := girepository.MustFind("Gio", "InputStream").InvokeMethod("skip_finish", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InputStream")
+	_gret := _info.InvokeClassMethod("skip_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)

@@ -86,8 +86,9 @@ func NewTCPWrapperConnection(baseIoStream IOStreamer, socket *Socket) *TCPWrappe
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseIoStream).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
 
-	_gret := girepository.MustFind("Gio", "TcpWrapperConnection").InvokeMethod("new_TcpWrapperConnection", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TcpWrapperConnection")
+	_gret := _info.InvokeClassMethod("new_TcpWrapperConnection", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseIoStream)
 	runtime.KeepAlive(socket)
@@ -110,8 +111,9 @@ func (conn *TCPWrapperConnection) BaseIOStream() IOStreamer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
-	_gret := girepository.MustFind("Gio", "TcpWrapperConnection").InvokeMethod("get_base_io_stream", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TcpWrapperConnection")
+	_gret := _info.InvokeClassMethod("get_base_io_stream", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(conn)
 

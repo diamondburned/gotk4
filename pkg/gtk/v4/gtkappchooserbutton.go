@@ -177,8 +177,9 @@ func NewAppChooserButton(contentType string) *AppChooserButton {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "AppChooserButton").InvokeMethod("new_AppChooserButton", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AppChooserButton")
+	_gret := _info.InvokeClassMethod("new_AppChooserButton", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(contentType)
 
@@ -214,7 +215,8 @@ func (self *AppChooserButton) AppendCustomItem(name, label string, icon gio.Icon
 	defer C.free(unsafe.Pointer(_args[2]))
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 
-	girepository.MustFind("Gtk", "AppChooserButton").InvokeMethod("append_custom_item", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AppChooserButton")
+	_info.InvokeClassMethod("append_custom_item", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(name)
@@ -229,7 +231,8 @@ func (self *AppChooserButton) AppendSeparator() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	girepository.MustFind("Gtk", "AppChooserButton").InvokeMethod("append_separator", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AppChooserButton")
+	_info.InvokeClassMethod("append_separator", _args[:], nil)
 
 	runtime.KeepAlive(self)
 }
@@ -246,8 +249,9 @@ func (self *AppChooserButton) Heading() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AppChooserButton").InvokeMethod("get_heading", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AppChooserButton")
+	_gret := _info.InvokeClassMethod("get_heading", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -271,8 +275,9 @@ func (self *AppChooserButton) Modal() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AppChooserButton").InvokeMethod("get_modal", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AppChooserButton")
+	_gret := _info.InvokeClassMethod("get_modal", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -297,8 +302,9 @@ func (self *AppChooserButton) ShowDefaultItem() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AppChooserButton").InvokeMethod("get_show_default_item", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AppChooserButton")
+	_gret := _info.InvokeClassMethod("get_show_default_item", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -323,8 +329,9 @@ func (self *AppChooserButton) ShowDialogItem() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AppChooserButton").InvokeMethod("get_show_dialog_item", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AppChooserButton")
+	_gret := _info.InvokeClassMethod("get_show_dialog_item", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -354,7 +361,8 @@ func (self *AppChooserButton) SetActiveCustomItem(name string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "AppChooserButton").InvokeMethod("set_active_custom_item", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AppChooserButton")
+	_info.InvokeClassMethod("set_active_custom_item", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(name)
@@ -375,7 +383,8 @@ func (self *AppChooserButton) SetHeading(heading string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(heading)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "AppChooserButton").InvokeMethod("set_heading", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AppChooserButton")
+	_info.InvokeClassMethod("set_heading", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(heading)
@@ -395,7 +404,8 @@ func (self *AppChooserButton) SetModal(modal bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "AppChooserButton").InvokeMethod("set_modal", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AppChooserButton")
+	_info.InvokeClassMethod("set_modal", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(modal)
@@ -416,7 +426,8 @@ func (self *AppChooserButton) SetShowDefaultItem(setting bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "AppChooserButton").InvokeMethod("set_show_default_item", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AppChooserButton")
+	_info.InvokeClassMethod("set_show_default_item", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
@@ -437,7 +448,8 @@ func (self *AppChooserButton) SetShowDialogItem(setting bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "AppChooserButton").InvokeMethod("set_show_dialog_item", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AppChooserButton")
+	_info.InvokeClassMethod("set_show_dialog_item", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)

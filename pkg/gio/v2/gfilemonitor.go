@@ -130,8 +130,9 @@ func (monitor *FileMonitor) Cancel() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
-	_gret := girepository.MustFind("Gio", "FileMonitor").InvokeMethod("cancel", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "FileMonitor")
+	_gret := _info.InvokeClassMethod("cancel", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(monitor)
 
@@ -155,8 +156,9 @@ func (monitor *FileMonitor) IsCancelled() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
-	_gret := girepository.MustFind("Gio", "FileMonitor").InvokeMethod("is_cancelled", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "FileMonitor")
+	_gret := _info.InvokeClassMethod("is_cancelled", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(monitor)
 
@@ -183,7 +185,8 @@ func (monitor *FileMonitor) SetRateLimit(limitMsecs int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(limitMsecs)
 
-	girepository.MustFind("Gio", "FileMonitor").InvokeMethod("set_rate_limit", _args[:], nil)
+	_info := girepository.MustFind("Gio", "FileMonitor")
+	_info.InvokeClassMethod("set_rate_limit", _args[:], nil)
 
 	runtime.KeepAlive(monitor)
 	runtime.KeepAlive(limitMsecs)

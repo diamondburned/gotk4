@@ -129,8 +129,9 @@ func ReorderItems(logicalItems []*Item) []*Item {
 	}
 	defer C.g_list_free(_args[0])
 
-	_gret := girepository.MustFind("Pango", "reorder_items").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "reorder_items")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(logicalItems)
 
@@ -146,7 +147,7 @@ func ReorderItems(logicalItems []*Item) []*Item {
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Pango", "Item").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Pango", "Item").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -185,7 +186,8 @@ func Shape(text string, length int32, analysis *Analysis, glyphs *GlyphString) {
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(analysis)))
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphs)))
 
-	girepository.MustFind("Pango", "shape").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Pango", "shape")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(length)
@@ -235,7 +237,8 @@ func ShapeFull(itemText string, itemLength int32, paragraphText string, paragrap
 	*(**C.void)(unsafe.Pointer(&_args[4])) = (*C.void)(gextras.StructNative(unsafe.Pointer(analysis)))
 	*(**C.void)(unsafe.Pointer(&_args[5])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphs)))
 
-	girepository.MustFind("Pango", "shape_full").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Pango", "shape_full")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(itemText)
 	runtime.KeepAlive(itemLength)
@@ -321,7 +324,9 @@ func marshalGlyphString(p uintptr) (interface{}, error) {
 
 // NewGlyphString constructs a struct GlyphString.
 func NewGlyphString() *GlyphString {
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "GlyphString")
+	_gret := _info.InvokeRecordMethod("new", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _glyphString *GlyphString // out
 
@@ -331,7 +336,7 @@ func NewGlyphString() *GlyphString {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Pango", "GlyphString").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Pango", "GlyphString").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -353,7 +358,9 @@ func (str *GlyphString) Copy() *GlyphString {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(str)))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "GlyphString")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
 
@@ -366,7 +373,7 @@ func (str *GlyphString) Copy() *GlyphString {
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Pango", "GlyphString").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Pango", "GlyphString").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -401,6 +408,9 @@ func (glyphs *GlyphString) Extents(font Fonter) (inkRect *Rectangle, logicalRect
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphs)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(font).Native()))
+
+	_info := girepository.MustFind("Pango", "GlyphString")
+	_info.InvokeRecordMethod("extents", _args[:], _outs[:])
 
 	runtime.KeepAlive(glyphs)
 	runtime.KeepAlive(font)
@@ -447,6 +457,9 @@ func (glyphs *GlyphString) ExtentsRange(start int32, end int32, font Fonter) (in
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(end)
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 
+	_info := girepository.MustFind("Pango", "GlyphString")
+	_info.InvokeRecordMethod("extents_range", _args[:], _outs[:])
+
 	runtime.KeepAlive(glyphs)
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(end)
@@ -481,7 +494,9 @@ func (glyphs *GlyphString) Width() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphs)))
 
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "GlyphString")
+	_gret := _info.InvokeRecordMethod("get_width", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(glyphs)
 
@@ -524,6 +539,9 @@ func (glyphs *GlyphString) IndexToX(text string, length int32, analysis *Analysi
 		*(*C.gboolean)(unsafe.Pointer(&_args[5])) = C.TRUE
 	}
 
+	_info := girepository.MustFind("Pango", "GlyphString")
+	_info.InvokeRecordMethod("index_to_x", _args[:], _outs[:])
+
 	runtime.KeepAlive(glyphs)
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(length)
@@ -549,6 +567,9 @@ func (str *GlyphString) SetSize(newLen int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(str)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(newLen)
+
+	_info := girepository.MustFind("Pango", "GlyphString")
+	_info.InvokeRecordMethod("set_size", _args[:], nil)
 
 	runtime.KeepAlive(str)
 	runtime.KeepAlive(newLen)
@@ -585,6 +606,9 @@ func (glyphs *GlyphString) XToIndex(text string, length int32, analysis *Analysi
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(length)
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(analysis)))
 	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(xPos)
+
+	_info := girepository.MustFind("Pango", "GlyphString")
+	_info.InvokeRecordMethod("x_to_index", _args[:], _outs[:])
 
 	runtime.KeepAlive(glyphs)
 	runtime.KeepAlive(text)

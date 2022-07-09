@@ -86,7 +86,9 @@ func NewPaperSize(name string) *PaperSize {
 		defer C.free(unsafe.Pointer(_args[0]))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PaperSize")
+	_gret := _info.InvokeRecordMethod("new", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
 
@@ -98,7 +100,7 @@ func NewPaperSize(name string) *PaperSize {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "PaperSize").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "PaperSize").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -112,7 +114,9 @@ func NewPaperSizeFromGVariant(variant *glib.Variant) *PaperSize {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(variant)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PaperSize")
+	_gret := _info.InvokeRecordMethod("new_from_gvariant", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(variant)
 
@@ -124,7 +128,7 @@ func NewPaperSizeFromGVariant(variant *glib.Variant) *PaperSize {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "PaperSize").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "PaperSize").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -141,7 +145,9 @@ func NewPaperSizeFromIPP(ippName string, width float64, height float64) *PaperSi
 	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(width)
 	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(height)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PaperSize")
+	_gret := _info.InvokeRecordMethod("new_from_ipp", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(ippName)
 	runtime.KeepAlive(width)
@@ -155,7 +161,7 @@ func NewPaperSizeFromIPP(ippName string, width float64, height float64) *PaperSi
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "PaperSize").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "PaperSize").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -173,7 +179,9 @@ func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PaperSiz
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PaperSize")
+	_gret := _info.InvokeRecordMethod("new_from_key_file", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyFile)
 	runtime.KeepAlive(groupName)
@@ -187,7 +195,7 @@ func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PaperSiz
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "PaperSize").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "PaperSize").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -209,7 +217,9 @@ func NewPaperSizeFromPPD(ppdName string, ppdDisplayName string, width float64, h
 	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(width)
 	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(height)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PaperSize")
+	_gret := _info.InvokeRecordMethod("new_from_ppd", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(ppdName)
 	runtime.KeepAlive(ppdDisplayName)
@@ -224,7 +234,7 @@ func NewPaperSizeFromPPD(ppdName string, ppdDisplayName string, width float64, h
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "PaperSize").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "PaperSize").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -243,7 +253,9 @@ func (other *PaperSize) Copy() *PaperSize {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PaperSize")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(other)
 
@@ -255,7 +267,7 @@ func (other *PaperSize) Copy() *PaperSize {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "PaperSize").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "PaperSize").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -274,7 +286,9 @@ func (size *PaperSize) DisplayName() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PaperSize")
+	_gret := _info.InvokeRecordMethod("get_display_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(size)
 
@@ -296,7 +310,9 @@ func (size *PaperSize) Name() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PaperSize")
+	_gret := _info.InvokeRecordMethod("get_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(size)
 
@@ -318,7 +334,9 @@ func (size *PaperSize) PPDName() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PaperSize")
+	_gret := _info.InvokeRecordMethod("get_ppd_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(size)
 
@@ -340,7 +358,9 @@ func (size *PaperSize) IsCustom() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PaperSize")
+	_gret := _info.InvokeRecordMethod("is_custom", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(size)
 
@@ -369,7 +389,9 @@ func (size1 *PaperSize) IsEqual(size2 *PaperSize) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size1)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size2)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PaperSize")
+	_gret := _info.InvokeRecordMethod("is_equal", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(size1)
 	runtime.KeepAlive(size2)
@@ -394,7 +416,9 @@ func (size *PaperSize) IsIPP() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PaperSize")
+	_gret := _info.InvokeRecordMethod("is_ipp", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(size)
 
@@ -418,7 +442,9 @@ func (paperSize *PaperSize) ToGVariant() *glib.Variant {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(paperSize)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PaperSize")
+	_gret := _info.InvokeRecordMethod("to_gvariant", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(paperSize)
 
@@ -451,6 +477,9 @@ func (size *PaperSize) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(groupName)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
+	_info := girepository.MustFind("Gtk", "PaperSize")
+	_info.InvokeRecordMethod("to_key_file", _args[:], nil)
+
 	runtime.KeepAlive(size)
 	runtime.KeepAlive(keyFile)
 	runtime.KeepAlive(groupName)
@@ -465,8 +494,9 @@ func (size *PaperSize) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 //      should not be modified.
 //
 func PaperSizeGetDefault() string {
-	_gret := girepository.MustFind("Gtk", "get_default").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "get_default")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _utf8 string // out
 
@@ -493,8 +523,9 @@ func PaperSizeGetPaperSizes(includeCustom bool) []*PaperSize {
 		*(*C.gboolean)(unsafe.Pointer(&_args[0])) = C.TRUE
 	}
 
-	_gret := girepository.MustFind("Gtk", "get_paper_sizes").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "get_paper_sizes")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(includeCustom)
 
@@ -510,7 +541,7 @@ func PaperSizeGetPaperSizes(includeCustom bool) []*PaperSize {
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Gtk", "PaperSize").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Gtk", "PaperSize").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)

@@ -15,8 +15,6 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GObject* _gotk4_gtk4_BuildableIface_get_internal_child(void*, void*, void*);
-// extern char* _gotk4_gtk4_BuildableIface_get_id(void*);
 // extern gboolean _gotk4_gtk4_BuildableIface_custom_tag_start(void*, void*, void*, void*, void*, void*);
 // extern void _gotk4_gtk4_BuildableIface_add_child(void*, void*, void*, void*);
 // extern void _gotk4_gtk4_BuildableIface_custom_finished(void*, void*, void*, void*, gpointer);
@@ -24,6 +22,8 @@ import (
 // extern void _gotk4_gtk4_BuildableIface_parser_finished(void*, void*);
 // extern void _gotk4_gtk4_BuildableIface_set_buildable_property(void*, void*, void*, void*);
 // extern void _gotk4_gtk4_BuildableIface_set_id(void*, void*);
+// extern void* _gotk4_gtk4_BuildableIface_get_id(void*);
+// extern void* _gotk4_gtk4_BuildableIface_get_internal_child(void*, void*, void*);
 import "C"
 
 // GTypeBuildable returns the GType for the type Buildable.
@@ -253,7 +253,7 @@ func _gotk4_gtk4_BuildableIface_custom_tag_start(arg0 *C.void, arg1 *C.void, arg
 }
 
 //export _gotk4_gtk4_BuildableIface_get_id
-func _gotk4_gtk4_BuildableIface_get_id(arg0 *C.void) (cret *C.char) {
+func _gotk4_gtk4_BuildableIface_get_id(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(BuildableOverrider)
 
@@ -266,7 +266,7 @@ func _gotk4_gtk4_BuildableIface_get_id(arg0 *C.void) (cret *C.char) {
 }
 
 //export _gotk4_gtk4_BuildableIface_get_internal_child
-func _gotk4_gtk4_BuildableIface_get_internal_child(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret *C.GObject) {
+func _gotk4_gtk4_BuildableIface_get_internal_child(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(BuildableOverrider)
 
@@ -347,7 +347,9 @@ func (buildable *Buildable) BuildableID() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Buildable")
+	_gret := _info.InvokeIfaceMethod("get_buildable_id", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(buildable)
 

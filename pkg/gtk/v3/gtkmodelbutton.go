@@ -200,8 +200,9 @@ func marshalModelButton(p uintptr) (interface{}, error) {
 //    - modelButton: newly created ModelButton widget.
 //
 func NewModelButton() *ModelButton {
-	_gret := girepository.MustFind("Gtk", "ModelButton").InvokeMethod("new_ModelButton", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ModelButton")
+	_gret := _info.InvokeClassMethod("new_ModelButton", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _modelButton *ModelButton // out
 

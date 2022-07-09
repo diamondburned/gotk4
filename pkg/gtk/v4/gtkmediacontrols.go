@@ -95,8 +95,9 @@ func NewMediaControls(stream MediaStreamer) *MediaControls {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "MediaControls").InvokeMethod("new_MediaControls", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MediaControls")
+	_gret := _info.InvokeClassMethod("new_MediaControls", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 
@@ -118,8 +119,9 @@ func (controls *MediaControls) MediaStream() MediaStreamer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(controls).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MediaControls").InvokeMethod("get_media_stream", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MediaControls")
+	_gret := _info.InvokeClassMethod("get_media_stream", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(controls)
 
@@ -159,7 +161,8 @@ func (controls *MediaControls) SetMediaStream(stream MediaStreamer) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	}
 
-	girepository.MustFind("Gtk", "MediaControls").InvokeMethod("set_media_stream", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MediaControls")
+	_info.InvokeClassMethod("set_media_stream", _args[:], nil)
 
 	runtime.KeepAlive(controls)
 	runtime.KeepAlive(stream)

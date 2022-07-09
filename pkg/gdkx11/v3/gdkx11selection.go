@@ -28,7 +28,8 @@ func X11FreeCompoundText(ctext *byte) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(ctext))
 
-	girepository.MustFind("GdkX11", "x11_free_compound_text").Invoke(_args[:], nil)
+	_info := girepository.MustFind("GdkX11", "x11_free_compound_text")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(ctext)
 }

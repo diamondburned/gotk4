@@ -250,7 +250,7 @@ func (f *GoFileGenerator) Generate() ([]byte, error) {
 		namespace := f.Namespace().Namespace
 
 		fpen.Words("func init() {")
-		fpen.Linef("  girepository.Require(%q, %q)", namespace.Name, namespace.Version)
+		fpen.Linef("  girepository.Require(%q, %q, girepository.LoadFlagLazy)", namespace.Name, namespace.Version)
 		fpen.Words("}")
 	}
 

@@ -135,8 +135,9 @@ func NewEditableLabel(str string) *EditableLabel {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "EditableLabel").InvokeMethod("new_EditableLabel", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EditableLabel")
+	_gret := _info.InvokeClassMethod("new_EditableLabel", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
 
@@ -158,8 +159,9 @@ func (self *EditableLabel) Editing() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EditableLabel").InvokeMethod("get_editing", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EditableLabel")
+	_gret := _info.InvokeClassMethod("get_editing", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -178,7 +180,8 @@ func (self *EditableLabel) StartEditing() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	girepository.MustFind("Gtk", "EditableLabel").InvokeMethod("start_editing", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "EditableLabel")
+	_info.InvokeClassMethod("start_editing", _args[:], nil)
 
 	runtime.KeepAlive(self)
 }
@@ -201,7 +204,8 @@ func (self *EditableLabel) StopEditing(commit bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "EditableLabel").InvokeMethod("stop_editing", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "EditableLabel")
+	_info.InvokeClassMethod("stop_editing", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(commit)

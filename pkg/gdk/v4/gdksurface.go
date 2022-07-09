@@ -272,8 +272,9 @@ func NewSurfacePopup(parent Surfacer, autohide bool) *Surface {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	_gret := girepository.MustFind("Gdk", "Surface").InvokeMethod("new_Surface_popup", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Surface")
+	_gret := _info.InvokeClassMethod("new_Surface_popup", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(autohide)
@@ -300,8 +301,9 @@ func NewSurfaceToplevel(display *Display) *Surface {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Surface").InvokeMethod("new_Surface_toplevel", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Surface")
+	_gret := _info.InvokeClassMethod("new_Surface_toplevel", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)
 
@@ -321,7 +323,8 @@ func (surface *Surface) Beep() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	girepository.MustFind("Gdk", "Surface").InvokeMethod("beep", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Surface")
+	_info.InvokeClassMethod("beep", _args[:], nil)
 
 	runtime.KeepAlive(surface)
 }
@@ -337,8 +340,9 @@ func (surface *Surface) CreateCairoContext() CairoContexter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Surface").InvokeMethod("create_cairo_context", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Surface")
+	_gret := _info.InvokeClassMethod("create_cairo_context", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 
@@ -381,8 +385,9 @@ func (surface *Surface) CreateGLContext() (GLContexter, error) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Surface").InvokeMethod("create_gl_context", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Surface")
+	_gret := _info.InvokeClassMethod("create_gl_context", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 
@@ -426,8 +431,9 @@ func (surface *Surface) CreateVulkanContext() (VulkanContexter, error) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Surface").InvokeMethod("create_vulkan_context", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Surface")
+	_gret := _info.InvokeClassMethod("create_vulkan_context", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 
@@ -471,7 +477,8 @@ func (surface *Surface) Destroy() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	girepository.MustFind("Gdk", "Surface").InvokeMethod("destroy", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Surface")
+	_info.InvokeClassMethod("destroy", _args[:], nil)
 
 	runtime.KeepAlive(surface)
 }
@@ -493,8 +500,9 @@ func (surface *Surface) Cursor() *Cursor {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Surface").InvokeMethod("get_cursor", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Surface")
+	_gret := _info.InvokeClassMethod("get_cursor", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 
@@ -529,8 +537,9 @@ func (surface *Surface) DeviceCursor(device Devicer) *Cursor {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Surface").InvokeMethod("get_device_cursor", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Surface")
+	_gret := _info.InvokeClassMethod("get_device_cursor", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(device)
@@ -567,8 +576,9 @@ func (surface *Surface) DevicePosition(device Devicer) (x, y float64, mask Modif
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Surface").InvokeMethod("get_device_position", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Surface")
+	_gret := _info.InvokeClassMethod("get_device_position", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(device)
@@ -605,8 +615,9 @@ func (surface *Surface) Display() *Display {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Surface").InvokeMethod("get_display", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Surface")
+	_gret := _info.InvokeClassMethod("get_display", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 
@@ -631,8 +642,9 @@ func (surface *Surface) FrameClock() FrameClocker {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Surface").InvokeMethod("get_frame_clock", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Surface")
+	_gret := _info.InvokeClassMethod("get_frame_clock", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 
@@ -673,8 +685,9 @@ func (surface *Surface) Height() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Surface").InvokeMethod("get_height", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Surface")
+	_gret := _info.InvokeClassMethod("get_height", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 
@@ -698,8 +711,9 @@ func (surface *Surface) Mapped() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Surface").InvokeMethod("get_mapped", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Surface")
+	_gret := _info.InvokeClassMethod("get_mapped", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 
@@ -733,8 +747,9 @@ func (surface *Surface) ScaleFactor() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Surface").InvokeMethod("get_scale_factor", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Surface")
+	_gret := _info.InvokeClassMethod("get_scale_factor", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 
@@ -759,8 +774,9 @@ func (surface *Surface) Width() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Surface").InvokeMethod("get_width", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Surface")
+	_gret := _info.InvokeClassMethod("get_width", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 
@@ -781,7 +797,8 @@ func (surface *Surface) Hide() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	girepository.MustFind("Gdk", "Surface").InvokeMethod("hide", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Surface")
+	_info.InvokeClassMethod("hide", _args[:], nil)
 
 	runtime.KeepAlive(surface)
 }
@@ -797,8 +814,9 @@ func (surface *Surface) IsDestroyed() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Surface").InvokeMethod("is_destroyed", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Surface")
+	_gret := _info.InvokeClassMethod("is_destroyed", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 
@@ -821,7 +839,8 @@ func (surface *Surface) QueueRender() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	girepository.MustFind("Gdk", "Surface").InvokeMethod("queue_render", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Surface")
+	_info.InvokeClassMethod("queue_render", _args[:], nil)
 
 	runtime.KeepAlive(surface)
 }
@@ -834,7 +853,8 @@ func (surface *Surface) RequestLayout() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	girepository.MustFind("Gdk", "Surface").InvokeMethod("request_layout", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Surface")
+	_info.InvokeClassMethod("request_layout", _args[:], nil)
 
 	runtime.KeepAlive(surface)
 }
@@ -860,7 +880,8 @@ func (surface *Surface) SetCursor(cursor *Cursor) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 	}
 
-	girepository.MustFind("Gdk", "Surface").InvokeMethod("set_cursor", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Surface")
+	_info.InvokeClassMethod("set_cursor", _args[:], nil)
 
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(cursor)
@@ -887,7 +908,8 @@ func (surface *Surface) SetDeviceCursor(device Devicer, cursor *Cursor) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
-	girepository.MustFind("Gdk", "Surface").InvokeMethod("set_device_cursor", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Surface")
+	_info.InvokeClassMethod("set_device_cursor", _args[:], nil)
 
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(device)
@@ -918,7 +940,8 @@ func (surface *Surface) SetInputRegion(region *cairo.Region) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(region.Native()))
 
-	girepository.MustFind("Gdk", "Surface").InvokeMethod("set_input_region", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Surface")
+	_info.InvokeClassMethod("set_input_region", _args[:], nil)
 
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(region)
@@ -951,7 +974,8 @@ func (surface *Surface) SetOpaqueRegion(region *cairo.Region) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(region.Native()))
 	}
 
-	girepository.MustFind("Gdk", "Surface").InvokeMethod("set_opaque_region", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Surface")
+	_info.InvokeClassMethod("set_opaque_region", _args[:], nil)
 
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(region)

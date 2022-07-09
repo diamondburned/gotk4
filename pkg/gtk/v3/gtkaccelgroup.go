@@ -109,8 +109,9 @@ func AccelGroupsFromObject(object *coreglib.Object) []*AccelGroup {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(object.Native()))
 
-	_gret := girepository.MustFind("Gtk", "accel_groups_from_object").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "accel_groups_from_object")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(object)
 
@@ -157,7 +158,8 @@ func AcceleratorParse(accelerator string) (uint32, gdk.ModifierType) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(accelerator)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	girepository.MustFind("Gtk", "accelerator_parse").Invoke(_args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "accelerator_parse")
+	_info.Invoke(_args[:], _outs[:])
 
 	runtime.KeepAlive(accelerator)
 
@@ -208,7 +210,8 @@ func AcceleratorParseWithKeycode(accelerator string) (uint32, []uint32, gdk.Modi
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(accelerator)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	girepository.MustFind("Gtk", "accelerator_parse_with_keycode").Invoke(_args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "accelerator_parse_with_keycode")
+	_info.Invoke(_args[:], _outs[:])
 
 	runtime.KeepAlive(accelerator)
 
@@ -293,8 +296,9 @@ func marshalAccelGroup(p uintptr) (interface{}, error) {
 //    - accelGroup: new AccelGroup object.
 //
 func NewAccelGroup() *AccelGroup {
-	_gret := girepository.MustFind("Gtk", "AccelGroup").InvokeMethod("new_AccelGroup", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AccelGroup")
+	_gret := _info.InvokeClassMethod("new_AccelGroup", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _accelGroup *AccelGroup // out
 
@@ -329,7 +333,8 @@ func (accelGroup *AccelGroup) ConnectByPath(accelPath string, closure coreglib.A
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(accelGroup), closure))
 
-	girepository.MustFind("Gtk", "AccelGroup").InvokeMethod("connect_by_path", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AccelGroup")
+	_info.InvokeClassMethod("connect_by_path", _args[:], nil)
 
 	runtime.KeepAlive(accelGroup)
 	runtime.KeepAlive(accelPath)
@@ -356,8 +361,9 @@ func (accelGroup *AccelGroup) Disconnect(closure coreglib.AnyClosure) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(accelGroup), closure))
 
-	_gret := girepository.MustFind("Gtk", "AccelGroup").InvokeMethod("disconnect", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AccelGroup")
+	_gret := _info.InvokeClassMethod("disconnect", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(accelGroup)
 	runtime.KeepAlive(closure)
@@ -384,8 +390,9 @@ func (accelGroup *AccelGroup) IsLocked() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AccelGroup").InvokeMethod("get_is_locked", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AccelGroup")
+	_gret := _info.InvokeClassMethod("get_is_locked", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(accelGroup)
 
@@ -411,7 +418,8 @@ func (accelGroup *AccelGroup) Lock() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
 
-	girepository.MustFind("Gtk", "AccelGroup").InvokeMethod("lock", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AccelGroup")
+	_info.InvokeClassMethod("lock", _args[:], nil)
 
 	runtime.KeepAlive(accelGroup)
 }
@@ -422,7 +430,8 @@ func (accelGroup *AccelGroup) Unlock() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
 
-	girepository.MustFind("Gtk", "AccelGroup").InvokeMethod("unlock", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AccelGroup")
+	_info.InvokeClassMethod("unlock", _args[:], nil)
 
 	runtime.KeepAlive(accelGroup)
 }

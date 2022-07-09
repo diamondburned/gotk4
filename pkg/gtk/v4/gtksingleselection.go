@@ -91,8 +91,9 @@ func NewSingleSelection(model gio.ListModeller) *SingleSelection {
 		C.g_object_ref(C.gpointer(coreglib.InternObject(model).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "SingleSelection").InvokeMethod("new_SingleSelection", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SingleSelection")
+	_gret := _info.InvokeClassMethod("new_SingleSelection", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
 
@@ -115,8 +116,9 @@ func (self *SingleSelection) Autoselect() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "SingleSelection").InvokeMethod("get_autoselect", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SingleSelection")
+	_gret := _info.InvokeClassMethod("get_autoselect", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -141,8 +143,9 @@ func (self *SingleSelection) CanUnselect() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "SingleSelection").InvokeMethod("get_can_unselect", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SingleSelection")
+	_gret := _info.InvokeClassMethod("get_can_unselect", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -166,8 +169,9 @@ func (self *SingleSelection) Model() *gio.ListModel {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "SingleSelection").InvokeMethod("get_model", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SingleSelection")
+	_gret := _info.InvokeClassMethod("get_model", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -196,8 +200,9 @@ func (self *SingleSelection) Selected() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "SingleSelection").InvokeMethod("get_selected", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SingleSelection")
+	_gret := _info.InvokeClassMethod("get_selected", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -221,8 +226,9 @@ func (self *SingleSelection) SelectedItem() *coreglib.Object {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "SingleSelection").InvokeMethod("get_selected_item", _args[:], nil)
-	_cret = *(*C.gpointer)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SingleSelection")
+	_gret := _info.InvokeClassMethod("get_selected_item", _args[:], nil)
+	_cret := *(*C.gpointer)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -251,7 +257,8 @@ func (self *SingleSelection) SetAutoselect(autoselect bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "SingleSelection").InvokeMethod("set_autoselect", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "SingleSelection")
+	_info.InvokeClassMethod("set_autoselect", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(autoselect)
@@ -276,7 +283,8 @@ func (self *SingleSelection) SetCanUnselect(canUnselect bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "SingleSelection").InvokeMethod("set_can_unselect", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "SingleSelection")
+	_info.InvokeClassMethod("set_can_unselect", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(canUnselect)
@@ -298,7 +306,8 @@ func (self *SingleSelection) SetModel(model gio.ListModeller) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
 
-	girepository.MustFind("Gtk", "SingleSelection").InvokeMethod("set_model", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "SingleSelection")
+	_info.InvokeClassMethod("set_model", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)
@@ -322,7 +331,8 @@ func (self *SingleSelection) SetSelected(position uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
 
-	girepository.MustFind("Gtk", "SingleSelection").InvokeMethod("set_selected", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "SingleSelection")
+	_info.InvokeClassMethod("set_selected", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)

@@ -17,14 +17,15 @@ import (
 import "C"
 
 func init() {
-	girepository.Require("Gio", "2.0")
+	girepository.Require("Gio", "2.0", girepository.LoadFlagLazy)
 }
 
 // The function returns the following values:
 //
 func DBusErrorQuark() glib.Quark {
-	_gret := girepository.MustFind("Gio", "quark").Invoke(nil, nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "quark")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 

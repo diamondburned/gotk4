@@ -82,8 +82,9 @@ func marshalSocketClient(p uintptr) (interface{}, error) {
 //    - socketClient: Client. Free the returned object with g_object_unref().
 //
 func NewSocketClient() *SocketClient {
-	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("new_SocketClient", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_gret := _info.InvokeClassMethod("new_SocketClient", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _socketClient *SocketClient // out
 
@@ -121,7 +122,8 @@ func (client *SocketClient) AddApplicationProxy(protocol string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(protocol)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gio", "SocketClient").InvokeMethod("add_application_proxy", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_info.InvokeClassMethod("add_application_proxy", _args[:], nil)
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(protocol)
@@ -167,8 +169,9 @@ func (client *SocketClient) ConnectSocketClient(ctx context.Context, connectable
 	}
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
 
-	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_gret := _info.InvokeClassMethod("connect", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(ctx)
@@ -219,7 +222,8 @@ func (client *SocketClient) ConnectAsync(ctx context.Context, connectable Socket
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect_async", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_info.InvokeClassMethod("connect_async", _args[:], nil)
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(ctx)
@@ -244,8 +248,9 @@ func (client *SocketClient) ConnectFinish(result AsyncResulter) (*SocketConnecti
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect_finish", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_gret := _info.InvokeClassMethod("connect_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(result)
@@ -314,8 +319,9 @@ func (client *SocketClient) ConnectToHost(ctx context.Context, hostAndPort strin
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(*C.guint16)(unsafe.Pointer(&_args[2])) = C.guint16(defaultPort)
 
-	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect_to_host", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_gret := _info.InvokeClassMethod("connect_to_host", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(ctx)
@@ -363,7 +369,8 @@ func (client *SocketClient) ConnectToHostAsync(ctx context.Context, hostAndPort 
 		_args[5] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect_to_host_async", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_info.InvokeClassMethod("connect_to_host_async", _args[:], nil)
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(ctx)
@@ -389,8 +396,9 @@ func (client *SocketClient) ConnectToHostFinish(result AsyncResulter) (*SocketCo
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect_to_host_finish", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_gret := _info.InvokeClassMethod("connect_to_host_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(result)
@@ -444,8 +452,9 @@ func (client *SocketClient) ConnectToService(ctx context.Context, domain, servic
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(service)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect_to_service", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_gret := _info.InvokeClassMethod("connect_to_service", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(ctx)
@@ -491,7 +500,8 @@ func (client *SocketClient) ConnectToServiceAsync(ctx context.Context, domain, s
 		_args[5] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect_to_service_async", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_info.InvokeClassMethod("connect_to_service_async", _args[:], nil)
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(ctx)
@@ -517,8 +527,9 @@ func (client *SocketClient) ConnectToServiceFinish(result AsyncResulter) (*Socke
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect_to_service_finish", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_gret := _info.InvokeClassMethod("connect_to_service_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(result)
@@ -577,8 +588,9 @@ func (client *SocketClient) ConnectToURI(ctx context.Context, uri string, defaul
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(*C.guint16)(unsafe.Pointer(&_args[2])) = C.guint16(defaultPort)
 
-	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect_to_uri", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_gret := _info.InvokeClassMethod("connect_to_uri", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(ctx)
@@ -626,7 +638,8 @@ func (client *SocketClient) ConnectToURIAsync(ctx context.Context, uri string, d
 		_args[5] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect_to_uri_async", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_info.InvokeClassMethod("connect_to_uri_async", _args[:], nil)
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(ctx)
@@ -652,8 +665,9 @@ func (client *SocketClient) ConnectToURIFinish(result AsyncResulter) (*SocketCon
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("connect_to_uri_finish", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_gret := _info.InvokeClassMethod("connect_to_uri_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(result)
@@ -681,8 +695,9 @@ func (client *SocketClient) EnableProxy() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 
-	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("get_enable_proxy", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_gret := _info.InvokeClassMethod("get_enable_proxy", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(client)
 
@@ -708,8 +723,9 @@ func (client *SocketClient) LocalAddress() SocketAddresser {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 
-	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("get_local_address", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_gret := _info.InvokeClassMethod("get_local_address", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(client)
 
@@ -748,8 +764,9 @@ func (client *SocketClient) ProxyResolver() *ProxyResolver {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 
-	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("get_proxy_resolver", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_gret := _info.InvokeClassMethod("get_proxy_resolver", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(client)
 
@@ -773,8 +790,9 @@ func (client *SocketClient) Timeout() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 
-	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("get_timeout", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_gret := _info.InvokeClassMethod("get_timeout", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(client)
 
@@ -797,8 +815,9 @@ func (client *SocketClient) TLS() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 
-	_gret := girepository.MustFind("Gio", "SocketClient").InvokeMethod("get_tls", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_gret := _info.InvokeClassMethod("get_tls", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(client)
 
@@ -830,7 +849,8 @@ func (client *SocketClient) SetEnableProxy(enable bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "SocketClient").InvokeMethod("set_enable_proxy", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_info.InvokeClassMethod("set_enable_proxy", _args[:], nil)
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(enable)
@@ -855,7 +875,8 @@ func (client *SocketClient) SetLocalAddress(address SocketAddresser) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 	}
 
-	girepository.MustFind("Gio", "SocketClient").InvokeMethod("set_local_address", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_info.InvokeClassMethod("set_local_address", _args[:], nil)
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(address)
@@ -881,7 +902,8 @@ func (client *SocketClient) SetProxyResolver(proxyResolver ProxyResolverer) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxyResolver).Native()))
 	}
 
-	girepository.MustFind("Gio", "SocketClient").InvokeMethod("set_proxy_resolver", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_info.InvokeClassMethod("set_proxy_resolver", _args[:], nil)
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(proxyResolver)
@@ -904,7 +926,8 @@ func (client *SocketClient) SetTimeout(timeout uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(client).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(timeout)
 
-	girepository.MustFind("Gio", "SocketClient").InvokeMethod("set_timeout", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_info.InvokeClassMethod("set_timeout", _args[:], nil)
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(timeout)
@@ -939,7 +962,8 @@ func (client *SocketClient) SetTLS(tls bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "SocketClient").InvokeMethod("set_tls", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SocketClient")
+	_info.InvokeClassMethod("set_tls", _args[:], nil)
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(tls)

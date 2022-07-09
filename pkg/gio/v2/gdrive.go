@@ -19,12 +19,6 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GIcon* _gotk4_gio2_DriveIface_get_icon(void*);
-// extern GIcon* _gotk4_gio2_DriveIface_get_symbolic_icon(void*);
-// extern GList* _gotk4_gio2_DriveIface_get_volumes(void*);
-// extern char* _gotk4_gio2_DriveIface_get_identifier(void*, void*);
-// extern char* _gotk4_gio2_DriveIface_get_name(void*);
-// extern char** _gotk4_gio2_DriveIface_enumerate_identifiers(void*);
 // extern gboolean _gotk4_gio2_DriveIface_can_eject(void*);
 // extern gboolean _gotk4_gio2_DriveIface_can_poll_for_media(void*);
 // extern gboolean _gotk4_gio2_DriveIface_can_start(void*);
@@ -40,7 +34,6 @@ import (
 // extern gboolean _gotk4_gio2_DriveIface_poll_for_media_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_DriveIface_start_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_DriveIface_stop_finish(void*, void*, GError**);
-// extern gchar* _gotk4_gio2_DriveIface_get_sort_key(void*);
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 // extern void _gotk4_gio2_DriveIface_changed(void*);
 // extern void _gotk4_gio2_DriveIface_disconnected(void*);
@@ -50,6 +43,13 @@ import (
 // extern void _gotk4_gio2_Drive_ConnectDisconnected(gpointer, guintptr);
 // extern void _gotk4_gio2_Drive_ConnectEjectButton(gpointer, guintptr);
 // extern void _gotk4_gio2_Drive_ConnectStopButton(gpointer, guintptr);
+// extern void* _gotk4_gio2_DriveIface_get_icon(void*);
+// extern void* _gotk4_gio2_DriveIface_get_identifier(void*, void*);
+// extern void* _gotk4_gio2_DriveIface_get_name(void*);
+// extern void* _gotk4_gio2_DriveIface_get_sort_key(void*);
+// extern void* _gotk4_gio2_DriveIface_get_symbolic_icon(void*);
+// extern void* _gotk4_gio2_DriveIface_get_volumes(void*);
+// extern void** _gotk4_gio2_DriveIface_enumerate_identifiers(void*);
 import "C"
 
 // GTypeDrive returns the GType for the type Drive.
@@ -282,7 +282,9 @@ func (drive *Drive) CanEject() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Drive")
+	_gret := _info.InvokeIfaceMethod("can_eject", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drive)
 
@@ -306,7 +308,9 @@ func (drive *Drive) CanPollForMedia() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Drive")
+	_gret := _info.InvokeIfaceMethod("can_poll_for_media", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drive)
 
@@ -330,7 +334,9 @@ func (drive *Drive) CanStart() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Drive")
+	_gret := _info.InvokeIfaceMethod("can_start", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drive)
 
@@ -354,7 +360,9 @@ func (drive *Drive) CanStartDegraded() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Drive")
+	_gret := _info.InvokeIfaceMethod("can_start_degraded", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drive)
 
@@ -378,7 +386,9 @@ func (drive *Drive) CanStop() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Drive")
+	_gret := _info.InvokeIfaceMethod("can_stop", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drive)
 
@@ -404,6 +414,9 @@ func (drive *Drive) EjectFinish(result AsyncResulter) error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	_info := girepository.MustFind("Gio", "Drive")
+	_info.InvokeIfaceMethod("eject_finish", _args[:], nil)
 
 	runtime.KeepAlive(drive)
 	runtime.KeepAlive(result)
@@ -431,6 +444,9 @@ func (drive *Drive) EjectWithOperationFinish(result AsyncResulter) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
+	_info := girepository.MustFind("Gio", "Drive")
+	_info.InvokeIfaceMethod("eject_with_operation_finish", _args[:], nil)
+
 	runtime.KeepAlive(drive)
 	runtime.KeepAlive(result)
 
@@ -456,7 +472,9 @@ func (drive *Drive) EnumerateIdentifiers() []string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_cret = *(***C.char)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Drive")
+	_gret := _info.InvokeIfaceMethod("enumerate_identifiers", _args[:], nil)
+	_cret := *(***C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drive)
 
@@ -492,7 +510,9 @@ func (drive *Drive) Icon() *Icon {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Drive")
+	_gret := _info.InvokeIfaceMethod("get_icon", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drive)
 
@@ -522,7 +542,9 @@ func (drive *Drive) Identifier(kind string) string {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(kind)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Drive")
+	_gret := _info.InvokeIfaceMethod("get_identifier", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drive)
 	runtime.KeepAlive(kind)
@@ -549,7 +571,9 @@ func (drive *Drive) Name() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Drive")
+	_gret := _info.InvokeIfaceMethod("get_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drive)
 
@@ -573,7 +597,9 @@ func (drive *Drive) SortKey() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Drive")
+	_gret := _info.InvokeIfaceMethod("get_sort_key", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drive)
 
@@ -598,7 +624,9 @@ func (drive *Drive) SymbolicIcon() *Icon {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Drive")
+	_gret := _info.InvokeIfaceMethod("get_symbolic_icon", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drive)
 
@@ -623,7 +651,9 @@ func (drive *Drive) Volumes() []*Volume {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Drive")
+	_gret := _info.InvokeIfaceMethod("get_volumes", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drive)
 
@@ -653,7 +683,9 @@ func (drive *Drive) HasMedia() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Drive")
+	_gret := _info.InvokeIfaceMethod("has_media", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drive)
 
@@ -677,7 +709,9 @@ func (drive *Drive) HasVolumes() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Drive")
+	_gret := _info.InvokeIfaceMethod("has_volumes", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drive)
 
@@ -703,7 +737,9 @@ func (drive *Drive) IsMediaCheckAutomatic() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Drive")
+	_gret := _info.InvokeIfaceMethod("is_media_check_automatic", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drive)
 
@@ -727,7 +763,9 @@ func (drive *Drive) IsMediaRemovable() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Drive")
+	_gret := _info.InvokeIfaceMethod("is_media_removable", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drive)
 
@@ -753,7 +791,9 @@ func (drive *Drive) IsRemovable() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Drive")
+	_gret := _info.InvokeIfaceMethod("is_removable", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drive)
 
@@ -791,6 +831,9 @@ func (drive *Drive) PollForMedia(ctx context.Context, callback AsyncReadyCallbac
 		_args[3] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "Drive")
+	_info.InvokeIfaceMethod("poll_for_media", _args[:], nil)
+
 	runtime.KeepAlive(drive)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(callback)
@@ -808,6 +851,9 @@ func (drive *Drive) PollForMediaFinish(result AsyncResulter) error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	_info := girepository.MustFind("Gio", "Drive")
+	_info.InvokeIfaceMethod("poll_for_media_finish", _args[:], nil)
 
 	runtime.KeepAlive(drive)
 	runtime.KeepAlive(result)
@@ -833,6 +879,9 @@ func (drive *Drive) StartFinish(result AsyncResulter) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
+	_info := girepository.MustFind("Gio", "Drive")
+	_info.InvokeIfaceMethod("start_finish", _args[:], nil)
+
 	runtime.KeepAlive(drive)
 	runtime.KeepAlive(result)
 
@@ -856,6 +905,9 @@ func (drive *Drive) StopFinish(result AsyncResulter) error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	_info := girepository.MustFind("Gio", "Drive")
+	_info.InvokeIfaceMethod("stop_finish", _args[:], nil)
 
 	runtime.KeepAlive(drive)
 	runtime.KeepAlive(result)

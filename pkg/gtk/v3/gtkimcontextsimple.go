@@ -87,8 +87,9 @@ func marshalIMContextSimple(p uintptr) (interface{}, error) {
 //    - imContextSimple: new IMContextSimple.
 //
 func NewIMContextSimple() *IMContextSimple {
-	_gret := girepository.MustFind("Gtk", "IMContextSimple").InvokeMethod("new_IMContextSimple", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "IMContextSimple")
+	_gret := _info.InvokeClassMethod("new_IMContextSimple", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _imContextSimple *IMContextSimple // out
 
@@ -110,7 +111,8 @@ func (contextSimple *IMContextSimple) AddComposeFile(composeFile string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(composeFile)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "IMContextSimple").InvokeMethod("add_compose_file", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "IMContextSimple")
+	_info.InvokeClassMethod("add_compose_file", _args[:], nil)
 
 	runtime.KeepAlive(contextSimple)
 	runtime.KeepAlive(composeFile)

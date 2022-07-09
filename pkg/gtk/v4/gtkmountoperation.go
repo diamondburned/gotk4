@@ -91,8 +91,9 @@ func NewMountOperation(parent *Window) *MountOperation {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "MountOperation").InvokeMethod("new_MountOperation", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MountOperation")
+	_gret := _info.InvokeClassMethod("new_MountOperation", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(parent)
 
@@ -115,8 +116,9 @@ func (op *MountOperation) Display() *gdk.Display {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MountOperation").InvokeMethod("get_display", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MountOperation")
+	_gret := _info.InvokeClassMethod("get_display", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(op)
 
@@ -143,8 +145,9 @@ func (op *MountOperation) Parent() *Window {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MountOperation").InvokeMethod("get_parent", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MountOperation")
+	_gret := _info.InvokeClassMethod("get_parent", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(op)
 
@@ -167,8 +170,9 @@ func (op *MountOperation) IsShowing() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MountOperation").InvokeMethod("is_showing", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MountOperation")
+	_gret := _info.InvokeClassMethod("is_showing", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(op)
 
@@ -193,7 +197,8 @@ func (op *MountOperation) SetDisplay(display *gdk.Display) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	girepository.MustFind("Gtk", "MountOperation").InvokeMethod("set_display", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MountOperation")
+	_info.InvokeClassMethod("set_display", _args[:], nil)
 
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(display)
@@ -214,7 +219,8 @@ func (op *MountOperation) SetParent(parent *Window) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
 
-	girepository.MustFind("Gtk", "MountOperation").InvokeMethod("set_parent", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MountOperation")
+	_info.InvokeClassMethod("set_parent", _args[:], nil)
 
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(parent)

@@ -16,8 +16,6 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GList* _gotk4_gtk3_CellLayoutIface_get_cells(void*);
-// extern GtkCellArea* _gotk4_gtk3_CellLayoutIface_get_area(void*);
 // extern void _gotk4_gtk3_CellLayoutDataFunc(void*, void*, void*, void*, gpointer);
 // extern void _gotk4_gtk3_CellLayoutIface_add_attribute(void*, void*, void*, gint);
 // extern void _gotk4_gtk3_CellLayoutIface_clear(void*);
@@ -26,6 +24,8 @@ import (
 // extern void _gotk4_gtk3_CellLayoutIface_pack_start(void*, void*, gboolean);
 // extern void _gotk4_gtk3_CellLayoutIface_reorder(void*, void*, gint);
 // extern void callbackDelete(gpointer);
+// extern void* _gotk4_gtk3_CellLayoutIface_get_area(void*);
+// extern void* _gotk4_gtk3_CellLayoutIface_get_cells(void*);
 import "C"
 
 // GTypeCellLayout returns the GType for the type CellLayout.
@@ -274,6 +274,9 @@ func (cellLayout *CellLayout) AddAttribute(cell CellRendererer, attribute string
 	defer C.free(unsafe.Pointer(_args[2]))
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(column)
 
+	_info := girepository.MustFind("Gtk", "CellLayout")
+	_info.InvokeIfaceMethod("add_attribute", _args[:], nil)
+
 	runtime.KeepAlive(cellLayout)
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(attribute)
@@ -286,6 +289,9 @@ func (cellLayout *CellLayout) Clear() {
 	var _args [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+
+	_info := girepository.MustFind("Gtk", "CellLayout")
+	_info.InvokeIfaceMethod("clear", _args[:], nil)
 
 	runtime.KeepAlive(cellLayout)
 }
@@ -302,6 +308,9 @@ func (cellLayout *CellLayout) ClearAttributes(cell CellRendererer) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	_info := girepository.MustFind("Gtk", "CellLayout")
+	_info.InvokeIfaceMethod("clear_attributes", _args[:], nil)
 
 	runtime.KeepAlive(cellLayout)
 	runtime.KeepAlive(cell)
@@ -320,7 +329,9 @@ func (cellLayout *CellLayout) Area() CellAreaer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellLayout")
+	_gret := _info.InvokeIfaceMethod("get_area", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cellLayout)
 
@@ -359,7 +370,9 @@ func (cellLayout *CellLayout) Cells() []CellRendererer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellLayout")
+	_gret := _info.InvokeIfaceMethod("get_cells", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cellLayout)
 
@@ -412,6 +425,9 @@ func (cellLayout *CellLayout) PackEnd(cell CellRendererer, expand bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
+	_info := girepository.MustFind("Gtk", "CellLayout")
+	_info.InvokeIfaceMethod("pack_end", _args[:], nil)
+
 	runtime.KeepAlive(cellLayout)
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(expand)
@@ -437,6 +453,9 @@ func (cellLayout *CellLayout) PackStart(cell CellRendererer, expand bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
+	_info := girepository.MustFind("Gtk", "CellLayout")
+	_info.InvokeIfaceMethod("pack_start", _args[:], nil)
+
 	runtime.KeepAlive(cellLayout)
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(expand)
@@ -458,6 +477,9 @@ func (cellLayout *CellLayout) Reorder(cell CellRendererer, position int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(position)
+
+	_info := girepository.MustFind("Gtk", "CellLayout")
+	_info.InvokeIfaceMethod("reorder", _args[:], nil)
 
 	runtime.KeepAlive(cellLayout)
 	runtime.KeepAlive(cell)
@@ -487,6 +509,9 @@ func (cellLayout *CellLayout) SetCellDataFunc(cell CellRendererer, fn CellLayout
 		_args[3] = C.gpointer(gbox.Assign(fn))
 		_args[4] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
+
+	_info := girepository.MustFind("Gtk", "CellLayout")
+	_info.InvokeIfaceMethod("set_cell_data_func", _args[:], nil)
 
 	runtime.KeepAlive(cellLayout)
 	runtime.KeepAlive(cell)

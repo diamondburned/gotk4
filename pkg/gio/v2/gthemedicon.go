@@ -73,8 +73,9 @@ func NewThemedIcon(iconname string) *ThemedIcon {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(iconname)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "ThemedIcon").InvokeMethod("new_ThemedIcon", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ThemedIcon")
+	_gret := _info.InvokeClassMethod("new_ThemedIcon", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iconname)
 
@@ -109,8 +110,9 @@ func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
 		}
 	}
 
-	_gret := girepository.MustFind("Gio", "ThemedIcon").InvokeMethod("new_ThemedIcon_from_names", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ThemedIcon")
+	_gret := _info.InvokeClassMethod("new_ThemedIcon_from_names", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iconnames)
 
@@ -150,8 +152,9 @@ func NewThemedIconWithDefaultFallbacks(iconname string) *ThemedIcon {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(iconname)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "ThemedIcon").InvokeMethod("new_ThemedIcon_with_default_fallbacks", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ThemedIcon")
+	_gret := _info.InvokeClassMethod("new_ThemedIcon_with_default_fallbacks", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iconname)
 
@@ -178,7 +181,8 @@ func (icon *ThemedIcon) AppendName(iconname string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(iconname)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gio", "ThemedIcon").InvokeMethod("append_name", _args[:], nil)
+	_info := girepository.MustFind("Gio", "ThemedIcon")
+	_info.InvokeClassMethod("append_name", _args[:], nil)
 
 	runtime.KeepAlive(icon)
 	runtime.KeepAlive(iconname)
@@ -195,8 +199,9 @@ func (icon *ThemedIcon) Names() []string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 
-	_gret := girepository.MustFind("Gio", "ThemedIcon").InvokeMethod("get_names", _args[:], nil)
-	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ThemedIcon")
+	_gret := _info.InvokeClassMethod("get_names", _args[:], nil)
+	_cret := *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(icon)
 
@@ -235,7 +240,8 @@ func (icon *ThemedIcon) PrependName(iconname string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(iconname)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gio", "ThemedIcon").InvokeMethod("prepend_name", _args[:], nil)
+	_info := girepository.MustFind("Gio", "ThemedIcon")
+	_info.InvokeClassMethod("prepend_name", _args[:], nil)
 
 	runtime.KeepAlive(icon)
 	runtime.KeepAlive(iconname)

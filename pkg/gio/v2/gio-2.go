@@ -220,8 +220,9 @@ func GTypeTestDBus() coreglib.Type {
 //    - quark: #GQuark.
 //
 func ResolverErrorQuark() glib.Quark {
-	_gret := girepository.MustFind("Gio", "quark").Invoke(nil, nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "quark")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
@@ -237,8 +238,9 @@ func ResolverErrorQuark() glib.Quark {
 //    - quark: #GQuark.
 //
 func ResourceErrorQuark() glib.Quark {
-	_gret := girepository.MustFind("Gio", "quark").Invoke(nil, nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "quark")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
@@ -254,8 +256,9 @@ func ResourceErrorQuark() glib.Quark {
 //    - quark: #GQuark.
 //
 func TLSChannelBindingErrorQuark() glib.Quark {
-	_gret := girepository.MustFind("Gio", "quark").Invoke(nil, nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "quark")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
@@ -271,8 +274,9 @@ func TLSChannelBindingErrorQuark() glib.Quark {
 //    - quark: #GQuark.
 //
 func TLSErrorQuark() glib.Quark {
-	_gret := girepository.MustFind("Gio", "quark").Invoke(nil, nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "quark")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
@@ -288,8 +292,9 @@ func TLSErrorQuark() glib.Quark {
 //    - quark: #GQuark.
 //
 func IOErrorQuark() glib.Quark {
-	_gret := girepository.MustFind("Gio", "io_error_quark").Invoke(nil, nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "io_error_quark")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 

@@ -298,8 +298,9 @@ func (about *AboutDialog) ConnectActivateLink(f func(uri string) (ok bool)) core
 //    - aboutDialog: newly created AboutDialog.
 //
 func NewAboutDialog() *AboutDialog {
-	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("new_AboutDialog", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_gret := _info.InvokeClassMethod("new_AboutDialog", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _aboutDialog *AboutDialog // out
 
@@ -335,7 +336,8 @@ func (about *AboutDialog) AddCreditSection(sectionName string, people []string) 
 		}
 	}
 
-	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("add_credit_section", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_info.InvokeClassMethod("add_credit_section", _args[:], nil)
 
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(sectionName)
@@ -355,8 +357,9 @@ func (about *AboutDialog) Artists() []string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_artists", _args[:], nil)
-	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_gret := _info.InvokeClassMethod("get_artists", _args[:], nil)
+	_cret := *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(about)
 
@@ -392,8 +395,9 @@ func (about *AboutDialog) Authors() []string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_authors", _args[:], nil)
-	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_gret := _info.InvokeClassMethod("get_authors", _args[:], nil)
+	_cret := *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(about)
 
@@ -428,8 +432,9 @@ func (about *AboutDialog) Comments() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_comments", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_gret := _info.InvokeClassMethod("get_comments", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(about)
 
@@ -452,8 +457,9 @@ func (about *AboutDialog) Copyright() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_copyright", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_gret := _info.InvokeClassMethod("get_copyright", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(about)
 
@@ -477,8 +483,9 @@ func (about *AboutDialog) Documenters() []string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_documenters", _args[:], nil)
-	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_gret := _info.InvokeClassMethod("get_documenters", _args[:], nil)
+	_cret := *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(about)
 
@@ -513,8 +520,9 @@ func (about *AboutDialog) License() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_license", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_gret := _info.InvokeClassMethod("get_license", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(about)
 
@@ -537,8 +545,9 @@ func (about *AboutDialog) Logo() *gdkpixbuf.Pixbuf {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_logo", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_gret := _info.InvokeClassMethod("get_logo", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(about)
 
@@ -571,8 +580,9 @@ func (about *AboutDialog) LogoIconName() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_logo_icon_name", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_gret := _info.InvokeClassMethod("get_logo_icon_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(about)
 
@@ -595,8 +605,9 @@ func (about *AboutDialog) ProgramName() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_program_name", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_gret := _info.InvokeClassMethod("get_program_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(about)
 
@@ -620,8 +631,9 @@ func (about *AboutDialog) TranslatorCredits() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_translator_credits", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_gret := _info.InvokeClassMethod("get_translator_credits", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(about)
 
@@ -644,8 +656,9 @@ func (about *AboutDialog) Version() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_version", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_gret := _info.InvokeClassMethod("get_version", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(about)
 
@@ -668,8 +681,9 @@ func (about *AboutDialog) Website() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_website", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_gret := _info.InvokeClassMethod("get_website", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(about)
 
@@ -692,8 +706,9 @@ func (about *AboutDialog) WebsiteLabel() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_website_label", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_gret := _info.InvokeClassMethod("get_website_label", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(about)
 
@@ -716,8 +731,9 @@ func (about *AboutDialog) WrapLicense() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("get_wrap_license", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_gret := _info.InvokeClassMethod("get_wrap_license", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(about)
 
@@ -755,7 +771,8 @@ func (about *AboutDialog) SetArtists(artists []string) {
 		}
 	}
 
-	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_artists", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_info.InvokeClassMethod("set_artists", _args[:], nil)
 
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(artists)
@@ -786,7 +803,8 @@ func (about *AboutDialog) SetAuthors(authors []string) {
 		}
 	}
 
-	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_authors", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_info.InvokeClassMethod("set_authors", _args[:], nil)
 
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(authors)
@@ -808,7 +826,8 @@ func (about *AboutDialog) SetComments(comments string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_comments", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_info.InvokeClassMethod("set_comments", _args[:], nil)
 
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(comments)
@@ -830,7 +849,8 @@ func (about *AboutDialog) SetCopyright(copyright string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_copyright", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_info.InvokeClassMethod("set_copyright", _args[:], nil)
 
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(copyright)
@@ -861,7 +881,8 @@ func (about *AboutDialog) SetDocumenters(documenters []string) {
 		}
 	}
 
-	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_documenters", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_info.InvokeClassMethod("set_documenters", _args[:], nil)
 
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(documenters)
@@ -883,7 +904,8 @@ func (about *AboutDialog) SetLicense(license string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_license", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_info.InvokeClassMethod("set_license", _args[:], nil)
 
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(license)
@@ -905,7 +927,8 @@ func (about *AboutDialog) SetLogo(logo *gdkpixbuf.Pixbuf) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(logo).Native()))
 	}
 
-	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_logo", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_info.InvokeClassMethod("set_logo", _args[:], nil)
 
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(logo)
@@ -928,7 +951,8 @@ func (about *AboutDialog) SetLogoIconName(iconName string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_logo_icon_name", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_info.InvokeClassMethod("set_logo_icon_name", _args[:], nil)
 
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(iconName)
@@ -948,7 +972,8 @@ func (about *AboutDialog) SetProgramName(name string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_program_name", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_info.InvokeClassMethod("set_program_name", _args[:], nil)
 
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(name)
@@ -983,7 +1008,8 @@ func (about *AboutDialog) SetTranslatorCredits(translatorCredits string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_translator_credits", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_info.InvokeClassMethod("set_translator_credits", _args[:], nil)
 
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(translatorCredits)
@@ -1004,7 +1030,8 @@ func (about *AboutDialog) SetVersion(version string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_version", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_info.InvokeClassMethod("set_version", _args[:], nil)
 
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(version)
@@ -1025,7 +1052,8 @@ func (about *AboutDialog) SetWebsite(website string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_website", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_info.InvokeClassMethod("set_website", _args[:], nil)
 
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(website)
@@ -1044,7 +1072,8 @@ func (about *AboutDialog) SetWebsiteLabel(websiteLabel string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(websiteLabel)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_website_label", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_info.InvokeClassMethod("set_website_label", _args[:], nil)
 
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(websiteLabel)
@@ -1065,7 +1094,8 @@ func (about *AboutDialog) SetWrapLicense(wrapLicense bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "AboutDialog").InvokeMethod("set_wrap_license", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AboutDialog")
+	_info.InvokeClassMethod("set_wrap_license", _args[:], nil)
 
 	runtime.KeepAlive(about)
 	runtime.KeepAlive(wrapLicense)

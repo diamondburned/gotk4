@@ -86,8 +86,9 @@ func (self *NumerableIcon) BackgroundGIcon() *gio.Icon {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "NumerableIcon").InvokeMethod("get_background_gicon", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "NumerableIcon")
+	_gret := _info.InvokeClassMethod("get_background_gicon", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -119,8 +120,9 @@ func (self *NumerableIcon) BackgroundIconName() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "NumerableIcon").InvokeMethod("get_background_icon_name", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "NumerableIcon")
+	_gret := _info.InvokeClassMethod("get_background_icon_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -146,8 +148,9 @@ func (self *NumerableIcon) Count() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "NumerableIcon").InvokeMethod("get_count", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "NumerableIcon")
+	_gret := _info.InvokeClassMethod("get_count", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -171,8 +174,9 @@ func (self *NumerableIcon) Label() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "NumerableIcon").InvokeMethod("get_label", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "NumerableIcon")
+	_gret := _info.InvokeClassMethod("get_label", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -200,8 +204,9 @@ func (self *NumerableIcon) StyleContext() *StyleContext {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "NumerableIcon").InvokeMethod("get_style_context", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "NumerableIcon")
+	_gret := _info.InvokeClassMethod("get_style_context", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -237,7 +242,8 @@ func (self *NumerableIcon) SetBackgroundGIcon(icon gio.Iconner) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 	}
 
-	girepository.MustFind("Gtk", "NumerableIcon").InvokeMethod("set_background_gicon", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "NumerableIcon")
+	_info.InvokeClassMethod("set_background_gicon", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(icon)
@@ -268,7 +274,8 @@ func (self *NumerableIcon) SetBackgroundIconName(iconName string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "NumerableIcon").InvokeMethod("set_background_icon_name", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "NumerableIcon")
+	_info.InvokeClassMethod("set_background_icon_name", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(iconName)
@@ -295,7 +302,8 @@ func (self *NumerableIcon) SetCount(count int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(count)
 
-	girepository.MustFind("Gtk", "NumerableIcon").InvokeMethod("set_count", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "NumerableIcon")
+	_info.InvokeClassMethod("set_count", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(count)
@@ -329,7 +337,8 @@ func (self *NumerableIcon) SetLabel(label string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "NumerableIcon").InvokeMethod("set_label", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "NumerableIcon")
+	_info.InvokeClassMethod("set_label", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(label)
@@ -350,7 +359,8 @@ func (self *NumerableIcon) SetStyleContext(style *StyleContext) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(style).Native()))
 
-	girepository.MustFind("Gtk", "NumerableIcon").InvokeMethod("set_style_context", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "NumerableIcon")
+	_info.InvokeClassMethod("set_style_context", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(style)
@@ -373,8 +383,9 @@ func NewNumerableIcon(baseIcon gio.Iconner) *gio.Icon {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseIcon).Native()))
 
-	_gret := girepository.MustFind("Gtk", "new").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "new")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseIcon)
 
@@ -411,8 +422,9 @@ func NewNumerableIconWithStyleContext(baseIcon gio.Iconner, context *StyleContex
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseIcon).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gtk", "new_with_style_context").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "new_with_style_context")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseIcon)
 	runtime.KeepAlive(context)

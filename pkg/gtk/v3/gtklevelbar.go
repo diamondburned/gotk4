@@ -185,8 +185,9 @@ func (self *LevelBar) ConnectOffsetChanged(f func(name string)) coreglib.SignalH
 //    - levelBar: LevelBar.
 //
 func NewLevelBar() *LevelBar {
-	_gret := girepository.MustFind("Gtk", "LevelBar").InvokeMethod("new_LevelBar", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "LevelBar")
+	_gret := _info.InvokeClassMethod("new_LevelBar", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _levelBar *LevelBar // out
 
@@ -213,8 +214,9 @@ func NewLevelBarForInterval(minValue, maxValue float64) *LevelBar {
 	*(*C.gdouble)(unsafe.Pointer(&_args[0])) = C.gdouble(minValue)
 	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(maxValue)
 
-	_gret := girepository.MustFind("Gtk", "LevelBar").InvokeMethod("new_LevelBar_for_interval", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "LevelBar")
+	_gret := _info.InvokeClassMethod("new_LevelBar_for_interval", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(minValue)
 	runtime.KeepAlive(maxValue)
@@ -246,7 +248,8 @@ func (self *LevelBar) AddOffsetValue(name string, value float64) {
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(value)
 
-	girepository.MustFind("Gtk", "LevelBar").InvokeMethod("add_offset_value", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "LevelBar")
+	_info.InvokeClassMethod("add_offset_value", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(name)
@@ -264,8 +267,9 @@ func (self *LevelBar) Inverted() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "LevelBar").InvokeMethod("get_inverted", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "LevelBar")
+	_gret := _info.InvokeClassMethod("get_inverted", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -289,8 +293,9 @@ func (self *LevelBar) MaxValue() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "LevelBar").InvokeMethod("get_max_value", _args[:], nil)
-	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "LevelBar")
+	_gret := _info.InvokeClassMethod("get_max_value", _args[:], nil)
+	_cret := *(*C.gdouble)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -312,8 +317,9 @@ func (self *LevelBar) MinValue() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "LevelBar").InvokeMethod("get_min_value", _args[:], nil)
-	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "LevelBar")
+	_gret := _info.InvokeClassMethod("get_min_value", _args[:], nil)
+	_cret := *(*C.gdouble)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -346,8 +352,9 @@ func (self *LevelBar) OffsetValue(name string) (float64, bool) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	_gret := girepository.MustFind("Gtk", "LevelBar").InvokeMethod("get_offset_value", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "LevelBar")
+	_gret := _info.InvokeClassMethod("get_offset_value", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(name)
@@ -375,8 +382,9 @@ func (self *LevelBar) Value() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "LevelBar").InvokeMethod("get_value", _args[:], nil)
-	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "LevelBar")
+	_gret := _info.InvokeClassMethod("get_value", _args[:], nil)
+	_cret := *(*C.gdouble)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -403,7 +411,8 @@ func (self *LevelBar) RemoveOffsetValue(name string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "LevelBar").InvokeMethod("remove_offset_value", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "LevelBar")
+	_info.InvokeClassMethod("remove_offset_value", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(name)
@@ -423,7 +432,8 @@ func (self *LevelBar) SetInverted(inverted bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "LevelBar").InvokeMethod("set_inverted", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "LevelBar")
+	_info.InvokeClassMethod("set_inverted", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(inverted)
@@ -444,7 +454,8 @@ func (self *LevelBar) SetMaxValue(value float64) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(value)
 
-	girepository.MustFind("Gtk", "LevelBar").InvokeMethod("set_max_value", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "LevelBar")
+	_info.InvokeClassMethod("set_max_value", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(value)
@@ -465,7 +476,8 @@ func (self *LevelBar) SetMinValue(value float64) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(value)
 
-	girepository.MustFind("Gtk", "LevelBar").InvokeMethod("set_min_value", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "LevelBar")
+	_info.InvokeClassMethod("set_min_value", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(value)
@@ -483,7 +495,8 @@ func (self *LevelBar) SetValue(value float64) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(value)
 
-	girepository.MustFind("Gtk", "LevelBar").InvokeMethod("set_value", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "LevelBar")
+	_info.InvokeClassMethod("set_value", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(value)

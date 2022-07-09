@@ -83,8 +83,9 @@ func marshalCellRendererSpin(p uintptr) (interface{}, error) {
 //    - cellRendererSpin: new CellRendererSpin.
 //
 func NewCellRendererSpin() *CellRendererSpin {
-	_gret := girepository.MustFind("Gtk", "CellRendererSpin").InvokeMethod("new_CellRendererSpin", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellRendererSpin")
+	_gret := _info.InvokeClassMethod("new_CellRendererSpin", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _cellRendererSpin *CellRendererSpin // out
 

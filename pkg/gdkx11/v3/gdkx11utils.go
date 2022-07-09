@@ -25,8 +25,9 @@ import "C"
 // The function returns the following values:
 //
 func X11GetParentRelativePattern() *cairo.Pattern {
-	_gret := girepository.MustFind("GdkX11", "x11_get_parent_relative_pattern").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("GdkX11", "x11_get_parent_relative_pattern")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _pattern *cairo.Pattern // out
 
@@ -46,11 +47,13 @@ func X11GetParentRelativePattern() *cairo.Pattern {
 //
 // gdk_x11_grab_server()/gdk_x11_ungrab_server() calls can be nested.
 func X11GrabServer() {
-	girepository.MustFind("GdkX11", "x11_grab_server").Invoke(nil, nil)
+	_info := girepository.MustFind("GdkX11", "x11_grab_server")
+	_info.Invoke(nil, nil)
 }
 
 // X11UngrabServer: ungrab the default display after it has been grabbed with
 // gdk_x11_grab_server().
 func X11UngrabServer() {
-	girepository.MustFind("GdkX11", "x11_ungrab_server").Invoke(nil, nil)
+	_info := girepository.MustFind("GdkX11", "x11_ungrab_server")
+	_info.Invoke(nil, nil)
 }

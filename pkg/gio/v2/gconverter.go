@@ -95,5 +95,8 @@ func (converter *Converter) Reset() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(converter).Native()))
 
+	_info := girepository.MustFind("Gio", "Converter")
+	_info.InvokeIfaceMethod("reset", _args[:], nil)
+
 	runtime.KeepAlive(converter)
 }

@@ -65,8 +65,9 @@ func marshalCellRendererProgress(p uintptr) (interface{}, error) {
 //    - cellRendererProgress: new cell renderer.
 //
 func NewCellRendererProgress() *CellRendererProgress {
-	_gret := girepository.MustFind("Gtk", "CellRendererProgress").InvokeMethod("new_CellRendererProgress", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellRendererProgress")
+	_gret := _info.InvokeClassMethod("new_CellRendererProgress", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _cellRendererProgress *CellRendererProgress // out
 

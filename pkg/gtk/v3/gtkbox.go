@@ -136,8 +136,9 @@ func (box *Box) CenterWidget() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Box").InvokeMethod("get_center_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Box")
+	_gret := _info.InvokeClassMethod("get_center_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(box)
 
@@ -175,8 +176,9 @@ func (box *Box) Homogeneous() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Box").InvokeMethod("get_homogeneous", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Box")
+	_gret := _info.InvokeClassMethod("get_homogeneous", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(box)
 
@@ -200,8 +202,9 @@ func (box *Box) Spacing() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Box").InvokeMethod("get_spacing", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Box")
+	_gret := _info.InvokeClassMethod("get_spacing", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(box)
 
@@ -245,7 +248,8 @@ func (box *Box) PackEnd(child Widgetter, expand, fill bool, padding uint32) {
 	}
 	*(*C.guint)(unsafe.Pointer(&_args[4])) = C.guint(padding)
 
-	girepository.MustFind("Gtk", "Box").InvokeMethod("pack_end", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Box")
+	_info.InvokeClassMethod("pack_end", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(child)
@@ -287,7 +291,8 @@ func (box *Box) PackStart(child Widgetter, expand, fill bool, padding uint32) {
 	}
 	*(*C.guint)(unsafe.Pointer(&_args[4])) = C.guint(padding)
 
-	girepository.MustFind("Gtk", "Box").InvokeMethod("pack_start", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Box")
+	_info.InvokeClassMethod("pack_start", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(child)
@@ -316,7 +321,8 @@ func (box *Box) QueryChildPacking(child Widgetter) (expand, fill bool, padding u
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	girepository.MustFind("Gtk", "Box").InvokeMethod("query_child_packing", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "Box")
+	_info.InvokeClassMethod("query_child_packing", _args[:], _outs[:])
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(child)
@@ -360,7 +366,8 @@ func (box *Box) ReorderChild(child Widgetter, position int32) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(position)
 
-	girepository.MustFind("Gtk", "Box").InvokeMethod("reorder_child", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Box")
+	_info.InvokeClassMethod("reorder_child", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(child)
@@ -383,7 +390,8 @@ func (box *Box) SetCenterWidget(widget Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
 
-	girepository.MustFind("Gtk", "Box").InvokeMethod("set_center_widget", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Box")
+	_info.InvokeClassMethod("set_center_widget", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(widget)
@@ -405,7 +413,8 @@ func (box *Box) SetHomogeneous(homogeneous bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Box").InvokeMethod("set_homogeneous", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Box")
+	_info.InvokeClassMethod("set_homogeneous", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(homogeneous)
@@ -424,7 +433,8 @@ func (box *Box) SetSpacing(spacing int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(spacing)
 
-	girepository.MustFind("Gtk", "Box").InvokeMethod("set_spacing", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Box")
+	_info.InvokeClassMethod("set_spacing", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(spacing)

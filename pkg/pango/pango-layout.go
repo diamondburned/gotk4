@@ -253,8 +253,9 @@ func NewLayout(context *Context) *Layout {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("new_Layout", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("new_Layout", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -275,7 +276,8 @@ func (layout *Layout) ContextChanged() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("context_changed", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("context_changed", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 }
@@ -295,8 +297,9 @@ func (src *Layout) Copy() *Layout {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("copy", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(src)
 
@@ -318,8 +321,9 @@ func (layout *Layout) Attributes() *AttrList {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_attributes", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_attributes", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -354,8 +358,9 @@ func (layout *Layout) AutoDir() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_auto_dir", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_auto_dir", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -379,8 +384,9 @@ func (layout *Layout) Baseline() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_baseline", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_baseline", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -403,8 +409,9 @@ func (layout *Layout) CharacterCount() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_character_count", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_character_count", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -428,8 +435,9 @@ func (layout *Layout) Context() *Context {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_context", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_context", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -467,7 +475,8 @@ func (layout *Layout) CursorPos(index_ int32) (strongPos, weakPos *Rectangle) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(index_)
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("get_cursor_pos", _args[:], _outs[:])
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("get_cursor_pos", _args[:], _outs[:])
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(index_)
@@ -509,7 +518,8 @@ func (layout *Layout) Extents() (inkRect, logicalRect *Rectangle) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("get_extents", _args[:], _outs[:])
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("get_extents", _args[:], _outs[:])
 
 	runtime.KeepAlive(layout)
 
@@ -539,8 +549,9 @@ func (layout *Layout) FontDescription() *FontDescription {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_font_description", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_font_description", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -566,8 +577,9 @@ func (layout *Layout) Height() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_height", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_height", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -591,8 +603,9 @@ func (layout *Layout) Indent() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_indent", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_indent", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -615,8 +628,9 @@ func (layout *Layout) Iter() *LayoutIter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_iter", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_iter", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -628,7 +642,7 @@ func (layout *Layout) Iter() *LayoutIter {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Pango", "LayoutIter").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Pango", "LayoutIter").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -648,8 +662,9 @@ func (layout *Layout) Justify() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_justify", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_justify", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -684,8 +699,9 @@ func (layout *Layout) Line(line int32) *LayoutLine {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(line)
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_line", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_line", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(line)
@@ -717,8 +733,9 @@ func (layout *Layout) LineCount() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_line_count", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_line_count", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -752,8 +769,9 @@ func (layout *Layout) LineReadonly(line int32) *LayoutLine {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(line)
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_line_readonly", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_line_readonly", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(line)
@@ -785,8 +803,9 @@ func (layout *Layout) LineSpacing() float32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_line_spacing", _args[:], nil)
-	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_line_spacing", _args[:], nil)
+	_cret := *(*C.float)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -813,8 +832,9 @@ func (layout *Layout) Lines() []*LayoutLine {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_lines", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_lines", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -855,8 +875,9 @@ func (layout *Layout) LinesReadonly() []*LayoutLine {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_lines_readonly", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_lines_readonly", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -894,7 +915,8 @@ func (layout *Layout) LogAttrs() []LogAttr {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("get_log_attrs", _args[:], _outs[:])
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("get_log_attrs", _args[:], _outs[:])
 
 	runtime.KeepAlive(layout)
 
@@ -932,7 +954,8 @@ func (layout *Layout) PixelExtents() (inkRect, logicalRect *Rectangle) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("get_pixel_extents", _args[:], _outs[:])
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("get_pixel_extents", _args[:], _outs[:])
 
 	runtime.KeepAlive(layout)
 
@@ -966,7 +989,8 @@ func (layout *Layout) PixelSize() (width, height int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("get_pixel_size", _args[:], _outs[:])
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("get_pixel_size", _args[:], _outs[:])
 
 	runtime.KeepAlive(layout)
 
@@ -1004,8 +1028,9 @@ func (layout *Layout) Serial() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_serial", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_serial", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -1030,8 +1055,9 @@ func (layout *Layout) SingleParagraphMode() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_single_paragraph_mode", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_single_paragraph_mode", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -1059,7 +1085,8 @@ func (layout *Layout) Size() (width, height int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("get_size", _args[:], _outs[:])
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("get_size", _args[:], _outs[:])
 
 	runtime.KeepAlive(layout)
 
@@ -1087,8 +1114,9 @@ func (layout *Layout) Spacing() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_spacing", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_spacing", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -1115,8 +1143,9 @@ func (layout *Layout) Tabs() *TabArray {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_tabs", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_tabs", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -1129,7 +1158,7 @@ func (layout *Layout) Tabs() *TabArray {
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Pango", "TabArray").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Pango", "TabArray").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -1150,8 +1179,9 @@ func (layout *Layout) Text() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_text", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_text", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -1178,8 +1208,9 @@ func (layout *Layout) UnknownGlyphsCount() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_unknown_glyphs_count", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_unknown_glyphs_count", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -1201,8 +1232,9 @@ func (layout *Layout) Width() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("get_width", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("get_width", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -1242,7 +1274,8 @@ func (layout *Layout) IndexToLineX(index_ int32, trailing bool) (line, xPos int3
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("index_to_line_x", _args[:], _outs[:])
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("index_to_line_x", _args[:], _outs[:])
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(index_)
@@ -1284,7 +1317,8 @@ func (layout *Layout) IndexToPos(index_ int32) *Rectangle {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(index_)
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("index_to_pos", _args[:], _outs[:])
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("index_to_pos", _args[:], _outs[:])
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(index_)
@@ -1311,8 +1345,9 @@ func (layout *Layout) IsEllipsized() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("is_ellipsized", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("is_ellipsized", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -1340,8 +1375,9 @@ func (layout *Layout) IsWrapped() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("is_wrapped", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("is_wrapped", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -1404,7 +1440,8 @@ func (layout *Layout) MoveCursorVisually(strong bool, oldIndex, oldTrailing, dir
 	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(oldTrailing)
 	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(direction)
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("move_cursor_visually", _args[:], _outs[:])
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("move_cursor_visually", _args[:], _outs[:])
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(strong)
@@ -1436,7 +1473,8 @@ func (layout *Layout) SetAttributes(attrs *AttrList) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(attrs)))
 	}
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("set_attributes", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("set_attributes", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(attrs)
@@ -1472,7 +1510,8 @@ func (layout *Layout) SetAutoDir(autoDir bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("set_auto_dir", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("set_auto_dir", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(autoDir)
@@ -1496,7 +1535,8 @@ func (layout *Layout) SetFontDescription(desc *FontDescription) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
 	}
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("set_font_description", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("set_font_description", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(desc)
@@ -1537,7 +1577,8 @@ func (layout *Layout) SetHeight(height int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(height)
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("set_height", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("set_height", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(height)
@@ -1562,7 +1603,8 @@ func (layout *Layout) SetIndent(indent int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(indent)
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("set_indent", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("set_indent", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(indent)
@@ -1590,7 +1632,8 @@ func (layout *Layout) SetJustify(justify bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("set_justify", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("set_justify", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(justify)
@@ -1620,7 +1663,8 @@ func (layout *Layout) SetLineSpacing(factor float32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(factor)
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("set_line_spacing", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("set_line_spacing", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(factor)
@@ -1647,7 +1691,8 @@ func (layout *Layout) SetMarkup(markup string, length int32) {
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(length)
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("set_markup", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("set_markup", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(markup)
@@ -1688,7 +1733,8 @@ func (layout *Layout) SetMarkupWithAccel(markup string, length int32, accelMarke
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(length)
 	*(*C.gunichar)(unsafe.Pointer(&_args[3])) = C.gunichar(accelMarker)
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("set_markup_with_accel", _args[:], _outs[:])
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("set_markup_with_accel", _args[:], _outs[:])
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(markup)
@@ -1723,7 +1769,8 @@ func (layout *Layout) SetSingleParagraphMode(setting bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("set_single_paragraph_mode", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("set_single_paragraph_mode", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(setting)
@@ -1752,7 +1799,8 @@ func (layout *Layout) SetSpacing(spacing int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(spacing)
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("set_spacing", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("set_spacing", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(spacing)
@@ -1776,7 +1824,8 @@ func (layout *Layout) SetTabs(tabs *TabArray) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(tabs)))
 	}
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("set_tabs", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("set_tabs", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(tabs)
@@ -1807,7 +1856,8 @@ func (layout *Layout) SetText(text string, length int32) {
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(length)
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("set_text", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("set_text", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(text)
@@ -1830,7 +1880,8 @@ func (layout *Layout) SetWidth(width int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(width)
 
-	girepository.MustFind("Pango", "Layout").InvokeMethod("set_width", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Layout")
+	_info.InvokeClassMethod("set_width", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(width)
@@ -1867,8 +1918,9 @@ func (layout *Layout) XYToIndex(x, y int32) (index_, trailing int32, ok bool) {
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(x)
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(y)
 
-	_gret := girepository.MustFind("Pango", "Layout").InvokeMethod("xy_to_index", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Layout")
+	_gret := _info.InvokeClassMethod("xy_to_index", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(x)
@@ -1920,7 +1972,9 @@ func (iter *LayoutIter) AtLastLine() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "LayoutIter")
+	_gret := _info.InvokeRecordMethod("at_last_line", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1947,7 +2001,9 @@ func (iter *LayoutIter) Copy() *LayoutIter {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "LayoutIter")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1960,7 +2016,7 @@ func (iter *LayoutIter) Copy() *LayoutIter {
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Pango", "LayoutIter").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Pango", "LayoutIter").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -1981,7 +2037,9 @@ func (iter *LayoutIter) Baseline() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "LayoutIter")
+	_gret := _info.InvokeRecordMethod("get_baseline", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2007,6 +2065,9 @@ func (iter *LayoutIter) CharExtents() *Rectangle {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
+	_info := girepository.MustFind("Pango", "LayoutIter")
+	_info.InvokeRecordMethod("get_char_extents", _args[:], _outs[:])
+
 	runtime.KeepAlive(iter)
 
 	var _logicalRect *Rectangle // out
@@ -2029,6 +2090,9 @@ func (iter *LayoutIter) ClusterExtents() (inkRect *Rectangle, logicalRect *Recta
 	var _outs [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+
+	_info := girepository.MustFind("Pango", "LayoutIter")
+	_info.InvokeRecordMethod("get_cluster_extents", _args[:], _outs[:])
 
 	runtime.KeepAlive(iter)
 
@@ -2059,7 +2123,9 @@ func (iter *LayoutIter) Index() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "LayoutIter")
+	_gret := _info.InvokeRecordMethod("get_index", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2081,7 +2147,9 @@ func (iter *LayoutIter) Layout() *Layout {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "LayoutIter")
+	_gret := _info.InvokeRecordMethod("get_layout", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2105,6 +2173,9 @@ func (iter *LayoutIter) LayoutExtents() (inkRect *Rectangle, logicalRect *Rectan
 	var _outs [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+
+	_info := girepository.MustFind("Pango", "LayoutIter")
+	_info.InvokeRecordMethod("get_layout_extents", _args[:], _outs[:])
 
 	runtime.KeepAlive(iter)
 
@@ -2135,7 +2206,9 @@ func (iter *LayoutIter) Line() *LayoutLine {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "LayoutIter")
+	_gret := _info.InvokeRecordMethod("get_line", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2170,6 +2243,9 @@ func (iter *LayoutIter) LineExtents() (inkRect *Rectangle, logicalRect *Rectangl
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
+	_info := girepository.MustFind("Pango", "LayoutIter")
+	_info.InvokeRecordMethod("get_line_extents", _args[:], _outs[:])
+
 	runtime.KeepAlive(iter)
 
 	var _inkRect *Rectangle     // out
@@ -2199,7 +2275,9 @@ func (iter *LayoutIter) LineReadonly() *LayoutLine {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "LayoutIter")
+	_gret := _info.InvokeRecordMethod("get_line_readonly", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2238,6 +2316,9 @@ func (iter *LayoutIter) LineYrange() (y0 int32, y1 int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
+	_info := girepository.MustFind("Pango", "LayoutIter")
+	_info.InvokeRecordMethod("get_line_yrange", _args[:], _outs[:])
+
 	runtime.KeepAlive(iter)
 
 	var _y0 int32 // out
@@ -2270,7 +2351,9 @@ func (iter *LayoutIter) Run() *LayoutRun {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "LayoutIter")
+	_gret := _info.InvokeRecordMethod("get_run", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2296,6 +2379,9 @@ func (iter *LayoutIter) RunExtents() (inkRect *Rectangle, logicalRect *Rectangle
 	var _outs [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+
+	_info := girepository.MustFind("Pango", "LayoutIter")
+	_info.InvokeRecordMethod("get_run_extents", _args[:], _outs[:])
 
 	runtime.KeepAlive(iter)
 
@@ -2329,7 +2415,9 @@ func (iter *LayoutIter) RunReadonly() *LayoutRun {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "LayoutIter")
+	_gret := _info.InvokeRecordMethod("get_run_readonly", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2354,7 +2442,9 @@ func (iter *LayoutIter) NextChar() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "LayoutIter")
+	_gret := _info.InvokeRecordMethod("next_char", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2379,7 +2469,9 @@ func (iter *LayoutIter) NextCluster() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "LayoutIter")
+	_gret := _info.InvokeRecordMethod("next_cluster", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2404,7 +2496,9 @@ func (iter *LayoutIter) NextLine() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "LayoutIter")
+	_gret := _info.InvokeRecordMethod("next_line", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2429,7 +2523,9 @@ func (iter *LayoutIter) NextRun() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "LayoutIter")
+	_gret := _info.InvokeRecordMethod("next_run", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -2522,6 +2618,9 @@ func (line *LayoutLine) Extents() (inkRect *Rectangle, logicalRect *Rectangle) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(line)))
 
+	_info := girepository.MustFind("Pango", "LayoutLine")
+	_info.InvokeRecordMethod("get_extents", _args[:], _outs[:])
+
 	runtime.KeepAlive(line)
 
 	var _inkRect *Rectangle     // out
@@ -2549,6 +2648,9 @@ func (line *LayoutLine) Height() int32 {
 	var _outs [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(line)))
+
+	_info := girepository.MustFind("Pango", "LayoutLine")
+	_info.InvokeRecordMethod("get_height", _args[:], _outs[:])
 
 	runtime.KeepAlive(line)
 
@@ -2581,6 +2683,9 @@ func (layoutLine *LayoutLine) PixelExtents() (inkRect *Rectangle, logicalRect *R
 	var _outs [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layoutLine)))
+
+	_info := girepository.MustFind("Pango", "LayoutLine")
+	_info.InvokeRecordMethod("get_pixel_extents", _args[:], _outs[:])
 
 	runtime.KeepAlive(layoutLine)
 
@@ -2630,6 +2735,9 @@ func (line *LayoutLine) XRanges(startIndex int32, endIndex int32) []int32 {
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(startIndex)
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(endIndex)
 
+	_info := girepository.MustFind("Pango", "LayoutLine")
+	_info.InvokeRecordMethod("get_x_ranges", _args[:], _outs[:])
+
 	runtime.KeepAlive(line)
 	runtime.KeepAlive(startIndex)
 	runtime.KeepAlive(endIndex)
@@ -2670,6 +2778,9 @@ func (line *LayoutLine) IndexToX(index_ int32, trailing bool) int32 {
 	if trailing {
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
+
+	_info := girepository.MustFind("Pango", "LayoutLine")
+	_info.InvokeRecordMethod("index_to_x", _args[:], _outs[:])
 
 	runtime.KeepAlive(line)
 	runtime.KeepAlive(index_)
@@ -2712,7 +2823,9 @@ func (line *LayoutLine) XToIndex(xPos int32) (index_ int32, trailing int32, ok b
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(line)))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(xPos)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "LayoutLine")
+	_gret := _info.InvokeRecordMethod("x_to_index", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(line)
 	runtime.KeepAlive(xPos)

@@ -18,11 +18,11 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GInputStream* _gotk4_gio2_IOStreamClass_get_input_stream(void*);
-// extern GOutputStream* _gotk4_gio2_IOStreamClass_get_output_stream(void*);
 // extern gboolean _gotk4_gio2_IOStreamClass_close_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_IOStreamClass_close_fn(void*, void*, GError**);
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void* _gotk4_gio2_IOStreamClass_get_input_stream(void*);
+// extern void* _gotk4_gio2_IOStreamClass_get_output_stream(void*);
 import "C"
 
 // GTypeIOStream returns the GType for the type IOStream.
@@ -223,7 +223,7 @@ func _gotk4_gio2_IOStreamClass_close_fn(arg0 *C.void, arg1 *C.void, _cerr **C.GE
 }
 
 //export _gotk4_gio2_IOStreamClass_get_input_stream
-func _gotk4_gio2_IOStreamClass_get_input_stream(arg0 *C.void) (cret *C.GInputStream) {
+func _gotk4_gio2_IOStreamClass_get_input_stream(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ InputStream() InputStreamer })
 
@@ -235,7 +235,7 @@ func _gotk4_gio2_IOStreamClass_get_input_stream(arg0 *C.void) (cret *C.GInputStr
 }
 
 //export _gotk4_gio2_IOStreamClass_get_output_stream
-func _gotk4_gio2_IOStreamClass_get_output_stream(arg0 *C.void) (cret *C.GOutputStream) {
+func _gotk4_gio2_IOStreamClass_get_output_stream(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ OutputStream() OutputStreamer })
 
@@ -271,7 +271,8 @@ func (stream *IOStream) ClearPending() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	girepository.MustFind("Gio", "IOStream").InvokeMethod("clear_pending", _args[:], nil)
+	_info := girepository.MustFind("Gio", "IOStream")
+	_info.InvokeClassMethod("clear_pending", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 }
@@ -323,7 +324,8 @@ func (stream *IOStream) Close(ctx context.Context) error {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	girepository.MustFind("Gio", "IOStream").InvokeMethod("close", _args[:], nil)
+	_info := girepository.MustFind("Gio", "IOStream")
+	_info.InvokeClassMethod("close", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -368,7 +370,8 @@ func (stream *IOStream) CloseAsync(ctx context.Context, ioPriority int32, callba
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "IOStream").InvokeMethod("close_async", _args[:], nil)
+	_info := girepository.MustFind("Gio", "IOStream")
+	_info.InvokeClassMethod("close_async", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -388,7 +391,8 @@ func (stream *IOStream) CloseFinish(result AsyncResulter) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	girepository.MustFind("Gio", "IOStream").InvokeMethod("close_finish", _args[:], nil)
+	_info := girepository.MustFind("Gio", "IOStream")
+	_info.InvokeClassMethod("close_finish", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
@@ -413,8 +417,9 @@ func (stream *IOStream) InputStream() InputStreamer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	_gret := girepository.MustFind("Gio", "IOStream").InvokeMethod("get_input_stream", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "IOStream")
+	_gret := _info.InvokeClassMethod("get_input_stream", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 
@@ -453,8 +458,9 @@ func (stream *IOStream) OutputStream() OutputStreamer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	_gret := girepository.MustFind("Gio", "IOStream").InvokeMethod("get_output_stream", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "IOStream")
+	_gret := _info.InvokeClassMethod("get_output_stream", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 
@@ -492,8 +498,9 @@ func (stream *IOStream) HasPending() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	_gret := girepository.MustFind("Gio", "IOStream").InvokeMethod("has_pending", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "IOStream")
+	_gret := _info.InvokeClassMethod("has_pending", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 
@@ -517,8 +524,9 @@ func (stream *IOStream) IsClosed() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	_gret := girepository.MustFind("Gio", "IOStream").InvokeMethod("is_closed", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "IOStream")
+	_gret := _info.InvokeClassMethod("is_closed", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 
@@ -538,7 +546,8 @@ func (stream *IOStream) SetPending() error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	girepository.MustFind("Gio", "IOStream").InvokeMethod("set_pending", _args[:], nil)
+	_info := girepository.MustFind("Gio", "IOStream")
+	_info.InvokeClassMethod("set_pending", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 
@@ -562,7 +571,8 @@ func IOStreamSpliceFinish(result AsyncResulter) error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	girepository.MustFind("Gio", "splice_finish").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gio", "splice_finish")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(result)
 

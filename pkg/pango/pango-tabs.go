@@ -92,7 +92,9 @@ func NewTabArray(initialSize int32, positionsInPixels bool) *TabArray {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "TabArray")
+	_gret := _info.InvokeRecordMethod("new", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(initialSize)
 	runtime.KeepAlive(positionsInPixels)
@@ -105,7 +107,7 @@ func NewTabArray(initialSize int32, positionsInPixels bool) *TabArray {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Pango", "TabArray").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Pango", "TabArray").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -125,7 +127,9 @@ func (src *TabArray) Copy() *TabArray {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "TabArray")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(src)
 
@@ -137,7 +141,7 @@ func (src *TabArray) Copy() *TabArray {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Pango", "TabArray").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Pango", "TabArray").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -157,7 +161,9 @@ func (tabArray *TabArray) PositionsInPixels() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(tabArray)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "TabArray")
+	_gret := _info.InvokeRecordMethod("get_positions_in_pixels", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(tabArray)
 
@@ -181,7 +187,9 @@ func (tabArray *TabArray) Size() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(tabArray)))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "TabArray")
+	_gret := _info.InvokeRecordMethod("get_size", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(tabArray)
 
@@ -209,6 +217,9 @@ func (tabArray *TabArray) Tab(tabIndex int32) (TabAlign, int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(tabArray)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(tabIndex)
+
+	_info := girepository.MustFind("Pango", "TabArray")
+	_info.InvokeRecordMethod("get_tab", _args[:], _outs[:])
 
 	runtime.KeepAlive(tabArray)
 	runtime.KeepAlive(tabIndex)
@@ -240,6 +251,9 @@ func (tabArray *TabArray) Resize(newSize int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(tabArray)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(newSize)
+
+	_info := girepository.MustFind("Pango", "TabArray")
+	_info.InvokeRecordMethod("resize", _args[:], nil)
 
 	runtime.KeepAlive(tabArray)
 	runtime.KeepAlive(newSize)

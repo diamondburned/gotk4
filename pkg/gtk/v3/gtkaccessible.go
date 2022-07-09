@@ -131,7 +131,8 @@ func (accessible *Accessible) ConnectWidgetDestroyed() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
-	girepository.MustFind("Gtk", "Accessible").InvokeMethod("connect_widget_destroyed", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Accessible")
+	_info.InvokeClassMethod("connect_widget_destroyed", _args[:], nil)
 
 	runtime.KeepAlive(accessible)
 }
@@ -149,8 +150,9 @@ func (accessible *Accessible) Widget() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Accessible").InvokeMethod("get_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Accessible")
+	_gret := _info.InvokeClassMethod("get_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(accessible)
 
@@ -194,7 +196,8 @@ func (accessible *Accessible) SetWidget(widget Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
 
-	girepository.MustFind("Gtk", "Accessible").InvokeMethod("set_widget", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Accessible")
+	_info.InvokeClassMethod("set_widget", _args[:], nil)
 
 	runtime.KeepAlive(accessible)
 	runtime.KeepAlive(widget)

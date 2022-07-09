@@ -84,8 +84,9 @@ func (plug *PlugAccessible) ID() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
 
-	_gret := girepository.MustFind("Gtk", "PlugAccessible").InvokeMethod("get_id", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PlugAccessible")
+	_gret := _info.InvokeClassMethod("get_id", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(plug)
 

@@ -97,8 +97,9 @@ func marshalAnyFilter(p uintptr) (interface{}, error) {
 //    - anyFilter: new GtkAnyFilter.
 //
 func NewAnyFilter() *AnyFilter {
-	_gret := girepository.MustFind("Gtk", "AnyFilter").InvokeMethod("new_AnyFilter", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AnyFilter")
+	_gret := _info.InvokeClassMethod("new_AnyFilter", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _anyFilter *AnyFilter // out
 
@@ -153,8 +154,9 @@ func marshalEveryFilter(p uintptr) (interface{}, error) {
 //    - everyFilter: new GtkEveryFilter.
 //
 func NewEveryFilter() *EveryFilter {
-	_gret := girepository.MustFind("Gtk", "EveryFilter").InvokeMethod("new_EveryFilter", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EveryFilter")
+	_gret := _info.InvokeClassMethod("new_EveryFilter", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _everyFilter *EveryFilter // out
 
@@ -230,7 +232,8 @@ func (self *MultiFilter) Append(filter *Filter) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(filter).Native()))
 
-	girepository.MustFind("Gtk", "MultiFilter").InvokeMethod("append", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MultiFilter")
+	_info.InvokeClassMethod("append", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(filter)
@@ -252,7 +255,8 @@ func (self *MultiFilter) Remove(position uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
 
-	girepository.MustFind("Gtk", "MultiFilter").InvokeMethod("remove", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MultiFilter")
+	_info.InvokeClassMethod("remove", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)

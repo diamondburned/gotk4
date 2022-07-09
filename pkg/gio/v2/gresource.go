@@ -30,7 +30,8 @@ func ResourcesRegister(resource *Resource) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(resource)))
 
-	girepository.MustFind("Gio", "resources_register").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gio", "resources_register")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(resource)
 }
@@ -47,7 +48,8 @@ func ResourcesUnregister(resource *Resource) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(resource)))
 
-	girepository.MustFind("Gio", "resources_unregister").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gio", "resources_unregister")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(resource)
 }
@@ -76,8 +78,9 @@ func ResourceLoad(filename string) (*Resource, error) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "load").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "load")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(filename)
 
@@ -121,6 +124,9 @@ func (staticResource *StaticResource) Fini() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(staticResource)))
 
+	_info := girepository.MustFind("Gio", "StaticResource")
+	_info.InvokeRecordMethod("fini", _args[:], nil)
+
 	runtime.KeepAlive(staticResource)
 }
 
@@ -140,7 +146,9 @@ func (staticResource *StaticResource) Resource() *Resource {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(staticResource)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "StaticResource")
+	_gret := _info.InvokeRecordMethod("get_resource", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(staticResource)
 
@@ -167,6 +175,9 @@ func (staticResource *StaticResource) Init() {
 	var _args [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(staticResource)))
+
+	_info := girepository.MustFind("Gio", "StaticResource")
+	_info.InvokeRecordMethod("init", _args[:], nil)
 
 	runtime.KeepAlive(staticResource)
 }

@@ -38,8 +38,9 @@ func GTypeX11Screen() coreglib.Type {
 //      XOpenDisplay().
 //
 func X11GetDefaultScreen() int32 {
-	_gret := girepository.MustFind("GdkX11", "x11_get_default_screen").Invoke(nil, nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("GdkX11", "x11_get_default_screen")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	var _gint int32 // out
 
@@ -103,8 +104,9 @@ func (screen *X11Screen) CurrentDesktop() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_gret := girepository.MustFind("GdkX11", "X11Screen").InvokeMethod("get_current_desktop", _args[:], nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("GdkX11", "X11Screen")
+	_gret := _info.InvokeClassMethod("get_current_desktop", _args[:], nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)
 
@@ -129,8 +131,9 @@ func (screen *X11Screen) NumberOfDesktops() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_gret := girepository.MustFind("GdkX11", "X11Screen").InvokeMethod("get_number_of_desktops", _args[:], nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("GdkX11", "X11Screen")
+	_gret := _info.InvokeClassMethod("get_number_of_desktops", _args[:], nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)
 
@@ -152,8 +155,9 @@ func (screen *X11Screen) ScreenNumber() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_gret := girepository.MustFind("GdkX11", "X11Screen").InvokeMethod("get_screen_number", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("GdkX11", "X11Screen")
+	_gret := _info.InvokeClassMethod("get_screen_number", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)
 
@@ -177,8 +181,9 @@ func (screen *X11Screen) WindowManagerName() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_gret := girepository.MustFind("GdkX11", "X11Screen").InvokeMethod("get_window_manager_name", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("GdkX11", "X11Screen")
+	_gret := _info.InvokeClassMethod("get_window_manager_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)
 

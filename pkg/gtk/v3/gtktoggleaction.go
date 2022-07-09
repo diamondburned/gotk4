@@ -145,8 +145,9 @@ func NewToggleAction(name, label, tooltip, stockId string) *ToggleAction {
 		defer C.free(unsafe.Pointer(_args[3]))
 	}
 
-	_gret := girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("new_ToggleAction", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToggleAction")
+	_gret := _info.InvokeClassMethod("new_ToggleAction", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(label)
@@ -173,8 +174,9 @@ func (action *ToggleAction) Active() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("get_active", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToggleAction")
+	_gret := _info.InvokeClassMethod("get_active", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(action)
 
@@ -201,8 +203,9 @@ func (action *ToggleAction) DrawAsRadio() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("get_draw_as_radio", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToggleAction")
+	_gret := _info.InvokeClassMethod("get_draw_as_radio", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(action)
 
@@ -231,7 +234,8 @@ func (action *ToggleAction) SetActive(isActive bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("set_active", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ToggleAction")
+	_info.InvokeClassMethod("set_active", _args[:], nil)
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(isActive)
@@ -254,7 +258,8 @@ func (action *ToggleAction) SetDrawAsRadio(drawAsRadio bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("set_draw_as_radio", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ToggleAction")
+	_info.InvokeClassMethod("set_draw_as_radio", _args[:], nil)
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(drawAsRadio)
@@ -268,7 +273,8 @@ func (action *ToggleAction) Toggled() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
-	girepository.MustFind("Gtk", "ToggleAction").InvokeMethod("toggled", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ToggleAction")
+	_info.InvokeClassMethod("toggled", _args[:], nil)
 
 	runtime.KeepAlive(action)
 }

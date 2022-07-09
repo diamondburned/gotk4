@@ -152,8 +152,9 @@ func marshalDrawingArea(p uintptr) (interface{}, error) {
 //    - drawingArea: new DrawingArea.
 //
 func NewDrawingArea() *DrawingArea {
-	_gret := girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("new_DrawingArea", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "DrawingArea")
+	_gret := _info.InvokeClassMethod("new_DrawingArea", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _drawingArea *DrawingArea // out
 

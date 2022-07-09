@@ -447,7 +447,8 @@ func (renderer *Renderer) Activate() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	girepository.MustFind("Pango", "Renderer").InvokeMethod("activate", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Renderer")
+	_info.InvokeClassMethod("activate", _args[:], nil)
 
 	runtime.KeepAlive(renderer)
 }
@@ -460,7 +461,8 @@ func (renderer *Renderer) Deactivate() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	girepository.MustFind("Pango", "Renderer").InvokeMethod("deactivate", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Renderer")
+	_info.InvokeClassMethod("deactivate", _args[:], nil)
 
 	runtime.KeepAlive(renderer)
 }
@@ -490,7 +492,8 @@ func (renderer *Renderer) DrawErrorUnderline(x, y, width, height int32) {
 	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(width)
 	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(height)
 
-	girepository.MustFind("Pango", "Renderer").InvokeMethod("draw_error_underline", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Renderer")
+	_info.InvokeClassMethod("draw_error_underline", _args[:], nil)
 
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(x)
@@ -517,7 +520,8 @@ func (renderer *Renderer) DrawGlyph(font Fonter, glyph Glyph, x, y float64) {
 	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(x)
 	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(y)
 
-	girepository.MustFind("Pango", "Renderer").InvokeMethod("draw_glyph", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Renderer")
+	_info.InvokeClassMethod("draw_glyph", _args[:], nil)
 
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(font)
@@ -561,7 +565,8 @@ func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x, y 
 	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(x)
 	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(y)
 
-	girepository.MustFind("Pango", "Renderer").InvokeMethod("draw_glyph_item", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Renderer")
+	_info.InvokeClassMethod("draw_glyph_item", _args[:], nil)
 
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(text)
@@ -590,7 +595,8 @@ func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int3
 	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(x)
 	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(y)
 
-	girepository.MustFind("Pango", "Renderer").InvokeMethod("draw_glyphs", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Renderer")
+	_info.InvokeClassMethod("draw_glyphs", _args[:], nil)
 
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(font)
@@ -617,7 +623,8 @@ func (renderer *Renderer) DrawLayout(layout *Layout, x, y int32) {
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(x)
 	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(y)
 
-	girepository.MustFind("Pango", "Renderer").InvokeMethod("draw_layout", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Renderer")
+	_info.InvokeClassMethod("draw_layout", _args[:], nil)
 
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(layout)
@@ -643,7 +650,8 @@ func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x, y int32) {
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(x)
 	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(y)
 
-	girepository.MustFind("Pango", "Renderer").InvokeMethod("draw_layout_line", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Renderer")
+	_info.InvokeClassMethod("draw_layout_line", _args[:], nil)
 
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(line)
@@ -668,8 +676,9 @@ func (renderer *Renderer) Layout() *Layout {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	_gret := girepository.MustFind("Pango", "Renderer").InvokeMethod("get_layout", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Renderer")
+	_gret := _info.InvokeClassMethod("get_layout", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(renderer)
 
@@ -699,8 +708,9 @@ func (renderer *Renderer) LayoutLine() *LayoutLine {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	_gret := girepository.MustFind("Pango", "Renderer").InvokeMethod("get_layout_line", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Renderer")
+	_gret := _info.InvokeClassMethod("get_layout_line", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(renderer)
 
@@ -735,8 +745,9 @@ func (renderer *Renderer) Matrix() *Matrix {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	_gret := girepository.MustFind("Pango", "Renderer").InvokeMethod("get_matrix", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Renderer")
+	_gret := _info.InvokeClassMethod("get_matrix", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(renderer)
 
@@ -764,7 +775,8 @@ func (renderer *Renderer) SetMatrix(matrix *Matrix) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
 	}
 
-	girepository.MustFind("Pango", "Renderer").InvokeMethod("set_matrix", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Renderer")
+	_info.InvokeClassMethod("set_matrix", _args[:], nil)
 
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(matrix)

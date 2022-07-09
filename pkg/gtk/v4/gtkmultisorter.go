@@ -87,8 +87,9 @@ func marshalMultiSorter(p uintptr) (interface{}, error) {
 //    - multiSorter: new GtkMultiSorter.
 //
 func NewMultiSorter() *MultiSorter {
-	_gret := girepository.MustFind("Gtk", "MultiSorter").InvokeMethod("new_MultiSorter", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MultiSorter")
+	_gret := _info.InvokeClassMethod("new_MultiSorter", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _multiSorter *MultiSorter // out
 
@@ -113,7 +114,8 @@ func (self *MultiSorter) Append(sorter *Sorter) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sorter).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(sorter).Native()))
 
-	girepository.MustFind("Gtk", "MultiSorter").InvokeMethod("append", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MultiSorter")
+	_info.InvokeClassMethod("append", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(sorter)
@@ -134,7 +136,8 @@ func (self *MultiSorter) Remove(position uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
 
-	girepository.MustFind("Gtk", "MultiSorter").InvokeMethod("remove", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MultiSorter")
+	_info.InvokeClassMethod("remove", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(position)

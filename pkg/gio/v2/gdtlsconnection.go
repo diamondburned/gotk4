@@ -22,9 +22,9 @@ import (
 // extern gboolean _gotk4_gio2_DtlsConnectionInterface_handshake_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_DtlsConnectionInterface_shutdown(void*, gboolean, gboolean, void*, GError**);
 // extern gboolean _gotk4_gio2_DtlsConnectionInterface_shutdown_finish(void*, void*, GError**);
-// extern gchar* _gotk4_gio2_DtlsConnectionInterface_get_negotiated_protocol(void*);
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 // extern void _gotk4_gio2_DtlsConnectionInterface_set_advertised_protocols(void*, void**);
+// extern void* _gotk4_gio2_DtlsConnectionInterface_get_negotiated_protocol(void*);
 import "C"
 
 // GTypeDTLSConnection returns the GType for the type DTLSConnection.
@@ -169,6 +169,9 @@ func (conn *DTLSConnection) Close(ctx context.Context) error {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
+	_info := girepository.MustFind("Gio", "DtlsConnection")
+	_info.InvokeIfaceMethod("close", _args[:], nil)
+
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(ctx)
 
@@ -205,6 +208,9 @@ func (conn *DTLSConnection) CloseAsync(ctx context.Context, ioPriority int32, ca
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "DtlsConnection")
+	_info.InvokeIfaceMethod("close_async", _args[:], nil)
+
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(ioPriority)
@@ -223,6 +229,9 @@ func (conn *DTLSConnection) CloseFinish(result AsyncResulter) error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	_info := girepository.MustFind("Gio", "DtlsConnection")
+	_info.InvokeIfaceMethod("close_finish", _args[:], nil)
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(result)
@@ -248,7 +257,9 @@ func (conn *DTLSConnection) Certificate() TLSCertificater {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DtlsConnection")
+	_gret := _info.InvokeIfaceMethod("get_certificate", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(conn)
 
@@ -286,7 +297,9 @@ func (conn *DTLSConnection) Database() TLSDatabaser {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DtlsConnection")
+	_gret := _info.InvokeIfaceMethod("get_database", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(conn)
 
@@ -325,7 +338,9 @@ func (conn *DTLSConnection) Interaction() *TLSInteraction {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DtlsConnection")
+	_gret := _info.InvokeIfaceMethod("get_interaction", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(conn)
 
@@ -355,7 +370,9 @@ func (conn *DTLSConnection) NegotiatedProtocol() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DtlsConnection")
+	_gret := _info.InvokeIfaceMethod("get_negotiated_protocol", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(conn)
 
@@ -381,7 +398,9 @@ func (conn *DTLSConnection) PeerCertificate() TLSCertificater {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DtlsConnection")
+	_gret := _info.InvokeIfaceMethod("get_peer_certificate", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(conn)
 
@@ -420,7 +439,9 @@ func (conn *DTLSConnection) RequireCloseNotify() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DtlsConnection")
+	_gret := _info.InvokeIfaceMethod("get_require_close_notify", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(conn)
 
@@ -472,6 +493,9 @@ func (conn *DTLSConnection) Handshake(ctx context.Context) error {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
+	_info := girepository.MustFind("Gio", "DtlsConnection")
+	_info.InvokeIfaceMethod("handshake", _args[:], nil)
+
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(ctx)
 
@@ -508,6 +532,9 @@ func (conn *DTLSConnection) HandshakeAsync(ctx context.Context, ioPriority int32
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "DtlsConnection")
+	_info.InvokeIfaceMethod("handshake_async", _args[:], nil)
+
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(ioPriority)
@@ -526,6 +553,9 @@ func (conn *DTLSConnection) HandshakeFinish(result AsyncResulter) error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	_info := girepository.MustFind("Gio", "DtlsConnection")
+	_info.InvokeIfaceMethod("handshake_finish", _args[:], nil)
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(result)
@@ -574,6 +604,9 @@ func (conn *DTLSConnection) SetAdvertisedProtocols(protocols []string) {
 		}
 	}
 
+	_info := girepository.MustFind("Gio", "DtlsConnection")
+	_info.InvokeIfaceMethod("set_advertised_protocols", _args[:], nil)
+
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(protocols)
 }
@@ -604,6 +637,9 @@ func (conn *DTLSConnection) SetCertificate(certificate TLSCertificater) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(certificate).Native()))
 
+	_info := girepository.MustFind("Gio", "DtlsConnection")
+	_info.InvokeIfaceMethod("set_certificate", _args[:], nil)
+
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(certificate)
 }
@@ -628,6 +664,9 @@ func (conn *DTLSConnection) SetDatabase(database TLSDatabaser) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(database).Native()))
 	}
 
+	_info := girepository.MustFind("Gio", "DtlsConnection")
+	_info.InvokeIfaceMethod("set_database", _args[:], nil)
+
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(database)
 }
@@ -650,6 +689,9 @@ func (conn *DTLSConnection) SetInteraction(interaction *TLSInteraction) {
 	if interaction != nil {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interaction).Native()))
 	}
+
+	_info := girepository.MustFind("Gio", "DtlsConnection")
+	_info.InvokeIfaceMethod("set_interaction", _args[:], nil)
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(interaction)
@@ -688,6 +730,9 @@ func (conn *DTLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 	if requireCloseNotify {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
+
+	_info := girepository.MustFind("Gio", "DtlsConnection")
+	_info.InvokeIfaceMethod("set_require_close_notify", _args[:], nil)
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(requireCloseNotify)
@@ -731,6 +776,9 @@ func (conn *DTLSConnection) Shutdown(ctx context.Context, shutdownRead, shutdown
 	if shutdownWrite {
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
+
+	_info := girepository.MustFind("Gio", "DtlsConnection")
+	_info.InvokeIfaceMethod("shutdown", _args[:], nil)
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(ctx)
@@ -778,6 +826,9 @@ func (conn *DTLSConnection) ShutdownAsync(ctx context.Context, shutdownRead, shu
 		_args[6] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "DtlsConnection")
+	_info.InvokeIfaceMethod("shutdown_async", _args[:], nil)
+
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(shutdownRead)
@@ -798,6 +849,9 @@ func (conn *DTLSConnection) ShutdownFinish(result AsyncResulter) error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	_info := girepository.MustFind("Gio", "DtlsConnection")
+	_info.InvokeIfaceMethod("shutdown_finish", _args[:], nil)
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(result)

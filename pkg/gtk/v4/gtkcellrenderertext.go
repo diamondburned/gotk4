@@ -142,8 +142,9 @@ func (renderer *CellRendererText) ConnectEdited(f func(path, newText string)) co
 //    - cellRendererText: new cell renderer.
 //
 func NewCellRendererText() *CellRendererText {
-	_gret := girepository.MustFind("Gtk", "CellRendererText").InvokeMethod("new_CellRendererText", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellRendererText")
+	_gret := _info.InvokeClassMethod("new_CellRendererText", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _cellRendererText *CellRendererText // out
 
@@ -171,7 +172,8 @@ func (renderer *CellRendererText) SetFixedHeightFromFont(numberOfRows int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(numberOfRows)
 
-	girepository.MustFind("Gtk", "CellRendererText").InvokeMethod("set_fixed_height_from_font", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellRendererText")
+	_info.InvokeClassMethod("set_fixed_height_from_font", _args[:], nil)
 
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(numberOfRows)

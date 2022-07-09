@@ -294,8 +294,9 @@ func (entry *SearchEntry) ConnectStopSearch(f func()) coreglib.SignalHandle {
 //    - searchEntry: new SearchEntry.
 //
 func NewSearchEntry() *SearchEntry {
-	_gret := girepository.MustFind("Gtk", "SearchEntry").InvokeMethod("new_SearchEntry", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SearchEntry")
+	_gret := _info.InvokeClassMethod("new_SearchEntry", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _searchEntry *SearchEntry // out
 
@@ -329,8 +330,9 @@ func (entry *SearchEntry) HandleEvent(event *gdk.Event) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
 
-	_gret := girepository.MustFind("Gtk", "SearchEntry").InvokeMethod("handle_event", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SearchEntry")
+	_gret := _info.InvokeClassMethod("handle_event", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(event)

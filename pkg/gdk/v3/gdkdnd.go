@@ -219,7 +219,8 @@ func DragAbort(context *DragContext, time_ uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(time_)
 
-	girepository.MustFind("Gdk", "drag_abort").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gdk", "drag_abort")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(time_)
@@ -243,7 +244,8 @@ func DragDrop(context *DragContext, time_ uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(time_)
 
-	girepository.MustFind("Gdk", "drag_drop").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gdk", "drag_drop")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(time_)
@@ -272,7 +274,8 @@ func DragDropDone(context *DragContext, success bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gdk", "drag_drop_done").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gdk", "drag_drop_done")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(success)
@@ -295,8 +298,9 @@ func DragDropSucceeded(context *DragContext) bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gdk", "drag_drop_succeeded").Invoke(_args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "drag_drop_succeeded")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -339,7 +343,8 @@ func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(xRoot)
 	*(*C.gint)(unsafe.Pointer(&_args[4])) = C.gint(yRoot)
 
-	girepository.MustFind("Gdk", "drag_find_window_for_screen").Invoke(_args[:], _outs[:])
+	_info := girepository.MustFind("Gdk", "drag_find_window_for_screen")
+	_info.Invoke(_args[:], _outs[:])
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(dragWindow)
@@ -391,7 +396,8 @@ func DropFinish(context *DragContext, success bool, time_ uint32) {
 	}
 	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(time_)
 
-	girepository.MustFind("Gdk", "drop_finish").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gdk", "drop_finish")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(success)
@@ -418,7 +424,8 @@ func DropReply(context *DragContext, accepted bool, time_ uint32) {
 	}
 	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(time_)
 
-	girepository.MustFind("Gdk", "drop_reply").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gdk", "drop_reply")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(accepted)
@@ -436,8 +443,9 @@ func (context *DragContext) DestWindow() Windower {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gdk", "DragContext").InvokeMethod("get_dest_window", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "DragContext")
+	_gret := _info.InvokeClassMethod("get_dest_window", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -475,8 +483,9 @@ func (context *DragContext) Device() Devicer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gdk", "DragContext").InvokeMethod("get_device", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "DragContext")
+	_gret := _info.InvokeClassMethod("get_device", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -518,8 +527,9 @@ func (context *DragContext) DragWindow() Windower {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gdk", "DragContext").InvokeMethod("get_drag_window", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "DragContext")
+	_gret := _info.InvokeClassMethod("get_drag_window", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -556,8 +566,9 @@ func (context *DragContext) SourceWindow() Windower {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gdk", "DragContext").InvokeMethod("get_source_window", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "DragContext")
+	_gret := _info.InvokeClassMethod("get_source_window", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -597,7 +608,8 @@ func (context *DragContext) SetDevice(device Devicer) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
-	girepository.MustFind("Gdk", "DragContext").InvokeMethod("set_device", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "DragContext")
+	_info.InvokeClassMethod("set_device", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(device)
@@ -619,7 +631,8 @@ func (context *DragContext) SetHotspot(hotX, hotY int32) {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(hotX)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(hotY)
 
-	girepository.MustFind("Gdk", "DragContext").InvokeMethod("set_hotspot", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "DragContext")
+	_info.InvokeClassMethod("set_hotspot", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(hotX)

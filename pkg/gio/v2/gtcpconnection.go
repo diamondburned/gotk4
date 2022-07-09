@@ -76,8 +76,9 @@ func (connection *TCPConnection) GracefulDisconnect() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
-	_gret := girepository.MustFind("Gio", "TcpConnection").InvokeMethod("get_graceful_disconnect", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TcpConnection")
+	_gret := _info.InvokeClassMethod("get_graceful_disconnect", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
 
@@ -113,7 +114,8 @@ func (connection *TCPConnection) SetGracefulDisconnect(gracefulDisconnect bool) 
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "TcpConnection").InvokeMethod("set_graceful_disconnect", _args[:], nil)
+	_info := girepository.MustFind("Gio", "TcpConnection")
+	_info.InvokeClassMethod("set_graceful_disconnect", _args[:], nil)
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(gracefulDisconnect)

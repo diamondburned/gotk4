@@ -14,7 +14,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern AtkHyperlink* _gotk4_atk1_HyperlinkImplIface_get_hyperlink(void*);
+// extern void* _gotk4_atk1_HyperlinkImplIface_get_hyperlink(void*);
 import "C"
 
 // GTypeHyperlinkImpl returns the GType for the type HyperlinkImpl.
@@ -92,7 +92,7 @@ func ifaceInitHyperlinkImpler(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_atk1_HyperlinkImplIface_get_hyperlink
-func _gotk4_atk1_HyperlinkImplIface_get_hyperlink(arg0 *C.void) (cret *C.AtkHyperlink) {
+func _gotk4_atk1_HyperlinkImplIface_get_hyperlink(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(HyperlinkImplOverrider)
 
@@ -126,7 +126,9 @@ func (impl *HyperlinkImpl) Hyperlink() *Hyperlink {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(impl).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "HyperlinkImpl")
+	_gret := _info.InvokeIfaceMethod("get_hyperlink", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(impl)
 

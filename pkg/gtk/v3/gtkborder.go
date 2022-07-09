@@ -48,7 +48,9 @@ func marshalBorder(p uintptr) (interface{}, error) {
 
 // NewBorder constructs a struct Border.
 func NewBorder() *Border {
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Border")
+	_gret := _info.InvokeRecordMethod("new", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _border *Border // out
 
@@ -58,7 +60,7 @@ func NewBorder() *Border {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "Border").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "Border").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -141,7 +143,9 @@ func (border_ *Border) Copy() *Border {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(border_)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Border")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(border_)
 
@@ -153,7 +157,7 @@ func (border_ *Border) Copy() *Border {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "Border").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "Border").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)

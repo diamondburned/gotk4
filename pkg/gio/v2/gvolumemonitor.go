@@ -16,11 +16,6 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GList* _gotk4_gio2_VolumeMonitorClass_get_connected_drives(void*);
-// extern GList* _gotk4_gio2_VolumeMonitorClass_get_mounts(void*);
-// extern GList* _gotk4_gio2_VolumeMonitorClass_get_volumes(void*);
-// extern GMount* _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid(void*, void*);
-// extern GVolume* _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid(void*, void*);
 // extern void _gotk4_gio2_VolumeMonitorClass_drive_changed(void*, void*);
 // extern void _gotk4_gio2_VolumeMonitorClass_drive_connected(void*, void*);
 // extern void _gotk4_gio2_VolumeMonitorClass_drive_disconnected(void*, void*);
@@ -45,6 +40,11 @@ import (
 // extern void _gotk4_gio2_VolumeMonitor_ConnectVolumeAdded(gpointer, void*, guintptr);
 // extern void _gotk4_gio2_VolumeMonitor_ConnectVolumeChanged(gpointer, void*, guintptr);
 // extern void _gotk4_gio2_VolumeMonitor_ConnectVolumeRemoved(gpointer, void*, guintptr);
+// extern void* _gotk4_gio2_VolumeMonitorClass_get_connected_drives(void*);
+// extern void* _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid(void*, void*);
+// extern void* _gotk4_gio2_VolumeMonitorClass_get_mounts(void*);
+// extern void* _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid(void*, void*);
+// extern void* _gotk4_gio2_VolumeMonitorClass_get_volumes(void*);
 import "C"
 
 // GTypeVolumeMonitor returns the GType for the type VolumeMonitor.
@@ -412,7 +412,7 @@ func _gotk4_gio2_VolumeMonitorClass_drive_stop_button(arg0 *C.void, arg1 *C.void
 }
 
 //export _gotk4_gio2_VolumeMonitorClass_get_connected_drives
-func _gotk4_gio2_VolumeMonitorClass_get_connected_drives(arg0 *C.void) (cret *C.GList) {
+func _gotk4_gio2_VolumeMonitorClass_get_connected_drives(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ConnectedDrives() []*Drive })
 
@@ -430,7 +430,7 @@ func _gotk4_gio2_VolumeMonitorClass_get_connected_drives(arg0 *C.void) (cret *C.
 }
 
 //export _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid
-func _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid(arg0 *C.void, arg1 *C.void) (cret *C.GMount) {
+func _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid(arg0 *C.void, arg1 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ MountForUUID(uuid string) *Mount })
 
@@ -449,7 +449,7 @@ func _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid(arg0 *C.void, arg1 *C.voi
 }
 
 //export _gotk4_gio2_VolumeMonitorClass_get_mounts
-func _gotk4_gio2_VolumeMonitorClass_get_mounts(arg0 *C.void) (cret *C.GList) {
+func _gotk4_gio2_VolumeMonitorClass_get_mounts(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Mounts() []*Mount })
 
@@ -467,7 +467,7 @@ func _gotk4_gio2_VolumeMonitorClass_get_mounts(arg0 *C.void) (cret *C.GList) {
 }
 
 //export _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid
-func _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid(arg0 *C.void, arg1 *C.void) (cret *C.GVolume) {
+func _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid(arg0 *C.void, arg1 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ VolumeForUUID(uuid string) *Volume })
 
@@ -486,7 +486,7 @@ func _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid(arg0 *C.void, arg1 *C.vo
 }
 
 //export _gotk4_gio2_VolumeMonitorClass_get_volumes
-func _gotk4_gio2_VolumeMonitorClass_get_volumes(arg0 *C.void) (cret *C.GList) {
+func _gotk4_gio2_VolumeMonitorClass_get_volumes(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Volumes() []*Volume })
 
@@ -1220,8 +1220,9 @@ func (volumeMonitor *VolumeMonitor) ConnectedDrives() []*Drive {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(volumeMonitor).Native()))
 
-	_gret := girepository.MustFind("Gio", "VolumeMonitor").InvokeMethod("get_connected_drives", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "VolumeMonitor")
+	_gret := _info.InvokeClassMethod("get_connected_drives", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(volumeMonitor)
 
@@ -1256,8 +1257,9 @@ func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) *Mount {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uuid)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gio", "VolumeMonitor").InvokeMethod("get_mount_for_uuid", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "VolumeMonitor")
+	_gret := _info.InvokeClassMethod("get_mount_for_uuid", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(volumeMonitor)
 	runtime.KeepAlive(uuid)
@@ -1285,8 +1287,9 @@ func (volumeMonitor *VolumeMonitor) Mounts() []*Mount {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(volumeMonitor).Native()))
 
-	_gret := girepository.MustFind("Gio", "VolumeMonitor").InvokeMethod("get_mounts", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "VolumeMonitor")
+	_gret := _info.InvokeClassMethod("get_mounts", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(volumeMonitor)
 
@@ -1321,8 +1324,9 @@ func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) *Volume {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uuid)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gio", "VolumeMonitor").InvokeMethod("get_volume_for_uuid", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "VolumeMonitor")
+	_gret := _info.InvokeClassMethod("get_volume_for_uuid", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(volumeMonitor)
 	runtime.KeepAlive(uuid)
@@ -1350,8 +1354,9 @@ func (volumeMonitor *VolumeMonitor) Volumes() []*Volume {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(volumeMonitor).Native()))
 
-	_gret := girepository.MustFind("Gio", "VolumeMonitor").InvokeMethod("get_volumes", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "VolumeMonitor")
+	_gret := _info.InvokeClassMethod("get_volumes", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(volumeMonitor)
 
@@ -1416,8 +1421,9 @@ func VolumeMonitorAdoptOrphanMount(mount Mounter) *Volume {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 
-	_gret := girepository.MustFind("Gio", "adopt_orphan_mount").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "adopt_orphan_mount")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mount)
 
@@ -1436,8 +1442,9 @@ func VolumeMonitorAdoptOrphanMount(mount Mounter) *Volume {
 //      g_object_unref() when done with it.
 //
 func VolumeMonitorGet() *VolumeMonitor {
-	_gret := girepository.MustFind("Gio", "get").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "get")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _volumeMonitor *VolumeMonitor // out
 

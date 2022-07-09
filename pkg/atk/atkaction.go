@@ -16,11 +16,11 @@ import (
 // #include <glib-object.h>
 // extern gboolean _gotk4_atk1_ActionIface_do_action(void*, gint);
 // extern gboolean _gotk4_atk1_ActionIface_set_description(void*, gint, void*);
-// extern gchar* _gotk4_atk1_ActionIface_get_description(void*, gint);
-// extern gchar* _gotk4_atk1_ActionIface_get_keybinding(void*, gint);
-// extern gchar* _gotk4_atk1_ActionIface_get_localized_name(void*, gint);
-// extern gchar* _gotk4_atk1_ActionIface_get_name(void*, gint);
 // extern gint _gotk4_atk1_ActionIface_get_n_actions(void*);
+// extern void* _gotk4_atk1_ActionIface_get_description(void*, gint);
+// extern void* _gotk4_atk1_ActionIface_get_keybinding(void*, gint);
+// extern void* _gotk4_atk1_ActionIface_get_localized_name(void*, gint);
+// extern void* _gotk4_atk1_ActionIface_get_name(void*, gint);
 import "C"
 
 // GTypeAction returns the GType for the type Action.
@@ -236,7 +236,7 @@ func _gotk4_atk1_ActionIface_do_action(arg0 *C.void, arg1 C.gint) (cret C.gboole
 }
 
 //export _gotk4_atk1_ActionIface_get_description
-func _gotk4_atk1_ActionIface_get_description(arg0 *C.void, arg1 C.gint) (cret *C.gchar) {
+func _gotk4_atk1_ActionIface_get_description(arg0 *C.void, arg1 C.gint) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -255,7 +255,7 @@ func _gotk4_atk1_ActionIface_get_description(arg0 *C.void, arg1 C.gint) (cret *C
 }
 
 //export _gotk4_atk1_ActionIface_get_keybinding
-func _gotk4_atk1_ActionIface_get_keybinding(arg0 *C.void, arg1 C.gint) (cret *C.gchar) {
+func _gotk4_atk1_ActionIface_get_keybinding(arg0 *C.void, arg1 C.gint) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -274,7 +274,7 @@ func _gotk4_atk1_ActionIface_get_keybinding(arg0 *C.void, arg1 C.gint) (cret *C.
 }
 
 //export _gotk4_atk1_ActionIface_get_localized_name
-func _gotk4_atk1_ActionIface_get_localized_name(arg0 *C.void, arg1 C.gint) (cret *C.gchar) {
+func _gotk4_atk1_ActionIface_get_localized_name(arg0 *C.void, arg1 C.gint) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -305,7 +305,7 @@ func _gotk4_atk1_ActionIface_get_n_actions(arg0 *C.void) (cret C.gint) {
 }
 
 //export _gotk4_atk1_ActionIface_get_name
-func _gotk4_atk1_ActionIface_get_name(arg0 *C.void, arg1 C.gint) (cret *C.gchar) {
+func _gotk4_atk1_ActionIface_get_name(arg0 *C.void, arg1 C.gint) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -369,7 +369,9 @@ func (action *Action) DoAction(i int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Action")
+	_gret := _info.InvokeIfaceMethod("do_action", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(i)
@@ -400,7 +402,9 @@ func (action *Action) Description(i int32) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Action")
+	_gret := _info.InvokeIfaceMethod("get_description", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(i)
@@ -454,7 +458,9 @@ func (action *Action) Keybinding(i int32) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Action")
+	_gret := _info.InvokeIfaceMethod("get_keybinding", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(i)
@@ -486,7 +492,9 @@ func (action *Action) LocalizedName(i int32) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Action")
+	_gret := _info.InvokeIfaceMethod("get_localized_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(i)
@@ -514,7 +522,9 @@ func (action *Action) NActions() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Action")
+	_gret := _info.InvokeIfaceMethod("get_n_actions", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(action)
 
@@ -553,7 +563,9 @@ func (action *Action) Name(i int32) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Action")
+	_gret := _info.InvokeIfaceMethod("get_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(i)
@@ -586,7 +598,9 @@ func (action *Action) SetDescription(i int32, desc string) bool {
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(desc)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Action")
+	_gret := _info.InvokeIfaceMethod("set_description", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(i)

@@ -104,8 +104,9 @@ func NewVScrollbar(adjustment *Adjustment) *VScrollbar {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "VScrollbar").InvokeMethod("new_VScrollbar", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "VScrollbar")
+	_gret := _info.InvokeClassMethod("new_VScrollbar", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(adjustment)
 

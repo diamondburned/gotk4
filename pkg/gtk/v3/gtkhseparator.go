@@ -95,8 +95,9 @@ func marshalHSeparator(p uintptr) (interface{}, error) {
 //    - hSeparator: new HSeparator.
 //
 func NewHSeparator() *HSeparator {
-	_gret := girepository.MustFind("Gtk", "HSeparator").InvokeMethod("new_HSeparator", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "HSeparator")
+	_gret := _info.InvokeClassMethod("new_HSeparator", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _hSeparator *HSeparator // out
 

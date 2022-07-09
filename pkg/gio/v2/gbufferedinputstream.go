@@ -229,8 +229,9 @@ func NewBufferedInputStream(baseStream InputStreamer) *BufferedInputStream {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseStream).Native()))
 
-	_gret := girepository.MustFind("Gio", "BufferedInputStream").InvokeMethod("new_BufferedInputStream", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "BufferedInputStream")
+	_gret := _info.InvokeClassMethod("new_BufferedInputStream", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseStream)
 
@@ -259,8 +260,9 @@ func NewBufferedInputStreamSized(baseStream InputStreamer, size uint) *BufferedI
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseStream).Native()))
 	*(*C.gsize)(unsafe.Pointer(&_args[1])) = C.gsize(size)
 
-	_gret := girepository.MustFind("Gio", "BufferedInputStream").InvokeMethod("new_BufferedInputStream_sized", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "BufferedInputStream")
+	_gret := _info.InvokeClassMethod("new_BufferedInputStream_sized", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseStream)
 	runtime.KeepAlive(size)
@@ -318,8 +320,9 @@ func (stream *BufferedInputStream) Fill(ctx context.Context, count int) (int, er
 	}
 	*(*C.gssize)(unsafe.Pointer(&_args[1])) = C.gssize(count)
 
-	_gret := girepository.MustFind("Gio", "BufferedInputStream").InvokeMethod("fill", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "BufferedInputStream")
+	_gret := _info.InvokeClassMethod("fill", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -366,7 +369,8 @@ func (stream *BufferedInputStream) FillAsync(ctx context.Context, count int, ioP
 		_args[5] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "BufferedInputStream").InvokeMethod("fill_async", _args[:], nil)
+	_info := girepository.MustFind("Gio", "BufferedInputStream")
+	_info.InvokeClassMethod("fill_async", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -391,8 +395,9 @@ func (stream *BufferedInputStream) FillFinish(result AsyncResulter) (int, error)
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_gret := girepository.MustFind("Gio", "BufferedInputStream").InvokeMethod("fill_finish", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "BufferedInputStream")
+	_gret := _info.InvokeClassMethod("fill_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
@@ -419,8 +424,9 @@ func (stream *BufferedInputStream) Available() uint {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	_gret := girepository.MustFind("Gio", "BufferedInputStream").InvokeMethod("get_available", _args[:], nil)
-	_cret = *(*C.gsize)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "BufferedInputStream")
+	_gret := _info.InvokeClassMethod("get_available", _args[:], nil)
+	_cret := *(*C.gsize)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 
@@ -442,8 +448,9 @@ func (stream *BufferedInputStream) BufferSize() uint {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	_gret := girepository.MustFind("Gio", "BufferedInputStream").InvokeMethod("get_buffer_size", _args[:], nil)
-	_cret = *(*C.gsize)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "BufferedInputStream")
+	_gret := _info.InvokeClassMethod("get_buffer_size", _args[:], nil)
+	_cret := *(*C.gsize)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 
@@ -468,8 +475,9 @@ func (stream *BufferedInputStream) PeekBuffer() []byte {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	_gret := girepository.MustFind("Gio", "BufferedInputStream").InvokeMethod("peek_buffer", _args[:], _outs[:])
-	_cret = *(*unsafe.Pointer)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "BufferedInputStream")
+	_gret := _info.InvokeClassMethod("peek_buffer", _args[:], _outs[:])
+	_cret := *(*unsafe.Pointer)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 
@@ -513,8 +521,9 @@ func (stream *BufferedInputStream) ReadByte(ctx context.Context) (int32, error) 
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_gret := girepository.MustFind("Gio", "BufferedInputStream").InvokeMethod("read_byte", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "BufferedInputStream")
+	_gret := _info.InvokeClassMethod("read_byte", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -544,7 +553,8 @@ func (stream *BufferedInputStream) SetBufferSize(size uint) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	*(*C.gsize)(unsafe.Pointer(&_args[1])) = C.gsize(size)
 
-	girepository.MustFind("Gio", "BufferedInputStream").InvokeMethod("set_buffer_size", _args[:], nil)
+	_info := girepository.MustFind("Gio", "BufferedInputStream")
+	_info.InvokeClassMethod("set_buffer_size", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(size)

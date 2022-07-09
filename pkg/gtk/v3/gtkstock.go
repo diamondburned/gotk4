@@ -15,8 +15,8 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern gchar* _gotk4_gtk3_TranslateFunc(void*, gpointer);
 // extern void callbackDelete(gpointer);
+// extern void* _gotk4_gtk3_TranslateFunc(void*, gpointer);
 import "C"
 
 // STOCK_ABOUT: “About” item. ! (help-about.png)
@@ -597,7 +597,7 @@ type Stock = string
 type TranslateFunc func(path string) (utf8 string)
 
 //export _gotk4_gtk3_TranslateFunc
-func _gotk4_gtk3_TranslateFunc(arg1 *C.void, arg2 C.gpointer) (cret *C.gchar) {
+func _gotk4_gtk3_TranslateFunc(arg1 *C.void, arg2 C.gpointer) (cret *C.void) {
 	var fn TranslateFunc
 	{
 		v := gbox.Get(uintptr(arg2))
@@ -629,8 +629,9 @@ func _gotk4_gtk3_TranslateFunc(arg1 *C.void, arg2 C.gpointer) (cret *C.gchar) {
 //    - sList: list of known stock IDs.
 //
 func StockListIDs() []string {
-	_gret := girepository.MustFind("Gtk", "stock_list_ids").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "stock_list_ids")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _sList []string // out
 
@@ -667,8 +668,9 @@ func StockLookup(stockId string) (*StockItem, bool) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "stock_lookup").Invoke(_args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "stock_lookup")
+	_gret := _info.Invoke(_args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stockId)
 
@@ -730,7 +732,8 @@ func StockSetTranslateFunc(domain string, fn TranslateFunc) {
 	_args[2] = C.gpointer(gbox.Assign(fn))
 	_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
-	girepository.MustFind("Gtk", "stock_set_translate_func").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "stock_set_translate_func")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(domain)
 	runtime.KeepAlive(fn)

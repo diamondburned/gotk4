@@ -18,9 +18,9 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GSource* _gotk4_gio2_PollableInputStreamInterface_create_source(void*, void*);
 // extern gboolean _gotk4_gio2_PollableInputStreamInterface_can_poll(void*);
 // extern gboolean _gotk4_gio2_PollableInputStreamInterface_is_readable(void*);
+// extern void* _gotk4_gio2_PollableInputStreamInterface_create_source(void*, void*);
 import "C"
 
 // GTypePollableInputStream returns the GType for the type PollableInputStream.
@@ -137,7 +137,7 @@ func _gotk4_gio2_PollableInputStreamInterface_can_poll(arg0 *C.void) (cret C.gbo
 }
 
 //export _gotk4_gio2_PollableInputStreamInterface_create_source
-func _gotk4_gio2_PollableInputStreamInterface_create_source(arg0 *C.void, arg1 *C.void) (cret *C.GSource) {
+func _gotk4_gio2_PollableInputStreamInterface_create_source(arg0 *C.void, arg1 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(PollableInputStreamOverrider)
 
@@ -197,7 +197,9 @@ func (stream *PollableInputStream) CanPoll() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "PollableInputStream")
+	_gret := _info.InvokeIfaceMethod("can_poll", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 
@@ -237,7 +239,9 @@ func (stream *PollableInputStream) CreateSource(ctx context.Context) *glib.Sourc
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "PollableInputStream")
+	_gret := _info.InvokeIfaceMethod("create_source", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -250,7 +254,7 @@ func (stream *PollableInputStream) CreateSource(ctx context.Context) *glib.Sourc
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("GLib", "Source").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("GLib", "Source").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -277,7 +281,9 @@ func (stream *PollableInputStream) IsReadable() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "PollableInputStream")
+	_gret := _info.InvokeIfaceMethod("is_readable", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 

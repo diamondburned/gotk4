@@ -76,28 +76,17 @@ func AddCallableHeader(gen FileGenerator, h *file.Header, name string, callable 
 //    func CallableCHeader(gen FileGenerator, name string, callable *gir.CallableAttrs) string
 //
 func CallableCHeader(gen FileGenerator, name string, callable *gir.CallableAttrs) string {
+	resolveAny := func(any gir.AnyType) string {
+		cType := ResolveAnyTypeC(gen, any)
+		if cType == "" {
+			panic("unknown primitive " + AnyTypeC(any))
+		}
+		return cType
+	}
+
 	var ctail pen.Joints
 	if callable.Parameters != nil {
 		ctail = pen.NewJoints(", ", len(callable.Parameters.Parameters)+1)
-
-		var resolveAny func(gir.AnyType) string
-
-		switch gen.LinkMode() {
-		case DynamicLinkMode:
-			resolveAny = func(any gir.AnyType) string {
-				any = ResolveAnyType(gen, any)
-				return AnyTypeC(any)
-			}
-		case RuntimeLinkMode:
-			resolveAny = func(any gir.AnyType) string {
-				any = ResolveAnyType(gen, any)
-				if prim := AnyTypeCPrimitive(gen, any); prim != "" {
-					return prim
-				}
-				panic("unknown primitive " + AnyTypeC(any))
-				// return ""
-			}
-		}
 
 		if callable.Parameters.InstanceParameter != nil {
 			ctail.Add(resolveAny(callable.Parameters.InstanceParameter.AnyType))
@@ -111,8 +100,8 @@ func CallableCHeader(gen FileGenerator, name string, callable *gir.CallableAttrs
 	}
 
 	cReturn := "void"
-	if callable.ReturnValue != nil {
-		cReturn = AnyTypeC(callable.ReturnValue.AnyType)
+	if !ReturnIsVoid(callable.ReturnValue) {
+		cReturn = resolveAny(callable.ReturnValue.AnyType)
 	}
 
 	if name == "" {

@@ -69,8 +69,9 @@ func Itemize(context *Context, text string, startIndex, length int32, attrs *Att
 		*(**C.void)(unsafe.Pointer(&_args[5])) = (*C.void)(gextras.StructNative(unsafe.Pointer(cachedIter)))
 	}
 
-	_gret := girepository.MustFind("Pango", "itemize").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "itemize")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(text)
@@ -91,7 +92,7 @@ func Itemize(context *Context, text string, startIndex, length int32, attrs *Att
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Pango", "Item").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Pango", "Item").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -145,8 +146,9 @@ func marshalContext(p uintptr) (interface{}, error) {
 //      g_object_unref().
 //
 func NewContext() *Context {
-	_gret := girepository.MustFind("Pango", "Context").InvokeMethod("new_Context", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Context")
+	_gret := _info.InvokeClassMethod("new_Context", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _context *Context // out
 
@@ -166,7 +168,8 @@ func (context *Context) Changed() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	girepository.MustFind("Pango", "Context").InvokeMethod("changed", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Context")
+	_info.InvokeClassMethod("changed", _args[:], nil)
 
 	runtime.KeepAlive(context)
 }
@@ -183,8 +186,9 @@ func (context *Context) FontDescription() *FontDescription {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Pango", "Context").InvokeMethod("get_font_description", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Context")
+	_gret := _info.InvokeClassMethod("get_font_description", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -207,8 +211,9 @@ func (context *Context) FontMap() FontMapper {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Pango", "Context").InvokeMethod("get_font_map", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Context")
+	_gret := _info.InvokeClassMethod("get_font_map", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -246,8 +251,9 @@ func (context *Context) Language() *Language {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Pango", "Context").InvokeMethod("get_language", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Context")
+	_gret := _info.InvokeClassMethod("get_language", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -280,8 +286,9 @@ func (context *Context) Matrix() *Matrix {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Pango", "Context").InvokeMethod("get_matrix", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Context")
+	_gret := _info.InvokeClassMethod("get_matrix", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -331,8 +338,9 @@ func (context *Context) Metrics(desc *FontDescription, language *Language) *Font
 		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(language)))
 	}
 
-	_gret := girepository.MustFind("Pango", "Context").InvokeMethod("get_metrics", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Context")
+	_gret := _info.InvokeClassMethod("get_metrics", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(desc)
@@ -361,8 +369,9 @@ func (context *Context) RoundGlyphPositions() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Pango", "Context").InvokeMethod("get_round_glyph_positions", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Context")
+	_gret := _info.InvokeClassMethod("get_round_glyph_positions", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -396,8 +405,9 @@ func (context *Context) Serial() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Pango", "Context").InvokeMethod("get_serial", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Context")
+	_gret := _info.InvokeClassMethod("get_serial", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -421,7 +431,8 @@ func (context *Context) ListFamilies() []FontFamilier {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	girepository.MustFind("Pango", "Context").InvokeMethod("list_families", _args[:], _outs[:])
+	_info := girepository.MustFind("Pango", "Context")
+	_info.InvokeClassMethod("list_families", _args[:], _outs[:])
 
 	runtime.KeepAlive(context)
 
@@ -473,8 +484,9 @@ func (context *Context) LoadFont(desc *FontDescription) Fonter {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
 
-	_gret := girepository.MustFind("Pango", "Context").InvokeMethod("load_font", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Context")
+	_gret := _info.InvokeClassMethod("load_font", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(desc)
@@ -521,8 +533,9 @@ func (context *Context) LoadFontset(desc *FontDescription, language *Language) F
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(language)))
 
-	_gret := girepository.MustFind("Pango", "Context").InvokeMethod("load_fontset", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Context")
+	_gret := _info.InvokeClassMethod("load_fontset", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(desc)
@@ -562,7 +575,8 @@ func (context *Context) SetFontDescription(desc *FontDescription) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
 
-	girepository.MustFind("Pango", "Context").InvokeMethod("set_font_description", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Context")
+	_info.InvokeClassMethod("set_font_description", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(desc)
@@ -584,7 +598,8 @@ func (context *Context) SetFontMap(fontMap FontMapper) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontMap).Native()))
 
-	girepository.MustFind("Pango", "Context").InvokeMethod("set_font_map", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Context")
+	_info.InvokeClassMethod("set_font_map", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(fontMap)
@@ -605,7 +620,8 @@ func (context *Context) SetLanguage(language *Language) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(language)))
 
-	girepository.MustFind("Pango", "Context").InvokeMethod("set_language", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Context")
+	_info.InvokeClassMethod("set_language", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(language)
@@ -633,7 +649,8 @@ func (context *Context) SetMatrix(matrix *Matrix) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
 	}
 
-	girepository.MustFind("Pango", "Context").InvokeMethod("set_matrix", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Context")
+	_info.InvokeClassMethod("set_matrix", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(matrix)
@@ -659,7 +676,8 @@ func (context *Context) SetRoundGlyphPositions(roundPositions bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Pango", "Context").InvokeMethod("set_round_glyph_positions", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Context")
+	_info.InvokeClassMethod("set_round_glyph_positions", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(roundPositions)

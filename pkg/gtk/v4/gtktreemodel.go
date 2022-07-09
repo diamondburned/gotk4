@@ -18,7 +18,6 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GtkTreePath* _gotk4_gtk4_TreeModelIface_get_path(void*, void*);
 // extern gboolean _gotk4_gtk4_TreeModelForEachFunc(void*, void*, void*, gpointer);
 // extern gboolean _gotk4_gtk4_TreeModelIface_get_iter(void*, void*, void*);
 // extern gboolean _gotk4_gtk4_TreeModelIface_iter_children(void*, void*, void*);
@@ -41,6 +40,7 @@ import (
 // extern void _gotk4_gtk4_TreeModel_ConnectRowHasChildToggled(gpointer, void*, void*, guintptr);
 // extern void _gotk4_gtk4_TreeModel_ConnectRowInserted(gpointer, void*, void*, guintptr);
 // extern void _gotk4_gtk4_TreeModel_ConnectRowsReordered(gpointer, void*, void*, gpointer, guintptr);
+// extern void* _gotk4_gtk4_TreeModelIface_get_path(void*, void*);
 import "C"
 
 // GTypeTreeModelFlags returns the GType for the type TreeModelFlags.
@@ -755,7 +755,7 @@ func _gotk4_gtk4_TreeModelIface_get_n_columns(arg0 *C.void) (cret C.int) {
 }
 
 //export _gotk4_gtk4_TreeModelIface_get_path
-func _gotk4_gtk4_TreeModelIface_get_path(arg0 *C.void, arg1 *C.void) (cret *C.GtkTreePath) {
+func _gotk4_gtk4_TreeModelIface_get_path(arg0 *C.void, arg1 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TreeModelOverrider)
 
@@ -1180,6 +1180,9 @@ func (model *TreeModel) ForEach(fn TreeModelForEachFunc) {
 	_args[2] = C.gpointer(gbox.Assign(fn))
 	defer gbox.Delete(uintptr(_args[2]))
 
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_info.InvokeIfaceMethod("foreach", _args[:], nil)
+
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(fn)
 }
@@ -1203,7 +1206,9 @@ func (treeModel *TreeModel) Iter(path *TreePath) (*TreeIter, bool) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_gret := _info.InvokeIfaceMethod("get_iter", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(path)
@@ -1233,7 +1238,9 @@ func (treeModel *TreeModel) IterFirst() (*TreeIter, bool) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_gret := _info.InvokeIfaceMethod("get_iter_first", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(treeModel)
 
@@ -1268,7 +1275,9 @@ func (treeModel *TreeModel) IterFromString(pathString string) (*TreeIter, bool) 
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(pathString)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_gret := _info.InvokeIfaceMethod("get_iter_from_string", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(pathString)
@@ -1295,7 +1304,9 @@ func (treeModel *TreeModel) NColumns() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_gret := _info.InvokeIfaceMethod("get_n_columns", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(treeModel)
 
@@ -1324,7 +1335,9 @@ func (treeModel *TreeModel) Path(iter *TreeIter) *TreePath {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_gret := _info.InvokeIfaceMethod("get_path", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(iter)
@@ -1337,7 +1350,7 @@ func (treeModel *TreeModel) Path(iter *TreeIter) *TreePath {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -1364,7 +1377,9 @@ func (treeModel *TreeModel) StringFromIter(iter *TreeIter) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_gret := _info.InvokeIfaceMethod("get_string_from_iter", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(iter)
@@ -1400,6 +1415,9 @@ func (treeModel *TreeModel) Value(iter *TreeIter, column int32) coreglib.Value {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(column)
+
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_info.InvokeIfaceMethod("get_value", _args[:], _outs[:])
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(iter)
@@ -1438,7 +1456,9 @@ func (treeModel *TreeModel) IterChildren(parent *TreeIter) (*TreeIter, bool) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parent)))
 	}
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_gret := _info.InvokeIfaceMethod("iter_children", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(parent)
@@ -1470,7 +1490,9 @@ func (treeModel *TreeModel) IterHasChild(iter *TreeIter) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_gret := _info.InvokeIfaceMethod("iter_has_child", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(iter)
@@ -1505,7 +1527,9 @@ func (treeModel *TreeModel) IterNChildren(iter *TreeIter) int32 {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	}
 
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_gret := _info.InvokeIfaceMethod("iter_n_children", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(iter)
@@ -1535,7 +1559,9 @@ func (treeModel *TreeModel) IterNext(iter *TreeIter) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_gret := _info.InvokeIfaceMethod("iter_next", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(iter)
@@ -1576,7 +1602,9 @@ func (treeModel *TreeModel) IterNthChild(parent *TreeIter, n int32) (*TreeIter, 
 	}
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(n)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_gret := _info.InvokeIfaceMethod("iter_nth_child", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(parent)
@@ -1618,7 +1646,9 @@ func (treeModel *TreeModel) IterParent(child *TreeIter) (*TreeIter, bool) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(child)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_gret := _info.InvokeIfaceMethod("iter_parent", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(child)
@@ -1653,7 +1683,9 @@ func (treeModel *TreeModel) IterPrevious(iter *TreeIter) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_gret := _info.InvokeIfaceMethod("iter_previous", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(iter)
@@ -1693,6 +1725,9 @@ func (treeModel *TreeModel) RefNode(iter *TreeIter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_info.InvokeIfaceMethod("ref_node", _args[:], nil)
+
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(iter)
 }
@@ -1710,6 +1745,9 @@ func (treeModel *TreeModel) RowChanged(path *TreePath, iter *TreeIter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_info.InvokeIfaceMethod("row_changed", _args[:], nil)
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(path)
@@ -1735,6 +1773,9 @@ func (treeModel *TreeModel) RowDeleted(path *TreePath) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_info.InvokeIfaceMethod("row_deleted", _args[:], nil)
+
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(path)
 }
@@ -1755,6 +1796,9 @@ func (treeModel *TreeModel) RowHasChildToggled(path *TreePath, iter *TreeIter) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_info.InvokeIfaceMethod("row_has_child_toggled", _args[:], nil)
+
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(iter)
@@ -1773,6 +1817,9 @@ func (treeModel *TreeModel) RowInserted(path *TreePath, iter *TreeIter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_info.InvokeIfaceMethod("row_inserted", _args[:], nil)
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(path)
@@ -1809,6 +1856,9 @@ func (treeModel *TreeModel) RowsReordered(path *TreePath, iter *TreeIter, newOrd
 		}
 	}
 
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_info.InvokeIfaceMethod("rows_reordered_with_length", _args[:], nil)
+
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(iter)
@@ -1832,6 +1882,9 @@ func (treeModel *TreeModel) UnrefNode(iter *TreeIter) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_info.InvokeIfaceMethod("unref_node", _args[:], nil)
 
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(iter)
@@ -1914,7 +1967,9 @@ func (iter *TreeIter) Copy() *TreeIter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeIter")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -1926,7 +1981,7 @@ func (iter *TreeIter) Copy() *TreeIter {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "TreeIter").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "TreeIter").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -1953,7 +2008,9 @@ func marshalTreePath(p uintptr) (interface{}, error) {
 
 // NewTreePath constructs a struct TreePath.
 func NewTreePath() *TreePath {
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreePath")
+	_gret := _info.InvokeRecordMethod("new", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _treePath *TreePath // out
 
@@ -1963,7 +2020,7 @@ func NewTreePath() *TreePath {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -1973,7 +2030,9 @@ func NewTreePath() *TreePath {
 
 // NewTreePathFirst constructs a struct TreePath.
 func NewTreePathFirst() *TreePath {
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreePath")
+	_gret := _info.InvokeRecordMethod("new_first", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _treePath *TreePath // out
 
@@ -1983,7 +2042,7 @@ func NewTreePathFirst() *TreePath {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -2005,7 +2064,9 @@ func NewTreePathFromIndices(indices []int32) *TreePath {
 		}
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreePath")
+	_gret := _info.InvokeRecordMethod("new_from_indicesv", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(indices)
 
@@ -2017,7 +2078,7 @@ func NewTreePathFromIndices(indices []int32) *TreePath {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -2032,7 +2093,9 @@ func NewTreePathFromString(path string) *TreePath {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreePath")
+	_gret := _info.InvokeRecordMethod("new_from_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 
@@ -2045,7 +2108,7 @@ func NewTreePathFromString(path string) *TreePath {
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -2067,6 +2130,9 @@ func (path *TreePath) AppendIndex(index_ int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(index_)
+
+	_info := girepository.MustFind("Gtk", "TreePath")
+	_info.InvokeRecordMethod("append_index", _args[:], nil)
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(index_)
@@ -2091,7 +2157,9 @@ func (a *TreePath) Compare(b *TreePath) int32 {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(a)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(b)))
 
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreePath")
+	_gret := _info.InvokeRecordMethod("compare", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(a)
 	runtime.KeepAlive(b)
@@ -2114,7 +2182,9 @@ func (path *TreePath) Copy() *TreePath {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreePath")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 
@@ -2126,7 +2196,7 @@ func (path *TreePath) Copy() *TreePath {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -2139,6 +2209,9 @@ func (path *TreePath) Down() {
 	var _args [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
+
+	_info := girepository.MustFind("Gtk", "TreePath")
+	_info.InvokeRecordMethod("down", _args[:], nil)
 
 	runtime.KeepAlive(path)
 }
@@ -2154,7 +2227,9 @@ func (path *TreePath) Depth() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreePath")
+	_gret := _info.InvokeRecordMethod("get_depth", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 
@@ -2180,7 +2255,9 @@ func (path *TreePath) Indices() []int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
-	_cret = *(**C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreePath")
+	_gret := _info.InvokeRecordMethod("get_indices_with_depth", _args[:], _outs[:])
+	_cret := *(**C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 
@@ -2213,7 +2290,9 @@ func (path *TreePath) IsAncestor(descendant *TreePath) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(descendant)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreePath")
+	_gret := _info.InvokeRecordMethod("is_ancestor", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(descendant)
@@ -2243,7 +2322,9 @@ func (path *TreePath) IsDescendant(ancestor *TreePath) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(ancestor)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreePath")
+	_gret := _info.InvokeRecordMethod("is_descendant", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(ancestor)
@@ -2263,6 +2344,9 @@ func (path *TreePath) Next() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
+	_info := girepository.MustFind("Gtk", "TreePath")
+	_info.InvokeRecordMethod("next", _args[:], nil)
+
 	runtime.KeepAlive(path)
 }
 
@@ -2280,6 +2364,9 @@ func (path *TreePath) PrependIndex(index_ int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(index_)
 
+	_info := girepository.MustFind("Gtk", "TreePath")
+	_info.InvokeRecordMethod("prepend_index", _args[:], nil)
+
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(index_)
 }
@@ -2296,7 +2383,9 @@ func (path *TreePath) Prev() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreePath")
+	_gret := _info.InvokeRecordMethod("prev", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 
@@ -2324,7 +2413,9 @@ func (path *TreePath) String() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreePath")
+	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 
@@ -2349,7 +2440,9 @@ func (path *TreePath) Up() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreePath")
+	_gret := _info.InvokeRecordMethod("up", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 
@@ -2388,7 +2481,9 @@ func NewTreeRowReference(model TreeModeller, path *TreePath) *TreeRowReference {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeRowReference")
+	_gret := _info.InvokeRecordMethod("new", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(path)
@@ -2402,7 +2497,7 @@ func NewTreeRowReference(model TreeModeller, path *TreePath) *TreeRowReference {
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Gtk", "TreeRowReference").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Gtk", "TreeRowReference").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -2419,7 +2514,9 @@ func NewTreeRowReferenceProxy(proxy *coreglib.Object, model TreeModeller, path *
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeRowReference")
+	_gret := _info.InvokeRecordMethod("new_proxy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(proxy)
 	runtime.KeepAlive(model)
@@ -2434,7 +2531,7 @@ func NewTreeRowReferenceProxy(proxy *coreglib.Object, model TreeModeller, path *
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Gtk", "TreeRowReference").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Gtk", "TreeRowReference").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -2454,7 +2551,9 @@ func (reference *TreeRowReference) Copy() *TreeRowReference {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(reference)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeRowReference")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(reference)
 
@@ -2466,7 +2565,7 @@ func (reference *TreeRowReference) Copy() *TreeRowReference {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "TreeRowReference").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "TreeRowReference").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -2485,7 +2584,9 @@ func (reference *TreeRowReference) Model() *TreeModel {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(reference)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeRowReference")
+	_gret := _info.InvokeRecordMethod("get_model", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(reference)
 
@@ -2508,7 +2609,9 @@ func (reference *TreeRowReference) Path() *TreePath {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(reference)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeRowReference")
+	_gret := _info.InvokeRecordMethod("get_path", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(reference)
 
@@ -2521,7 +2624,7 @@ func (reference *TreeRowReference) Path() *TreePath {
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -2544,7 +2647,9 @@ func (reference *TreeRowReference) Valid() bool {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(reference)))
 	}
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeRowReference")
+	_gret := _info.InvokeRecordMethod("valid", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(reference)
 
@@ -2572,7 +2677,8 @@ func TreeRowReferenceDeleted(proxy *coreglib.Object, path *TreePath) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(proxy.Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
-	girepository.MustFind("Gtk", "deleted").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "deleted")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(proxy)
 	runtime.KeepAlive(path)
@@ -2593,7 +2699,8 @@ func TreeRowReferenceInserted(proxy *coreglib.Object, path *TreePath) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(proxy.Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
-	girepository.MustFind("Gtk", "inserted").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "inserted")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(proxy)
 	runtime.KeepAlive(path)

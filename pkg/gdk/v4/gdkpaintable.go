@@ -16,13 +16,13 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GdkPaintable* _gotk4_gdk4_PaintableInterface_get_current_image(void*);
 // extern double _gotk4_gdk4_PaintableInterface_get_intrinsic_aspect_ratio(void*);
 // extern int _gotk4_gdk4_PaintableInterface_get_intrinsic_height(void*);
 // extern int _gotk4_gdk4_PaintableInterface_get_intrinsic_width(void*);
 // extern void _gotk4_gdk4_PaintableInterface_snapshot(void*, void*, double, double);
 // extern void _gotk4_gdk4_Paintable_ConnectInvalidateContents(gpointer, guintptr);
 // extern void _gotk4_gdk4_Paintable_ConnectInvalidateSize(gpointer, guintptr);
+// extern void* _gotk4_gdk4_PaintableInterface_get_current_image(void*);
 import "C"
 
 // GTypePaintableFlags returns the GType for the type PaintableFlags.
@@ -287,7 +287,7 @@ func ifaceInitPaintabler(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gdk4_PaintableInterface_get_current_image
-func _gotk4_gdk4_PaintableInterface_get_current_image(arg0 *C.void) (cret *C.GdkPaintable) {
+func _gotk4_gdk4_PaintableInterface_get_current_image(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(PaintableOverrider)
 
@@ -466,6 +466,9 @@ func (paintable *Paintable) ComputeConcreteSize(specifiedWidth, specifiedHeight,
 	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(defaultWidth)
 	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(defaultHeight)
 
+	_info := girepository.MustFind("Gdk", "Paintable")
+	_info.InvokeIfaceMethod("compute_concrete_size", _args[:], _outs[:])
+
 	runtime.KeepAlive(paintable)
 	runtime.KeepAlive(specifiedWidth)
 	runtime.KeepAlive(specifiedHeight)
@@ -498,7 +501,9 @@ func (paintable *Paintable) CurrentImage() *Paintable {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Paintable")
+	_gret := _info.InvokeIfaceMethod("get_current_image", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(paintable)
 
@@ -536,7 +541,9 @@ func (paintable *Paintable) IntrinsicAspectRatio() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
 
-	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Paintable")
+	_gret := _info.InvokeIfaceMethod("get_intrinsic_aspect_ratio", _args[:], nil)
+	_cret := *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(paintable)
 
@@ -568,7 +575,9 @@ func (paintable *Paintable) IntrinsicHeight() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
 
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Paintable")
+	_gret := _info.InvokeIfaceMethod("get_intrinsic_height", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(paintable)
 
@@ -600,7 +609,9 @@ func (paintable *Paintable) IntrinsicWidth() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
 
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Paintable")
+	_gret := _info.InvokeIfaceMethod("get_intrinsic_width", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(paintable)
 
@@ -626,6 +637,9 @@ func (paintable *Paintable) InvalidateContents() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
 
+	_info := girepository.MustFind("Gdk", "Paintable")
+	_info.InvokeIfaceMethod("invalidate_contents", _args[:], nil)
+
 	runtime.KeepAlive(paintable)
 }
 
@@ -643,6 +657,9 @@ func (paintable *Paintable) InvalidateSize() {
 	var _args [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
+
+	_info := girepository.MustFind("Gdk", "Paintable")
+	_info.InvokeIfaceMethod("invalidate_size", _args[:], nil)
 
 	runtime.KeepAlive(paintable)
 }
@@ -665,6 +682,9 @@ func (paintable *Paintable) Snapshot(snapshot Snapshotter, width, height float64
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
 	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(width)
 	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(height)
+
+	_info := girepository.MustFind("Gdk", "Paintable")
+	_info.InvokeIfaceMethod("snapshot", _args[:], nil)
 
 	runtime.KeepAlive(paintable)
 	runtime.KeepAlive(snapshot)
@@ -695,8 +715,9 @@ func NewPaintableEmpty(intrinsicWidth, intrinsicHeight int32) *Paintable {
 	*(*C.int)(unsafe.Pointer(&_args[0])) = C.int(intrinsicWidth)
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(intrinsicHeight)
 
-	_gret := girepository.MustFind("Gdk", "new_empty").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "new_empty")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(intrinsicWidth)
 	runtime.KeepAlive(intrinsicHeight)

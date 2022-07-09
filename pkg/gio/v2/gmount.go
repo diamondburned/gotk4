@@ -18,14 +18,6 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GDrive* _gotk4_gio2_MountIface_get_drive(void*);
-// extern GFile* _gotk4_gio2_MountIface_get_default_location(void*);
-// extern GFile* _gotk4_gio2_MountIface_get_root(void*);
-// extern GIcon* _gotk4_gio2_MountIface_get_icon(void*);
-// extern GIcon* _gotk4_gio2_MountIface_get_symbolic_icon(void*);
-// extern GVolume* _gotk4_gio2_MountIface_get_volume(void*);
-// extern char* _gotk4_gio2_MountIface_get_name(void*);
-// extern char* _gotk4_gio2_MountIface_get_uuid(void*);
 // extern gboolean _gotk4_gio2_MountIface_can_eject(void*);
 // extern gboolean _gotk4_gio2_MountIface_can_unmount(void*);
 // extern gboolean _gotk4_gio2_MountIface_eject_finish(void*, void*, GError**);
@@ -33,9 +25,6 @@ import (
 // extern gboolean _gotk4_gio2_MountIface_remount_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_MountIface_unmount_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_MountIface_unmount_with_operation_finish(void*, void*, GError**);
-// extern gchar* _gotk4_gio2_MountIface_get_sort_key(void*);
-// extern gchar** _gotk4_gio2_MountIface_guess_content_type_finish(void*, void*, GError**);
-// extern gchar** _gotk4_gio2_MountIface_guess_content_type_sync(void*, gboolean, void*, GError**);
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 // extern void _gotk4_gio2_MountIface_changed(void*);
 // extern void _gotk4_gio2_MountIface_pre_unmount(void*);
@@ -43,6 +32,17 @@ import (
 // extern void _gotk4_gio2_Mount_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gio2_Mount_ConnectPreUnmount(gpointer, guintptr);
 // extern void _gotk4_gio2_Mount_ConnectUnmounted(gpointer, guintptr);
+// extern void* _gotk4_gio2_MountIface_get_default_location(void*);
+// extern void* _gotk4_gio2_MountIface_get_drive(void*);
+// extern void* _gotk4_gio2_MountIface_get_icon(void*);
+// extern void* _gotk4_gio2_MountIface_get_name(void*);
+// extern void* _gotk4_gio2_MountIface_get_root(void*);
+// extern void* _gotk4_gio2_MountIface_get_sort_key(void*);
+// extern void* _gotk4_gio2_MountIface_get_symbolic_icon(void*);
+// extern void* _gotk4_gio2_MountIface_get_uuid(void*);
+// extern void* _gotk4_gio2_MountIface_get_volume(void*);
+// extern void** _gotk4_gio2_MountIface_guess_content_type_finish(void*, void*, GError**);
+// extern void** _gotk4_gio2_MountIface_guess_content_type_sync(void*, gboolean, void*, GError**);
 import "C"
 
 // GTypeMount returns the GType for the type Mount.
@@ -236,7 +236,9 @@ func (mount *Mount) CanEject() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Mount")
+	_gret := _info.InvokeIfaceMethod("can_eject", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mount)
 
@@ -260,7 +262,9 @@ func (mount *Mount) CanUnmount() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Mount")
+	_gret := _info.InvokeIfaceMethod("can_unmount", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mount)
 
@@ -289,6 +293,9 @@ func (mount *Mount) EjectFinish(result AsyncResulter) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
+	_info := girepository.MustFind("Gio", "Mount")
+	_info.InvokeIfaceMethod("eject_finish", _args[:], nil)
+
 	runtime.KeepAlive(mount)
 	runtime.KeepAlive(result)
 
@@ -314,6 +321,9 @@ func (mount *Mount) EjectWithOperationFinish(result AsyncResulter) error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	_info := girepository.MustFind("Gio", "Mount")
+	_info.InvokeIfaceMethod("eject_with_operation_finish", _args[:], nil)
 
 	runtime.KeepAlive(mount)
 	runtime.KeepAlive(result)
@@ -341,7 +351,9 @@ func (mount *Mount) DefaultLocation() *File {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Mount")
+	_gret := _info.InvokeIfaceMethod("get_default_location", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mount)
 
@@ -368,7 +380,9 @@ func (mount *Mount) Drive() *Drive {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Mount")
+	_gret := _info.InvokeIfaceMethod("get_drive", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mount)
 
@@ -393,7 +407,9 @@ func (mount *Mount) Icon() *Icon {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Mount")
+	_gret := _info.InvokeIfaceMethod("get_icon", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mount)
 
@@ -416,7 +432,9 @@ func (mount *Mount) Name() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Mount")
+	_gret := _info.InvokeIfaceMethod("get_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mount)
 
@@ -440,7 +458,9 @@ func (mount *Mount) Root() *File {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Mount")
+	_gret := _info.InvokeIfaceMethod("get_root", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mount)
 
@@ -463,7 +483,9 @@ func (mount *Mount) SortKey() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Mount")
+	_gret := _info.InvokeIfaceMethod("get_sort_key", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mount)
 
@@ -488,7 +510,9 @@ func (mount *Mount) SymbolicIcon() *Icon {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Mount")
+	_gret := _info.InvokeIfaceMethod("get_symbolic_icon", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mount)
 
@@ -513,7 +537,9 @@ func (mount *Mount) UUID() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Mount")
+	_gret := _info.InvokeIfaceMethod("get_uuid", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mount)
 
@@ -540,7 +566,9 @@ func (mount *Mount) Volume() *Volume {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Mount")
+	_gret := _info.InvokeIfaceMethod("get_volume", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mount)
 
@@ -589,6 +617,9 @@ func (mount *Mount) GuessContentType(ctx context.Context, forceRescan bool, call
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "Mount")
+	_info.InvokeIfaceMethod("guess_content_type", _args[:], nil)
+
 	runtime.KeepAlive(mount)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(forceRescan)
@@ -615,7 +646,9 @@ func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, erro
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Mount")
+	_gret := _info.InvokeIfaceMethod("guess_content_type_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mount)
 	runtime.KeepAlive(result)
@@ -679,7 +712,9 @@ func (mount *Mount) GuessContentTypeSync(ctx context.Context, forceRescan bool) 
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Mount")
+	_gret := _info.InvokeIfaceMethod("guess_content_type_sync", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mount)
 	runtime.KeepAlive(ctx)
@@ -740,7 +775,9 @@ func (mount *Mount) IsShadowed() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Mount")
+	_gret := _info.InvokeIfaceMethod("is_shadowed", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mount)
 
@@ -767,6 +804,9 @@ func (mount *Mount) RemountFinish(result AsyncResulter) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
+	_info := girepository.MustFind("Gio", "Mount")
+	_info.InvokeIfaceMethod("remount_finish", _args[:], nil)
+
 	runtime.KeepAlive(mount)
 	runtime.KeepAlive(result)
 
@@ -788,6 +828,9 @@ func (mount *Mount) Shadow() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 
+	_info := girepository.MustFind("Gio", "Mount")
+	_info.InvokeIfaceMethod("shadow", _args[:], nil)
+
 	runtime.KeepAlive(mount)
 }
 
@@ -806,6 +849,9 @@ func (mount *Mount) UnmountFinish(result AsyncResulter) error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	_info := girepository.MustFind("Gio", "Mount")
+	_info.InvokeIfaceMethod("unmount_finish", _args[:], nil)
 
 	runtime.KeepAlive(mount)
 	runtime.KeepAlive(result)
@@ -833,6 +879,9 @@ func (mount *Mount) UnmountWithOperationFinish(result AsyncResulter) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
+	_info := girepository.MustFind("Gio", "Mount")
+	_info.InvokeIfaceMethod("unmount_with_operation_finish", _args[:], nil)
+
 	runtime.KeepAlive(mount)
 	runtime.KeepAlive(result)
 
@@ -853,6 +902,9 @@ func (mount *Mount) Unshadow() {
 	var _args [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+
+	_info := girepository.MustFind("Gio", "Mount")
+	_info.InvokeIfaceMethod("unshadow", _args[:], nil)
 
 	runtime.KeepAlive(mount)
 }

@@ -19,8 +19,6 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GtkAction* _gotk4_gtk3_UIManagerClass_get_action(void*, void*);
-// extern GtkWidget* _gotk4_gtk3_UIManagerClass_get_widget(void*, void*);
 // extern void _gotk4_gtk3_UIManagerClass_actions_changed(void*);
 // extern void _gotk4_gtk3_UIManagerClass_add_widget(void*, void*);
 // extern void _gotk4_gtk3_UIManagerClass_connect_proxy(void*, void*, void*);
@@ -33,6 +31,8 @@ import (
 // extern void _gotk4_gtk3_UIManager_ConnectDisconnectProxy(gpointer, void*, void*, guintptr);
 // extern void _gotk4_gtk3_UIManager_ConnectPostActivate(gpointer, void*, guintptr);
 // extern void _gotk4_gtk3_UIManager_ConnectPreActivate(gpointer, void*, guintptr);
+// extern void* _gotk4_gtk3_UIManagerClass_get_action(void*, void*);
+// extern void* _gotk4_gtk3_UIManagerClass_get_widget(void*, void*);
 import "C"
 
 // GTypeUIManagerItemType returns the GType for the type UIManagerItemType.
@@ -596,7 +596,7 @@ func _gotk4_gtk3_UIManagerClass_disconnect_proxy(arg0 *C.void, arg1 *C.void, arg
 }
 
 //export _gotk4_gtk3_UIManagerClass_get_action
-func _gotk4_gtk3_UIManagerClass_get_action(arg0 *C.void, arg1 *C.void) (cret *C.GtkAction) {
+func _gotk4_gtk3_UIManagerClass_get_action(arg0 *C.void, arg1 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Action(path string) *Action })
 
@@ -612,7 +612,7 @@ func _gotk4_gtk3_UIManagerClass_get_action(arg0 *C.void, arg1 *C.void) (cret *C.
 }
 
 //export _gotk4_gtk3_UIManagerClass_get_widget
-func _gotk4_gtk3_UIManagerClass_get_widget(arg0 *C.void, arg1 *C.void) (cret *C.GtkWidget) {
+func _gotk4_gtk3_UIManagerClass_get_widget(arg0 *C.void, arg1 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Widget(path string) Widgetter })
 
@@ -884,8 +884,9 @@ func (manager *UIManager) ConnectPreActivate(f func(action *Action)) coreglib.Si
 //    - uiManager: new ui manager object.
 //
 func NewUIManager() *UIManager {
-	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("new_UIManager", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "UIManager")
+	_gret := _info.InvokeClassMethod("new_UIManager", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _uiManager *UIManager // out
 
@@ -916,8 +917,9 @@ func (manager *UIManager) AddUiFromFile(filename string) (uint32, error) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("add_ui_from_file", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "UIManager")
+	_gret := _info.InvokeClassMethod("add_ui_from_file", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(filename)
@@ -955,8 +957,9 @@ func (manager *UIManager) AddUiFromResource(resourcePath string) (uint32, error)
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("add_ui_from_resource", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "UIManager")
+	_gret := _info.InvokeClassMethod("add_ui_from_resource", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(resourcePath)
@@ -997,8 +1000,9 @@ func (manager *UIManager) AddUiFromString(buffer string, length int) (uint32, er
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(*C.gssize)(unsafe.Pointer(&_args[2])) = C.gssize(length)
 
-	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("add_ui_from_string", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "UIManager")
+	_gret := _info.InvokeClassMethod("add_ui_from_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(buffer)
@@ -1036,7 +1040,8 @@ func (manager *UIManager) EnsureUpdate() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	girepository.MustFind("Gtk", "UIManager").InvokeMethod("ensure_update", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "UIManager")
+	_info.InvokeClassMethod("ensure_update", _args[:], nil)
 
 	runtime.KeepAlive(manager)
 }
@@ -1054,8 +1059,9 @@ func (manager *UIManager) AccelGroup() *AccelGroup {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_accel_group", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "UIManager")
+	_gret := _info.InvokeClassMethod("get_accel_group", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 
@@ -1087,8 +1093,9 @@ func (manager *UIManager) Action(path string) *Action {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_action", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "UIManager")
+	_gret := _info.InvokeClassMethod("get_action", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(path)
@@ -1114,8 +1121,9 @@ func (manager *UIManager) ActionGroups() []*ActionGroup {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_action_groups", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "UIManager")
+	_gret := _info.InvokeClassMethod("get_action_groups", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 
@@ -1147,8 +1155,9 @@ func (manager *UIManager) AddTearoffs() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_add_tearoffs", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "UIManager")
+	_gret := _info.InvokeClassMethod("get_add_tearoffs", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 
@@ -1175,8 +1184,9 @@ func (manager *UIManager) Ui() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_ui", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "UIManager")
+	_gret := _info.InvokeClassMethod("get_ui", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 
@@ -1219,8 +1229,9 @@ func (manager *UIManager) Widget(path string) Widgetter {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("get_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "UIManager")
+	_gret := _info.InvokeClassMethod("get_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(path)
@@ -1269,7 +1280,8 @@ func (manager *UIManager) InsertActionGroup(actionGroup *ActionGroup, pos int32)
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(pos)
 
-	girepository.MustFind("Gtk", "UIManager").InvokeMethod("insert_action_group", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "UIManager")
+	_info.InvokeClassMethod("insert_action_group", _args[:], nil)
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(actionGroup)
@@ -1290,8 +1302,9 @@ func (manager *UIManager) NewMergeID() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	_gret := girepository.MustFind("Gtk", "UIManager").InvokeMethod("new_merge_id", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "UIManager")
+	_gret := _info.InvokeClassMethod("new_merge_id", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 
@@ -1317,7 +1330,8 @@ func (manager *UIManager) RemoveActionGroup(actionGroup *ActionGroup) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 
-	girepository.MustFind("Gtk", "UIManager").InvokeMethod("remove_action_group", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "UIManager")
+	_info.InvokeClassMethod("remove_action_group", _args[:], nil)
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(actionGroup)
@@ -1337,7 +1351,8 @@ func (manager *UIManager) RemoveUi(mergeId uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(mergeId)
 
-	girepository.MustFind("Gtk", "UIManager").InvokeMethod("remove_ui", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "UIManager")
+	_info.InvokeClassMethod("remove_ui", _args[:], nil)
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(mergeId)
@@ -1364,7 +1379,8 @@ func (manager *UIManager) SetAddTearoffs(addTearoffs bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "UIManager").InvokeMethod("set_add_tearoffs", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "UIManager")
+	_info.InvokeClassMethod("set_add_tearoffs", _args[:], nil)
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(addTearoffs)

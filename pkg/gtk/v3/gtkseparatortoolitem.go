@@ -102,8 +102,9 @@ func marshalSeparatorToolItem(p uintptr) (interface{}, error) {
 //    - separatorToolItem: new SeparatorToolItem.
 //
 func NewSeparatorToolItem() *SeparatorToolItem {
-	_gret := girepository.MustFind("Gtk", "SeparatorToolItem").InvokeMethod("new_SeparatorToolItem", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SeparatorToolItem")
+	_gret := _info.InvokeClassMethod("new_SeparatorToolItem", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _separatorToolItem *SeparatorToolItem // out
 
@@ -124,8 +125,9 @@ func (item *SeparatorToolItem) Draw() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
 
-	_gret := girepository.MustFind("Gtk", "SeparatorToolItem").InvokeMethod("get_draw", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SeparatorToolItem")
+	_gret := _info.InvokeClassMethod("get_draw", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(item)
 
@@ -154,7 +156,8 @@ func (item *SeparatorToolItem) SetDraw(draw bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "SeparatorToolItem").InvokeMethod("set_draw", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "SeparatorToolItem")
+	_info.InvokeClassMethod("set_draw", _args[:], nil)
 
 	runtime.KeepAlive(item)
 	runtime.KeepAlive(draw)

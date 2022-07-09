@@ -98,8 +98,9 @@ func (layoutChild *LayoutChild) ChildWidget() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layoutChild).Native()))
 
-	_gret := girepository.MustFind("Gtk", "LayoutChild").InvokeMethod("get_child_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "LayoutChild")
+	_gret := _info.InvokeClassMethod("get_child_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layoutChild)
 
@@ -138,8 +139,9 @@ func (layoutChild *LayoutChild) LayoutManager() LayoutManagerer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layoutChild).Native()))
 
-	_gret := girepository.MustFind("Gtk", "LayoutChild").InvokeMethod("get_layout_manager", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "LayoutChild")
+	_gret := _info.InvokeClassMethod("get_layout_manager", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layoutChild)
 

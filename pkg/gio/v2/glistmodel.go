@@ -226,7 +226,9 @@ func (list *ListModel) NItems() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(list).Native()))
 
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ListModel")
+	_gret := _info.InvokeIfaceMethod("get_n_items", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(list)
 
@@ -257,7 +259,9 @@ func (list *ListModel) Item(position uint32) *coreglib.Object {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(list).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ListModel")
+	_gret := _info.InvokeIfaceMethod("get_object", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(position)
@@ -303,6 +307,9 @@ func (list *ListModel) ItemsChanged(position, removed, added uint32) {
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
 	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(removed)
 	*(*C.guint)(unsafe.Pointer(&_args[3])) = C.guint(added)
+
+	_info := girepository.MustFind("Gio", "ListModel")
+	_info.InvokeIfaceMethod("items_changed", _args[:], nil)
 
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(position)

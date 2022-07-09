@@ -395,6 +395,9 @@ func (activatable *Activatable) DoSetRelatedAction(action *Action) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
+	_info := girepository.MustFind("Gtk", "Activatable")
+	_info.InvokeIfaceMethod("do_set_related_action", _args[:], nil)
+
 	runtime.KeepAlive(activatable)
 	runtime.KeepAlive(action)
 }
@@ -412,7 +415,9 @@ func (activatable *Activatable) RelatedAction() *Action {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Activatable")
+	_gret := _info.InvokeIfaceMethod("get_related_action", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(activatable)
 
@@ -438,7 +443,9 @@ func (activatable *Activatable) UseActionAppearance() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Activatable")
+	_gret := _info.InvokeIfaceMethod("get_use_action_appearance", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(activatable)
 
@@ -468,6 +475,9 @@ func (activatable *Activatable) SetRelatedAction(action *Action) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(activatable).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
+	_info := girepository.MustFind("Gtk", "Activatable")
+	_info.InvokeIfaceMethod("set_related_action", _args[:], nil)
+
 	runtime.KeepAlive(activatable)
 	runtime.KeepAlive(action)
 }
@@ -494,6 +504,9 @@ func (activatable *Activatable) SetUseActionAppearance(useAppearance bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
+	_info := girepository.MustFind("Gtk", "Activatable")
+	_info.InvokeIfaceMethod("set_use_action_appearance", _args[:], nil)
+
 	runtime.KeepAlive(activatable)
 	runtime.KeepAlive(useAppearance)
 }
@@ -516,6 +529,9 @@ func (activatable *Activatable) SyncActionProperties(action *Action) {
 	if action != nil {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	}
+
+	_info := girepository.MustFind("Gtk", "Activatable")
+	_info.InvokeIfaceMethod("sync_action_properties", _args[:], nil)
 
 	runtime.KeepAlive(activatable)
 	runtime.KeepAlive(action)

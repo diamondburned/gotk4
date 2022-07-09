@@ -255,8 +255,9 @@ func (self *DrawingArea) ConnectResize(f func(width, height int32)) coreglib.Sig
 //    - drawingArea: new GtkDrawingArea.
 //
 func NewDrawingArea() *DrawingArea {
-	_gret := girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("new_DrawingArea", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "DrawingArea")
+	_gret := _info.InvokeClassMethod("new_DrawingArea", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _drawingArea *DrawingArea // out
 
@@ -276,8 +277,9 @@ func (self *DrawingArea) ContentHeight() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("get_content_height", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "DrawingArea")
+	_gret := _info.InvokeClassMethod("get_content_height", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -299,8 +301,9 @@ func (self *DrawingArea) ContentWidth() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("get_content_width", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "DrawingArea")
+	_gret := _info.InvokeClassMethod("get_content_width", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -329,7 +332,8 @@ func (self *DrawingArea) SetContentHeight(height int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(height)
 
-	girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("set_content_height", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "DrawingArea")
+	_info.InvokeClassMethod("set_content_height", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(height)
@@ -353,7 +357,8 @@ func (self *DrawingArea) SetContentWidth(width int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(width)
 
-	girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("set_content_width", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "DrawingArea")
+	_info.InvokeClassMethod("set_content_width", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(width)
@@ -388,7 +393,8 @@ func (self *DrawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc) {
 		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	girepository.MustFind("Gtk", "DrawingArea").InvokeMethod("set_draw_func", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "DrawingArea")
+	_info.InvokeClassMethod("set_draw_func", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(drawFunc)

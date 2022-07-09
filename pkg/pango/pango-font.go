@@ -18,22 +18,22 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern PangoCoverage* _gotk4_pango1_FontClass_get_coverage(void*, void*);
-// extern PangoFontDescription* _gotk4_pango1_FontClass_describe(void*);
-// extern PangoFontDescription* _gotk4_pango1_FontClass_describe_absolute(void*);
-// extern PangoFontDescription* _gotk4_pango1_FontFaceClass_describe(void*);
-// extern PangoFontFace* _gotk4_pango1_FontFamilyClass_get_face(void*, void*);
-// extern PangoFontFamily* _gotk4_pango1_FontFaceClass_get_family(void*);
-// extern PangoFontMap* _gotk4_pango1_FontClass_get_font_map(void*);
-// extern PangoFontMetrics* _gotk4_pango1_FontClass_get_metrics(void*, void*);
-// extern char* _gotk4_pango1_FontFaceClass_get_face_name(void*);
-// extern char* _gotk4_pango1_FontFamilyClass_get_name(void*);
 // extern gboolean _gotk4_pango1_FontFaceClass_is_synthesized(void*);
 // extern gboolean _gotk4_pango1_FontFamilyClass_is_monospace(void*);
 // extern gboolean _gotk4_pango1_FontFamilyClass_is_variable(void*);
 // extern void _gotk4_pango1_FontClass_get_glyph_extents(void*, guint32, void*, void*);
 // extern void _gotk4_pango1_FontFaceClass_list_sizes(void*, void**, void*);
 // extern void _gotk4_pango1_FontFamilyClass_list_faces(void*, void***, void*);
+// extern void* _gotk4_pango1_FontClass_describe(void*);
+// extern void* _gotk4_pango1_FontClass_describe_absolute(void*);
+// extern void* _gotk4_pango1_FontClass_get_coverage(void*, void*);
+// extern void* _gotk4_pango1_FontClass_get_font_map(void*);
+// extern void* _gotk4_pango1_FontClass_get_metrics(void*, void*);
+// extern void* _gotk4_pango1_FontFaceClass_describe(void*);
+// extern void* _gotk4_pango1_FontFaceClass_get_face_name(void*);
+// extern void* _gotk4_pango1_FontFaceClass_get_family(void*);
+// extern void* _gotk4_pango1_FontFamilyClass_get_face(void*, void*);
+// extern void* _gotk4_pango1_FontFamilyClass_get_name(void*);
 import "C"
 
 // GTypeStretch returns the GType for the type Stretch.
@@ -558,7 +558,7 @@ func classInitFonter(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_pango1_FontClass_describe
-func _gotk4_pango1_FontClass_describe(arg0 *C.void) (cret *C.PangoFontDescription) {
+func _gotk4_pango1_FontClass_describe(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Describe() *FontDescription })
 
@@ -571,7 +571,7 @@ func _gotk4_pango1_FontClass_describe(arg0 *C.void) (cret *C.PangoFontDescriptio
 }
 
 //export _gotk4_pango1_FontClass_describe_absolute
-func _gotk4_pango1_FontClass_describe_absolute(arg0 *C.void) (cret *C.PangoFontDescription) {
+func _gotk4_pango1_FontClass_describe_absolute(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DescribeAbsolute() *FontDescription })
 
@@ -584,7 +584,7 @@ func _gotk4_pango1_FontClass_describe_absolute(arg0 *C.void) (cret *C.PangoFontD
 }
 
 //export _gotk4_pango1_FontClass_get_coverage
-func _gotk4_pango1_FontClass_get_coverage(arg0 *C.void, arg1 *C.void) (cret *C.PangoCoverage) {
+func _gotk4_pango1_FontClass_get_coverage(arg0 *C.void, arg1 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Coverage(language *Language) *Coverage
@@ -603,7 +603,7 @@ func _gotk4_pango1_FontClass_get_coverage(arg0 *C.void, arg1 *C.void) (cret *C.P
 }
 
 //export _gotk4_pango1_FontClass_get_font_map
-func _gotk4_pango1_FontClass_get_font_map(arg0 *C.void) (cret *C.PangoFontMap) {
+func _gotk4_pango1_FontClass_get_font_map(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FontMap() FontMapper })
 
@@ -642,7 +642,7 @@ func _gotk4_pango1_FontClass_get_glyph_extents(arg0 *C.void, arg1 C.guint32, arg
 }
 
 //export _gotk4_pango1_FontClass_get_metrics
-func _gotk4_pango1_FontClass_get_metrics(arg0 *C.void, arg1 *C.void) (cret *C.PangoFontMetrics) {
+func _gotk4_pango1_FontClass_get_metrics(arg0 *C.void, arg1 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Metrics(language *Language) *FontMetrics
@@ -694,8 +694,9 @@ func (font *Font) Describe() *FontDescription {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 
-	_gret := girepository.MustFind("Pango", "Font").InvokeMethod("describe", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Font")
+	_gret := _info.InvokeClassMethod("describe", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(font)
 
@@ -707,7 +708,7 @@ func (font *Font) Describe() *FontDescription {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Pango", "FontDescription").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Pango", "FontDescription").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -729,8 +730,9 @@ func (font *Font) DescribeWithAbsoluteSize() *FontDescription {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 
-	_gret := girepository.MustFind("Pango", "Font").InvokeMethod("describe_with_absolute_size", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Font")
+	_gret := _info.InvokeClassMethod("describe_with_absolute_size", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(font)
 
@@ -742,7 +744,7 @@ func (font *Font) DescribeWithAbsoluteSize() *FontDescription {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Pango", "FontDescription").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Pango", "FontDescription").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -766,8 +768,9 @@ func (font *Font) Coverage(language *Language) *Coverage {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(language)))
 
-	_gret := girepository.MustFind("Pango", "Font").InvokeMethod("get_coverage", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Font")
+	_gret := _info.InvokeClassMethod("get_coverage", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(font)
 	runtime.KeepAlive(language)
@@ -790,8 +793,9 @@ func (font *Font) Face() FontFacer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 
-	_gret := girepository.MustFind("Pango", "Font").InvokeMethod("get_face", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Font")
+	_gret := _info.InvokeClassMethod("get_face", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(font)
 
@@ -840,8 +844,9 @@ func (font *Font) FontMap() FontMapper {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 	}
 
-	_gret := girepository.MustFind("Pango", "Font").InvokeMethod("get_font_map", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Font")
+	_gret := _info.InvokeClassMethod("get_font_map", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(font)
 
@@ -899,7 +904,8 @@ func (font *Font) GlyphExtents(glyph Glyph) (inkRect, logicalRect *Rectangle) {
 	}
 	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(glyph)
 
-	girepository.MustFind("Pango", "Font").InvokeMethod("get_glyph_extents", _args[:], _outs[:])
+	_info := girepository.MustFind("Pango", "Font")
+	_info.InvokeClassMethod("get_glyph_extents", _args[:], _outs[:])
 
 	runtime.KeepAlive(font)
 	runtime.KeepAlive(glyph)
@@ -946,8 +952,9 @@ func (font *Font) Metrics(language *Language) *FontMetrics {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(language)))
 	}
 
-	_gret := girepository.MustFind("Pango", "Font").InvokeMethod("get_metrics", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Font")
+	_gret := _info.InvokeClassMethod("get_metrics", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(font)
 	runtime.KeepAlive(language)
@@ -981,8 +988,9 @@ func (font *Font) HasChar(wc uint32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 	*(*C.gunichar)(unsafe.Pointer(&_args[1])) = C.gunichar(wc)
 
-	_gret := girepository.MustFind("Pango", "Font").InvokeMethod("has_char", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Font")
+	_gret := _info.InvokeClassMethod("has_char", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(font)
 	runtime.KeepAlive(wc)
@@ -1108,7 +1116,7 @@ func classInitFontFacer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_pango1_FontFaceClass_describe
-func _gotk4_pango1_FontFaceClass_describe(arg0 *C.void) (cret *C.PangoFontDescription) {
+func _gotk4_pango1_FontFaceClass_describe(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Describe() *FontDescription })
 
@@ -1121,7 +1129,7 @@ func _gotk4_pango1_FontFaceClass_describe(arg0 *C.void) (cret *C.PangoFontDescri
 }
 
 //export _gotk4_pango1_FontFaceClass_get_face_name
-func _gotk4_pango1_FontFaceClass_get_face_name(arg0 *C.void) (cret *C.char) {
+func _gotk4_pango1_FontFaceClass_get_face_name(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FaceName() string })
 
@@ -1134,7 +1142,7 @@ func _gotk4_pango1_FontFaceClass_get_face_name(arg0 *C.void) (cret *C.char) {
 }
 
 //export _gotk4_pango1_FontFaceClass_get_family
-func _gotk4_pango1_FontFaceClass_get_family(arg0 *C.void) (cret *C.PangoFontFamily) {
+func _gotk4_pango1_FontFaceClass_get_family(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Family() FontFamilier })
 
@@ -1210,8 +1218,9 @@ func (face *FontFace) Describe() *FontDescription {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(face).Native()))
 
-	_gret := girepository.MustFind("Pango", "FontFace").InvokeMethod("describe", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontFace")
+	_gret := _info.InvokeClassMethod("describe", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(face)
 
@@ -1223,7 +1232,7 @@ func (face *FontFace) Describe() *FontDescription {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Pango", "FontDescription").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Pango", "FontDescription").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -1245,8 +1254,9 @@ func (face *FontFace) FaceName() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(face).Native()))
 
-	_gret := girepository.MustFind("Pango", "FontFace").InvokeMethod("get_face_name", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontFace")
+	_gret := _info.InvokeClassMethod("get_face_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(face)
 
@@ -1268,8 +1278,9 @@ func (face *FontFace) Family() FontFamilier {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(face).Native()))
 
-	_gret := girepository.MustFind("Pango", "FontFace").InvokeMethod("get_family", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontFace")
+	_gret := _info.InvokeClassMethod("get_family", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(face)
 
@@ -1309,8 +1320,9 @@ func (face *FontFace) IsSynthesized() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(face).Native()))
 
-	_gret := girepository.MustFind("Pango", "FontFace").InvokeMethod("is_synthesized", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontFace")
+	_gret := _info.InvokeClassMethod("is_synthesized", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(face)
 
@@ -1340,7 +1352,8 @@ func (face *FontFace) ListSizes() []int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(face).Native()))
 
-	girepository.MustFind("Pango", "FontFace").InvokeMethod("list_sizes", _args[:], _outs[:])
+	_info := girepository.MustFind("Pango", "FontFace")
+	_info.InvokeClassMethod("list_sizes", _args[:], _outs[:])
 
 	runtime.KeepAlive(face)
 
@@ -1489,7 +1502,7 @@ func classInitFontFamilier(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_pango1_FontFamilyClass_get_face
-func _gotk4_pango1_FontFamilyClass_get_face(arg0 *C.void, arg1 *C.void) (cret *C.PangoFontFace) {
+func _gotk4_pango1_FontFamilyClass_get_face(arg0 *C.void, arg1 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Face(name string) FontFacer })
 
@@ -1509,7 +1522,7 @@ func _gotk4_pango1_FontFamilyClass_get_face(arg0 *C.void, arg1 *C.void) (cret *C
 }
 
 //export _gotk4_pango1_FontFamilyClass_get_name
-func _gotk4_pango1_FontFamilyClass_get_name(arg0 *C.void) (cret *C.char) {
+func _gotk4_pango1_FontFamilyClass_get_name(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Name() string })
 
@@ -1608,8 +1621,9 @@ func (family *FontFamily) Face(name string) FontFacer {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	_gret := girepository.MustFind("Pango", "FontFamily").InvokeMethod("get_face", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontFamily")
+	_gret := _info.InvokeClassMethod("get_face", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(family)
 	runtime.KeepAlive(name)
@@ -1651,8 +1665,9 @@ func (family *FontFamily) Name() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(family).Native()))
 
-	_gret := girepository.MustFind("Pango", "FontFamily").InvokeMethod("get_name", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontFamily")
+	_gret := _info.InvokeClassMethod("get_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(family)
 
@@ -1686,8 +1701,9 @@ func (family *FontFamily) IsMonospace() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(family).Native()))
 
-	_gret := girepository.MustFind("Pango", "FontFamily").InvokeMethod("is_monospace", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontFamily")
+	_gret := _info.InvokeClassMethod("is_monospace", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(family)
 
@@ -1712,8 +1728,9 @@ func (family *FontFamily) IsVariable() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(family).Native()))
 
-	_gret := girepository.MustFind("Pango", "FontFamily").InvokeMethod("is_variable", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontFamily")
+	_gret := _info.InvokeClassMethod("is_variable", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(family)
 
@@ -1743,7 +1760,8 @@ func (family *FontFamily) ListFaces() []FontFacer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(family).Native()))
 
-	girepository.MustFind("Pango", "FontFamily").InvokeMethod("list_faces", _args[:], _outs[:])
+	_info := girepository.MustFind("Pango", "FontFamily")
+	_info.InvokeClassMethod("list_faces", _args[:], _outs[:])
 
 	runtime.KeepAlive(family)
 
@@ -1803,7 +1821,9 @@ func marshalFontDescription(p uintptr) (interface{}, error) {
 
 // NewFontDescription constructs a struct FontDescription.
 func NewFontDescription() *FontDescription {
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontDescription")
+	_gret := _info.InvokeRecordMethod("new", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _fontDescription *FontDescription // out
 
@@ -1813,7 +1833,7 @@ func NewFontDescription() *FontDescription {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Pango", "FontDescription").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Pango", "FontDescription").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -1851,7 +1871,9 @@ func (desc *FontDescription) BetterMatch(oldMatch *FontDescription, newMatch *Fo
 	}
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(newMatch)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontDescription")
+	_gret := _info.InvokeRecordMethod("better_match", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(desc)
 	runtime.KeepAlive(oldMatch)
@@ -1881,7 +1903,9 @@ func (desc *FontDescription) Copy() *FontDescription {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontDescription")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(desc)
 
@@ -1894,7 +1918,7 @@ func (desc *FontDescription) Copy() *FontDescription {
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Pango", "FontDescription").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Pango", "FontDescription").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -1924,7 +1948,9 @@ func (desc *FontDescription) CopyStatic() *FontDescription {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontDescription")
+	_gret := _info.InvokeRecordMethod("copy_static", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(desc)
 
@@ -1937,7 +1963,7 @@ func (desc *FontDescription) CopyStatic() *FontDescription {
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Pango", "FontDescription").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Pango", "FontDescription").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -1967,7 +1993,9 @@ func (desc1 *FontDescription) Equal(desc2 *FontDescription) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc1)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc2)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontDescription")
+	_gret := _info.InvokeRecordMethod("equal", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(desc1)
 	runtime.KeepAlive(desc2)
@@ -1996,7 +2024,9 @@ func (desc *FontDescription) Family() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontDescription")
+	_gret := _info.InvokeRecordMethod("get_family", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(desc)
 
@@ -2026,7 +2056,9 @@ func (desc *FontDescription) Size() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontDescription")
+	_gret := _info.InvokeRecordMethod("get_size", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(desc)
 
@@ -2054,7 +2086,9 @@ func (desc *FontDescription) SizeIsAbsolute() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontDescription")
+	_gret := _info.InvokeRecordMethod("get_size_is_absolute", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(desc)
 
@@ -2082,7 +2116,9 @@ func (desc *FontDescription) Variations() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontDescription")
+	_gret := _info.InvokeRecordMethod("get_variations", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(desc)
 
@@ -2109,7 +2145,9 @@ func (desc *FontDescription) Hash() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
 
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontDescription")
+	_gret := _info.InvokeRecordMethod("hash", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(desc)
 
@@ -2146,6 +2184,9 @@ func (desc *FontDescription) Merge(descToMerge *FontDescription, replaceExisting
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
+	_info := girepository.MustFind("Pango", "FontDescription")
+	_info.InvokeRecordMethod("merge", _args[:], nil)
+
 	runtime.KeepAlive(desc)
 	runtime.KeepAlive(descToMerge)
 	runtime.KeepAlive(replaceExisting)
@@ -2174,6 +2215,9 @@ func (desc *FontDescription) MergeStatic(descToMerge *FontDescription, replaceEx
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
+	_info := girepository.MustFind("Pango", "FontDescription")
+	_info.InvokeRecordMethod("merge_static", _args[:], nil)
+
 	runtime.KeepAlive(desc)
 	runtime.KeepAlive(descToMerge)
 	runtime.KeepAlive(replaceExisting)
@@ -2196,6 +2240,9 @@ func (desc *FontDescription) SetAbsoluteSize(size float64) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
 	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(size)
 
+	_info := girepository.MustFind("Pango", "FontDescription")
+	_info.InvokeRecordMethod("set_absolute_size", _args[:], nil)
+
 	runtime.KeepAlive(desc)
 	runtime.KeepAlive(size)
 }
@@ -2216,6 +2263,9 @@ func (desc *FontDescription) SetFamily(family string) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(family)))
 	defer C.free(unsafe.Pointer(_args[1]))
+
+	_info := girepository.MustFind("Pango", "FontDescription")
+	_info.InvokeRecordMethod("set_family", _args[:], nil)
 
 	runtime.KeepAlive(desc)
 	runtime.KeepAlive(family)
@@ -2241,6 +2291,9 @@ func (desc *FontDescription) SetFamilyStatic(family string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(family)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
+	_info := girepository.MustFind("Pango", "FontDescription")
+	_info.InvokeRecordMethod("set_family_static", _args[:], nil)
+
 	runtime.KeepAlive(desc)
 	runtime.KeepAlive(family)
 }
@@ -2264,6 +2317,9 @@ func (desc *FontDescription) SetSize(size int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(size)
+
+	_info := girepository.MustFind("Pango", "FontDescription")
+	_info.InvokeRecordMethod("set_size", _args[:], nil)
 
 	runtime.KeepAlive(desc)
 	runtime.KeepAlive(size)
@@ -2296,6 +2352,9 @@ func (desc *FontDescription) SetVariations(variations string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(variations)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
+	_info := girepository.MustFind("Pango", "FontDescription")
+	_info.InvokeRecordMethod("set_variations", _args[:], nil)
+
 	runtime.KeepAlive(desc)
 	runtime.KeepAlive(variations)
 }
@@ -2319,6 +2378,9 @@ func (desc *FontDescription) SetVariationsStatic(variations string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(variations)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
+	_info := girepository.MustFind("Pango", "FontDescription")
+	_info.InvokeRecordMethod("set_variations_static", _args[:], nil)
+
 	runtime.KeepAlive(desc)
 	runtime.KeepAlive(variations)
 }
@@ -2338,7 +2400,9 @@ func (desc *FontDescription) ToFilename() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontDescription")
+	_gret := _info.InvokeRecordMethod("to_filename", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(desc)
 
@@ -2366,7 +2430,9 @@ func (desc *FontDescription) String() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontDescription")
+	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(desc)
 
@@ -2433,8 +2499,9 @@ func FontDescriptionFromString(str string) *FontDescription {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Pango", "from_string").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "from_string")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
 
@@ -2446,7 +2513,7 @@ func FontDescriptionFromString(str string) *FontDescription {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Pango", "FontDescription").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Pango", "FontDescription").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -2493,7 +2560,9 @@ func (metrics *FontMetrics) ApproximateCharWidth() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(metrics)))
 
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontMetrics")
+	_gret := _info.InvokeRecordMethod("get_approximate_char_width", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(metrics)
 
@@ -2521,7 +2590,9 @@ func (metrics *FontMetrics) ApproximateDigitWidth() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(metrics)))
 
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontMetrics")
+	_gret := _info.InvokeRecordMethod("get_approximate_digit_width", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(metrics)
 
@@ -2547,7 +2618,9 @@ func (metrics *FontMetrics) Ascent() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(metrics)))
 
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontMetrics")
+	_gret := _info.InvokeRecordMethod("get_ascent", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(metrics)
 
@@ -2574,7 +2647,9 @@ func (metrics *FontMetrics) Descent() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(metrics)))
 
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontMetrics")
+	_gret := _info.InvokeRecordMethod("get_descent", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(metrics)
 
@@ -2600,7 +2675,9 @@ func (metrics *FontMetrics) Height() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(metrics)))
 
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontMetrics")
+	_gret := _info.InvokeRecordMethod("get_height", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(metrics)
 
@@ -2625,7 +2702,9 @@ func (metrics *FontMetrics) StrikethroughPosition() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(metrics)))
 
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontMetrics")
+	_gret := _info.InvokeRecordMethod("get_strikethrough_position", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(metrics)
 
@@ -2648,7 +2727,9 @@ func (metrics *FontMetrics) StrikethroughThickness() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(metrics)))
 
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontMetrics")
+	_gret := _info.InvokeRecordMethod("get_strikethrough_thickness", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(metrics)
 
@@ -2674,7 +2755,9 @@ func (metrics *FontMetrics) UnderlinePosition() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(metrics)))
 
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontMetrics")
+	_gret := _info.InvokeRecordMethod("get_underline_position", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(metrics)
 
@@ -2696,7 +2779,9 @@ func (metrics *FontMetrics) UnderlineThickness() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(metrics)))
 
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontMetrics")
+	_gret := _info.InvokeRecordMethod("get_underline_thickness", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(metrics)
 

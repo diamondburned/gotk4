@@ -106,8 +106,9 @@ func NewProxyAddress(inetaddr *InetAddress, port uint16, protocol, destHostname 
 		defer C.free(unsafe.Pointer(_args[6]))
 	}
 
-	_gret := girepository.MustFind("Gio", "ProxyAddress").InvokeMethod("new_ProxyAddress", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ProxyAddress")
+	_gret := _info.InvokeClassMethod("new_ProxyAddress", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(inetaddr)
 	runtime.KeepAlive(port)
@@ -137,8 +138,9 @@ func (proxy *ProxyAddress) DestinationHostname() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
-	_gret := girepository.MustFind("Gio", "ProxyAddress").InvokeMethod("get_destination_hostname", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ProxyAddress")
+	_gret := _info.InvokeClassMethod("get_destination_hostname", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(proxy)
 
@@ -162,8 +164,9 @@ func (proxy *ProxyAddress) DestinationPort() uint16 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
-	_gret := girepository.MustFind("Gio", "ProxyAddress").InvokeMethod("get_destination_port", _args[:], nil)
-	_cret = *(*C.guint16)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ProxyAddress")
+	_gret := _info.InvokeClassMethod("get_destination_port", _args[:], nil)
+	_cret := *(*C.guint16)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(proxy)
 
@@ -186,8 +189,9 @@ func (proxy *ProxyAddress) DestinationProtocol() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
-	_gret := girepository.MustFind("Gio", "ProxyAddress").InvokeMethod("get_destination_protocol", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ProxyAddress")
+	_gret := _info.InvokeClassMethod("get_destination_protocol", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(proxy)
 
@@ -209,8 +213,9 @@ func (proxy *ProxyAddress) Password() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
-	_gret := girepository.MustFind("Gio", "ProxyAddress").InvokeMethod("get_password", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ProxyAddress")
+	_gret := _info.InvokeClassMethod("get_password", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(proxy)
 
@@ -234,8 +239,9 @@ func (proxy *ProxyAddress) Protocol() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
-	_gret := girepository.MustFind("Gio", "ProxyAddress").InvokeMethod("get_protocol", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ProxyAddress")
+	_gret := _info.InvokeClassMethod("get_protocol", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(proxy)
 
@@ -257,8 +263,9 @@ func (proxy *ProxyAddress) URI() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
-	_gret := girepository.MustFind("Gio", "ProxyAddress").InvokeMethod("get_uri", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ProxyAddress")
+	_gret := _info.InvokeClassMethod("get_uri", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(proxy)
 
@@ -282,8 +289,9 @@ func (proxy *ProxyAddress) Username() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
-	_gret := girepository.MustFind("Gio", "ProxyAddress").InvokeMethod("get_username", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ProxyAddress")
+	_gret := _info.InvokeClassMethod("get_username", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(proxy)
 

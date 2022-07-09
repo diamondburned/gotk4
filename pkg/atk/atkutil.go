@@ -161,7 +161,8 @@ func FocusTrackerNotify(object *ObjectClass) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
 
-	girepository.MustFind("Atk", "focus_tracker_notify").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Atk", "focus_tracker_notify")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(object)
 }
@@ -173,8 +174,9 @@ func FocusTrackerNotify(object *ObjectClass) {
 //    - object: currently focused object for the current application.
 //
 func GetFocusObject() *ObjectClass {
-	_gret := girepository.MustFind("Atk", "get_focus_object").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "get_focus_object")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _object *ObjectClass // out
 
@@ -190,8 +192,9 @@ func GetFocusObject() *ObjectClass {
 //    - object: root accessible container for the current application.
 //
 func GetRoot() *ObjectClass {
-	_gret := girepository.MustFind("Atk", "get_root").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "get_root")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _object *ObjectClass // out
 
@@ -209,8 +212,9 @@ func GetRoot() *ObjectClass {
 //      application.
 //
 func GetToolkitName() string {
-	_gret := girepository.MustFind("Atk", "get_toolkit_name").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "get_toolkit_name")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _utf8 string // out
 
@@ -228,8 +232,9 @@ func GetToolkitName() string {
 //      application.
 //
 func GetToolkitVersion() string {
-	_gret := girepository.MustFind("Atk", "get_toolkit_version").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "get_toolkit_version")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _utf8 string // out
 
@@ -245,8 +250,9 @@ func GetToolkitVersion() string {
 //    - utf8: version string for ATK.
 //
 func GetVersion() string {
-	_gret := girepository.MustFind("Atk", "get_version").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "get_version")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _utf8 string // out
 
@@ -271,7 +277,8 @@ func RemoveFocusTracker(trackerId uint32) {
 
 	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(trackerId)
 
-	girepository.MustFind("Atk", "remove_focus_tracker").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Atk", "remove_focus_tracker")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(trackerId)
 }
@@ -297,7 +304,8 @@ func RemoveGlobalEventListener(listenerId uint32) {
 
 	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(listenerId)
 
-	girepository.MustFind("Atk", "remove_global_event_listener").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Atk", "remove_global_event_listener")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(listenerId)
 }
@@ -316,7 +324,8 @@ func RemoveKeyEventListener(listenerId uint32) {
 
 	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(listenerId)
 
-	girepository.MustFind("Atk", "remove_key_event_listener").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Atk", "remove_key_event_listener")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(listenerId)
 }

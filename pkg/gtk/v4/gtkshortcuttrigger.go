@@ -121,8 +121,9 @@ func NewAlternativeTrigger(first, second ShortcutTriggerer) *AlternativeTrigger 
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(second).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(second).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AlternativeTrigger").InvokeMethod("new_AlternativeTrigger", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AlternativeTrigger")
+	_gret := _info.InvokeClassMethod("new_AlternativeTrigger", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(first)
 	runtime.KeepAlive(second)
@@ -147,8 +148,9 @@ func (self *AlternativeTrigger) First() ShortcutTriggerer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AlternativeTrigger").InvokeMethod("get_first", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AlternativeTrigger")
+	_gret := _info.InvokeClassMethod("get_first", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -188,8 +190,9 @@ func (self *AlternativeTrigger) Second() ShortcutTriggerer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AlternativeTrigger").InvokeMethod("get_second", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AlternativeTrigger")
+	_gret := _info.InvokeClassMethod("get_second", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -250,8 +253,9 @@ func (self *KeyvalTrigger) Keyval() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "KeyvalTrigger").InvokeMethod("get_keyval", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "KeyvalTrigger")
+	_gret := _info.InvokeClassMethod("get_keyval", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -307,8 +311,9 @@ func NewMnemonicTrigger(keyval uint32) *MnemonicTrigger {
 
 	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(keyval)
 
-	_gret := girepository.MustFind("Gtk", "MnemonicTrigger").InvokeMethod("new_MnemonicTrigger", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MnemonicTrigger")
+	_gret := _info.InvokeClassMethod("new_MnemonicTrigger", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyval)
 
@@ -330,8 +335,9 @@ func (self *MnemonicTrigger) Keyval() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MnemonicTrigger").InvokeMethod("get_keyval", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MnemonicTrigger")
+	_gret := _info.InvokeClassMethod("get_keyval", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -374,8 +380,9 @@ func marshalNeverTrigger(p uintptr) (interface{}, error) {
 //    - neverTrigger: never trigger.
 //
 func NeverTriggerGet() *NeverTrigger {
-	_gret := girepository.MustFind("Gtk", "get").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "get")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _neverTrigger *NeverTrigger // out
 
@@ -466,8 +473,9 @@ func NewShortcutTriggerParseString(str string) *ShortcutTrigger {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "ShortcutTrigger").InvokeMethod("new_ShortcutTrigger_parse_string", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ShortcutTrigger")
+	_gret := _info.InvokeClassMethod("new_ShortcutTrigger_parse_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
 
@@ -501,8 +509,9 @@ func (trigger1 *ShortcutTrigger) Compare(trigger2 ShortcutTriggerer) int32 {
 	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = C.gpointer(unsafe.Pointer(coreglib.InternObject(trigger1).Native()))
 	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = C.gpointer(unsafe.Pointer(coreglib.InternObject(trigger2).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ShortcutTrigger").InvokeMethod("compare", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ShortcutTrigger")
+	_gret := _info.InvokeClassMethod("compare", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(trigger1)
 	runtime.KeepAlive(trigger2)
@@ -533,8 +542,9 @@ func (trigger1 *ShortcutTrigger) Equal(trigger2 ShortcutTriggerer) bool {
 	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = C.gpointer(unsafe.Pointer(coreglib.InternObject(trigger1).Native()))
 	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = C.gpointer(unsafe.Pointer(coreglib.InternObject(trigger2).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ShortcutTrigger").InvokeMethod("equal", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ShortcutTrigger")
+	_gret := _info.InvokeClassMethod("equal", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(trigger1)
 	runtime.KeepAlive(trigger2)
@@ -567,8 +577,9 @@ func (trigger *ShortcutTrigger) Hash() uint32 {
 
 	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = C.gpointer(unsafe.Pointer(coreglib.InternObject(trigger).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ShortcutTrigger").InvokeMethod("hash", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ShortcutTrigger")
+	_gret := _info.InvokeClassMethod("hash", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(trigger)
 
@@ -604,8 +615,9 @@ func (self *ShortcutTrigger) ToLabel(display *gdk.Display) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ShortcutTrigger").InvokeMethod("to_label", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ShortcutTrigger")
+	_gret := _info.InvokeClassMethod("to_label", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(display)
@@ -632,8 +644,9 @@ func (self *ShortcutTrigger) String() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ShortcutTrigger").InvokeMethod("to_string", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ShortcutTrigger")
+	_gret := _info.InvokeClassMethod("to_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 

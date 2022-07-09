@@ -782,8 +782,9 @@ func (textView *TextView) ConnectToggleOverwrite(f func()) coreglib.SignalHandle
 //    - textView: new TextView.
 //
 func NewTextView() *TextView {
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("new_TextView", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("new_TextView", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _textView *TextView // out
 
@@ -811,8 +812,9 @@ func NewTextViewWithBuffer(buffer *TextBuffer) *TextView {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("new_TextView_with_buffer", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("new_TextView_with_buffer", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(buffer)
 
@@ -837,7 +839,8 @@ func (textView *TextView) AddChildAtAnchor(child Widgetter, anchor *TextChildAnc
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("add_child_at_anchor", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("add_child_at_anchor", _args[:], nil)
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(child)
@@ -866,8 +869,9 @@ func (textView *TextView) BackwardDisplayLine(iter *TextIter) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("backward_display_line", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("backward_display_line", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(iter)
@@ -903,8 +907,9 @@ func (textView *TextView) BackwardDisplayLineStart(iter *TextIter) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("backward_display_line_start", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("backward_display_line_start", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(iter)
@@ -940,8 +945,9 @@ func (textView *TextView) ForwardDisplayLine(iter *TextIter) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("forward_display_line", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("forward_display_line", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(iter)
@@ -977,8 +983,9 @@ func (textView *TextView) ForwardDisplayLineEnd(iter *TextIter) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("forward_display_line_end", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("forward_display_line_end", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(iter)
@@ -1005,8 +1012,9 @@ func (textView *TextView) AcceptsTab() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_accepts_tab", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("get_accepts_tab", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 
@@ -1030,8 +1038,9 @@ func (textView *TextView) BottomMargin() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_bottom_margin", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("get_bottom_margin", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 
@@ -1055,8 +1064,9 @@ func (textView *TextView) Buffer() *TextBuffer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_buffer", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("get_buffer", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 
@@ -1106,7 +1116,8 @@ func (textView *TextView) CursorLocations(iter *TextIter) (strong, weak *gdk.Rec
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	}
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("get_cursor_locations", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("get_cursor_locations", _args[:], _outs[:])
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(iter)
@@ -1135,8 +1146,9 @@ func (textView *TextView) CursorVisible() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_cursor_visible", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("get_cursor_visible", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 
@@ -1166,8 +1178,9 @@ func (textView *TextView) DefaultAttributes() *TextAttributes {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_default_attributes", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("get_default_attributes", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 
@@ -1196,8 +1209,9 @@ func (textView *TextView) Editable() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_editable", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("get_editable", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 
@@ -1223,8 +1237,9 @@ func (textView *TextView) HAdjustment() *Adjustment {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_hadjustment", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("get_hadjustment", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 
@@ -1247,8 +1262,9 @@ func (textView *TextView) Indent() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_indent", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("get_indent", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 
@@ -1283,8 +1299,9 @@ func (textView *TextView) IterAtLocation(x, y int32) (*TextIter, bool) {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(x)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(y)
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_iter_at_location", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("get_iter_at_location", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(x)
@@ -1332,8 +1349,9 @@ func (textView *TextView) IterAtPosition(x, y int32) (*TextIter, int32, bool) {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(x)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(y)
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_iter_at_position", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("get_iter_at_position", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(x)
@@ -1374,7 +1392,8 @@ func (textView *TextView) IterLocation(iter *TextIter) *gdk.Rectangle {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("get_iter_location", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("get_iter_location", _args[:], _outs[:])
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(iter)
@@ -1398,8 +1417,9 @@ func (textView *TextView) LeftMargin() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_left_margin", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("get_left_margin", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 
@@ -1431,7 +1451,8 @@ func (textView *TextView) LineAtY(y int32) (*TextIter, int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(y)
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("get_line_at_y", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("get_line_at_y", _args[:], _outs[:])
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(y)
@@ -1465,7 +1486,8 @@ func (textView *TextView) LineYrange(iter *TextIter) (y, height int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("get_line_yrange", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("get_line_yrange", _args[:], _outs[:])
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(iter)
@@ -1490,8 +1512,9 @@ func (textView *TextView) Monospace() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_monospace", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("get_monospace", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 
@@ -1515,8 +1538,9 @@ func (textView *TextView) Overwrite() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_overwrite", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("get_overwrite", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 
@@ -1542,8 +1566,9 @@ func (textView *TextView) PixelsAboveLines() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_pixels_above_lines", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("get_pixels_above_lines", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 
@@ -1569,8 +1594,9 @@ func (textView *TextView) PixelsBelowLines() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_pixels_below_lines", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("get_pixels_below_lines", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 
@@ -1593,8 +1619,9 @@ func (textView *TextView) PixelsInsideWrap() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_pixels_inside_wrap", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("get_pixels_inside_wrap", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 
@@ -1617,8 +1644,9 @@ func (textView *TextView) RightMargin() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_right_margin", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("get_right_margin", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 
@@ -1643,8 +1671,9 @@ func (textView *TextView) Tabs() *pango.TabArray {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_tabs", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("get_tabs", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 
@@ -1657,7 +1686,7 @@ func (textView *TextView) Tabs() *pango.TabArray {
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Pango", "TabArray").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Pango", "TabArray").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -1677,8 +1706,9 @@ func (textView *TextView) TopMargin() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_top_margin", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("get_top_margin", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 
@@ -1702,8 +1732,9 @@ func (textView *TextView) VAdjustment() *Adjustment {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("get_vadjustment", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("get_vadjustment", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 
@@ -1728,7 +1759,8 @@ func (textView *TextView) VisibleRect() *gdk.Rectangle {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("get_visible_rect", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("get_visible_rect", _args[:], _outs[:])
 
 	runtime.KeepAlive(textView)
 
@@ -1782,8 +1814,9 @@ func (textView *TextView) IMContextFilterKeypress(event *gdk.EventKey) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("im_context_filter_keypress", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("im_context_filter_keypress", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(event)
@@ -1814,7 +1847,8 @@ func (textView *TextView) MoveChild(child Widgetter, xpos, ypos int32) {
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(xpos)
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(ypos)
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("move_child", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("move_child", _args[:], nil)
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(child)
@@ -1839,8 +1873,9 @@ func (textView *TextView) MoveMarkOnscreen(mark *TextMark) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("move_mark_onscreen", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("move_mark_onscreen", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(mark)
@@ -1881,8 +1916,9 @@ func (textView *TextView) MoveVisually(iter *TextIter, count int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(count)
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("move_visually", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("move_visually", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(iter)
@@ -1909,8 +1945,9 @@ func (textView *TextView) PlaceCursorOnscreen() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("place_cursor_onscreen", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("place_cursor_onscreen", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 
@@ -1934,7 +1971,8 @@ func (textView *TextView) ResetCursorBlink() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("reset_cursor_blink", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("reset_cursor_blink", _args[:], nil)
 
 	runtime.KeepAlive(textView)
 }
@@ -1948,7 +1986,8 @@ func (textView *TextView) ResetIMContext() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("reset_im_context", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("reset_im_context", _args[:], nil)
 
 	runtime.KeepAlive(textView)
 }
@@ -1966,7 +2005,8 @@ func (textView *TextView) ScrollMarkOnscreen(mark *TextMark) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("scroll_mark_onscreen", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("scroll_mark_onscreen", _args[:], nil)
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(mark)
@@ -2010,8 +2050,9 @@ func (textView *TextView) ScrollToIter(iter *TextIter, withinMargin float64, use
 	*(*C.gdouble)(unsafe.Pointer(&_args[4])) = C.gdouble(xalign)
 	*(*C.gdouble)(unsafe.Pointer(&_args[5])) = C.gdouble(yalign)
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("scroll_to_iter", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("scroll_to_iter", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(iter)
@@ -2057,7 +2098,8 @@ func (textView *TextView) ScrollToMark(mark *TextMark, withinMargin float64, use
 	*(*C.gdouble)(unsafe.Pointer(&_args[4])) = C.gdouble(xalign)
 	*(*C.gdouble)(unsafe.Pointer(&_args[5])) = C.gdouble(yalign)
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("scroll_to_mark", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("scroll_to_mark", _args[:], nil)
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(mark)
@@ -2084,7 +2126,8 @@ func (textView *TextView) SetAcceptsTab(acceptsTab bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_accepts_tab", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("set_accepts_tab", _args[:], nil)
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(acceptsTab)
@@ -2105,7 +2148,8 @@ func (textView *TextView) SetBottomMargin(bottomMargin int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(bottomMargin)
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_bottom_margin", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("set_bottom_margin", _args[:], nil)
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(bottomMargin)
@@ -2129,7 +2173,8 @@ func (textView *TextView) SetBuffer(buffer *TextBuffer) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 	}
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_buffer", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("set_buffer", _args[:], nil)
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(buffer)
@@ -2154,7 +2199,8 @@ func (textView *TextView) SetCursorVisible(setting bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_cursor_visible", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("set_cursor_visible", _args[:], nil)
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(setting)
@@ -2176,7 +2222,8 @@ func (textView *TextView) SetEditable(setting bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_editable", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("set_editable", _args[:], nil)
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(setting)
@@ -2195,7 +2242,8 @@ func (textView *TextView) SetIndent(indent int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(indent)
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_indent", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("set_indent", _args[:], nil)
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(indent)
@@ -2217,7 +2265,8 @@ func (textView *TextView) SetLeftMargin(leftMargin int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(leftMargin)
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_left_margin", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("set_left_margin", _args[:], nil)
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(leftMargin)
@@ -2238,7 +2287,8 @@ func (textView *TextView) SetMonospace(monospace bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_monospace", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("set_monospace", _args[:], nil)
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(monospace)
@@ -2258,7 +2308,8 @@ func (textView *TextView) SetOverwrite(overwrite bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_overwrite", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("set_overwrite", _args[:], nil)
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(overwrite)
@@ -2277,7 +2328,8 @@ func (textView *TextView) SetPixelsAboveLines(pixelsAboveLines int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pixelsAboveLines)
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_pixels_above_lines", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("set_pixels_above_lines", _args[:], nil)
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(pixelsAboveLines)
@@ -2297,7 +2349,8 @@ func (textView *TextView) SetPixelsBelowLines(pixelsBelowLines int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pixelsBelowLines)
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_pixels_below_lines", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("set_pixels_below_lines", _args[:], nil)
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(pixelsBelowLines)
@@ -2317,7 +2370,8 @@ func (textView *TextView) SetPixelsInsideWrap(pixelsInsideWrap int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pixelsInsideWrap)
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_pixels_inside_wrap", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("set_pixels_inside_wrap", _args[:], nil)
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(pixelsInsideWrap)
@@ -2339,7 +2393,8 @@ func (textView *TextView) SetRightMargin(rightMargin int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(rightMargin)
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_right_margin", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("set_right_margin", _args[:], nil)
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(rightMargin)
@@ -2358,7 +2413,8 @@ func (textView *TextView) SetTabs(tabs *pango.TabArray) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(tabs)))
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_tabs", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("set_tabs", _args[:], nil)
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(tabs)
@@ -2379,7 +2435,8 @@ func (textView *TextView) SetTopMargin(topMargin int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(topMargin)
 
-	girepository.MustFind("Gtk", "TextView").InvokeMethod("set_top_margin", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextView")
+	_info.InvokeClassMethod("set_top_margin", _args[:], nil)
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(topMargin)
@@ -2403,8 +2460,9 @@ func (textView *TextView) StartsDisplayLine(iter *TextIter) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_gret := girepository.MustFind("Gtk", "TextView").InvokeMethod("starts_display_line", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextView")
+	_gret := _info.InvokeClassMethod("starts_display_line", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(iter)

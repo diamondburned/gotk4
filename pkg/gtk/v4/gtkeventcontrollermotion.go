@@ -142,8 +142,9 @@ func (self *EventControllerMotion) ConnectMotion(f func(x, y float64)) coreglib.
 //    - eventControllerMotion: new GtkEventControllerMotion.
 //
 func NewEventControllerMotion() *EventControllerMotion {
-	_gret := girepository.MustFind("Gtk", "EventControllerMotion").InvokeMethod("new_EventControllerMotion", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EventControllerMotion")
+	_gret := _info.InvokeClassMethod("new_EventControllerMotion", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _eventControllerMotion *EventControllerMotion // out
 
@@ -163,8 +164,9 @@ func (self *EventControllerMotion) ContainsPointer() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EventControllerMotion").InvokeMethod("contains_pointer", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EventControllerMotion")
+	_gret := _info.InvokeClassMethod("contains_pointer", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -188,8 +190,9 @@ func (self *EventControllerMotion) IsPointer() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EventControllerMotion").InvokeMethod("is_pointer", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EventControllerMotion")
+	_gret := _info.InvokeClassMethod("is_pointer", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 

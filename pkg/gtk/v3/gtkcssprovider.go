@@ -235,8 +235,9 @@ func (cssProvider *CSSProvider) ConnectParsingError(f func(section *CSSSection, 
 //    - cssProvider: new CssProvider.
 //
 func NewCSSProvider() *CSSProvider {
-	_gret := girepository.MustFind("Gtk", "CssProvider").InvokeMethod("new_CssProvider", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CssProvider")
+	_gret := _info.InvokeClassMethod("new_CssProvider", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _cssProvider *CSSProvider // out
 
@@ -261,7 +262,8 @@ func (cssProvider *CSSProvider) LoadFromData(data string) error {
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[1])))), len(data)), data)
 	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[1]))))
 
-	girepository.MustFind("Gtk", "CssProvider").InvokeMethod("load_from_data", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CssProvider")
+	_info.InvokeClassMethod("load_from_data", _args[:], nil)
 
 	runtime.KeepAlive(cssProvider)
 	runtime.KeepAlive(data)
@@ -288,7 +290,8 @@ func (cssProvider *CSSProvider) LoadFromFile(file gio.Filer) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cssProvider).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	girepository.MustFind("Gtk", "CssProvider").InvokeMethod("load_from_file", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CssProvider")
+	_info.InvokeClassMethod("load_from_file", _args[:], nil)
 
 	runtime.KeepAlive(cssProvider)
 	runtime.KeepAlive(file)
@@ -316,7 +319,8 @@ func (cssProvider *CSSProvider) LoadFromPath(path string) error {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "CssProvider").InvokeMethod("load_from_path", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CssProvider")
+	_info.InvokeClassMethod("load_from_path", _args[:], nil)
 
 	runtime.KeepAlive(cssProvider)
 	runtime.KeepAlive(path)
@@ -347,7 +351,8 @@ func (cssProvider *CSSProvider) LoadFromResource(resourcePath string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "CssProvider").InvokeMethod("load_from_resource", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CssProvider")
+	_info.InvokeClassMethod("load_from_resource", _args[:], nil)
 
 	runtime.KeepAlive(cssProvider)
 	runtime.KeepAlive(resourcePath)
@@ -368,8 +373,9 @@ func (provider *CSSProvider) String() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
 
-	_gret := girepository.MustFind("Gtk", "CssProvider").InvokeMethod("to_string", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CssProvider")
+	_gret := _info.InvokeClassMethod("to_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(provider)
 
@@ -392,8 +398,9 @@ func (provider *CSSProvider) String() string {
 //      GTK+, and you must not free it.
 //
 func CSSProviderGetDefault() *CSSProvider {
-	_gret := girepository.MustFind("Gtk", "get_default").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "get_default")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _cssProvider *CSSProvider // out
 
@@ -424,8 +431,9 @@ func CSSProviderGetNamed(name, variant string) *CSSProvider {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	_gret := girepository.MustFind("Gtk", "get_named").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "get_named")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(variant)

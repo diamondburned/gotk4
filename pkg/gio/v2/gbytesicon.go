@@ -36,8 +36,9 @@ func NewBytesIcon(bytes *glib.Bytes) *BytesIcon {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bytes)))
 
-	_gret := girepository.MustFind("Gio", "BytesIcon").InvokeMethod("new_BytesIcon", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "BytesIcon")
+	_gret := _info.InvokeClassMethod("new_BytesIcon", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(bytes)
 
@@ -59,8 +60,9 @@ func (icon *BytesIcon) Bytes() *glib.Bytes {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 
-	_gret := girepository.MustFind("Gio", "BytesIcon").InvokeMethod("get_bytes", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "BytesIcon")
+	_gret := _info.InvokeClassMethod("get_bytes", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(icon)
 

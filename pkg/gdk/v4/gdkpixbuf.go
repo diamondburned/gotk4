@@ -49,8 +49,9 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int3
 	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(width)
 	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(height)
 
-	_gret := girepository.MustFind("Gdk", "pixbuf_get_from_surface").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "pixbuf_get_from_surface")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(srcX)
@@ -95,8 +96,9 @@ func PixbufGetFromTexture(texture Texturer) *gdkpixbuf.Pixbuf {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
 
-	_gret := girepository.MustFind("Gdk", "pixbuf_get_from_texture").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "pixbuf_get_from_texture")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(texture)
 

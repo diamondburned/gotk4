@@ -100,8 +100,9 @@ func marshalSocketListener(p uintptr) (interface{}, error) {
 //    - socketListener: new Listener.
 //
 func NewSocketListener() *SocketListener {
-	_gret := girepository.MustFind("Gio", "SocketListener").InvokeMethod("new_SocketListener", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketListener")
+	_gret := _info.InvokeClassMethod("new_SocketListener", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _socketListener *SocketListener // out
 
@@ -141,8 +142,9 @@ func (listener *SocketListener) Accept(ctx context.Context) (*coreglib.Object, *
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_gret := girepository.MustFind("Gio", "SocketListener").InvokeMethod("accept", _args[:], _outs[:])
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketListener")
+	_gret := _info.InvokeClassMethod("accept", _args[:], _outs[:])
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(ctx)
@@ -186,7 +188,8 @@ func (listener *SocketListener) AcceptAsync(ctx context.Context, callback AsyncR
 		_args[3] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "SocketListener").InvokeMethod("accept_async", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SocketListener")
+	_info.InvokeClassMethod("accept_async", _args[:], nil)
 
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(ctx)
@@ -212,8 +215,9 @@ func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*coreglib.Ob
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_gret := girepository.MustFind("Gio", "SocketListener").InvokeMethod("accept_finish", _args[:], _outs[:])
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketListener")
+	_gret := _info.InvokeClassMethod("accept_finish", _args[:], _outs[:])
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(result)
@@ -267,8 +271,9 @@ func (listener *SocketListener) AcceptSocket(ctx context.Context) (*coreglib.Obj
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_gret := girepository.MustFind("Gio", "SocketListener").InvokeMethod("accept_socket", _args[:], _outs[:])
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketListener")
+	_gret := _info.InvokeClassMethod("accept_socket", _args[:], _outs[:])
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(ctx)
@@ -313,7 +318,8 @@ func (listener *SocketListener) AcceptSocketAsync(ctx context.Context, callback 
 		_args[3] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "SocketListener").InvokeMethod("accept_socket_async", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SocketListener")
+	_info.InvokeClassMethod("accept_socket_async", _args[:], nil)
 
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(ctx)
@@ -339,8 +345,9 @@ func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*coreg
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_gret := girepository.MustFind("Gio", "SocketListener").InvokeMethod("accept_socket_finish", _args[:], _outs[:])
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketListener")
+	_gret := _info.InvokeClassMethod("accept_socket_finish", _args[:], _outs[:])
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(result)
@@ -386,8 +393,9 @@ func (listener *SocketListener) AddAnyInetPort(sourceObject *coreglib.Object) (u
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(sourceObject.Native()))
 	}
 
-	_gret := girepository.MustFind("Gio", "SocketListener").InvokeMethod("add_any_inet_port", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketListener")
+	_gret := _info.InvokeClassMethod("add_any_inet_port", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(sourceObject)
@@ -429,7 +437,8 @@ func (listener *SocketListener) AddInetPort(port uint16, sourceObject *coreglib.
 		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(sourceObject.Native()))
 	}
 
-	girepository.MustFind("Gio", "SocketListener").InvokeMethod("add_inet_port", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SocketListener")
+	_info.InvokeClassMethod("add_inet_port", _args[:], nil)
 
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(port)
@@ -470,7 +479,8 @@ func (listener *SocketListener) AddSocket(socket *Socket, sourceObject *coreglib
 		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(sourceObject.Native()))
 	}
 
-	girepository.MustFind("Gio", "SocketListener").InvokeMethod("add_socket", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SocketListener")
+	_info.InvokeClassMethod("add_socket", _args[:], nil)
 
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(socket)
@@ -491,7 +501,8 @@ func (listener *SocketListener) Close() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
 
-	girepository.MustFind("Gio", "SocketListener").InvokeMethod("close", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SocketListener")
+	_info.InvokeClassMethod("close", _args[:], nil)
 
 	runtime.KeepAlive(listener)
 }
@@ -512,7 +523,8 @@ func (listener *SocketListener) SetBacklog(listenBacklog int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(listenBacklog)
 
-	girepository.MustFind("Gio", "SocketListener").InvokeMethod("set_backlog", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SocketListener")
+	_info.InvokeClassMethod("set_backlog", _args[:], nil)
 
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(listenBacklog)

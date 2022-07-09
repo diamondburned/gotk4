@@ -158,8 +158,9 @@ func NewExpander(label string) *Expander {
 		defer C.free(unsafe.Pointer(_args[0]))
 	}
 
-	_gret := girepository.MustFind("Gtk", "Expander").InvokeMethod("new_Expander", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Expander")
+	_gret := _info.InvokeClassMethod("new_Expander", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(label)
 
@@ -194,8 +195,9 @@ func NewExpanderWithMnemonic(label string) *Expander {
 		defer C.free(unsafe.Pointer(_args[0]))
 	}
 
-	_gret := girepository.MustFind("Gtk", "Expander").InvokeMethod("new_Expander_with_mnemonic", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Expander")
+	_gret := _info.InvokeClassMethod("new_Expander_with_mnemonic", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(label)
 
@@ -220,8 +222,9 @@ func (expander *Expander) Expanded() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Expander").InvokeMethod("get_expanded", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Expander")
+	_gret := _info.InvokeClassMethod("get_expanded", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(expander)
 
@@ -255,8 +258,9 @@ func (expander *Expander) Label() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Expander").InvokeMethod("get_label", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Expander")
+	_gret := _info.InvokeClassMethod("get_label", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(expander)
 
@@ -281,8 +285,9 @@ func (expander *Expander) LabelFill() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Expander").InvokeMethod("get_label_fill", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Expander")
+	_gret := _info.InvokeClassMethod("get_label_fill", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(expander)
 
@@ -307,8 +312,9 @@ func (expander *Expander) LabelWidget() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Expander").InvokeMethod("get_label_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Expander")
+	_gret := _info.InvokeClassMethod("get_label_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(expander)
 
@@ -346,8 +352,9 @@ func (expander *Expander) ResizeToplevel() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Expander").InvokeMethod("get_resize_toplevel", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Expander")
+	_gret := _info.InvokeClassMethod("get_resize_toplevel", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(expander)
 
@@ -373,8 +380,9 @@ func (expander *Expander) Spacing() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Expander").InvokeMethod("get_spacing", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Expander")
+	_gret := _info.InvokeClassMethod("get_spacing", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(expander)
 
@@ -398,8 +406,9 @@ func (expander *Expander) UseMarkup() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Expander").InvokeMethod("get_use_markup", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Expander")
+	_gret := _info.InvokeClassMethod("get_use_markup", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(expander)
 
@@ -425,8 +434,9 @@ func (expander *Expander) UseUnderline() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Expander").InvokeMethod("get_use_underline", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Expander")
+	_gret := _info.InvokeClassMethod("get_use_underline", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(expander)
 
@@ -455,7 +465,8 @@ func (expander *Expander) SetExpanded(expanded bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Expander").InvokeMethod("set_expanded", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Expander")
+	_info.InvokeClassMethod("set_expanded", _args[:], nil)
 
 	runtime.KeepAlive(expander)
 	runtime.KeepAlive(expanded)
@@ -478,7 +489,8 @@ func (expander *Expander) SetLabel(label string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "Expander").InvokeMethod("set_label", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Expander")
+	_info.InvokeClassMethod("set_label", _args[:], nil)
 
 	runtime.KeepAlive(expander)
 	runtime.KeepAlive(label)
@@ -502,7 +514,8 @@ func (expander *Expander) SetLabelFill(labelFill bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Expander").InvokeMethod("set_label_fill", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Expander")
+	_info.InvokeClassMethod("set_label_fill", _args[:], nil)
 
 	runtime.KeepAlive(expander)
 	runtime.KeepAlive(labelFill)
@@ -523,7 +536,8 @@ func (expander *Expander) SetLabelWidget(labelWidget Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(labelWidget).Native()))
 	}
 
-	girepository.MustFind("Gtk", "Expander").InvokeMethod("set_label_widget", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Expander")
+	_info.InvokeClassMethod("set_label_widget", _args[:], nil)
 
 	runtime.KeepAlive(expander)
 	runtime.KeepAlive(labelWidget)
@@ -544,7 +558,8 @@ func (expander *Expander) SetResizeToplevel(resizeToplevel bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Expander").InvokeMethod("set_resize_toplevel", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Expander")
+	_info.InvokeClassMethod("set_resize_toplevel", _args[:], nil)
 
 	runtime.KeepAlive(expander)
 	runtime.KeepAlive(resizeToplevel)
@@ -565,7 +580,8 @@ func (expander *Expander) SetSpacing(spacing int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expander).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(spacing)
 
-	girepository.MustFind("Gtk", "Expander").InvokeMethod("set_spacing", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Expander")
+	_info.InvokeClassMethod("set_spacing", _args[:], nil)
 
 	runtime.KeepAlive(expander)
 	runtime.KeepAlive(spacing)
@@ -586,7 +602,8 @@ func (expander *Expander) SetUseMarkup(useMarkup bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Expander").InvokeMethod("set_use_markup", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Expander")
+	_info.InvokeClassMethod("set_use_markup", _args[:], nil)
 
 	runtime.KeepAlive(expander)
 	runtime.KeepAlive(useMarkup)
@@ -607,7 +624,8 @@ func (expander *Expander) SetUseUnderline(useUnderline bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Expander").InvokeMethod("set_use_underline", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Expander")
+	_info.InvokeClassMethod("set_use_underline", _args[:], nil)
 
 	runtime.KeepAlive(expander)
 	runtime.KeepAlive(useUnderline)

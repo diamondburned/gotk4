@@ -14,7 +14,6 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern AtkObject* _gotk4_atk1_SelectionIface_ref_selection(void*, gint);
 // extern gboolean _gotk4_atk1_SelectionIface_add_selection(void*, gint);
 // extern gboolean _gotk4_atk1_SelectionIface_clear_selection(void*);
 // extern gboolean _gotk4_atk1_SelectionIface_is_child_selected(void*, gint);
@@ -23,6 +22,7 @@ import (
 // extern gint _gotk4_atk1_SelectionIface_get_selection_count(void*);
 // extern void _gotk4_atk1_SelectionIface_selection_changed(void*);
 // extern void _gotk4_atk1_Selection_ConnectSelectionChanged(gpointer, guintptr);
+// extern void* _gotk4_atk1_SelectionIface_ref_selection(void*, gint);
 import "C"
 
 // GTypeSelection returns the GType for the type Selection.
@@ -258,7 +258,7 @@ func _gotk4_atk1_SelectionIface_is_child_selected(arg0 *C.void, arg1 C.gint) (cr
 }
 
 //export _gotk4_atk1_SelectionIface_ref_selection
-func _gotk4_atk1_SelectionIface_ref_selection(arg0 *C.void, arg1 C.gint) (cret *C.AtkObject) {
+func _gotk4_atk1_SelectionIface_ref_selection(arg0 *C.void, arg1 C.gint) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionOverrider)
 
@@ -365,7 +365,9 @@ func (selection *Selection) AddSelection(i int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Selection")
+	_gret := _info.InvokeIfaceMethod("add_selection", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selection)
 	runtime.KeepAlive(i)
@@ -391,7 +393,9 @@ func (selection *Selection) ClearSelection() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Selection")
+	_gret := _info.InvokeIfaceMethod("clear_selection", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selection)
 
@@ -420,7 +424,9 @@ func (selection *Selection) SelectionCount() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Selection")
+	_gret := _info.InvokeIfaceMethod("get_selection_count", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selection)
 
@@ -452,7 +458,9 @@ func (selection *Selection) IsChildSelected(i int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Selection")
+	_gret := _info.InvokeIfaceMethod("is_child_selected", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selection)
 	runtime.KeepAlive(i)
@@ -488,7 +496,9 @@ func (selection *Selection) RefSelection(i int32) *ObjectClass {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Selection")
+	_gret := _info.InvokeIfaceMethod("ref_selection", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selection)
 	runtime.KeepAlive(i)
@@ -520,7 +530,9 @@ func (selection *Selection) RemoveSelection(i int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Selection")
+	_gret := _info.InvokeIfaceMethod("remove_selection", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selection)
 	runtime.KeepAlive(i)
@@ -546,7 +558,9 @@ func (selection *Selection) SelectAllSelection() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Selection")
+	_gret := _info.InvokeIfaceMethod("select_all_selection", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selection)
 

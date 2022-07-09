@@ -89,8 +89,9 @@ func NewEmblemedIcon(icon Iconner, emblem *Emblem) *EmblemedIcon {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblem).Native()))
 	}
 
-	_gret := girepository.MustFind("Gio", "EmblemedIcon").InvokeMethod("new_EmblemedIcon", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "EmblemedIcon")
+	_gret := _info.InvokeClassMethod("new_EmblemedIcon", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(icon)
 	runtime.KeepAlive(emblem)
@@ -114,7 +115,8 @@ func (emblemed *EmblemedIcon) AddEmblem(emblem *Emblem) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblem).Native()))
 
-	girepository.MustFind("Gio", "EmblemedIcon").InvokeMethod("add_emblem", _args[:], nil)
+	_info := girepository.MustFind("Gio", "EmblemedIcon")
+	_info.InvokeClassMethod("add_emblem", _args[:], nil)
 
 	runtime.KeepAlive(emblemed)
 	runtime.KeepAlive(emblem)
@@ -126,7 +128,8 @@ func (emblemed *EmblemedIcon) ClearEmblems() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
 
-	girepository.MustFind("Gio", "EmblemedIcon").InvokeMethod("clear_emblems", _args[:], nil)
+	_info := girepository.MustFind("Gio", "EmblemedIcon")
+	_info.InvokeClassMethod("clear_emblems", _args[:], nil)
 
 	runtime.KeepAlive(emblemed)
 }
@@ -142,8 +145,9 @@ func (emblemed *EmblemedIcon) Emblems() []*Emblem {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
 
-	_gret := girepository.MustFind("Gio", "EmblemedIcon").InvokeMethod("get_emblems", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "EmblemedIcon")
+	_gret := _info.InvokeClassMethod("get_emblems", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(emblemed)
 
@@ -171,8 +175,9 @@ func (emblemed *EmblemedIcon) GetIcon() *Icon {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblemed).Native()))
 
-	_gret := girepository.MustFind("Gio", "EmblemedIcon").InvokeMethod("get_icon", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "EmblemedIcon")
+	_gret := _info.InvokeClassMethod("get_icon", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(emblemed)
 

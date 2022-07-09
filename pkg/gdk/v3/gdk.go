@@ -54,14 +54,15 @@ func GTypeDragContext() coreglib.Type {
 }
 
 func init() {
-	girepository.Require("Gdk", "3.0")
+	girepository.Require("Gdk", "3.0", girepository.LoadFlagLazy)
 }
 
 // The function returns the following values:
 //
 func GLErrorQuark() glib.Quark {
-	_gret := girepository.MustFind("Gdk", "quark").Invoke(nil, nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "quark")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 

@@ -16,7 +16,6 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GtkBitset* _gotk4_gtk4_SelectionModelInterface_get_selection_in_range(void*, guint, guint);
 // extern gboolean _gotk4_gtk4_SelectionModelInterface_is_selected(void*, guint);
 // extern gboolean _gotk4_gtk4_SelectionModelInterface_select_all(void*);
 // extern gboolean _gotk4_gtk4_SelectionModelInterface_select_item(void*, guint, gboolean);
@@ -26,6 +25,7 @@ import (
 // extern gboolean _gotk4_gtk4_SelectionModelInterface_unselect_item(void*, guint);
 // extern gboolean _gotk4_gtk4_SelectionModelInterface_unselect_range(void*, guint, guint);
 // extern void _gotk4_gtk4_SelectionModel_ConnectSelectionChanged(gpointer, guint, guint, guintptr);
+// extern void* _gotk4_gtk4_SelectionModelInterface_get_selection_in_range(void*, guint, guint);
 import "C"
 
 // GTypeSelectionModel returns the GType for the type SelectionModel.
@@ -283,7 +283,7 @@ func ifaceInitSelectionModeller(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk4_SelectionModelInterface_get_selection_in_range
-func _gotk4_gtk4_SelectionModelInterface_get_selection_in_range(arg0 *C.void, arg1 C.guint, arg2 C.guint) (cret *C.GtkBitset) {
+func _gotk4_gtk4_SelectionModelInterface_get_selection_in_range(arg0 *C.void, arg1 C.guint, arg2 C.guint) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SelectionModelOverrider)
 
@@ -526,7 +526,9 @@ func (model *SelectionModel) Selection() *Bitset {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionModel")
+	_gret := _info.InvokeIfaceMethod("get_selection", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
 
@@ -566,7 +568,9 @@ func (model *SelectionModel) SelectionInRange(position, nItems uint32) *Bitset {
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
 	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(nItems)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionModel")
+	_gret := _info.InvokeIfaceMethod("get_selection_in_range", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(position)
@@ -601,7 +605,9 @@ func (model *SelectionModel) IsSelected(position uint32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionModel")
+	_gret := _info.InvokeIfaceMethod("is_selected", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(position)
@@ -627,7 +633,9 @@ func (model *SelectionModel) SelectAll() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionModel")
+	_gret := _info.InvokeIfaceMethod("select_all", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
 
@@ -661,7 +669,9 @@ func (model *SelectionModel) SelectItem(position uint32, unselectRest bool) bool
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionModel")
+	_gret := _info.InvokeIfaceMethod("select_item", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(position)
@@ -699,7 +709,9 @@ func (model *SelectionModel) SelectRange(position, nItems uint32, unselectRest b
 		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
 	}
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionModel")
+	_gret := _info.InvokeIfaceMethod("select_range", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(position)
@@ -731,6 +743,9 @@ func (model *SelectionModel) SelectionChanged(position, nItems uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
 	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(nItems)
+
+	_info := girepository.MustFind("Gtk", "SelectionModel")
+	_info.InvokeIfaceMethod("selection_changed", _args[:], nil)
 
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(position)
@@ -786,7 +801,9 @@ func (model *SelectionModel) SetSelection(selected, mask *Bitset) bool {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selected)))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(mask)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionModel")
+	_gret := _info.InvokeIfaceMethod("set_selection", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(selected)
@@ -813,7 +830,9 @@ func (model *SelectionModel) UnselectAll() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionModel")
+	_gret := _info.InvokeIfaceMethod("unselect_all", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
 
@@ -843,7 +862,9 @@ func (model *SelectionModel) UnselectItem(position uint32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionModel")
+	_gret := _info.InvokeIfaceMethod("unselect_item", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(position)
@@ -876,7 +897,9 @@ func (model *SelectionModel) UnselectRange(position, nItems uint32) bool {
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
 	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(nItems)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionModel")
+	_gret := _info.InvokeIfaceMethod("unselect_range", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(position)

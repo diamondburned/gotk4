@@ -229,6 +229,9 @@ func (cellEditable *CellEditable) EditingDone() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
 
+	_info := girepository.MustFind("Gtk", "CellEditable")
+	_info.InvokeIfaceMethod("editing_done", _args[:], nil)
+
 	runtime.KeepAlive(cellEditable)
 }
 
@@ -237,6 +240,9 @@ func (cellEditable *CellEditable) RemoveWidget() {
 	var _args [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
+
+	_info := girepository.MustFind("Gtk", "CellEditable")
+	_info.InvokeIfaceMethod("remove_widget", _args[:], nil)
 
 	runtime.KeepAlive(cellEditable)
 }
@@ -264,6 +270,9 @@ func (cellEditable *CellEditable) StartEditing(event *gdk.Event) {
 	if event != nil {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
 	}
+
+	_info := girepository.MustFind("Gtk", "CellEditable")
+	_info.InvokeIfaceMethod("start_editing", _args[:], nil)
 
 	runtime.KeepAlive(cellEditable)
 	runtime.KeepAlive(event)

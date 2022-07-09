@@ -104,8 +104,9 @@ func NewHScrollbar(adjustment *Adjustment) *HScrollbar {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "HScrollbar").InvokeMethod("new_HScrollbar", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "HScrollbar")
+	_gret := _info.InvokeClassMethod("new_HScrollbar", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(adjustment)
 

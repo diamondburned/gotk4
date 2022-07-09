@@ -69,8 +69,9 @@ func NewFileIcon(file Filer) *FileIcon {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 
-	_gret := girepository.MustFind("Gio", "FileIcon").InvokeMethod("new_FileIcon", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "FileIcon")
+	_gret := _info.InvokeClassMethod("new_FileIcon", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 
@@ -92,8 +93,9 @@ func (icon *FileIcon) File() *File {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 
-	_gret := girepository.MustFind("Gio", "FileIcon").InvokeMethod("get_file", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "FileIcon")
+	_gret := _info.InvokeClassMethod("get_file", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(icon)
 

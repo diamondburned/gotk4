@@ -97,8 +97,9 @@ func NewFilterListModel(model gio.ListModeller, filter *Filter) *FilterListModel
 		C.g_object_ref(C.gpointer(coreglib.InternObject(filter).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("new_FilterListModel", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FilterListModel")
+	_gret := _info.InvokeClassMethod("new_FilterListModel", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
 	runtime.KeepAlive(filter)
@@ -121,8 +122,9 @@ func (self *FilterListModel) Filter() *Filter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("get_filter", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FilterListModel")
+	_gret := _info.InvokeClassMethod("get_filter", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -148,8 +150,9 @@ func (self *FilterListModel) Incremental() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("get_incremental", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FilterListModel")
+	_gret := _info.InvokeClassMethod("get_incremental", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -173,8 +176,9 @@ func (self *FilterListModel) Model() *gio.ListModel {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("get_model", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FilterListModel")
+	_gret := _info.InvokeClassMethod("get_model", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -216,8 +220,9 @@ func (self *FilterListModel) Pending() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("get_pending", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FilterListModel")
+	_gret := _info.InvokeClassMethod("get_pending", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -242,7 +247,8 @@ func (self *FilterListModel) SetFilter(filter *Filter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	}
 
-	girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("set_filter", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "FilterListModel")
+	_info.InvokeClassMethod("set_filter", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(filter)
@@ -277,7 +283,8 @@ func (self *FilterListModel) SetIncremental(incremental bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("set_incremental", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "FilterListModel")
+	_info.InvokeClassMethod("set_incremental", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(incremental)
@@ -301,7 +308,8 @@ func (self *FilterListModel) SetModel(model gio.ListModeller) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
 
-	girepository.MustFind("Gtk", "FilterListModel").InvokeMethod("set_model", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "FilterListModel")
+	_info.InvokeClassMethod("set_model", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)

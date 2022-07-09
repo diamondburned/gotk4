@@ -83,8 +83,9 @@ func marshalInvisible(p uintptr) (interface{}, error) {
 //    - invisible: new Invisible.
 //
 func NewInvisible() *Invisible {
-	_gret := girepository.MustFind("Gtk", "Invisible").InvokeMethod("new_Invisible", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Invisible")
+	_gret := _info.InvokeClassMethod("new_Invisible", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _invisible *Invisible // out
 
@@ -108,8 +109,9 @@ func NewInvisibleForScreen(screen *gdk.Screen) *Invisible {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Invisible").InvokeMethod("new_Invisible_for_screen", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Invisible")
+	_gret := _info.InvokeClassMethod("new_Invisible_for_screen", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)
 
@@ -131,8 +133,9 @@ func (invisible *Invisible) Screen() *gdk.Screen {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(invisible).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Invisible").InvokeMethod("get_screen", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Invisible")
+	_gret := _info.InvokeClassMethod("get_screen", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(invisible)
 
@@ -160,7 +163,8 @@ func (invisible *Invisible) SetScreen(screen *gdk.Screen) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(invisible).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	girepository.MustFind("Gtk", "Invisible").InvokeMethod("set_screen", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Invisible")
+	_info.InvokeClassMethod("set_screen", _args[:], nil)
 
 	runtime.KeepAlive(invisible)
 	runtime.KeepAlive(screen)

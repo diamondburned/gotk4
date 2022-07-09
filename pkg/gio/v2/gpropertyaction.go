@@ -44,8 +44,9 @@ func NewPropertyAction(name string, object *coreglib.Object, propertyName string
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	_gret := girepository.MustFind("Gio", "PropertyAction").InvokeMethod("new_PropertyAction", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "PropertyAction")
+	_gret := _info.InvokeClassMethod("new_PropertyAction", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(object)

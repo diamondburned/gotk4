@@ -392,8 +392,9 @@ func (assistant *Assistant) ConnectPrepare(f func(page Widgetter)) coreglib.Sign
 //    - assistant: newly created GtkAssistant.
 //
 func NewAssistant() *Assistant {
-	_gret := girepository.MustFind("Gtk", "Assistant").InvokeMethod("new_Assistant", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Assistant")
+	_gret := _info.InvokeClassMethod("new_Assistant", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _assistant *Assistant // out
 
@@ -414,7 +415,8 @@ func (assistant *Assistant) AddActionWidget(child Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	girepository.MustFind("Gtk", "Assistant").InvokeMethod("add_action_widget", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Assistant")
+	_info.InvokeClassMethod("add_action_widget", _args[:], nil)
 
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(child)
@@ -436,8 +438,9 @@ func (assistant *Assistant) AppendPage(page Widgetter) int32 {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Assistant").InvokeMethod("append_page", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Assistant")
+	_gret := _info.InvokeClassMethod("append_page", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
@@ -463,7 +466,8 @@ func (assistant *Assistant) Commit() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 
-	girepository.MustFind("Gtk", "Assistant").InvokeMethod("commit", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Assistant")
+	_info.InvokeClassMethod("commit", _args[:], nil)
 
 	runtime.KeepAlive(assistant)
 }
@@ -480,8 +484,9 @@ func (assistant *Assistant) CurrentPage() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Assistant").InvokeMethod("get_current_page", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Assistant")
+	_gret := _info.InvokeClassMethod("get_current_page", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(assistant)
 
@@ -503,8 +508,9 @@ func (assistant *Assistant) NPages() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Assistant").InvokeMethod("get_n_pages", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Assistant")
+	_gret := _info.InvokeClassMethod("get_n_pages", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(assistant)
 
@@ -531,8 +537,9 @@ func (assistant *Assistant) NthPage(pageNum int32) Widgetter {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(pageNum)
 
-	_gret := girepository.MustFind("Gtk", "Assistant").InvokeMethod("get_nth_page", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Assistant")
+	_gret := _info.InvokeClassMethod("get_nth_page", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(pageNum)
@@ -575,8 +582,9 @@ func (assistant *Assistant) Page(child Widgetter) *AssistantPage {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Assistant").InvokeMethod("get_page", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Assistant")
+	_gret := _info.InvokeClassMethod("get_page", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(child)
@@ -604,8 +612,9 @@ func (assistant *Assistant) PageComplete(page Widgetter) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Assistant").InvokeMethod("get_page_complete", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Assistant")
+	_gret := _info.InvokeClassMethod("get_page_complete", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
@@ -635,8 +644,9 @@ func (assistant *Assistant) PageTitle(page Widgetter) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Assistant").InvokeMethod("get_page_title", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Assistant")
+	_gret := _info.InvokeClassMethod("get_page_title", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
@@ -659,8 +669,9 @@ func (assistant *Assistant) Pages() *gio.ListModel {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Assistant").InvokeMethod("get_pages", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Assistant")
+	_gret := _info.InvokeClassMethod("get_pages", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(assistant)
 
@@ -695,8 +706,9 @@ func (assistant *Assistant) InsertPage(page Widgetter, position int32) int32 {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(position)
 
-	_gret := girepository.MustFind("Gtk", "Assistant").InvokeMethod("insert_page", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Assistant")
+	_gret := _info.InvokeClassMethod("insert_page", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
@@ -720,7 +732,8 @@ func (assistant *Assistant) NextPage() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 
-	girepository.MustFind("Gtk", "Assistant").InvokeMethod("next_page", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Assistant")
+	_info.InvokeClassMethod("next_page", _args[:], nil)
 
 	runtime.KeepAlive(assistant)
 }
@@ -741,8 +754,9 @@ func (assistant *Assistant) PrependPage(page Widgetter) int32 {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Assistant").InvokeMethod("prepend_page", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Assistant")
+	_gret := _info.InvokeClassMethod("prepend_page", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
@@ -766,7 +780,8 @@ func (assistant *Assistant) PreviousPage() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 
-	girepository.MustFind("Gtk", "Assistant").InvokeMethod("previous_page", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Assistant")
+	_info.InvokeClassMethod("previous_page", _args[:], nil)
 
 	runtime.KeepAlive(assistant)
 }
@@ -783,7 +798,8 @@ func (assistant *Assistant) RemoveActionWidget(child Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	girepository.MustFind("Gtk", "Assistant").InvokeMethod("remove_action_widget", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Assistant")
+	_info.InvokeClassMethod("remove_action_widget", _args[:], nil)
 
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(child)
@@ -801,7 +817,8 @@ func (assistant *Assistant) RemovePage(pageNum int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(pageNum)
 
-	girepository.MustFind("Gtk", "Assistant").InvokeMethod("remove_page", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Assistant")
+	_info.InvokeClassMethod("remove_page", _args[:], nil)
 
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(pageNum)
@@ -824,7 +841,8 @@ func (assistant *Assistant) SetCurrentPage(pageNum int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(pageNum)
 
-	girepository.MustFind("Gtk", "Assistant").InvokeMethod("set_current_page", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Assistant")
+	_info.InvokeClassMethod("set_current_page", _args[:], nil)
 
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(pageNum)
@@ -852,7 +870,8 @@ func (assistant *Assistant) SetForwardPageFunc(pageFunc AssistantPageFunc) {
 		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	girepository.MustFind("Gtk", "Assistant").InvokeMethod("set_forward_page_func", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Assistant")
+	_info.InvokeClassMethod("set_forward_page_func", _args[:], nil)
 
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(pageFunc)
@@ -877,7 +896,8 @@ func (assistant *Assistant) SetPageComplete(page Widgetter, complete bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Assistant").InvokeMethod("set_page_complete", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Assistant")
+	_info.InvokeClassMethod("set_page_complete", _args[:], nil)
 
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
@@ -902,7 +922,8 @@ func (assistant *Assistant) SetPageTitle(page Widgetter, title string) {
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	girepository.MustFind("Gtk", "Assistant").InvokeMethod("set_page_title", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Assistant")
+	_info.InvokeClassMethod("set_page_title", _args[:], nil)
 
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
@@ -923,7 +944,8 @@ func (assistant *Assistant) UpdateButtonsState() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 
-	girepository.MustFind("Gtk", "Assistant").InvokeMethod("update_buttons_state", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Assistant")
+	_info.InvokeClassMethod("update_buttons_state", _args[:], nil)
 
 	runtime.KeepAlive(assistant)
 }
@@ -959,8 +981,9 @@ func (page *AssistantPage) Child() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AssistantPage").InvokeMethod("get_child", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AssistantPage")
+	_gret := _info.InvokeClassMethod("get_child", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(page)
 

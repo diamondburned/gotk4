@@ -116,8 +116,9 @@ func NewLayout(hadjustment, vadjustment *Adjustment) *Layout {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(vadjustment).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "Layout").InvokeMethod("new_Layout", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Layout")
+	_gret := _info.InvokeClassMethod("new_Layout", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(hadjustment)
 	runtime.KeepAlive(vadjustment)
@@ -140,8 +141,9 @@ func (layout *Layout) BinWindow() gdk.Windower {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Layout").InvokeMethod("get_bin_window", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Layout")
+	_gret := _info.InvokeClassMethod("get_bin_window", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -186,8 +188,9 @@ func (layout *Layout) HAdjustment() *Adjustment {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Layout").InvokeMethod("get_hadjustment", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Layout")
+	_gret := _info.InvokeClassMethod("get_hadjustment", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -212,7 +215,8 @@ func (layout *Layout) Size() (width, height uint32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	girepository.MustFind("Gtk", "Layout").InvokeMethod("get_size", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "Layout")
+	_info.InvokeClassMethod("get_size", _args[:], _outs[:])
 
 	runtime.KeepAlive(layout)
 
@@ -247,8 +251,9 @@ func (layout *Layout) VAdjustment() *Adjustment {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Layout").InvokeMethod("get_vadjustment", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Layout")
+	_gret := _info.InvokeClassMethod("get_vadjustment", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -275,7 +280,8 @@ func (layout *Layout) Move(childWidget Widgetter, x, y int32) {
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(x)
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(y)
 
-	girepository.MustFind("Gtk", "Layout").InvokeMethod("move", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Layout")
+	_info.InvokeClassMethod("move", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(childWidget)
@@ -300,7 +306,8 @@ func (layout *Layout) Put(childWidget Widgetter, x, y int32) {
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(x)
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(y)
 
-	girepository.MustFind("Gtk", "Layout").InvokeMethod("put", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Layout")
+	_info.InvokeClassMethod("put", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(childWidget)
@@ -326,7 +333,8 @@ func (layout *Layout) SetHAdjustment(adjustment *Adjustment) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
 
-	girepository.MustFind("Gtk", "Layout").InvokeMethod("set_hadjustment", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Layout")
+	_info.InvokeClassMethod("set_hadjustment", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(adjustment)
@@ -346,7 +354,8 @@ func (layout *Layout) SetSize(width, height uint32) {
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(width)
 	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(height)
 
-	girepository.MustFind("Gtk", "Layout").InvokeMethod("set_size", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Layout")
+	_info.InvokeClassMethod("set_size", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(width)
@@ -371,7 +380,8 @@ func (layout *Layout) SetVAdjustment(adjustment *Adjustment) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
 
-	girepository.MustFind("Gtk", "Layout").InvokeMethod("set_vadjustment", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Layout")
+	_info.InvokeClassMethod("set_vadjustment", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(adjustment)

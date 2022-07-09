@@ -44,7 +44,8 @@ func ShowURI(screen *gdk.Screen, uri string, timestamp uint32) error {
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(timestamp)
 
-	girepository.MustFind("Gtk", "show_uri").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "show_uri")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(uri)
@@ -93,7 +94,8 @@ func ShowURIOnWindow(parent *Window, uri string, timestamp uint32) error {
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(timestamp)
 
-	girepository.MustFind("Gtk", "show_uri_on_window").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "show_uri_on_window")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(uri)

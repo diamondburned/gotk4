@@ -15,9 +15,9 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GdkContentProvider* _gotk4_gtk4_DragSource_ConnectPrepare(gpointer, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_DragSource_ConnectDragBegin(gpointer, void*, guintptr);
 // extern void _gotk4_gtk4_DragSource_ConnectDragEnd(gpointer, void*, gboolean, guintptr);
+// extern void* _gotk4_gtk4_DragSource_ConnectPrepare(gpointer, gdouble, gdouble, guintptr);
 import "C"
 
 // GTypeDragSource returns the GType for the type DragSource.
@@ -218,7 +218,7 @@ func (source *DragSource) ConnectDragEnd(f func(drag gdk.Dragger, deleteData boo
 }
 
 //export _gotk4_gtk4_DragSource_ConnectPrepare
-func _gotk4_gtk4_DragSource_ConnectPrepare(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) (cret *C.GdkContentProvider) {
+func _gotk4_gtk4_DragSource_ConnectPrepare(arg0 C.gpointer, arg1 C.gdouble, arg2 C.gdouble, arg3 C.guintptr) (cret *C.void) {
 	var f func(x, y float64) (contentProvider *gdk.ContentProvider)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -263,8 +263,9 @@ func (source *DragSource) ConnectPrepare(f func(x, y float64) (contentProvider *
 //    - dragSource: new GtkDragSource.
 //
 func NewDragSource() *DragSource {
-	_gret := girepository.MustFind("Gtk", "DragSource").InvokeMethod("new_DragSource", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "DragSource")
+	_gret := _info.InvokeClassMethod("new_DragSource", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _dragSource *DragSource // out
 
@@ -279,7 +280,8 @@ func (source *DragSource) DragCancel() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(source).Native()))
 
-	girepository.MustFind("Gtk", "DragSource").InvokeMethod("drag_cancel", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "DragSource")
+	_info.InvokeClassMethod("drag_cancel", _args[:], nil)
 
 	runtime.KeepAlive(source)
 }
@@ -295,8 +297,9 @@ func (source *DragSource) Content() *gdk.ContentProvider {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(source).Native()))
 
-	_gret := girepository.MustFind("Gtk", "DragSource").InvokeMethod("get_content", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "DragSource")
+	_gret := _info.InvokeClassMethod("get_content", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(source)
 
@@ -325,8 +328,9 @@ func (source *DragSource) Drag() gdk.Dragger {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(source).Native()))
 
-	_gret := girepository.MustFind("Gtk", "DragSource").InvokeMethod("get_drag", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "DragSource")
+	_gret := _info.InvokeClassMethod("get_drag", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(source)
 
@@ -375,7 +379,8 @@ func (source *DragSource) SetContent(content *gdk.ContentProvider) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(content).Native()))
 	}
 
-	girepository.MustFind("Gtk", "DragSource").InvokeMethod("set_content", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "DragSource")
+	_info.InvokeClassMethod("set_content", _args[:], nil)
 
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(content)
@@ -407,7 +412,8 @@ func (source *DragSource) SetIcon(paintable gdk.Paintabler, hotX, hotY int32) {
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(hotX)
 	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(hotY)
 
-	girepository.MustFind("Gtk", "DragSource").InvokeMethod("set_icon", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "DragSource")
+	_info.InvokeClassMethod("set_icon", _args[:], nil)
 
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(paintable)
@@ -438,8 +444,9 @@ func (widget *Widget) DragCheckThreshold(startX, startY, currentX, currentY int3
 	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(currentX)
 	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(currentY)
 
-	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("drag_check_threshold", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Widget")
+	_gret := _info.InvokeClassMethod("drag_check_threshold", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(startX)

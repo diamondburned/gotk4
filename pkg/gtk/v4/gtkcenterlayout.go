@@ -75,8 +75,9 @@ func marshalCenterLayout(p uintptr) (interface{}, error) {
 //    - centerLayout: newly created GtkCenterLayout.
 //
 func NewCenterLayout() *CenterLayout {
-	_gret := girepository.MustFind("Gtk", "CenterLayout").InvokeMethod("new_CenterLayout", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CenterLayout")
+	_gret := _info.InvokeClassMethod("new_CenterLayout", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _centerLayout *CenterLayout // out
 
@@ -96,8 +97,9 @@ func (self *CenterLayout) CenterWidget() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "CenterLayout").InvokeMethod("get_center_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CenterLayout")
+	_gret := _info.InvokeClassMethod("get_center_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -134,8 +136,9 @@ func (self *CenterLayout) EndWidget() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "CenterLayout").InvokeMethod("get_end_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CenterLayout")
+	_gret := _info.InvokeClassMethod("get_end_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -172,8 +175,9 @@ func (self *CenterLayout) StartWidget() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "CenterLayout").InvokeMethod("get_start_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CenterLayout")
+	_gret := _info.InvokeClassMethod("get_start_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -215,7 +219,8 @@ func (self *CenterLayout) SetCenterWidget(widget Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
 
-	girepository.MustFind("Gtk", "CenterLayout").InvokeMethod("set_center_widget", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CenterLayout")
+	_info.InvokeClassMethod("set_center_widget", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(widget)
@@ -237,7 +242,8 @@ func (self *CenterLayout) SetEndWidget(widget Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
 
-	girepository.MustFind("Gtk", "CenterLayout").InvokeMethod("set_end_widget", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CenterLayout")
+	_info.InvokeClassMethod("set_end_widget", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(widget)
@@ -259,7 +265,8 @@ func (self *CenterLayout) SetStartWidget(widget Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	}
 
-	girepository.MustFind("Gtk", "CenterLayout").InvokeMethod("set_start_widget", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CenterLayout")
+	_info.InvokeClassMethod("set_start_widget", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(widget)

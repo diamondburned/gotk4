@@ -82,8 +82,9 @@ func NewInetSocketAddress(address *InetAddress, port uint16) *InetSocketAddress 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 	*(*C.guint16)(unsafe.Pointer(&_args[1])) = C.guint16(port)
 
-	_gret := girepository.MustFind("Gio", "InetSocketAddress").InvokeMethod("new_InetSocketAddress", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetSocketAddress")
+	_gret := _info.InvokeClassMethod("new_InetSocketAddress", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(address)
 	runtime.KeepAlive(port)
@@ -118,8 +119,9 @@ func NewInetSocketAddressFromString(address string, port uint32) *InetSocketAddr
 	defer C.free(unsafe.Pointer(_args[0]))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(port)
 
-	_gret := girepository.MustFind("Gio", "InetSocketAddress").InvokeMethod("new_InetSocketAddress_from_string", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetSocketAddress")
+	_gret := _info.InvokeClassMethod("new_InetSocketAddress_from_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(address)
 	runtime.KeepAlive(port)
@@ -145,8 +147,9 @@ func (address *InetSocketAddress) Address() *InetAddress {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_gret := girepository.MustFind("Gio", "InetSocketAddress").InvokeMethod("get_address", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetSocketAddress")
+	_gret := _info.InvokeClassMethod("get_address", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(address)
 
@@ -169,8 +172,9 @@ func (address *InetSocketAddress) Flowinfo() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_gret := girepository.MustFind("Gio", "InetSocketAddress").InvokeMethod("get_flowinfo", _args[:], nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetSocketAddress")
+	_gret := _info.InvokeClassMethod("get_flowinfo", _args[:], nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(address)
 
@@ -192,8 +196,9 @@ func (address *InetSocketAddress) Port() uint16 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_gret := girepository.MustFind("Gio", "InetSocketAddress").InvokeMethod("get_port", _args[:], nil)
-	_cret = *(*C.guint16)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetSocketAddress")
+	_gret := _info.InvokeClassMethod("get_port", _args[:], nil)
+	_cret := *(*C.guint16)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(address)
 
@@ -216,8 +221,9 @@ func (address *InetSocketAddress) ScopeID() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_gret := girepository.MustFind("Gio", "InetSocketAddress").InvokeMethod("get_scope_id", _args[:], nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetSocketAddress")
+	_gret := _info.InvokeClassMethod("get_scope_id", _args[:], nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(address)
 

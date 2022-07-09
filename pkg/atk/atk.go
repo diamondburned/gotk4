@@ -15,5 +15,5 @@ import (
 import "C"
 
 func init() {
-	girepository.Require("Atk", "1.0")
+	girepository.Require("Atk", "1.0", girepository.LoadFlagLazy)
 }

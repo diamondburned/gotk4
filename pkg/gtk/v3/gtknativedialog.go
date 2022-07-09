@@ -202,7 +202,8 @@ func (self *NativeDialog) Destroy() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	girepository.MustFind("Gtk", "NativeDialog").InvokeMethod("destroy", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "NativeDialog")
+	_info.InvokeClassMethod("destroy", _args[:], nil)
 
 	runtime.KeepAlive(self)
 }
@@ -218,8 +219,9 @@ func (self *NativeDialog) Modal() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "NativeDialog").InvokeMethod("get_modal", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "NativeDialog")
+	_gret := _info.InvokeClassMethod("get_modal", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -245,8 +247,9 @@ func (self *NativeDialog) Title() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "NativeDialog").InvokeMethod("get_title", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "NativeDialog")
+	_gret := _info.InvokeClassMethod("get_title", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -272,8 +275,9 @@ func (self *NativeDialog) TransientFor() *Window {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "NativeDialog").InvokeMethod("get_transient_for", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "NativeDialog")
+	_gret := _info.InvokeClassMethod("get_transient_for", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -297,8 +301,9 @@ func (self *NativeDialog) Visible() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "NativeDialog").InvokeMethod("get_visible", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "NativeDialog")
+	_gret := _info.InvokeClassMethod("get_visible", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -321,7 +326,8 @@ func (self *NativeDialog) Hide() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	girepository.MustFind("Gtk", "NativeDialog").InvokeMethod("hide", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "NativeDialog")
+	_info.InvokeClassMethod("hide", _args[:], nil)
 
 	runtime.KeepAlive(self)
 }
@@ -364,8 +370,9 @@ func (self *NativeDialog) Run() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "NativeDialog").InvokeMethod("run", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "NativeDialog")
+	_gret := _info.InvokeClassMethod("run", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -394,7 +401,8 @@ func (self *NativeDialog) SetModal(modal bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "NativeDialog").InvokeMethod("set_modal", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "NativeDialog")
+	_info.InvokeClassMethod("set_modal", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(modal)
@@ -413,7 +421,8 @@ func (self *NativeDialog) SetTitle(title string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "NativeDialog").InvokeMethod("set_title", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "NativeDialog")
+	_info.InvokeClassMethod("set_title", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(title)
@@ -438,7 +447,8 @@ func (self *NativeDialog) SetTransientFor(parent *Window) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
 
-	girepository.MustFind("Gtk", "NativeDialog").InvokeMethod("set_transient_for", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "NativeDialog")
+	_info.InvokeClassMethod("set_transient_for", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(parent)
@@ -454,7 +464,8 @@ func (self *NativeDialog) Show() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	girepository.MustFind("Gtk", "NativeDialog").InvokeMethod("show", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "NativeDialog")
+	_info.InvokeClassMethod("show", _args[:], nil)
 
 	runtime.KeepAlive(self)
 }

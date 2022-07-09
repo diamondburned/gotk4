@@ -323,8 +323,9 @@ func (paned *Paned) EndChild() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Paned").InvokeMethod("get_end_child", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Paned")
+	_gret := _info.InvokeClassMethod("get_end_child", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(paned)
 
@@ -361,8 +362,9 @@ func (paned *Paned) Position() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Paned").InvokeMethod("get_position", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Paned")
+	_gret := _info.InvokeClassMethod("get_position", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(paned)
 
@@ -384,8 +386,9 @@ func (paned *Paned) ResizeEndChild() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Paned").InvokeMethod("get_resize_end_child", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Paned")
+	_gret := _info.InvokeClassMethod("get_resize_end_child", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(paned)
 
@@ -409,8 +412,9 @@ func (paned *Paned) ResizeStartChild() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Paned").InvokeMethod("get_resize_start_child", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Paned")
+	_gret := _info.InvokeClassMethod("get_resize_start_child", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(paned)
 
@@ -434,8 +438,9 @@ func (paned *Paned) ShrinkEndChild() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Paned").InvokeMethod("get_shrink_end_child", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Paned")
+	_gret := _info.InvokeClassMethod("get_shrink_end_child", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(paned)
 
@@ -459,8 +464,9 @@ func (paned *Paned) ShrinkStartChild() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Paned").InvokeMethod("get_shrink_start_child", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Paned")
+	_gret := _info.InvokeClassMethod("get_shrink_start_child", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(paned)
 
@@ -486,8 +492,9 @@ func (paned *Paned) StartChild() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Paned").InvokeMethod("get_start_child", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Paned")
+	_gret := _info.InvokeClassMethod("get_start_child", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(paned)
 
@@ -524,8 +531,9 @@ func (paned *Paned) WideHandle() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Paned").InvokeMethod("get_wide_handle", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Paned")
+	_gret := _info.InvokeClassMethod("get_wide_handle", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(paned)
 
@@ -550,7 +558,8 @@ func (paned *Paned) SetEndChild(child Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	girepository.MustFind("Gtk", "Paned").InvokeMethod("set_end_child", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Paned")
+	_info.InvokeClassMethod("set_end_child", _args[:], nil)
 
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(child)
@@ -569,7 +578,8 @@ func (paned *Paned) SetPosition(position int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(position)
 
-	girepository.MustFind("Gtk", "Paned").InvokeMethod("set_position", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Paned")
+	_info.InvokeClassMethod("set_position", _args[:], nil)
 
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(position)
@@ -589,7 +599,8 @@ func (paned *Paned) SetResizeEndChild(resize bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Paned").InvokeMethod("set_resize_end_child", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Paned")
+	_info.InvokeClassMethod("set_resize_end_child", _args[:], nil)
 
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(resize)
@@ -609,7 +620,8 @@ func (paned *Paned) SetResizeStartChild(resize bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Paned").InvokeMethod("set_resize_start_child", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Paned")
+	_info.InvokeClassMethod("set_resize_start_child", _args[:], nil)
 
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(resize)
@@ -629,7 +641,8 @@ func (paned *Paned) SetShrinkEndChild(resize bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Paned").InvokeMethod("set_shrink_end_child", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Paned")
+	_info.InvokeClassMethod("set_shrink_end_child", _args[:], nil)
 
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(resize)
@@ -649,7 +662,8 @@ func (paned *Paned) SetShrinkStartChild(resize bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Paned").InvokeMethod("set_shrink_start_child", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Paned")
+	_info.InvokeClassMethod("set_shrink_start_child", _args[:], nil)
 
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(resize)
@@ -667,7 +681,8 @@ func (paned *Paned) SetStartChild(child Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	girepository.MustFind("Gtk", "Paned").InvokeMethod("set_start_child", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Paned")
+	_info.InvokeClassMethod("set_start_child", _args[:], nil)
 
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(child)
@@ -687,7 +702,8 @@ func (paned *Paned) SetWideHandle(wide bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Paned").InvokeMethod("set_wide_handle", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Paned")
+	_info.InvokeClassMethod("set_wide_handle", _args[:], nil)
 
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(wide)

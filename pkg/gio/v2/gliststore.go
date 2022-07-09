@@ -89,7 +89,8 @@ func (store *ListStore) Append(item *coreglib.Object) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(store).Native()))
 	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = C.gpointer(unsafe.Pointer(item.Native()))
 
-	girepository.MustFind("Gio", "ListStore").InvokeMethod("append", _args[:], nil)
+	_info := girepository.MustFind("Gio", "ListStore")
+	_info.InvokeClassMethod("append", _args[:], nil)
 
 	runtime.KeepAlive(store)
 	runtime.KeepAlive(item)
@@ -119,8 +120,9 @@ func (store *ListStore) Find(item *coreglib.Object) (uint32, bool) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(store).Native()))
 	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = C.gpointer(unsafe.Pointer(item.Native()))
 
-	_gret := girepository.MustFind("Gio", "ListStore").InvokeMethod("find", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ListStore")
+	_gret := _info.InvokeClassMethod("find", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(store)
 	runtime.KeepAlive(item)
@@ -159,7 +161,8 @@ func (store *ListStore) Insert(position uint32, item *coreglib.Object) {
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
 	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = C.gpointer(unsafe.Pointer(item.Native()))
 
-	girepository.MustFind("Gio", "ListStore").InvokeMethod("insert", _args[:], nil)
+	_info := girepository.MustFind("Gio", "ListStore")
+	_info.InvokeClassMethod("insert", _args[:], nil)
 
 	runtime.KeepAlive(store)
 	runtime.KeepAlive(position)
@@ -193,8 +196,9 @@ func (store *ListStore) InsertSorted(item *coreglib.Object, compareFunc glib.Com
 	_args[3] = C.gpointer(gbox.Assign(compareFunc))
 	defer gbox.Delete(uintptr(_args[3]))
 
-	_gret := girepository.MustFind("Gio", "ListStore").InvokeMethod("insert_sorted", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ListStore")
+	_gret := _info.InvokeClassMethod("insert_sorted", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(store)
 	runtime.KeepAlive(item)
@@ -223,7 +227,8 @@ func (store *ListStore) Remove(position uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(store).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
 
-	girepository.MustFind("Gio", "ListStore").InvokeMethod("remove", _args[:], nil)
+	_info := girepository.MustFind("Gio", "ListStore")
+	_info.InvokeClassMethod("remove", _args[:], nil)
 
 	runtime.KeepAlive(store)
 	runtime.KeepAlive(position)
@@ -235,7 +240,8 @@ func (store *ListStore) RemoveAll() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(store).Native()))
 
-	girepository.MustFind("Gio", "ListStore").InvokeMethod("remove_all", _args[:], nil)
+	_info := girepository.MustFind("Gio", "ListStore")
+	_info.InvokeClassMethod("remove_all", _args[:], nil)
 
 	runtime.KeepAlive(store)
 }
@@ -254,7 +260,8 @@ func (store *ListStore) Sort(compareFunc glib.CompareDataFunc) {
 	_args[2] = C.gpointer(gbox.Assign(compareFunc))
 	defer gbox.Delete(uintptr(_args[2]))
 
-	girepository.MustFind("Gio", "ListStore").InvokeMethod("sort", _args[:], nil)
+	_info := girepository.MustFind("Gio", "ListStore")
+	_info.InvokeClassMethod("sort", _args[:], nil)
 
 	runtime.KeepAlive(store)
 	runtime.KeepAlive(compareFunc)
@@ -296,7 +303,8 @@ func (store *ListStore) Splice(position, nRemovals uint32, additions []*coreglib
 		}
 	}
 
-	girepository.MustFind("Gio", "ListStore").InvokeMethod("splice", _args[:], nil)
+	_info := girepository.MustFind("Gio", "ListStore")
+	_info.InvokeClassMethod("splice", _args[:], nil)
 
 	runtime.KeepAlive(store)
 	runtime.KeepAlive(position)

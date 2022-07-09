@@ -159,8 +159,9 @@ func NewRadioAction(name, label, tooltip, stockId string, value int32) *RadioAct
 	}
 	*(*C.gint)(unsafe.Pointer(&_args[4])) = C.gint(value)
 
-	_gret := girepository.MustFind("Gtk", "RadioAction").InvokeMethod("new_RadioAction", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RadioAction")
+	_gret := _info.InvokeClassMethod("new_RadioAction", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(label)
@@ -189,8 +190,9 @@ func (action *RadioAction) CurrentValue() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
-	_gret := girepository.MustFind("Gtk", "RadioAction").InvokeMethod("get_current_value", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RadioAction")
+	_gret := _info.InvokeClassMethod("get_current_value", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(action)
 
@@ -228,8 +230,9 @@ func (action *RadioAction) Group() []*RadioAction {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
-	_gret := girepository.MustFind("Gtk", "RadioAction").InvokeMethod("get_group", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RadioAction")
+	_gret := _info.InvokeClassMethod("get_group", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(action)
 
@@ -280,7 +283,8 @@ func (action *RadioAction) JoinGroup(groupSource *RadioAction) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(groupSource).Native()))
 	}
 
-	girepository.MustFind("Gtk", "RadioAction").InvokeMethod("join_group", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "RadioAction")
+	_info.InvokeClassMethod("join_group", _args[:], nil)
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(groupSource)
@@ -301,7 +305,8 @@ func (action *RadioAction) SetCurrentValue(currentValue int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(currentValue)
 
-	girepository.MustFind("Gtk", "RadioAction").InvokeMethod("set_current_value", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "RadioAction")
+	_info.InvokeClassMethod("set_current_value", _args[:], nil)
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(currentValue)
@@ -329,7 +334,8 @@ func (action *RadioAction) SetGroup(group []*RadioAction) {
 		defer C.g_slist_free(_args[1])
 	}
 
-	girepository.MustFind("Gtk", "RadioAction").InvokeMethod("set_group", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "RadioAction")
+	_info.InvokeClassMethod("set_group", _args[:], nil)
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(group)

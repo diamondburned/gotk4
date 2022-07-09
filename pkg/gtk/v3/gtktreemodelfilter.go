@@ -146,7 +146,9 @@ func (childModel *TreeModel) NewFilter(root *TreePath) *TreeModel {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(root)))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_gret := _info.InvokeIfaceMethod("filter_new", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(childModel)
 	runtime.KeepAlive(root)
@@ -376,7 +378,8 @@ func (filter *TreeModelFilter) ClearCache() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 
-	girepository.MustFind("Gtk", "TreeModelFilter").InvokeMethod("clear_cache", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TreeModelFilter")
+	_info.InvokeClassMethod("clear_cache", _args[:], nil)
 
 	runtime.KeepAlive(filter)
 }
@@ -402,8 +405,9 @@ func (filter *TreeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (*Tre
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(childIter)))
 
-	_gret := girepository.MustFind("Gtk", "TreeModelFilter").InvokeMethod("convert_child_iter_to_iter", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModelFilter")
+	_gret := _info.InvokeClassMethod("convert_child_iter_to_iter", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(childIter)
@@ -439,8 +443,9 @@ func (filter *TreeModelFilter) ConvertChildPathToPath(childPath *TreePath) *Tree
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(childPath)))
 
-	_gret := girepository.MustFind("Gtk", "TreeModelFilter").InvokeMethod("convert_child_path_to_path", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModelFilter")
+	_gret := _info.InvokeClassMethod("convert_child_path_to_path", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(childPath)
@@ -454,7 +459,7 @@ func (filter *TreeModelFilter) ConvertChildPathToPath(childPath *TreePath) *Tree
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -481,7 +486,8 @@ func (filter *TreeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) *Tre
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(filterIter)))
 
-	girepository.MustFind("Gtk", "TreeModelFilter").InvokeMethod("convert_iter_to_child_iter", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "TreeModelFilter")
+	_info.InvokeClassMethod("convert_iter_to_child_iter", _args[:], _outs[:])
 
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(filterIter)
@@ -513,8 +519,9 @@ func (filter *TreeModelFilter) ConvertPathToChildPath(filterPath *TreePath) *Tre
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(filterPath)))
 
-	_gret := girepository.MustFind("Gtk", "TreeModelFilter").InvokeMethod("convert_path_to_child_path", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModelFilter")
+	_gret := _info.InvokeClassMethod("convert_path_to_child_path", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(filterPath)
@@ -528,7 +535,7 @@ func (filter *TreeModelFilter) ConvertPathToChildPath(filterPath *TreePath) *Tre
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Gtk", "TreePath").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -548,8 +555,9 @@ func (filter *TreeModelFilter) Model() *TreeModel {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TreeModelFilter").InvokeMethod("get_model", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeModelFilter")
+	_gret := _info.InvokeClassMethod("get_model", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(filter)
 
@@ -567,7 +575,8 @@ func (filter *TreeModelFilter) Refilter() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 
-	girepository.MustFind("Gtk", "TreeModelFilter").InvokeMethod("refilter", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TreeModelFilter")
+	_info.InvokeClassMethod("refilter", _args[:], nil)
 
 	runtime.KeepAlive(filter)
 }
@@ -590,7 +599,8 @@ func (filter *TreeModelFilter) SetVisibleColumn(column int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(column)
 
-	girepository.MustFind("Gtk", "TreeModelFilter").InvokeMethod("set_visible_column", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TreeModelFilter")
+	_info.InvokeClassMethod("set_visible_column", _args[:], nil)
 
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(column)
@@ -642,7 +652,8 @@ func (filter *TreeModelFilter) SetVisibleFunc(fn TreeModelFilterVisibleFunc) {
 	_args[2] = C.gpointer(gbox.Assign(fn))
 	_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
-	girepository.MustFind("Gtk", "TreeModelFilter").InvokeMethod("set_visible_func", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TreeModelFilter")
+	_info.InvokeClassMethod("set_visible_func", _args[:], nil)
 
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(fn)

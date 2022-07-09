@@ -124,8 +124,9 @@ func (context *PrintContext) CreatePangoContext() *pango.Context {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("create_pango_context", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PrintContext")
+	_gret := _info.InvokeClassMethod("create_pango_context", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -153,8 +154,9 @@ func (context *PrintContext) CreatePangoLayout() *pango.Layout {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("create_pango_layout", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PrintContext")
+	_gret := _info.InvokeClassMethod("create_pango_layout", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -182,8 +184,9 @@ func (context *PrintContext) CairoContext() *cairo.Context {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_cairo_context", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PrintContext")
+	_gret := _info.InvokeClassMethod("get_cairo_context", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -209,8 +212,9 @@ func (context *PrintContext) DPIX() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_dpi_x", _args[:], nil)
-	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PrintContext")
+	_gret := _info.InvokeClassMethod("get_dpi_x", _args[:], nil)
+	_cret := *(*C.gdouble)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -232,8 +236,9 @@ func (context *PrintContext) DPIY() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_dpi_y", _args[:], nil)
-	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PrintContext")
+	_gret := _info.InvokeClassMethod("get_dpi_y", _args[:], nil)
+	_cret := *(*C.gdouble)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -261,8 +266,9 @@ func (context *PrintContext) HardMargins() (top, bottom, left, right float64, ok
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_hard_margins", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PrintContext")
+	_gret := _info.InvokeClassMethod("get_hard_margins", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -294,8 +300,9 @@ func (context *PrintContext) Height() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_height", _args[:], nil)
-	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PrintContext")
+	_gret := _info.InvokeClassMethod("get_height", _args[:], nil)
+	_cret := *(*C.gdouble)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -318,8 +325,9 @@ func (context *PrintContext) PageSetup() *PageSetup {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_page_setup", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PrintContext")
+	_gret := _info.InvokeClassMethod("get_page_setup", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -342,8 +350,9 @@ func (context *PrintContext) PangoFontmap() pango.FontMapper {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_pango_fontmap", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PrintContext")
+	_gret := _info.InvokeClassMethod("get_pango_fontmap", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -381,8 +390,9 @@ func (context *PrintContext) Width() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gtk", "PrintContext").InvokeMethod("get_width", _args[:], nil)
-	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PrintContext")
+	_gret := _info.InvokeClassMethod("get_width", _args[:], nil)
+	_cret := *(*C.gdouble)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -413,7 +423,8 @@ func (context *PrintContext) SetCairoContext(cr *cairo.Context, dpiX, dpiY float
 	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(dpiX)
 	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(dpiY)
 
-	girepository.MustFind("Gtk", "PrintContext").InvokeMethod("set_cairo_context", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "PrintContext")
+	_info.InvokeClassMethod("set_cairo_context", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)

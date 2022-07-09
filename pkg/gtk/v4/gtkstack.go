@@ -261,8 +261,9 @@ func marshalStack(p uintptr) (interface{}, error) {
 //    - stack: new GtkStack.
 //
 func NewStack() *Stack {
-	_gret := girepository.MustFind("Gtk", "Stack").InvokeMethod("new_Stack", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Stack")
+	_gret := _info.InvokeClassMethod("new_Stack", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _stack *Stack // out
 
@@ -287,8 +288,9 @@ func (stack *Stack) AddChild(child Widgetter) *StackPage {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Stack").InvokeMethod("add_child", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Stack")
+	_gret := _info.InvokeClassMethod("add_child", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(child)
@@ -323,8 +325,9 @@ func (stack *Stack) AddNamed(child Widgetter, name string) *StackPage {
 		defer C.free(unsafe.Pointer(_args[2]))
 	}
 
-	_gret := girepository.MustFind("Gtk", "Stack").InvokeMethod("add_named", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Stack")
+	_gret := _info.InvokeClassMethod("add_named", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(child)
@@ -364,8 +367,9 @@ func (stack *Stack) AddTitled(child Widgetter, name, title string) *StackPage {
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_args[3]))
 
-	_gret := girepository.MustFind("Gtk", "Stack").InvokeMethod("add_titled", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Stack")
+	_gret := _info.InvokeClassMethod("add_titled", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(child)
@@ -398,8 +402,9 @@ func (stack *Stack) ChildByName(name string) Widgetter {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "Stack").InvokeMethod("get_child_by_name", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Stack")
+	_gret := _info.InvokeClassMethod("get_child_by_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(name)
@@ -437,8 +442,9 @@ func (stack *Stack) Hhomogeneous() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Stack").InvokeMethod("get_hhomogeneous", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Stack")
+	_gret := _info.InvokeClassMethod("get_hhomogeneous", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stack)
 
@@ -463,8 +469,9 @@ func (stack *Stack) InterpolateSize() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Stack").InvokeMethod("get_interpolate_size", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Stack")
+	_gret := _info.InvokeClassMethod("get_interpolate_size", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stack)
 
@@ -493,8 +500,9 @@ func (stack *Stack) Page(child Widgetter) *StackPage {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Stack").InvokeMethod("get_page", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Stack")
+	_gret := _info.InvokeClassMethod("get_page", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(child)
@@ -520,8 +528,9 @@ func (stack *Stack) Pages() *SelectionModel {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Stack").InvokeMethod("get_pages", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Stack")
+	_gret := _info.InvokeClassMethod("get_pages", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stack)
 
@@ -544,8 +553,9 @@ func (stack *Stack) TransitionDuration() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Stack").InvokeMethod("get_transition_duration", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Stack")
+	_gret := _info.InvokeClassMethod("get_transition_duration", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stack)
 
@@ -568,8 +578,9 @@ func (stack *Stack) TransitionRunning() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Stack").InvokeMethod("get_transition_running", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Stack")
+	_gret := _info.InvokeClassMethod("get_transition_running", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stack)
 
@@ -593,8 +604,9 @@ func (stack *Stack) Vhomogeneous() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Stack").InvokeMethod("get_vhomogeneous", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Stack")
+	_gret := _info.InvokeClassMethod("get_vhomogeneous", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stack)
 
@@ -620,8 +632,9 @@ func (stack *Stack) VisibleChild() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Stack").InvokeMethod("get_visible_child", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Stack")
+	_gret := _info.InvokeClassMethod("get_visible_child", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stack)
 
@@ -660,8 +673,9 @@ func (stack *Stack) VisibleChildName() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Stack").InvokeMethod("get_visible_child_name", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Stack")
+	_gret := _info.InvokeClassMethod("get_visible_child_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stack)
 
@@ -686,7 +700,8 @@ func (stack *Stack) Remove(child Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	girepository.MustFind("Gtk", "Stack").InvokeMethod("remove", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Stack")
+	_info.InvokeClassMethod("remove", _args[:], nil)
 
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(child)
@@ -710,7 +725,8 @@ func (stack *Stack) SetHhomogeneous(hhomogeneous bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Stack").InvokeMethod("set_hhomogeneous", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Stack")
+	_info.InvokeClassMethod("set_hhomogeneous", _args[:], nil)
 
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(hhomogeneous)
@@ -735,7 +751,8 @@ func (stack *Stack) SetInterpolateSize(interpolateSize bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Stack").InvokeMethod("set_interpolate_size", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Stack")
+	_info.InvokeClassMethod("set_interpolate_size", _args[:], nil)
 
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(interpolateSize)
@@ -754,7 +771,8 @@ func (stack *Stack) SetTransitionDuration(duration uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(duration)
 
-	girepository.MustFind("Gtk", "Stack").InvokeMethod("set_transition_duration", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Stack")
+	_info.InvokeClassMethod("set_transition_duration", _args[:], nil)
 
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(duration)
@@ -778,7 +796,8 @@ func (stack *Stack) SetVhomogeneous(vhomogeneous bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Stack").InvokeMethod("set_vhomogeneous", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Stack")
+	_info.InvokeClassMethod("set_vhomogeneous", _args[:], nil)
 
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(vhomogeneous)
@@ -802,7 +821,8 @@ func (stack *Stack) SetVisibleChild(child Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	girepository.MustFind("Gtk", "Stack").InvokeMethod("set_visible_child", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Stack")
+	_info.InvokeClassMethod("set_visible_child", _args[:], nil)
 
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(child)
@@ -827,7 +847,8 @@ func (stack *Stack) SetVisibleChildName(name string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "Stack").InvokeMethod("set_visible_child_name", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Stack")
+	_info.InvokeClassMethod("set_visible_child_name", _args[:], nil)
 
 	runtime.KeepAlive(stack)
 	runtime.KeepAlive(name)
@@ -869,8 +890,9 @@ func (self *StackPage) Child() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StackPage").InvokeMethod("get_child", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StackPage")
+	_gret := _info.InvokeClassMethod("get_child", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -908,8 +930,9 @@ func (self *StackPage) IconName() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StackPage").InvokeMethod("get_icon_name", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StackPage")
+	_gret := _info.InvokeClassMethod("get_icon_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -933,8 +956,9 @@ func (self *StackPage) Name() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StackPage").InvokeMethod("get_name", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StackPage")
+	_gret := _info.InvokeClassMethod("get_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -958,8 +982,9 @@ func (self *StackPage) NeedsAttention() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StackPage").InvokeMethod("get_needs_attention", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StackPage")
+	_gret := _info.InvokeClassMethod("get_needs_attention", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -983,8 +1008,9 @@ func (self *StackPage) Title() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StackPage").InvokeMethod("get_title", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StackPage")
+	_gret := _info.InvokeClassMethod("get_title", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -1008,8 +1034,9 @@ func (self *StackPage) UseUnderline() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StackPage").InvokeMethod("get_use_underline", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StackPage")
+	_gret := _info.InvokeClassMethod("get_use_underline", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -1035,8 +1062,9 @@ func (self *StackPage) Visible() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StackPage").InvokeMethod("get_visible", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StackPage")
+	_gret := _info.InvokeClassMethod("get_visible", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -1062,7 +1090,8 @@ func (self *StackPage) SetIconName(setting string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(setting)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "StackPage").InvokeMethod("set_icon_name", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StackPage")
+	_info.InvokeClassMethod("set_icon_name", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
@@ -1081,7 +1110,8 @@ func (self *StackPage) SetName(setting string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(setting)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "StackPage").InvokeMethod("set_name", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StackPage")
+	_info.InvokeClassMethod("set_name", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
@@ -1101,7 +1131,8 @@ func (self *StackPage) SetNeedsAttention(setting bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "StackPage").InvokeMethod("set_needs_attention", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StackPage")
+	_info.InvokeClassMethod("set_needs_attention", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
@@ -1120,7 +1151,8 @@ func (self *StackPage) SetTitle(setting string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(setting)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "StackPage").InvokeMethod("set_title", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StackPage")
+	_info.InvokeClassMethod("set_title", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
@@ -1140,7 +1172,8 @@ func (self *StackPage) SetUseUnderline(setting bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "StackPage").InvokeMethod("set_use_underline", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StackPage")
+	_info.InvokeClassMethod("set_use_underline", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
@@ -1160,7 +1193,8 @@ func (self *StackPage) SetVisible(visible bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "StackPage").InvokeMethod("set_visible", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StackPage")
+	_info.InvokeClassMethod("set_visible", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(visible)

@@ -43,8 +43,9 @@ func DBusAddressEscapeValue(str string) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "dbus_address_escape_value").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "dbus_address_escape_value")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
 
@@ -89,7 +90,8 @@ func DBusAddressGetStream(ctx context.Context, address string, callback AsyncRea
 		_args[3] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "dbus_address_get_stream").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gio", "dbus_address_get_stream")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(address)
@@ -119,8 +121,9 @@ func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_gret := girepository.MustFind("Gio", "dbus_address_get_stream_finish").Invoke(_args[:], _outs[:])
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "dbus_address_get_stream_finish")
+	_gret := _info.Invoke(_args[:], _outs[:])
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(res)
 
@@ -191,8 +194,9 @@ func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOSt
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(address)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "dbus_address_get_stream_sync").Invoke(_args[:], _outs[:])
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "dbus_address_get_stream_sync")
+	_gret := _info.Invoke(_args[:], _outs[:])
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(address)
@@ -249,8 +253,9 @@ func DBusIsAddress(str string) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "dbus_is_address").Invoke(_args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "dbus_is_address")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
 
@@ -278,7 +283,8 @@ func DBusIsSupportedAddress(str string) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	girepository.MustFind("Gio", "dbus_is_supported_address").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gio", "dbus_is_supported_address")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(str)
 

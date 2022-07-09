@@ -166,8 +166,9 @@ func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureMultiPress").InvokeMethod("new_GestureMultiPress", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureMultiPress")
+	_gret := _info.InvokeClassMethod("new_GestureMultiPress", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
 
@@ -194,8 +195,9 @@ func (gesture *GestureMultiPress) Area() (*gdk.Rectangle, bool) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureMultiPress").InvokeMethod("get_area", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureMultiPress")
+	_gret := _info.InvokeClassMethod("get_area", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)
 
@@ -230,7 +232,8 @@ func (gesture *GestureMultiPress) SetArea(rect *gdk.Rectangle) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
 	}
 
-	girepository.MustFind("Gtk", "GestureMultiPress").InvokeMethod("set_area", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "GestureMultiPress")
+	_info.InvokeClassMethod("set_area", _args[:], nil)
 
 	runtime.KeepAlive(gesture)
 	runtime.KeepAlive(rect)

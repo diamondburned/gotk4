@@ -239,8 +239,9 @@ func (statusbar *Statusbar) ConnectTextPushed(f func(contextId uint32, text stri
 //    - statusbar: new Statusbar.
 //
 func NewStatusbar() *Statusbar {
-	_gret := girepository.MustFind("Gtk", "Statusbar").InvokeMethod("new_Statusbar", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Statusbar")
+	_gret := _info.InvokeClassMethod("new_Statusbar", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _statusbar *Statusbar // out
 
@@ -268,8 +269,9 @@ func (statusbar *Statusbar) ContextID(contextDescription string) uint32 {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(contextDescription)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "Statusbar").InvokeMethod("get_context_id", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Statusbar")
+	_gret := _info.InvokeClassMethod("get_context_id", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(statusbar)
 	runtime.KeepAlive(contextDescription)
@@ -292,8 +294,9 @@ func (statusbar *Statusbar) MessageArea() *Box {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Statusbar").InvokeMethod("get_message_area", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Statusbar")
+	_gret := _info.InvokeClassMethod("get_message_area", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(statusbar)
 
@@ -320,7 +323,8 @@ func (statusbar *Statusbar) Pop(contextId uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(contextId)
 
-	girepository.MustFind("Gtk", "Statusbar").InvokeMethod("pop", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Statusbar")
+	_info.InvokeClassMethod("pop", _args[:], nil)
 
 	runtime.KeepAlive(statusbar)
 	runtime.KeepAlive(contextId)
@@ -346,8 +350,9 @@ func (statusbar *Statusbar) Push(contextId uint32, text string) uint32 {
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	_gret := girepository.MustFind("Gtk", "Statusbar").InvokeMethod("push", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Statusbar")
+	_gret := _info.InvokeClassMethod("push", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(statusbar)
 	runtime.KeepAlive(contextId)
@@ -375,7 +380,8 @@ func (statusbar *Statusbar) Remove(contextId, messageId uint32) {
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(contextId)
 	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(messageId)
 
-	girepository.MustFind("Gtk", "Statusbar").InvokeMethod("remove", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Statusbar")
+	_info.InvokeClassMethod("remove", _args[:], nil)
 
 	runtime.KeepAlive(statusbar)
 	runtime.KeepAlive(contextId)
@@ -395,7 +401,8 @@ func (statusbar *Statusbar) RemoveAll(contextId uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(contextId)
 
-	girepository.MustFind("Gtk", "Statusbar").InvokeMethod("remove_all", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Statusbar")
+	_info.InvokeClassMethod("remove_all", _args[:], nil)
 
 	runtime.KeepAlive(statusbar)
 	runtime.KeepAlive(contextId)

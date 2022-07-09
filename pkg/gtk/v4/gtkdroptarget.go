@@ -218,8 +218,9 @@ func (self *DropTarget) Drop() gdk.Dropper {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "DropTarget").InvokeMethod("get_drop", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "DropTarget")
+	_gret := _info.InvokeClassMethod("get_drop", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -258,8 +259,9 @@ func (self *DropTarget) Formats() *gdk.ContentFormats {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "DropTarget").InvokeMethod("get_formats", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "DropTarget")
+	_gret := _info.InvokeClassMethod("get_formats", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -289,8 +291,9 @@ func (self *DropTarget) Preload() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "DropTarget").InvokeMethod("get_preload", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "DropTarget")
+	_gret := _info.InvokeClassMethod("get_preload", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -314,8 +317,9 @@ func (self *DropTarget) Value() *coreglib.Value {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "DropTarget").InvokeMethod("get_value", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "DropTarget")
+	_gret := _info.InvokeClassMethod("get_value", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -340,7 +344,8 @@ func (self *DropTarget) Reject() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	girepository.MustFind("Gtk", "DropTarget").InvokeMethod("reject", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "DropTarget")
+	_info.InvokeClassMethod("reject", _args[:], nil)
 
 	runtime.KeepAlive(self)
 }
@@ -359,7 +364,8 @@ func (self *DropTarget) SetPreload(preload bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "DropTarget").InvokeMethod("set_preload", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "DropTarget")
+	_info.InvokeClassMethod("set_preload", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(preload)

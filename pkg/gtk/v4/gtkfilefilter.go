@@ -111,8 +111,9 @@ func marshalFileFilter(p uintptr) (interface{}, error) {
 //    - fileFilter: new GtkFileFilter.
 //
 func NewFileFilter() *FileFilter {
-	_gret := girepository.MustFind("Gtk", "FileFilter").InvokeMethod("new_FileFilter", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FileFilter")
+	_gret := _info.InvokeClassMethod("new_FileFilter", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _fileFilter *FileFilter // out
 
@@ -138,8 +139,9 @@ func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(variant)))
 
-	_gret := girepository.MustFind("Gtk", "FileFilter").InvokeMethod("new_FileFilter_from_gvariant", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FileFilter")
+	_gret := _info.InvokeClassMethod("new_FileFilter_from_gvariant", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(variant)
 
@@ -163,7 +165,8 @@ func (filter *FileFilter) AddMIMEType(mimeType string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "FileFilter").InvokeMethod("add_mime_type", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "FileFilter")
+	_info.InvokeClassMethod("add_mime_type", _args[:], nil)
 
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(mimeType)
@@ -182,7 +185,8 @@ func (filter *FileFilter) AddPattern(pattern string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(pattern)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "FileFilter").InvokeMethod("add_pattern", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "FileFilter")
+	_info.InvokeClassMethod("add_pattern", _args[:], nil)
 
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(pattern)
@@ -198,7 +202,8 @@ func (filter *FileFilter) AddPixbufFormats() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 
-	girepository.MustFind("Gtk", "FileFilter").InvokeMethod("add_pixbuf_formats", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "FileFilter")
+	_info.InvokeClassMethod("add_pixbuf_formats", _args[:], nil)
 
 	runtime.KeepAlive(filter)
 }
@@ -218,8 +223,9 @@ func (filter *FileFilter) Attributes() []string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 
-	_gret := girepository.MustFind("Gtk", "FileFilter").InvokeMethod("get_attributes", _args[:], nil)
-	_cret = *(***C.char)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FileFilter")
+	_gret := _info.InvokeClassMethod("get_attributes", _args[:], nil)
+	_cret := *(***C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(filter)
 
@@ -256,8 +262,9 @@ func (filter *FileFilter) Name() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 
-	_gret := girepository.MustFind("Gtk", "FileFilter").InvokeMethod("get_name", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FileFilter")
+	_gret := _info.InvokeClassMethod("get_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(filter)
 
@@ -288,7 +295,8 @@ func (filter *FileFilter) SetName(name string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "FileFilter").InvokeMethod("set_name", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "FileFilter")
+	_info.InvokeClassMethod("set_name", _args[:], nil)
 
 	runtime.KeepAlive(filter)
 	runtime.KeepAlive(name)
@@ -305,8 +313,9 @@ func (filter *FileFilter) ToGVariant() *glib.Variant {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
 
-	_gret := girepository.MustFind("Gtk", "FileFilter").InvokeMethod("to_gvariant", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FileFilter")
+	_gret := _info.InvokeClassMethod("to_gvariant", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(filter)
 

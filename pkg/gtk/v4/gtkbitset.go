@@ -47,7 +47,9 @@ func (iter *BitsetIter) Value() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "BitsetIter")
+	_gret := _info.InvokeRecordMethod("get_value", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -69,7 +71,9 @@ func (iter *BitsetIter) IsValid() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "BitsetIter")
+	_gret := _info.InvokeRecordMethod("is_valid", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -98,7 +102,9 @@ func (iter *BitsetIter) Next() (uint32, bool) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "BitsetIter")
+	_gret := _info.InvokeRecordMethod("next", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -131,7 +137,9 @@ func (iter *BitsetIter) Previous() (uint32, bool) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "BitsetIter")
+	_gret := _info.InvokeRecordMethod("previous", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 
@@ -171,8 +179,9 @@ func BitsetIterInitAt(set *Bitset, target uint32) (*BitsetIter, uint32, bool) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(set)))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(target)
 
-	_gret := girepository.MustFind("Gtk", "init_at").Invoke(_args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "init_at")
+	_gret := _info.Invoke(_args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(set)
 	runtime.KeepAlive(target)
@@ -213,8 +222,9 @@ func BitsetIterInitFirst(set *Bitset) (*BitsetIter, uint32, bool) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(set)))
 
-	_gret := girepository.MustFind("Gtk", "init_first").Invoke(_args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "init_first")
+	_gret := _info.Invoke(_args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(set)
 
@@ -254,8 +264,9 @@ func BitsetIterInitLast(set *Bitset) (*BitsetIter, uint32, bool) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(set)))
 
-	_gret := girepository.MustFind("Gtk", "init_last").Invoke(_args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "init_last")
+	_gret := _info.Invoke(_args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(set)
 

@@ -136,8 +136,9 @@ func marshalSocketService(p uintptr) (interface{}, error) {
 //    - socketService: new Service.
 //
 func NewSocketService() *SocketService {
-	_gret := girepository.MustFind("Gio", "SocketService").InvokeMethod("new_SocketService", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketService")
+	_gret := _info.InvokeClassMethod("new_SocketService", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _socketService *SocketService // out
 
@@ -159,8 +160,9 @@ func (service *SocketService) IsActive() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(service).Native()))
 
-	_gret := girepository.MustFind("Gio", "SocketService").InvokeMethod("is_active", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketService")
+	_gret := _info.InvokeClassMethod("is_active", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(service)
 
@@ -184,7 +186,8 @@ func (service *SocketService) Start() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(service).Native()))
 
-	girepository.MustFind("Gio", "SocketService").InvokeMethod("start", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SocketService")
+	_info.InvokeClassMethod("start", _args[:], nil)
 
 	runtime.KeepAlive(service)
 }
@@ -209,7 +212,8 @@ func (service *SocketService) Stop() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(service).Native()))
 
-	girepository.MustFind("Gio", "SocketService").InvokeMethod("stop", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SocketService")
+	_info.InvokeClassMethod("stop", _args[:], nil)
 
 	runtime.KeepAlive(service)
 }

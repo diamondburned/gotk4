@@ -119,8 +119,9 @@ func (self *Scrollbar) Adjustment() *Adjustment {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Scrollbar").InvokeMethod("get_adjustment", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Scrollbar")
+	_gret := _info.InvokeClassMethod("get_adjustment", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -145,7 +146,8 @@ func (self *Scrollbar) SetAdjustment(adjustment *Adjustment) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
 
-	girepository.MustFind("Gtk", "Scrollbar").InvokeMethod("set_adjustment", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Scrollbar")
+	_info.InvokeClassMethod("set_adjustment", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(adjustment)

@@ -133,8 +133,9 @@ func NewThreadedSocketService(maxThreads int32) *ThreadedSocketService {
 
 	*(*C.int)(unsafe.Pointer(&_args[0])) = C.int(maxThreads)
 
-	_gret := girepository.MustFind("Gio", "ThreadedSocketService").InvokeMethod("new_ThreadedSocketService", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ThreadedSocketService")
+	_gret := _info.InvokeClassMethod("new_ThreadedSocketService", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(maxThreads)
 

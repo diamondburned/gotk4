@@ -131,7 +131,9 @@ func (rgba *RGBA) Copy() *RGBA {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "RGBA")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(rgba)
 
@@ -143,7 +145,7 @@ func (rgba *RGBA) Copy() *RGBA {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gdk", "RGBA").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gdk", "RGBA").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -167,7 +169,9 @@ func (p1 *RGBA) Equal(p2 *RGBA) bool {
 	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = C.gpointer(gextras.StructNative(unsafe.Pointer(p1)))
 	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = C.gpointer(gextras.StructNative(unsafe.Pointer(p2)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "RGBA")
+	_gret := _info.InvokeRecordMethod("equal", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(p1)
 	runtime.KeepAlive(p2)
@@ -192,7 +196,9 @@ func (p *RGBA) Hash() uint32 {
 
 	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = C.gpointer(gextras.StructNative(unsafe.Pointer(p)))
 
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "RGBA")
+	_gret := _info.InvokeRecordMethod("hash", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(p)
 
@@ -216,7 +222,9 @@ func (rgba *RGBA) IsClear() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "RGBA")
+	_gret := _info.InvokeRecordMethod("is_clear", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(rgba)
 
@@ -243,7 +251,9 @@ func (rgba *RGBA) IsOpaque() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "RGBA")
+	_gret := _info.InvokeRecordMethod("is_opaque", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(rgba)
 
@@ -293,7 +303,9 @@ func (rgba *RGBA) Parse(spec string) bool {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(spec)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "RGBA")
+	_gret := _info.InvokeRecordMethod("parse", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(rgba)
 	runtime.KeepAlive(spec)
@@ -329,7 +341,9 @@ func (rgba *RGBA) String() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "RGBA")
+	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(rgba)
 

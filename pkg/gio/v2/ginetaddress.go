@@ -15,7 +15,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern gchar* _gotk4_gio2_InetAddressClass_to_string(void*);
+// extern void* _gotk4_gio2_InetAddressClass_to_string(void*);
 import "C"
 
 // GTypeInetAddress returns the GType for the type InetAddress.
@@ -73,7 +73,7 @@ func classInitInetAddresser(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_InetAddressClass_to_string
-func _gotk4_gio2_InetAddressClass_to_string(arg0 *C.void) (cret *C.gchar) {
+func _gotk4_gio2_InetAddressClass_to_string(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ String() string })
 
@@ -113,8 +113,9 @@ func NewInetAddressFromString(str string) *InetAddress {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "InetAddress").InvokeMethod("new_InetAddress_from_string", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetAddress")
+	_gret := _info.InvokeClassMethod("new_InetAddress_from_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
 
@@ -143,8 +144,9 @@ func (address *InetAddress) Equal(otherAddress *InetAddress) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(otherAddress).Native()))
 
-	_gret := girepository.MustFind("Gio", "InetAddress").InvokeMethod("equal", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetAddress")
+	_gret := _info.InvokeClassMethod("equal", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(address)
 	runtime.KeepAlive(otherAddress)
@@ -169,8 +171,9 @@ func (address *InetAddress) IsAny() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_gret := girepository.MustFind("Gio", "InetAddress").InvokeMethod("get_is_any", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetAddress")
+	_gret := _info.InvokeClassMethod("get_is_any", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(address)
 
@@ -195,8 +198,9 @@ func (address *InetAddress) IsLinkLocal() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_gret := girepository.MustFind("Gio", "InetAddress").InvokeMethod("get_is_link_local", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetAddress")
+	_gret := _info.InvokeClassMethod("get_is_link_local", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(address)
 
@@ -220,8 +224,9 @@ func (address *InetAddress) IsLoopback() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_gret := girepository.MustFind("Gio", "InetAddress").InvokeMethod("get_is_loopback", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetAddress")
+	_gret := _info.InvokeClassMethod("get_is_loopback", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(address)
 
@@ -245,8 +250,9 @@ func (address *InetAddress) IsMcGlobal() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_gret := girepository.MustFind("Gio", "InetAddress").InvokeMethod("get_is_mc_global", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetAddress")
+	_gret := _info.InvokeClassMethod("get_is_mc_global", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(address)
 
@@ -270,8 +276,9 @@ func (address *InetAddress) IsMcLinkLocal() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_gret := girepository.MustFind("Gio", "InetAddress").InvokeMethod("get_is_mc_link_local", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetAddress")
+	_gret := _info.InvokeClassMethod("get_is_mc_link_local", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(address)
 
@@ -295,8 +302,9 @@ func (address *InetAddress) IsMcNodeLocal() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_gret := girepository.MustFind("Gio", "InetAddress").InvokeMethod("get_is_mc_node_local", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetAddress")
+	_gret := _info.InvokeClassMethod("get_is_mc_node_local", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(address)
 
@@ -321,8 +329,9 @@ func (address *InetAddress) IsMcOrgLocal() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_gret := girepository.MustFind("Gio", "InetAddress").InvokeMethod("get_is_mc_org_local", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetAddress")
+	_gret := _info.InvokeClassMethod("get_is_mc_org_local", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(address)
 
@@ -346,8 +355,9 @@ func (address *InetAddress) IsMcSiteLocal() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_gret := girepository.MustFind("Gio", "InetAddress").InvokeMethod("get_is_mc_site_local", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetAddress")
+	_gret := _info.InvokeClassMethod("get_is_mc_site_local", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(address)
 
@@ -371,8 +381,9 @@ func (address *InetAddress) IsMulticast() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_gret := girepository.MustFind("Gio", "InetAddress").InvokeMethod("get_is_multicast", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetAddress")
+	_gret := _info.InvokeClassMethod("get_is_multicast", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(address)
 
@@ -399,8 +410,9 @@ func (address *InetAddress) IsSiteLocal() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_gret := girepository.MustFind("Gio", "InetAddress").InvokeMethod("get_is_site_local", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetAddress")
+	_gret := _info.InvokeClassMethod("get_is_site_local", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(address)
 
@@ -425,8 +437,9 @@ func (address *InetAddress) NativeSize() uint {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_gret := girepository.MustFind("Gio", "InetAddress").InvokeMethod("get_native_size", _args[:], nil)
-	_cret = *(*C.gsize)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetAddress")
+	_gret := _info.InvokeClassMethod("get_native_size", _args[:], nil)
+	_cret := *(*C.gsize)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(address)
 
@@ -449,8 +462,9 @@ func (address *InetAddress) String() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_gret := girepository.MustFind("Gio", "InetAddress").InvokeMethod("to_string", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetAddress")
+	_gret := _info.InvokeClassMethod("to_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(address)
 

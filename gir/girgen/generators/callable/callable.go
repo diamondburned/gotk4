@@ -599,21 +599,27 @@ func (g *Generator) renderRuntimeLinkedBlock() bool {
 		}
 	}
 
-	info := fmt.Sprintf("girepository.MustFind(%q, %q)", g.typ.Namespace.Name, g.typ.Name())
+	g.pen.Linef(secFnCall, "_info := girepository.MustFind(%q, %q)", g.typ.Namespace.Name, g.typ.Name())
+
+	var decl string
 	if hasReturn {
-		info = "_gret := " + info
+		decl = "_gret :="
 	}
 
 	switch g.typ.Type.(type) {
 	case *gir.Function:
-		g.pen.Linef(secFnCall, "%s.Invoke(%s, %s)", info, argsName, outsName)
+		g.pen.Linef(secFnCall, "%s _info.Invoke(%s, %s)", decl, argsName, outsName)
 	case *gir.Class:
-		g.pen.Linef(secFnCall, "%s.InvokeMethod(%q, %s, %s)", info, g.CallableAttrs.Name, argsName, outsName)
+		g.pen.Linef(secFnCall, "%s _info.InvokeClassMethod(%q, %s, %s)", decl, g.CallableAttrs.Name, argsName, outsName)
+	case *gir.Interface:
+		g.pen.Linef(secFnCall, "%s _info.InvokeIfaceMethod(%q, %s, %s)", decl, g.CallableAttrs.Name, argsName, outsName)
+	case *gir.Record:
+		g.pen.Linef(secFnCall, "%s _info.InvokeRecordMethod(%q, %s, %s)", decl, g.CallableAttrs.Name, argsName, outsName)
 	}
 
 	if hasReturn {
 		ret := g.Results[len(g.Results)-1]
-		g.pen.Linef(secFnCall, "_cret = *(*%s)(unsafe.Pointer(&_gret))", ret.In.Type)
+		g.pen.Linef(secFnCall, "_cret := *(*%s)(unsafe.Pointer(&_gret))", ret.In.Type)
 	}
 
 	// Generate the right statements to ensure that nothing is freed before or

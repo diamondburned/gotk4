@@ -99,8 +99,9 @@ func marshalCellAreaBox(p uintptr) (interface{}, error) {
 //    - cellAreaBox: newly created CellAreaBox.
 //
 func NewCellAreaBox() *CellAreaBox {
-	_gret := girepository.MustFind("Gtk", "CellAreaBox").InvokeMethod("new_CellAreaBox", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellAreaBox")
+	_gret := _info.InvokeClassMethod("new_CellAreaBox", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _cellAreaBox *CellAreaBox // out
 
@@ -120,8 +121,9 @@ func (box *CellAreaBox) Spacing() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
-	_gret := girepository.MustFind("Gtk", "CellAreaBox").InvokeMethod("get_spacing", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellAreaBox")
+	_gret := _info.InvokeClassMethod("get_spacing", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(box)
 
@@ -160,7 +162,8 @@ func (box *CellAreaBox) PackEnd(renderer CellRendererer, expand, align, fixed bo
 		*(*C.gboolean)(unsafe.Pointer(&_args[4])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "CellAreaBox").InvokeMethod("pack_end", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellAreaBox")
+	_info.InvokeClassMethod("pack_end", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(renderer)
@@ -197,7 +200,8 @@ func (box *CellAreaBox) PackStart(renderer CellRendererer, expand, align, fixed 
 		*(*C.gboolean)(unsafe.Pointer(&_args[4])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "CellAreaBox").InvokeMethod("pack_start", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellAreaBox")
+	_info.InvokeClassMethod("pack_start", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(renderer)
@@ -218,7 +222,8 @@ func (box *CellAreaBox) SetSpacing(spacing int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(spacing)
 
-	girepository.MustFind("Gtk", "CellAreaBox").InvokeMethod("set_spacing", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellAreaBox")
+	_info.InvokeClassMethod("set_spacing", _args[:], nil)
 
 	runtime.KeepAlive(box)
 	runtime.KeepAlive(spacing)

@@ -268,8 +268,9 @@ func (handleBox *HandleBox) ConnectChildDetached(f func(widget Widgetter)) coreg
 //    - handleBox: new HandleBox.
 //
 func NewHandleBox() *HandleBox {
-	_gret := girepository.MustFind("Gtk", "HandleBox").InvokeMethod("new_HandleBox", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "HandleBox")
+	_gret := _info.InvokeClassMethod("new_HandleBox", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _handleBox *HandleBox // out
 
@@ -291,8 +292,9 @@ func (handleBox *HandleBox) ChildDetached() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(handleBox).Native()))
 
-	_gret := girepository.MustFind("Gtk", "HandleBox").InvokeMethod("get_child_detached", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "HandleBox")
+	_gret := _info.InvokeClassMethod("get_child_detached", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(handleBox)
 

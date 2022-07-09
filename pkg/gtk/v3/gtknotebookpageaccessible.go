@@ -81,8 +81,9 @@ func NewNotebookPageAccessible(notebook *NotebookAccessible, child Widgetter) *N
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_gret := girepository.MustFind("Gtk", "NotebookPageAccessible").InvokeMethod("new_NotebookPageAccessible", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "NotebookPageAccessible")
+	_gret := _info.InvokeClassMethod("new_NotebookPageAccessible", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(notebook)
 	runtime.KeepAlive(child)
@@ -99,7 +100,8 @@ func (page *NotebookPageAccessible) Invalidate() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
 
-	girepository.MustFind("Gtk", "NotebookPageAccessible").InvokeMethod("invalidate", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "NotebookPageAccessible")
+	_info.InvokeClassMethod("invalidate", _args[:], nil)
 
 	runtime.KeepAlive(page)
 }

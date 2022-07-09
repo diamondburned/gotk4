@@ -58,7 +58,8 @@ func SimpleAsyncReportGErrorInIdle(object *coreglib.Object, callback AsyncReadyC
 		*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gerror.New(err))
 	}
 
-	girepository.MustFind("Gio", "simple_async_report_gerror_in_idle").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gio", "simple_async_report_gerror_in_idle")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(callback)
@@ -281,8 +282,9 @@ func NewSimpleAsyncResult(sourceObject *coreglib.Object, callback AsyncReadyCall
 	}
 	*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (C.gpointer)(unsafe.Pointer(sourceTag))
 
-	_gret := girepository.MustFind("Gio", "SimpleAsyncResult").InvokeMethod("new_SimpleAsyncResult", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SimpleAsyncResult")
+	_gret := _info.InvokeClassMethod("new_SimpleAsyncResult", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sourceObject)
 	runtime.KeepAlive(callback)
@@ -323,8 +325,9 @@ func NewSimpleAsyncResultFromError(sourceObject *coreglib.Object, callback Async
 		*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gerror.New(err))
 	}
 
-	_gret := girepository.MustFind("Gio", "SimpleAsyncResult").InvokeMethod("new_SimpleAsyncResult_from_error", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SimpleAsyncResult")
+	_gret := _info.InvokeClassMethod("new_SimpleAsyncResult_from_error", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sourceObject)
 	runtime.KeepAlive(callback)
@@ -351,7 +354,8 @@ func (simple *SimpleAsyncResult) Complete() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
 
-	girepository.MustFind("Gio", "SimpleAsyncResult").InvokeMethod("complete", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SimpleAsyncResult")
+	_info.InvokeClassMethod("complete", _args[:], nil)
 
 	runtime.KeepAlive(simple)
 }
@@ -370,7 +374,8 @@ func (simple *SimpleAsyncResult) CompleteInIdle() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
 
-	girepository.MustFind("Gio", "SimpleAsyncResult").InvokeMethod("complete_in_idle", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SimpleAsyncResult")
+	_info.InvokeClassMethod("complete_in_idle", _args[:], nil)
 
 	runtime.KeepAlive(simple)
 }
@@ -390,8 +395,9 @@ func (simple *SimpleAsyncResult) OpResGboolean() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
 
-	_gret := girepository.MustFind("Gio", "SimpleAsyncResult").InvokeMethod("get_op_res_gboolean", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SimpleAsyncResult")
+	_gret := _info.InvokeClassMethod("get_op_res_gboolean", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(simple)
 
@@ -417,8 +423,9 @@ func (simple *SimpleAsyncResult) OpResGssize() int {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
 
-	_gret := girepository.MustFind("Gio", "SimpleAsyncResult").InvokeMethod("get_op_res_gssize", _args[:], nil)
-	_cret = *(*C.gssize)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SimpleAsyncResult")
+	_gret := _info.InvokeClassMethod("get_op_res_gssize", _args[:], nil)
+	_cret := *(*C.gssize)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(simple)
 
@@ -442,7 +449,8 @@ func (simple *SimpleAsyncResult) PropagateError() error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
 
-	girepository.MustFind("Gio", "SimpleAsyncResult").InvokeMethod("propagate_error", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SimpleAsyncResult")
+	_info.InvokeClassMethod("propagate_error", _args[:], nil)
 
 	runtime.KeepAlive(simple)
 
@@ -487,7 +495,8 @@ func (simple *SimpleAsyncResult) SetCheckCancellable(ctx context.Context) {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	girepository.MustFind("Gio", "SimpleAsyncResult").InvokeMethod("set_check_cancellable", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SimpleAsyncResult")
+	_info.InvokeClassMethod("set_check_cancellable", _args[:], nil)
 
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(ctx)
@@ -509,7 +518,8 @@ func (simple *SimpleAsyncResult) SetFromError(err error) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gerror.New(err))
 	}
 
-	girepository.MustFind("Gio", "SimpleAsyncResult").InvokeMethod("set_from_error", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SimpleAsyncResult")
+	_info.InvokeClassMethod("set_from_error", _args[:], nil)
 
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(err)
@@ -536,7 +546,8 @@ func (simple *SimpleAsyncResult) SetHandleCancellation(handleCancellation bool) 
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "SimpleAsyncResult").InvokeMethod("set_handle_cancellation", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SimpleAsyncResult")
+	_info.InvokeClassMethod("set_handle_cancellation", _args[:], nil)
 
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(handleCancellation)
@@ -559,7 +570,8 @@ func (simple *SimpleAsyncResult) SetOpResGboolean(opRes bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "SimpleAsyncResult").InvokeMethod("set_op_res_gboolean", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SimpleAsyncResult")
+	_info.InvokeClassMethod("set_op_res_gboolean", _args[:], nil)
 
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(opRes)
@@ -580,7 +592,8 @@ func (simple *SimpleAsyncResult) SetOpResGssize(opRes int) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
 	*(*C.gssize)(unsafe.Pointer(&_args[1])) = C.gssize(opRes)
 
-	girepository.MustFind("Gio", "SimpleAsyncResult").InvokeMethod("set_op_res_gssize", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SimpleAsyncResult")
+	_info.InvokeClassMethod("set_op_res_gssize", _args[:], nil)
 
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(opRes)
@@ -618,8 +631,9 @@ func SimpleAsyncResultIsValid(result AsyncResulter, source *coreglib.Object, sou
 	}
 	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (C.gpointer)(unsafe.Pointer(sourceTag))
 
-	_gret := girepository.MustFind("Gio", "is_valid").Invoke(_args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "is_valid")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(result)
 	runtime.KeepAlive(source)

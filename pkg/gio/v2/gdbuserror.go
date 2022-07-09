@@ -44,8 +44,9 @@ func DBusErrorEncodeGError(err error) string {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gerror.New(err))
 	}
 
-	_gret := girepository.MustFind("Gio", "encode_gerror").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "encode_gerror")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(err)
 
@@ -80,8 +81,9 @@ func DBusErrorGetRemoteError(err error) string {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gerror.New(err))
 	}
 
-	_gret := girepository.MustFind("Gio", "get_remote_error").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "get_remote_error")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(err)
 
@@ -115,8 +117,9 @@ func DBusErrorIsRemoteError(err error) bool {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gerror.New(err))
 	}
 
-	_gret := girepository.MustFind("Gio", "is_remote_error").Invoke(_args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "is_remote_error")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(err)
 
@@ -172,8 +175,9 @@ func NewDBusErrorForDBusError(dbusErrorName, dbusErrorMessage string) error {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(dbusErrorMessage)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gio", "new_for_dbus_error").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "new_for_dbus_error")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(dbusErrorName)
 	runtime.KeepAlive(dbusErrorMessage)
@@ -209,8 +213,9 @@ func DBusErrorRegisterError(errorDomain glib.Quark, errorCode int32, dbusErrorNa
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(dbusErrorName)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	_gret := girepository.MustFind("Gio", "register_error").Invoke(_args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "register_error")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(errorDomain)
 	runtime.KeepAlive(errorCode)
@@ -247,8 +252,9 @@ func DBusErrorStripRemoteError(err error) bool {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gerror.New(err))
 	}
 
-	_gret := girepository.MustFind("Gio", "strip_remote_error").Invoke(_args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "strip_remote_error")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(err)
 
@@ -282,8 +288,9 @@ func DBusErrorUnregisterError(errorDomain glib.Quark, errorCode int32, dbusError
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(dbusErrorName)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	_gret := girepository.MustFind("Gio", "unregister_error").Invoke(_args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "unregister_error")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(errorDomain)
 	runtime.KeepAlive(errorCode)

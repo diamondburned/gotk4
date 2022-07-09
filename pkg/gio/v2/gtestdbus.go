@@ -30,7 +30,8 @@ func (self *TestDBus) AddServiceDir(path string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gio", "TestDBus").InvokeMethod("add_service_dir", _args[:], nil)
+	_info := girepository.MustFind("Gio", "TestDBus")
+	_info.InvokeClassMethod("add_service_dir", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(path)
@@ -46,7 +47,8 @@ func (self *TestDBus) Down() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	girepository.MustFind("Gio", "TestDBus").InvokeMethod("down", _args[:], nil)
+	_info := girepository.MustFind("Gio", "TestDBus")
+	_info.InvokeClassMethod("down", _args[:], nil)
 
 	runtime.KeepAlive(self)
 }
@@ -64,8 +66,9 @@ func (self *TestDBus) BusAddress() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gio", "TestDBus").InvokeMethod("get_bus_address", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TestDBus")
+	_gret := _info.InvokeClassMethod("get_bus_address", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -89,7 +92,8 @@ func (self *TestDBus) Stop() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	girepository.MustFind("Gio", "TestDBus").InvokeMethod("stop", _args[:], nil)
+	_info := girepository.MustFind("Gio", "TestDBus")
+	_info.InvokeClassMethod("stop", _args[:], nil)
 
 	runtime.KeepAlive(self)
 }
@@ -107,7 +111,8 @@ func (self *TestDBus) Up() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	girepository.MustFind("Gio", "TestDBus").InvokeMethod("up", _args[:], nil)
+	_info := girepository.MustFind("Gio", "TestDBus")
+	_info.InvokeClassMethod("up", _args[:], nil)
 
 	runtime.KeepAlive(self)
 }
@@ -119,5 +124,6 @@ func (self *TestDBus) Up() {
 // bus is running. It is not necessary to call this if unit test already calls
 // g_test_dbus_up() before acquiring the session bus.
 func TestDBusUnset() {
-	girepository.MustFind("Gio", "unset").Invoke(nil, nil)
+	_info := girepository.MustFind("Gio", "unset")
+	_info.Invoke(nil, nil)
 }

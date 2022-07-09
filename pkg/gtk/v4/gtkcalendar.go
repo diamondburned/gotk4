@@ -225,8 +225,9 @@ func (calendar *Calendar) ConnectPrevYear(f func()) coreglib.SignalHandle {
 //    - calendar: newly GtkCalendar widget.
 //
 func NewCalendar() *Calendar {
-	_gret := girepository.MustFind("Gtk", "Calendar").InvokeMethod("new_Calendar", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_gret := _info.InvokeClassMethod("new_Calendar", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _calendar *Calendar // out
 
@@ -241,7 +242,8 @@ func (calendar *Calendar) ClearMarks() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(calendar).Native()))
 
-	girepository.MustFind("Gtk", "Calendar").InvokeMethod("clear_marks", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_info.InvokeClassMethod("clear_marks", _args[:], nil)
 
 	runtime.KeepAlive(calendar)
 }
@@ -259,8 +261,9 @@ func (self *Calendar) Date() *glib.DateTime {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Calendar").InvokeMethod("get_date", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_gret := _info.InvokeClassMethod("get_date", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -293,8 +296,9 @@ func (calendar *Calendar) DayIsMarked(day uint32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(calendar).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(day)
 
-	_gret := girepository.MustFind("Gtk", "Calendar").InvokeMethod("get_day_is_marked", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_gret := _info.InvokeClassMethod("get_day_is_marked", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(calendar)
 	runtime.KeepAlive(day)
@@ -322,8 +326,9 @@ func (self *Calendar) ShowDayNames() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Calendar").InvokeMethod("get_show_day_names", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_gret := _info.InvokeClassMethod("get_show_day_names", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -349,8 +354,9 @@ func (self *Calendar) ShowHeading() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Calendar").InvokeMethod("get_show_heading", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_gret := _info.InvokeClassMethod("get_show_heading", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -376,8 +382,9 @@ func (self *Calendar) ShowWeekNumbers() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Calendar").InvokeMethod("get_show_week_numbers", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_gret := _info.InvokeClassMethod("get_show_week_numbers", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -402,7 +409,8 @@ func (calendar *Calendar) MarkDay(day uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(calendar).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(day)
 
-	girepository.MustFind("Gtk", "Calendar").InvokeMethod("mark_day", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_info.InvokeClassMethod("mark_day", _args[:], nil)
 
 	runtime.KeepAlive(calendar)
 	runtime.KeepAlive(day)
@@ -420,7 +428,8 @@ func (self *Calendar) SelectDay(date *glib.DateTime) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(date)))
 
-	girepository.MustFind("Gtk", "Calendar").InvokeMethod("select_day", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_info.InvokeClassMethod("select_day", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(date)
@@ -440,7 +449,8 @@ func (self *Calendar) SetShowDayNames(value bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Calendar").InvokeMethod("set_show_day_names", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_info.InvokeClassMethod("set_show_day_names", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(value)
@@ -463,7 +473,8 @@ func (self *Calendar) SetShowHeading(value bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Calendar").InvokeMethod("set_show_heading", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_info.InvokeClassMethod("set_show_heading", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(value)
@@ -483,7 +494,8 @@ func (self *Calendar) SetShowWeekNumbers(value bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Calendar").InvokeMethod("set_show_week_numbers", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_info.InvokeClassMethod("set_show_week_numbers", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(value)
@@ -501,7 +513,8 @@ func (calendar *Calendar) UnmarkDay(day uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(calendar).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(day)
 
-	girepository.MustFind("Gtk", "Calendar").InvokeMethod("unmark_day", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_info.InvokeClassMethod("unmark_day", _args[:], nil)
 
 	runtime.KeepAlive(calendar)
 	runtime.KeepAlive(day)

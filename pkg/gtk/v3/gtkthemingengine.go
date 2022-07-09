@@ -656,8 +656,9 @@ func (engine *ThemingEngine) Path() *WidgetPath {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ThemingEngine").InvokeMethod("get_path", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ThemingEngine")
+	_gret := _info.InvokeClassMethod("get_path", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(engine)
 
@@ -670,7 +671,7 @@ func (engine *ThemingEngine) Path() *WidgetPath {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "WidgetPath").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "WidgetPath").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -691,8 +692,9 @@ func (engine *ThemingEngine) Screen() *gdk.Screen {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ThemingEngine").InvokeMethod("get_screen", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ThemingEngine")
+	_gret := _info.InvokeClassMethod("get_screen", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(engine)
 
@@ -731,7 +733,8 @@ func (engine *ThemingEngine) StyleProperty(propertyName string) coreglib.Value {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "ThemingEngine").InvokeMethod("get_style_property", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "ThemingEngine")
+	_info.InvokeClassMethod("get_style_property", _args[:], _outs[:])
 
 	runtime.KeepAlive(engine)
 	runtime.KeepAlive(propertyName)
@@ -763,8 +766,9 @@ func (engine *ThemingEngine) HasClass(styleClass string) bool {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(styleClass)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "ThemingEngine").InvokeMethod("has_class", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ThemingEngine")
+	_gret := _info.InvokeClassMethod("has_class", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(engine)
 	runtime.KeepAlive(styleClass)
@@ -801,8 +805,9 @@ func (engine *ThemingEngine) HasRegion(styleRegion string) (RegionFlags, bool) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(styleRegion)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "ThemingEngine").InvokeMethod("has_region", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ThemingEngine")
+	_gret := _info.InvokeClassMethod("has_region", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(engine)
 	runtime.KeepAlive(styleRegion)
@@ -842,8 +847,9 @@ func (engine *ThemingEngine) LookupColor(colorName string) (*gdk.RGBA, bool) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(colorName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "ThemingEngine").InvokeMethod("lookup_color", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ThemingEngine")
+	_gret := _info.InvokeClassMethod("lookup_color", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(engine)
 	runtime.KeepAlive(colorName)
@@ -879,8 +885,9 @@ func ThemingEngineLoad(name string) *ThemingEngine {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "load").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "load")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
 

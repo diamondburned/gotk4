@@ -19,8 +19,6 @@ import (
 // extern gboolean _gotk4_atk1_TextIface_remove_selection(void*, gint);
 // extern gboolean _gotk4_atk1_TextIface_set_caret_offset(void*, gint);
 // extern gboolean _gotk4_atk1_TextIface_set_selection(void*, gint, gint, gint);
-// extern gchar* _gotk4_atk1_TextIface_get_selection(void*, gint, void*, void*);
-// extern gchar* _gotk4_atk1_TextIface_get_text(void*, gint, gint);
 // extern gint _gotk4_atk1_TextIface_get_caret_offset(void*);
 // extern gint _gotk4_atk1_TextIface_get_character_count(void*);
 // extern gint _gotk4_atk1_TextIface_get_n_selections(void*);
@@ -35,6 +33,8 @@ import (
 // extern void _gotk4_atk1_Text_ConnectTextInsert(gpointer, gint, gint, void*, guintptr);
 // extern void _gotk4_atk1_Text_ConnectTextRemove(gpointer, gint, gint, void*, guintptr);
 // extern void _gotk4_atk1_Text_ConnectTextSelectionChanged(gpointer, guintptr);
+// extern void* _gotk4_atk1_TextIface_get_selection(void*, gint, void*, void*);
+// extern void* _gotk4_atk1_TextIface_get_text(void*, gint, gint);
 import "C"
 
 // GTypeTextAttribute returns the GType for the type TextAttribute.
@@ -729,7 +729,7 @@ func _gotk4_atk1_TextIface_get_n_selections(arg0 *C.void) (cret C.gint) {
 }
 
 //export _gotk4_atk1_TextIface_get_selection
-func _gotk4_atk1_TextIface_get_selection(arg0 *C.void, arg1 C.gint, arg2 *C.void, arg3 *C.void) (cret *C.gchar) {
+func _gotk4_atk1_TextIface_get_selection(arg0 *C.void, arg1 C.gint, arg2 *C.void, arg3 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -747,7 +747,7 @@ func _gotk4_atk1_TextIface_get_selection(arg0 *C.void, arg1 C.gint, arg2 *C.void
 }
 
 //export _gotk4_atk1_TextIface_get_text
-func _gotk4_atk1_TextIface_get_text(arg0 *C.void, arg1 C.gint, arg2 C.gint) (cret *C.gchar) {
+func _gotk4_atk1_TextIface_get_text(arg0 *C.void, arg1 C.gint, arg2 C.gint) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -1055,7 +1055,9 @@ func (text *Text) AddSelection(startOffset, endOffset int32) bool {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(startOffset)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(endOffset)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Text")
+	_gret := _info.InvokeIfaceMethod("add_selection", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(startOffset)
@@ -1082,7 +1084,9 @@ func (text *Text) CaretOffset() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Text")
+	_gret := _info.InvokeIfaceMethod("get_caret_offset", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(text)
 
@@ -1109,7 +1113,9 @@ func (text *Text) CharacterAtOffset(offset int32) uint32 {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(offset)
 
-	_cret = *(*C.gunichar)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Text")
+	_gret := _info.InvokeIfaceMethod("get_character_at_offset", _args[:], nil)
+	_cret := *(*C.gunichar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(offset)
@@ -1132,7 +1138,9 @@ func (text *Text) CharacterCount() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Text")
+	_gret := _info.InvokeIfaceMethod("get_character_count", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(text)
 
@@ -1154,7 +1162,9 @@ func (text *Text) NSelections() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Text")
+	_gret := _info.InvokeIfaceMethod("get_n_selections", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(text)
 
@@ -1191,7 +1201,9 @@ func (text *Text) Selection(selectionNum int32) (startOffset, endOffset int32, u
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(selectionNum)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Text")
+	_gret := _info.InvokeIfaceMethod("get_selection", _args[:], _outs[:])
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(selectionNum)
@@ -1228,7 +1240,9 @@ func (text *Text) Text(startOffset, endOffset int32) string {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(startOffset)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(endOffset)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Text")
+	_gret := _info.InvokeIfaceMethod("get_text", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(startOffset)
@@ -1262,7 +1276,9 @@ func (text *Text) RemoveSelection(selectionNum int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(selectionNum)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Text")
+	_gret := _info.InvokeIfaceMethod("remove_selection", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(selectionNum)
@@ -1308,7 +1324,9 @@ func (text *Text) SetCaretOffset(offset int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(offset)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Text")
+	_gret := _info.InvokeIfaceMethod("set_caret_offset", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(offset)
@@ -1347,7 +1365,9 @@ func (text *Text) SetSelection(selectionNum, startOffset, endOffset int32) bool 
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(startOffset)
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(endOffset)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Text")
+	_gret := _info.InvokeIfaceMethod("set_selection", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(selectionNum)

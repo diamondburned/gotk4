@@ -189,8 +189,9 @@ func NewTable(rows, columns uint32, homogeneous bool) *Table {
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
-	_gret := girepository.MustFind("Gtk", "Table").InvokeMethod("new_Table", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Table")
+	_gret := _info.InvokeClassMethod("new_Table", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(rows)
 	runtime.KeepAlive(columns)
@@ -231,7 +232,8 @@ func (table *Table) AttachDefaults(widget Widgetter, leftAttach, rightAttach, to
 	*(*C.guint)(unsafe.Pointer(&_args[4])) = C.guint(topAttach)
 	*(*C.guint)(unsafe.Pointer(&_args[5])) = C.guint(bottomAttach)
 
-	girepository.MustFind("Gtk", "Table").InvokeMethod("attach_defaults", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Table")
+	_info.InvokeClassMethod("attach_defaults", _args[:], nil)
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(widget)
@@ -260,8 +262,9 @@ func (table *Table) ColSpacing(column uint32) uint32 {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(column)
 
-	_gret := girepository.MustFind("Gtk", "Table").InvokeMethod("get_col_spacing", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Table")
+	_gret := _info.InvokeClassMethod("get_col_spacing", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
@@ -288,8 +291,9 @@ func (table *Table) DefaultColSpacing() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Table").InvokeMethod("get_default_col_spacing", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Table")
+	_gret := _info.InvokeClassMethod("get_default_col_spacing", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 
@@ -315,8 +319,9 @@ func (table *Table) DefaultRowSpacing() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Table").InvokeMethod("get_default_row_spacing", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Table")
+	_gret := _info.InvokeClassMethod("get_default_row_spacing", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 
@@ -342,8 +347,9 @@ func (table *Table) Homogeneous() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Table").InvokeMethod("get_homogeneous", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Table")
+	_gret := _info.InvokeClassMethod("get_homogeneous", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 
@@ -375,8 +381,9 @@ func (table *Table) RowSpacing(row uint32) uint32 {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(row)
 
-	_gret := girepository.MustFind("Gtk", "Table").InvokeMethod("get_row_spacing", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Table")
+	_gret := _info.InvokeClassMethod("get_row_spacing", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
@@ -403,7 +410,8 @@ func (table *Table) Size() (rows, columns uint32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 
-	girepository.MustFind("Gtk", "Table").InvokeMethod("get_size", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "Table")
+	_info.InvokeClassMethod("get_size", _args[:], _outs[:])
 
 	runtime.KeepAlive(table)
 
@@ -437,7 +445,8 @@ func (table *Table) Resize(rows, columns uint32) {
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(rows)
 	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(columns)
 
-	girepository.MustFind("Gtk", "Table").InvokeMethod("resize", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Table")
+	_info.InvokeClassMethod("resize", _args[:], nil)
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(rows)
@@ -463,7 +472,8 @@ func (table *Table) SetColSpacing(column, spacing uint32) {
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(column)
 	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(spacing)
 
-	girepository.MustFind("Gtk", "Table").InvokeMethod("set_col_spacing", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Table")
+	_info.InvokeClassMethod("set_col_spacing", _args[:], nil)
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(column)
@@ -485,7 +495,8 @@ func (table *Table) SetColSpacings(spacing uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(spacing)
 
-	girepository.MustFind("Gtk", "Table").InvokeMethod("set_col_spacings", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Table")
+	_info.InvokeClassMethod("set_col_spacings", _args[:], nil)
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(spacing)
@@ -510,7 +521,8 @@ func (table *Table) SetHomogeneous(homogeneous bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Table").InvokeMethod("set_homogeneous", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Table")
+	_info.InvokeClassMethod("set_homogeneous", _args[:], nil)
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(homogeneous)
@@ -535,7 +547,8 @@ func (table *Table) SetRowSpacing(row, spacing uint32) {
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(row)
 	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(spacing)
 
-	girepository.MustFind("Gtk", "Table").InvokeMethod("set_row_spacing", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Table")
+	_info.InvokeClassMethod("set_row_spacing", _args[:], nil)
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(row)
@@ -557,7 +570,8 @@ func (table *Table) SetRowSpacings(spacing uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(spacing)
 
-	girepository.MustFind("Gtk", "Table").InvokeMethod("set_row_spacings", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Table")
+	_info.InvokeClassMethod("set_row_spacings", _args[:], nil)
 
 	runtime.KeepAlive(table)
 	runtime.KeepAlive(spacing)

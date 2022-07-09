@@ -60,7 +60,9 @@ func marshalTextAttributes(p uintptr) (interface{}, error) {
 
 // NewTextAttributes constructs a struct TextAttributes.
 func NewTextAttributes() *TextAttributes {
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextAttributes")
+	_gret := _info.InvokeRecordMethod("new", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _textAttributes *TextAttributes // out
 
@@ -86,7 +88,9 @@ func (src *TextAttributes) Copy() *TextAttributes {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextAttributes")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(src)
 
@@ -115,6 +119,9 @@ func (src *TextAttributes) CopyValues(dest *TextAttributes) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(dest)))
+
+	_info := girepository.MustFind("Gtk", "TextAttributes")
+	_info.InvokeRecordMethod("copy_values", _args[:], nil)
 
 	runtime.KeepAlive(src)
 	runtime.KeepAlive(dest)

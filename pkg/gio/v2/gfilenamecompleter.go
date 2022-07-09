@@ -109,8 +109,9 @@ func (completer *FilenameCompleter) ConnectGotCompletionData(f func()) coreglib.
 //    - filenameCompleter: Completer.
 //
 func NewFilenameCompleter() *FilenameCompleter {
-	_gret := girepository.MustFind("Gio", "FilenameCompleter").InvokeMethod("new_FilenameCompleter", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "FilenameCompleter")
+	_gret := _info.InvokeClassMethod("new_FilenameCompleter", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _filenameCompleter *FilenameCompleter // out
 
@@ -137,8 +138,9 @@ func (completer *FilenameCompleter) CompletionSuffix(initialText string) string 
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(initialText)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gio", "FilenameCompleter").InvokeMethod("get_completion_suffix", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "FilenameCompleter")
+	_gret := _info.InvokeClassMethod("get_completion_suffix", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(completer)
 	runtime.KeepAlive(initialText)
@@ -171,8 +173,9 @@ func (completer *FilenameCompleter) Completions(initialText string) []string {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(initialText)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gio", "FilenameCompleter").InvokeMethod("get_completions", _args[:], nil)
-	_cret = *(***C.char)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "FilenameCompleter")
+	_gret := _info.InvokeClassMethod("get_completions", _args[:], nil)
+	_cret := *(***C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(completer)
 	runtime.KeepAlive(initialText)
@@ -213,7 +216,8 @@ func (completer *FilenameCompleter) SetDirsOnly(dirsOnly bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "FilenameCompleter").InvokeMethod("set_dirs_only", _args[:], nil)
+	_info := girepository.MustFind("Gio", "FilenameCompleter")
+	_info.InvokeClassMethod("set_dirs_only", _args[:], nil)
 
 	runtime.KeepAlive(completer)
 	runtime.KeepAlive(dirsOnly)

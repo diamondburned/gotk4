@@ -18,9 +18,9 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GSocketAddress* _gotk4_gio2_SocketAddressEnumeratorClass_next(void*, void*, GError**);
-// extern GSocketAddress* _gotk4_gio2_SocketAddressEnumeratorClass_next_finish(void*, void*, GError**);
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void* _gotk4_gio2_SocketAddressEnumeratorClass_next(void*, void*, GError**);
+// extern void* _gotk4_gio2_SocketAddressEnumeratorClass_next_finish(void*, void*, GError**);
 import "C"
 
 // GTypeSocketAddressEnumerator returns the GType for the type SocketAddressEnumerator.
@@ -132,7 +132,7 @@ func classInitSocketAddressEnumeratorrer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_SocketAddressEnumeratorClass_next
-func _gotk4_gio2_SocketAddressEnumeratorClass_next(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.GSocketAddress) {
+func _gotk4_gio2_SocketAddressEnumeratorClass_next(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Next(ctx context.Context) (SocketAddresser, error)
@@ -156,7 +156,7 @@ func _gotk4_gio2_SocketAddressEnumeratorClass_next(arg0 *C.void, arg1 *C.void, _
 }
 
 //export _gotk4_gio2_SocketAddressEnumeratorClass_next_finish
-func _gotk4_gio2_SocketAddressEnumeratorClass_next_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.GSocketAddress) {
+func _gotk4_gio2_SocketAddressEnumeratorClass_next_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		NextFinish(result AsyncResulter) (SocketAddresser, error)
@@ -243,8 +243,9 @@ func (enumerator *SocketAddressEnumerator) Next(ctx context.Context) (SocketAddr
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	_gret := girepository.MustFind("Gio", "SocketAddressEnumerator").InvokeMethod("next", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketAddressEnumerator")
+	_gret := _info.InvokeClassMethod("next", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(enumerator)
 	runtime.KeepAlive(ctx)
@@ -302,7 +303,8 @@ func (enumerator *SocketAddressEnumerator) NextAsync(ctx context.Context, callba
 		_args[3] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "SocketAddressEnumerator").InvokeMethod("next_async", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SocketAddressEnumerator")
+	_info.InvokeClassMethod("next_async", _args[:], nil)
 
 	runtime.KeepAlive(enumerator)
 	runtime.KeepAlive(ctx)
@@ -328,8 +330,9 @@ func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResulter) (Soc
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_gret := girepository.MustFind("Gio", "SocketAddressEnumerator").InvokeMethod("next_finish", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketAddressEnumerator")
+	_gret := _info.InvokeClassMethod("next_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(enumerator)
 	runtime.KeepAlive(result)

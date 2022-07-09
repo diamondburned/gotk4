@@ -137,7 +137,9 @@ func (pad *DevicePad) GroupNModes(groupIdx int32) int32 {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pad).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(groupIdx)
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "DevicePad")
+	_gret := _info.InvokeIfaceMethod("get_group_n_modes", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pad)
 	runtime.KeepAlive(groupIdx)
@@ -162,7 +164,9 @@ func (pad *DevicePad) NGroups() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pad).Native()))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "DevicePad")
+	_gret := _info.InvokeIfaceMethod("get_n_groups", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pad)
 

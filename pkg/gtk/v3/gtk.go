@@ -87,14 +87,15 @@ func GTypeEntryIconAccessible() coreglib.Type {
 }
 
 func init() {
-	girepository.Require("Gtk", "3.0")
+	girepository.Require("Gtk", "3.0", girepository.LoadFlagLazy)
 }
 
 // The function returns the following values:
 //
 func BuilderErrorQuark() glib.Quark {
-	_gret := girepository.MustFind("Gtk", "quark").Invoke(nil, nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "quark")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
@@ -106,8 +107,9 @@ func BuilderErrorQuark() glib.Quark {
 // The function returns the following values:
 //
 func CSSProviderErrorQuark() glib.Quark {
-	_gret := girepository.MustFind("Gtk", "quark").Invoke(nil, nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "quark")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
@@ -119,8 +121,9 @@ func CSSProviderErrorQuark() glib.Quark {
 // The function returns the following values:
 //
 func IconThemeErrorQuark() glib.Quark {
-	_gret := girepository.MustFind("Gtk", "quark").Invoke(nil, nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "quark")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
@@ -212,8 +215,9 @@ func (n NotebookTab) String() string {
 // The function returns the following values:
 //
 func RecentChooserErrorQuark() glib.Quark {
-	_gret := girepository.MustFind("Gtk", "quark").Invoke(nil, nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "quark")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
@@ -225,8 +229,9 @@ func RecentChooserErrorQuark() glib.Quark {
 // The function returns the following values:
 //
 func RecentManagerErrorQuark() glib.Quark {
-	_gret := girepository.MustFind("Gtk", "quark").Invoke(nil, nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "quark")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 

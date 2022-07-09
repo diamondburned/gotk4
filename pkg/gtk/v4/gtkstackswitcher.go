@@ -95,8 +95,9 @@ func marshalStackSwitcher(p uintptr) (interface{}, error) {
 //    - stackSwitcher: new GtkStackSwitcher.
 //
 func NewStackSwitcher() *StackSwitcher {
-	_gret := girepository.MustFind("Gtk", "StackSwitcher").InvokeMethod("new_StackSwitcher", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StackSwitcher")
+	_gret := _info.InvokeClassMethod("new_StackSwitcher", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _stackSwitcher *StackSwitcher // out
 
@@ -116,8 +117,9 @@ func (switcher *StackSwitcher) Stack() *Stack {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(switcher).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StackSwitcher").InvokeMethod("get_stack", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StackSwitcher")
+	_gret := _info.InvokeClassMethod("get_stack", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(switcher)
 
@@ -144,7 +146,8 @@ func (switcher *StackSwitcher) SetStack(stack *Stack) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 	}
 
-	girepository.MustFind("Gtk", "StackSwitcher").InvokeMethod("set_stack", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StackSwitcher")
+	_info.InvokeClassMethod("set_stack", _args[:], nil)
 
 	runtime.KeepAlive(switcher)
 	runtime.KeepAlive(stack)

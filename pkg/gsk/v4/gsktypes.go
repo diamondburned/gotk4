@@ -56,7 +56,9 @@ func marshalTransform(p uintptr) (interface{}, error) {
 
 // NewTransform constructs a struct Transform.
 func NewTransform() *Transform {
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "Transform")
+	_gret := _info.InvokeRecordMethod("new", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _transform *Transform // out
 
@@ -91,7 +93,9 @@ func (first *Transform) Equal(second *Transform) bool {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(second)))
 	}
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "Transform")
+	_gret := _info.InvokeRecordMethod("equal", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(first)
 	runtime.KeepAlive(second)
@@ -124,7 +128,9 @@ func (self *Transform) Invert() *Transform {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "Transform")
+	_gret := _info.InvokeRecordMethod("invert", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -161,7 +167,9 @@ func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 	}
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "Transform")
+	_gret := _info.InvokeRecordMethod("matrix", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(matrix)
@@ -202,7 +210,9 @@ func (next *Transform) Perspective(depth float32) *Transform {
 	}
 	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(depth)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "Transform")
+	_gret := _info.InvokeRecordMethod("perspective", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(depth)
@@ -238,7 +248,9 @@ func (next *Transform) Rotate(angle float32) *Transform {
 	}
 	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(angle)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "Transform")
+	_gret := _info.InvokeRecordMethod("rotate", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(angle)
@@ -278,7 +290,9 @@ func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(angle)
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(axis)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "Transform")
+	_gret := _info.InvokeRecordMethod("rotate_3d", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(angle)
@@ -319,7 +333,9 @@ func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(factorX)
 	*(*C.float)(unsafe.Pointer(&_args[2])) = C.float(factorY)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "Transform")
+	_gret := _info.InvokeRecordMethod("scale", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(factorX)
@@ -360,7 +376,9 @@ func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32
 	*(*C.float)(unsafe.Pointer(&_args[2])) = C.float(factorY)
 	*(*C.float)(unsafe.Pointer(&_args[3])) = C.float(factorZ)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "Transform")
+	_gret := _info.InvokeRecordMethod("scale_3d", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(factorX)
@@ -410,6 +428,9 @@ func (self *Transform) To2D() (outXx float32, outYx float32, outXy float32, outY
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 
+	_info := girepository.MustFind("Gsk", "Transform")
+	_info.InvokeRecordMethod("to_2d", _args[:], _outs[:])
+
 	runtime.KeepAlive(self)
 
 	var _outXx float32 // out
@@ -447,6 +468,9 @@ func (self *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx f
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 
+	_info := girepository.MustFind("Gsk", "Transform")
+	_info.InvokeRecordMethod("to_affine", _args[:], _outs[:])
+
 	runtime.KeepAlive(self)
 
 	var _outScaleX float32 // out
@@ -478,6 +502,9 @@ func (self *Transform) ToMatrix() *graphene.Matrix {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	}
 
+	_info := girepository.MustFind("Gsk", "Transform")
+	_info.InvokeRecordMethod("to_matrix", _args[:], _outs[:])
+
 	runtime.KeepAlive(self)
 
 	var _outMatrix *graphene.Matrix // out
@@ -504,7 +531,9 @@ func (self *Transform) String() string {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "Transform")
+	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -531,6 +560,9 @@ func (self *Transform) ToTranslate() (outDx float32, outDy float32) {
 	var _outs [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_info := girepository.MustFind("Gsk", "Transform")
+	_info.InvokeRecordMethod("to_translate", _args[:], _outs[:])
 
 	runtime.KeepAlive(self)
 
@@ -563,7 +595,9 @@ func (next *Transform) Transform(other *Transform) *Transform {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "Transform")
+	_gret := _info.InvokeRecordMethod("transform", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(other)
@@ -600,6 +634,9 @@ func (self *Transform) TransformBounds(rect *graphene.Rect) *graphene.Rect {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
 
+	_info := girepository.MustFind("Gsk", "Transform")
+	_info.InvokeRecordMethod("transform_bounds", _args[:], _outs[:])
+
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(rect)
 
@@ -626,6 +663,9 @@ func (self *Transform) TransformPoint(point *graphene.Point) *graphene.Point {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
+
+	_info := girepository.MustFind("Gsk", "Transform")
+	_info.InvokeRecordMethod("transform_point", _args[:], _outs[:])
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(point)
@@ -655,7 +695,9 @@ func (next *Transform) Translate(point *graphene.Point) *Transform {
 	}
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "Transform")
+	_gret := _info.InvokeRecordMethod("translate", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(point)
@@ -691,7 +733,9 @@ func (next *Transform) Translate3D(point *graphene.Point3D) *Transform {
 	}
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "Transform")
+	_gret := _info.InvokeRecordMethod("translate_3d", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(next)
 	runtime.KeepAlive(point)

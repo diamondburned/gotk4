@@ -109,8 +109,9 @@ func marshalFixedLayout(p uintptr) (interface{}, error) {
 //    - fixedLayout: newly created GtkFixedLayout.
 //
 func NewFixedLayout() *FixedLayout {
-	_gret := girepository.MustFind("Gtk", "FixedLayout").InvokeMethod("new_FixedLayout", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FixedLayout")
+	_gret := _info.InvokeClassMethod("new_FixedLayout", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _fixedLayout *FixedLayout // out
 
@@ -164,8 +165,9 @@ func (child *FixedLayoutChild) Transform() *gsk.Transform {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_gret := girepository.MustFind("Gtk", "FixedLayoutChild").InvokeMethod("get_transform", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "FixedLayoutChild")
+	_gret := _info.InvokeClassMethod("get_transform", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(child)
 
@@ -197,7 +199,8 @@ func (child *FixedLayoutChild) SetTransform(transform *gsk.Transform) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(transform)))
 
-	girepository.MustFind("Gtk", "FixedLayoutChild").InvokeMethod("set_transform", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "FixedLayoutChild")
+	_info.InvokeClassMethod("set_transform", _args[:], nil)
 
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(transform)

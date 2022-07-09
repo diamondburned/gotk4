@@ -67,8 +67,9 @@ func (keymap *X11Keymap) GroupForState(state uint32) int32 {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(state)
 
-	_gret := girepository.MustFind("GdkX11", "X11Keymap").InvokeMethod("get_group_for_state", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("GdkX11", "X11Keymap")
+	_gret := _info.InvokeClassMethod("get_group_for_state", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keymap)
 	runtime.KeepAlive(state)
@@ -100,8 +101,9 @@ func (keymap *X11Keymap) KeyIsModifier(keycode uint32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(keymap).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(keycode)
 
-	_gret := girepository.MustFind("GdkX11", "X11Keymap").InvokeMethod("key_is_modifier", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("GdkX11", "X11Keymap")
+	_gret := _info.InvokeClassMethod("key_is_modifier", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keymap)
 	runtime.KeepAlive(keycode)

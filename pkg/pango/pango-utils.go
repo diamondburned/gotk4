@@ -34,8 +34,9 @@ func IsZeroWidth(ch uint32) bool {
 
 	*(*C.gunichar)(unsafe.Pointer(&_args[0])) = C.gunichar(ch)
 
-	_gret := girepository.MustFind("Pango", "is_zero_width").Invoke(_args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "is_zero_width")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(ch)
 
@@ -79,8 +80,9 @@ func Log2VisGetEmbeddingLevels(text string, length int32, pbaseDir *Direction) *
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(length)
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(pbaseDir))
 
-	_gret := girepository.MustFind("Pango", "log2vis_get_embedding_levels").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "log2vis_get_embedding_levels")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(length)
@@ -120,8 +122,9 @@ func ParseStretch(str string, warn bool) (Stretch, bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	_gret := girepository.MustFind("Pango", "parse_stretch").Invoke(_args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "parse_stretch")
+	_gret := _info.Invoke(_args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
 	runtime.KeepAlive(warn)
@@ -162,8 +165,9 @@ func ParseStyle(str string, warn bool) (Style, bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	_gret := girepository.MustFind("Pango", "parse_style").Invoke(_args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "parse_style")
+	_gret := _info.Invoke(_args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
 	runtime.KeepAlive(warn)
@@ -204,8 +208,9 @@ func ParseVariant(str string, warn bool) (Variant, bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	_gret := girepository.MustFind("Pango", "parse_variant").Invoke(_args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "parse_variant")
+	_gret := _info.Invoke(_args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
 	runtime.KeepAlive(warn)
@@ -246,8 +251,9 @@ func ParseWeight(str string, warn bool) (Weight, bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	_gret := girepository.MustFind("Pango", "parse_weight").Invoke(_args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "parse_weight")
+	_gret := _info.Invoke(_args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
 	runtime.KeepAlive(warn)
@@ -282,8 +288,9 @@ func SplitFileList(str string) []string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Pango", "split_file_list").Invoke(_args[:], nil)
-	_cret = *(***C.char)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "split_file_list")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(***C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
 
@@ -326,8 +333,9 @@ func TrimString(str string) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Pango", "trim_string").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "trim_string")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
 
@@ -350,8 +358,9 @@ func TrimString(str string) string {
 //    - gint: encoded version of Pango library available at run time.
 //
 func Version() int32 {
-	_gret := girepository.MustFind("Pango", "version").Invoke(nil, nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "version")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	var _gint int32 // out
 
@@ -396,8 +405,9 @@ func VersionCheck(requiredMajor, requiredMinor, requiredMicro int32) string {
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(requiredMinor)
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(requiredMicro)
 
-	_gret := girepository.MustFind("Pango", "version_check").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "version_check")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(requiredMajor)
 	runtime.KeepAlive(requiredMinor)
@@ -424,8 +434,9 @@ func VersionCheck(requiredMajor, requiredMinor, requiredMicro int32) string {
 //      freed.
 //
 func VersionString() string {
-	_gret := girepository.MustFind("Pango", "version_string").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "version_string")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _utf8 string // out
 

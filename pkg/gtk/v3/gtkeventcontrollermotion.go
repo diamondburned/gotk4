@@ -146,8 +146,9 @@ func NewEventControllerMotion(widget Widgetter) *EventControllerMotion {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EventControllerMotion").InvokeMethod("new_EventControllerMotion", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EventControllerMotion")
+	_gret := _info.InvokeClassMethod("new_EventControllerMotion", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
 

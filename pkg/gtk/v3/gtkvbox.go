@@ -126,8 +126,9 @@ func NewVBox(homogeneous bool, spacing int32) *VBox {
 	}
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(spacing)
 
-	_gret := girepository.MustFind("Gtk", "VBox").InvokeMethod("new_VBox", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "VBox")
+	_gret := _info.InvokeClassMethod("new_VBox", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(homogeneous)
 	runtime.KeepAlive(spacing)

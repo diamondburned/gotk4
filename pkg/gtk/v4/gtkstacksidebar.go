@@ -82,8 +82,9 @@ func marshalStackSidebar(p uintptr) (interface{}, error) {
 //    - stackSidebar: new GtkStackSidebar.
 //
 func NewStackSidebar() *StackSidebar {
-	_gret := girepository.MustFind("Gtk", "StackSidebar").InvokeMethod("new_StackSidebar", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StackSidebar")
+	_gret := _info.InvokeClassMethod("new_StackSidebar", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _stackSidebar *StackSidebar // out
 
@@ -104,8 +105,9 @@ func (self *StackSidebar) Stack() *Stack {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StackSidebar").InvokeMethod("get_stack", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StackSidebar")
+	_gret := _info.InvokeClassMethod("get_stack", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -133,7 +135,8 @@ func (self *StackSidebar) SetStack(stack *Stack) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stack).Native()))
 
-	girepository.MustFind("Gtk", "StackSidebar").InvokeMethod("set_stack", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StackSidebar")
+	_info.InvokeClassMethod("set_stack", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(stack)

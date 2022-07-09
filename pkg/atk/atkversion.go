@@ -60,8 +60,9 @@ const VERSION_MIN_REQUIRED = 2
 //    - guint: binary age of the ATK library.
 //
 func GetBinaryAge() uint32 {
-	_gret := girepository.MustFind("Atk", "get_binary_age").Invoke(nil, nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "get_binary_age")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
 
@@ -78,8 +79,9 @@ func GetBinaryAge() uint32 {
 //    - guint: interface age of the ATK library.
 //
 func GetInterfaceAge() uint32 {
-	_gret := girepository.MustFind("Atk", "get_interface_age").Invoke(nil, nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "get_interface_age")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
 
@@ -100,8 +102,9 @@ func GetInterfaceAge() uint32 {
 //    - guint: major version number of the ATK library.
 //
 func GetMajorVersion() uint32 {
-	_gret := girepository.MustFind("Atk", "get_major_version").Invoke(nil, nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "get_major_version")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
 
@@ -122,8 +125,9 @@ func GetMajorVersion() uint32 {
 //    - guint: micro version number of the ATK library.
 //
 func GetMicroVersion() uint32 {
-	_gret := girepository.MustFind("Atk", "get_micro_version").Invoke(nil, nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "get_micro_version")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
 
@@ -144,8 +148,9 @@ func GetMicroVersion() uint32 {
 //    - guint: minor version number of the ATK library.
 //
 func GetMinorVersion() uint32 {
-	_gret := girepository.MustFind("Atk", "get_minor_version").Invoke(nil, nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "get_minor_version")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
 

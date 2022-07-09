@@ -151,8 +151,9 @@ func marshalIconFactory(p uintptr) (interface{}, error) {
 //    - iconFactory: new IconFactory.
 //
 func NewIconFactory() *IconFactory {
-	_gret := girepository.MustFind("Gtk", "IconFactory").InvokeMethod("new_IconFactory", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "IconFactory")
+	_gret := _info.InvokeClassMethod("new_IconFactory", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _iconFactory *IconFactory // out
 
@@ -185,7 +186,8 @@ func (factory *IconFactory) Add(stockId string, iconSet *IconSet) {
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iconSet)))
 
-	girepository.MustFind("Gtk", "IconFactory").InvokeMethod("add", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "IconFactory")
+	_info.InvokeClassMethod("add", _args[:], nil)
 
 	runtime.KeepAlive(factory)
 	runtime.KeepAlive(stockId)
@@ -204,7 +206,8 @@ func (factory *IconFactory) AddDefault() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
 
-	girepository.MustFind("Gtk", "IconFactory").InvokeMethod("add_default", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "IconFactory")
+	_info.InvokeClassMethod("add_default", _args[:], nil)
 
 	runtime.KeepAlive(factory)
 }
@@ -232,8 +235,9 @@ func (factory *IconFactory) Lookup(stockId string) *IconSet {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "IconFactory").InvokeMethod("lookup", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "IconFactory")
+	_gret := _info.InvokeClassMethod("lookup", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(factory)
 	runtime.KeepAlive(stockId)
@@ -262,7 +266,8 @@ func (factory *IconFactory) RemoveDefault() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
 
-	girepository.MustFind("Gtk", "IconFactory").InvokeMethod("remove_default", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "IconFactory")
+	_info.InvokeClassMethod("remove_default", _args[:], nil)
 
 	runtime.KeepAlive(factory)
 }
@@ -289,8 +294,9 @@ func IconFactoryLookupDefault(stockId string) *IconSet {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "lookup_default").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "lookup_default")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stockId)
 

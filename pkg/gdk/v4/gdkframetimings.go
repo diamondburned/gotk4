@@ -73,7 +73,9 @@ func (timings *FrameTimings) Complete() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(timings)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "FrameTimings")
+	_gret := _info.InvokeRecordMethod("get_complete", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(timings)
 
@@ -98,7 +100,9 @@ func (timings *FrameTimings) FrameCounter() int64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(timings)))
 
-	_cret = *(*C.gint64)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "FrameTimings")
+	_gret := _info.InvokeRecordMethod("get_frame_counter", _args[:], nil)
+	_cret := *(*C.gint64)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(timings)
 
@@ -124,7 +128,9 @@ func (timings *FrameTimings) FrameTime() int64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(timings)))
 
-	_cret = *(*C.gint64)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "FrameTimings")
+	_gret := _info.InvokeRecordMethod("get_frame_time", _args[:], nil)
+	_cret := *(*C.gint64)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(timings)
 
@@ -159,7 +165,9 @@ func (timings *FrameTimings) PredictedPresentationTime() int64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(timings)))
 
-	_cret = *(*C.gint64)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "FrameTimings")
+	_gret := _info.InvokeRecordMethod("get_predicted_presentation_time", _args[:], nil)
+	_cret := *(*C.gint64)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(timings)
 
@@ -185,7 +193,9 @@ func (timings *FrameTimings) PresentationTime() int64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(timings)))
 
-	_cret = *(*C.gint64)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "FrameTimings")
+	_gret := _info.InvokeRecordMethod("get_presentation_time", _args[:], nil)
+	_cret := *(*C.gint64)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(timings)
 
@@ -211,7 +221,9 @@ func (timings *FrameTimings) RefreshInterval() int64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(timings)))
 
-	_cret = *(*C.gint64)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "FrameTimings")
+	_gret := _info.InvokeRecordMethod("get_refresh_interval", _args[:], nil)
+	_cret := *(*C.gint64)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(timings)
 

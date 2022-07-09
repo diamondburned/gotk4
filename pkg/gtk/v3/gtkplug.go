@@ -144,8 +144,9 @@ func (plug *Plug) Embedded() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Plug").InvokeMethod("get_embedded", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Plug")
+	_gret := _info.InvokeClassMethod("get_embedded", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(plug)
 
@@ -169,8 +170,9 @@ func (plug *Plug) SocketWindow() gdk.Windower {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Plug").InvokeMethod("get_socket_window", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Plug")
+	_gret := _info.InvokeClassMethod("get_socket_window", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(plug)
 

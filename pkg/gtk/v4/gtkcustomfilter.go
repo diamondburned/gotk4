@@ -121,8 +121,9 @@ func NewCustomFilter(matchFunc CustomFilterFunc) *CustomFilter {
 		_args[2] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	_gret := girepository.MustFind("Gtk", "CustomFilter").InvokeMethod("new_CustomFilter", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CustomFilter")
+	_gret := _info.InvokeClassMethod("new_CustomFilter", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(matchFunc)
 
@@ -156,7 +157,8 @@ func (self *CustomFilter) SetFilterFunc(matchFunc CustomFilterFunc) {
 		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	girepository.MustFind("Gtk", "CustomFilter").InvokeMethod("set_filter_func", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CustomFilter")
+	_info.InvokeClassMethod("set_filter_func", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(matchFunc)

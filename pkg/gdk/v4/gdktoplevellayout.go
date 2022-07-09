@@ -53,7 +53,9 @@ func marshalToplevelLayout(p uintptr) (interface{}, error) {
 
 // NewToplevelLayout constructs a struct ToplevelLayout.
 func NewToplevelLayout() *ToplevelLayout {
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ToplevelLayout")
+	_gret := _info.InvokeRecordMethod("new", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _toplevelLayout *ToplevelLayout // out
 
@@ -79,7 +81,9 @@ func (layout *ToplevelLayout) Copy() *ToplevelLayout {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ToplevelLayout")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -113,7 +117,9 @@ func (layout *ToplevelLayout) Equal(other *ToplevelLayout) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(other)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ToplevelLayout")
+	_gret := _info.InvokeRecordMethod("equal", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(other)
@@ -142,7 +148,9 @@ func (layout *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ToplevelLayout")
+	_gret := _info.InvokeRecordMethod("get_fullscreen", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -171,7 +179,9 @@ func (layout *ToplevelLayout) FullscreenMonitor() *Monitor {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ToplevelLayout")
+	_gret := _info.InvokeRecordMethod("get_fullscreen_monitor", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -199,7 +209,9 @@ func (layout *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ToplevelLayout")
+	_gret := _info.InvokeRecordMethod("get_maximized", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -228,7 +240,9 @@ func (layout *ToplevelLayout) Resizable() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ToplevelLayout")
+	_gret := _info.InvokeRecordMethod("get_resizable", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -260,6 +274,9 @@ func (layout *ToplevelLayout) SetFullscreen(fullscreen bool, monitor *Monitor) {
 		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 	}
 
+	_info := girepository.MustFind("Gdk", "ToplevelLayout")
+	_info.InvokeRecordMethod("set_fullscreen", _args[:], nil)
+
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(fullscreen)
 	runtime.KeepAlive(monitor)
@@ -280,6 +297,9 @@ func (layout *ToplevelLayout) SetMaximized(maximized bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
+	_info := girepository.MustFind("Gdk", "ToplevelLayout")
+	_info.InvokeRecordMethod("set_maximized", _args[:], nil)
+
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(maximized)
 }
@@ -298,6 +318,9 @@ func (layout *ToplevelLayout) SetResizable(resizable bool) {
 	if resizable {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
+
+	_info := girepository.MustFind("Gdk", "ToplevelLayout")
+	_info.InvokeRecordMethod("set_resizable", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(resizable)

@@ -126,8 +126,9 @@ func NewGestureLongPress(widget Widgetter) *GestureLongPress {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureLongPress").InvokeMethod("new_GestureLongPress", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureLongPress")
+	_gret := _info.InvokeClassMethod("new_GestureLongPress", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
 

@@ -137,8 +137,9 @@ func NewRadioToolButton(group []*RadioButton) *RadioToolButton {
 		defer C.g_slist_free(_args[0])
 	}
 
-	_gret := girepository.MustFind("Gtk", "RadioToolButton").InvokeMethod("new_RadioToolButton", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RadioToolButton")
+	_gret := _info.InvokeClassMethod("new_RadioToolButton", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(group)
 
@@ -180,8 +181,9 @@ func NewRadioToolButtonFromStock(group []*RadioButton, stockId string) *RadioToo
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "RadioToolButton").InvokeMethod("new_RadioToolButton_from_stock", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RadioToolButton")
+	_gret := _info.InvokeClassMethod("new_RadioToolButton_from_stock", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(stockId)
@@ -211,8 +213,9 @@ func NewRadioToolButtonFromWidget(group *RadioToolButton) *RadioToolButton {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "RadioToolButton").InvokeMethod("new_RadioToolButton_from_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RadioToolButton")
+	_gret := _info.InvokeClassMethod("new_RadioToolButton_from_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(group)
 
@@ -247,8 +250,9 @@ func NewRadioToolButtonWithStockFromWidget(group *RadioToolButton, stockId strin
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "RadioToolButton").InvokeMethod("new_RadioToolButton_with_stock_from_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RadioToolButton")
+	_gret := _info.InvokeClassMethod("new_RadioToolButton_with_stock_from_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(stockId)
@@ -271,8 +275,9 @@ func (button *RadioToolButton) Group() []*RadioButton {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
-	_gret := girepository.MustFind("Gtk", "RadioToolButton").InvokeMethod("get_group", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RadioToolButton")
+	_gret := _info.InvokeClassMethod("get_group", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
 
@@ -310,7 +315,8 @@ func (button *RadioToolButton) SetGroup(group []*RadioButton) {
 		defer C.g_slist_free(_args[1])
 	}
 
-	girepository.MustFind("Gtk", "RadioToolButton").InvokeMethod("set_group", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "RadioToolButton")
+	_info.InvokeClassMethod("set_group", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(group)

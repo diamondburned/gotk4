@@ -71,8 +71,9 @@ func (accessible *ToplevelAccessible) Children() []*Window {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ToplevelAccessible").InvokeMethod("get_children", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToplevelAccessible")
+	_gret := _info.InvokeClassMethod("get_children", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(accessible)
 

@@ -119,7 +119,8 @@ func (misc *Misc) ThreadsEnter() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
 
-	girepository.MustFind("Atk", "Misc").InvokeMethod("threads_enter", _args[:], nil)
+	_info := girepository.MustFind("Atk", "Misc")
+	_info.InvokeClassMethod("threads_enter", _args[:], nil)
 
 	runtime.KeepAlive(misc)
 }
@@ -139,7 +140,8 @@ func (misc *Misc) ThreadsLeave() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
 
-	girepository.MustFind("Atk", "Misc").InvokeMethod("threads_leave", _args[:], nil)
+	_info := girepository.MustFind("Atk", "Misc")
+	_info.InvokeClassMethod("threads_leave", _args[:], nil)
 
 	runtime.KeepAlive(misc)
 }
@@ -154,8 +156,9 @@ func (misc *Misc) ThreadsLeave() {
 //    - misc: singleton instance of AtkMisc for this application.
 //
 func MiscGetInstance() *Misc {
-	_gret := girepository.MustFind("Atk", "get_instance").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "get_instance")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _misc *Misc // out
 

@@ -95,8 +95,9 @@ func (stream *FilterOutputStream) BaseStream() OutputStreamer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	_gret := girepository.MustFind("Gio", "FilterOutputStream").InvokeMethod("get_base_stream", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "FilterOutputStream")
+	_gret := _info.InvokeClassMethod("get_base_stream", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 
@@ -135,8 +136,9 @@ func (stream *FilterOutputStream) CloseBaseStream() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	_gret := girepository.MustFind("Gio", "FilterOutputStream").InvokeMethod("get_close_base_stream", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "FilterOutputStream")
+	_gret := _info.InvokeClassMethod("get_close_base_stream", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 
@@ -164,7 +166,8 @@ func (stream *FilterOutputStream) SetCloseBaseStream(closeBase bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "FilterOutputStream").InvokeMethod("set_close_base_stream", _args[:], nil)
+	_info := girepository.MustFind("Gio", "FilterOutputStream")
+	_info.InvokeClassMethod("set_close_base_stream", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(closeBase)

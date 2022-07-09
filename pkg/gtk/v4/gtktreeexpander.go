@@ -118,8 +118,9 @@ func marshalTreeExpander(p uintptr) (interface{}, error) {
 //    - treeExpander: new GtkTreeExpander.
 //
 func NewTreeExpander() *TreeExpander {
-	_gret := girepository.MustFind("Gtk", "TreeExpander").InvokeMethod("new_TreeExpander", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeExpander")
+	_gret := _info.InvokeClassMethod("new_TreeExpander", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _treeExpander *TreeExpander // out
 
@@ -139,8 +140,9 @@ func (self *TreeExpander) Child() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TreeExpander").InvokeMethod("get_child", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeExpander")
+	_gret := _info.InvokeClassMethod("get_child", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -181,8 +183,9 @@ func (self *TreeExpander) Item() *coreglib.Object {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TreeExpander").InvokeMethod("get_item", _args[:], nil)
-	_cret = *(*C.gpointer)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeExpander")
+	_gret := _info.InvokeClassMethod("get_item", _args[:], nil)
+	_cret := *(*C.gpointer)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -204,8 +207,9 @@ func (self *TreeExpander) ListRow() *TreeListRow {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TreeExpander").InvokeMethod("get_list_row", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TreeExpander")
+	_gret := _info.InvokeClassMethod("get_list_row", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -232,7 +236,8 @@ func (self *TreeExpander) SetChild(child Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
 
-	girepository.MustFind("Gtk", "TreeExpander").InvokeMethod("set_child", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TreeExpander")
+	_info.InvokeClassMethod("set_child", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(child)
@@ -252,7 +257,8 @@ func (self *TreeExpander) SetListRow(listRow *TreeListRow) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listRow).Native()))
 	}
 
-	girepository.MustFind("Gtk", "TreeExpander").InvokeMethod("set_list_row", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TreeExpander")
+	_info.InvokeClassMethod("set_list_row", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(listRow)

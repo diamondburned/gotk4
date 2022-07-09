@@ -118,7 +118,8 @@ func (interaction *TLSInteraction) AskPasswordAsync(ctx context.Context, passwor
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "TlsInteraction").InvokeMethod("ask_password_async", _args[:], nil)
+	_info := girepository.MustFind("Gio", "TlsInteraction")
+	_info.InvokeClassMethod("ask_password_async", _args[:], nil)
 
 	runtime.KeepAlive(interaction)
 	runtime.KeepAlive(ctx)

@@ -269,6 +269,9 @@ func (preview *PrintOperationPreview) EndPreview() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(preview).Native()))
 
+	_info := girepository.MustFind("Gtk", "PrintOperationPreview")
+	_info.InvokeIfaceMethod("end_preview", _args[:], nil)
+
 	runtime.KeepAlive(preview)
 }
 
@@ -289,7 +292,9 @@ func (preview *PrintOperationPreview) IsSelected(pageNr int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(preview).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(pageNr)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PrintOperationPreview")
+	_gret := _info.InvokeIfaceMethod("is_selected", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(preview)
 	runtime.KeepAlive(pageNr)
@@ -323,6 +328,9 @@ func (preview *PrintOperationPreview) RenderPage(pageNr int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(preview).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(pageNr)
+
+	_info := girepository.MustFind("Gtk", "PrintOperationPreview")
+	_info.InvokeIfaceMethod("render_page", _args[:], nil)
 
 	runtime.KeepAlive(preview)
 	runtime.KeepAlive(pageNr)

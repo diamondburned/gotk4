@@ -84,8 +84,9 @@ func marshalOverlayLayout(p uintptr) (interface{}, error) {
 //    - overlayLayout: newly created instance.
 //
 func NewOverlayLayout() *OverlayLayout {
-	_gret := girepository.MustFind("Gtk", "OverlayLayout").InvokeMethod("new_OverlayLayout", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "OverlayLayout")
+	_gret := _info.InvokeClassMethod("new_OverlayLayout", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _overlayLayout *OverlayLayout // out
 
@@ -140,8 +141,9 @@ func (child *OverlayLayoutChild) ClipOverlay() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_gret := girepository.MustFind("Gtk", "OverlayLayoutChild").InvokeMethod("get_clip_overlay", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "OverlayLayoutChild")
+	_gret := _info.InvokeClassMethod("get_clip_overlay", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(child)
 
@@ -165,8 +167,9 @@ func (child *OverlayLayoutChild) Measure() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_gret := girepository.MustFind("Gtk", "OverlayLayoutChild").InvokeMethod("get_measure", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "OverlayLayoutChild")
+	_gret := _info.InvokeClassMethod("get_measure", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(child)
 
@@ -193,7 +196,8 @@ func (child *OverlayLayoutChild) SetClipOverlay(clipOverlay bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "OverlayLayoutChild").InvokeMethod("set_clip_overlay", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "OverlayLayoutChild")
+	_info.InvokeClassMethod("set_clip_overlay", _args[:], nil)
 
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(clipOverlay)
@@ -213,7 +217,8 @@ func (child *OverlayLayoutChild) SetMeasure(measure bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "OverlayLayoutChild").InvokeMethod("set_measure", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "OverlayLayoutChild")
+	_info.InvokeClassMethod("set_measure", _args[:], nil)
 
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(measure)

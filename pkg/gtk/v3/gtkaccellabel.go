@@ -123,8 +123,9 @@ func NewAccelLabel(str string) *AccelLabel {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "AccelLabel").InvokeMethod("new_AccelLabel", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AccelLabel")
+	_gret := _info.InvokeClassMethod("new_AccelLabel", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
 
@@ -148,7 +149,8 @@ func (accelLabel *AccelLabel) Accel() (uint32, gdk.ModifierType) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelLabel).Native()))
 
-	girepository.MustFind("Gtk", "AccelLabel").InvokeMethod("get_accel", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "AccelLabel")
+	_info.InvokeClassMethod("get_accel", _args[:], _outs[:])
 
 	runtime.KeepAlive(accelLabel)
 
@@ -173,8 +175,9 @@ func (accelLabel *AccelLabel) AccelWidget() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelLabel).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AccelLabel").InvokeMethod("get_accel_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AccelLabel")
+	_gret := _info.InvokeClassMethod("get_accel_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(accelLabel)
 
@@ -213,8 +216,9 @@ func (accelLabel *AccelLabel) AccelWidth() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelLabel).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AccelLabel").InvokeMethod("get_accel_width", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AccelLabel")
+	_gret := _info.InvokeClassMethod("get_accel_width", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(accelLabel)
 
@@ -238,8 +242,9 @@ func (accelLabel *AccelLabel) Refetch() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelLabel).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AccelLabel").InvokeMethod("refetch", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AccelLabel")
+	_gret := _info.InvokeClassMethod("refetch", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(accelLabel)
 
@@ -268,7 +273,8 @@ func (accelLabel *AccelLabel) SetAccelClosure(accelClosure coreglib.AnyClosure) 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelLabel).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(accelLabel), accelClosure))
 
-	girepository.MustFind("Gtk", "AccelLabel").InvokeMethod("set_accel_closure", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AccelLabel")
+	_info.InvokeClassMethod("set_accel_closure", _args[:], nil)
 
 	runtime.KeepAlive(accelLabel)
 	runtime.KeepAlive(accelClosure)
@@ -290,7 +296,8 @@ func (accelLabel *AccelLabel) SetAccelWidget(accelWidget Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelWidget).Native()))
 	}
 
-	girepository.MustFind("Gtk", "AccelLabel").InvokeMethod("set_accel_widget", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AccelLabel")
+	_info.InvokeClassMethod("set_accel_widget", _args[:], nil)
 
 	runtime.KeepAlive(accelLabel)
 	runtime.KeepAlive(accelWidget)

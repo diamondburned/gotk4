@@ -185,8 +185,9 @@ func NewToolButton(iconWidget Widgetter, label string) *ToolButton {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	_gret := girepository.MustFind("Gtk", "ToolButton").InvokeMethod("new_ToolButton", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToolButton")
+	_gret := _info.InvokeClassMethod("new_ToolButton", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iconWidget)
 	runtime.KeepAlive(label)
@@ -221,8 +222,9 @@ func NewToolButtonFromStock(stockId string) *ToolButton {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "ToolButton").InvokeMethod("new_ToolButton_from_stock", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToolButton")
+	_gret := _info.InvokeClassMethod("new_ToolButton_from_stock", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stockId)
 
@@ -245,8 +247,9 @@ func (button *ToolButton) IconName() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ToolButton").InvokeMethod("get_icon_name", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToolButton")
+	_gret := _info.InvokeClassMethod("get_icon_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
 
@@ -271,8 +274,9 @@ func (button *ToolButton) IconWidget() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ToolButton").InvokeMethod("get_icon_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToolButton")
+	_gret := _info.InvokeClassMethod("get_icon_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
 
@@ -311,8 +315,9 @@ func (button *ToolButton) Label() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ToolButton").InvokeMethod("get_label", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToolButton")
+	_gret := _info.InvokeClassMethod("get_label", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
 
@@ -337,8 +342,9 @@ func (button *ToolButton) LabelWidget() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ToolButton").InvokeMethod("get_label_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToolButton")
+	_gret := _info.InvokeClassMethod("get_label_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
 
@@ -379,8 +385,9 @@ func (button *ToolButton) StockID() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ToolButton").InvokeMethod("get_stock_id", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToolButton")
+	_gret := _info.InvokeClassMethod("get_stock_id", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
 
@@ -405,8 +412,9 @@ func (button *ToolButton) UseUnderline() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ToolButton").InvokeMethod("get_use_underline", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToolButton")
+	_gret := _info.InvokeClassMethod("get_use_underline", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
 
@@ -437,7 +445,8 @@ func (button *ToolButton) SetIconName(iconName string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "ToolButton").InvokeMethod("set_icon_name", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ToolButton")
+	_info.InvokeClassMethod("set_icon_name", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(iconName)
@@ -459,7 +468,8 @@ func (button *ToolButton) SetIconWidget(iconWidget Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconWidget).Native()))
 	}
 
-	girepository.MustFind("Gtk", "ToolButton").InvokeMethod("set_icon_widget", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ToolButton")
+	_info.InvokeClassMethod("set_icon_widget", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(iconWidget)
@@ -485,7 +495,8 @@ func (button *ToolButton) SetLabel(label string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "ToolButton").InvokeMethod("set_label", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ToolButton")
+	_info.InvokeClassMethod("set_label", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(label)
@@ -509,7 +520,8 @@ func (button *ToolButton) SetLabelWidget(labelWidget Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(labelWidget).Native()))
 	}
 
-	girepository.MustFind("Gtk", "ToolButton").InvokeMethod("set_label_widget", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ToolButton")
+	_info.InvokeClassMethod("set_label_widget", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(labelWidget)
@@ -535,7 +547,8 @@ func (button *ToolButton) SetStockID(stockId string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "ToolButton").InvokeMethod("set_stock_id", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ToolButton")
+	_info.InvokeClassMethod("set_stock_id", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(stockId)
@@ -562,7 +575,8 @@ func (button *ToolButton) SetUseUnderline(useUnderline bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ToolButton").InvokeMethod("set_use_underline", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ToolButton")
+	_info.InvokeClassMethod("set_use_underline", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(useUnderline)

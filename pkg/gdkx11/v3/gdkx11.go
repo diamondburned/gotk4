@@ -15,5 +15,5 @@ import (
 import "C"
 
 func init() {
-	girepository.Require("GdkX11", "3.0")
+	girepository.Require("GdkX11", "3.0", girepository.LoadFlagLazy)
 }

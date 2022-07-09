@@ -57,7 +57,9 @@ func NewRange(lowerLimit float64, upperLimit float64, description string) *Range
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(description)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Range")
+	_gret := _info.InvokeRecordMethod("new", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(lowerLimit)
 	runtime.KeepAlive(upperLimit)
@@ -71,7 +73,7 @@ func NewRange(lowerLimit float64, upperLimit float64, description string) *Range
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Atk", "Range").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Atk", "Range").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -90,7 +92,9 @@ func (src *Range) Copy() *Range {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Range")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(src)
 
@@ -102,7 +106,7 @@ func (src *Range) Copy() *Range {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Atk", "Range").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Atk", "Range").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -121,7 +125,9 @@ func (_range *Range) Description() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(_range)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Range")
+	_gret := _info.InvokeRecordMethod("get_description", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(_range)
 
@@ -143,7 +149,9 @@ func (_range *Range) LowerLimit() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(_range)))
 
-	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Range")
+	_gret := _info.InvokeRecordMethod("get_lower_limit", _args[:], nil)
+	_cret := *(*C.gdouble)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(_range)
 
@@ -165,7 +173,9 @@ func (_range *Range) UpperLimit() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(_range)))
 
-	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Range")
+	_gret := _info.InvokeRecordMethod("get_upper_limit", _args[:], nil)
+	_cret := *(*C.gdouble)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(_range)
 

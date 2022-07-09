@@ -150,8 +150,9 @@ func marshalComboBoxText(p uintptr) (interface{}, error) {
 //    - comboBoxText: new ComboBoxText.
 //
 func NewComboBoxText() *ComboBoxText {
-	_gret := girepository.MustFind("Gtk", "ComboBoxText").InvokeMethod("new_ComboBoxText", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ComboBoxText")
+	_gret := _info.InvokeClassMethod("new_ComboBoxText", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _comboBoxText *ComboBoxText // out
 
@@ -168,8 +169,9 @@ func NewComboBoxText() *ComboBoxText {
 //    - comboBoxText: new ComboBoxText.
 //
 func NewComboBoxTextWithEntry() *ComboBoxText {
-	_gret := girepository.MustFind("Gtk", "ComboBoxText").InvokeMethod("new_ComboBoxText_with_entry", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ComboBoxText")
+	_gret := _info.InvokeClassMethod("new_ComboBoxText_with_entry", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _comboBoxText *ComboBoxText // out
 
@@ -200,7 +202,8 @@ func (comboBox *ComboBoxText) Append(id, text string) {
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	girepository.MustFind("Gtk", "ComboBoxText").InvokeMethod("append", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ComboBoxText")
+	_info.InvokeClassMethod("append", _args[:], nil)
 
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(id)
@@ -223,7 +226,8 @@ func (comboBox *ComboBoxText) AppendText(text string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "ComboBoxText").InvokeMethod("append_text", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ComboBoxText")
+	_info.InvokeClassMethod("append_text", _args[:], nil)
 
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(text)
@@ -243,8 +247,9 @@ func (comboBox *ComboBoxText) ActiveText() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ComboBoxText").InvokeMethod("get_active_text", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ComboBoxText")
+	_gret := _info.InvokeClassMethod("get_active_text", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(comboBox)
 
@@ -280,7 +285,8 @@ func (comboBox *ComboBoxText) Insert(position int32, id, text string) {
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_args[3]))
 
-	girepository.MustFind("Gtk", "ComboBoxText").InvokeMethod("insert", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ComboBoxText")
+	_info.InvokeClassMethod("insert", _args[:], nil)
 
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(position)
@@ -309,7 +315,8 @@ func (comboBox *ComboBoxText) InsertText(position int32, text string) {
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	girepository.MustFind("Gtk", "ComboBoxText").InvokeMethod("insert_text", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ComboBoxText")
+	_info.InvokeClassMethod("insert_text", _args[:], nil)
 
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(position)
@@ -337,7 +344,8 @@ func (comboBox *ComboBoxText) Prepend(id, text string) {
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	girepository.MustFind("Gtk", "ComboBoxText").InvokeMethod("prepend", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ComboBoxText")
+	_info.InvokeClassMethod("prepend", _args[:], nil)
 
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(id)
@@ -360,7 +368,8 @@ func (comboBox *ComboBoxText) PrependText(text string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "ComboBoxText").InvokeMethod("prepend_text", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ComboBoxText")
+	_info.InvokeClassMethod("prepend_text", _args[:], nil)
 
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(text)
@@ -378,7 +387,8 @@ func (comboBox *ComboBoxText) Remove(position int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(position)
 
-	girepository.MustFind("Gtk", "ComboBoxText").InvokeMethod("remove", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ComboBoxText")
+	_info.InvokeClassMethod("remove", _args[:], nil)
 
 	runtime.KeepAlive(comboBox)
 	runtime.KeepAlive(position)
@@ -390,7 +400,8 @@ func (comboBox *ComboBoxText) RemoveAll() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
 
-	girepository.MustFind("Gtk", "ComboBoxText").InvokeMethod("remove_all", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ComboBoxText")
+	_info.InvokeClassMethod("remove_all", _args[:], nil)
 
 	runtime.KeepAlive(comboBox)
 }

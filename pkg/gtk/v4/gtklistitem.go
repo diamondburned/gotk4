@@ -72,8 +72,9 @@ func (self *ListItem) Activatable() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ListItem").InvokeMethod("get_activatable", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListItem")
+	_gret := _info.InvokeClassMethod("get_activatable", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -98,8 +99,9 @@ func (self *ListItem) Child() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ListItem").InvokeMethod("get_child", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListItem")
+	_gret := _info.InvokeClassMethod("get_child", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -138,8 +140,9 @@ func (self *ListItem) Item() *coreglib.Object {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ListItem").InvokeMethod("get_item", _args[:], nil)
-	_cret = *(*C.gpointer)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListItem")
+	_gret := _info.InvokeClassMethod("get_item", _args[:], nil)
+	_cret := *(*C.gpointer)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -163,8 +166,9 @@ func (self *ListItem) Position() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ListItem").InvokeMethod("get_position", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListItem")
+	_gret := _info.InvokeClassMethod("get_position", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -189,8 +193,9 @@ func (self *ListItem) Selectable() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ListItem").InvokeMethod("get_selectable", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListItem")
+	_gret := _info.InvokeClassMethod("get_selectable", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -217,8 +222,9 @@ func (self *ListItem) Selected() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ListItem").InvokeMethod("get_selected", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListItem")
+	_gret := _info.InvokeClassMethod("get_selected", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -252,7 +258,8 @@ func (self *ListItem) SetActivatable(activatable bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ListItem").InvokeMethod("set_activatable", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListItem")
+	_info.InvokeClassMethod("set_activatable", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(activatable)
@@ -275,7 +282,8 @@ func (self *ListItem) SetChild(child Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	}
 
-	girepository.MustFind("Gtk", "ListItem").InvokeMethod("set_child", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListItem")
+	_info.InvokeClassMethod("set_child", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(child)
@@ -305,7 +313,8 @@ func (self *ListItem) SetSelectable(selectable bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ListItem").InvokeMethod("set_selectable", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListItem")
+	_info.InvokeClassMethod("set_selectable", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(selectable)

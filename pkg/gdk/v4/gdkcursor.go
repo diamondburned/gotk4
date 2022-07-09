@@ -124,8 +124,9 @@ func NewCursorFromName(name string, fallback *Cursor) *Cursor {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fallback).Native()))
 	}
 
-	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("new_Cursor_from_name", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Cursor")
+	_gret := _info.InvokeClassMethod("new_Cursor_from_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(fallback)
@@ -163,8 +164,9 @@ func NewCursorFromTexture(texture Texturer, hotspotX, hotspotY int32, fallback *
 		*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fallback).Native()))
 	}
 
-	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("new_Cursor_from_texture", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Cursor")
+	_gret := _info.InvokeClassMethod("new_Cursor_from_texture", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(texture)
 	runtime.KeepAlive(hotspotX)
@@ -196,8 +198,9 @@ func (cursor *Cursor) Fallback() *Cursor {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_fallback", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Cursor")
+	_gret := _info.InvokeClassMethod("get_fallback", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cursor)
 
@@ -227,8 +230,9 @@ func (cursor *Cursor) HotspotX() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_hotspot_x", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Cursor")
+	_gret := _info.InvokeClassMethod("get_hotspot_x", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cursor)
 
@@ -256,8 +260,9 @@ func (cursor *Cursor) HotspotY() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_hotspot_y", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Cursor")
+	_gret := _info.InvokeClassMethod("get_hotspot_y", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cursor)
 
@@ -281,8 +286,9 @@ func (cursor *Cursor) Name() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_name", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Cursor")
+	_gret := _info.InvokeClassMethod("get_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cursor)
 
@@ -308,8 +314,9 @@ func (cursor *Cursor) Texture() Texturer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_texture", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Cursor")
+	_gret := _info.InvokeClassMethod("get_texture", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cursor)
 

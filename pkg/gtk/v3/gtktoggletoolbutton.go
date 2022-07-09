@@ -153,8 +153,9 @@ func (button *ToggleToolButton) ConnectToggled(f func()) coreglib.SignalHandle {
 //    - toggleToolButton: newly created ToggleToolButton.
 //
 func NewToggleToolButton() *ToggleToolButton {
-	_gret := girepository.MustFind("Gtk", "ToggleToolButton").InvokeMethod("new_ToggleToolButton", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToggleToolButton")
+	_gret := _info.InvokeClassMethod("new_ToggleToolButton", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _toggleToolButton *ToggleToolButton // out
 
@@ -185,8 +186,9 @@ func NewToggleToolButtonFromStock(stockId string) *ToggleToolButton {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "ToggleToolButton").InvokeMethod("new_ToggleToolButton_from_stock", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToggleToolButton")
+	_gret := _info.InvokeClassMethod("new_ToggleToolButton_from_stock", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stockId)
 
@@ -209,8 +211,9 @@ func (button *ToggleToolButton) Active() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ToggleToolButton").InvokeMethod("get_active", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToggleToolButton")
+	_gret := _info.InvokeClassMethod("get_active", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
 
@@ -239,7 +242,8 @@ func (button *ToggleToolButton) SetActive(isActive bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ToggleToolButton").InvokeMethod("set_active", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ToggleToolButton")
+	_info.InvokeClassMethod("set_active", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(isActive)

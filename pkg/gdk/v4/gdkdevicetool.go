@@ -130,8 +130,9 @@ func (tool *DeviceTool) HardwareID() uint64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tool).Native()))
 
-	_gret := girepository.MustFind("Gdk", "DeviceTool").InvokeMethod("get_hardware_id", _args[:], nil)
-	_cret = *(*C.guint64)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "DeviceTool")
+	_gret := _info.InvokeClassMethod("get_hardware_id", _args[:], nil)
+	_cret := *(*C.guint64)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(tool)
 
@@ -156,8 +157,9 @@ func (tool *DeviceTool) Serial() uint64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tool).Native()))
 
-	_gret := girepository.MustFind("Gdk", "DeviceTool").InvokeMethod("get_serial", _args[:], nil)
-	_cret = *(*C.guint64)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "DeviceTool")
+	_gret := _info.InvokeClassMethod("get_serial", _args[:], nil)
+	_cret := *(*C.guint64)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(tool)
 

@@ -43,7 +43,8 @@ func RenderActivity(context *StyleContext, cr *cairo.Context, x, y, width, heigh
 	*(*C.gdouble)(unsafe.Pointer(&_args[4])) = C.gdouble(width)
 	*(*C.gdouble)(unsafe.Pointer(&_args[5])) = C.gdouble(height)
 
-	girepository.MustFind("Gtk", "render_activity").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "render_activity")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -79,7 +80,8 @@ func RenderArrow(context *StyleContext, cr *cairo.Context, angle, x, y, size flo
 	*(*C.gdouble)(unsafe.Pointer(&_args[4])) = C.gdouble(y)
 	*(*C.gdouble)(unsafe.Pointer(&_args[5])) = C.gdouble(size)
 
-	girepository.MustFind("Gtk", "render_arrow").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "render_arrow")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -115,7 +117,8 @@ func RenderBackground(context *StyleContext, cr *cairo.Context, x, y, width, hei
 	*(*C.gdouble)(unsafe.Pointer(&_args[4])) = C.gdouble(width)
 	*(*C.gdouble)(unsafe.Pointer(&_args[5])) = C.gdouble(height)
 
-	girepository.MustFind("Gtk", "render_background").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "render_background")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -150,7 +153,8 @@ func RenderBackgroundGetClip(context *StyleContext, x, y, width, height float64)
 	*(*C.gdouble)(unsafe.Pointer(&_args[3])) = C.gdouble(width)
 	*(*C.gdouble)(unsafe.Pointer(&_args[4])) = C.gdouble(height)
 
-	girepository.MustFind("Gtk", "render_background_get_clip").Invoke(_args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "render_background_get_clip")
+	_info.Invoke(_args[:], _outs[:])
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(x)
@@ -194,7 +198,8 @@ func RenderCheck(context *StyleContext, cr *cairo.Context, x, y, width, height f
 	*(*C.gdouble)(unsafe.Pointer(&_args[4])) = C.gdouble(width)
 	*(*C.gdouble)(unsafe.Pointer(&_args[5])) = C.gdouble(height)
 
-	girepository.MustFind("Gtk", "render_check").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "render_check")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -231,7 +236,8 @@ func RenderExpander(context *StyleContext, cr *cairo.Context, x, y, width, heigh
 	*(*C.gdouble)(unsafe.Pointer(&_args[4])) = C.gdouble(width)
 	*(*C.gdouble)(unsafe.Pointer(&_args[5])) = C.gdouble(height)
 
-	girepository.MustFind("Gtk", "render_expander").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "render_expander")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -267,7 +273,8 @@ func RenderFocus(context *StyleContext, cr *cairo.Context, x, y, width, height f
 	*(*C.gdouble)(unsafe.Pointer(&_args[4])) = C.gdouble(width)
 	*(*C.gdouble)(unsafe.Pointer(&_args[5])) = C.gdouble(height)
 
-	girepository.MustFind("Gtk", "render_focus").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "render_focus")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -304,7 +311,8 @@ func RenderFrame(context *StyleContext, cr *cairo.Context, x, y, width, height f
 	*(*C.gdouble)(unsafe.Pointer(&_args[4])) = C.gdouble(width)
 	*(*C.gdouble)(unsafe.Pointer(&_args[5])) = C.gdouble(height)
 
-	girepository.MustFind("Gtk", "render_frame").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "render_frame")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -340,7 +348,8 @@ func RenderHandle(context *StyleContext, cr *cairo.Context, x, y, width, height 
 	*(*C.gdouble)(unsafe.Pointer(&_args[4])) = C.gdouble(width)
 	*(*C.gdouble)(unsafe.Pointer(&_args[5])) = C.gdouble(height)
 
-	girepository.MustFind("Gtk", "render_handle").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "render_handle")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -376,7 +385,8 @@ func RenderIcon(context *StyleContext, cr *cairo.Context, pixbuf *gdkpixbuf.Pixb
 	*(*C.gdouble)(unsafe.Pointer(&_args[3])) = C.gdouble(x)
 	*(*C.gdouble)(unsafe.Pointer(&_args[4])) = C.gdouble(y)
 
-	girepository.MustFind("Gtk", "render_icon").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "render_icon")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -405,7 +415,8 @@ func RenderIconSurface(context *StyleContext, cr *cairo.Context, surface *cairo.
 	*(*C.gdouble)(unsafe.Pointer(&_args[3])) = C.gdouble(x)
 	*(*C.gdouble)(unsafe.Pointer(&_args[4])) = C.gdouble(y)
 
-	girepository.MustFind("Gtk", "render_icon_surface").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "render_icon_surface")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -433,7 +444,8 @@ func RenderLayout(context *StyleContext, cr *cairo.Context, x, y float64, layout
 	*(*C.gdouble)(unsafe.Pointer(&_args[3])) = C.gdouble(y)
 	*(**C.void)(unsafe.Pointer(&_args[4])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	girepository.MustFind("Gtk", "render_layout").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "render_layout")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -463,7 +475,8 @@ func RenderLine(context *StyleContext, cr *cairo.Context, x0, y0, x1, y1 float64
 	*(*C.gdouble)(unsafe.Pointer(&_args[4])) = C.gdouble(x1)
 	*(*C.gdouble)(unsafe.Pointer(&_args[5])) = C.gdouble(y1)
 
-	girepository.MustFind("Gtk", "render_line").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "render_line")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)
@@ -500,7 +513,8 @@ func RenderOption(context *StyleContext, cr *cairo.Context, x, y, width, height 
 	*(*C.gdouble)(unsafe.Pointer(&_args[4])) = C.gdouble(width)
 	*(*C.gdouble)(unsafe.Pointer(&_args[5])) = C.gdouble(height)
 
-	girepository.MustFind("Gtk", "render_option").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "render_option")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(cr)

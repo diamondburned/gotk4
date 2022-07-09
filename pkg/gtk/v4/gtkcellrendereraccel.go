@@ -130,8 +130,9 @@ func (v *CellRendererAccel) ConnectAccelCleared(f func(pathString string)) coreg
 //    - cellRendererAccel: new cell renderer.
 //
 func NewCellRendererAccel() *CellRendererAccel {
-	_gret := girepository.MustFind("Gtk", "CellRendererAccel").InvokeMethod("new_CellRendererAccel", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellRendererAccel")
+	_gret := _info.InvokeClassMethod("new_CellRendererAccel", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _cellRendererAccel *CellRendererAccel // out
 

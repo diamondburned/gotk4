@@ -103,8 +103,9 @@ func marshalRecentChooserWidget(p uintptr) (interface{}, error) {
 //    - recentChooserWidget: new RecentChooserWidget.
 //
 func NewRecentChooserWidget() *RecentChooserWidget {
-	_gret := girepository.MustFind("Gtk", "RecentChooserWidget").InvokeMethod("new_RecentChooserWidget", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RecentChooserWidget")
+	_gret := _info.InvokeClassMethod("new_RecentChooserWidget", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _recentChooserWidget *RecentChooserWidget // out
 
@@ -132,8 +133,9 @@ func NewRecentChooserWidgetForManager(manager *RecentManager) *RecentChooserWidg
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	_gret := girepository.MustFind("Gtk", "RecentChooserWidget").InvokeMethod("new_RecentChooserWidget_for_manager", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RecentChooserWidget")
+	_gret := _info.InvokeClassMethod("new_RecentChooserWidget_for_manager", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 

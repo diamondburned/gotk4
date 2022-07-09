@@ -110,7 +110,9 @@ func (self *NativeSurface) Renderer() gsk.Rendererer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "NativeSurface")
+	_gret := _info.InvokeIfaceMethod("get_renderer", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -148,7 +150,9 @@ func (self *NativeSurface) Surface() gdk.Surfacer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "NativeSurface")
+	_gret := _info.InvokeIfaceMethod("get_surface", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -191,6 +195,9 @@ func (self *NativeSurface) SurfaceTransform() (x, y float64) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
+	_info := girepository.MustFind("Gtk", "NativeSurface")
+	_info.InvokeIfaceMethod("get_surface_transform", _args[:], _outs[:])
+
 	runtime.KeepAlive(self)
 
 	var _x float64 // out
@@ -210,6 +217,9 @@ func (self *NativeSurface) Realize() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
+	_info := girepository.MustFind("Gtk", "NativeSurface")
+	_info.InvokeIfaceMethod("realize", _args[:], nil)
+
 	runtime.KeepAlive(self)
 }
 
@@ -220,6 +230,9 @@ func (self *NativeSurface) Unrealize() {
 	var _args [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_info := girepository.MustFind("Gtk", "NativeSurface")
+	_info.InvokeIfaceMethod("unrealize", _args[:], nil)
 
 	runtime.KeepAlive(self)
 }
@@ -239,8 +252,9 @@ func NativeSurfaceGetForSurface(surface gdk.Surfacer) *NativeSurface {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	_gret := girepository.MustFind("Gtk", "get_for_surface").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "get_for_surface")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 

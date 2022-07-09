@@ -116,8 +116,9 @@ func marshalFixed(p uintptr) (interface{}, error) {
 //    - fixed: new Fixed.
 //
 func NewFixed() *Fixed {
-	_gret := girepository.MustFind("Gtk", "Fixed").InvokeMethod("new_Fixed", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Fixed")
+	_gret := _info.InvokeClassMethod("new_Fixed", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _fixed *Fixed // out
 
@@ -142,7 +143,8 @@ func (fixed *Fixed) Move(widget Widgetter, x, y int32) {
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(x)
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(y)
 
-	girepository.MustFind("Gtk", "Fixed").InvokeMethod("move", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Fixed")
+	_info.InvokeClassMethod("move", _args[:], nil)
 
 	runtime.KeepAlive(fixed)
 	runtime.KeepAlive(widget)
@@ -166,7 +168,8 @@ func (fixed *Fixed) Put(widget Widgetter, x, y int32) {
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(x)
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(y)
 
-	girepository.MustFind("Gtk", "Fixed").InvokeMethod("put", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Fixed")
+	_info.InvokeClassMethod("put", _args[:], nil)
 
 	runtime.KeepAlive(fixed)
 	runtime.KeepAlive(widget)

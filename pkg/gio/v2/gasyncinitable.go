@@ -226,6 +226,9 @@ func (initable *AsyncInitable) InitAsync(ctx context.Context, ioPriority int32, 
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "AsyncInitable")
+	_info.InvokeIfaceMethod("init_async", _args[:], nil)
+
 	runtime.KeepAlive(initable)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(ioPriority)
@@ -244,6 +247,9 @@ func (initable *AsyncInitable) InitFinish(res AsyncResulter) error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(initable).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+
+	_info := girepository.MustFind("Gio", "AsyncInitable")
+	_info.InvokeIfaceMethod("init_finish", _args[:], nil)
 
 	runtime.KeepAlive(initable)
 	runtime.KeepAlive(res)
@@ -275,7 +281,9 @@ func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*coreglib.Object, e
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(initable).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AsyncInitable")
+	_gret := _info.InvokeIfaceMethod("new_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(initable)
 	runtime.KeepAlive(res)

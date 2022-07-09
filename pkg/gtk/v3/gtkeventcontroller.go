@@ -82,8 +82,9 @@ func (controller *EventController) Widget() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EventController").InvokeMethod("get_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EventController")
+	_gret := _info.InvokeClassMethod("get_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(controller)
 
@@ -128,8 +129,9 @@ func (controller *EventController) HandleEvent(event *gdk.Event) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
 
-	_gret := girepository.MustFind("Gtk", "EventController").InvokeMethod("handle_event", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EventController")
+	_gret := _info.InvokeClassMethod("handle_event", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(controller)
 	runtime.KeepAlive(event)
@@ -151,7 +153,8 @@ func (controller *EventController) Reset() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
 
-	girepository.MustFind("Gtk", "EventController").InvokeMethod("reset", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "EventController")
+	_info.InvokeClassMethod("reset", _args[:], nil)
 
 	runtime.KeepAlive(controller)
 }

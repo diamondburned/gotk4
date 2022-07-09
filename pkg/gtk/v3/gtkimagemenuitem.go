@@ -128,8 +128,9 @@ func marshalImageMenuItem(p uintptr) (interface{}, error) {
 //    - imageMenuItem: new ImageMenuItem.
 //
 func NewImageMenuItem() *ImageMenuItem {
-	_gret := girepository.MustFind("Gtk", "ImageMenuItem").InvokeMethod("new_ImageMenuItem", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ImageMenuItem")
+	_gret := _info.InvokeClassMethod("new_ImageMenuItem", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _imageMenuItem *ImageMenuItem // out
 
@@ -168,8 +169,9 @@ func NewImageMenuItemFromStock(stockId string, accelGroup *AccelGroup) *ImageMen
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "ImageMenuItem").InvokeMethod("new_ImageMenuItem_from_stock", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ImageMenuItem")
+	_gret := _info.InvokeClassMethod("new_ImageMenuItem_from_stock", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stockId)
 	runtime.KeepAlive(accelGroup)
@@ -199,8 +201,9 @@ func NewImageMenuItemWithLabel(label string) *ImageMenuItem {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "ImageMenuItem").InvokeMethod("new_ImageMenuItem_with_label", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ImageMenuItem")
+	_gret := _info.InvokeClassMethod("new_ImageMenuItem_with_label", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(label)
 
@@ -232,8 +235,9 @@ func NewImageMenuItemWithMnemonic(label string) *ImageMenuItem {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "ImageMenuItem").InvokeMethod("new_ImageMenuItem_with_mnemonic", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ImageMenuItem")
+	_gret := _info.InvokeClassMethod("new_ImageMenuItem_with_mnemonic", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(label)
 
@@ -258,8 +262,9 @@ func (imageMenuItem *ImageMenuItem) AlwaysShowImage() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(imageMenuItem).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ImageMenuItem").InvokeMethod("get_always_show_image", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ImageMenuItem")
+	_gret := _info.InvokeClassMethod("get_always_show_image", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(imageMenuItem)
 
@@ -286,8 +291,9 @@ func (imageMenuItem *ImageMenuItem) Image() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(imageMenuItem).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ImageMenuItem").InvokeMethod("get_image", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ImageMenuItem")
+	_gret := _info.InvokeClassMethod("get_image", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(imageMenuItem)
 
@@ -329,8 +335,9 @@ func (imageMenuItem *ImageMenuItem) UseStock() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(imageMenuItem).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ImageMenuItem").InvokeMethod("get_use_stock", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ImageMenuItem")
+	_gret := _info.InvokeClassMethod("get_use_stock", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(imageMenuItem)
 
@@ -363,7 +370,8 @@ func (imageMenuItem *ImageMenuItem) SetAccelGroup(accelGroup *AccelGroup) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(imageMenuItem).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
 
-	girepository.MustFind("Gtk", "ImageMenuItem").InvokeMethod("set_accel_group", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ImageMenuItem")
+	_info.InvokeClassMethod("set_accel_group", _args[:], nil)
 
 	runtime.KeepAlive(imageMenuItem)
 	runtime.KeepAlive(accelGroup)
@@ -389,7 +397,8 @@ func (imageMenuItem *ImageMenuItem) SetAlwaysShowImage(alwaysShow bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ImageMenuItem").InvokeMethod("set_always_show_image", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ImageMenuItem")
+	_info.InvokeClassMethod("set_always_show_image", _args[:], nil)
 
 	runtime.KeepAlive(imageMenuItem)
 	runtime.KeepAlive(alwaysShow)
@@ -413,7 +422,8 @@ func (imageMenuItem *ImageMenuItem) SetImage(image Widgetter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 	}
 
-	girepository.MustFind("Gtk", "ImageMenuItem").InvokeMethod("set_image", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ImageMenuItem")
+	_info.InvokeClassMethod("set_image", _args[:], nil)
 
 	runtime.KeepAlive(imageMenuItem)
 	runtime.KeepAlive(image)
@@ -436,7 +446,8 @@ func (imageMenuItem *ImageMenuItem) SetUseStock(useStock bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ImageMenuItem").InvokeMethod("set_use_stock", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ImageMenuItem")
+	_info.InvokeClassMethod("set_use_stock", _args[:], nil)
 
 	runtime.KeepAlive(imageMenuItem)
 	runtime.KeepAlive(useStock)

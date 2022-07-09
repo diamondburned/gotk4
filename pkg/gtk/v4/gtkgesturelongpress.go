@@ -126,8 +126,9 @@ func (gesture *GestureLongPress) ConnectPressed(f func(x, y float64)) coreglib.S
 //    - gestureLongPress: newly created GtkGestureLongPress.
 //
 func NewGestureLongPress() *GestureLongPress {
-	_gret := girepository.MustFind("Gtk", "GestureLongPress").InvokeMethod("new_GestureLongPress", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureLongPress")
+	_gret := _info.InvokeClassMethod("new_GestureLongPress", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _gestureLongPress *GestureLongPress // out
 
@@ -147,8 +148,9 @@ func (gesture *GestureLongPress) DelayFactor() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureLongPress").InvokeMethod("get_delay_factor", _args[:], nil)
-	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureLongPress")
+	_gret := _info.InvokeClassMethod("get_delay_factor", _args[:], nil)
+	_cret := *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)
 
@@ -174,7 +176,8 @@ func (gesture *GestureLongPress) SetDelayFactor(delayFactor float64) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(delayFactor)
 
-	girepository.MustFind("Gtk", "GestureLongPress").InvokeMethod("set_delay_factor", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "GestureLongPress")
+	_info.InvokeClassMethod("set_delay_factor", _args[:], nil)
 
 	runtime.KeepAlive(gesture)
 	runtime.KeepAlive(delayFactor)

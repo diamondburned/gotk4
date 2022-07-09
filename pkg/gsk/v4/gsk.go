@@ -17,14 +17,15 @@ import (
 import "C"
 
 func init() {
-	girepository.Require("Gsk", "4.0")
+	girepository.Require("Gsk", "4.0", girepository.LoadFlagLazy)
 }
 
 // The function returns the following values:
 //
 func SerializationErrorQuark() glib.Quark {
-	_gret := girepository.MustFind("Gsk", "quark").Invoke(nil, nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "quark")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 

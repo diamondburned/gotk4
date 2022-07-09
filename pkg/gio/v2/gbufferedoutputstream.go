@@ -97,8 +97,9 @@ func NewBufferedOutputStream(baseStream OutputStreamer) *BufferedOutputStream {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseStream).Native()))
 
-	_gret := girepository.MustFind("Gio", "BufferedOutputStream").InvokeMethod("new_BufferedOutputStream", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "BufferedOutputStream")
+	_gret := _info.InvokeClassMethod("new_BufferedOutputStream", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseStream)
 
@@ -127,8 +128,9 @@ func NewBufferedOutputStreamSized(baseStream OutputStreamer, size uint) *Buffere
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseStream).Native()))
 	*(*C.gsize)(unsafe.Pointer(&_args[1])) = C.gsize(size)
 
-	_gret := girepository.MustFind("Gio", "BufferedOutputStream").InvokeMethod("new_BufferedOutputStream_sized", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "BufferedOutputStream")
+	_gret := _info.InvokeClassMethod("new_BufferedOutputStream_sized", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseStream)
 	runtime.KeepAlive(size)
@@ -151,8 +153,9 @@ func (stream *BufferedOutputStream) AutoGrow() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	_gret := girepository.MustFind("Gio", "BufferedOutputStream").InvokeMethod("get_auto_grow", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "BufferedOutputStream")
+	_gret := _info.InvokeClassMethod("get_auto_grow", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 
@@ -176,8 +179,9 @@ func (stream *BufferedOutputStream) BufferSize() uint {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 
-	_gret := girepository.MustFind("Gio", "BufferedOutputStream").InvokeMethod("get_buffer_size", _args[:], nil)
-	_cret = *(*C.gsize)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "BufferedOutputStream")
+	_gret := _info.InvokeClassMethod("get_buffer_size", _args[:], nil)
+	_cret := *(*C.gsize)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 
@@ -205,7 +209,8 @@ func (stream *BufferedOutputStream) SetAutoGrow(autoGrow bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "BufferedOutputStream").InvokeMethod("set_auto_grow", _args[:], nil)
+	_info := girepository.MustFind("Gio", "BufferedOutputStream")
+	_info.InvokeClassMethod("set_auto_grow", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(autoGrow)
@@ -223,7 +228,8 @@ func (stream *BufferedOutputStream) SetBufferSize(size uint) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	*(*C.gsize)(unsafe.Pointer(&_args[1])) = C.gsize(size)
 
-	girepository.MustFind("Gio", "BufferedOutputStream").InvokeMethod("set_buffer_size", _args[:], nil)
+	_info := girepository.MustFind("Gio", "BufferedOutputStream")
+	_info.InvokeClassMethod("set_buffer_size", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(size)

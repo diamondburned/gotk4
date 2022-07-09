@@ -176,8 +176,9 @@ func (gesture *GestureStylus) ConnectUp(f func(x, y float64)) coreglib.SignalHan
 //    - gestureStylus: newly created stylus gesture.
 //
 func NewGestureStylus() *GestureStylus {
-	_gret := girepository.MustFind("Gtk", "GestureStylus").InvokeMethod("new_GestureStylus", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureStylus")
+	_gret := _info.InvokeClassMethod("new_GestureStylus", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _gestureStylus *GestureStylus // out
 
@@ -211,8 +212,9 @@ func (gesture *GestureStylus) Backlog() ([]gdk.TimeCoord, bool) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureStylus").InvokeMethod("get_backlog", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureStylus")
+	_gret := _info.InvokeClassMethod("get_backlog", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)
 
@@ -256,8 +258,9 @@ func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureStylus").InvokeMethod("get_device_tool", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureStylus")
+	_gret := _info.InvokeClassMethod("get_device_tool", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)
 

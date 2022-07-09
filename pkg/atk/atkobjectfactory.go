@@ -101,8 +101,9 @@ func (factory *ObjectFactory) CreateAccessible(obj *coreglib.Object) *ObjectClas
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(obj.Native()))
 
-	_gret := girepository.MustFind("Atk", "ObjectFactory").InvokeMethod("create_accessible", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "ObjectFactory")
+	_gret := _info.InvokeClassMethod("create_accessible", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(factory)
 	runtime.KeepAlive(obj)
@@ -123,7 +124,8 @@ func (factory *ObjectFactory) Invalidate() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
 
-	girepository.MustFind("Atk", "ObjectFactory").InvokeMethod("invalidate", _args[:], nil)
+	_info := girepository.MustFind("Atk", "ObjectFactory")
+	_info.InvokeClassMethod("invalidate", _args[:], nil)
 
 	runtime.KeepAlive(factory)
 }

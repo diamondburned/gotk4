@@ -138,8 +138,9 @@ func (constraint *Constraint) Constant() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_constant", _args[:], nil)
-	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Constraint")
+	_gret := _info.InvokeClassMethod("get_constant", _args[:], nil)
+	_cret := *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(constraint)
 
@@ -162,8 +163,9 @@ func (constraint *Constraint) Multiplier() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_multiplier", _args[:], nil)
-	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Constraint")
+	_gret := _info.InvokeClassMethod("get_multiplier", _args[:], nil)
+	_cret := *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(constraint)
 
@@ -189,8 +191,9 @@ func (constraint *Constraint) Source() *ConstraintTarget {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_source", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Constraint")
+	_gret := _info.InvokeClassMethod("get_source", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(constraint)
 
@@ -214,8 +217,9 @@ func (constraint *Constraint) Strength() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_strength", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Constraint")
+	_gret := _info.InvokeClassMethod("get_strength", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(constraint)
 
@@ -241,8 +245,9 @@ func (constraint *Constraint) Target() *ConstraintTarget {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("get_target", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Constraint")
+	_gret := _info.InvokeClassMethod("get_target", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(constraint)
 
@@ -267,8 +272,9 @@ func (constraint *Constraint) IsAttached() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("is_attached", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Constraint")
+	_gret := _info.InvokeClassMethod("is_attached", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(constraint)
 
@@ -293,8 +299,9 @@ func (constraint *Constraint) IsConstant() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("is_constant", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Constraint")
+	_gret := _info.InvokeClassMethod("is_constant", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(constraint)
 
@@ -319,8 +326,9 @@ func (constraint *Constraint) IsRequired() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Constraint").InvokeMethod("is_required", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Constraint")
+	_gret := _info.InvokeClassMethod("is_required", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(constraint)
 

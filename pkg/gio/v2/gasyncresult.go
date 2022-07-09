@@ -15,9 +15,9 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GObject* _gotk4_gio2_AsyncResultIface_get_source_object(void*);
 // extern gboolean _gotk4_gio2_AsyncResultIface_is_tagged(void*, gpointer);
 // extern gpointer _gotk4_gio2_AsyncResultIface_get_user_data(void*);
+// extern void* _gotk4_gio2_AsyncResultIface_get_source_object(void*);
 import "C"
 
 // GTypeAsyncResult returns the GType for the type AsyncResult.
@@ -180,7 +180,7 @@ func ifaceInitAsyncResulter(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_AsyncResultIface_get_source_object
-func _gotk4_gio2_AsyncResultIface_get_source_object(arg0 *C.void) (cret *C.GObject) {
+func _gotk4_gio2_AsyncResultIface_get_source_object(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(AsyncResultOverrider)
 
@@ -246,7 +246,9 @@ func (res *AsyncResult) SourceObject() *coreglib.Object {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AsyncResult")
+	_gret := _info.InvokeIfaceMethod("get_source_object", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(res)
 
@@ -270,7 +272,9 @@ func (res *AsyncResult) UserData() unsafe.Pointer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_cret = *(*C.gpointer)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AsyncResult")
+	_gret := _info.InvokeIfaceMethod("get_user_data", _args[:], nil)
+	_cret := *(*C.gpointer)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(res)
 
@@ -298,7 +302,9 @@ func (res *AsyncResult) IsTagged(sourceTag unsafe.Pointer) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (C.gpointer)(unsafe.Pointer(sourceTag))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AsyncResult")
+	_gret := _info.InvokeIfaceMethod("is_tagged", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(res)
 	runtime.KeepAlive(sourceTag)
@@ -324,6 +330,9 @@ func (res *AsyncResult) LegacyPropagateError() error {
 	var _args [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
+
+	_info := girepository.MustFind("Gio", "AsyncResult")
+	_info.InvokeIfaceMethod("legacy_propagate_error", _args[:], nil)
 
 	runtime.KeepAlive(res)
 

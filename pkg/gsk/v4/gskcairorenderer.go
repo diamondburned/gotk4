@@ -63,8 +63,9 @@ func marshalCairoRenderer(p uintptr) (interface{}, error) {
 //    - cairoRenderer: new Cairo renderer.
 //
 func NewCairoRenderer() *CairoRenderer {
-	_gret := girepository.MustFind("Gsk", "CairoRenderer").InvokeMethod("new_CairoRenderer", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "CairoRenderer")
+	_gret := _info.InvokeClassMethod("new_CairoRenderer", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _cairoRenderer *CairoRenderer // out
 

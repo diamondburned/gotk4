@@ -20,9 +20,9 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GDBusMessage* _gotk4_gio2_DBusMessageFilterFunction(void*, void*, gboolean, gpointer);
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 // extern void callbackDelete(gpointer);
+// extern void* _gotk4_gio2_DBusMessageFilterFunction(void*, void*, gboolean, gpointer);
 import "C"
 
 // DBusInterfaceGetPropertyFunc: type of the get_property function in
@@ -30,7 +30,7 @@ import "C"
 type DBusInterfaceGetPropertyFunc func(connection *DBusConnection, sender, objectPath, interfaceName, propertyName string) (err error, variant *glib.Variant)
 
 //export _gotk4_gio2_DBusInterfaceGetPropertyFunc
-func _gotk4_gio2_DBusInterfaceGetPropertyFunc(arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.void, arg5 *C.void, arg6 **C.void, arg7 C.gpointer) (cret *C.GVariant) {
+func _gotk4_gio2_DBusInterfaceGetPropertyFunc(arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.void, arg5 *C.void, arg6 **C.void, arg7 C.gpointer) (cret *C.void) {
 	var fn DBusInterfaceGetPropertyFunc
 	{
 		v := gbox.Get(uintptr(arg7))
@@ -213,7 +213,7 @@ func _gotk4_gio2_DBusInterfaceSetPropertyFunc(arg1 *C.void, arg2 *C.void, arg3 *
 type DBusMessageFilterFunction func(connection *DBusConnection, message *DBusMessage, incoming bool) (dBusMessage *DBusMessage)
 
 //export _gotk4_gio2_DBusMessageFilterFunction
-func _gotk4_gio2_DBusMessageFilterFunction(arg1 *C.void, arg2 *C.void, arg3 C.gboolean, arg4 C.gpointer) (cret *C.GDBusMessage) {
+func _gotk4_gio2_DBusMessageFilterFunction(arg1 *C.void, arg2 *C.void, arg3 C.gboolean, arg4 C.gpointer) (cret *C.void) {
 	var fn DBusMessageFilterFunction
 	{
 		v := gbox.Get(uintptr(arg4))
@@ -291,7 +291,7 @@ func _gotk4_gio2_DBusSignalCallback(arg1 *C.void, arg2 *C.void, arg3 *C.void, ar
 type DBusSubtreeDispatchFunc func(connection *DBusConnection, sender, objectPath, interfaceName, node string) (outUserData unsafe.Pointer, dBusInterfaceVTable *DBusInterfaceVTable)
 
 //export _gotk4_gio2_DBusSubtreeDispatchFunc
-func _gotk4_gio2_DBusSubtreeDispatchFunc(arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.void, arg5 *C.void, arg6 *C.void, arg7 C.gpointer) (cret *C.GDBusInterfaceVTable) {
+func _gotk4_gio2_DBusSubtreeDispatchFunc(arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.void, arg5 *C.void, arg6 *C.void, arg7 C.gpointer) (cret *C.void) {
 	var fn DBusSubtreeDispatchFunc
 	{
 		v := gbox.Get(uintptr(arg7))
@@ -337,7 +337,7 @@ func _gotk4_gio2_DBusSubtreeDispatchFunc(arg1 *C.void, arg2 *C.void, arg3 *C.voi
 type DBusSubtreeEnumerateFunc func(connection *DBusConnection, sender, objectPath string) (utf8s []string)
 
 //export _gotk4_gio2_DBusSubtreeEnumerateFunc
-func _gotk4_gio2_DBusSubtreeEnumerateFunc(arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 C.gpointer) (cret **C.gchar) {
+func _gotk4_gio2_DBusSubtreeEnumerateFunc(arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 C.gpointer) (cret **C.void) {
 	var fn DBusSubtreeEnumerateFunc
 	{
 		v := gbox.Get(uintptr(arg4))
@@ -393,7 +393,7 @@ func _gotk4_gio2_DBusSubtreeEnumerateFunc(arg1 *C.void, arg2 *C.void, arg3 *C.vo
 type DBusSubtreeIntrospectFunc func(connection *DBusConnection, sender, objectPath, node string) (dBusInterfaceInfos []*DBusInterfaceInfo)
 
 //export _gotk4_gio2_DBusSubtreeIntrospectFunc
-func _gotk4_gio2_DBusSubtreeIntrospectFunc(arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.void, arg5 C.gpointer) (cret **C.GDBusInterfaceInfo) {
+func _gotk4_gio2_DBusSubtreeIntrospectFunc(arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.void, arg5 C.gpointer) (cret **C.void) {
 	var fn DBusSubtreeIntrospectFunc
 	{
 		v := gbox.Get(uintptr(arg5))
@@ -455,8 +455,9 @@ func BusGetFinish(res AsyncResulter) (*DBusConnection, error) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_gret := girepository.MustFind("Gio", "bus_get_finish").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "bus_get_finish")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(res)
 
@@ -487,8 +488,9 @@ func NewDBusConnectionFinish(res AsyncResulter) (*DBusConnection, error) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("new_DBusConnection_finish", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_gret := _info.InvokeClassMethod("new_DBusConnection_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(res)
 
@@ -519,8 +521,9 @@ func NewDBusConnectionForAddressFinish(res AsyncResulter) (*DBusConnection, erro
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("new_DBusConnection_for_address_finish", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_gret := _info.InvokeClassMethod("new_DBusConnection_for_address_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(res)
 
@@ -578,8 +581,9 @@ func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunc
 	_args[2] = C.gpointer(gbox.Assign(filterFunction))
 	_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
-	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("add_filter", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_gret := _info.InvokeClassMethod("add_filter", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(filterFunction)
@@ -608,8 +612,9 @@ func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("call_finish", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_gret := _info.InvokeClassMethod("call_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(res)
@@ -673,7 +678,8 @@ func (connection *DBusConnection) Close(ctx context.Context, callback AsyncReady
 		_args[3] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("close", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_info.InvokeClassMethod("close", _args[:], nil)
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(ctx)
@@ -692,7 +698,8 @@ func (connection *DBusConnection) CloseFinish(res AsyncResulter) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("close_finish", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_info.InvokeClassMethod("close_finish", _args[:], nil)
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(res)
@@ -724,7 +731,8 @@ func (connection *DBusConnection) CloseSync(ctx context.Context) error {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("close_sync", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_info.InvokeClassMethod("close_sync", _args[:], nil)
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(ctx)
@@ -774,7 +782,8 @@ func (connection *DBusConnection) EmitSignal(destinationBusName, objectPath, int
 		*(**C.void)(unsafe.Pointer(&_args[5])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parameters)))
 	}
 
-	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("emit_signal", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_info.InvokeClassMethod("emit_signal", _args[:], nil)
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(destinationBusName)
@@ -826,7 +835,8 @@ func (connection *DBusConnection) Flush(ctx context.Context, callback AsyncReady
 		_args[3] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("flush", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_info.InvokeClassMethod("flush", _args[:], nil)
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(ctx)
@@ -845,7 +855,8 @@ func (connection *DBusConnection) FlushFinish(res AsyncResulter) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("flush_finish", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_info.InvokeClassMethod("flush_finish", _args[:], nil)
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(res)
@@ -877,7 +888,8 @@ func (connection *DBusConnection) FlushSync(ctx context.Context) error {
 		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
 
-	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("flush_sync", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_info.InvokeClassMethod("flush_sync", _args[:], nil)
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(ctx)
@@ -904,8 +916,9 @@ func (connection *DBusConnection) ExitOnClose() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("get_exit_on_close", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_gret := _info.InvokeClassMethod("get_exit_on_close", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
 
@@ -930,8 +943,9 @@ func (connection *DBusConnection) GUID() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("get_guid", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_gret := _info.InvokeClassMethod("get_guid", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
 
@@ -958,8 +972,9 @@ func (connection *DBusConnection) LastSerial() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("get_last_serial", _args[:], nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_gret := _info.InvokeClassMethod("get_last_serial", _args[:], nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
 
@@ -989,8 +1004,9 @@ func (connection *DBusConnection) PeerCredentials() *Credentials {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("get_peer_credentials", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_gret := _info.InvokeClassMethod("get_peer_credentials", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
 
@@ -1017,8 +1033,9 @@ func (connection *DBusConnection) Stream() IOStreamer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("get_stream", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_gret := _info.InvokeClassMethod("get_stream", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
 
@@ -1059,8 +1076,9 @@ func (connection *DBusConnection) UniqueName() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("get_unique_name", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_gret := _info.InvokeClassMethod("get_unique_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
 
@@ -1084,8 +1102,9 @@ func (connection *DBusConnection) IsClosed() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("is_closed", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_gret := _info.InvokeClassMethod("is_closed", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
 
@@ -1125,8 +1144,9 @@ func (connection *DBusConnection) RegisterObject(objectPath string, interfaceInf
 	*(**C.void)(unsafe.Pointer(&_args[4])) = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(connection), getPropertyClosure))
 	*(**C.void)(unsafe.Pointer(&_args[5])) = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(connection), setPropertyClosure))
 
-	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("register_object_with_closures", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_gret := _info.InvokeClassMethod("register_object_with_closures", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(objectPath)
@@ -1165,7 +1185,8 @@ func (connection *DBusConnection) RemoveFilter(filterId uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(filterId)
 
-	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("remove_filter", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_info.InvokeClassMethod("remove_filter", _args[:], nil)
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(filterId)
@@ -1198,8 +1219,9 @@ func (connection *DBusConnection) SendMessageWithReplyFinish(res AsyncResulter) 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(res).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("send_message_with_reply_finish", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_gret := _info.InvokeClassMethod("send_message_with_reply_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(res)
@@ -1238,7 +1260,8 @@ func (connection *DBusConnection) SetExitOnClose(exitOnClose bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("set_exit_on_close", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_info.InvokeClassMethod("set_exit_on_close", _args[:], nil)
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(exitOnClose)
@@ -1264,7 +1287,8 @@ func (connection *DBusConnection) SignalUnsubscribe(subscriptionId uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(subscriptionId)
 
-	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("signal_unsubscribe", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_info.InvokeClassMethod("signal_unsubscribe", _args[:], nil)
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(subscriptionId)
@@ -1279,7 +1303,8 @@ func (connection *DBusConnection) StartMessageProcessing() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
-	girepository.MustFind("Gio", "DBusConnection").InvokeMethod("start_message_processing", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_info.InvokeClassMethod("start_message_processing", _args[:], nil)
 
 	runtime.KeepAlive(connection)
 }
@@ -1301,8 +1326,9 @@ func (connection *DBusConnection) UnregisterObject(registrationId uint32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(registrationId)
 
-	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("unregister_object", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_gret := _info.InvokeClassMethod("unregister_object", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(registrationId)
@@ -1333,8 +1359,9 @@ func (connection *DBusConnection) UnregisterSubtree(registrationId uint32) bool 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(registrationId)
 
-	_gret := girepository.MustFind("Gio", "DBusConnection").InvokeMethod("unregister_subtree", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusConnection")
+	_gret := _info.InvokeClassMethod("unregister_subtree", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(registrationId)

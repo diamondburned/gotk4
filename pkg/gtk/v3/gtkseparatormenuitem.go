@@ -109,8 +109,9 @@ func marshalSeparatorMenuItem(p uintptr) (interface{}, error) {
 //    - separatorMenuItem: new SeparatorMenuItem.
 //
 func NewSeparatorMenuItem() *SeparatorMenuItem {
-	_gret := girepository.MustFind("Gtk", "SeparatorMenuItem").InvokeMethod("new_SeparatorMenuItem", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SeparatorMenuItem")
+	_gret := _info.InvokeClassMethod("new_SeparatorMenuItem", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _separatorMenuItem *SeparatorMenuItem // out
 

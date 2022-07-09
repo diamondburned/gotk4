@@ -14,9 +14,9 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GAction* _gotk4_gio2_ActionMapInterface_lookup_action(void*, void*);
 // extern void _gotk4_gio2_ActionMapInterface_add_action(void*, void*);
 // extern void _gotk4_gio2_ActionMapInterface_remove_action(void*, void*);
+// extern void* _gotk4_gio2_ActionMapInterface_lookup_action(void*, void*);
 import "C"
 
 // GTypeActionMap returns the GType for the type ActionMap.
@@ -136,7 +136,7 @@ func _gotk4_gio2_ActionMapInterface_add_action(arg0 *C.void, arg1 *C.void) {
 }
 
 //export _gotk4_gio2_ActionMapInterface_lookup_action
-func _gotk4_gio2_ActionMapInterface_lookup_action(arg0 *C.void, arg1 *C.void) (cret *C.GAction) {
+func _gotk4_gio2_ActionMapInterface_lookup_action(arg0 *C.void, arg1 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionMapOverrider)
 
@@ -192,6 +192,9 @@ func (actionMap *ActionMap) AddAction(action Actioner) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionMap).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 
+	_info := girepository.MustFind("Gio", "ActionMap")
+	_info.InvokeIfaceMethod("add_action", _args[:], nil)
+
 	runtime.KeepAlive(actionMap)
 	runtime.KeepAlive(action)
 }
@@ -215,7 +218,9 @@ func (actionMap *ActionMap) LookupAction(actionName string) *Action {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ActionMap")
+	_gret := _info.InvokeIfaceMethod("lookup_action", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(actionMap)
 	runtime.KeepAlive(actionName)
@@ -243,6 +248,9 @@ func (actionMap *ActionMap) RemoveAction(actionName string) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionMap).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_args[1]))
+
+	_info := girepository.MustFind("Gio", "ActionMap")
+	_info.InvokeIfaceMethod("remove_action", _args[:], nil)
 
 	runtime.KeepAlive(actionMap)
 	runtime.KeepAlive(actionName)

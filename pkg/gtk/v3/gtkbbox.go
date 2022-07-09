@@ -156,8 +156,9 @@ func (widget *ButtonBox) ChildNonHomogeneous(child Widgetter) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ButtonBox").InvokeMethod("get_child_non_homogeneous", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ButtonBox")
+	_gret := _info.InvokeClassMethod("get_child_non_homogeneous", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(child)
@@ -188,8 +189,9 @@ func (widget *ButtonBox) ChildSecondary(child Widgetter) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ButtonBox").InvokeMethod("get_child_secondary", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ButtonBox")
+	_gret := _info.InvokeClassMethod("get_child_secondary", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(child)
@@ -220,7 +222,8 @@ func (widget *ButtonBox) SetChildNonHomogeneous(child Widgetter, nonHomogeneous 
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ButtonBox").InvokeMethod("set_child_non_homogeneous", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ButtonBox")
+	_info.InvokeClassMethod("set_child_non_homogeneous", _args[:], nil)
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(child)
@@ -254,7 +257,8 @@ func (widget *ButtonBox) SetChildSecondary(child Widgetter, isSecondary bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ButtonBox").InvokeMethod("set_child_secondary", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ButtonBox")
+	_info.InvokeClassMethod("set_child_secondary", _args[:], nil)
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(child)

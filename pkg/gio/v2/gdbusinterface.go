@@ -15,9 +15,9 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GDBusInterfaceInfo* _gotk4_gio2_DBusInterfaceIface_get_info(void*);
-// extern GDBusObject* _gotk4_gio2_DBusInterfaceIface_dup_object(void*);
 // extern void _gotk4_gio2_DBusInterfaceIface_set_object(void*, void*);
+// extern void* _gotk4_gio2_DBusInterfaceIface_dup_object(void*);
+// extern void* _gotk4_gio2_DBusInterfaceIface_get_info(void*);
 import "C"
 
 // GTypeDBusInterface returns the GType for the type DBusInterface.
@@ -97,7 +97,7 @@ func ifaceInitDBusInterfacer(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_DBusInterfaceIface_dup_object
-func _gotk4_gio2_DBusInterfaceIface_dup_object(arg0 *C.void) (cret *C.GDBusObject) {
+func _gotk4_gio2_DBusInterfaceIface_dup_object(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusInterfaceOverrider)
 
@@ -112,7 +112,7 @@ func _gotk4_gio2_DBusInterfaceIface_dup_object(arg0 *C.void) (cret *C.GDBusObjec
 }
 
 //export _gotk4_gio2_DBusInterfaceIface_get_info
-func _gotk4_gio2_DBusInterfaceIface_get_info(arg0 *C.void) (cret *C.GDBusInterfaceInfo) {
+func _gotk4_gio2_DBusInterfaceIface_get_info(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusInterfaceOverrider)
 
@@ -172,7 +172,9 @@ func (interface_ *DBusInterface) GetObject() *DBusObject {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusInterface")
+	_gret := _info.InvokeIfaceMethod("dup_object", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(interface_)
 
@@ -197,7 +199,9 @@ func (interface_ *DBusInterface) Info() *DBusInterfaceInfo {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusInterface")
+	_gret := _info.InvokeIfaceMethod("get_info", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(interface_)
 
@@ -230,6 +234,9 @@ func (interface_ *DBusInterface) SetObject(object DBusObjector) {
 	if object != nil {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
 	}
+
+	_info := girepository.MustFind("Gio", "DBusInterface")
+	_info.InvokeIfaceMethod("set_object", _args[:], nil)
 
 	runtime.KeepAlive(interface_)
 	runtime.KeepAlive(object)

@@ -344,6 +344,9 @@ func (toplevel *Toplevel) BeginMove(device Devicer, button int32, x, y float64, 
 	*(*C.double)(unsafe.Pointer(&_args[4])) = C.double(y)
 	*(*C.guint32)(unsafe.Pointer(&_args[5])) = C.guint32(timestamp)
 
+	_info := girepository.MustFind("Gdk", "Toplevel")
+	_info.InvokeIfaceMethod("begin_move", _args[:], nil)
+
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(device)
 	runtime.KeepAlive(button)
@@ -366,6 +369,9 @@ func (toplevel *Toplevel) Focus(timestamp uint32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(timestamp)
+
+	_info := girepository.MustFind("Gdk", "Toplevel")
+	_info.InvokeIfaceMethod("focus", _args[:], nil)
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(timestamp)
@@ -405,6 +411,9 @@ func (toplevel *Toplevel) InhibitSystemShortcuts(event Eventer) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 	}
 
+	_info := girepository.MustFind("Gdk", "Toplevel")
+	_info.InvokeIfaceMethod("inhibit_system_shortcuts", _args[:], nil)
+
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(event)
 }
@@ -422,7 +431,9 @@ func (toplevel *Toplevel) Lower() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Toplevel")
+	_gret := _info.InvokeIfaceMethod("lower", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(toplevel)
 
@@ -448,7 +459,9 @@ func (toplevel *Toplevel) Minimize() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Toplevel")
+	_gret := _info.InvokeIfaceMethod("minimize", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(toplevel)
 
@@ -482,6 +495,9 @@ func (toplevel *Toplevel) Present(layout *ToplevelLayout) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(layout)))
 
+	_info := girepository.MustFind("Gdk", "Toplevel")
+	_info.InvokeIfaceMethod("present", _args[:], nil)
+
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(layout)
 }
@@ -494,6 +510,9 @@ func (toplevel *Toplevel) RestoreSystemShortcuts() {
 	var _args [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+
+	_info := girepository.MustFind("Gdk", "Toplevel")
+	_info.InvokeIfaceMethod("restore_system_shortcuts", _args[:], nil)
 
 	runtime.KeepAlive(toplevel)
 }
@@ -516,6 +535,9 @@ func (toplevel *Toplevel) SetDecorated(decorated bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
+	_info := girepository.MustFind("Gdk", "Toplevel")
+	_info.InvokeIfaceMethod("set_decorated", _args[:], nil)
+
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(decorated)
 }
@@ -536,6 +558,9 @@ func (toplevel *Toplevel) SetDeletable(deletable bool) {
 	if deletable {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
+
+	_info := girepository.MustFind("Gdk", "Toplevel")
+	_info.InvokeIfaceMethod("set_deletable", _args[:], nil)
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(deletable)
@@ -566,6 +591,9 @@ func (toplevel *Toplevel) SetIconList(surfaces []Texturer) {
 	}
 	defer C.g_list_free(_args[1])
 
+	_info := girepository.MustFind("Gdk", "Toplevel")
+	_info.InvokeIfaceMethod("set_icon_list", _args[:], nil)
+
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(surfaces)
 }
@@ -591,6 +619,9 @@ func (toplevel *Toplevel) SetModal(modal bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
+	_info := girepository.MustFind("Gdk", "Toplevel")
+	_info.InvokeIfaceMethod("set_modal", _args[:], nil)
+
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(modal)
 }
@@ -611,6 +642,9 @@ func (toplevel *Toplevel) SetStartupID(startupId string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(startupId)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
+	_info := girepository.MustFind("Gdk", "Toplevel")
+	_info.InvokeIfaceMethod("set_startup_id", _args[:], nil)
+
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(startupId)
 }
@@ -629,6 +663,9 @@ func (toplevel *Toplevel) SetTitle(title string) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_args[1]))
+
+	_info := girepository.MustFind("Gdk", "Toplevel")
+	_info.InvokeIfaceMethod("set_title", _args[:], nil)
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(title)
@@ -651,6 +688,9 @@ func (toplevel *Toplevel) SetTransientFor(parent Surfacer) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+
+	_info := girepository.MustFind("Gdk", "Toplevel")
+	_info.InvokeIfaceMethod("set_transient_for", _args[:], nil)
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(parent)
@@ -677,7 +717,9 @@ func (toplevel *Toplevel) ShowWindowMenu(event Eventer) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Toplevel")
+	_gret := _info.InvokeIfaceMethod("show_window_menu", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(event)
@@ -703,7 +745,9 @@ func (toplevel *Toplevel) SupportsEdgeConstraints() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Toplevel")
+	_gret := _info.InvokeIfaceMethod("supports_edge_constraints", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(toplevel)
 

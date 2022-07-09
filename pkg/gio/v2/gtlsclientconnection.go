@@ -186,6 +186,9 @@ func (conn *TLSClientConnection) CopySessionState(source TLSClientConnectioner) 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(source).Native()))
 
+	_info := girepository.MustFind("Gio", "TlsClientConnection")
+	_info.InvokeIfaceMethod("copy_session_state", _args[:], nil)
+
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(source)
 }
@@ -202,7 +205,9 @@ func (conn *TLSClientConnection) ServerIdentity() *SocketConnectable {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TlsClientConnection")
+	_gret := _info.InvokeIfaceMethod("get_server_identity", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(conn)
 
@@ -229,7 +234,9 @@ func (conn *TLSClientConnection) UseSSL3() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TlsClientConnection")
+	_gret := _info.InvokeIfaceMethod("get_use_ssl3", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(conn)
 
@@ -256,6 +263,9 @@ func (conn *TLSClientConnection) SetServerIdentity(identity SocketConnectabler) 
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(identity).Native()))
+
+	_info := girepository.MustFind("Gio", "TlsClientConnection")
+	_info.InvokeIfaceMethod("set_server_identity", _args[:], nil)
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(identity)
@@ -284,6 +294,9 @@ func (conn *TLSClientConnection) SetUseSSL3(useSsl3 bool) {
 	if useSsl3 {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
+
+	_info := girepository.MustFind("Gio", "TlsClientConnection")
+	_info.InvokeIfaceMethod("set_use_ssl3", _args[:], nil)
 
 	runtime.KeepAlive(conn)
 	runtime.KeepAlive(useSsl3)
@@ -314,8 +327,9 @@ func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnec
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(serverIdentity).Native()))
 	}
 
-	_gret := girepository.MustFind("Gio", "new").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "new")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseIoStream)
 	runtime.KeepAlive(serverIdentity)

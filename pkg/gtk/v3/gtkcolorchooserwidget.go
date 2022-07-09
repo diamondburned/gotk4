@@ -112,8 +112,9 @@ func marshalColorChooserWidget(p uintptr) (interface{}, error) {
 //    - colorChooserWidget: new ColorChooserWidget.
 //
 func NewColorChooserWidget() *ColorChooserWidget {
-	_gret := girepository.MustFind("Gtk", "ColorChooserWidget").InvokeMethod("new_ColorChooserWidget", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ColorChooserWidget")
+	_gret := _info.InvokeClassMethod("new_ColorChooserWidget", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _colorChooserWidget *ColorChooserWidget // out
 

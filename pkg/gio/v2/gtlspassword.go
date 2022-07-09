@@ -15,8 +15,8 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern gchar* _gotk4_gio2_TlsPasswordClass_get_default_warning(void*);
-// extern guchar* _gotk4_gio2_TlsPasswordClass_get_value(void*, void*);
+// extern void* _gotk4_gio2_TlsPasswordClass_get_default_warning(void*);
+// extern void* _gotk4_gio2_TlsPasswordClass_get_value(void*, void*);
 import "C"
 
 // GTypeTLSPassword returns the GType for the type TLSPassword.
@@ -82,7 +82,7 @@ func classInitTLSPassworder(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_TlsPasswordClass_get_default_warning
-func _gotk4_gio2_TlsPasswordClass_get_default_warning(arg0 *C.void) (cret *C.gchar) {
+func _gotk4_gio2_TlsPasswordClass_get_default_warning(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ DefaultWarning() string })
 
@@ -95,7 +95,7 @@ func _gotk4_gio2_TlsPasswordClass_get_default_warning(arg0 *C.void) (cret *C.gch
 }
 
 //export _gotk4_gio2_TlsPasswordClass_get_value
-func _gotk4_gio2_TlsPasswordClass_get_value(arg0 *C.void, arg1 *C.void) (cret *C.guchar) {
+func _gotk4_gio2_TlsPasswordClass_get_value(arg0 *C.void, arg1 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Value(length *uint) *byte })
 
@@ -134,8 +134,9 @@ func (password *TLSPassword) Description() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(password).Native()))
 
-	_gret := girepository.MustFind("Gio", "TlsPassword").InvokeMethod("get_description", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TlsPassword")
+	_gret := _info.InvokeClassMethod("get_description", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(password)
 
@@ -167,8 +168,9 @@ func (password *TLSPassword) Value(length *uint) *byte {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(length))
 	}
 
-	_gret := girepository.MustFind("Gio", "TlsPassword").InvokeMethod("get_value", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TlsPassword")
+	_gret := _info.InvokeClassMethod("get_value", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(password)
 	runtime.KeepAlive(length)
@@ -193,8 +195,9 @@ func (password *TLSPassword) Warning() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(password).Native()))
 
-	_gret := girepository.MustFind("Gio", "TlsPassword").InvokeMethod("get_warning", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TlsPassword")
+	_gret := _info.InvokeClassMethod("get_warning", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(password)
 
@@ -219,7 +222,8 @@ func (password *TLSPassword) SetDescription(description string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(description)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gio", "TlsPassword").InvokeMethod("set_description", _args[:], nil)
+	_info := girepository.MustFind("Gio", "TlsPassword")
+	_info.InvokeClassMethod("set_description", _args[:], nil)
 
 	runtime.KeepAlive(password)
 	runtime.KeepAlive(description)
@@ -246,7 +250,8 @@ func (password *TLSPassword) SetValue(value []byte) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(&value[0]))
 	}
 
-	girepository.MustFind("Gio", "TlsPassword").InvokeMethod("set_value", _args[:], nil)
+	_info := girepository.MustFind("Gio", "TlsPassword")
+	_info.InvokeClassMethod("set_value", _args[:], nil)
 
 	runtime.KeepAlive(password)
 	runtime.KeepAlive(value)
@@ -267,7 +272,8 @@ func (password *TLSPassword) SetWarning(warning string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(warning)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gio", "TlsPassword").InvokeMethod("set_warning", _args[:], nil)
+	_info := girepository.MustFind("Gio", "TlsPassword")
+	_info.InvokeClassMethod("set_warning", _args[:], nil)
 
 	runtime.KeepAlive(password)
 	runtime.KeepAlive(warning)

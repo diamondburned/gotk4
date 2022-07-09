@@ -136,7 +136,8 @@ func (sizeGroup *SizeGroup) AddWidget(widget Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sizeGroup).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	girepository.MustFind("Gtk", "SizeGroup").InvokeMethod("add_widget", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "SizeGroup")
+	_info.InvokeClassMethod("add_widget", _args[:], nil)
 
 	runtime.KeepAlive(sizeGroup)
 	runtime.KeepAlive(widget)
@@ -154,8 +155,9 @@ func (sizeGroup *SizeGroup) Widgets() []Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sizeGroup).Native()))
 
-	_gret := girepository.MustFind("Gtk", "SizeGroup").InvokeMethod("get_widgets", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SizeGroup")
+	_gret := _info.InvokeClassMethod("get_widgets", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sizeGroup)
 
@@ -200,7 +202,8 @@ func (sizeGroup *SizeGroup) RemoveWidget(widget Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sizeGroup).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	girepository.MustFind("Gtk", "SizeGroup").InvokeMethod("remove_widget", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "SizeGroup")
+	_info.InvokeClassMethod("remove_widget", _args[:], nil)
 
 	runtime.KeepAlive(sizeGroup)
 	runtime.KeepAlive(widget)

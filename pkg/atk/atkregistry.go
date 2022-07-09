@@ -38,8 +38,9 @@ func GTypeRegistry() coreglib.Type {
 //    - registry: default implementation of the ObjectFactory/type registry.
 //
 func GetDefaultRegistry() *Registry {
-	_gret := girepository.MustFind("Atk", "get_default_registry").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "get_default_registry")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _registry *Registry // out
 

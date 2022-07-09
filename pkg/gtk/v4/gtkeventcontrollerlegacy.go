@@ -108,8 +108,9 @@ func (v *EventControllerLegacy) ConnectEvent(f func(event gdk.Eventer) (ok bool)
 //    - eventControllerLegacy: newly created event controller.
 //
 func NewEventControllerLegacy() *EventControllerLegacy {
-	_gret := girepository.MustFind("Gtk", "EventControllerLegacy").InvokeMethod("new_EventControllerLegacy", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EventControllerLegacy")
+	_gret := _info.InvokeClassMethod("new_EventControllerLegacy", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _eventControllerLegacy *EventControllerLegacy // out
 

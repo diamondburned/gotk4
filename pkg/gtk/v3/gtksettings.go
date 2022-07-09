@@ -110,7 +110,8 @@ func (settings *Settings) ResetProperty(name string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "Settings").InvokeMethod("reset_property", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Settings")
+	_info.InvokeClassMethod("reset_property", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(name)
@@ -134,7 +135,8 @@ func (settings *Settings) SetDoubleProperty(name string, vDouble float64, origin
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(C.CString(origin)))
 	defer C.free(unsafe.Pointer(_args[3]))
 
-	girepository.MustFind("Gtk", "Settings").InvokeMethod("set_double_property", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Settings")
+	_info.InvokeClassMethod("set_double_property", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(name)
@@ -160,7 +162,8 @@ func (settings *Settings) SetLongProperty(name string, vLong int32, origin strin
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(C.CString(origin)))
 	defer C.free(unsafe.Pointer(_args[3]))
 
-	girepository.MustFind("Gtk", "Settings").InvokeMethod("set_long_property", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Settings")
+	_info.InvokeClassMethod("set_long_property", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(name)
@@ -183,7 +186,8 @@ func (settings *Settings) SetPropertyValue(name string, svalue *SettingsValue) {
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(svalue)))
 
-	girepository.MustFind("Gtk", "Settings").InvokeMethod("set_property_value", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Settings")
+	_info.InvokeClassMethod("set_property_value", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(name)
@@ -209,7 +213,8 @@ func (settings *Settings) SetStringProperty(name, vString, origin string) {
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(C.CString(origin)))
 	defer C.free(unsafe.Pointer(_args[3]))
 
-	girepository.MustFind("Gtk", "Settings").InvokeMethod("set_string_property", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Settings")
+	_info.InvokeClassMethod("set_string_property", _args[:], nil)
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(name)
@@ -226,8 +231,9 @@ func (settings *Settings) SetStringProperty(name, vString, origin string) {
 //      NULL.
 //
 func SettingsGetDefault() *Settings {
-	_gret := girepository.MustFind("Gtk", "get_default").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "get_default")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _settings *Settings // out
 
@@ -254,8 +260,9 @@ func SettingsGetForScreen(screen *gdk.Screen) *Settings {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	_gret := girepository.MustFind("Gtk", "get_for_screen").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "get_for_screen")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)
 

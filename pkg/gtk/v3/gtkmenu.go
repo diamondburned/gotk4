@@ -209,8 +209,9 @@ func (menu *Menu) ConnectPoppedUp(f func(flippedRect, finalRect unsafe.Pointer, 
 //    - menu: new Menu.
 //
 func NewMenu() *Menu {
-	_gret := girepository.MustFind("Gtk", "Menu").InvokeMethod("new_Menu", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Menu")
+	_gret := _info.InvokeClassMethod("new_Menu", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _menu *Menu // out
 
@@ -243,8 +244,9 @@ func NewMenuFromModel(model gio.MenuModeller) *Menu {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Menu").InvokeMethod("new_Menu_from_model", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Menu")
+	_gret := _info.InvokeClassMethod("new_Menu_from_model", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(model)
 
@@ -281,7 +283,8 @@ func (menu *Menu) Attach(child Widgetter, leftAttach, rightAttach, topAttach, bo
 	*(*C.guint)(unsafe.Pointer(&_args[4])) = C.guint(topAttach)
 	*(*C.guint)(unsafe.Pointer(&_args[5])) = C.guint(bottomAttach)
 
-	girepository.MustFind("Gtk", "Menu").InvokeMethod("attach", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Menu")
+	_info.InvokeClassMethod("attach", _args[:], nil)
 
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(child)
@@ -299,7 +302,8 @@ func (menu *Menu) Detach() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 
-	girepository.MustFind("Gtk", "Menu").InvokeMethod("detach", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Menu")
+	_info.InvokeClassMethod("detach", _args[:], nil)
 
 	runtime.KeepAlive(menu)
 }
@@ -316,8 +320,9 @@ func (menu *Menu) AccelGroup() *AccelGroup {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Menu").InvokeMethod("get_accel_group", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Menu")
+	_gret := _info.InvokeClassMethod("get_accel_group", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menu)
 
@@ -339,8 +344,9 @@ func (menu *Menu) AccelPath() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Menu").InvokeMethod("get_accel_path", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Menu")
+	_gret := _info.InvokeClassMethod("get_accel_path", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menu)
 
@@ -364,8 +370,9 @@ func (menu *Menu) Active() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Menu").InvokeMethod("get_active", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Menu")
+	_gret := _info.InvokeClassMethod("get_active", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menu)
 
@@ -403,8 +410,9 @@ func (menu *Menu) AttachWidget() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Menu").InvokeMethod("get_attach_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Menu")
+	_gret := _info.InvokeClassMethod("get_attach_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menu)
 
@@ -443,8 +451,9 @@ func (menu *Menu) Monitor() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Menu").InvokeMethod("get_monitor", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Menu")
+	_gret := _info.InvokeClassMethod("get_monitor", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menu)
 
@@ -467,8 +476,9 @@ func (menu *Menu) ReserveToggleSize() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Menu").InvokeMethod("get_reserve_toggle_size", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Menu")
+	_gret := _info.InvokeClassMethod("get_reserve_toggle_size", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menu)
 
@@ -495,8 +505,9 @@ func (menu *Menu) TearoffState() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Menu").InvokeMethod("get_tearoff_state", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Menu")
+	_gret := _info.InvokeClassMethod("get_tearoff_state", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menu)
 
@@ -523,8 +534,9 @@ func (menu *Menu) Title() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Menu").InvokeMethod("get_title", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Menu")
+	_gret := _info.InvokeClassMethod("get_title", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menu)
 
@@ -547,7 +559,8 @@ func (menu *Menu) PlaceOnMonitor(monitor *gdk.Monitor) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
-	girepository.MustFind("Gtk", "Menu").InvokeMethod("place_on_monitor", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Menu")
+	_info.InvokeClassMethod("place_on_monitor", _args[:], nil)
 
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(monitor)
@@ -559,7 +572,8 @@ func (menu *Menu) Popdown() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 
-	girepository.MustFind("Gtk", "Menu").InvokeMethod("popdown", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Menu")
+	_info.InvokeClassMethod("popdown", _args[:], nil)
 
 	runtime.KeepAlive(menu)
 }
@@ -590,7 +604,8 @@ func (menu *Menu) PopupAtPointer(triggerEvent *gdk.Event) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(triggerEvent)))
 	}
 
-	girepository.MustFind("Gtk", "Menu").InvokeMethod("popup_at_pointer", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Menu")
+	_info.InvokeClassMethod("popup_at_pointer", _args[:], nil)
 
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(triggerEvent)
@@ -611,7 +626,8 @@ func (menu *Menu) ReorderChild(child Widgetter, position int32) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(position)
 
-	girepository.MustFind("Gtk", "Menu").InvokeMethod("reorder_child", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Menu")
+	_info.InvokeClassMethod("reorder_child", _args[:], nil)
 
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(child)
@@ -624,7 +640,8 @@ func (menu *Menu) Reposition() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 
-	girepository.MustFind("Gtk", "Menu").InvokeMethod("reposition", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Menu")
+	_info.InvokeClassMethod("reposition", _args[:], nil)
 
 	runtime.KeepAlive(menu)
 }
@@ -646,7 +663,8 @@ func (menu *Menu) SetAccelGroup(accelGroup *AccelGroup) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
 	}
 
-	girepository.MustFind("Gtk", "Menu").InvokeMethod("set_accel_group", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Menu")
+	_info.InvokeClassMethod("set_accel_group", _args[:], nil)
 
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(accelGroup)
@@ -687,7 +705,8 @@ func (menu *Menu) SetAccelPath(accelPath string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "Menu").InvokeMethod("set_accel_path", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Menu")
+	_info.InvokeClassMethod("set_accel_path", _args[:], nil)
 
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(accelPath)
@@ -706,7 +725,8 @@ func (menu *Menu) SetActive(index uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(index)
 
-	girepository.MustFind("Gtk", "Menu").InvokeMethod("set_active", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Menu")
+	_info.InvokeClassMethod("set_active", _args[:], nil)
 
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(index)
@@ -731,7 +751,8 @@ func (menu *Menu) SetMonitor(monitorNum int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(monitorNum)
 
-	girepository.MustFind("Gtk", "Menu").InvokeMethod("set_monitor", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Menu")
+	_info.InvokeClassMethod("set_monitor", _args[:], nil)
 
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(monitorNum)
@@ -752,7 +773,8 @@ func (menu *Menu) SetReserveToggleSize(reserveToggleSize bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Menu").InvokeMethod("set_reserve_toggle_size", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Menu")
+	_info.InvokeClassMethod("set_reserve_toggle_size", _args[:], nil)
 
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(reserveToggleSize)
@@ -773,7 +795,8 @@ func (menu *Menu) SetScreen(screen *gdk.Screen) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 	}
 
-	girepository.MustFind("Gtk", "Menu").InvokeMethod("set_screen", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Menu")
+	_info.InvokeClassMethod("set_screen", _args[:], nil)
 
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(screen)
@@ -798,7 +821,8 @@ func (menu *Menu) SetTearoffState(tornOff bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Menu").InvokeMethod("set_tearoff_state", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Menu")
+	_info.InvokeClassMethod("set_tearoff_state", _args[:], nil)
 
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(tornOff)
@@ -826,7 +850,8 @@ func (menu *Menu) SetTitle(title string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "Menu").InvokeMethod("set_title", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Menu")
+	_info.InvokeClassMethod("set_title", _args[:], nil)
 
 	runtime.KeepAlive(menu)
 	runtime.KeepAlive(title)
@@ -848,8 +873,9 @@ func MenuGetForAttachWidget(widget Widgetter) []Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_gret := girepository.MustFind("Gtk", "get_for_attach_widget").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "get_for_attach_widget")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
 

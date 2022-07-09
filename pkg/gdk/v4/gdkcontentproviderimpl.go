@@ -37,8 +37,9 @@ func NewContentProviderForBytes(mimeType string, bytes *glib.Bytes) *ContentProv
 	defer C.free(unsafe.Pointer(_args[0]))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bytes)))
 
-	_gret := girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("new_ContentProvider_for_bytes", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ContentProvider")
+	_gret := _info.InvokeClassMethod("new_ContentProvider_for_bytes", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mimeType)
 	runtime.KeepAlive(bytes)
@@ -66,8 +67,9 @@ func NewContentProviderForValue(value *coreglib.Value) *ContentProvider {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(value.Native()))
 
-	_gret := girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("new_ContentProvider_for_value", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ContentProvider")
+	_gret := _info.InvokeClassMethod("new_ContentProvider_for_value", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(value)
 
@@ -117,8 +119,9 @@ func NewContentProviderUnion(providers []*ContentProvider) *ContentProvider {
 		}
 	}
 
-	_gret := girepository.MustFind("Gdk", "ContentProvider").InvokeMethod("new_ContentProvider_union", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "ContentProvider")
+	_gret := _info.InvokeClassMethod("new_ContentProvider_union", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(providers)
 

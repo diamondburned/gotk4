@@ -104,8 +104,9 @@ func NewHScale(adjustment *Adjustment) *HScale {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "HScale").InvokeMethod("new_HScale", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "HScale")
+	_gret := _info.InvokeClassMethod("new_HScale", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(adjustment)
 
@@ -145,8 +146,9 @@ func NewHScaleWithRange(min, max, step float64) *HScale {
 	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(max)
 	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(step)
 
-	_gret := girepository.MustFind("Gtk", "HScale").InvokeMethod("new_HScale_with_range", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "HScale")
+	_gret := _info.InvokeClassMethod("new_HScale_with_range", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(min)
 	runtime.KeepAlive(max)

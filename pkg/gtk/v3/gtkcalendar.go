@@ -18,7 +18,6 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern gchar* _gotk4_gtk3_CalendarDetailFunc(void*, guint, guint, guint, gpointer);
 // extern void _gotk4_gtk3_CalendarClass_day_selected(void*);
 // extern void _gotk4_gtk3_CalendarClass_day_selected_double_click(void*);
 // extern void _gotk4_gtk3_CalendarClass_month_changed(void*);
@@ -34,6 +33,7 @@ import (
 // extern void _gotk4_gtk3_Calendar_ConnectPrevMonth(gpointer, guintptr);
 // extern void _gotk4_gtk3_Calendar_ConnectPrevYear(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
+// extern void* _gotk4_gtk3_CalendarDetailFunc(void*, guint, guint, guint, gpointer);
 import "C"
 
 // GTypeCalendarDisplayOptions returns the GType for the type CalendarDisplayOptions.
@@ -129,7 +129,7 @@ func (c CalendarDisplayOptions) Has(other CalendarDisplayOptions) bool {
 type CalendarDetailFunc func(calendar *Calendar, year, month, day uint32) (utf8 string)
 
 //export _gotk4_gtk3_CalendarDetailFunc
-func _gotk4_gtk3_CalendarDetailFunc(arg1 *C.void, arg2 C.guint, arg3 C.guint, arg4 C.guint, arg5 C.gpointer) (cret *C.gchar) {
+func _gotk4_gtk3_CalendarDetailFunc(arg1 *C.void, arg2 C.guint, arg3 C.guint, arg4 C.guint, arg5 C.gpointer) (cret *C.void) {
 	var fn CalendarDetailFunc
 	{
 		v := gbox.Get(uintptr(arg5))
@@ -475,8 +475,9 @@ func (calendar *Calendar) ConnectPrevYear(f func()) coreglib.SignalHandle {
 //    - calendar: newly Calendar widget.
 //
 func NewCalendar() *Calendar {
-	_gret := girepository.MustFind("Gtk", "Calendar").InvokeMethod("new_Calendar", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_gret := _info.InvokeClassMethod("new_Calendar", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _calendar *Calendar // out
 
@@ -491,7 +492,8 @@ func (calendar *Calendar) ClearMarks() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(calendar).Native()))
 
-	girepository.MustFind("Gtk", "Calendar").InvokeMethod("clear_marks", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_info.InvokeClassMethod("clear_marks", _args[:], nil)
 
 	runtime.KeepAlive(calendar)
 }
@@ -513,7 +515,8 @@ func (calendar *Calendar) Date() (year, month, day uint32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(calendar).Native()))
 
-	girepository.MustFind("Gtk", "Calendar").InvokeMethod("get_date", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_info.InvokeClassMethod("get_date", _args[:], _outs[:])
 
 	runtime.KeepAlive(calendar)
 
@@ -550,8 +553,9 @@ func (calendar *Calendar) DayIsMarked(day uint32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(calendar).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(day)
 
-	_gret := girepository.MustFind("Gtk", "Calendar").InvokeMethod("get_day_is_marked", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_gret := _info.InvokeClassMethod("get_day_is_marked", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(calendar)
 	runtime.KeepAlive(day)
@@ -577,8 +581,9 @@ func (calendar *Calendar) DetailHeightRows() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(calendar).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Calendar").InvokeMethod("get_detail_height_rows", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_gret := _info.InvokeClassMethod("get_detail_height_rows", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(calendar)
 
@@ -601,8 +606,9 @@ func (calendar *Calendar) DetailWidthChars() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(calendar).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Calendar").InvokeMethod("get_detail_width_chars", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_gret := _info.InvokeClassMethod("get_detail_width_chars", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(calendar)
 
@@ -625,7 +631,8 @@ func (calendar *Calendar) MarkDay(day uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(calendar).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(day)
 
-	girepository.MustFind("Gtk", "Calendar").InvokeMethod("mark_day", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_info.InvokeClassMethod("mark_day", _args[:], nil)
 
 	runtime.KeepAlive(calendar)
 	runtime.KeepAlive(day)
@@ -643,7 +650,8 @@ func (calendar *Calendar) SelectDay(day uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(calendar).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(day)
 
-	girepository.MustFind("Gtk", "Calendar").InvokeMethod("select_day", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_info.InvokeClassMethod("select_day", _args[:], nil)
 
 	runtime.KeepAlive(calendar)
 	runtime.KeepAlive(day)
@@ -663,7 +671,8 @@ func (calendar *Calendar) SelectMonth(month, year uint32) {
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(month)
 	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(year)
 
-	girepository.MustFind("Gtk", "Calendar").InvokeMethod("select_month", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_info.InvokeClassMethod("select_month", _args[:], nil)
 
 	runtime.KeepAlive(calendar)
 	runtime.KeepAlive(month)
@@ -692,7 +701,8 @@ func (calendar *Calendar) SetDetailFunc(fn CalendarDetailFunc) {
 	_args[2] = C.gpointer(gbox.Assign(fn))
 	_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
-	girepository.MustFind("Gtk", "Calendar").InvokeMethod("set_detail_func", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_info.InvokeClassMethod("set_detail_func", _args[:], nil)
 
 	runtime.KeepAlive(calendar)
 	runtime.KeepAlive(fn)
@@ -711,7 +721,8 @@ func (calendar *Calendar) SetDetailHeightRows(rows int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(calendar).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(rows)
 
-	girepository.MustFind("Gtk", "Calendar").InvokeMethod("set_detail_height_rows", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_info.InvokeClassMethod("set_detail_height_rows", _args[:], nil)
 
 	runtime.KeepAlive(calendar)
 	runtime.KeepAlive(rows)
@@ -730,7 +741,8 @@ func (calendar *Calendar) SetDetailWidthChars(chars int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(calendar).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(chars)
 
-	girepository.MustFind("Gtk", "Calendar").InvokeMethod("set_detail_width_chars", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_info.InvokeClassMethod("set_detail_width_chars", _args[:], nil)
 
 	runtime.KeepAlive(calendar)
 	runtime.KeepAlive(chars)
@@ -748,7 +760,8 @@ func (calendar *Calendar) UnmarkDay(day uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(calendar).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(day)
 
-	girepository.MustFind("Gtk", "Calendar").InvokeMethod("unmark_day", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Calendar")
+	_info.InvokeClassMethod("unmark_day", _args[:], nil)
 
 	runtime.KeepAlive(calendar)
 	runtime.KeepAlive(day)

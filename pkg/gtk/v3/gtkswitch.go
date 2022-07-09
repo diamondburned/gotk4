@@ -231,8 +231,9 @@ func (sw *Switch) ConnectStateSet(f func(state bool) (ok bool)) coreglib.SignalH
 //    - _switch: newly created Switch instance.
 //
 func NewSwitch() *Switch {
-	_gret := girepository.MustFind("Gtk", "Switch").InvokeMethod("new_Switch", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Switch")
+	_gret := _info.InvokeClassMethod("new_Switch", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var __switch *Switch // out
 
@@ -252,8 +253,9 @@ func (sw *Switch) Active() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sw).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Switch").InvokeMethod("get_active", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Switch")
+	_gret := _info.InvokeClassMethod("get_active", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sw)
 
@@ -277,8 +279,9 @@ func (sw *Switch) State() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sw).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Switch").InvokeMethod("get_state", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Switch")
+	_gret := _info.InvokeClassMethod("get_state", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sw)
 
@@ -305,7 +308,8 @@ func (sw *Switch) SetActive(isActive bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Switch").InvokeMethod("set_active", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Switch")
+	_info.InvokeClassMethod("set_active", _args[:], nil)
 
 	runtime.KeepAlive(sw)
 	runtime.KeepAlive(isActive)
@@ -331,7 +335,8 @@ func (sw *Switch) SetState(state bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Switch").InvokeMethod("set_state", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Switch")
+	_info.InvokeClassMethod("set_state", _args[:], nil)
 
 	runtime.KeepAlive(sw)
 	runtime.KeepAlive(state)

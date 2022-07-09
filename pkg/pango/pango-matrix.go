@@ -162,6 +162,9 @@ func (matrix *Matrix) Concat(newMatrix *Matrix) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(newMatrix)))
 
+	_info := girepository.MustFind("Pango", "Matrix")
+	_info.InvokeRecordMethod("concat", _args[:], nil)
+
 	runtime.KeepAlive(matrix)
 	runtime.KeepAlive(newMatrix)
 }
@@ -180,7 +183,9 @@ func (matrix *Matrix) Copy() *Matrix {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Matrix")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(matrix)
 
@@ -193,7 +198,7 @@ func (matrix *Matrix) Copy() *Matrix {
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Pango", "Matrix").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Pango", "Matrix").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -221,7 +226,9 @@ func (matrix *Matrix) FontScaleFactor() float64 {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
 	}
 
-	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Matrix")
+	_gret := _info.InvokeRecordMethod("get_font_scale_factor", _args[:], nil)
+	_cret := *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(matrix)
 
@@ -255,6 +262,9 @@ func (matrix *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
 	}
 
+	_info := girepository.MustFind("Pango", "Matrix")
+	_info.InvokeRecordMethod("get_font_scale_factors", _args[:], _outs[:])
+
 	runtime.KeepAlive(matrix)
 
 	var _xscale float64 // out
@@ -284,6 +294,9 @@ func (matrix *Matrix) Rotate(degrees float64) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
 	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(degrees)
 
+	_info := girepository.MustFind("Pango", "Matrix")
+	_info.InvokeRecordMethod("rotate", _args[:], nil)
+
 	runtime.KeepAlive(matrix)
 	runtime.KeepAlive(degrees)
 }
@@ -303,6 +316,9 @@ func (matrix *Matrix) Scale(scaleX float64, scaleY float64) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
 	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(scaleX)
 	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(scaleY)
+
+	_info := girepository.MustFind("Pango", "Matrix")
+	_info.InvokeRecordMethod("scale", _args[:], nil)
 
 	runtime.KeepAlive(matrix)
 	runtime.KeepAlive(scaleX)
@@ -324,6 +340,9 @@ func (matrix *Matrix) Translate(tx float64, ty float64) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
 	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(tx)
 	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(ty)
+
+	_info := girepository.MustFind("Pango", "Matrix")
+	_info.InvokeRecordMethod("translate", _args[:], nil)
 
 	runtime.KeepAlive(matrix)
 	runtime.KeepAlive(tx)

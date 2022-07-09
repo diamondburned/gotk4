@@ -42,8 +42,9 @@ func (display *X11Display) GLXVersion() (major, minor int32, ok bool) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	_gret := girepository.MustFind("GdkX11", "X11Display").InvokeMethod("get_glx_version", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("GdkX11", "X11Display")
+	_gret := _info.InvokeClassMethod("get_glx_version", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)
 

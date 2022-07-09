@@ -151,8 +151,9 @@ func marshalPopoverMenu(p uintptr) (interface{}, error) {
 //    - popoverMenu: new PopoverMenu.
 //
 func NewPopoverMenu() *PopoverMenu {
-	_gret := girepository.MustFind("Gtk", "PopoverMenu").InvokeMethod("new_PopoverMenu", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "PopoverMenu")
+	_gret := _info.InvokeClassMethod("new_PopoverMenu", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _popoverMenu *PopoverMenu // out
 
@@ -180,7 +181,8 @@ func (popover *PopoverMenu) OpenSubmenu(name string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "PopoverMenu").InvokeMethod("open_submenu", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "PopoverMenu")
+	_info.InvokeClassMethod("open_submenu", _args[:], nil)
 
 	runtime.KeepAlive(popover)
 	runtime.KeepAlive(name)

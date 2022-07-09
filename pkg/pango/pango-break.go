@@ -43,7 +43,8 @@ func DefaultBreak(text string, length int32, analysis *Analysis, attrs *LogAttr,
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(attrs)))
 	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(attrsLen)
 
-	girepository.MustFind("Pango", "default_break").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Pango", "default_break")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(length)
@@ -82,7 +83,8 @@ func FindParagraphBoundary(text string, length int32) (paragraphDelimiterIndex, 
 	defer C.free(unsafe.Pointer(_args[0]))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(length)
 
-	girepository.MustFind("Pango", "find_paragraph_boundary").Invoke(_args[:], _outs[:])
+	_info := girepository.MustFind("Pango", "find_paragraph_boundary")
+	_info.Invoke(_args[:], _outs[:])
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(length)

@@ -87,8 +87,9 @@ func NewDataOutputStream(baseStream OutputStreamer) *DataOutputStream {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseStream).Native()))
 
-	_gret := girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("new_DataOutputStream", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DataOutputStream")
+	_gret := _info.InvokeClassMethod("new_DataOutputStream", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseStream)
 
@@ -117,7 +118,8 @@ func (stream *DataOutputStream) PutByte(ctx context.Context, data byte) error {
 	}
 	*(*C.guchar)(unsafe.Pointer(&_args[1])) = C.guchar(data)
 
-	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_byte", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DataOutputStream")
+	_info.InvokeClassMethod("put_byte", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -150,7 +152,8 @@ func (stream *DataOutputStream) PutInt16(ctx context.Context, data int16) error 
 	}
 	*(*C.gint16)(unsafe.Pointer(&_args[1])) = C.gint16(data)
 
-	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_int16", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DataOutputStream")
+	_info.InvokeClassMethod("put_int16", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -183,7 +186,8 @@ func (stream *DataOutputStream) PutInt32(ctx context.Context, data int32) error 
 	}
 	*(*C.gint32)(unsafe.Pointer(&_args[1])) = C.gint32(data)
 
-	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_int32", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DataOutputStream")
+	_info.InvokeClassMethod("put_int32", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -216,7 +220,8 @@ func (stream *DataOutputStream) PutInt64(ctx context.Context, data int64) error 
 	}
 	*(*C.gint64)(unsafe.Pointer(&_args[1])) = C.gint64(data)
 
-	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_int64", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DataOutputStream")
+	_info.InvokeClassMethod("put_int64", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -250,7 +255,8 @@ func (stream *DataOutputStream) PutString(ctx context.Context, str string) error
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_string", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DataOutputStream")
+	_info.InvokeClassMethod("put_string", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -283,7 +289,8 @@ func (stream *DataOutputStream) PutUint16(ctx context.Context, data uint16) erro
 	}
 	*(*C.guint16)(unsafe.Pointer(&_args[1])) = C.guint16(data)
 
-	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_uint16", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DataOutputStream")
+	_info.InvokeClassMethod("put_uint16", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -316,7 +323,8 @@ func (stream *DataOutputStream) PutUint32(ctx context.Context, data uint32) erro
 	}
 	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(data)
 
-	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_uint32", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DataOutputStream")
+	_info.InvokeClassMethod("put_uint32", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -349,7 +357,8 @@ func (stream *DataOutputStream) PutUint64(ctx context.Context, data uint64) erro
 	}
 	*(*C.guint64)(unsafe.Pointer(&_args[1])) = C.guint64(data)
 
-	girepository.MustFind("Gio", "DataOutputStream").InvokeMethod("put_uint64", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DataOutputStream")
+	_info.InvokeClassMethod("put_uint64", _args[:], nil)
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)

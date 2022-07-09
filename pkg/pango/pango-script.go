@@ -566,7 +566,9 @@ func NewScriptIter(text string, length int32) *ScriptIter {
 	defer C.free(unsafe.Pointer(_args[0]))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(length)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "ScriptIter")
+	_gret := _info.InvokeRecordMethod("new", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(length)
@@ -579,7 +581,7 @@ func NewScriptIter(text string, length int32) *ScriptIter {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Pango", "ScriptIter").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Pango", "ScriptIter").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -606,6 +608,9 @@ func (iter *ScriptIter) Range() (start string, end string, script Script) {
 	var _outs [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+
+	_info := girepository.MustFind("Pango", "ScriptIter")
+	_info.InvokeRecordMethod("get_range", _args[:], _outs[:])
 
 	runtime.KeepAlive(iter)
 
@@ -640,7 +645,9 @@ func (iter *ScriptIter) Next() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "ScriptIter")
+	_gret := _info.InvokeRecordMethod("next", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iter)
 

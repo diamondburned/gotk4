@@ -256,6 +256,9 @@ func (parent *CellAccessibleParent) Activate(cell *CellAccessible) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
+	_info := girepository.MustFind("Gtk", "CellAccessibleParent")
+	_info.InvokeIfaceMethod("activate", _args[:], nil)
+
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(cell)
 }
@@ -268,6 +271,9 @@ func (parent *CellAccessibleParent) Edit(cell *CellAccessible) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
+	_info := girepository.MustFind("Gtk", "CellAccessibleParent")
+	_info.InvokeIfaceMethod("edit", _args[:], nil)
+
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(cell)
 }
@@ -279,6 +285,9 @@ func (parent *CellAccessibleParent) ExpandCollapse(cell *CellAccessible) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	_info := girepository.MustFind("Gtk", "CellAccessibleParent")
+	_info.InvokeIfaceMethod("expand_collapse", _args[:], nil)
 
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(cell)
@@ -294,6 +303,9 @@ func (parent *CellAccessibleParent) CellArea(cell *CellAccessible) *gdk.Rectangl
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	_info := girepository.MustFind("Gtk", "CellAccessibleParent")
+	_info.InvokeIfaceMethod("get_cell_area", _args[:], _outs[:])
 
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(cell)
@@ -319,6 +331,9 @@ func (parent *CellAccessibleParent) CellPosition(cell *CellAccessible) (row, col
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
+	_info := girepository.MustFind("Gtk", "CellAccessibleParent")
+	_info.InvokeIfaceMethod("get_cell_position", _args[:], _outs[:])
+
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(cell)
 
@@ -341,7 +356,9 @@ func (parent *CellAccessibleParent) ChildIndex(cell *CellAccessible) int32 {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellAccessibleParent")
+	_gret := _info.InvokeIfaceMethod("get_child_index", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(cell)
@@ -363,7 +380,9 @@ func (parent *CellAccessibleParent) GrabFocus(cell *CellAccessible) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellAccessibleParent")
+	_gret := _info.InvokeIfaceMethod("grab_focus", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(cell)
@@ -388,6 +407,9 @@ func (parent *CellAccessibleParent) UpdateRelationset(cell *CellAccessible, rela
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(relationset).Native()))
+
+	_info := girepository.MustFind("Gtk", "CellAccessibleParent")
+	_info.InvokeIfaceMethod("update_relationset", _args[:], nil)
 
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(cell)

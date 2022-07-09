@@ -89,8 +89,9 @@ func NewRendererCellAccessible(renderer CellRendererer) *RendererCellAccessible 
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	_gret := girepository.MustFind("Gtk", "RendererCellAccessible").InvokeMethod("new_RendererCellAccessible", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RendererCellAccessible")
+	_gret := _info.InvokeClassMethod("new_RendererCellAccessible", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(renderer)
 

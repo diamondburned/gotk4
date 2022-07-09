@@ -411,7 +411,8 @@ func RCAddDefaultFile(filename string) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	girepository.MustFind("Gtk", "rc_add_default_file").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "rc_add_default_file")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(filename)
 }
@@ -436,8 +437,9 @@ func RCFindModuleInPath(moduleFile string) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(moduleFile)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "rc_find_module_in_path").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "rc_find_module_in_path")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(moduleFile)
 
@@ -474,8 +476,9 @@ func RCFindPixmapInPath(settings *Settings, scanner *glib.Scanner, pixmapFile st
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(pixmapFile)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	_gret := girepository.MustFind("Gtk", "rc_find_pixmap_in_path").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "rc_find_pixmap_in_path")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(scanner)
@@ -501,8 +504,9 @@ func RCFindPixmapInPath(settings *Settings, scanner *glib.Scanner, pixmapFile st
 //      information, you should make a copy.
 //
 func RCGetDefaultFiles() []string {
-	_gret := girepository.MustFind("Gtk", "rc_get_default_files").Invoke(nil, nil)
-	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "rc_get_default_files")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	var _filenames []string // out
 
@@ -535,8 +539,9 @@ func RCGetDefaultFiles() []string {
 //      the IM modules available for loading.
 //
 func RCGetIMModuleFile() string {
-	_gret := girepository.MustFind("Gtk", "rc_get_im_module_file").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "rc_get_im_module_file")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _filename string // out
 
@@ -559,8 +564,9 @@ func RCGetIMModuleFile() string {
 //      IM modules.
 //
 func RCGetIMModulePath() string {
-	_gret := girepository.MustFind("Gtk", "rc_get_im_module_path").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "rc_get_im_module_path")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _filename string // out
 
@@ -581,8 +587,9 @@ func RCGetIMModulePath() string {
 //    - filename: directory. (Must be freed with g_free()).
 //
 func RCGetModuleDir() string {
-	_gret := girepository.MustFind("Gtk", "rc_get_module_dir").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "rc_get_module_dir")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _filename string // out
 
@@ -613,8 +620,9 @@ func RCGetStyle(widget Widgetter) *Style {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_gret := girepository.MustFind("Gtk", "rc_get_style").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "rc_get_style")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
 
@@ -635,8 +643,9 @@ func RCGetStyle(widget Widgetter) *Style {
 //    - utf8: directory (must be freed with g_free()).
 //
 func RCGetThemeDir() string {
-	_gret := girepository.MustFind("Gtk", "rc_get_theme_dir").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "rc_get_theme_dir")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _utf8 string // out
 
@@ -661,7 +670,8 @@ func RCParse(filename string) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	girepository.MustFind("Gtk", "rc_parse").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "rc_parse")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(filename)
 }
@@ -689,8 +699,9 @@ func RCParseColor(scanner *glib.Scanner) (*gdk.Color, uint32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(scanner)))
 
-	_gret := girepository.MustFind("Gtk", "rc_parse_color").Invoke(_args[:], _outs[:])
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "rc_parse_color")
+	_gret := _info.Invoke(_args[:], _outs[:])
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scanner)
 
@@ -728,8 +739,9 @@ func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (*gdk.Color, uint32
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(style).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "rc_parse_color_full").Invoke(_args[:], _outs[:])
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "rc_parse_color_full")
+	_gret := _info.Invoke(_args[:], _outs[:])
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scanner)
 	runtime.KeepAlive(style)
@@ -765,8 +777,9 @@ func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint32 {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(scanner)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(priority))
 
-	_gret := girepository.MustFind("Gtk", "rc_parse_priority").Invoke(_args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "rc_parse_priority")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scanner)
 	runtime.KeepAlive(priority)
@@ -799,8 +812,9 @@ func RCParseState(scanner *glib.Scanner) (StateType, uint32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(scanner)))
 
-	_gret := girepository.MustFind("Gtk", "rc_parse_state").Invoke(_args[:], _outs[:])
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "rc_parse_state")
+	_gret := _info.Invoke(_args[:], _outs[:])
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scanner)
 
@@ -827,7 +841,8 @@ func RCParseString(rcString string) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(rcString)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	girepository.MustFind("Gtk", "rc_parse_string").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "rc_parse_string")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(rcString)
 }
@@ -843,8 +858,9 @@ func RCParseString(rcString string) {
 //    - ok: TRUE if the files were reread.
 //
 func RCReparseAll() bool {
-	_gret := girepository.MustFind("Gtk", "rc_reparse_all").Invoke(nil, nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "rc_reparse_all")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	var _ok bool // out
 
@@ -878,8 +894,9 @@ func RCReparseAllForSettings(settings *Settings, forceLoad bool) bool {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	_gret := girepository.MustFind("Gtk", "rc_reparse_all_for_settings").Invoke(_args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "rc_reparse_all_for_settings")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(forceLoad)
@@ -913,7 +930,8 @@ func RCResetStyles(settings *Settings) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 
-	girepository.MustFind("Gtk", "rc_reset_styles").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "rc_reset_styles")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(settings)
 }
@@ -944,7 +962,8 @@ func RCSetDefaultFiles(filenames []string) {
 		}
 	}
 
-	girepository.MustFind("Gtk", "rc_set_default_files").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "rc_set_default_files")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(filenames)
 }
@@ -1050,8 +1069,9 @@ func marshalRCStyle(p uintptr) (interface{}, error) {
 //    - rcStyle: newly-created RcStyle.
 //
 func NewRCStyle() *RCStyle {
-	_gret := girepository.MustFind("Gtk", "RcStyle").InvokeMethod("new_RcStyle", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RcStyle")
+	_gret := _info.InvokeClassMethod("new_RcStyle", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _rcStyle *RCStyle // out
 
@@ -1074,8 +1094,9 @@ func (orig *RCStyle) Copy() *RCStyle {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(orig).Native()))
 
-	_gret := girepository.MustFind("Gtk", "RcStyle").InvokeMethod("copy", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RcStyle")
+	_gret := _info.InvokeClassMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(orig)
 

@@ -42,7 +42,8 @@ func ShowURI(parent *Window, uri string, timestamp uint32) {
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(timestamp)
 
-	girepository.MustFind("Gtk", "show_uri").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "show_uri")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(uri)
@@ -85,7 +86,8 @@ func ShowURIFull(ctx context.Context, parent *Window, uri string, timestamp uint
 		_args[5] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gtk", "show_uri_full").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "show_uri_full")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(parent)
@@ -108,7 +110,8 @@ func ShowURIFullFinish(parent *Window, result gio.AsyncResulter) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	girepository.MustFind("Gtk", "show_uri_full_finish").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "show_uri_full_finish")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(result)

@@ -123,8 +123,9 @@ func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(vadjustment).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "Viewport").InvokeMethod("new_Viewport", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Viewport")
+	_gret := _info.InvokeClassMethod("new_Viewport", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(hadjustment)
 	runtime.KeepAlive(vadjustment)
@@ -147,8 +148,9 @@ func (viewport *Viewport) BinWindow() gdk.Windower {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Viewport").InvokeMethod("get_bin_window", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Viewport")
+	_gret := _info.InvokeClassMethod("get_bin_window", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(viewport)
 
@@ -188,8 +190,9 @@ func (viewport *Viewport) HAdjustment() *Adjustment {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Viewport").InvokeMethod("get_hadjustment", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Viewport")
+	_gret := _info.InvokeClassMethod("get_hadjustment", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(viewport)
 
@@ -213,8 +216,9 @@ func (viewport *Viewport) VAdjustment() *Adjustment {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Viewport").InvokeMethod("get_vadjustment", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Viewport")
+	_gret := _info.InvokeClassMethod("get_vadjustment", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(viewport)
 
@@ -236,8 +240,9 @@ func (viewport *Viewport) ViewWindow() gdk.Windower {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Viewport").InvokeMethod("get_view_window", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Viewport")
+	_gret := _info.InvokeClassMethod("get_view_window", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(viewport)
 
@@ -280,7 +285,8 @@ func (viewport *Viewport) SetHAdjustment(adjustment *Adjustment) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
 
-	girepository.MustFind("Gtk", "Viewport").InvokeMethod("set_hadjustment", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Viewport")
+	_info.InvokeClassMethod("set_hadjustment", _args[:], nil)
 
 	runtime.KeepAlive(viewport)
 	runtime.KeepAlive(adjustment)
@@ -302,7 +308,8 @@ func (viewport *Viewport) SetVAdjustment(adjustment *Adjustment) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 	}
 
-	girepository.MustFind("Gtk", "Viewport").InvokeMethod("set_vadjustment", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Viewport")
+	_info.InvokeClassMethod("set_vadjustment", _args[:], nil)
 
 	runtime.KeepAlive(viewport)
 	runtime.KeepAlive(adjustment)

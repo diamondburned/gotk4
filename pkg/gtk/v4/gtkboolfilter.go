@@ -80,8 +80,9 @@ func NewBoolFilter(expression Expressioner) *BoolFilter {
 		C.g_object_ref(C.gpointer(coreglib.InternObject(expression).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "BoolFilter").InvokeMethod("new_BoolFilter", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "BoolFilter")
+	_gret := _info.InvokeClassMethod("new_BoolFilter", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(expression)
 
@@ -104,8 +105,9 @@ func (self *BoolFilter) Expression() Expressioner {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "BoolFilter").InvokeMethod("get_expression", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "BoolFilter")
+	_gret := _info.InvokeClassMethod("get_expression", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -142,8 +144,9 @@ func (self *BoolFilter) Invert() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "BoolFilter").InvokeMethod("get_invert", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "BoolFilter")
+	_gret := _info.InvokeClassMethod("get_invert", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -173,7 +176,8 @@ func (self *BoolFilter) SetExpression(expression Expressioner) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
 	}
 
-	girepository.MustFind("Gtk", "BoolFilter").InvokeMethod("set_expression", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "BoolFilter")
+	_info.InvokeClassMethod("set_expression", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(expression)
@@ -193,7 +197,8 @@ func (self *BoolFilter) SetInvert(invert bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "BoolFilter").InvokeMethod("set_invert", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "BoolFilter")
+	_info.InvokeClassMethod("set_invert", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(invert)

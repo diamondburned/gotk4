@@ -326,8 +326,9 @@ func (deviceManager *DeviceManager) ClientPointer() Devicer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(deviceManager).Native()))
 
-	_gret := girepository.MustFind("Gdk", "DeviceManager").InvokeMethod("get_client_pointer", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "DeviceManager")
+	_gret := _info.InvokeClassMethod("get_client_pointer", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(deviceManager)
 
@@ -366,8 +367,9 @@ func (deviceManager *DeviceManager) Display() *Display {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(deviceManager).Native()))
 
-	_gret := girepository.MustFind("Gdk", "DeviceManager").InvokeMethod("get_display", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "DeviceManager")
+	_gret := _info.InvokeClassMethod("get_display", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(deviceManager)
 

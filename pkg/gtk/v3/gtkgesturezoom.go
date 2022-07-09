@@ -96,8 +96,9 @@ func NewGestureZoom(widget Widgetter) *GestureZoom {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureZoom").InvokeMethod("new_GestureZoom", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureZoom")
+	_gret := _info.InvokeClassMethod("new_GestureZoom", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
 
@@ -121,8 +122,9 @@ func (gesture *GestureZoom) ScaleDelta() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureZoom").InvokeMethod("get_scale_delta", _args[:], nil)
-	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureZoom")
+	_gret := _info.InvokeClassMethod("get_scale_delta", _args[:], nil)
+	_cret := *(*C.gdouble)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)
 

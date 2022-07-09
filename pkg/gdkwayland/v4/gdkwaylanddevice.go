@@ -73,8 +73,9 @@ func (device *WaylandDevice) NodePath() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
-	_gret := girepository.MustFind("GdkWayland", "WaylandDevice").InvokeMethod("get_node_path", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("GdkWayland", "WaylandDevice")
+	_gret := _info.InvokeClassMethod("get_node_path", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)
 

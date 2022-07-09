@@ -22,16 +22,16 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GList* _gotk4_gio2_ResolverClass_lookup_by_name(void*, void*, void*, GError**);
-// extern GList* _gotk4_gio2_ResolverClass_lookup_by_name_finish(void*, void*, GError**);
-// extern GList* _gotk4_gio2_ResolverClass_lookup_by_name_with_flags_finish(void*, void*, GError**);
-// extern GList* _gotk4_gio2_ResolverClass_lookup_records_finish(void*, void*, GError**);
-// extern GList* _gotk4_gio2_ResolverClass_lookup_service_finish(void*, void*, GError**);
-// extern gchar* _gotk4_gio2_ResolverClass_lookup_by_address(void*, void*, void*, GError**);
-// extern gchar* _gotk4_gio2_ResolverClass_lookup_by_address_finish(void*, void*, GError**);
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 // extern void _gotk4_gio2_ResolverClass_reload(void*);
 // extern void _gotk4_gio2_Resolver_ConnectReload(gpointer, guintptr);
+// extern void* _gotk4_gio2_ResolverClass_lookup_by_address(void*, void*, void*, GError**);
+// extern void* _gotk4_gio2_ResolverClass_lookup_by_address_finish(void*, void*, GError**);
+// extern void* _gotk4_gio2_ResolverClass_lookup_by_name(void*, void*, void*, GError**);
+// extern void* _gotk4_gio2_ResolverClass_lookup_by_name_finish(void*, void*, GError**);
+// extern void* _gotk4_gio2_ResolverClass_lookup_by_name_with_flags_finish(void*, void*, GError**);
+// extern void* _gotk4_gio2_ResolverClass_lookup_records_finish(void*, void*, GError**);
+// extern void* _gotk4_gio2_ResolverClass_lookup_service_finish(void*, void*, GError**);
 import "C"
 
 // GTypeResolverNameLookupFlags returns the GType for the type ResolverNameLookupFlags.
@@ -348,7 +348,7 @@ func classInitResolverer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_ResolverClass_lookup_by_address
-func _gotk4_gio2_ResolverClass_lookup_by_address(arg0 *C.void, arg1 *C.void, arg2 *C.void, _cerr **C.GError) (cret *C.gchar) {
+func _gotk4_gio2_ResolverClass_lookup_by_address(arg0 *C.void, arg1 *C.void, arg2 *C.void, _cerr **C.GError) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupByAddress(ctx context.Context, address *InetAddress) (string, error)
@@ -373,7 +373,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_address(arg0 *C.void, arg1 *C.void, arg
 }
 
 //export _gotk4_gio2_ResolverClass_lookup_by_address_finish
-func _gotk4_gio2_ResolverClass_lookup_by_address_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.gchar) {
+func _gotk4_gio2_ResolverClass_lookup_by_address_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupByAddressFinish(result AsyncResulter) (string, error)
@@ -410,7 +410,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_address_finish(arg0 *C.void, arg1 *C.vo
 }
 
 //export _gotk4_gio2_ResolverClass_lookup_by_name
-func _gotk4_gio2_ResolverClass_lookup_by_name(arg0 *C.void, arg1 *C.void, arg2 *C.void, _cerr **C.GError) (cret *C.GList) {
+func _gotk4_gio2_ResolverClass_lookup_by_name(arg0 *C.void, arg1 *C.void, arg2 *C.void, _cerr **C.GError) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupByName(ctx context.Context, hostname string) ([]*InetAddress, error)
@@ -441,7 +441,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_name(arg0 *C.void, arg1 *C.void, arg2 *
 }
 
 //export _gotk4_gio2_ResolverClass_lookup_by_name_finish
-func _gotk4_gio2_ResolverClass_lookup_by_name_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.GList) {
+func _gotk4_gio2_ResolverClass_lookup_by_name_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupByNameFinish(result AsyncResulter) ([]*InetAddress, error)
@@ -484,7 +484,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_name_finish(arg0 *C.void, arg1 *C.void,
 }
 
 //export _gotk4_gio2_ResolverClass_lookup_by_name_with_flags_finish
-func _gotk4_gio2_ResolverClass_lookup_by_name_with_flags_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.GList) {
+func _gotk4_gio2_ResolverClass_lookup_by_name_with_flags_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupByNameWithFlagsFinish(result AsyncResulter) ([]*InetAddress, error)
@@ -527,7 +527,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_name_with_flags_finish(arg0 *C.void, ar
 }
 
 //export _gotk4_gio2_ResolverClass_lookup_records_finish
-func _gotk4_gio2_ResolverClass_lookup_records_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.GList) {
+func _gotk4_gio2_ResolverClass_lookup_records_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupRecordsFinish(result AsyncResulter) ([]*glib.Variant, error)
@@ -569,7 +569,7 @@ func _gotk4_gio2_ResolverClass_lookup_records_finish(arg0 *C.void, arg1 *C.void,
 }
 
 //export _gotk4_gio2_ResolverClass_lookup_service_finish
-func _gotk4_gio2_ResolverClass_lookup_service_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.GList) {
+func _gotk4_gio2_ResolverClass_lookup_service_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupServiceFinish(result AsyncResulter) ([]*SrvTarget, error)
@@ -690,8 +690,9 @@ func (resolver *Resolver) LookupByAddress(ctx context.Context, address *InetAddr
 	}
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_gret := girepository.MustFind("Gio", "Resolver").InvokeMethod("lookup_by_address", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Resolver")
+	_gret := _info.InvokeClassMethod("lookup_by_address", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(ctx)
@@ -734,7 +735,8 @@ func (resolver *Resolver) LookupByAddressAsync(ctx context.Context, address *Ine
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "Resolver").InvokeMethod("lookup_by_address_async", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Resolver")
+	_info.InvokeClassMethod("lookup_by_address_async", _args[:], nil)
 
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(ctx)
@@ -764,8 +766,9 @@ func (resolver *Resolver) LookupByAddressFinish(result AsyncResulter) (string, e
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_gret := girepository.MustFind("Gio", "Resolver").InvokeMethod("lookup_by_address_finish", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Resolver")
+	_gret := _info.InvokeClassMethod("lookup_by_address_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(result)
@@ -826,8 +829,9 @@ func (resolver *Resolver) LookupByName(ctx context.Context, hostname string) ([]
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(hostname)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gio", "Resolver").InvokeMethod("lookup_by_name", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Resolver")
+	_gret := _info.InvokeClassMethod("lookup_by_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(ctx)
@@ -877,7 +881,8 @@ func (resolver *Resolver) LookupByNameAsync(ctx context.Context, hostname string
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "Resolver").InvokeMethod("lookup_by_name_async", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Resolver")
+	_info.InvokeClassMethod("lookup_by_name_async", _args[:], nil)
 
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(ctx)
@@ -907,8 +912,9 @@ func (resolver *Resolver) LookupByNameFinish(result AsyncResulter) ([]*InetAddre
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_gret := girepository.MustFind("Gio", "Resolver").InvokeMethod("lookup_by_name_finish", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Resolver")
+	_gret := _info.InvokeClassMethod("lookup_by_name_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(result)
@@ -952,8 +958,9 @@ func (resolver *Resolver) LookupByNameWithFlagsFinish(result AsyncResulter) ([]*
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_gret := girepository.MustFind("Gio", "Resolver").InvokeMethod("lookup_by_name_with_flags_finish", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Resolver")
+	_gret := _info.InvokeClassMethod("lookup_by_name_with_flags_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(result)
@@ -999,8 +1006,9 @@ func (resolver *Resolver) LookupRecordsFinish(result AsyncResulter) ([]*glib.Var
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_gret := girepository.MustFind("Gio", "Resolver").InvokeMethod("lookup_records_finish", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Resolver")
+	_gret := _info.InvokeClassMethod("lookup_records_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(result)
@@ -1076,8 +1084,9 @@ func (resolver *Resolver) LookupService(ctx context.Context, service, protocol, 
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(C.CString(domain)))
 	defer C.free(unsafe.Pointer(_args[3]))
 
-	_gret := girepository.MustFind("Gio", "Resolver").InvokeMethod("lookup_service", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Resolver")
+	_gret := _info.InvokeClassMethod("lookup_service", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(ctx)
@@ -1098,7 +1107,7 @@ func (resolver *Resolver) LookupService(ctx context.Context, service, protocol, 
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Gio", "SrvTarget").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Gio", "SrvTarget").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -1144,7 +1153,8 @@ func (resolver *Resolver) LookupServiceAsync(ctx context.Context, service, proto
 		_args[6] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "Resolver").InvokeMethod("lookup_service_async", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Resolver")
+	_info.InvokeClassMethod("lookup_service_async", _args[:], nil)
 
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(ctx)
@@ -1176,8 +1186,9 @@ func (resolver *Resolver) LookupServiceFinish(result AsyncResulter) ([]*SrvTarge
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_gret := girepository.MustFind("Gio", "Resolver").InvokeMethod("lookup_service_finish", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Resolver")
+	_gret := _info.InvokeClassMethod("lookup_service_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(result)
@@ -1195,7 +1206,7 @@ func (resolver *Resolver) LookupServiceFinish(result AsyncResulter) ([]*SrvTarge
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("Gio", "SrvTarget").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("Gio", "SrvTarget").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -1222,7 +1233,8 @@ func (resolver *Resolver) SetDefault() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
 
-	girepository.MustFind("Gio", "Resolver").InvokeMethod("set_default", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Resolver")
+	_info.InvokeClassMethod("set_default", _args[:], nil)
 
 	runtime.KeepAlive(resolver)
 }
@@ -1236,8 +1248,9 @@ func (resolver *Resolver) SetDefault() {
 //    - resolver: default #GResolver.
 //
 func ResolverGetDefault() Resolverer {
-	_gret := girepository.MustFind("Gio", "get_default").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "get_default")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _resolver Resolverer // out
 

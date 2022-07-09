@@ -267,8 +267,9 @@ func (self *DropTargetAsync) Formats() *gdk.ContentFormats {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "DropTargetAsync").InvokeMethod("get_formats", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "DropTargetAsync")
+	_gret := _info.InvokeClassMethod("get_formats", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -302,7 +303,8 @@ func (self *DropTargetAsync) RejectDrop(drop gdk.Dropper) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drop).Native()))
 
-	girepository.MustFind("Gtk", "DropTargetAsync").InvokeMethod("reject_drop", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "DropTargetAsync")
+	_info.InvokeClassMethod("reject_drop", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(drop)
@@ -322,7 +324,8 @@ func (self *DropTargetAsync) SetFormats(formats *gdk.ContentFormats) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
 	}
 
-	girepository.MustFind("Gtk", "DropTargetAsync").InvokeMethod("set_formats", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "DropTargetAsync")
+	_info.InvokeClassMethod("set_formats", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(formats)

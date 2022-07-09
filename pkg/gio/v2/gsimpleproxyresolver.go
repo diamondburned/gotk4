@@ -88,7 +88,8 @@ func (resolver *SimpleProxyResolver) SetDefaultProxy(defaultProxy string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(defaultProxy)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gio", "SimpleProxyResolver").InvokeMethod("set_default_proxy", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SimpleProxyResolver")
+	_info.InvokeClassMethod("set_default_proxy", _args[:], nil)
 
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(defaultProxy)
@@ -116,7 +117,8 @@ func (resolver *SimpleProxyResolver) SetURIProxy(uriScheme, proxy string) {
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(proxy)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	girepository.MustFind("Gio", "SimpleProxyResolver").InvokeMethod("set_uri_proxy", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SimpleProxyResolver")
+	_info.InvokeClassMethod("set_uri_proxy", _args[:], nil)
 
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(uriScheme)

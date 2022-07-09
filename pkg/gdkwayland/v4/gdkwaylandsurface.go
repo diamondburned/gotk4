@@ -82,8 +82,9 @@ func (toplevel *WaylandToplevel) ExportHandle(callback WaylandToplevelExported) 
 	_args[2] = C.gpointer(gbox.Assign(callback))
 	_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
-	_gret := girepository.MustFind("GdkWayland", "WaylandToplevel").InvokeMethod("export_handle", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("GdkWayland", "WaylandToplevel")
+	_gret := _info.InvokeClassMethod("export_handle", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(callback)
@@ -110,7 +111,8 @@ func (toplevel *WaylandToplevel) SetApplicationID(applicationId string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(applicationId)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("GdkWayland", "WaylandToplevel").InvokeMethod("set_application_id", _args[:], nil)
+	_info := girepository.MustFind("GdkWayland", "WaylandToplevel")
+	_info.InvokeClassMethod("set_application_id", _args[:], nil)
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(applicationId)
@@ -141,8 +143,9 @@ func (toplevel *WaylandToplevel) SetTransientForExported(parentHandleStr string)
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(parentHandleStr)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("GdkWayland", "WaylandToplevel").InvokeMethod("set_transient_for_exported", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("GdkWayland", "WaylandToplevel")
+	_gret := _info.InvokeClassMethod("set_transient_for_exported", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(parentHandleStr)
@@ -169,7 +172,8 @@ func (toplevel *WaylandToplevel) UnexportHandle() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
 
-	girepository.MustFind("GdkWayland", "WaylandToplevel").InvokeMethod("unexport_handle", _args[:], nil)
+	_info := girepository.MustFind("GdkWayland", "WaylandToplevel")
+	_info.InvokeClassMethod("unexport_handle", _args[:], nil)
 
 	runtime.KeepAlive(toplevel)
 }

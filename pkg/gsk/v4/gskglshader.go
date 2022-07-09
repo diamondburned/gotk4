@@ -191,8 +191,9 @@ func NewGLShaderFromBytes(sourcecode *glib.Bytes) *GLShader {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(sourcecode)))
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("new_GLShader_from_bytes", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "GLShader")
+	_gret := _info.InvokeClassMethod("new_GLShader_from_bytes", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sourcecode)
 
@@ -221,8 +222,9 @@ func NewGLShaderFromResource(resourcePath string) *GLShader {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("new_GLShader_from_resource", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "GLShader")
+	_gret := _info.InvokeClassMethod("new_GLShader_from_resource", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(resourcePath)
 
@@ -254,7 +256,8 @@ func (shader *GLShader) Compile(renderer Rendererer) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	girepository.MustFind("Gsk", "GLShader").InvokeMethod("compile", _args[:], nil)
+	_info := girepository.MustFind("Gsk", "GLShader")
+	_info.InvokeClassMethod("compile", _args[:], nil)
 
 	runtime.KeepAlive(shader)
 	runtime.KeepAlive(renderer)
@@ -286,8 +289,9 @@ func (shader *GLShader) FindUniformByName(name string) int32 {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("find_uniform_by_name", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "GLShader")
+	_gret := _info.InvokeClassMethod("find_uniform_by_name", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
 	runtime.KeepAlive(name)
@@ -319,8 +323,9 @@ func (shader *GLShader) ArgBool(args *glib.Bytes, idx int32) bool {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(idx)
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_bool", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "GLShader")
+	_gret := _info.InvokeClassMethod("get_arg_bool", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
 	runtime.KeepAlive(args)
@@ -355,8 +360,9 @@ func (shader *GLShader) ArgFloat(args *glib.Bytes, idx int32) float32 {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(idx)
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_float", _args[:], nil)
-	_cret = *(*C.float)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "GLShader")
+	_gret := _info.InvokeClassMethod("get_arg_float", _args[:], nil)
+	_cret := *(*C.float)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
 	runtime.KeepAlive(args)
@@ -389,8 +395,9 @@ func (shader *GLShader) ArgInt(args *glib.Bytes, idx int32) int32 {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(idx)
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_int", _args[:], nil)
-	_cret = *(*C.gint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "GLShader")
+	_gret := _info.InvokeClassMethod("get_arg_int", _args[:], nil)
+	_cret := *(*C.gint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
 	runtime.KeepAlive(args)
@@ -423,8 +430,9 @@ func (shader *GLShader) ArgUint(args *glib.Bytes, idx int32) uint32 {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(idx)
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_uint", _args[:], nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "GLShader")
+	_gret := _info.InvokeClassMethod("get_arg_uint", _args[:], nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
 	runtime.KeepAlive(args)
@@ -455,7 +463,8 @@ func (shader *GLShader) ArgVec2(args *glib.Bytes, idx int32, outValue *graphene.
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(idx)
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(outValue)))
 
-	girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_vec2", _args[:], nil)
+	_info := girepository.MustFind("Gsk", "GLShader")
+	_info.InvokeClassMethod("get_arg_vec2", _args[:], nil)
 
 	runtime.KeepAlive(shader)
 	runtime.KeepAlive(args)
@@ -481,7 +490,8 @@ func (shader *GLShader) ArgVec3(args *glib.Bytes, idx int32, outValue *graphene.
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(idx)
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(outValue)))
 
-	girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_vec3", _args[:], nil)
+	_info := girepository.MustFind("Gsk", "GLShader")
+	_info.InvokeClassMethod("get_arg_vec3", _args[:], nil)
 
 	runtime.KeepAlive(shader)
 	runtime.KeepAlive(args)
@@ -507,7 +517,8 @@ func (shader *GLShader) ArgVec4(args *glib.Bytes, idx int32, outValue *graphene.
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(idx)
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(outValue)))
 
-	girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_arg_vec4", _args[:], nil)
+	_info := girepository.MustFind("Gsk", "GLShader")
+	_info.InvokeClassMethod("get_arg_vec4", _args[:], nil)
 
 	runtime.KeepAlive(shader)
 	runtime.KeepAlive(args)
@@ -527,8 +538,9 @@ func (shader *GLShader) ArgsSize() uint {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_args_size", _args[:], nil)
-	_cret = *(*C.gsize)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "GLShader")
+	_gret := _info.InvokeClassMethod("get_args_size", _args[:], nil)
+	_cret := *(*C.gsize)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
 
@@ -554,8 +566,9 @@ func (shader *GLShader) NTextures() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_n_textures", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "GLShader")
+	_gret := _info.InvokeClassMethod("get_n_textures", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
 
@@ -577,8 +590,9 @@ func (shader *GLShader) NUniforms() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_n_uniforms", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "GLShader")
+	_gret := _info.InvokeClassMethod("get_n_uniforms", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
 
@@ -601,8 +615,9 @@ func (shader *GLShader) Resource() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_resource", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "GLShader")
+	_gret := _info.InvokeClassMethod("get_resource", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
 
@@ -624,8 +639,9 @@ func (shader *GLShader) Source() *glib.Bytes {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_source", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "GLShader")
+	_gret := _info.InvokeClassMethod("get_source", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
 
@@ -660,8 +676,9 @@ func (shader *GLShader) UniformName(idx int32) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(idx)
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_uniform_name", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "GLShader")
+	_gret := _info.InvokeClassMethod("get_uniform_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
 	runtime.KeepAlive(idx)
@@ -690,8 +707,9 @@ func (shader *GLShader) UniformOffset(idx int32) int32 {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(idx)
 
-	_gret := girepository.MustFind("Gsk", "GLShader").InvokeMethod("get_uniform_offset", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "GLShader")
+	_gret := _info.InvokeClassMethod("get_uniform_offset", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
 	runtime.KeepAlive(idx)
@@ -729,7 +747,9 @@ func NewShaderArgsBuilder(shader *GLShader, initialValues *glib.Bytes) *ShaderAr
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(initialValues)))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "ShaderArgsBuilder")
+	_gret := _info.InvokeRecordMethod("new", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shader)
 	runtime.KeepAlive(initialValues)
@@ -765,6 +785,9 @@ func (builder *ShaderArgsBuilder) SetBool(idx int32, value bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
+	_info := girepository.MustFind("Gsk", "ShaderArgsBuilder")
+	_info.InvokeRecordMethod("set_bool", _args[:], nil)
+
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(idx)
 	runtime.KeepAlive(value)
@@ -785,6 +808,9 @@ func (builder *ShaderArgsBuilder) SetFloat(idx int32, value float32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(idx)
 	*(*C.float)(unsafe.Pointer(&_args[2])) = C.float(value)
+
+	_info := girepository.MustFind("Gsk", "ShaderArgsBuilder")
+	_info.InvokeRecordMethod("set_float", _args[:], nil)
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(idx)
@@ -807,6 +833,9 @@ func (builder *ShaderArgsBuilder) SetInt(idx int32, value int32) {
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(idx)
 	*(*C.gint32)(unsafe.Pointer(&_args[2])) = C.gint32(value)
 
+	_info := girepository.MustFind("Gsk", "ShaderArgsBuilder")
+	_info.InvokeRecordMethod("set_int", _args[:], nil)
+
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(idx)
 	runtime.KeepAlive(value)
@@ -827,6 +856,9 @@ func (builder *ShaderArgsBuilder) SetUint(idx int32, value uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(idx)
 	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(value)
+
+	_info := girepository.MustFind("Gsk", "ShaderArgsBuilder")
+	_info.InvokeRecordMethod("set_uint", _args[:], nil)
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(idx)
@@ -849,6 +881,9 @@ func (builder *ShaderArgsBuilder) SetVec2(idx int32, value *graphene.Vec2) {
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(idx)
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
 
+	_info := girepository.MustFind("Gsk", "ShaderArgsBuilder")
+	_info.InvokeRecordMethod("set_vec2", _args[:], nil)
+
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(idx)
 	runtime.KeepAlive(value)
@@ -870,6 +905,9 @@ func (builder *ShaderArgsBuilder) SetVec3(idx int32, value *graphene.Vec3) {
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(idx)
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
 
+	_info := girepository.MustFind("Gsk", "ShaderArgsBuilder")
+	_info.InvokeRecordMethod("set_vec3", _args[:], nil)
+
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(idx)
 	runtime.KeepAlive(value)
@@ -890,6 +928,9 @@ func (builder *ShaderArgsBuilder) SetVec4(idx int32, value *graphene.Vec4) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(idx)
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
+
+	_info := girepository.MustFind("Gsk", "ShaderArgsBuilder")
+	_info.InvokeRecordMethod("set_vec4", _args[:], nil)
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(idx)
@@ -916,7 +957,9 @@ func (builder *ShaderArgsBuilder) ToArgs() *glib.Bytes {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gsk", "ShaderArgsBuilder")
+	_gret := _info.InvokeRecordMethod("to_args", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(builder)
 

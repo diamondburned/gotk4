@@ -84,8 +84,9 @@ func marshalEventBox(p uintptr) (interface{}, error) {
 //    - eventBox: new EventBox.
 //
 func NewEventBox() *EventBox {
-	_gret := girepository.MustFind("Gtk", "EventBox").InvokeMethod("new_EventBox", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EventBox")
+	_gret := _info.InvokeClassMethod("new_EventBox", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _eventBox *EventBox // out
 
@@ -106,8 +107,9 @@ func (eventBox *EventBox) AboveChild() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(eventBox).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EventBox").InvokeMethod("get_above_child", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EventBox")
+	_gret := _info.InvokeClassMethod("get_above_child", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(eventBox)
 
@@ -132,8 +134,9 @@ func (eventBox *EventBox) VisibleWindow() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(eventBox).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EventBox").InvokeMethod("get_visible_window", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EventBox")
+	_gret := _info.InvokeClassMethod("get_visible_window", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(eventBox)
 
@@ -166,7 +169,8 @@ func (eventBox *EventBox) SetAboveChild(aboveChild bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "EventBox").InvokeMethod("set_above_child", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "EventBox")
+	_info.InvokeClassMethod("set_above_child", _args[:], nil)
 
 	runtime.KeepAlive(eventBox)
 	runtime.KeepAlive(aboveChild)
@@ -213,7 +217,8 @@ func (eventBox *EventBox) SetVisibleWindow(visibleWindow bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "EventBox").InvokeMethod("set_visible_window", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "EventBox")
+	_info.InvokeClassMethod("set_visible_window", _args[:], nil)
 
 	runtime.KeepAlive(eventBox)
 	runtime.KeepAlive(visibleWindow)

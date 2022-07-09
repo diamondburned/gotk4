@@ -119,8 +119,9 @@ func (manager *DisplayManager) DefaultDisplay() *Display {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	_gret := girepository.MustFind("Gdk", "DisplayManager").InvokeMethod("get_default_display", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "DisplayManager")
+	_gret := _info.InvokeClassMethod("get_default_display", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 
@@ -145,8 +146,9 @@ func (manager *DisplayManager) ListDisplays() []*Display {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 
-	_gret := girepository.MustFind("Gdk", "DisplayManager").InvokeMethod("list_displays", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "DisplayManager")
+	_gret := _info.InvokeClassMethod("list_displays", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 
@@ -180,8 +182,9 @@ func (manager *DisplayManager) OpenDisplay(name string) *Display {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gdk", "DisplayManager").InvokeMethod("open_display", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "DisplayManager")
+	_gret := _info.InvokeClassMethod("open_display", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(name)
@@ -207,7 +210,8 @@ func (manager *DisplayManager) SetDefaultDisplay(display *Display) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
-	girepository.MustFind("Gdk", "DisplayManager").InvokeMethod("set_default_display", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "DisplayManager")
+	_info.InvokeClassMethod("set_default_display", _args[:], nil)
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(display)
@@ -226,8 +230,9 @@ func (manager *DisplayManager) SetDefaultDisplay(display *Display) {
 //      gdk_init(), or gdk_init_check() must have been called first.
 //
 func DisplayManagerGet() *DisplayManager {
-	_gret := girepository.MustFind("Gdk", "get").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "get")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _displayManager *DisplayManager // out
 

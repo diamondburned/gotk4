@@ -60,7 +60,9 @@ func marshalFileAttributeInfoList(p uintptr) (interface{}, error) {
 
 // NewFileAttributeInfoList constructs a struct FileAttributeInfoList.
 func NewFileAttributeInfoList() *FileAttributeInfoList {
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "FileAttributeInfoList")
+	_gret := _info.InvokeRecordMethod("new", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _fileAttributeInfoList *FileAttributeInfoList // out
 
@@ -111,7 +113,9 @@ func (list *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "FileAttributeInfoList")
+	_gret := _info.InvokeRecordMethod("dup", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(list)
 
@@ -145,7 +149,9 @@ func (list *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "FileAttributeInfoList")
+	_gret := _info.InvokeRecordMethod("lookup", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(name)

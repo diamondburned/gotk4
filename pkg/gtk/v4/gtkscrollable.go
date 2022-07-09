@@ -152,7 +152,9 @@ func (scrollable *Scrollable) Border() (*Border, bool) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Scrollable")
+	_gret := _info.InvokeIfaceMethod("get_border", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scrollable)
 
@@ -178,7 +180,9 @@ func (scrollable *Scrollable) HAdjustment() *Adjustment {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Scrollable")
+	_gret := _info.InvokeIfaceMethod("get_hadjustment", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scrollable)
 
@@ -200,7 +204,9 @@ func (scrollable *Scrollable) VAdjustment() *Adjustment {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Scrollable")
+	_gret := _info.InvokeIfaceMethod("get_vadjustment", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scrollable)
 
@@ -225,6 +231,9 @@ func (scrollable *Scrollable) SetHAdjustment(hadjustment *Adjustment) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hadjustment).Native()))
 	}
 
+	_info := girepository.MustFind("Gtk", "Scrollable")
+	_info.InvokeIfaceMethod("set_hadjustment", _args[:], nil)
+
 	runtime.KeepAlive(scrollable)
 	runtime.KeepAlive(hadjustment)
 }
@@ -242,6 +251,9 @@ func (scrollable *Scrollable) SetVAdjustment(vadjustment *Adjustment) {
 	if vadjustment != nil {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(vadjustment).Native()))
 	}
+
+	_info := girepository.MustFind("Gtk", "Scrollable")
+	_info.InvokeIfaceMethod("set_vadjustment", _args[:], nil)
 
 	runtime.KeepAlive(scrollable)
 	runtime.KeepAlive(vadjustment)

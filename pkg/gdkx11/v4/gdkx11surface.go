@@ -44,8 +44,9 @@ func X11GetServerTime(surface *X11Surface) uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	_gret := girepository.MustFind("GdkX11", "x11_get_server_time").Invoke(_args[:], nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("GdkX11", "x11_get_server_time")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 
@@ -88,8 +89,9 @@ func (surface *X11Surface) Desktop() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	_gret := girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("get_desktop", _args[:], nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("GdkX11", "X11Surface")
+	_gret := _info.InvokeClassMethod("get_desktop", _args[:], nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 
@@ -111,8 +113,9 @@ func (surface *X11Surface) Group() gdk.Surfacer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	_gret := girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("get_group", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("GdkX11", "X11Surface")
+	_gret := _info.InvokeClassMethod("get_group", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 
@@ -149,7 +152,8 @@ func (surface *X11Surface) MoveToCurrentDesktop() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("move_to_current_desktop", _args[:], nil)
+	_info := girepository.MustFind("GdkX11", "X11Surface")
+	_info.InvokeClassMethod("move_to_current_desktop", _args[:], nil)
 
 	runtime.KeepAlive(surface)
 }
@@ -169,7 +173,8 @@ func (surface *X11Surface) MoveToDesktop(desktop uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(desktop)
 
-	girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("move_to_desktop", _args[:], nil)
+	_info := girepository.MustFind("GdkX11", "X11Surface")
+	_info.InvokeClassMethod("move_to_desktop", _args[:], nil)
 
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(desktop)
@@ -194,7 +199,8 @@ func (surface *X11Surface) SetFrameSyncEnabled(frameSyncEnabled bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("set_frame_sync_enabled", _args[:], nil)
+	_info := girepository.MustFind("GdkX11", "X11Surface")
+	_info.InvokeClassMethod("set_frame_sync_enabled", _args[:], nil)
 
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(frameSyncEnabled)
@@ -213,7 +219,8 @@ func (surface *X11Surface) SetGroup(leader gdk.Surfacer) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(leader).Native()))
 
-	girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("set_group", _args[:], nil)
+	_info := girepository.MustFind("GdkX11", "X11Surface")
+	_info.InvokeClassMethod("set_group", _args[:], nil)
 
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(leader)
@@ -234,7 +241,8 @@ func (surface *X11Surface) SetSkipPagerHint(skipsPager bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("set_skip_pager_hint", _args[:], nil)
+	_info := girepository.MustFind("GdkX11", "X11Surface")
+	_info.InvokeClassMethod("set_skip_pager_hint", _args[:], nil)
 
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(skipsPager)
@@ -255,7 +263,8 @@ func (surface *X11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("set_skip_taskbar_hint", _args[:], nil)
+	_info := girepository.MustFind("GdkX11", "X11Surface")
+	_info.InvokeClassMethod("set_skip_taskbar_hint", _args[:], nil)
 
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(skipsTaskbar)
@@ -281,7 +290,8 @@ func (surface *X11Surface) SetThemeVariant(variant string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(variant)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("set_theme_variant", _args[:], nil)
+	_info := girepository.MustFind("GdkX11", "X11Surface")
+	_info.InvokeClassMethod("set_theme_variant", _args[:], nil)
 
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(variant)
@@ -302,7 +312,8 @@ func (surface *X11Surface) SetUrgencyHint(urgent bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("set_urgency_hint", _args[:], nil)
+	_info := girepository.MustFind("GdkX11", "X11Surface")
+	_info.InvokeClassMethod("set_urgency_hint", _args[:], nil)
 
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(urgent)
@@ -329,7 +340,8 @@ func (surface *X11Surface) SetUserTime(timestamp uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(timestamp)
 
-	girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("set_user_time", _args[:], nil)
+	_info := girepository.MustFind("GdkX11", "X11Surface")
+	_info.InvokeClassMethod("set_user_time", _args[:], nil)
 
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(timestamp)
@@ -355,7 +367,8 @@ func (surface *X11Surface) SetUTF8Property(name, value string) {
 		defer C.free(unsafe.Pointer(_args[2]))
 	}
 
-	girepository.MustFind("GdkX11", "X11Surface").InvokeMethod("set_utf8_property", _args[:], nil)
+	_info := girepository.MustFind("GdkX11", "X11Surface")
+	_info.InvokeClassMethod("set_utf8_property", _args[:], nil)
 
 	runtime.KeepAlive(surface)
 	runtime.KeepAlive(name)

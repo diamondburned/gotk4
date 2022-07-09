@@ -89,8 +89,9 @@ func NewCustomSorter(sortFunc glib.CompareDataFunc) *CustomSorter {
 		_args[2] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	_gret := girepository.MustFind("Gtk", "CustomSorter").InvokeMethod("new_CustomSorter", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CustomSorter")
+	_gret := _info.InvokeClassMethod("new_CustomSorter", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sortFunc)
 
@@ -124,7 +125,8 @@ func (self *CustomSorter) SetSortFunc(sortFunc glib.CompareDataFunc) {
 		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	girepository.MustFind("Gtk", "CustomSorter").InvokeMethod("set_sort_func", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CustomSorter")
+	_info.InvokeClassMethod("set_sort_func", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(sortFunc)

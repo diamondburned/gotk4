@@ -110,8 +110,9 @@ func NewColorChooserDialog(title string, parent *Window) *ColorChooserDialog {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "ColorChooserDialog").InvokeMethod("new_ColorChooserDialog", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ColorChooserDialog")
+	_gret := _info.InvokeClassMethod("new_ColorChooserDialog", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(title)
 	runtime.KeepAlive(parent)

@@ -81,8 +81,9 @@ func marshalConstraintGuide(p uintptr) (interface{}, error) {
 //    - constraintGuide: new GtkConstraintGuide object.
 //
 func NewConstraintGuide() *ConstraintGuide {
-	_gret := girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("new_ConstraintGuide", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ConstraintGuide")
+	_gret := _info.InvokeClassMethod("new_ConstraintGuide", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _constraintGuide *ConstraintGuide // out
 
@@ -109,7 +110,8 @@ func (guide *ConstraintGuide) MaxSize(width, height *int32) {
 		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(height))
 	}
 
-	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("get_max_size", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ConstraintGuide")
+	_info.InvokeClassMethod("get_max_size", _args[:], nil)
 
 	runtime.KeepAlive(guide)
 	runtime.KeepAlive(width)
@@ -134,7 +136,8 @@ func (guide *ConstraintGuide) MinSize(width, height *int32) {
 		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(height))
 	}
 
-	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("get_min_size", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ConstraintGuide")
+	_info.InvokeClassMethod("get_min_size", _args[:], nil)
 
 	runtime.KeepAlive(guide)
 	runtime.KeepAlive(width)
@@ -152,8 +155,9 @@ func (guide *ConstraintGuide) Name() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("get_name", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ConstraintGuide")
+	_gret := _info.InvokeClassMethod("get_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(guide)
 
@@ -184,7 +188,8 @@ func (guide *ConstraintGuide) NatSize(width, height *int32) {
 		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(height))
 	}
 
-	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("get_nat_size", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ConstraintGuide")
+	_info.InvokeClassMethod("get_nat_size", _args[:], nil)
 
 	runtime.KeepAlive(guide)
 	runtime.KeepAlive(width)
@@ -208,7 +213,8 @@ func (guide *ConstraintGuide) SetMaxSize(width, height int32) {
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(width)
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(height)
 
-	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("set_max_size", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ConstraintGuide")
+	_info.InvokeClassMethod("set_max_size", _args[:], nil)
 
 	runtime.KeepAlive(guide)
 	runtime.KeepAlive(width)
@@ -232,7 +238,8 @@ func (guide *ConstraintGuide) SetMinSize(width, height int32) {
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(width)
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(height)
 
-	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("set_min_size", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ConstraintGuide")
+	_info.InvokeClassMethod("set_min_size", _args[:], nil)
 
 	runtime.KeepAlive(guide)
 	runtime.KeepAlive(width)
@@ -256,7 +263,8 @@ func (guide *ConstraintGuide) SetName(name string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("set_name", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ConstraintGuide")
+	_info.InvokeClassMethod("set_name", _args[:], nil)
 
 	runtime.KeepAlive(guide)
 	runtime.KeepAlive(name)
@@ -279,7 +287,8 @@ func (guide *ConstraintGuide) SetNatSize(width, height int32) {
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(width)
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(height)
 
-	girepository.MustFind("Gtk", "ConstraintGuide").InvokeMethod("set_nat_size", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ConstraintGuide")
+	_info.InvokeClassMethod("set_nat_size", _args[:], nil)
 
 	runtime.KeepAlive(guide)
 	runtime.KeepAlive(width)

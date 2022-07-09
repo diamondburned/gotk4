@@ -42,8 +42,9 @@ func NewSimpleAction(name string, parameterType *glib.VariantType) *SimpleAction
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parameterType)))
 	}
 
-	_gret := girepository.MustFind("Gio", "SimpleAction").InvokeMethod("new_SimpleAction", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SimpleAction")
+	_gret := _info.InvokeClassMethod("new_SimpleAction", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(parameterType)
@@ -82,8 +83,9 @@ func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state
 	}
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(state)))
 
-	_gret := girepository.MustFind("Gio", "SimpleAction").InvokeMethod("new_SimpleAction_stateful", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SimpleAction")
+	_gret := _info.InvokeClassMethod("new_SimpleAction_stateful", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(parameterType)
@@ -116,7 +118,8 @@ func (simple *SimpleAction) SetEnabled(enabled bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gio", "SimpleAction").InvokeMethod("set_enabled", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SimpleAction")
+	_info.InvokeClassMethod("set_enabled", _args[:], nil)
 
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(enabled)
@@ -142,7 +145,8 @@ func (simple *SimpleAction) SetState(value *glib.Variant) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
 
-	girepository.MustFind("Gio", "SimpleAction").InvokeMethod("set_state", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SimpleAction")
+	_info.InvokeClassMethod("set_state", _args[:], nil)
 
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(value)
@@ -164,7 +168,8 @@ func (simple *SimpleAction) SetStateHint(stateHint *glib.Variant) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(stateHint)))
 	}
 
-	girepository.MustFind("Gio", "SimpleAction").InvokeMethod("set_state_hint", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SimpleAction")
+	_info.InvokeClassMethod("set_state_hint", _args[:], nil)
 
 	runtime.KeepAlive(simple)
 	runtime.KeepAlive(stateHint)

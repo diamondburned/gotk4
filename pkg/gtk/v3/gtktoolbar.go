@@ -313,8 +313,9 @@ func (toolbar *Toolbar) ConnectPopupContextMenu(f func(x, y, button int32) (ok b
 //    - toolbar: newly-created toolbar.
 //
 func NewToolbar() *Toolbar {
-	_gret := girepository.MustFind("Gtk", "Toolbar").InvokeMethod("new_Toolbar", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Toolbar")
+	_gret := _info.InvokeClassMethod("new_Toolbar", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _toolbar *Toolbar // out
 
@@ -345,8 +346,9 @@ func (toolbar *Toolbar) DropIndex(x, y int32) int32 {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(x)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(y)
 
-	_gret := girepository.MustFind("Gtk", "Toolbar").InvokeMethod("get_drop_index", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Toolbar")
+	_gret := _info.InvokeClassMethod("get_drop_index", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(toolbar)
 	runtime.KeepAlive(x)
@@ -376,8 +378,9 @@ func (toolbar *Toolbar) ItemIndex(item *ToolItem) int32 {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Toolbar").InvokeMethod("get_item_index", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Toolbar")
+	_gret := _info.InvokeClassMethod("get_item_index", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(toolbar)
 	runtime.KeepAlive(item)
@@ -400,8 +403,9 @@ func (toolbar *Toolbar) NItems() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Toolbar").InvokeMethod("get_n_items", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Toolbar")
+	_gret := _info.InvokeClassMethod("get_n_items", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(toolbar)
 
@@ -430,8 +434,9 @@ func (toolbar *Toolbar) NthItem(n int32) *ToolItem {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(n)
 
-	_gret := girepository.MustFind("Gtk", "Toolbar").InvokeMethod("get_nth_item", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Toolbar")
+	_gret := _info.InvokeClassMethod("get_nth_item", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(toolbar)
 	runtime.KeepAlive(n)
@@ -457,8 +462,9 @@ func (toolbar *Toolbar) ShowArrow() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Toolbar").InvokeMethod("get_show_arrow", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Toolbar")
+	_gret := _info.InvokeClassMethod("get_show_arrow", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(toolbar)
 
@@ -487,7 +493,8 @@ func (toolbar *Toolbar) Insert(item *ToolItem, pos int32) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(item).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(pos)
 
-	girepository.MustFind("Gtk", "Toolbar").InvokeMethod("insert", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Toolbar")
+	_info.InvokeClassMethod("insert", _args[:], nil)
 
 	runtime.KeepAlive(toolbar)
 	runtime.KeepAlive(item)
@@ -516,7 +523,8 @@ func (toolbar *Toolbar) SetDropHighlightItem(toolItem *ToolItem, index_ int32) {
 	}
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(index_)
 
-	girepository.MustFind("Gtk", "Toolbar").InvokeMethod("set_drop_highlight_item", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Toolbar")
+	_info.InvokeClassMethod("set_drop_highlight_item", _args[:], nil)
 
 	runtime.KeepAlive(toolbar)
 	runtime.KeepAlive(toolItem)
@@ -543,7 +551,8 @@ func (toolbar *Toolbar) SetShowArrow(showArrow bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Toolbar").InvokeMethod("set_show_arrow", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Toolbar")
+	_info.InvokeClassMethod("set_show_arrow", _args[:], nil)
 
 	runtime.KeepAlive(toolbar)
 	runtime.KeepAlive(showArrow)
@@ -556,7 +565,8 @@ func (toolbar *Toolbar) UnsetIconSize() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
 
-	girepository.MustFind("Gtk", "Toolbar").InvokeMethod("unset_icon_size", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Toolbar")
+	_info.InvokeClassMethod("unset_icon_size", _args[:], nil)
 
 	runtime.KeepAlive(toolbar)
 }
@@ -568,7 +578,8 @@ func (toolbar *Toolbar) UnsetStyle() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolbar).Native()))
 
-	girepository.MustFind("Gtk", "Toolbar").InvokeMethod("unset_style", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Toolbar")
+	_info.InvokeClassMethod("unset_style", _args[:], nil)
 
 	runtime.KeepAlive(toolbar)
 }

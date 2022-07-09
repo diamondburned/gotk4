@@ -315,8 +315,9 @@ func (completion *EntryCompletion) ConnectNoMatches(f func()) coreglib.SignalHan
 //    - entryCompletion: newly created GtkEntryCompletion object.
 //
 func NewEntryCompletion() *EntryCompletion {
-	_gret := girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("new_EntryCompletion", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_gret := _info.InvokeClassMethod("new_EntryCompletion", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _entryCompletion *EntryCompletion // out
 
@@ -344,8 +345,9 @@ func NewEntryCompletionWithArea(area CellAreaer) *EntryCompletion {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("new_EntryCompletion_with_area", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_gret := _info.InvokeClassMethod("new_EntryCompletion_with_area", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 
@@ -365,7 +367,8 @@ func (completion *EntryCompletion) Complete() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
 
-	girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("complete", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_info.InvokeClassMethod("complete", _args[:], nil)
 
 	runtime.KeepAlive(completion)
 }
@@ -393,8 +396,9 @@ func (completion *EntryCompletion) ComputePrefix(key string) string {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("compute_prefix", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_gret := _info.InvokeClassMethod("compute_prefix", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(completion)
 	runtime.KeepAlive(key)
@@ -421,8 +425,9 @@ func (completion *EntryCompletion) CompletionPrefix() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("get_completion_prefix", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_gret := _info.InvokeClassMethod("get_completion_prefix", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(completion)
 
@@ -446,8 +451,9 @@ func (completion *EntryCompletion) Entry() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("get_entry", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_gret := _info.InvokeClassMethod("get_entry", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(completion)
 
@@ -486,8 +492,9 @@ func (completion *EntryCompletion) InlineCompletion() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("get_inline_completion", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_gret := _info.InvokeClassMethod("get_inline_completion", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(completion)
 
@@ -511,8 +518,9 @@ func (completion *EntryCompletion) InlineSelection() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("get_inline_selection", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_gret := _info.InvokeClassMethod("get_inline_selection", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(completion)
 
@@ -536,8 +544,9 @@ func (completion *EntryCompletion) MinimumKeyLength() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("get_minimum_key_length", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_gret := _info.InvokeClassMethod("get_minimum_key_length", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(completion)
 
@@ -561,8 +570,9 @@ func (completion *EntryCompletion) Model() *TreeModel {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("get_model", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_gret := _info.InvokeClassMethod("get_model", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(completion)
 
@@ -587,8 +597,9 @@ func (completion *EntryCompletion) PopupCompletion() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("get_popup_completion", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_gret := _info.InvokeClassMethod("get_popup_completion", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(completion)
 
@@ -613,8 +624,9 @@ func (completion *EntryCompletion) PopupSetWidth() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("get_popup_set_width", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_gret := _info.InvokeClassMethod("get_popup_set_width", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(completion)
 
@@ -640,8 +652,9 @@ func (completion *EntryCompletion) PopupSingleMatch() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("get_popup_single_match", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_gret := _info.InvokeClassMethod("get_popup_single_match", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(completion)
 
@@ -665,8 +678,9 @@ func (completion *EntryCompletion) TextColumn() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
 
-	_gret := girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("get_text_column", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_gret := _info.InvokeClassMethod("get_text_column", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(completion)
 
@@ -683,7 +697,8 @@ func (completion *EntryCompletion) InsertPrefix() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
 
-	girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("insert_prefix", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_info.InvokeClassMethod("insert_prefix", _args[:], nil)
 
 	runtime.KeepAlive(completion)
 }
@@ -703,7 +718,8 @@ func (completion *EntryCompletion) SetInlineCompletion(inlineCompletion bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("set_inline_completion", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_info.InvokeClassMethod("set_inline_completion", _args[:], nil)
 
 	runtime.KeepAlive(completion)
 	runtime.KeepAlive(inlineCompletion)
@@ -724,7 +740,8 @@ func (completion *EntryCompletion) SetInlineSelection(inlineSelection bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("set_inline_selection", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_info.InvokeClassMethod("set_inline_selection", _args[:], nil)
 
 	runtime.KeepAlive(completion)
 	runtime.KeepAlive(inlineSelection)
@@ -747,7 +764,8 @@ func (completion *EntryCompletion) SetMatchFunc(fn EntryCompletionMatchFunc) {
 	_args[2] = C.gpointer(gbox.Assign(fn))
 	_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
-	girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("set_match_func", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_info.InvokeClassMethod("set_match_func", _args[:], nil)
 
 	runtime.KeepAlive(completion)
 	runtime.KeepAlive(fn)
@@ -770,7 +788,8 @@ func (completion *EntryCompletion) SetMinimumKeyLength(length int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(length)
 
-	girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("set_minimum_key_length", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_info.InvokeClassMethod("set_minimum_key_length", _args[:], nil)
 
 	runtime.KeepAlive(completion)
 	runtime.KeepAlive(length)
@@ -793,7 +812,8 @@ func (completion *EntryCompletion) SetModel(model TreeModeller) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
 
-	girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("set_model", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_info.InvokeClassMethod("set_model", _args[:], nil)
 
 	runtime.KeepAlive(completion)
 	runtime.KeepAlive(model)
@@ -814,7 +834,8 @@ func (completion *EntryCompletion) SetPopupCompletion(popupCompletion bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("set_popup_completion", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_info.InvokeClassMethod("set_popup_completion", _args[:], nil)
 
 	runtime.KeepAlive(completion)
 	runtime.KeepAlive(popupCompletion)
@@ -835,7 +856,8 @@ func (completion *EntryCompletion) SetPopupSetWidth(popupSetWidth bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("set_popup_set_width", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_info.InvokeClassMethod("set_popup_set_width", _args[:], nil)
 
 	runtime.KeepAlive(completion)
 	runtime.KeepAlive(popupSetWidth)
@@ -860,7 +882,8 @@ func (completion *EntryCompletion) SetPopupSingleMatch(popupSingleMatch bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("set_popup_single_match", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_info.InvokeClassMethod("set_popup_single_match", _args[:], nil)
 
 	runtime.KeepAlive(completion)
 	runtime.KeepAlive(popupSingleMatch)
@@ -888,7 +911,8 @@ func (completion *EntryCompletion) SetTextColumn(column int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(column)
 
-	girepository.MustFind("Gtk", "EntryCompletion").InvokeMethod("set_text_column", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "EntryCompletion")
+	_info.InvokeClassMethod("set_text_column", _args[:], nil)
 
 	runtime.KeepAlive(completion)
 	runtime.KeepAlive(column)

@@ -18,11 +18,11 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GdkGLContext* _gotk4_gtk3_GLArea_ConnectCreateContext(gpointer, guintptr);
 // extern gboolean _gotk4_gtk3_GLAreaClass_render(void*, void*);
 // extern gboolean _gotk4_gtk3_GLArea_ConnectRender(gpointer, void*, guintptr);
 // extern void _gotk4_gtk3_GLAreaClass_resize(void*, int, int);
 // extern void _gotk4_gtk3_GLArea_ConnectResize(gpointer, gint, gint, guintptr);
+// extern void* _gotk4_gtk3_GLArea_ConnectCreateContext(gpointer, guintptr);
 import "C"
 
 // GTypeGLArea returns the GType for the type GLArea.
@@ -209,7 +209,7 @@ func marshalGLArea(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk3_GLArea_ConnectCreateContext
-func _gotk4_gtk3_GLArea_ConnectCreateContext(arg0 C.gpointer, arg1 C.guintptr) (cret *C.GdkGLContext) {
+func _gotk4_gtk3_GLArea_ConnectCreateContext(arg0 C.gpointer, arg1 C.guintptr) (cret *C.void) {
 	var f func() (glContext gdk.GLContexter)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
@@ -334,8 +334,9 @@ func (area *GLArea) ConnectResize(f func(width, height int32)) coreglib.SignalHa
 //    - glArea: new GLArea.
 //
 func NewGLArea() *GLArea {
-	_gret := girepository.MustFind("Gtk", "GLArea").InvokeMethod("new_GLArea", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GLArea")
+	_gret := _info.InvokeClassMethod("new_GLArea", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _glArea *GLArea // out
 
@@ -355,7 +356,8 @@ func (area *GLArea) AttachBuffers() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	girepository.MustFind("Gtk", "GLArea").InvokeMethod("attach_buffers", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "GLArea")
+	_info.InvokeClassMethod("attach_buffers", _args[:], nil)
 
 	runtime.KeepAlive(area)
 }
@@ -371,8 +373,9 @@ func (area *GLArea) AutoRender() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GLArea").InvokeMethod("get_auto_render", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GLArea")
+	_gret := _info.InvokeClassMethod("get_auto_render", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 
@@ -396,8 +399,9 @@ func (area *GLArea) Context() gdk.GLContexter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GLArea").InvokeMethod("get_context", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GLArea")
+	_gret := _info.InvokeClassMethod("get_context", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 
@@ -435,8 +439,9 @@ func (area *GLArea) Error() error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GLArea").InvokeMethod("get_error", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GLArea")
+	_gret := _info.InvokeClassMethod("get_error", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 
@@ -460,8 +465,9 @@ func (area *GLArea) HasAlpha() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GLArea").InvokeMethod("get_has_alpha", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GLArea")
+	_gret := _info.InvokeClassMethod("get_has_alpha", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 
@@ -485,8 +491,9 @@ func (area *GLArea) HasDepthBuffer() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GLArea").InvokeMethod("get_has_depth_buffer", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GLArea")
+	_gret := _info.InvokeClassMethod("get_has_depth_buffer", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 
@@ -510,8 +517,9 @@ func (area *GLArea) HasStencilBuffer() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GLArea").InvokeMethod("get_has_stencil_buffer", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GLArea")
+	_gret := _info.InvokeClassMethod("get_has_stencil_buffer", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 
@@ -538,7 +546,8 @@ func (area *GLArea) RequiredVersion() (major, minor int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	girepository.MustFind("Gtk", "GLArea").InvokeMethod("get_required_version", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "GLArea")
+	_info.InvokeClassMethod("get_required_version", _args[:], _outs[:])
 
 	runtime.KeepAlive(area)
 
@@ -563,8 +572,9 @@ func (area *GLArea) UseES() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GLArea").InvokeMethod("get_use_es", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GLArea")
+	_gret := _info.InvokeClassMethod("get_use_es", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 
@@ -587,7 +597,8 @@ func (area *GLArea) MakeCurrent() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	girepository.MustFind("Gtk", "GLArea").InvokeMethod("make_current", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "GLArea")
+	_info.InvokeClassMethod("make_current", _args[:], nil)
 
 	runtime.KeepAlive(area)
 }
@@ -604,7 +615,8 @@ func (area *GLArea) QueueRender() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	girepository.MustFind("Gtk", "GLArea").InvokeMethod("queue_render", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "GLArea")
+	_info.InvokeClassMethod("queue_render", _args[:], nil)
 
 	runtime.KeepAlive(area)
 }
@@ -631,7 +643,8 @@ func (area *GLArea) SetAutoRender(autoRender bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "GLArea").InvokeMethod("set_auto_render", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "GLArea")
+	_info.InvokeClassMethod("set_auto_render", _args[:], nil)
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(autoRender)
@@ -653,7 +666,8 @@ func (area *GLArea) SetError(err error) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gerror.New(err))
 	}
 
-	girepository.MustFind("Gtk", "GLArea").InvokeMethod("set_error", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "GLArea")
+	_info.InvokeClassMethod("set_error", _args[:], nil)
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(err)
@@ -678,7 +692,8 @@ func (area *GLArea) SetHasAlpha(hasAlpha bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "GLArea").InvokeMethod("set_has_alpha", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "GLArea")
+	_info.InvokeClassMethod("set_has_alpha", _args[:], nil)
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(hasAlpha)
@@ -700,7 +715,8 @@ func (area *GLArea) SetHasDepthBuffer(hasDepthBuffer bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "GLArea").InvokeMethod("set_has_depth_buffer", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "GLArea")
+	_info.InvokeClassMethod("set_has_depth_buffer", _args[:], nil)
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(hasDepthBuffer)
@@ -722,7 +738,8 @@ func (area *GLArea) SetHasStencilBuffer(hasStencilBuffer bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "GLArea").InvokeMethod("set_has_stencil_buffer", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "GLArea")
+	_info.InvokeClassMethod("set_has_stencil_buffer", _args[:], nil)
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(hasStencilBuffer)
@@ -745,7 +762,8 @@ func (area *GLArea) SetRequiredVersion(major, minor int32) {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(major)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(minor)
 
-	girepository.MustFind("Gtk", "GLArea").InvokeMethod("set_required_version", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "GLArea")
+	_info.InvokeClassMethod("set_required_version", _args[:], nil)
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(major)
@@ -770,7 +788,8 @@ func (area *GLArea) SetUseES(useEs bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "GLArea").InvokeMethod("set_use_es", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "GLArea")
+	_info.InvokeClassMethod("set_use_es", _args[:], nil)
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(useEs)

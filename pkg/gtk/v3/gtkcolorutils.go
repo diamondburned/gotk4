@@ -40,7 +40,8 @@ func RGBToHSV(r, g, b float64) (h, s, v float64) {
 	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(g)
 	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(b)
 
-	girepository.MustFind("Gtk", "rgb_to_hsv").Invoke(_args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "rgb_to_hsv")
+	_info.Invoke(_args[:], _outs[:])
 
 	runtime.KeepAlive(r)
 	runtime.KeepAlive(g)
@@ -82,7 +83,8 @@ func HSVToRGB(h, s, v float64) (r, g, b float64) {
 	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(s)
 	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(v)
 
-	girepository.MustFind("Gtk", "to_rgb").Invoke(_args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "to_rgb")
+	_info.Invoke(_args[:], _outs[:])
 
 	runtime.KeepAlive(h)
 	runtime.KeepAlive(s)

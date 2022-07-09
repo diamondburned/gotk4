@@ -103,7 +103,9 @@ func (self *Root) Display() *gdk.Display {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Root")
+	_gret := _info.InvokeIfaceMethod("get_display", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -134,7 +136,9 @@ func (self *Root) Focus() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Root")
+	_gret := _info.InvokeIfaceMethod("get_focus", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -180,6 +184,9 @@ func (self *Root) SetFocus(focus Widgetter) {
 	if focus != nil {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(focus).Native()))
 	}
+
+	_info := girepository.MustFind("Gtk", "Root")
+	_info.InvokeIfaceMethod("set_focus", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(focus)

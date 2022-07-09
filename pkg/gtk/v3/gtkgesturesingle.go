@@ -76,8 +76,9 @@ func (gesture *GestureSingle) Button() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureSingle").InvokeMethod("get_button", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureSingle")
+	_gret := _info.InvokeClassMethod("get_button", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)
 
@@ -100,8 +101,9 @@ func (gesture *GestureSingle) CurrentButton() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureSingle").InvokeMethod("get_current_button", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureSingle")
+	_gret := _info.InvokeClassMethod("get_current_button", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)
 
@@ -124,8 +126,9 @@ func (gesture *GestureSingle) CurrentSequence() *gdk.EventSequence {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureSingle").InvokeMethod("get_current_sequence", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureSingle")
+	_gret := _info.InvokeClassMethod("get_current_sequence", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)
 
@@ -156,8 +159,9 @@ func (gesture *GestureSingle) Exclusive() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureSingle").InvokeMethod("get_exclusive", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureSingle")
+	_gret := _info.InvokeClassMethod("get_exclusive", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)
 
@@ -181,8 +185,9 @@ func (gesture *GestureSingle) TouchOnly() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureSingle").InvokeMethod("get_touch_only", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureSingle")
+	_gret := _info.InvokeClassMethod("get_touch_only", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)
 
@@ -209,7 +214,8 @@ func (gesture *GestureSingle) SetButton(button uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(button)
 
-	girepository.MustFind("Gtk", "GestureSingle").InvokeMethod("set_button", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "GestureSingle")
+	_info.InvokeClassMethod("set_button", _args[:], nil)
 
 	runtime.KeepAlive(gesture)
 	runtime.KeepAlive(button)
@@ -231,7 +237,8 @@ func (gesture *GestureSingle) SetExclusive(exclusive bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "GestureSingle").InvokeMethod("set_exclusive", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "GestureSingle")
+	_info.InvokeClassMethod("set_exclusive", _args[:], nil)
 
 	runtime.KeepAlive(gesture)
 	runtime.KeepAlive(exclusive)
@@ -253,7 +260,8 @@ func (gesture *GestureSingle) SetTouchOnly(touchOnly bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "GestureSingle").InvokeMethod("set_touch_only", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "GestureSingle")
+	_info.InvokeClassMethod("set_touch_only", _args[:], nil)
 
 	runtime.KeepAlive(gesture)
 	runtime.KeepAlive(touchOnly)

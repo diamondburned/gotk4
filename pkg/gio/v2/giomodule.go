@@ -36,7 +36,8 @@ func IOModulesScanAllInDirectory(dirname string) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(dirname)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	girepository.MustFind("Gio", "io_modules_scan_all_in_directory").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gio", "io_modules_scan_all_in_directory")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(dirname)
 }

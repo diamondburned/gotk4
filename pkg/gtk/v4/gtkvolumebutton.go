@@ -80,8 +80,9 @@ func marshalVolumeButton(p uintptr) (interface{}, error) {
 //    - volumeButton: new GtkVolumeButton.
 //
 func NewVolumeButton() *VolumeButton {
-	_gret := girepository.MustFind("Gtk", "VolumeButton").InvokeMethod("new_VolumeButton", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "VolumeButton")
+	_gret := _info.InvokeClassMethod("new_VolumeButton", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _volumeButton *VolumeButton // out
 

@@ -31,8 +31,9 @@ func X11DeviceGetID(device *X11DeviceXI2) int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
-	_gret := girepository.MustFind("GdkX11", "x11_device_get_id").Invoke(_args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("GdkX11", "x11_device_get_id")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)
 

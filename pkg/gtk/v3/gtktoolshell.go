@@ -15,9 +15,9 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GtkSizeGroup* _gotk4_gtk3_ToolShellIface_get_text_size_group(void*);
 // extern gfloat _gotk4_gtk3_ToolShellIface_get_text_alignment(void*);
 // extern void _gotk4_gtk3_ToolShellIface_rebuild_menu(void*);
+// extern void* _gotk4_gtk3_ToolShellIface_get_text_size_group(void*);
 import "C"
 
 // GTypeToolShell returns the GType for the type ToolShell.
@@ -110,7 +110,7 @@ func _gotk4_gtk3_ToolShellIface_get_text_alignment(arg0 *C.void) (cret C.gfloat)
 }
 
 //export _gotk4_gtk3_ToolShellIface_get_text_size_group
-func _gotk4_gtk3_ToolShellIface_get_text_size_group(arg0 *C.void) (cret *C.GtkSizeGroup) {
+func _gotk4_gtk3_ToolShellIface_get_text_size_group(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ToolShellOverrider)
 
@@ -163,7 +163,9 @@ func (shell *ToolShell) TextAlignment() float32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(shell).Native()))
 
-	_cret = *(*C.gfloat)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToolShell")
+	_gret := _info.InvokeIfaceMethod("get_text_alignment", _args[:], nil)
+	_cret := *(*C.gfloat)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shell)
 
@@ -187,7 +189,9 @@ func (shell *ToolShell) TextSizeGroup() *SizeGroup {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(shell).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToolShell")
+	_gret := _info.InvokeIfaceMethod("get_text_size_group", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(shell)
 
@@ -208,6 +212,9 @@ func (shell *ToolShell) RebuildMenu() {
 	var _args [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(shell).Native()))
+
+	_info := girepository.MustFind("Gtk", "ToolShell")
+	_info.InvokeIfaceMethod("rebuild_menu", _args[:], nil)
 
 	runtime.KeepAlive(shell)
 }

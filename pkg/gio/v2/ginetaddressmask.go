@@ -86,8 +86,9 @@ func NewInetAddressMask(addr *InetAddress, length uint32) (*InetAddressMask, err
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(addr).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(length)
 
-	_gret := girepository.MustFind("Gio", "InetAddressMask").InvokeMethod("new_InetAddressMask", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetAddressMask")
+	_gret := _info.InvokeClassMethod("new_InetAddressMask", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(addr)
 	runtime.KeepAlive(length)
@@ -123,8 +124,9 @@ func NewInetAddressMaskFromString(maskString string) (*InetAddressMask, error) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(maskString)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "InetAddressMask").InvokeMethod("new_InetAddressMask_from_string", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetAddressMask")
+	_gret := _info.InvokeClassMethod("new_InetAddressMask_from_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(maskString)
 
@@ -155,8 +157,9 @@ func (mask *InetAddressMask) Equal(mask2 *InetAddressMask) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mask).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mask2).Native()))
 
-	_gret := girepository.MustFind("Gio", "InetAddressMask").InvokeMethod("equal", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetAddressMask")
+	_gret := _info.InvokeClassMethod("equal", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mask)
 	runtime.KeepAlive(mask2)
@@ -181,8 +184,9 @@ func (mask *InetAddressMask) Address() *InetAddress {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mask).Native()))
 
-	_gret := girepository.MustFind("Gio", "InetAddressMask").InvokeMethod("get_address", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetAddressMask")
+	_gret := _info.InvokeClassMethod("get_address", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mask)
 
@@ -204,8 +208,9 @@ func (mask *InetAddressMask) Length() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mask).Native()))
 
-	_gret := girepository.MustFind("Gio", "InetAddressMask").InvokeMethod("get_length", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetAddressMask")
+	_gret := _info.InvokeClassMethod("get_length", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mask)
 
@@ -232,8 +237,9 @@ func (mask *InetAddressMask) Matches(address *InetAddress) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mask).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(address).Native()))
 
-	_gret := girepository.MustFind("Gio", "InetAddressMask").InvokeMethod("matches", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetAddressMask")
+	_gret := _info.InvokeClassMethod("matches", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mask)
 	runtime.KeepAlive(address)
@@ -258,8 +264,9 @@ func (mask *InetAddressMask) String() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mask).Native()))
 
-	_gret := girepository.MustFind("Gio", "InetAddressMask").InvokeMethod("to_string", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "InetAddressMask")
+	_gret := _info.InvokeClassMethod("to_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mask)
 

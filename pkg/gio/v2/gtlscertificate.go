@@ -110,8 +110,9 @@ func NewTLSCertificateFromFile(file string) (*TLSCertificate, error) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(file)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "TlsCertificate").InvokeMethod("new_TlsCertificate_from_file", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TlsCertificate")
+	_gret := _info.InvokeClassMethod("new_TlsCertificate_from_file", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 
@@ -155,8 +156,9 @@ func NewTLSCertificateFromFiles(certFile, keyFile string) (*TLSCertificate, erro
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(keyFile)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gio", "TlsCertificate").InvokeMethod("new_TlsCertificate_from_files", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TlsCertificate")
+	_gret := _info.InvokeClassMethod("new_TlsCertificate_from_files", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(certFile)
 	runtime.KeepAlive(keyFile)
@@ -202,8 +204,9 @@ func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) 
 	defer C.free(unsafe.Pointer(_args[0]))
 	*(*C.gssize)(unsafe.Pointer(&_args[1])) = C.gssize(length)
 
-	_gret := girepository.MustFind("Gio", "TlsCertificate").InvokeMethod("new_TlsCertificate_from_pem", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TlsCertificate")
+	_gret := _info.InvokeClassMethod("new_TlsCertificate_from_pem", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(data)
 	runtime.KeepAlive(length)
@@ -264,8 +267,9 @@ func NewTLSCertificateFromPKCS11URIs(pkcs11Uri, privateKeyPkcs11Uri string) (*TL
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	_gret := girepository.MustFind("Gio", "TlsCertificate").InvokeMethod("new_TlsCertificate_from_pkcs11_uris", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TlsCertificate")
+	_gret := _info.InvokeClassMethod("new_TlsCertificate_from_pkcs11_uris", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pkcs11Uri)
 	runtime.KeepAlive(privateKeyPkcs11Uri)
@@ -293,8 +297,9 @@ func (cert *TLSCertificate) Issuer() TLSCertificater {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cert).Native()))
 
-	_gret := girepository.MustFind("Gio", "TlsCertificate").InvokeMethod("get_issuer", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TlsCertificate")
+	_gret := _info.InvokeClassMethod("get_issuer", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cert)
 
@@ -340,8 +345,9 @@ func (certOne *TLSCertificate) IsSame(certTwo TLSCertificater) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(certOne).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(certTwo).Native()))
 
-	_gret := girepository.MustFind("Gio", "TlsCertificate").InvokeMethod("is_same", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TlsCertificate")
+	_gret := _info.InvokeClassMethod("is_same", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(certOne)
 	runtime.KeepAlive(certTwo)
@@ -375,8 +381,9 @@ func TLSCertificateListNewFromFile(file string) ([]TLSCertificater, error) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(file)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "list_new_from_file").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "list_new_from_file")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 

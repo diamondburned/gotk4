@@ -89,8 +89,9 @@ func marshalSpinner(p uintptr) (interface{}, error) {
 //    - spinner: new Spinner.
 //
 func NewSpinner() *Spinner {
-	_gret := girepository.MustFind("Gtk", "Spinner").InvokeMethod("new_Spinner", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Spinner")
+	_gret := _info.InvokeClassMethod("new_Spinner", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _spinner *Spinner // out
 
@@ -105,7 +106,8 @@ func (spinner *Spinner) Start() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinner).Native()))
 
-	girepository.MustFind("Gtk", "Spinner").InvokeMethod("start", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Spinner")
+	_info.InvokeClassMethod("start", _args[:], nil)
 
 	runtime.KeepAlive(spinner)
 }
@@ -116,7 +118,8 @@ func (spinner *Spinner) Stop() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinner).Native()))
 
-	girepository.MustFind("Gtk", "Spinner").InvokeMethod("stop", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Spinner")
+	_info.InvokeClassMethod("stop", _args[:], nil)
 
 	runtime.KeepAlive(spinner)
 }

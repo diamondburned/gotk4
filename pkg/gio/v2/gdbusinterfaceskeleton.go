@@ -18,11 +18,11 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GDBusInterfaceInfo* _gotk4_gio2_DBusInterfaceSkeletonClass_get_info(void*);
-// extern GVariant* _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties(void*);
 // extern gboolean _gotk4_gio2_DBusInterfaceSkeletonClass_g_authorize_method(void*, void*);
 // extern gboolean _gotk4_gio2_DBusInterfaceSkeleton_ConnectGAuthorizeMethod(gpointer, void*, guintptr);
 // extern void _gotk4_gio2_DBusInterfaceSkeletonClass_flush(void*);
+// extern void* _gotk4_gio2_DBusInterfaceSkeletonClass_get_info(void*);
+// extern void* _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties(void*);
 import "C"
 
 // GTypeDBusInterfaceSkeleton returns the GType for the type DBusInterfaceSkeleton.
@@ -154,7 +154,7 @@ func _gotk4_gio2_DBusInterfaceSkeletonClass_g_authorize_method(arg0 *C.void, arg
 }
 
 //export _gotk4_gio2_DBusInterfaceSkeletonClass_get_info
-func _gotk4_gio2_DBusInterfaceSkeletonClass_get_info(arg0 *C.void) (cret *C.GDBusInterfaceInfo) {
+func _gotk4_gio2_DBusInterfaceSkeletonClass_get_info(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Info() *DBusInterfaceInfo })
 
@@ -166,7 +166,7 @@ func _gotk4_gio2_DBusInterfaceSkeletonClass_get_info(arg0 *C.void) (cret *C.GDBu
 }
 
 //export _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties
-func _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties(arg0 *C.void) (cret *C.GVariant) {
+func _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Properties() *glib.Variant })
 
@@ -279,7 +279,8 @@ func (interface_ *DBusInterfaceSkeleton) Export(connection *DBusConnection, obje
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("export", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusInterfaceSkeleton")
+	_info.InvokeClassMethod("export", _args[:], nil)
 
 	runtime.KeepAlive(interface_)
 	runtime.KeepAlive(connection)
@@ -306,7 +307,8 @@ func (interface_ *DBusInterfaceSkeleton) Flush() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 
-	girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("flush", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusInterfaceSkeleton")
+	_info.InvokeClassMethod("flush", _args[:], nil)
 
 	runtime.KeepAlive(interface_)
 }
@@ -323,8 +325,9 @@ func (interface_ *DBusInterfaceSkeleton) Connection() *DBusConnection {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("get_connection", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusInterfaceSkeleton")
+	_gret := _info.InvokeClassMethod("get_connection", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(interface_)
 
@@ -350,8 +353,9 @@ func (interface_ *DBusInterfaceSkeleton) Connections() []*DBusConnection {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("get_connections", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusInterfaceSkeleton")
+	_gret := _info.InvokeClassMethod("get_connections", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(interface_)
 
@@ -380,8 +384,9 @@ func (interface_ *DBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("get_info", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusInterfaceSkeleton")
+	_gret := _info.InvokeClassMethod("get_info", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(interface_)
 
@@ -411,8 +416,9 @@ func (interface_ *DBusInterfaceSkeleton) ObjectPath() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("get_object_path", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusInterfaceSkeleton")
+	_gret := _info.InvokeClassMethod("get_object_path", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(interface_)
 
@@ -437,8 +443,9 @@ func (interface_ *DBusInterfaceSkeleton) Properties() *glib.Variant {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("get_properties", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusInterfaceSkeleton")
+	_gret := _info.InvokeClassMethod("get_properties", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(interface_)
 
@@ -471,8 +478,9 @@ func (interface_ *DBusInterfaceSkeleton) HasConnection(connection *DBusConnectio
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
-	_gret := girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("has_connection", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusInterfaceSkeleton")
+	_gret := _info.InvokeClassMethod("has_connection", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(interface_)
 	runtime.KeepAlive(connection)
@@ -495,7 +503,8 @@ func (interface_ *DBusInterfaceSkeleton) Unexport() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 
-	girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("unexport", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusInterfaceSkeleton")
+	_info.InvokeClassMethod("unexport", _args[:], nil)
 
 	runtime.KeepAlive(interface_)
 }
@@ -515,7 +524,8 @@ func (interface_ *DBusInterfaceSkeleton) UnexportFromConnection(connection *DBus
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 
-	girepository.MustFind("Gio", "DBusInterfaceSkeleton").InvokeMethod("unexport_from_connection", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusInterfaceSkeleton")
+	_info.InvokeClassMethod("unexport_from_connection", _args[:], nil)
 
 	runtime.KeepAlive(interface_)
 	runtime.KeepAlive(connection)

@@ -379,7 +379,8 @@ func (application *Application) AddAccelerator(accelerator, actionName string, p
 		*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parameter)))
 	}
 
-	girepository.MustFind("Gtk", "Application").InvokeMethod("add_accelerator", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Application")
+	_info.InvokeClassMethod("add_accelerator", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(accelerator)
@@ -412,7 +413,8 @@ func (application *Application) AddWindow(window *Window) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gtk", "Application").InvokeMethod("add_window", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Application")
+	_info.InvokeClassMethod("add_window", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(window)
@@ -438,8 +440,9 @@ func (application *Application) AccelsForAction(detailedActionName string) []str
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(detailedActionName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_accels_for_action", _args[:], nil)
-	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Application")
+	_gret := _info.InvokeClassMethod("get_accels_for_action", _args[:], nil)
+	_cret := *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(detailedActionName)
@@ -495,8 +498,9 @@ func (application *Application) ActionsForAccel(accel string) []string {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(accel)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_actions_for_accel", _args[:], nil)
-	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Application")
+	_gret := _info.InvokeClassMethod("get_actions_for_accel", _args[:], nil)
+	_cret := *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(accel)
@@ -538,8 +542,9 @@ func (application *Application) ActiveWindow() *Window {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_active_window", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Application")
+	_gret := _info.InvokeClassMethod("get_active_window", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 
@@ -565,8 +570,9 @@ func (application *Application) AppMenu() gio.MenuModeller {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_app_menu", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Application")
+	_gret := _info.InvokeClassMethod("get_app_menu", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 
@@ -611,8 +617,9 @@ func (application *Application) MenuByID(id string) *gio.Menu {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_menu_by_id", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Application")
+	_gret := _info.InvokeClassMethod("get_menu_by_id", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(id)
@@ -643,8 +650,9 @@ func (application *Application) Menubar() gio.MenuModeller {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_menubar", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Application")
+	_gret := _info.InvokeClassMethod("get_menubar", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 
@@ -690,8 +698,9 @@ func (application *Application) WindowByID(id uint32) *Window {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(id)
 
-	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_window_by_id", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Application")
+	_gret := _info.InvokeClassMethod("get_window_by_id", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(id)
@@ -723,8 +732,9 @@ func (application *Application) Windows() []*Window {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("get_windows", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Application")
+	_gret := _info.InvokeClassMethod("get_windows", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 
@@ -754,8 +764,9 @@ func (application *Application) ListActionDescriptions() []string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("list_action_descriptions", _args[:], nil)
-	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Application")
+	_gret := _info.InvokeClassMethod("list_action_descriptions", _args[:], nil)
+	_cret := *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 
@@ -820,8 +831,9 @@ func (application *Application) PrefersAppMenu() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Application").InvokeMethod("prefers_app_menu", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Application")
+	_gret := _info.InvokeClassMethod("prefers_app_menu", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 
@@ -855,7 +867,8 @@ func (application *Application) RemoveAccelerator(actionName string, parameter *
 		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parameter)))
 	}
 
-	girepository.MustFind("Gtk", "Application").InvokeMethod("remove_accelerator", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Application")
+	_info.InvokeClassMethod("remove_accelerator", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(actionName)
@@ -879,7 +892,8 @@ func (application *Application) RemoveWindow(window *Window) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
-	girepository.MustFind("Gtk", "Application").InvokeMethod("remove_window", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Application")
+	_info.InvokeClassMethod("remove_window", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(window)
@@ -922,7 +936,8 @@ func (application *Application) SetAccelsForAction(detailedActionName string, ac
 		}
 	}
 
-	girepository.MustFind("Gtk", "Application").InvokeMethod("set_accels_for_action", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Application")
+	_info.InvokeClassMethod("set_accels_for_action", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(detailedActionName)
@@ -957,7 +972,8 @@ func (application *Application) SetAppMenu(appMenu gio.MenuModeller) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(appMenu).Native()))
 	}
 
-	girepository.MustFind("Gtk", "Application").InvokeMethod("set_app_menu", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Application")
+	_info.InvokeClassMethod("set_app_menu", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(appMenu)
@@ -993,7 +1009,8 @@ func (application *Application) SetMenubar(menubar gio.MenuModeller) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menubar).Native()))
 	}
 
-	girepository.MustFind("Gtk", "Application").InvokeMethod("set_menubar", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Application")
+	_info.InvokeClassMethod("set_menubar", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(menubar)
@@ -1013,7 +1030,8 @@ func (application *Application) Uninhibit(cookie uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(cookie)
 
-	girepository.MustFind("Gtk", "Application").InvokeMethod("uninhibit", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Application")
+	_info.InvokeClassMethod("uninhibit", _args[:], nil)
 
 	runtime.KeepAlive(application)
 	runtime.KeepAlive(cookie)

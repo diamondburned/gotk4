@@ -133,8 +133,9 @@ func (self *AppChooserDialog) Heading() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AppChooserDialog").InvokeMethod("get_heading", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AppChooserDialog")
+	_gret := _info.InvokeClassMethod("get_heading", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -158,8 +159,9 @@ func (self *AppChooserDialog) Widget() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "AppChooserDialog").InvokeMethod("get_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AppChooserDialog")
+	_gret := _info.InvokeClassMethod("get_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -201,7 +203,8 @@ func (self *AppChooserDialog) SetHeading(heading string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(heading)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "AppChooserDialog").InvokeMethod("set_heading", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AppChooserDialog")
+	_info.InvokeClassMethod("set_heading", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(heading)

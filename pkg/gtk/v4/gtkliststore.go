@@ -130,7 +130,8 @@ func (listStore *ListStore) Append() *TreeIter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
 
-	girepository.MustFind("Gtk", "ListStore").InvokeMethod("append", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "ListStore")
+	_info.InvokeClassMethod("append", _args[:], _outs[:])
 
 	runtime.KeepAlive(listStore)
 
@@ -147,7 +148,8 @@ func (listStore *ListStore) Clear() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
 
-	girepository.MustFind("Gtk", "ListStore").InvokeMethod("clear", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListStore")
+	_info.InvokeClassMethod("clear", _args[:], nil)
 
 	runtime.KeepAlive(listStore)
 }
@@ -173,7 +175,8 @@ func (listStore *ListStore) Insert(position int32) *TreeIter {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(position)
 
-	girepository.MustFind("Gtk", "ListStore").InvokeMethod("insert", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "ListStore")
+	_info.InvokeClassMethod("insert", _args[:], _outs[:])
 
 	runtime.KeepAlive(listStore)
 	runtime.KeepAlive(position)
@@ -208,7 +211,8 @@ func (listStore *ListStore) InsertAfter(sibling *TreeIter) *TreeIter {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(sibling)))
 	}
 
-	girepository.MustFind("Gtk", "ListStore").InvokeMethod("insert_after", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "ListStore")
+	_info.InvokeClassMethod("insert_after", _args[:], _outs[:])
 
 	runtime.KeepAlive(listStore)
 	runtime.KeepAlive(sibling)
@@ -242,7 +246,8 @@ func (listStore *ListStore) InsertBefore(sibling *TreeIter) *TreeIter {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(sibling)))
 	}
 
-	girepository.MustFind("Gtk", "ListStore").InvokeMethod("insert_before", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "ListStore")
+	_info.InvokeClassMethod("insert_before", _args[:], _outs[:])
 
 	runtime.KeepAlive(listStore)
 	runtime.KeepAlive(sibling)
@@ -273,8 +278,9 @@ func (listStore *ListStore) IterIsValid(iter *TreeIter) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_gret := girepository.MustFind("Gtk", "ListStore").InvokeMethod("iter_is_valid", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListStore")
+	_gret := _info.InvokeClassMethod("iter_is_valid", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(listStore)
 	runtime.KeepAlive(iter)
@@ -306,7 +312,8 @@ func (store *ListStore) MoveAfter(iter, position *TreeIter) {
 		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(position)))
 	}
 
-	girepository.MustFind("Gtk", "ListStore").InvokeMethod("move_after", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListStore")
+	_info.InvokeClassMethod("move_after", _args[:], nil)
 
 	runtime.KeepAlive(store)
 	runtime.KeepAlive(iter)
@@ -331,7 +338,8 @@ func (store *ListStore) MoveBefore(iter, position *TreeIter) {
 		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(position)))
 	}
 
-	girepository.MustFind("Gtk", "ListStore").InvokeMethod("move_before", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListStore")
+	_info.InvokeClassMethod("move_before", _args[:], nil)
 
 	runtime.KeepAlive(store)
 	runtime.KeepAlive(iter)
@@ -352,7 +360,8 @@ func (listStore *ListStore) Prepend() *TreeIter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
 
-	girepository.MustFind("Gtk", "ListStore").InvokeMethod("prepend", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "ListStore")
+	_info.InvokeClassMethod("prepend", _args[:], _outs[:])
 
 	runtime.KeepAlive(listStore)
 
@@ -381,8 +390,9 @@ func (listStore *ListStore) Remove(iter *TreeIter) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 
-	_gret := girepository.MustFind("Gtk", "ListStore").InvokeMethod("remove", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ListStore")
+	_gret := _info.InvokeClassMethod("remove", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(listStore)
 	runtime.KeepAlive(iter)
@@ -422,7 +432,8 @@ func (store *ListStore) Reorder(newOrder []int32) {
 		}
 	}
 
-	girepository.MustFind("Gtk", "ListStore").InvokeMethod("reorder", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListStore")
+	_info.InvokeClassMethod("reorder", _args[:], nil)
 
 	runtime.KeepAlive(store)
 	runtime.KeepAlive(newOrder)
@@ -445,7 +456,8 @@ func (listStore *ListStore) SetValue(iter *TreeIter, column int32, value *coregl
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(column)
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(value.Native()))
 
-	girepository.MustFind("Gtk", "ListStore").InvokeMethod("set_value", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListStore")
+	_info.InvokeClassMethod("set_value", _args[:], nil)
 
 	runtime.KeepAlive(listStore)
 	runtime.KeepAlive(iter)
@@ -468,7 +480,8 @@ func (store *ListStore) Swap(a, b *TreeIter) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(a)))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(b)))
 
-	girepository.MustFind("Gtk", "ListStore").InvokeMethod("swap", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ListStore")
+	_info.InvokeClassMethod("swap", _args[:], nil)
 
 	runtime.KeepAlive(store)
 	runtime.KeepAlive(a)

@@ -400,8 +400,9 @@ func (self *Text) ConnectToggleOverwrite(f func()) coreglib.SignalHandle {
 //    - text: new GtkText.
 //
 func NewText() *Text {
-	_gret := girepository.MustFind("Gtk", "Text").InvokeMethod("new_Text", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Text")
+	_gret := _info.InvokeClassMethod("new_Text", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _text *Text // out
 
@@ -425,8 +426,9 @@ func NewTextWithBuffer(buffer *EntryBuffer) *Text {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Text").InvokeMethod("new_Text_with_buffer", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Text")
+	_gret := _info.InvokeClassMethod("new_Text_with_buffer", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(buffer)
 
@@ -448,8 +450,9 @@ func (self *Text) ActivatesDefault() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Text").InvokeMethod("get_activates_default", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Text")
+	_gret := _info.InvokeClassMethod("get_activates_default", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -474,8 +477,9 @@ func (self *Text) Attributes() *pango.AttrList {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Text").InvokeMethod("get_attributes", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Text")
+	_gret := _info.InvokeClassMethod("get_attributes", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -506,8 +510,9 @@ func (self *Text) Buffer() *EntryBuffer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Text").InvokeMethod("get_buffer", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Text")
+	_gret := _info.InvokeClassMethod("get_buffer", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -530,8 +535,9 @@ func (self *Text) EnableEmojiCompletion() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Text").InvokeMethod("get_enable_emoji_completion", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Text")
+	_gret := _info.InvokeClassMethod("get_enable_emoji_completion", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -555,8 +561,9 @@ func (self *Text) ExtraMenu() gio.MenuModeller {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Text").InvokeMethod("get_extra_menu", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Text")
+	_gret := _info.InvokeClassMethod("get_extra_menu", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -599,8 +606,9 @@ func (self *Text) InvisibleChar() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Text").InvokeMethod("get_invisible_char", _args[:], nil)
-	_cret = *(*C.gunichar)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Text")
+	_gret := _info.InvokeClassMethod("get_invisible_char", _args[:], nil)
+	_cret := *(*C.gunichar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -628,8 +636,9 @@ func (self *Text) MaxLength() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Text").InvokeMethod("get_max_length", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Text")
+	_gret := _info.InvokeClassMethod("get_max_length", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -651,8 +660,9 @@ func (self *Text) OverwriteMode() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Text").InvokeMethod("get_overwrite_mode", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Text")
+	_gret := _info.InvokeClassMethod("get_overwrite_mode", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -680,8 +690,9 @@ func (self *Text) PlaceholderText() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Text").InvokeMethod("get_placeholder_text", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Text")
+	_gret := _info.InvokeClassMethod("get_placeholder_text", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -706,8 +717,9 @@ func (self *Text) PropagateTextWidth() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Text").InvokeMethod("get_propagate_text_width", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Text")
+	_gret := _info.InvokeClassMethod("get_propagate_text_width", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -732,8 +744,9 @@ func (self *Text) Tabs() *pango.TabArray {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Text").InvokeMethod("get_tabs", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Text")
+	_gret := _info.InvokeClassMethod("get_tabs", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -760,8 +773,9 @@ func (self *Text) TextLength() uint16 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Text").InvokeMethod("get_text_length", _args[:], nil)
-	_cret = *(*C.guint16)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Text")
+	_gret := _info.InvokeClassMethod("get_text_length", _args[:], nil)
+	_cret := *(*C.guint16)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -784,8 +798,9 @@ func (self *Text) TruncateMultiline() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Text").InvokeMethod("get_truncate_multiline", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Text")
+	_gret := _info.InvokeClassMethod("get_truncate_multiline", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -809,8 +824,9 @@ func (self *Text) Visibility() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Text").InvokeMethod("get_visibility", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Text")
+	_gret := _info.InvokeClassMethod("get_visibility", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -839,8 +855,9 @@ func (self *Text) GrabFocusWithoutSelecting() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Text").InvokeMethod("grab_focus_without_selecting", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Text")
+	_gret := _info.InvokeClassMethod("grab_focus_without_selecting", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -871,7 +888,8 @@ func (self *Text) SetActivatesDefault(activates bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Text").InvokeMethod("set_activates_default", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Text")
+	_info.InvokeClassMethod("set_activates_default", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(activates)
@@ -891,7 +909,8 @@ func (self *Text) SetAttributes(attrs *pango.AttrList) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(attrs)))
 	}
 
-	girepository.MustFind("Gtk", "Text").InvokeMethod("set_attributes", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Text")
+	_info.InvokeClassMethod("set_attributes", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(attrs)
@@ -910,7 +929,8 @@ func (self *Text) SetBuffer(buffer *EntryBuffer) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
-	girepository.MustFind("Gtk", "Text").InvokeMethod("set_buffer", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Text")
+	_info.InvokeClassMethod("set_buffer", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(buffer)
@@ -933,7 +953,8 @@ func (self *Text) SetEnableEmojiCompletion(enableEmojiCompletion bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Text").InvokeMethod("set_enable_emoji_completion", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Text")
+	_info.InvokeClassMethod("set_enable_emoji_completion", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(enableEmojiCompletion)
@@ -954,7 +975,8 @@ func (self *Text) SetExtraMenu(model gio.MenuModeller) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
 
-	girepository.MustFind("Gtk", "Text").InvokeMethod("set_extra_menu", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Text")
+	_info.InvokeClassMethod("set_extra_menu", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(model)
@@ -977,7 +999,8 @@ func (self *Text) SetInvisibleChar(ch uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(*C.gunichar)(unsafe.Pointer(&_args[1])) = C.gunichar(ch)
 
-	girepository.MustFind("Gtk", "Text").InvokeMethod("set_invisible_char", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Text")
+	_info.InvokeClassMethod("set_invisible_char", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(ch)
@@ -1003,7 +1026,8 @@ func (self *Text) SetMaxLength(length int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(length)
 
-	girepository.MustFind("Gtk", "Text").InvokeMethod("set_max_length", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Text")
+	_info.InvokeClassMethod("set_max_length", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(length)
@@ -1024,7 +1048,8 @@ func (self *Text) SetOverwriteMode(overwrite bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Text").InvokeMethod("set_overwrite_mode", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Text")
+	_info.InvokeClassMethod("set_overwrite_mode", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(overwrite)
@@ -1049,7 +1074,8 @@ func (self *Text) SetPlaceholderText(text string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "Text").InvokeMethod("set_placeholder_text", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Text")
+	_info.InvokeClassMethod("set_placeholder_text", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(text)
@@ -1070,7 +1096,8 @@ func (self *Text) SetPropagateTextWidth(propagateTextWidth bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Text").InvokeMethod("set_propagate_text_width", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Text")
+	_info.InvokeClassMethod("set_propagate_text_width", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(propagateTextWidth)
@@ -1090,7 +1117,8 @@ func (self *Text) SetTabs(tabs *pango.TabArray) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(tabs)))
 	}
 
-	girepository.MustFind("Gtk", "Text").InvokeMethod("set_tabs", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Text")
+	_info.InvokeClassMethod("set_tabs", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(tabs)
@@ -1111,7 +1139,8 @@ func (self *Text) SetTruncateMultiline(truncateMultiline bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Text").InvokeMethod("set_truncate_multiline", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Text")
+	_info.InvokeClassMethod("set_truncate_multiline", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(truncateMultiline)
@@ -1142,7 +1171,8 @@ func (self *Text) SetVisibility(visible bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "Text").InvokeMethod("set_visibility", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Text")
+	_info.InvokeClassMethod("set_visibility", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(visible)
@@ -1156,7 +1186,8 @@ func (self *Text) UnsetInvisibleChar() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	girepository.MustFind("Gtk", "Text").InvokeMethod("unset_invisible_char", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Text")
+	_info.InvokeClassMethod("unset_invisible_char", _args[:], nil)
 
 	runtime.KeepAlive(self)
 }

@@ -20,17 +20,6 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GAppInfo* _gotk4_gio2_AppInfoIface_dup(void*);
-// extern GIcon* _gotk4_gio2_AppInfoIface_get_icon(void*);
-// extern char* _gotk4_gio2_AppInfoIface_get_commandline(void*);
-// extern char* _gotk4_gio2_AppInfoIface_get_description(void*);
-// extern char* _gotk4_gio2_AppInfoIface_get_display_name(void*);
-// extern char* _gotk4_gio2_AppInfoIface_get_executable(void*);
-// extern char* _gotk4_gio2_AppInfoIface_get_id(void*);
-// extern char* _gotk4_gio2_AppInfoIface_get_name(void*);
-// extern char* _gotk4_gio2_AppLaunchContextClass_get_display(void*, void*, void*);
-// extern char* _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id(void*, void*, void*);
-// extern char** _gotk4_gio2_AppInfoIface_get_supported_types(void*);
 // extern gboolean _gotk4_gio2_AppInfoIface_add_supports_type(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_AppInfoIface_can_delete(void*);
 // extern gboolean _gotk4_gio2_AppInfoIface_can_remove_supports_type(void*);
@@ -50,6 +39,17 @@ import (
 // extern void _gotk4_gio2_AppLaunchContext_ConnectLaunchFailed(gpointer, void*, guintptr);
 // extern void _gotk4_gio2_AppLaunchContext_ConnectLaunched(gpointer, void*, void*, guintptr);
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void* _gotk4_gio2_AppInfoIface_dup(void*);
+// extern void* _gotk4_gio2_AppInfoIface_get_commandline(void*);
+// extern void* _gotk4_gio2_AppInfoIface_get_description(void*);
+// extern void* _gotk4_gio2_AppInfoIface_get_display_name(void*);
+// extern void* _gotk4_gio2_AppInfoIface_get_executable(void*);
+// extern void* _gotk4_gio2_AppInfoIface_get_icon(void*);
+// extern void* _gotk4_gio2_AppInfoIface_get_id(void*);
+// extern void* _gotk4_gio2_AppInfoIface_get_name(void*);
+// extern void* _gotk4_gio2_AppLaunchContextClass_get_display(void*, void*, void*);
+// extern void* _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id(void*, void*, void*);
+// extern void** _gotk4_gio2_AppInfoIface_get_supported_types(void*);
 import "C"
 
 // GTypeAppInfo returns the GType for the type AppInfo.
@@ -223,6 +223,9 @@ func (appinfo *AppInfo) AddSupportsType(contentType string) error {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_info.InvokeIfaceMethod("add_supports_type", _args[:], nil)
+
 	runtime.KeepAlive(appinfo)
 	runtime.KeepAlive(contentType)
 
@@ -247,7 +250,9 @@ func (appinfo *AppInfo) CanDelete() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_gret := _info.InvokeIfaceMethod("can_delete", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(appinfo)
 
@@ -273,7 +278,9 @@ func (appinfo *AppInfo) CanRemoveSupportsType() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_gret := _info.InvokeIfaceMethod("can_remove_supports_type", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(appinfo)
 
@@ -301,7 +308,9 @@ func (appinfo *AppInfo) Delete() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_gret := _info.InvokeIfaceMethod("delete", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(appinfo)
 
@@ -325,7 +334,9 @@ func (appinfo *AppInfo) Dup() *AppInfo {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_gret := _info.InvokeIfaceMethod("dup", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(appinfo)
 
@@ -356,7 +367,9 @@ func (appinfo1 *AppInfo) Equal(appinfo2 AppInfor) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo1).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo2).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_gret := _info.InvokeIfaceMethod("equal", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(appinfo1)
 	runtime.KeepAlive(appinfo2)
@@ -382,7 +395,9 @@ func (appinfo *AppInfo) Commandline() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_gret := _info.InvokeIfaceMethod("get_commandline", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(appinfo)
 
@@ -407,7 +422,9 @@ func (appinfo *AppInfo) Description() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_gret := _info.InvokeIfaceMethod("get_description", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(appinfo)
 
@@ -433,7 +450,9 @@ func (appinfo *AppInfo) DisplayName() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_gret := _info.InvokeIfaceMethod("get_display_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(appinfo)
 
@@ -455,7 +474,9 @@ func (appinfo *AppInfo) Executable() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_gret := _info.InvokeIfaceMethod("get_executable", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(appinfo)
 
@@ -478,7 +499,9 @@ func (appinfo *AppInfo) Icon() *Icon {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_gret := _info.InvokeIfaceMethod("get_icon", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(appinfo)
 
@@ -507,7 +530,9 @@ func (appinfo *AppInfo) ID() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_gret := _info.InvokeIfaceMethod("get_id", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(appinfo)
 
@@ -531,7 +556,9 @@ func (appinfo *AppInfo) Name() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_gret := _info.InvokeIfaceMethod("get_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(appinfo)
 
@@ -557,7 +584,9 @@ func (appinfo *AppInfo) SupportedTypes() []string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 
-	_cret = *(***C.char)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_gret := _info.InvokeIfaceMethod("get_supported_types", _args[:], nil)
+	_cret := *(***C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(appinfo)
 
@@ -629,6 +658,9 @@ func (appinfo *AppInfo) Launch(files []Filer, context *AppLaunchContext) error {
 		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	}
 
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_info.InvokeIfaceMethod("launch", _args[:], nil)
+
 	runtime.KeepAlive(appinfo)
 	runtime.KeepAlive(files)
 	runtime.KeepAlive(context)
@@ -675,6 +707,9 @@ func (appinfo *AppInfo) LaunchURIs(uris []string, context *AppLaunchContext) err
 	if context != nil {
 		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	}
+
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_info.InvokeIfaceMethod("launch_uris", _args[:], nil)
 
 	runtime.KeepAlive(appinfo)
 	runtime.KeepAlive(uris)
@@ -730,6 +765,9 @@ func (appinfo *AppInfo) LaunchURIsAsync(ctx context.Context, uris []string, cont
 		_args[5] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_info.InvokeIfaceMethod("launch_uris_async", _args[:], nil)
+
 	runtime.KeepAlive(appinfo)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(uris)
@@ -748,6 +786,9 @@ func (appinfo *AppInfo) LaunchURIsFinish(result AsyncResulter) error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_info.InvokeIfaceMethod("launch_uris_finish", _args[:], nil)
 
 	runtime.KeepAlive(appinfo)
 	runtime.KeepAlive(result)
@@ -773,6 +814,9 @@ func (appinfo *AppInfo) RemoveSupportsType(contentType string) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_args[1]))
+
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_info.InvokeIfaceMethod("remove_supports_type", _args[:], nil)
 
 	runtime.KeepAlive(appinfo)
 	runtime.KeepAlive(contentType)
@@ -800,6 +844,9 @@ func (appinfo *AppInfo) SetAsDefaultForExtension(extension string) error {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(extension)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_info.InvokeIfaceMethod("set_as_default_for_extension", _args[:], nil)
+
 	runtime.KeepAlive(appinfo)
 	runtime.KeepAlive(extension)
 
@@ -825,6 +872,9 @@ func (appinfo *AppInfo) SetAsDefaultForType(contentType string) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_args[1]))
+
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_info.InvokeIfaceMethod("set_as_default_for_type", _args[:], nil)
 
 	runtime.KeepAlive(appinfo)
 	runtime.KeepAlive(contentType)
@@ -854,6 +904,9 @@ func (appinfo *AppInfo) SetAsLastUsedForType(contentType string) error {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_info.InvokeIfaceMethod("set_as_last_used_for_type", _args[:], nil)
+
 	runtime.KeepAlive(appinfo)
 	runtime.KeepAlive(contentType)
 
@@ -878,7 +931,9 @@ func (appinfo *AppInfo) ShouldShow() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_gret := _info.InvokeIfaceMethod("should_show", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(appinfo)
 
@@ -902,7 +957,9 @@ func (appinfo *AppInfo) SupportsFiles() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_gret := _info.InvokeIfaceMethod("supports_files", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(appinfo)
 
@@ -927,7 +984,9 @@ func (appinfo *AppInfo) SupportsURIs() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AppInfo")
+	_gret := _info.InvokeIfaceMethod("supports_uris", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(appinfo)
 
@@ -953,8 +1012,9 @@ func (appinfo *AppInfo) SupportsURIs() bool {
 //    - list: newly allocated #GList of references to Infos.
 //
 func AppInfoGetAll() []*AppInfo {
-	_gret := girepository.MustFind("Gio", "get_all").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "get_all")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _list []*AppInfo // out
 
@@ -987,8 +1047,9 @@ func AppInfoGetAllForType(contentType string) []*AppInfo {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "get_all_for_type").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "get_all_for_type")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(contentType)
 
@@ -1025,8 +1086,9 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) *AppInfo
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	_gret := girepository.MustFind("Gio", "get_default_for_type").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "get_default_for_type")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(contentType)
 	runtime.KeepAlive(mustSupportUris)
@@ -1058,8 +1120,9 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) *AppInfo {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(uriScheme)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "get_default_for_uri_scheme").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "get_default_for_uri_scheme")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(uriScheme)
 
@@ -1090,8 +1153,9 @@ func AppInfoGetFallbackForType(contentType string) []*AppInfo {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "get_fallback_for_type").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "get_fallback_for_type")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(contentType)
 
@@ -1128,8 +1192,9 @@ func AppInfoGetRecommendedForType(contentType string) []*AppInfo {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "get_recommended_for_type").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "get_recommended_for_type")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(contentType)
 
@@ -1168,7 +1233,8 @@ func AppInfoLaunchDefaultForURI(uri string, context *AppLaunchContext) error {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	}
 
-	girepository.MustFind("Gio", "launch_default_for_uri").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gio", "launch_default_for_uri")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(uri)
 	runtime.KeepAlive(context)
@@ -1218,7 +1284,8 @@ func AppInfoLaunchDefaultForURIAsync(ctx context.Context, uri string, context *A
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
-	girepository.MustFind("Gio", "launch_default_for_uri_async").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gio", "launch_default_for_uri_async")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(uri)
@@ -1238,7 +1305,8 @@ func AppInfoLaunchDefaultForURIFinish(result AsyncResulter) error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	girepository.MustFind("Gio", "launch_default_for_uri_finish").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gio", "launch_default_for_uri_finish")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(result)
 
@@ -1266,7 +1334,8 @@ func AppInfoResetTypeAssociations(contentType string) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(contentType)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	girepository.MustFind("Gio", "reset_type_associations").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gio", "reset_type_associations")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(contentType)
 }
@@ -1286,8 +1355,9 @@ func AppInfoResetTypeAssociations(contentType string) {
 //    - appInfoMonitor: reference to a InfoMonitor.
 //
 func AppInfoMonitorGet() *AppInfoMonitor {
-	_gret := girepository.MustFind("Gio", "get").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "get")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _appInfoMonitor *AppInfoMonitor // out
 
@@ -1397,7 +1467,7 @@ func classInitAppLaunchContexter(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_AppLaunchContextClass_get_display
-func _gotk4_gio2_AppLaunchContextClass_get_display(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret *C.char) {
+func _gotk4_gio2_AppLaunchContextClass_get_display(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Display(info AppInfor, files []Filer) string
@@ -1457,7 +1527,7 @@ func _gotk4_gio2_AppLaunchContextClass_get_display(arg0 *C.void, arg1 *C.void, a
 }
 
 //export _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id
-func _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret *C.char) {
+func _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		StartupNotifyID(info AppInfor, files []Filer) string
@@ -1667,8 +1737,9 @@ func (context *AppLaunchContext) ConnectLaunched(f func(info AppInfor, platformD
 //    - appLaunchContext: LaunchContext.
 //
 func NewAppLaunchContext() *AppLaunchContext {
-	_gret := girepository.MustFind("Gio", "AppLaunchContext").InvokeMethod("new_AppLaunchContext", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AppLaunchContext")
+	_gret := _info.InvokeClassMethod("new_AppLaunchContext", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _appLaunchContext *AppLaunchContext // out
 
@@ -1703,8 +1774,9 @@ func (context *AppLaunchContext) Display(info AppInfor, files []Filer) string {
 	}
 	defer C.g_list_free(_args[2])
 
-	_gret := girepository.MustFind("Gio", "AppLaunchContext").InvokeMethod("get_display", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AppLaunchContext")
+	_gret := _info.InvokeClassMethod("get_display", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(info)
@@ -1733,8 +1805,9 @@ func (context *AppLaunchContext) Environment() []string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gio", "AppLaunchContext").InvokeMethod("get_environment", _args[:], nil)
-	_cret = *(***C.char)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AppLaunchContext")
+	_gret := _info.InvokeClassMethod("get_environment", _args[:], nil)
+	_cret := *(***C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -1789,8 +1862,9 @@ func (context *AppLaunchContext) StartupNotifyID(info AppInfor, files []Filer) s
 	}
 	defer C.g_list_free(_args[2])
 
-	_gret := girepository.MustFind("Gio", "AppLaunchContext").InvokeMethod("get_startup_notify_id", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "AppLaunchContext")
+	_gret := _info.InvokeClassMethod("get_startup_notify_id", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(info)
@@ -1822,7 +1896,8 @@ func (context *AppLaunchContext) LaunchFailed(startupNotifyId string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(startupNotifyId)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gio", "AppLaunchContext").InvokeMethod("launch_failed", _args[:], nil)
+	_info := girepository.MustFind("Gio", "AppLaunchContext")
+	_info.InvokeClassMethod("launch_failed", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(startupNotifyId)
@@ -1845,7 +1920,8 @@ func (context *AppLaunchContext) Setenv(variable, value string) {
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(value)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	girepository.MustFind("Gio", "AppLaunchContext").InvokeMethod("setenv", _args[:], nil)
+	_info := girepository.MustFind("Gio", "AppLaunchContext")
+	_info.InvokeClassMethod("setenv", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(variable)
@@ -1866,7 +1942,8 @@ func (context *AppLaunchContext) Unsetenv(variable string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(variable)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gio", "AppLaunchContext").InvokeMethod("unsetenv", _args[:], nil)
+	_info := girepository.MustFind("Gio", "AppLaunchContext")
+	_info.InvokeClassMethod("unsetenv", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(variable)

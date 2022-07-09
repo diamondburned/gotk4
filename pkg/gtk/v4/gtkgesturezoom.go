@@ -89,8 +89,9 @@ func (gesture *GestureZoom) ConnectScaleChanged(f func(scale float64)) coreglib.
 //    - gestureZoom: newly created GtkGestureZoom.
 //
 func NewGestureZoom() *GestureZoom {
-	_gret := girepository.MustFind("Gtk", "GestureZoom").InvokeMethod("new_GestureZoom", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureZoom")
+	_gret := _info.InvokeClassMethod("new_GestureZoom", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _gestureZoom *GestureZoom // out
 
@@ -114,8 +115,9 @@ func (gesture *GestureZoom) ScaleDelta() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureZoom").InvokeMethod("get_scale_delta", _args[:], nil)
-	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureZoom")
+	_gret := _info.InvokeClassMethod("get_scale_delta", _args[:], nil)
+	_cret := *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)
 

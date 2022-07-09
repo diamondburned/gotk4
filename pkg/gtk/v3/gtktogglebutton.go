@@ -205,8 +205,9 @@ func (toggleButton *ToggleButton) ConnectToggled(f func()) coreglib.SignalHandle
 //    - toggleButton: new toggle button.
 //
 func NewToggleButton() *ToggleButton {
-	_gret := girepository.MustFind("Gtk", "ToggleButton").InvokeMethod("new_ToggleButton", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToggleButton")
+	_gret := _info.InvokeClassMethod("new_ToggleButton", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _toggleButton *ToggleButton // out
 
@@ -231,8 +232,9 @@ func NewToggleButtonWithLabel(label string) *ToggleButton {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "ToggleButton").InvokeMethod("new_ToggleButton_with_label", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToggleButton")
+	_gret := _info.InvokeClassMethod("new_ToggleButton_with_label", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(label)
 
@@ -262,8 +264,9 @@ func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "ToggleButton").InvokeMethod("new_ToggleButton_with_mnemonic", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToggleButton")
+	_gret := _info.InvokeClassMethod("new_ToggleButton_with_mnemonic", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(label)
 
@@ -286,8 +289,9 @@ func (toggleButton *ToggleButton) Active() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toggleButton).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ToggleButton").InvokeMethod("get_active", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToggleButton")
+	_gret := _info.InvokeClassMethod("get_active", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(toggleButton)
 
@@ -311,8 +315,9 @@ func (toggleButton *ToggleButton) Inconsistent() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toggleButton).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ToggleButton").InvokeMethod("get_inconsistent", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToggleButton")
+	_gret := _info.InvokeClassMethod("get_inconsistent", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(toggleButton)
 
@@ -337,8 +342,9 @@ func (toggleButton *ToggleButton) Mode() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toggleButton).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ToggleButton").InvokeMethod("get_mode", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToggleButton")
+	_gret := _info.InvokeClassMethod("get_mode", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(toggleButton)
 
@@ -368,7 +374,8 @@ func (toggleButton *ToggleButton) SetActive(isActive bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ToggleButton").InvokeMethod("set_active", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ToggleButton")
+	_info.InvokeClassMethod("set_active", _args[:], nil)
 
 	runtime.KeepAlive(toggleButton)
 	runtime.KeepAlive(isActive)
@@ -395,7 +402,8 @@ func (toggleButton *ToggleButton) SetInconsistent(setting bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ToggleButton").InvokeMethod("set_inconsistent", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ToggleButton")
+	_info.InvokeClassMethod("set_inconsistent", _args[:], nil)
 
 	runtime.KeepAlive(toggleButton)
 	runtime.KeepAlive(setting)
@@ -425,7 +433,8 @@ func (toggleButton *ToggleButton) SetMode(drawIndicator bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ToggleButton").InvokeMethod("set_mode", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ToggleButton")
+	_info.InvokeClassMethod("set_mode", _args[:], nil)
 
 	runtime.KeepAlive(toggleButton)
 	runtime.KeepAlive(drawIndicator)
@@ -438,7 +447,8 @@ func (toggleButton *ToggleButton) Toggled() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toggleButton).Native()))
 
-	girepository.MustFind("Gtk", "ToggleButton").InvokeMethod("toggled", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ToggleButton")
+	_info.InvokeClassMethod("toggled", _args[:], nil)
 
 	runtime.KeepAlive(toggleButton)
 }

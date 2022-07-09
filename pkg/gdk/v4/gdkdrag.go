@@ -190,7 +190,8 @@ func (drag *Drag) DropDone(success bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gdk", "Drag").InvokeMethod("drop_done", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Drag")
+	_info.InvokeClassMethod("drop_done", _args[:], nil)
 
 	runtime.KeepAlive(drag)
 	runtime.KeepAlive(success)
@@ -207,8 +208,9 @@ func (drag *Drag) Content() *ContentProvider {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Drag").InvokeMethod("get_content", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Drag")
+	_gret := _info.InvokeClassMethod("get_content", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drag)
 
@@ -230,8 +232,9 @@ func (drag *Drag) Device() Devicer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Drag").InvokeMethod("get_device", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Drag")
+	_gret := _info.InvokeClassMethod("get_device", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drag)
 
@@ -269,8 +272,9 @@ func (drag *Drag) Display() *Display {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Drag").InvokeMethod("get_display", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Drag")
+	_gret := _info.InvokeClassMethod("get_display", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drag)
 
@@ -298,8 +302,9 @@ func (drag *Drag) DragSurface() Surfacer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Drag").InvokeMethod("get_drag_surface", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Drag")
+	_gret := _info.InvokeClassMethod("get_drag_surface", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drag)
 
@@ -336,8 +341,9 @@ func (drag *Drag) Formats() *ContentFormats {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Drag").InvokeMethod("get_formats", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Drag")
+	_gret := _info.InvokeClassMethod("get_formats", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drag)
 
@@ -366,8 +372,9 @@ func (drag *Drag) Surface() Surfacer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Drag").InvokeMethod("get_surface", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Drag")
+	_gret := _info.InvokeClassMethod("get_surface", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drag)
 
@@ -411,7 +418,8 @@ func (drag *Drag) SetHotspot(hotX, hotY int32) {
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(hotX)
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(hotY)
 
-	girepository.MustFind("Gdk", "Drag").InvokeMethod("set_hotspot", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "Drag")
+	_info.InvokeClassMethod("set_hotspot", _args[:], nil)
 
 	runtime.KeepAlive(drag)
 	runtime.KeepAlive(hotX)

@@ -198,8 +198,9 @@ func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeleton {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "DBusObjectSkeleton").InvokeMethod("new_DBusObjectSkeleton", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "DBusObjectSkeleton")
+	_gret := _info.InvokeClassMethod("new_DBusObjectSkeleton", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(objectPath)
 
@@ -228,7 +229,8 @@ func (object *DBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeletonn
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 
-	girepository.MustFind("Gio", "DBusObjectSkeleton").InvokeMethod("add_interface", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusObjectSkeleton")
+	_info.InvokeClassMethod("add_interface", _args[:], nil)
 
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(interface_)
@@ -241,7 +243,8 @@ func (object *DBusObjectSkeleton) Flush() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
 
-	girepository.MustFind("Gio", "DBusObjectSkeleton").InvokeMethod("flush", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusObjectSkeleton")
+	_info.InvokeClassMethod("flush", _args[:], nil)
 
 	runtime.KeepAlive(object)
 }
@@ -258,7 +261,8 @@ func (object *DBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkelet
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 
-	girepository.MustFind("Gio", "DBusObjectSkeleton").InvokeMethod("remove_interface", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusObjectSkeleton")
+	_info.InvokeClassMethod("remove_interface", _args[:], nil)
 
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(interface_)
@@ -281,7 +285,8 @@ func (object *DBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(interfaceName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gio", "DBusObjectSkeleton").InvokeMethod("remove_interface_by_name", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusObjectSkeleton")
+	_info.InvokeClassMethod("remove_interface_by_name", _args[:], nil)
 
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(interfaceName)
@@ -300,7 +305,8 @@ func (object *DBusObjectSkeleton) SetObjectPath(objectPath string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gio", "DBusObjectSkeleton").InvokeMethod("set_object_path", _args[:], nil)
+	_info := girepository.MustFind("Gio", "DBusObjectSkeleton")
+	_info.InvokeClassMethod("set_object_path", _args[:], nil)
 
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(objectPath)

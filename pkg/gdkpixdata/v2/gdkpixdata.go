@@ -15,5 +15,5 @@ import (
 import "C"
 
 func init() {
-	girepository.Require("GdkPixdata", "2.0")
+	girepository.Require("GdkPixdata", "2.0", girepository.LoadFlagLazy)
 }

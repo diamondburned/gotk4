@@ -18,10 +18,10 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GIOStream* _gotk4_gio2_ProxyInterface_connect(void*, void*, void*, void*, GError**);
-// extern GIOStream* _gotk4_gio2_ProxyInterface_connect_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_ProxyInterface_supports_hostname(void*);
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void* _gotk4_gio2_ProxyInterface_connect(void*, void*, void*, void*, GError**);
+// extern void* _gotk4_gio2_ProxyInterface_connect_finish(void*, void*, GError**);
 import "C"
 
 // GTypeProxy returns the GType for the type Proxy.
@@ -114,7 +114,9 @@ func (proxy *Proxy) ConnectProxy(ctx context.Context, connection IOStreamer, pro
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxyAddress).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Proxy")
+	_gret := _info.InvokeIfaceMethod("connect", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(proxy)
 	runtime.KeepAlive(ctx)
@@ -173,6 +175,9 @@ func (proxy *Proxy) ConnectAsync(ctx context.Context, connection IOStreamer, pro
 		_args[5] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "Proxy")
+	_info.InvokeIfaceMethod("connect_async", _args[:], nil)
+
 	runtime.KeepAlive(proxy)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(connection)
@@ -196,7 +201,9 @@ func (proxy *Proxy) ConnectFinish(result AsyncResulter) (IOStreamer, error) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Proxy")
+	_gret := _info.InvokeIfaceMethod("connect_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(proxy)
 	runtime.KeepAlive(result)
@@ -244,7 +251,9 @@ func (proxy *Proxy) SupportsHostname() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Proxy")
+	_gret := _info.InvokeIfaceMethod("supports_hostname", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(proxy)
 
@@ -274,8 +283,9 @@ func ProxyGetDefaultForProtocol(protocol string) *Proxy {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(protocol)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gio", "get_default_for_protocol").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "get_default_for_protocol")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(protocol)
 

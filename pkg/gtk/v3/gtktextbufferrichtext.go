@@ -63,7 +63,7 @@ func _gotk4_gtk3_TextBufferDeserializeFunc(arg1 *C.void, arg2 *C.void, arg3 *C.v
 type TextBufferSerializeFunc func(registerBuffer, contentBuffer *TextBuffer, start, end *TextIter) (length uint, guint8 *byte)
 
 //export _gotk4_gtk3_TextBufferSerializeFunc
-func _gotk4_gtk3_TextBufferSerializeFunc(arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.void, arg5 *C.void, arg6 C.gpointer) (cret *C.guint8) {
+func _gotk4_gtk3_TextBufferSerializeFunc(arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.void, arg5 *C.void, arg6 C.gpointer) (cret *C.void) {
 	var fn TextBufferSerializeFunc
 	{
 		v := gbox.Get(uintptr(arg6))

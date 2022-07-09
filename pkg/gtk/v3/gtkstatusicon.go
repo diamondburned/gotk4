@@ -584,8 +584,9 @@ func (statusIcon *StatusIcon) ConnectSizeChanged(f func(size int32) (ok bool)) c
 //    - statusIcon: new StatusIcon.
 //
 func NewStatusIcon() *StatusIcon {
-	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("new_StatusIcon", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_gret := _info.InvokeClassMethod("new_StatusIcon", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _statusIcon *StatusIcon // out
 
@@ -616,8 +617,9 @@ func NewStatusIconFromFile(filename string) *StatusIcon {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("new_StatusIcon_from_file", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_gret := _info.InvokeClassMethod("new_StatusIcon_from_file", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(filename)
 
@@ -647,8 +649,9 @@ func NewStatusIconFromGIcon(icon gio.Iconner) *StatusIcon {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("new_StatusIcon_from_gicon", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_gret := _info.InvokeClassMethod("new_StatusIcon_from_gicon", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(icon)
 
@@ -680,8 +683,9 @@ func NewStatusIconFromIconName(iconName string) *StatusIcon {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("new_StatusIcon_from_icon_name", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_gret := _info.InvokeClassMethod("new_StatusIcon_from_icon_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iconName)
 
@@ -713,8 +717,9 @@ func NewStatusIconFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *StatusIcon {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("new_StatusIcon_from_pixbuf", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_gret := _info.InvokeClassMethod("new_StatusIcon_from_pixbuf", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pixbuf)
 
@@ -747,8 +752,9 @@ func NewStatusIconFromStock(stockId string) *StatusIcon {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("new_StatusIcon_from_stock", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_gret := _info.InvokeClassMethod("new_StatusIcon_from_stock", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stockId)
 
@@ -793,8 +799,9 @@ func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, *gdk.Rectangle, Orientati
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_geometry", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_gret := _info.InvokeClassMethod("get_geometry", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(statusIcon)
 
@@ -843,8 +850,9 @@ func (statusIcon *StatusIcon) GIcon() *gio.Icon {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_gicon", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_gret := _info.InvokeClassMethod("get_gicon", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(statusIcon)
 
@@ -877,8 +885,9 @@ func (statusIcon *StatusIcon) HasTooltip() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_has_tooltip", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_gret := _info.InvokeClassMethod("get_has_tooltip", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(statusIcon)
 
@@ -909,8 +918,9 @@ func (statusIcon *StatusIcon) IconName() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_icon_name", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_gret := _info.InvokeClassMethod("get_icon_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(statusIcon)
 
@@ -940,8 +950,9 @@ func (statusIcon *StatusIcon) Pixbuf() *gdkpixbuf.Pixbuf {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_pixbuf", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_gret := _info.InvokeClassMethod("get_pixbuf", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(statusIcon)
 
@@ -979,8 +990,9 @@ func (statusIcon *StatusIcon) Screen() *gdk.Screen {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_screen", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_gret := _info.InvokeClassMethod("get_screen", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(statusIcon)
 
@@ -1017,8 +1029,9 @@ func (statusIcon *StatusIcon) Size() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_size", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_gret := _info.InvokeClassMethod("get_size", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(statusIcon)
 
@@ -1046,8 +1059,9 @@ func (statusIcon *StatusIcon) Stock() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_stock", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_gret := _info.InvokeClassMethod("get_stock", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(statusIcon)
 
@@ -1074,8 +1088,9 @@ func (statusIcon *StatusIcon) Title() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_title", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_gret := _info.InvokeClassMethod("get_title", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(statusIcon)
 
@@ -1101,8 +1116,9 @@ func (statusIcon *StatusIcon) TooltipMarkup() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_tooltip_markup", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_gret := _info.InvokeClassMethod("get_tooltip_markup", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(statusIcon)
 
@@ -1131,8 +1147,9 @@ func (statusIcon *StatusIcon) TooltipText() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_tooltip_text", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_gret := _info.InvokeClassMethod("get_tooltip_text", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(statusIcon)
 
@@ -1162,8 +1179,9 @@ func (statusIcon *StatusIcon) Visible() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_visible", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_gret := _info.InvokeClassMethod("get_visible", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(statusIcon)
 
@@ -1201,8 +1219,9 @@ func (statusIcon *StatusIcon) X11WindowID() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("get_x11_window_id", _args[:], nil)
-	_cret = *(*C.guint32)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_gret := _info.InvokeClassMethod("get_x11_window_id", _args[:], nil)
+	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(statusIcon)
 
@@ -1228,8 +1247,9 @@ func (statusIcon *StatusIcon) IsEmbedded() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 
-	_gret := girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("is_embedded", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_gret := _info.InvokeClassMethod("is_embedded", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(statusIcon)
 
@@ -1260,7 +1280,8 @@ func (statusIcon *StatusIcon) SetFromFile(filename string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_from_file", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_info.InvokeClassMethod("set_from_file", _args[:], nil)
 
 	runtime.KeepAlive(statusIcon)
 	runtime.KeepAlive(filename)
@@ -1283,7 +1304,8 @@ func (statusIcon *StatusIcon) SetFromGIcon(icon gio.Iconner) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 
-	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_from_gicon", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_info.InvokeClassMethod("set_from_gicon", _args[:], nil)
 
 	runtime.KeepAlive(statusIcon)
 	runtime.KeepAlive(icon)
@@ -1307,7 +1329,8 @@ func (statusIcon *StatusIcon) SetFromIconName(iconName string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(iconName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_from_icon_name", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_info.InvokeClassMethod("set_from_icon_name", _args[:], nil)
 
 	runtime.KeepAlive(statusIcon)
 	runtime.KeepAlive(iconName)
@@ -1332,7 +1355,8 @@ func (statusIcon *StatusIcon) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	}
 
-	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_from_pixbuf", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_info.InvokeClassMethod("set_from_pixbuf", _args[:], nil)
 
 	runtime.KeepAlive(statusIcon)
 	runtime.KeepAlive(pixbuf)
@@ -1354,7 +1378,8 @@ func (statusIcon *StatusIcon) SetFromStock(stockId string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_from_stock", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_info.InvokeClassMethod("set_from_stock", _args[:], nil)
 
 	runtime.KeepAlive(statusIcon)
 	runtime.KeepAlive(stockId)
@@ -1380,7 +1405,8 @@ func (statusIcon *StatusIcon) SetHasTooltip(hasTooltip bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_has_tooltip", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_info.InvokeClassMethod("set_has_tooltip", _args[:], nil)
 
 	runtime.KeepAlive(statusIcon)
 	runtime.KeepAlive(hasTooltip)
@@ -1406,7 +1432,8 @@ func (statusIcon *StatusIcon) SetName(name string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_name", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_info.InvokeClassMethod("set_name", _args[:], nil)
 
 	runtime.KeepAlive(statusIcon)
 	runtime.KeepAlive(name)
@@ -1429,7 +1456,8 @@ func (statusIcon *StatusIcon) SetScreen(screen *gdk.Screen) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
-	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_screen", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_info.InvokeClassMethod("set_screen", _args[:], nil)
 
 	runtime.KeepAlive(statusIcon)
 	runtime.KeepAlive(screen)
@@ -1454,7 +1482,8 @@ func (statusIcon *StatusIcon) SetTitle(title string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(title)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_title", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_info.InvokeClassMethod("set_title", _args[:], nil)
 
 	runtime.KeepAlive(statusIcon)
 	runtime.KeepAlive(title)
@@ -1484,7 +1513,8 @@ func (statusIcon *StatusIcon) SetTooltipMarkup(markup string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_tooltip_markup", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_info.InvokeClassMethod("set_tooltip_markup", _args[:], nil)
 
 	runtime.KeepAlive(statusIcon)
 	runtime.KeepAlive(markup)
@@ -1511,7 +1541,8 @@ func (statusIcon *StatusIcon) SetTooltipText(text string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_tooltip_text", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_info.InvokeClassMethod("set_tooltip_text", _args[:], nil)
 
 	runtime.KeepAlive(statusIcon)
 	runtime.KeepAlive(text)
@@ -1535,7 +1566,8 @@ func (statusIcon *StatusIcon) SetVisible(visible bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "StatusIcon").InvokeMethod("set_visible", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "StatusIcon")
+	_info.InvokeClassMethod("set_visible", _args[:], nil)
 
 	runtime.KeepAlive(statusIcon)
 	runtime.KeepAlive(visible)

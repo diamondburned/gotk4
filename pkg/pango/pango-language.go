@@ -78,7 +78,9 @@ func (language *Language) SampleString() string {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(language)))
 	}
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Language")
+	_gret := _info.InvokeRecordMethod("get_sample_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(language)
 
@@ -115,7 +117,9 @@ func (language *Language) Matches(rangeList string) bool {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(rangeList)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Language")
+	_gret := _info.InvokeRecordMethod("matches", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(language)
 	runtime.KeepAlive(rangeList)
@@ -141,7 +145,9 @@ func (language *Language) String() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(language)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Language")
+	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(language)
 
@@ -182,8 +188,9 @@ func LanguageFromString(language string) *Language {
 		defer C.free(unsafe.Pointer(_args[0]))
 	}
 
-	_gret := girepository.MustFind("Pango", "from_string").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "from_string")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(language)
 
@@ -226,8 +233,9 @@ func LanguageFromString(language string) *Language {
 //    - language: default language as a PangoLanguage, must not be freed.
 //
 func LanguageGetDefault() *Language {
-	_gret := girepository.MustFind("Pango", "get_default").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "get_default")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _language *Language // out
 
@@ -251,8 +259,9 @@ func LanguageGetDefault() *Language {
 //    - language (optional): NULL-terminated array of PangoLanguage*.
 //
 func LanguageGetPreferred() *Language {
-	_gret := girepository.MustFind("Pango", "get_preferred").Invoke(nil, nil)
-	_cret = *(***C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "get_preferred")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(***C.void)(unsafe.Pointer(&_gret))
 
 	var _language *Language // out
 

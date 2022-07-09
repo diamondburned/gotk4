@@ -16,16 +16,16 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GFile* _gotk4_gio2_VFSFileLookupFunc(void*, void*, gpointer);
-// extern GFile* _gotk4_gio2_VfsClass_get_file_for_path(void*, void*);
-// extern GFile* _gotk4_gio2_VfsClass_get_file_for_uri(void*, void*);
-// extern GFile* _gotk4_gio2_VfsClass_parse_name(void*, void*);
 // extern gboolean _gotk4_gio2_VfsClass_is_active(void*);
-// extern gchar** _gotk4_gio2_VfsClass_get_supported_uri_schemes(void*);
 // extern void _gotk4_gio2_VfsClass_add_writable_namespaces(void*, void*);
 // extern void _gotk4_gio2_VfsClass_local_file_moved(void*, void*, void*);
 // extern void _gotk4_gio2_VfsClass_local_file_removed(void*, void*);
 // extern void callbackDelete(gpointer);
+// extern void* _gotk4_gio2_VFSFileLookupFunc(void*, void*, gpointer);
+// extern void* _gotk4_gio2_VfsClass_get_file_for_path(void*, void*);
+// extern void* _gotk4_gio2_VfsClass_get_file_for_uri(void*, void*);
+// extern void* _gotk4_gio2_VfsClass_parse_name(void*, void*);
+// extern void** _gotk4_gio2_VfsClass_get_supported_uri_schemes(void*);
 import "C"
 
 // GTypeVFS returns the GType for the type VFS.
@@ -52,7 +52,7 @@ const VFS_EXTENSION_POINT_NAME = "gio-vfs"
 type VFSFileLookupFunc func(vfs *VFS, identifier string) (file *File)
 
 //export _gotk4_gio2_VFSFileLookupFunc
-func _gotk4_gio2_VFSFileLookupFunc(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) (cret *C.GFile) {
+func _gotk4_gio2_VFSFileLookupFunc(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) (cret *C.void) {
 	var fn VFSFileLookupFunc
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -232,7 +232,7 @@ func _gotk4_gio2_VfsClass_add_writable_namespaces(arg0 *C.void, arg1 *C.void) {
 }
 
 //export _gotk4_gio2_VfsClass_get_file_for_path
-func _gotk4_gio2_VfsClass_get_file_for_path(arg0 *C.void, arg1 *C.void) (cret *C.GFile) {
+func _gotk4_gio2_VfsClass_get_file_for_path(arg0 *C.void, arg1 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FileForPath(path string) *File })
 
@@ -249,7 +249,7 @@ func _gotk4_gio2_VfsClass_get_file_for_path(arg0 *C.void, arg1 *C.void) (cret *C
 }
 
 //export _gotk4_gio2_VfsClass_get_file_for_uri
-func _gotk4_gio2_VfsClass_get_file_for_uri(arg0 *C.void, arg1 *C.void) (cret *C.GFile) {
+func _gotk4_gio2_VfsClass_get_file_for_uri(arg0 *C.void, arg1 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FileForURI(uri string) *File })
 
@@ -266,7 +266,7 @@ func _gotk4_gio2_VfsClass_get_file_for_uri(arg0 *C.void, arg1 *C.void) (cret *C.
 }
 
 //export _gotk4_gio2_VfsClass_get_supported_uri_schemes
-func _gotk4_gio2_VfsClass_get_supported_uri_schemes(arg0 *C.void) (cret **C.gchar) {
+func _gotk4_gio2_VfsClass_get_supported_uri_schemes(arg0 *C.void) (cret **C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SupportedURISchemes() []string })
 
@@ -330,7 +330,7 @@ func _gotk4_gio2_VfsClass_local_file_removed(arg0 *C.void, arg1 *C.void) {
 }
 
 //export _gotk4_gio2_VfsClass_parse_name
-func _gotk4_gio2_VfsClass_parse_name(arg0 *C.void, arg1 *C.void) (cret *C.GFile) {
+func _gotk4_gio2_VfsClass_parse_name(arg0 *C.void, arg1 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ParseName(parseName string) *File })
 
@@ -373,8 +373,9 @@ func (vfs *VFS) FileForPath(path string) *File {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(path)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gio", "Vfs").InvokeMethod("get_file_for_path", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Vfs")
+	_gret := _info.InvokeClassMethod("get_file_for_path", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(vfs)
 	runtime.KeepAlive(path)
@@ -406,8 +407,9 @@ func (vfs *VFS) FileForURI(uri string) *File {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gio", "Vfs").InvokeMethod("get_file_for_uri", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Vfs")
+	_gret := _info.InvokeClassMethod("get_file_for_uri", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(vfs)
 	runtime.KeepAlive(uri)
@@ -431,8 +433,9 @@ func (vfs *VFS) SupportedURISchemes() []string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(vfs).Native()))
 
-	_gret := girepository.MustFind("Gio", "Vfs").InvokeMethod("get_supported_uri_schemes", _args[:], nil)
-	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Vfs")
+	_gret := _info.InvokeClassMethod("get_supported_uri_schemes", _args[:], nil)
+	_cret := *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(vfs)
 
@@ -466,8 +469,9 @@ func (vfs *VFS) IsActive() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(vfs).Native()))
 
-	_gret := girepository.MustFind("Gio", "Vfs").InvokeMethod("is_active", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Vfs")
+	_gret := _info.InvokeClassMethod("is_active", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(vfs)
 
@@ -500,8 +504,9 @@ func (vfs *VFS) ParseName(parseName string) *File {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(parseName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gio", "Vfs").InvokeMethod("parse_name", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Vfs")
+	_gret := _info.InvokeClassMethod("parse_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(vfs)
 	runtime.KeepAlive(parseName)
@@ -562,8 +567,9 @@ func (vfs *VFS) RegisterURIScheme(scheme string, uriFunc, parseNameFunc VFSFileL
 		_args[7] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
 
-	_gret := girepository.MustFind("Gio", "Vfs").InvokeMethod("register_uri_scheme", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Vfs")
+	_gret := _info.InvokeClassMethod("register_uri_scheme", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(vfs)
 	runtime.KeepAlive(scheme)
@@ -598,8 +604,9 @@ func (vfs *VFS) UnregisterURIScheme(scheme string) bool {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(scheme)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gio", "Vfs").InvokeMethod("unregister_uri_scheme", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Vfs")
+	_gret := _info.InvokeClassMethod("unregister_uri_scheme", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(vfs)
 	runtime.KeepAlive(scheme)
@@ -621,8 +628,9 @@ func (vfs *VFS) UnregisterURIScheme(scheme string) bool {
 //      is available.
 //
 func VFSGetDefault() *VFS {
-	_gret := girepository.MustFind("Gio", "get_default").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "get_default")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _vfs *VFS // out
 
@@ -638,8 +646,9 @@ func VFSGetDefault() *VFS {
 //    - vfs: #GVfs.
 //
 func VFSGetLocal() *VFS {
-	_gret := girepository.MustFind("Gio", "get_local").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "get_local")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _vfs *VFS // out
 

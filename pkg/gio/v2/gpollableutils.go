@@ -39,8 +39,9 @@ func NewPollableSource(pollableStream *coreglib.Object) *glib.Source {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(pollableStream.Native()))
 
-	_gret := girepository.MustFind("Gio", "pollable_source_new").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "pollable_source_new")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pollableStream)
 
@@ -52,7 +53,7 @@ func NewPollableSource(pollableStream *coreglib.Object) *glib.Source {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("GLib", "Source").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("GLib", "Source").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -88,8 +89,9 @@ func PollableSourceNewFull(ctx context.Context, pollableStream *coreglib.Object,
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(childSource)))
 	}
 
-	_gret := girepository.MustFind("Gio", "pollable_source_new_full").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "pollable_source_new_full")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(pollableStream)
@@ -103,7 +105,7 @@ func PollableSourceNewFull(ctx context.Context, pollableStream *coreglib.Object,
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("GLib", "Source").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("GLib", "Source").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)

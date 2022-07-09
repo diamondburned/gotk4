@@ -950,3 +950,39 @@ func resolveCopyType(gen FileGenerator, typ *gir.Type, array *gir.Array) *gir.Ty
 
 	return &cpy
 }
+
+// ResolveAnyTypeC resolves any type to its C type. If link mode is runtime,
+// then a primitive is returned.
+func ResolveAnyTypeC(gen FileGenerator, any gir.AnyType) string {
+	switch gen.LinkMode() {
+	case DynamicLinkMode:
+		any = ResolveAnyType(gen, any)
+		return AnyTypeC(any)
+	case RuntimeLinkMode:
+		any = ResolveAnyType(gen, any)
+		if prim := AnyTypeCPrimitive(gen, any); prim != "" {
+			return prim
+		}
+		return ""
+	default:
+		panic("unreachable")
+	}
+}
+
+// ResolveAnyTypeCGo resolves any type to its Cgo type. If link mode is runtime,
+// then a primitive is returned.
+func ResolveAnyTypeCGo(gen FileGenerator, any gir.AnyType) string {
+	switch gen.LinkMode() {
+	case DynamicLinkMode:
+		any = ResolveAnyType(gen, any)
+		return AnyTypeCGo(any)
+	case RuntimeLinkMode:
+		any = ResolveAnyType(gen, any)
+		if prim := AnyTypeCGoPrimitive(gen, any); prim != "" {
+			return prim
+		}
+		return ""
+	default:
+		panic("unreachable")
+	}
+}

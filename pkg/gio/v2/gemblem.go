@@ -71,8 +71,9 @@ func NewEmblem(icon Iconner) *Emblem {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 
-	_gret := girepository.MustFind("Gio", "Emblem").InvokeMethod("new_Emblem", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Emblem")
+	_gret := _info.InvokeClassMethod("new_Emblem", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(icon)
 
@@ -95,8 +96,9 @@ func (emblem *Emblem) GetIcon() *Icon {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(emblem).Native()))
 
-	_gret := girepository.MustFind("Gio", "Emblem").InvokeMethod("get_icon", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Emblem")
+	_gret := _info.InvokeClassMethod("get_icon", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(emblem)
 

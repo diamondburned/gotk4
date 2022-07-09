@@ -106,8 +106,9 @@ func NewGestureSwipe(widget Widgetter) *GestureSwipe {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureSwipe").InvokeMethod("new_GestureSwipe", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureSwipe")
+	_gret := _info.InvokeClassMethod("new_GestureSwipe", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
 
@@ -134,8 +135,9 @@ func (gesture *GestureSwipe) Velocity() (velocityX, velocityY float64, ok bool) 
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureSwipe").InvokeMethod("get_velocity", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureSwipe")
+	_gret := _info.InvokeClassMethod("get_velocity", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)
 

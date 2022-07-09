@@ -256,8 +256,9 @@ func (style *Style) ConnectUnrealize(f func()) coreglib.SignalHandle {
 //    - style: new Style.
 //
 func NewStyle() *Style {
-	_gret := girepository.MustFind("Gtk", "Style").InvokeMethod("new_Style", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Style")
+	_gret := _info.InvokeClassMethod("new_Style", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _style *Style // out
 
@@ -279,8 +280,9 @@ func (style *Style) Copy() *Style {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(style).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Style").InvokeMethod("copy", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Style")
+	_gret := _info.InvokeClassMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(style)
 
@@ -300,7 +302,8 @@ func (style *Style) Detach() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(style).Native()))
 
-	girepository.MustFind("Gtk", "Style").InvokeMethod("detach", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Style")
+	_info.InvokeClassMethod("detach", _args[:], nil)
 
 	runtime.KeepAlive(style)
 }
@@ -316,8 +319,9 @@ func (style *Style) HasContext() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(style).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Style").InvokeMethod("has_context", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Style")
+	_gret := _info.InvokeClassMethod("has_context", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(style)
 
@@ -354,8 +358,9 @@ func (style *Style) LookupColor(colorName string) (*gdk.Color, bool) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(colorName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "Style").InvokeMethod("lookup_color", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Style")
+	_gret := _info.InvokeClassMethod("lookup_color", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(style)
 	runtime.KeepAlive(colorName)
@@ -391,8 +396,9 @@ func (style *Style) LookupIconSet(stockId string) *IconSet {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "Style").InvokeMethod("lookup_icon_set", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Style")
+	_gret := _info.InvokeClassMethod("lookup_icon_set", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(style)
 	runtime.KeepAlive(stockId)
@@ -431,7 +437,8 @@ func (widget *Widget) ClassPath() (pathLength uint32, path, pathReversed string)
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	girepository.MustFind("Gtk", "Widget").InvokeMethod("class_path", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "Widget")
+	_info.InvokeClassMethod("class_path", _args[:], _outs[:])
 
 	runtime.KeepAlive(widget)
 
@@ -466,7 +473,8 @@ func (widget *Widget) EnsureStyle() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	girepository.MustFind("Gtk", "Widget").InvokeMethod("ensure_style", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Widget")
+	_info.InvokeClassMethod("ensure_style", _args[:], nil)
 
 	runtime.KeepAlive(widget)
 }
@@ -497,8 +505,9 @@ func (widget *Widget) ModifierStyle() *RCStyle {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_modifier_style", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Widget")
+	_gret := _info.InvokeClassMethod("get_modifier_style", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
 
@@ -522,8 +531,9 @@ func (widget *Widget) Style() *Style {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("get_style", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Widget")
+	_gret := _info.InvokeClassMethod("get_style", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
 
@@ -549,8 +559,9 @@ func (widget *Widget) HasRCStyle() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Widget").InvokeMethod("has_rc_style", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Widget")
+	_gret := _info.InvokeClassMethod("has_rc_style", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
 
@@ -591,7 +602,8 @@ func (widget *Widget) ModifyCursor(primary, secondary *gdk.Color) {
 		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(secondary)))
 	}
 
-	girepository.MustFind("Gtk", "Widget").InvokeMethod("modify_cursor", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Widget")
+	_info.InvokeClassMethod("modify_cursor", _args[:], nil)
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(primary)
@@ -618,7 +630,8 @@ func (widget *Widget) ModifyFont(fontDesc *pango.FontDescription) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(fontDesc)))
 	}
 
-	girepository.MustFind("Gtk", "Widget").InvokeMethod("modify_font", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Widget")
+	_info.InvokeClassMethod("modify_font", _args[:], nil)
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(fontDesc)
@@ -653,7 +666,8 @@ func (widget *Widget) ModifyStyle(style *RCStyle) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(style).Native()))
 
-	girepository.MustFind("Gtk", "Widget").InvokeMethod("modify_style", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Widget")
+	_info.InvokeClassMethod("modify_style", _args[:], nil)
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(style)
@@ -685,7 +699,8 @@ func (widget *Widget) Path() (pathLength uint32, path, pathReversed string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	girepository.MustFind("Gtk", "Widget").InvokeMethod("path", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "Widget")
+	_info.InvokeClassMethod("path", _args[:], _outs[:])
 
 	runtime.KeepAlive(widget)
 
@@ -720,7 +735,8 @@ func (widget *Widget) ResetRCStyles() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	girepository.MustFind("Gtk", "Widget").InvokeMethod("reset_rc_styles", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Widget")
+	_info.InvokeClassMethod("reset_rc_styles", _args[:], nil)
 
 	runtime.KeepAlive(widget)
 }
@@ -743,7 +759,8 @@ func (widget *Widget) SetStyle(style *Style) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(style).Native()))
 	}
 
-	girepository.MustFind("Gtk", "Widget").InvokeMethod("set_style", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Widget")
+	_info.InvokeClassMethod("set_style", _args[:], nil)
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(style)
@@ -765,7 +782,8 @@ func (widget *Widget) StyleAttach() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	girepository.MustFind("Gtk", "Widget").InvokeMethod("style_attach", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Widget")
+	_info.InvokeClassMethod("style_attach", _args[:], nil)
 
 	runtime.KeepAlive(widget)
 }
@@ -782,8 +800,9 @@ func (widget *Widget) StyleAttach() {
 //      be modified or freed.
 //
 func WidgetGetDefaultStyle() *Style {
-	_gret := girepository.MustFind("Gtk", "get_default_style").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "get_default_style")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _style *Style // out
 

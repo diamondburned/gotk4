@@ -213,8 +213,9 @@ func (message *SocketControlMessage) Level() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
 
-	_gret := girepository.MustFind("Gio", "SocketControlMessage").InvokeMethod("get_level", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketControlMessage")
+	_gret := _info.InvokeClassMethod("get_level", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
 
@@ -237,8 +238,9 @@ func (message *SocketControlMessage) MsgType() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
 
-	_gret := girepository.MustFind("Gio", "SocketControlMessage").InvokeMethod("get_msg_type", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketControlMessage")
+	_gret := _info.InvokeClassMethod("get_msg_type", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
 
@@ -261,8 +263,9 @@ func (message *SocketControlMessage) Size() uint {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
 
-	_gret := girepository.MustFind("Gio", "SocketControlMessage").InvokeMethod("get_size", _args[:], nil)
-	_cret = *(*C.gsize)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SocketControlMessage")
+	_gret := _info.InvokeClassMethod("get_size", _args[:], nil)
+	_cret := *(*C.gsize)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
 
@@ -288,7 +291,8 @@ func (message *SocketControlMessage) Serialize(data unsafe.Pointer) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
 	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (C.gpointer)(unsafe.Pointer(data))
 
-	girepository.MustFind("Gio", "SocketControlMessage").InvokeMethod("serialize", _args[:], nil)
+	_info := girepository.MustFind("Gio", "SocketControlMessage")
+	_info.InvokeClassMethod("serialize", _args[:], nil)
 
 	runtime.KeepAlive(message)
 	runtime.KeepAlive(data)
@@ -322,8 +326,9 @@ func SocketControlMessageDeserialize(level, typ int32, data []byte) SocketContro
 		*(*C.guint8)(unsafe.Pointer(&_args[3])) = (C.guint8)(unsafe.Pointer(&data[0]))
 	}
 
-	_gret := girepository.MustFind("Gio", "deserialize").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "deserialize")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(level)
 	runtime.KeepAlive(typ)

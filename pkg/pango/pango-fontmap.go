@@ -16,12 +16,12 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern PangoFont* _gotk4_pango1_FontMapClass_load_font(void*, void*, void*);
-// extern PangoFontFamily* _gotk4_pango1_FontMapClass_get_family(void*, void*);
-// extern PangoFontset* _gotk4_pango1_FontMapClass_load_fontset(void*, void*, void*, void*);
 // extern guint _gotk4_pango1_FontMapClass_get_serial(void*);
 // extern void _gotk4_pango1_FontMapClass_changed(void*);
 // extern void _gotk4_pango1_FontMapClass_list_families(void*, void***, void*);
+// extern void* _gotk4_pango1_FontMapClass_get_family(void*, void*);
+// extern void* _gotk4_pango1_FontMapClass_load_font(void*, void*, void*);
+// extern void* _gotk4_pango1_FontMapClass_load_fontset(void*, void*, void*, void*);
 import "C"
 
 // GTypeFontMap returns the GType for the type FontMap.
@@ -192,7 +192,7 @@ func _gotk4_pango1_FontMapClass_changed(arg0 *C.void) {
 }
 
 //export _gotk4_pango1_FontMapClass_get_family
-func _gotk4_pango1_FontMapClass_get_family(arg0 *C.void, arg1 *C.void) (cret *C.PangoFontFamily) {
+func _gotk4_pango1_FontMapClass_get_family(arg0 *C.void, arg1 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Family(name string) FontFamilier
@@ -239,7 +239,7 @@ func _gotk4_pango1_FontMapClass_list_families(arg0 *C.void, arg1 ***C.void, arg2
 }
 
 //export _gotk4_pango1_FontMapClass_load_font
-func _gotk4_pango1_FontMapClass_load_font(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret *C.PangoFont) {
+func _gotk4_pango1_FontMapClass_load_font(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LoadFont(context *Context, desc *FontDescription) Fonter
@@ -262,7 +262,7 @@ func _gotk4_pango1_FontMapClass_load_font(arg0 *C.void, arg1 *C.void, arg2 *C.vo
 }
 
 //export _gotk4_pango1_FontMapClass_load_fontset
-func _gotk4_pango1_FontMapClass_load_fontset(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.void) (cret *C.PangoFontset) {
+func _gotk4_pango1_FontMapClass_load_fontset(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LoadFontset(context *Context, desc *FontDescription, language *Language) Fontsetter
@@ -316,7 +316,8 @@ func (fontmap *FontMap) Changed() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
 
-	girepository.MustFind("Pango", "FontMap").InvokeMethod("changed", _args[:], nil)
+	_info := girepository.MustFind("Pango", "FontMap")
+	_info.InvokeClassMethod("changed", _args[:], nil)
 
 	runtime.KeepAlive(fontmap)
 }
@@ -340,8 +341,9 @@ func (fontmap *FontMap) CreateContext() *Context {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
 
-	_gret := girepository.MustFind("Pango", "FontMap").InvokeMethod("create_context", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontMap")
+	_gret := _info.InvokeClassMethod("create_context", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(fontmap)
 
@@ -369,8 +371,9 @@ func (fontmap *FontMap) Family(name string) FontFamilier {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Pango", "FontMap").InvokeMethod("get_family", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontMap")
+	_gret := _info.InvokeClassMethod("get_family", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(fontmap)
 	runtime.KeepAlive(name)
@@ -420,8 +423,9 @@ func (fontmap *FontMap) Serial() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
 
-	_gret := girepository.MustFind("Pango", "FontMap").InvokeMethod("get_serial", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontMap")
+	_gret := _info.InvokeClassMethod("get_serial", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(fontmap)
 
@@ -445,7 +449,8 @@ func (fontmap *FontMap) ListFamilies() []FontFamilier {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
 
-	girepository.MustFind("Pango", "FontMap").InvokeMethod("list_families", _args[:], _outs[:])
+	_info := girepository.MustFind("Pango", "FontMap")
+	_info.InvokeClassMethod("list_families", _args[:], _outs[:])
 
 	runtime.KeepAlive(fontmap)
 
@@ -498,8 +503,9 @@ func (fontmap *FontMap) LoadFont(context *Context, desc *FontDescription) Fonter
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
 
-	_gret := girepository.MustFind("Pango", "FontMap").InvokeMethod("load_font", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontMap")
+	_gret := _info.InvokeClassMethod("load_font", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(fontmap)
 	runtime.KeepAlive(context)
@@ -549,8 +555,9 @@ func (fontmap *FontMap) LoadFontset(context *Context, desc *FontDescription, lan
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(language)))
 
-	_gret := girepository.MustFind("Pango", "FontMap").InvokeMethod("load_fontset", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "FontMap")
+	_gret := _info.InvokeClassMethod("load_fontset", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(fontmap)
 	runtime.KeepAlive(context)

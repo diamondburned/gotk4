@@ -17,8 +17,6 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GtkCellAreaContext* _gotk4_gtk3_CellAreaClass_copy_context(void*, void*);
-// extern GtkCellAreaContext* _gotk4_gtk3_CellAreaClass_create_context(void*);
 // extern gboolean _gotk4_gtk3_CellAllocCallback(void*, void*, void*, gpointer);
 // extern gboolean _gotk4_gtk3_CellAreaClass_is_activatable(void*);
 // extern gboolean _gotk4_gtk3_CellCallback(void*, gpointer);
@@ -33,6 +31,8 @@ import (
 // extern void _gotk4_gtk3_CellArea_ConnectApplyAttributes(gpointer, void*, void*, gboolean, gboolean, guintptr);
 // extern void _gotk4_gtk3_CellArea_ConnectFocusChanged(gpointer, void*, void*, guintptr);
 // extern void _gotk4_gtk3_CellArea_ConnectRemoveEditable(gpointer, void*, void*, guintptr);
+// extern void* _gotk4_gtk3_CellAreaClass_copy_context(void*, void*);
+// extern void* _gotk4_gtk3_CellAreaClass_create_context(void*);
 import "C"
 
 // GTypeCellArea returns the GType for the type CellArea.
@@ -598,7 +598,7 @@ func _gotk4_gtk3_CellAreaClass_apply_attributes(arg0 *C.void, arg1 *C.void, arg2
 }
 
 //export _gotk4_gtk3_CellAreaClass_copy_context
-func _gotk4_gtk3_CellAreaClass_copy_context(arg0 *C.void, arg1 *C.void) (cret *C.GtkCellAreaContext) {
+func _gotk4_gtk3_CellAreaClass_copy_context(arg0 *C.void, arg1 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CopyContext(context *CellAreaContext) *CellAreaContext
@@ -617,7 +617,7 @@ func _gotk4_gtk3_CellAreaClass_copy_context(arg0 *C.void, arg1 *C.void) (cret *C
 }
 
 //export _gotk4_gtk3_CellAreaClass_create_context
-func _gotk4_gtk3_CellAreaClass_create_context(arg0 *C.void) (cret *C.GtkCellAreaContext) {
+func _gotk4_gtk3_CellAreaClass_create_context(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CreateContext() *CellAreaContext })
 
@@ -1079,7 +1079,8 @@ func (area *CellArea) Add(renderer CellRendererer) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	girepository.MustFind("Gtk", "CellArea").InvokeMethod("add", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_info.InvokeClassMethod("add", _args[:], nil)
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
@@ -1104,7 +1105,8 @@ func (area *CellArea) AddFocusSibling(renderer, sibling CellRendererer) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sibling).Native()))
 
-	girepository.MustFind("Gtk", "CellArea").InvokeMethod("add_focus_sibling", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_info.InvokeClassMethod("add_focus_sibling", _args[:], nil)
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
@@ -1135,7 +1137,8 @@ func (area *CellArea) ApplyAttributes(treeModel TreeModeller, iter *TreeIter, is
 		*(*C.gboolean)(unsafe.Pointer(&_args[4])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "CellArea").InvokeMethod("apply_attributes", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_info.InvokeClassMethod("apply_attributes", _args[:], nil)
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(treeModel)
@@ -1162,7 +1165,8 @@ func (area *CellArea) AttributeConnect(renderer CellRendererer, attribute string
 	defer C.free(unsafe.Pointer(_args[2]))
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(column)
 
-	girepository.MustFind("Gtk", "CellArea").InvokeMethod("attribute_connect", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_info.InvokeClassMethod("attribute_connect", _args[:], nil)
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
@@ -1186,7 +1190,8 @@ func (area *CellArea) AttributeDisconnect(renderer CellRendererer, attribute str
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	girepository.MustFind("Gtk", "CellArea").InvokeMethod("attribute_disconnect", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_info.InvokeClassMethod("attribute_disconnect", _args[:], nil)
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
@@ -1213,8 +1218,9 @@ func (area *CellArea) AttributeGetColumn(renderer CellRendererer, attribute stri
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	_gret := girepository.MustFind("Gtk", "CellArea").InvokeMethod("attribute_get_column", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_gret := _info.InvokeClassMethod("attribute_get_column", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
@@ -1244,7 +1250,8 @@ func (area *CellArea) CellGetProperty(renderer CellRendererer, propertyName stri
 	defer C.free(unsafe.Pointer(_args[2]))
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(value.Native()))
 
-	girepository.MustFind("Gtk", "CellArea").InvokeMethod("cell_get_property", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_info.InvokeClassMethod("cell_get_property", _args[:], nil)
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
@@ -1269,7 +1276,8 @@ func (area *CellArea) CellSetProperty(renderer CellRendererer, propertyName stri
 	defer C.free(unsafe.Pointer(_args[2]))
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(value.Native()))
 
-	girepository.MustFind("Gtk", "CellArea").InvokeMethod("cell_set_property", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_info.InvokeClassMethod("cell_set_property", _args[:], nil)
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
@@ -1301,8 +1309,9 @@ func (area *CellArea) CopyContext(context *CellAreaContext) *CellAreaContext {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gtk", "CellArea").InvokeMethod("copy_context", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_gret := _info.InvokeClassMethod("copy_context", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(context)
@@ -1330,8 +1339,9 @@ func (area *CellArea) CreateContext() *CellAreaContext {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_gret := girepository.MustFind("Gtk", "CellArea").InvokeMethod("create_context", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_gret := _info.InvokeClassMethod("create_context", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 
@@ -1356,7 +1366,8 @@ func (area *CellArea) ForEach(callback CellCallback) {
 	_args[2] = C.gpointer(gbox.Assign(callback))
 	defer gbox.Delete(uintptr(_args[2]))
 
-	girepository.MustFind("Gtk", "CellArea").InvokeMethod("foreach", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_info.InvokeClassMethod("foreach", _args[:], nil)
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(callback)
@@ -1385,7 +1396,8 @@ func (area *CellArea) ForEachAlloc(context *CellAreaContext, widget Widgetter, c
 	_args[6] = C.gpointer(gbox.Assign(callback))
 	defer gbox.Delete(uintptr(_args[6]))
 
-	girepository.MustFind("Gtk", "CellArea").InvokeMethod("foreach_alloc", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_info.InvokeClassMethod("foreach_alloc", _args[:], nil)
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(context)
@@ -1419,7 +1431,8 @@ func (area *CellArea) CellAllocation(context *CellAreaContext, widget Widgetter,
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[4])) = (*C.void)(gextras.StructNative(unsafe.Pointer(cellArea)))
 
-	girepository.MustFind("Gtk", "CellArea").InvokeMethod("get_cell_allocation", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_info.InvokeClassMethod("get_cell_allocation", _args[:], _outs[:])
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(context)
@@ -1462,8 +1475,9 @@ func (area *CellArea) CellAtPosition(context *CellAreaContext, widget Widgetter,
 	*(*C.gint)(unsafe.Pointer(&_args[4])) = C.gint(x)
 	*(*C.gint)(unsafe.Pointer(&_args[5])) = C.gint(y)
 
-	_gret := girepository.MustFind("Gtk", "CellArea").InvokeMethod("get_cell_at_position", _args[:], _outs[:])
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_gret := _info.InvokeClassMethod("get_cell_at_position", _args[:], _outs[:])
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(context)
@@ -1513,8 +1527,9 @@ func (area *CellArea) CurrentPathString() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_gret := girepository.MustFind("Gtk", "CellArea").InvokeMethod("get_current_path_string", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_gret := _info.InvokeClassMethod("get_current_path_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 
@@ -1537,8 +1552,9 @@ func (area *CellArea) EditWidget() *CellEditable {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_gret := girepository.MustFind("Gtk", "CellArea").InvokeMethod("get_edit_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_gret := _info.InvokeClassMethod("get_edit_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 
@@ -1560,8 +1576,9 @@ func (area *CellArea) EditedCell() CellRendererer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_gret := girepository.MustFind("Gtk", "CellArea").InvokeMethod("get_edited_cell", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_gret := _info.InvokeClassMethod("get_edited_cell", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 
@@ -1599,8 +1616,9 @@ func (area *CellArea) FocusCell() CellRendererer {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_gret := girepository.MustFind("Gtk", "CellArea").InvokeMethod("get_focus_cell", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_gret := _info.InvokeClassMethod("get_focus_cell", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 
@@ -1648,8 +1666,9 @@ func (area *CellArea) FocusFromSibling(renderer CellRendererer) CellRendererer {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	_gret := girepository.MustFind("Gtk", "CellArea").InvokeMethod("get_focus_from_sibling", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_gret := _info.InvokeClassMethod("get_focus_from_sibling", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
@@ -1693,8 +1712,9 @@ func (area *CellArea) FocusSiblings(renderer CellRendererer) []CellRendererer {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	_gret := girepository.MustFind("Gtk", "CellArea").InvokeMethod("get_focus_siblings", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_gret := _info.InvokeClassMethod("get_focus_siblings", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
@@ -1754,7 +1774,8 @@ func (area *CellArea) PreferredHeight(context *CellAreaContext, widget Widgetter
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	girepository.MustFind("Gtk", "CellArea").InvokeMethod("get_preferred_height", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_info.InvokeClassMethod("get_preferred_height", _args[:], _outs[:])
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(context)
@@ -1807,7 +1828,8 @@ func (area *CellArea) PreferredHeightForWidth(context *CellAreaContext, widget W
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(width)
 
-	girepository.MustFind("Gtk", "CellArea").InvokeMethod("get_preferred_height_for_width", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_info.InvokeClassMethod("get_preferred_height_for_width", _args[:], _outs[:])
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(context)
@@ -1852,7 +1874,8 @@ func (area *CellArea) PreferredWidth(context *CellAreaContext, widget Widgetter)
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	girepository.MustFind("Gtk", "CellArea").InvokeMethod("get_preferred_width", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_info.InvokeClassMethod("get_preferred_width", _args[:], _outs[:])
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(context)
@@ -1905,7 +1928,8 @@ func (area *CellArea) PreferredWidthForHeight(context *CellAreaContext, widget W
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(height)
 
-	girepository.MustFind("Gtk", "CellArea").InvokeMethod("get_preferred_width_for_height", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_info.InvokeClassMethod("get_preferred_width_for_height", _args[:], _outs[:])
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(context)
@@ -1941,8 +1965,9 @@ func (area *CellArea) HasRenderer(renderer CellRendererer) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	_gret := girepository.MustFind("Gtk", "CellArea").InvokeMethod("has_renderer", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_gret := _info.InvokeClassMethod("has_renderer", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
@@ -1978,7 +2003,8 @@ func (area *CellArea) InnerCellArea(widget Widgetter, cellArea *gdk.Rectangle) *
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(cellArea)))
 
-	girepository.MustFind("Gtk", "CellArea").InvokeMethod("inner_cell_area", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_info.InvokeClassMethod("inner_cell_area", _args[:], _outs[:])
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(widget)
@@ -2003,8 +2029,9 @@ func (area *CellArea) IsActivatable() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 
-	_gret := girepository.MustFind("Gtk", "CellArea").InvokeMethod("is_activatable", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_gret := _info.InvokeClassMethod("is_activatable", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 
@@ -2036,8 +2063,9 @@ func (area *CellArea) IsFocusSibling(renderer, sibling CellRendererer) bool {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sibling).Native()))
 
-	_gret := girepository.MustFind("Gtk", "CellArea").InvokeMethod("is_focus_sibling", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_gret := _info.InvokeClassMethod("is_focus_sibling", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
@@ -2064,7 +2092,8 @@ func (area *CellArea) Remove(renderer CellRendererer) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	girepository.MustFind("Gtk", "CellArea").InvokeMethod("remove", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_info.InvokeClassMethod("remove", _args[:], nil)
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
@@ -2085,7 +2114,8 @@ func (area *CellArea) RemoveFocusSibling(renderer, sibling CellRendererer) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sibling).Native()))
 
-	girepository.MustFind("Gtk", "CellArea").InvokeMethod("remove_focus_sibling", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_info.InvokeClassMethod("remove_focus_sibling", _args[:], nil)
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
@@ -2108,7 +2138,8 @@ func (area *CellArea) SetFocusCell(renderer CellRendererer) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 
-	girepository.MustFind("Gtk", "CellArea").InvokeMethod("set_focus_cell", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_info.InvokeClassMethod("set_focus_cell", _args[:], nil)
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
@@ -2134,7 +2165,8 @@ func (area *CellArea) StopEditing(canceled bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "CellArea").InvokeMethod("stop_editing", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "CellArea")
+	_info.InvokeClassMethod("stop_editing", _args[:], nil)
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(canceled)

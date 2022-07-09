@@ -91,8 +91,9 @@ func NewColumnViewColumn(title string, factory *ListItemFactory) *ColumnViewColu
 		C.g_object_ref(C.gpointer(coreglib.InternObject(factory).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "ColumnViewColumn").InvokeMethod("new_ColumnViewColumn", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
+	_gret := _info.InvokeClassMethod("new_ColumnViewColumn", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(title)
 	runtime.KeepAlive(factory)
@@ -117,8 +118,9 @@ func (self *ColumnViewColumn) ColumnView() *ColumnView {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ColumnViewColumn").InvokeMethod("get_column_view", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
+	_gret := _info.InvokeClassMethod("get_column_view", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -142,8 +144,9 @@ func (self *ColumnViewColumn) Expand() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ColumnViewColumn").InvokeMethod("get_expand", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
+	_gret := _info.InvokeClassMethod("get_expand", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -168,8 +171,9 @@ func (self *ColumnViewColumn) Factory() *ListItemFactory {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ColumnViewColumn").InvokeMethod("get_factory", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
+	_gret := _info.InvokeClassMethod("get_factory", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -193,8 +197,9 @@ func (self *ColumnViewColumn) FixedWidth() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ColumnViewColumn").InvokeMethod("get_fixed_width", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
+	_gret := _info.InvokeClassMethod("get_fixed_width", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -217,8 +222,9 @@ func (self *ColumnViewColumn) HeaderMenu() gio.MenuModeller {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ColumnViewColumn").InvokeMethod("get_header_menu", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
+	_gret := _info.InvokeClassMethod("get_header_menu", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -255,8 +261,9 @@ func (self *ColumnViewColumn) Resizable() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ColumnViewColumn").InvokeMethod("get_resizable", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
+	_gret := _info.InvokeClassMethod("get_resizable", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -280,8 +287,9 @@ func (self *ColumnViewColumn) Sorter() *Sorter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ColumnViewColumn").InvokeMethod("get_sorter", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
+	_gret := _info.InvokeClassMethod("get_sorter", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -305,8 +313,9 @@ func (self *ColumnViewColumn) Title() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ColumnViewColumn").InvokeMethod("get_title", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
+	_gret := _info.InvokeClassMethod("get_title", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -330,8 +339,9 @@ func (self *ColumnViewColumn) Visible() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ColumnViewColumn").InvokeMethod("get_visible", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
+	_gret := _info.InvokeClassMethod("get_visible", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -361,7 +371,8 @@ func (self *ColumnViewColumn) SetExpand(expand bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ColumnViewColumn").InvokeMethod("set_expand", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
+	_info.InvokeClassMethod("set_expand", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(expand)
@@ -382,7 +393,8 @@ func (self *ColumnViewColumn) SetFactory(factory *ListItemFactory) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
 	}
 
-	girepository.MustFind("Gtk", "ColumnViewColumn").InvokeMethod("set_factory", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
+	_info.InvokeClassMethod("set_factory", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(factory)
@@ -404,7 +416,8 @@ func (self *ColumnViewColumn) SetFixedWidth(fixedWidth int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(fixedWidth)
 
-	girepository.MustFind("Gtk", "ColumnViewColumn").InvokeMethod("set_fixed_width", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
+	_info.InvokeClassMethod("set_fixed_width", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(fixedWidth)
@@ -425,7 +438,8 @@ func (self *ColumnViewColumn) SetHeaderMenu(menu gio.MenuModeller) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 	}
 
-	girepository.MustFind("Gtk", "ColumnViewColumn").InvokeMethod("set_header_menu", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
+	_info.InvokeClassMethod("set_header_menu", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(menu)
@@ -445,7 +459,8 @@ func (self *ColumnViewColumn) SetResizable(resizable bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ColumnViewColumn").InvokeMethod("set_resizable", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
+	_info.InvokeClassMethod("set_resizable", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(resizable)
@@ -474,7 +489,8 @@ func (self *ColumnViewColumn) SetSorter(sorter *Sorter) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(sorter).Native()))
 	}
 
-	girepository.MustFind("Gtk", "ColumnViewColumn").InvokeMethod("set_sorter", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
+	_info.InvokeClassMethod("set_sorter", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(sorter)
@@ -498,7 +514,8 @@ func (self *ColumnViewColumn) SetTitle(title string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "ColumnViewColumn").InvokeMethod("set_title", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
+	_info.InvokeClassMethod("set_title", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(title)
@@ -518,7 +535,8 @@ func (self *ColumnViewColumn) SetVisible(visible bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ColumnViewColumn").InvokeMethod("set_visible", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
+	_info.InvokeClassMethod("set_visible", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(visible)

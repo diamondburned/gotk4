@@ -102,8 +102,9 @@ func NewVScale(adjustment *Adjustment) *VScale {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 
-	_gret := girepository.MustFind("Gtk", "VScale").InvokeMethod("new_VScale", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "VScale")
+	_gret := _info.InvokeClassMethod("new_VScale", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(adjustment)
 
@@ -143,8 +144,9 @@ func NewVScaleWithRange(min, max, step float64) *VScale {
 	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(max)
 	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(step)
 
-	_gret := girepository.MustFind("Gtk", "VScale").InvokeMethod("new_VScale_with_range", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "VScale")
+	_gret := _info.InvokeClassMethod("new_VScale_with_range", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(min)
 	runtime.KeepAlive(max)

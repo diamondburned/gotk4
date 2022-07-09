@@ -93,8 +93,9 @@ func NewTextTag(name string) *TextTag {
 		defer C.free(unsafe.Pointer(_args[0]))
 	}
 
-	_gret := girepository.MustFind("Gtk", "TextTag").InvokeMethod("new_TextTag", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextTag")
+	_gret := _info.InvokeClassMethod("new_TextTag", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
 
@@ -123,7 +124,8 @@ func (tag *TextTag) Changed(sizeChanged bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "TextTag").InvokeMethod("changed", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextTag")
+	_info.InvokeClassMethod("changed", _args[:], nil)
 
 	runtime.KeepAlive(tag)
 	runtime.KeepAlive(sizeChanged)
@@ -140,8 +142,9 @@ func (tag *TextTag) Priority() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 
-	_gret := girepository.MustFind("Gtk", "TextTag").InvokeMethod("get_priority", _args[:], nil)
-	_cret = *(*C.int)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TextTag")
+	_gret := _info.InvokeClassMethod("get_priority", _args[:], nil)
+	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(tag)
 
@@ -176,7 +179,8 @@ func (tag *TextTag) SetPriority(priority int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(priority)
 
-	girepository.MustFind("Gtk", "TextTag").InvokeMethod("set_priority", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "TextTag")
+	_info.InvokeClassMethod("set_priority", _args[:], nil)
 
 	runtime.KeepAlive(tag)
 	runtime.KeepAlive(priority)

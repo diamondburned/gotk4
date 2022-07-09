@@ -442,8 +442,9 @@ func NewSpinButton(adjustment *Adjustment, climbRate float64, digits uint32) *Sp
 	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(climbRate)
 	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(digits)
 
-	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("new_SpinButton", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SpinButton")
+	_gret := _info.InvokeClassMethod("new_SpinButton", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(adjustment)
 	runtime.KeepAlive(climbRate)
@@ -483,8 +484,9 @@ func NewSpinButtonWithRange(min, max, step float64) *SpinButton {
 	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(max)
 	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(step)
 
-	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("new_SpinButton_with_range", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SpinButton")
+	_gret := _info.InvokeClassMethod("new_SpinButton_with_range", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(min)
 	runtime.KeepAlive(max)
@@ -517,7 +519,8 @@ func (spinButton *SpinButton) Configure(adjustment *Adjustment, climbRate float6
 	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(climbRate)
 	*(*C.guint)(unsafe.Pointer(&_args[3])) = C.guint(digits)
 
-	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("configure", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "SpinButton")
+	_info.InvokeClassMethod("configure", _args[:], nil)
 
 	runtime.KeepAlive(spinButton)
 	runtime.KeepAlive(adjustment)
@@ -536,8 +539,9 @@ func (spinButton *SpinButton) Adjustment() *Adjustment {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 
-	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("get_adjustment", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SpinButton")
+	_gret := _info.InvokeClassMethod("get_adjustment", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(spinButton)
 
@@ -560,8 +564,9 @@ func (spinButton *SpinButton) Digits() uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 
-	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("get_digits", _args[:], nil)
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SpinButton")
+	_gret := _info.InvokeClassMethod("get_digits", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(spinButton)
 
@@ -586,7 +591,8 @@ func (spinButton *SpinButton) Increments() (step, page float64) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 
-	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("get_increments", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "SpinButton")
+	_info.InvokeClassMethod("get_increments", _args[:], _outs[:])
 
 	runtime.KeepAlive(spinButton)
 
@@ -615,8 +621,9 @@ func (spinButton *SpinButton) Numeric() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 
-	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("get_numeric", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SpinButton")
+	_gret := _info.InvokeClassMethod("get_numeric", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(spinButton)
 
@@ -643,7 +650,8 @@ func (spinButton *SpinButton) Range() (min, max float64) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 
-	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("get_range", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "SpinButton")
+	_info.InvokeClassMethod("get_range", _args[:], _outs[:])
 
 	runtime.KeepAlive(spinButton)
 
@@ -672,8 +680,9 @@ func (spinButton *SpinButton) SnapToTicks() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 
-	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("get_snap_to_ticks", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SpinButton")
+	_gret := _info.InvokeClassMethod("get_snap_to_ticks", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(spinButton)
 
@@ -697,8 +706,9 @@ func (spinButton *SpinButton) Value() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 
-	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("get_value", _args[:], nil)
-	_cret = *(*C.gdouble)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SpinButton")
+	_gret := _info.InvokeClassMethod("get_value", _args[:], nil)
+	_cret := *(*C.gdouble)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(spinButton)
 
@@ -720,8 +730,9 @@ func (spinButton *SpinButton) ValueAsInt() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 
-	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("get_value_as_int", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SpinButton")
+	_gret := _info.InvokeClassMethod("get_value_as_int", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(spinButton)
 
@@ -745,8 +756,9 @@ func (spinButton *SpinButton) Wrap() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 
-	_gret := girepository.MustFind("Gtk", "SpinButton").InvokeMethod("get_wrap", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SpinButton")
+	_gret := _info.InvokeClassMethod("get_wrap", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(spinButton)
 
@@ -771,7 +783,8 @@ func (spinButton *SpinButton) SetAdjustment(adjustment *Adjustment) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
 
-	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("set_adjustment", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "SpinButton")
+	_info.InvokeClassMethod("set_adjustment", _args[:], nil)
 
 	runtime.KeepAlive(spinButton)
 	runtime.KeepAlive(adjustment)
@@ -791,7 +804,8 @@ func (spinButton *SpinButton) SetDigits(digits uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(digits)
 
-	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("set_digits", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "SpinButton")
+	_info.InvokeClassMethod("set_digits", _args[:], nil)
 
 	runtime.KeepAlive(spinButton)
 	runtime.KeepAlive(digits)
@@ -812,7 +826,8 @@ func (spinButton *SpinButton) SetIncrements(step, page float64) {
 	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(step)
 	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(page)
 
-	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("set_increments", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "SpinButton")
+	_info.InvokeClassMethod("set_increments", _args[:], nil)
 
 	runtime.KeepAlive(spinButton)
 	runtime.KeepAlive(step)
@@ -834,7 +849,8 @@ func (spinButton *SpinButton) SetNumeric(numeric bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("set_numeric", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "SpinButton")
+	_info.InvokeClassMethod("set_numeric", _args[:], nil)
 
 	runtime.KeepAlive(spinButton)
 	runtime.KeepAlive(numeric)
@@ -857,7 +873,8 @@ func (spinButton *SpinButton) SetRange(min, max float64) {
 	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(min)
 	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(max)
 
-	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("set_range", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "SpinButton")
+	_info.InvokeClassMethod("set_range", _args[:], nil)
 
 	runtime.KeepAlive(spinButton)
 	runtime.KeepAlive(min)
@@ -880,7 +897,8 @@ func (spinButton *SpinButton) SetSnapToTicks(snapToTicks bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("set_snap_to_ticks", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "SpinButton")
+	_info.InvokeClassMethod("set_snap_to_ticks", _args[:], nil)
 
 	runtime.KeepAlive(spinButton)
 	runtime.KeepAlive(snapToTicks)
@@ -898,7 +916,8 @@ func (spinButton *SpinButton) SetValue(value float64) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(value)
 
-	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("set_value", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "SpinButton")
+	_info.InvokeClassMethod("set_value", _args[:], nil)
 
 	runtime.KeepAlive(spinButton)
 	runtime.KeepAlive(value)
@@ -919,7 +938,8 @@ func (spinButton *SpinButton) SetWrap(wrap bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("set_wrap", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "SpinButton")
+	_info.InvokeClassMethod("set_wrap", _args[:], nil)
 
 	runtime.KeepAlive(spinButton)
 	runtime.KeepAlive(wrap)
@@ -931,7 +951,8 @@ func (spinButton *SpinButton) Update() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(spinButton).Native()))
 
-	girepository.MustFind("Gtk", "SpinButton").InvokeMethod("update", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "SpinButton")
+	_info.InvokeClassMethod("update", _args[:], nil)
 
 	runtime.KeepAlive(spinButton)
 }

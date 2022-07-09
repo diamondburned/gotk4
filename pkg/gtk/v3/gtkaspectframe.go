@@ -117,8 +117,9 @@ func NewAspectFrame(label string, xalign, yalign, ratio float32, obeyChild bool)
 		*(*C.gboolean)(unsafe.Pointer(&_args[4])) = C.TRUE
 	}
 
-	_gret := girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("new_AspectFrame", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AspectFrame")
+	_gret := _info.InvokeClassMethod("new_AspectFrame", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(label)
 	runtime.KeepAlive(xalign)
@@ -156,7 +157,8 @@ func (aspectFrame *AspectFrame) Set(xalign, yalign, ratio float32, obeyChild boo
 		*(*C.gboolean)(unsafe.Pointer(&_args[4])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "AspectFrame").InvokeMethod("set", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "AspectFrame")
+	_info.InvokeClassMethod("set", _args[:], nil)
 
 	runtime.KeepAlive(aspectFrame)
 	runtime.KeepAlive(xalign)

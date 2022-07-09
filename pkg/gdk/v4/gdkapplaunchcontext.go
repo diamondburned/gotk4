@@ -80,8 +80,9 @@ func (context *AppLaunchContext) Display() *Display {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
-	_gret := girepository.MustFind("Gdk", "AppLaunchContext").InvokeMethod("get_display", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "AppLaunchContext")
+	_gret := _info.InvokeClassMethod("get_display", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
@@ -111,7 +112,8 @@ func (context *AppLaunchContext) SetDesktop(desktop int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(desktop)
 
-	girepository.MustFind("Gdk", "AppLaunchContext").InvokeMethod("set_desktop", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "AppLaunchContext")
+	_info.InvokeClassMethod("set_desktop", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(desktop)
@@ -136,7 +138,8 @@ func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 	}
 
-	girepository.MustFind("Gdk", "AppLaunchContext").InvokeMethod("set_icon", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "AppLaunchContext")
+	_info.InvokeClassMethod("set_icon", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(icon)
@@ -166,7 +169,8 @@ func (context *AppLaunchContext) SetIconName(iconName string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gdk", "AppLaunchContext").InvokeMethod("set_icon_name", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "AppLaunchContext")
+	_info.InvokeClassMethod("set_icon_name", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(iconName)
@@ -191,7 +195,8 @@ func (context *AppLaunchContext) SetTimestamp(timestamp uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(timestamp)
 
-	girepository.MustFind("Gdk", "AppLaunchContext").InvokeMethod("set_timestamp", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "AppLaunchContext")
+	_info.InvokeClassMethod("set_timestamp", _args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(timestamp)

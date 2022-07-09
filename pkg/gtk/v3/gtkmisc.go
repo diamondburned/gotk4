@@ -121,7 +121,8 @@ func (misc *Misc) Alignment() (xalign, yalign float32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
 
-	girepository.MustFind("Gtk", "Misc").InvokeMethod("get_alignment", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "Misc")
+	_info.InvokeClassMethod("get_alignment", _args[:], _outs[:])
 
 	runtime.KeepAlive(misc)
 
@@ -154,7 +155,8 @@ func (misc *Misc) Padding() (xpad, ypad int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
 
-	girepository.MustFind("Gtk", "Misc").InvokeMethod("get_padding", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "Misc")
+	_info.InvokeClassMethod("get_padding", _args[:], _outs[:])
 
 	runtime.KeepAlive(misc)
 
@@ -188,7 +190,8 @@ func (misc *Misc) SetAlignment(xalign, yalign float32) {
 	*(*C.gfloat)(unsafe.Pointer(&_args[1])) = C.gfloat(xalign)
 	*(*C.gfloat)(unsafe.Pointer(&_args[2])) = C.gfloat(yalign)
 
-	girepository.MustFind("Gtk", "Misc").InvokeMethod("set_alignment", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Misc")
+	_info.InvokeClassMethod("set_alignment", _args[:], nil)
 
 	runtime.KeepAlive(misc)
 	runtime.KeepAlive(xalign)
@@ -213,7 +216,8 @@ func (misc *Misc) SetPadding(xpad, ypad int32) {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(xpad)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(ypad)
 
-	girepository.MustFind("Gtk", "Misc").InvokeMethod("set_padding", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Misc")
+	_info.InvokeClassMethod("set_padding", _args[:], nil)
 
 	runtime.KeepAlive(misc)
 	runtime.KeepAlive(xpad)

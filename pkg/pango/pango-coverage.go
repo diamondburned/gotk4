@@ -116,8 +116,9 @@ func marshalCoverage(p uintptr) (interface{}, error) {
 //      with pango_coverage_unref().
 //
 func NewCoverage() *Coverage {
-	_gret := girepository.MustFind("Pango", "Coverage").InvokeMethod("new_Coverage", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Coverage")
+	_gret := _info.InvokeClassMethod("new_Coverage", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _coverage *Coverage // out
 
@@ -138,8 +139,9 @@ func (coverage *Coverage) Copy() *Coverage {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(coverage).Native()))
 
-	_gret := girepository.MustFind("Pango", "Coverage").InvokeMethod("copy", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "Coverage")
+	_gret := _info.InvokeClassMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(coverage)
 
@@ -166,7 +168,8 @@ func (coverage *Coverage) Max(other *Coverage) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(coverage).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(other).Native()))
 
-	girepository.MustFind("Pango", "Coverage").InvokeMethod("max", _args[:], nil)
+	_info := girepository.MustFind("Pango", "Coverage")
+	_info.InvokeClassMethod("max", _args[:], nil)
 
 	runtime.KeepAlive(coverage)
 	runtime.KeepAlive(other)
@@ -186,7 +189,8 @@ func (coverage *Coverage) ToBytes() []byte {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(coverage).Native()))
 
-	girepository.MustFind("Pango", "Coverage").InvokeMethod("to_bytes", _args[:], _outs[:])
+	_info := girepository.MustFind("Pango", "Coverage")
+	_info.InvokeClassMethod("to_bytes", _args[:], _outs[:])
 
 	runtime.KeepAlive(coverage)
 
@@ -221,8 +225,9 @@ func CoverageFromBytes(bytes []byte) *Coverage {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(&bytes[0]))
 	}
 
-	_gret := girepository.MustFind("Pango", "from_bytes").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "from_bytes")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(bytes)
 

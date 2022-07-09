@@ -14,9 +14,9 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GTlsDatabase* _gotk4_gio2_TlsBackendInterface_get_default_database(void*);
 // extern gboolean _gotk4_gio2_TlsBackendInterface_supports_dtls(void*);
 // extern gboolean _gotk4_gio2_TlsBackendInterface_supports_tls(void*);
+// extern void* _gotk4_gio2_TlsBackendInterface_get_default_database(void*);
 import "C"
 
 // GTypeTLSBackend returns the GType for the type TLSBackend.
@@ -101,7 +101,7 @@ func ifaceInitTLSBackender(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_TlsBackendInterface_get_default_database
-func _gotk4_gio2_TlsBackendInterface_get_default_database(arg0 *C.void) (cret *C.GTlsDatabase) {
+func _gotk4_gio2_TlsBackendInterface_get_default_database(arg0 *C.void) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TLSBackendOverrider)
 
@@ -162,7 +162,9 @@ func (backend *TLSBackend) DefaultDatabase() TLSDatabaser {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TlsBackend")
+	_gret := _info.InvokeIfaceMethod("get_default_database", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(backend)
 
@@ -210,6 +212,9 @@ func (backend *TLSBackend) SetDefaultDatabase(database TLSDatabaser) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(database).Native()))
 	}
 
+	_info := girepository.MustFind("Gio", "TlsBackend")
+	_info.InvokeIfaceMethod("set_default_database", _args[:], nil)
+
 	runtime.KeepAlive(backend)
 	runtime.KeepAlive(database)
 }
@@ -226,7 +231,9 @@ func (backend *TLSBackend) SupportsDTLS() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TlsBackend")
+	_gret := _info.InvokeIfaceMethod("supports_dtls", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(backend)
 
@@ -251,7 +258,9 @@ func (backend *TLSBackend) SupportsTLS() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "TlsBackend")
+	_gret := _info.InvokeIfaceMethod("supports_tls", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(backend)
 
@@ -271,8 +280,9 @@ func (backend *TLSBackend) SupportsTLS() bool {
 //    - tlsBackend which will be a dummy object if no TLS backend is available.
 //
 func TLSBackendGetDefault() *TLSBackend {
-	_gret := girepository.MustFind("Gio", "get_default").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "get_default")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _tlsBackend *TLSBackend // out
 

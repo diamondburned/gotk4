@@ -89,8 +89,9 @@ func marshalVButtonBox(p uintptr) (interface{}, error) {
 //    - vButtonBox: new button box Widget.
 //
 func NewVButtonBox() *VButtonBox {
-	_gret := girepository.MustFind("Gtk", "VButtonBox").InvokeMethod("new_VButtonBox", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "VButtonBox")
+	_gret := _info.InvokeClassMethod("new_VButtonBox", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _vButtonBox *VButtonBox // out
 

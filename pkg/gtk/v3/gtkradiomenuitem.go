@@ -177,8 +177,9 @@ func NewRadioMenuItem(group []*RadioMenuItem) *RadioMenuItem {
 		defer C.g_slist_free(_args[0])
 	}
 
-	_gret := girepository.MustFind("Gtk", "RadioMenuItem").InvokeMethod("new_RadioMenuItem", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RadioMenuItem")
+	_gret := _info.InvokeClassMethod("new_RadioMenuItem", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(group)
 
@@ -207,8 +208,9 @@ func NewRadioMenuItemFromWidget(group *RadioMenuItem) *RadioMenuItem {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "RadioMenuItem").InvokeMethod("new_RadioMenuItem_from_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RadioMenuItem")
+	_gret := _info.InvokeClassMethod("new_RadioMenuItem_from_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(group)
 
@@ -246,8 +248,9 @@ func NewRadioMenuItemWithLabel(group []*RadioMenuItem, label string) *RadioMenuI
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "RadioMenuItem").InvokeMethod("new_RadioMenuItem_with_label", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RadioMenuItem")
+	_gret := _info.InvokeClassMethod("new_RadioMenuItem_with_label", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(label)
@@ -283,8 +286,9 @@ func NewRadioMenuItemWithLabelFromWidget(group *RadioMenuItem, label string) *Ra
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	_gret := girepository.MustFind("Gtk", "RadioMenuItem").InvokeMethod("new_RadioMenuItem_with_label_from_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RadioMenuItem")
+	_gret := _info.InvokeClassMethod("new_RadioMenuItem_with_label_from_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(label)
@@ -325,8 +329,9 @@ func NewRadioMenuItemWithMnemonic(group []*RadioMenuItem, label string) *RadioMe
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gtk", "RadioMenuItem").InvokeMethod("new_RadioMenuItem_with_mnemonic", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RadioMenuItem")
+	_gret := _info.InvokeClassMethod("new_RadioMenuItem_with_mnemonic", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(label)
@@ -366,8 +371,9 @@ func NewRadioMenuItemWithMnemonicFromWidget(group *RadioMenuItem, label string) 
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	_gret := girepository.MustFind("Gtk", "RadioMenuItem").InvokeMethod("new_RadioMenuItem_with_mnemonic_from_widget", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RadioMenuItem")
+	_gret := _info.InvokeClassMethod("new_RadioMenuItem_with_mnemonic_from_widget", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(label)
@@ -391,8 +397,9 @@ func (radioMenuItem *RadioMenuItem) Group() []*RadioMenuItem {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(radioMenuItem).Native()))
 
-	_gret := girepository.MustFind("Gtk", "RadioMenuItem").InvokeMethod("get_group", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "RadioMenuItem")
+	_gret := _info.InvokeClassMethod("get_group", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(radioMenuItem)
 
@@ -443,7 +450,8 @@ func (radioMenuItem *RadioMenuItem) JoinGroup(groupSource *RadioMenuItem) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(groupSource).Native()))
 	}
 
-	girepository.MustFind("Gtk", "RadioMenuItem").InvokeMethod("join_group", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "RadioMenuItem")
+	_info.InvokeClassMethod("join_group", _args[:], nil)
 
 	runtime.KeepAlive(radioMenuItem)
 	runtime.KeepAlive(groupSource)
@@ -469,7 +477,8 @@ func (radioMenuItem *RadioMenuItem) SetGroup(group []*RadioMenuItem) {
 		defer C.g_slist_free(_args[1])
 	}
 
-	girepository.MustFind("Gtk", "RadioMenuItem").InvokeMethod("set_group", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "RadioMenuItem")
+	_info.InvokeClassMethod("set_group", _args[:], nil)
 
 	runtime.KeepAlive(radioMenuItem)
 	runtime.KeepAlive(group)

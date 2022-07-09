@@ -209,8 +209,9 @@ func marshalImage(p uintptr) (interface{}, error) {
 //    - image: newly created Image widget.
 //
 func NewImage() *Image {
-	_gret := girepository.MustFind("Gtk", "Image").InvokeMethod("new_Image", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Image")
+	_gret := _info.InvokeClassMethod("new_Image", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _image *Image // out
 
@@ -242,8 +243,9 @@ func NewImageFromAnimation(animation *gdkpixbuf.PixbufAnimation) *Image {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(animation).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Image").InvokeMethod("new_Image_from_animation", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Image")
+	_gret := _info.InvokeClassMethod("new_Image_from_animation", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(animation)
 
@@ -283,8 +285,9 @@ func NewImageFromFile(filename string) *Image {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "Image").InvokeMethod("new_Image_from_file", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Image")
+	_gret := _info.InvokeClassMethod("new_Image_from_file", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(filename)
 
@@ -318,8 +321,9 @@ func NewImageFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Image {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "Image").InvokeMethod("new_Image_from_pixbuf", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Image")
+	_gret := _info.InvokeClassMethod("new_Image_from_pixbuf", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pixbuf)
 
@@ -359,8 +363,9 @@ func NewImageFromResource(resourcePath string) *Image {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "Image").InvokeMethod("new_Image_from_resource", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Image")
+	_gret := _info.InvokeClassMethod("new_Image_from_resource", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(resourcePath)
 
@@ -390,8 +395,9 @@ func NewImageFromSurface(surface *cairo.Surface) *Image {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(surface.Native()))
 	}
 
-	_gret := girepository.MustFind("Gtk", "Image").InvokeMethod("new_Image_from_surface", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Image")
+	_gret := _info.InvokeClassMethod("new_Image_from_surface", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 
@@ -408,7 +414,8 @@ func (image *Image) Clear() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 
-	girepository.MustFind("Gtk", "Image").InvokeMethod("clear", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Image")
+	_info.InvokeClassMethod("clear", _args[:], nil)
 
 	runtime.KeepAlive(image)
 }
@@ -428,8 +435,9 @@ func (image *Image) Animation() *gdkpixbuf.PixbufAnimation {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Image").InvokeMethod("get_animation", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Image")
+	_gret := _info.InvokeClassMethod("get_animation", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(image)
 
@@ -463,7 +471,8 @@ func (image *Image) GIcon() (*gio.Icon, int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 
-	girepository.MustFind("Gtk", "Image").InvokeMethod("get_gicon", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "Image")
+	_info.InvokeClassMethod("get_gicon", _args[:], _outs[:])
 
 	runtime.KeepAlive(image)
 
@@ -501,7 +510,8 @@ func (image *Image) IconName() (string, int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 
-	girepository.MustFind("Gtk", "Image").InvokeMethod("get_icon_name", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "Image")
+	_info.InvokeClassMethod("get_icon_name", _args[:], _outs[:])
 
 	runtime.KeepAlive(image)
 
@@ -535,7 +545,8 @@ func (image *Image) IconSet() (*IconSet, int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 
-	girepository.MustFind("Gtk", "Image").InvokeMethod("get_icon_set", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "Image")
+	_info.InvokeClassMethod("get_icon_set", _args[:], _outs[:])
 
 	runtime.KeepAlive(image)
 
@@ -573,8 +584,9 @@ func (image *Image) Pixbuf() *gdkpixbuf.Pixbuf {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Image").InvokeMethod("get_pixbuf", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Image")
+	_gret := _info.InvokeClassMethod("get_pixbuf", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(image)
 
@@ -608,8 +620,9 @@ func (image *Image) PixelSize() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 
-	_gret := girepository.MustFind("Gtk", "Image").InvokeMethod("get_pixel_size", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "Image")
+	_gret := _info.InvokeClassMethod("get_pixel_size", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(image)
 
@@ -638,7 +651,8 @@ func (image *Image) Stock() (string, int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 
-	girepository.MustFind("Gtk", "Image").InvokeMethod("get_stock", _args[:], _outs[:])
+	_info := girepository.MustFind("Gtk", "Image")
+	_info.InvokeClassMethod("get_stock", _args[:], _outs[:])
 
 	runtime.KeepAlive(image)
 
@@ -668,7 +682,8 @@ func (image *Image) SetFromAnimation(animation *gdkpixbuf.PixbufAnimation) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(animation).Native()))
 
-	girepository.MustFind("Gtk", "Image").InvokeMethod("set_from_animation", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Image")
+	_info.InvokeClassMethod("set_from_animation", _args[:], nil)
 
 	runtime.KeepAlive(image)
 	runtime.KeepAlive(animation)
@@ -689,7 +704,8 @@ func (image *Image) SetFromFile(filename string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "Image").InvokeMethod("set_from_file", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Image")
+	_info.InvokeClassMethod("set_from_file", _args[:], nil)
 
 	runtime.KeepAlive(image)
 	runtime.KeepAlive(filename)
@@ -709,7 +725,8 @@ func (image *Image) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	}
 
-	girepository.MustFind("Gtk", "Image").InvokeMethod("set_from_pixbuf", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Image")
+	_info.InvokeClassMethod("set_from_pixbuf", _args[:], nil)
 
 	runtime.KeepAlive(image)
 	runtime.KeepAlive(pixbuf)
@@ -730,7 +747,8 @@ func (image *Image) SetFromResource(resourcePath string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "Image").InvokeMethod("set_from_resource", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Image")
+	_info.InvokeClassMethod("set_from_resource", _args[:], nil)
 
 	runtime.KeepAlive(image)
 	runtime.KeepAlive(resourcePath)
@@ -750,7 +768,8 @@ func (image *Image) SetFromSurface(surface *cairo.Surface) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(surface.Native()))
 	}
 
-	girepository.MustFind("Gtk", "Image").InvokeMethod("set_from_surface", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Image")
+	_info.InvokeClassMethod("set_from_surface", _args[:], nil)
 
 	runtime.KeepAlive(image)
 	runtime.KeepAlive(surface)
@@ -770,7 +789,8 @@ func (image *Image) SetPixelSize(pixelSize int32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pixelSize)
 
-	girepository.MustFind("Gtk", "Image").InvokeMethod("set_pixel_size", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "Image")
+	_info.InvokeClassMethod("set_pixel_size", _args[:], nil)
 
 	runtime.KeepAlive(image)
 	runtime.KeepAlive(pixelSize)

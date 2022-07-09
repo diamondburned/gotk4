@@ -187,8 +187,9 @@ func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	_gret := girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("new_MenuToolButton", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MenuToolButton")
+	_gret := _info.InvokeClassMethod("new_MenuToolButton", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iconWidget)
 	runtime.KeepAlive(label)
@@ -220,8 +221,9 @@ func NewMenuToolButtonFromStock(stockId string) *MenuToolButton {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
 	defer C.free(unsafe.Pointer(_args[0]))
 
-	_gret := girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("new_MenuToolButton_from_stock", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MenuToolButton")
+	_gret := _info.InvokeClassMethod("new_MenuToolButton_from_stock", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stockId)
 
@@ -243,8 +245,9 @@ func (button *MenuToolButton) Menu() Widgetter {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("get_menu", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MenuToolButton")
+	_gret := _info.InvokeClassMethod("get_menu", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
 
@@ -286,7 +289,8 @@ func (button *MenuToolButton) SetArrowTooltipMarkup(markup string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(markup)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("set_arrow_tooltip_markup", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuToolButton")
+	_info.InvokeClassMethod("set_arrow_tooltip_markup", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(markup)
@@ -307,7 +311,8 @@ func (button *MenuToolButton) SetArrowTooltipText(text string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("set_arrow_tooltip_text", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuToolButton")
+	_info.InvokeClassMethod("set_arrow_tooltip_text", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(text)
@@ -326,7 +331,8 @@ func (button *MenuToolButton) SetMenu(menu Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menu).Native()))
 
-	girepository.MustFind("Gtk", "MenuToolButton").InvokeMethod("set_menu", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MenuToolButton")
+	_info.InvokeClassMethod("set_menu", _args[:], nil)
 
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(menu)

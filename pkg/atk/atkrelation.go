@@ -74,7 +74,8 @@ func (relation *Relation) AddTarget(target *ObjectClass) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(target).Native()))
 
-	girepository.MustFind("Atk", "Relation").InvokeMethod("add_target", _args[:], nil)
+	_info := girepository.MustFind("Atk", "Relation")
+	_info.InvokeClassMethod("add_target", _args[:], nil)
 
 	runtime.KeepAlive(relation)
 	runtime.KeepAlive(target)
@@ -97,8 +98,9 @@ func (relation *Relation) RemoveTarget(target *ObjectClass) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(target).Native()))
 
-	_gret := girepository.MustFind("Atk", "Relation").InvokeMethod("remove_target", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Relation")
+	_gret := _info.InvokeClassMethod("remove_target", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(relation)
 	runtime.KeepAlive(target)

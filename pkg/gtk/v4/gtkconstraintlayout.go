@@ -247,8 +247,9 @@ func marshalConstraintLayout(p uintptr) (interface{}, error) {
 //    - constraintLayout: newly created GtkConstraintLayout.
 //
 func NewConstraintLayout() *ConstraintLayout {
-	_gret := girepository.MustFind("Gtk", "ConstraintLayout").InvokeMethod("new_ConstraintLayout", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ConstraintLayout")
+	_gret := _info.InvokeClassMethod("new_ConstraintLayout", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _constraintLayout *ConstraintLayout // out
 
@@ -281,7 +282,8 @@ func (layout *ConstraintLayout) AddConstraint(constraint *Constraint) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(constraint).Native()))
 
-	girepository.MustFind("Gtk", "ConstraintLayout").InvokeMethod("add_constraint", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ConstraintLayout")
+	_info.InvokeClassMethod("add_constraint", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(constraint)
@@ -405,8 +407,9 @@ func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hs
 	}
 	defer C.g_hash_table_unref(*(**C.void)(unsafe.Pointer(&_args[5])))
 
-	_gret := girepository.MustFind("Gtk", "ConstraintLayout").InvokeMethod("add_constraints_from_descriptionv", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ConstraintLayout")
+	_gret := _info.InvokeClassMethod("add_constraints_from_descriptionv", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(lines)
@@ -449,7 +452,8 @@ func (layout *ConstraintLayout) AddGuide(guide *ConstraintGuide) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(guide).Native()))
 
-	girepository.MustFind("Gtk", "ConstraintLayout").InvokeMethod("add_guide", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ConstraintLayout")
+	_info.InvokeClassMethod("add_guide", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(guide)
@@ -474,8 +478,9 @@ func (layout *ConstraintLayout) ObserveConstraints() *gio.ListModel {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ConstraintLayout").InvokeMethod("observe_constraints", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ConstraintLayout")
+	_gret := _info.InvokeClassMethod("observe_constraints", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -510,8 +515,9 @@ func (layout *ConstraintLayout) ObserveGuides() *gio.ListModel {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ConstraintLayout").InvokeMethod("observe_guides", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ConstraintLayout")
+	_gret := _info.InvokeClassMethod("observe_guides", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
@@ -533,7 +539,8 @@ func (layout *ConstraintLayout) RemoveAllConstraints() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 
-	girepository.MustFind("Gtk", "ConstraintLayout").InvokeMethod("remove_all_constraints", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ConstraintLayout")
+	_info.InvokeClassMethod("remove_all_constraints", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 }
@@ -551,7 +558,8 @@ func (layout *ConstraintLayout) RemoveConstraint(constraint *Constraint) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(constraint).Native()))
 
-	girepository.MustFind("Gtk", "ConstraintLayout").InvokeMethod("remove_constraint", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ConstraintLayout")
+	_info.InvokeClassMethod("remove_constraint", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(constraint)
@@ -570,7 +578,8 @@ func (layout *ConstraintLayout) RemoveGuide(guide *ConstraintGuide) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
 
-	girepository.MustFind("Gtk", "ConstraintLayout").InvokeMethod("remove_guide", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ConstraintLayout")
+	_info.InvokeClassMethod("remove_guide", _args[:], nil)
 
 	runtime.KeepAlive(layout)
 	runtime.KeepAlive(guide)

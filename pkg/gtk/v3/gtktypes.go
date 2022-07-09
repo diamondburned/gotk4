@@ -82,7 +82,9 @@ func marshalIconSet(p uintptr) (interface{}, error) {
 
 // NewIconSet constructs a struct IconSet.
 func NewIconSet() *IconSet {
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "IconSet")
+	_gret := _info.InvokeRecordMethod("new", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _iconSet *IconSet // out
 
@@ -103,7 +105,9 @@ func NewIconSetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *IconSet {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "IconSet")
+	_gret := _info.InvokeRecordMethod("new_from_pixbuf", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pixbuf)
 
@@ -156,6 +160,9 @@ func (iconSet *IconSet) AddSource(source *IconSource) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iconSet)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
 
+	_info := girepository.MustFind("Gtk", "IconSet")
+	_info.InvokeRecordMethod("add_source", _args[:], nil)
+
 	runtime.KeepAlive(iconSet)
 	runtime.KeepAlive(source)
 }
@@ -173,7 +180,9 @@ func (iconSet *IconSet) Copy() *IconSet {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iconSet)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "IconSet")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iconSet)
 
@@ -204,6 +213,9 @@ func (iconSet *IconSet) Sizes() []int32 {
 	var _outs [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iconSet)))
+
+	_info := girepository.MustFind("Gtk", "IconSet")
+	_info.InvokeRecordMethod("get_sizes", _args[:], _outs[:])
 
 	runtime.KeepAlive(iconSet)
 
@@ -238,7 +250,9 @@ func marshalIconSource(p uintptr) (interface{}, error) {
 
 // NewIconSource constructs a struct IconSource.
 func NewIconSource() *IconSource {
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "IconSource")
+	_gret := _info.InvokeRecordMethod("new", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _iconSource *IconSource // out
 
@@ -248,7 +262,7 @@ func NewIconSource() *IconSource {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "IconSource").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "IconSource").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -269,7 +283,9 @@ func (source *IconSource) Copy() *IconSource {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "IconSource")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(source)
 
@@ -281,7 +297,7 @@ func (source *IconSource) Copy() *IconSource {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "IconSource").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "IconSource").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -303,7 +319,9 @@ func (source *IconSource) DirectionWildcarded() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "IconSource")
+	_gret := _info.InvokeRecordMethod("get_direction_wildcarded", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(source)
 
@@ -331,7 +349,9 @@ func (source *IconSource) Filename() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "IconSource")
+	_gret := _info.InvokeRecordMethod("get_filename", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(source)
 
@@ -357,7 +377,9 @@ func (source *IconSource) IconName() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "IconSource")
+	_gret := _info.InvokeRecordMethod("get_icon_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(source)
 
@@ -385,7 +407,9 @@ func (source *IconSource) Pixbuf() *gdkpixbuf.Pixbuf {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "IconSource")
+	_gret := _info.InvokeRecordMethod("get_pixbuf", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(source)
 
@@ -419,7 +443,9 @@ func (source *IconSource) SizeWildcarded() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "IconSource")
+	_gret := _info.InvokeRecordMethod("get_size_wildcarded", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(source)
 
@@ -445,7 +471,9 @@ func (source *IconSource) StateWildcarded() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "IconSource")
+	_gret := _info.InvokeRecordMethod("get_state_wildcarded", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(source)
 
@@ -481,6 +509,9 @@ func (source *IconSource) SetDirectionWildcarded(setting bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
+	_info := girepository.MustFind("Gtk", "IconSource")
+	_info.InvokeRecordMethod("set_direction_wildcarded", _args[:], nil)
+
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(setting)
 }
@@ -500,6 +531,9 @@ func (source *IconSource) SetFilename(filename string) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
 	defer C.free(unsafe.Pointer(_args[1]))
+
+	_info := girepository.MustFind("Gtk", "IconSource")
+	_info.InvokeRecordMethod("set_filename", _args[:], nil)
 
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(filename)
@@ -523,6 +557,9 @@ func (source *IconSource) SetIconName(iconName string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
+	_info := girepository.MustFind("Gtk", "IconSource")
+	_info.InvokeRecordMethod("set_icon_name", _args[:], nil)
+
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(iconName)
 }
@@ -541,6 +578,9 @@ func (source *IconSource) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+
+	_info := girepository.MustFind("Gtk", "IconSource")
+	_info.InvokeRecordMethod("set_pixbuf", _args[:], nil)
 
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(pixbuf)
@@ -571,6 +611,9 @@ func (source *IconSource) SetSizeWildcarded(setting bool) {
 	if setting {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
+
+	_info := girepository.MustFind("Gtk", "IconSource")
+	_info.InvokeRecordMethod("set_size_wildcarded", _args[:], nil)
 
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(setting)
@@ -603,6 +646,9 @@ func (source *IconSource) SetStateWildcarded(setting bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
+	_info := girepository.MustFind("Gtk", "IconSource")
+	_info.InvokeRecordMethod("set_state_wildcarded", _args[:], nil)
+
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(setting)
 }
@@ -633,7 +679,9 @@ func (data *SelectionData) Copy() *SelectionData {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(data)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionData")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(data)
 
@@ -645,7 +693,7 @@ func (data *SelectionData) Copy() *SelectionData {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "SelectionData").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "SelectionData").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -665,7 +713,9 @@ func (selectionData *SelectionData) Data() []byte {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
-	_cret = *(**C.guchar)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionData")
+	_gret := _info.InvokeRecordMethod("get_data_with_length", _args[:], _outs[:])
+	_cret := *(**C.guchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selectionData)
 
@@ -688,7 +738,9 @@ func (selectionData *SelectionData) Display() *gdk.Display {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionData")
+	_gret := _info.InvokeRecordMethod("get_display", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selectionData)
 
@@ -715,7 +767,9 @@ func (selectionData *SelectionData) Format() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionData")
+	_gret := _info.InvokeRecordMethod("get_format", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selectionData)
 
@@ -737,7 +791,9 @@ func (selectionData *SelectionData) Length() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionData")
+	_gret := _info.InvokeRecordMethod("get_length", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selectionData)
 
@@ -762,7 +818,9 @@ func (selectionData *SelectionData) Pixbuf() *gdkpixbuf.Pixbuf {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionData")
+	_gret := _info.InvokeRecordMethod("get_pixbuf", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selectionData)
 
@@ -799,7 +857,9 @@ func (selectionData *SelectionData) Text() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionData")
+	_gret := _info.InvokeRecordMethod("get_text", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selectionData)
 
@@ -826,7 +886,9 @@ func (selectionData *SelectionData) URIs() []string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
-	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionData")
+	_gret := _info.InvokeRecordMethod("get_uris", _args[:], nil)
+	_cret := *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selectionData)
 
@@ -868,7 +930,9 @@ func (selectionData *SelectionData) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionData")
+	_gret := _info.InvokeRecordMethod("set_pixbuf", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selectionData)
 	runtime.KeepAlive(pixbuf)
@@ -902,7 +966,9 @@ func (selectionData *SelectionData) SetText(str string, len int32) bool {
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(len)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionData")
+	_gret := _info.InvokeRecordMethod("set_text", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selectionData)
 	runtime.KeepAlive(str)
@@ -946,7 +1012,9 @@ func (selectionData *SelectionData) SetURIs(uris []string) bool {
 		}
 	}
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionData")
+	_gret := _info.InvokeRecordMethod("set_uris", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selectionData)
 	runtime.KeepAlive(uris)
@@ -981,7 +1049,9 @@ func (selectionData *SelectionData) TargetsIncludeImage(writable bool) bool {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionData")
+	_gret := _info.InvokeRecordMethod("targets_include_image", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selectionData)
 	runtime.KeepAlive(writable)
@@ -1014,7 +1084,9 @@ func (selectionData *SelectionData) TargetsIncludeRichText(buffer *TextBuffer) b
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionData")
+	_gret := _info.InvokeRecordMethod("targets_include_rich_text", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selectionData)
 	runtime.KeepAlive(buffer)
@@ -1041,7 +1113,9 @@ func (selectionData *SelectionData) TargetsIncludeText() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionData")
+	_gret := _info.InvokeRecordMethod("targets_include_text", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selectionData)
 
@@ -1068,7 +1142,9 @@ func (selectionData *SelectionData) TargetsIncludeURI() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selectionData)))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "SelectionData")
+	_gret := _info.InvokeRecordMethod("targets_include_uri", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selectionData)
 
@@ -1128,7 +1204,9 @@ func marshalWidgetPath(p uintptr) (interface{}, error) {
 
 // NewWidgetPath constructs a struct WidgetPath.
 func NewWidgetPath() *WidgetPath {
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_gret := _info.InvokeRecordMethod("new", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _widgetPath *WidgetPath // out
 
@@ -1138,7 +1216,7 @@ func NewWidgetPath() *WidgetPath {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "WidgetPath").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "WidgetPath").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -1165,7 +1243,9 @@ func (path *WidgetPath) AppendForWidget(widget Widgetter) int32 {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_gret := _info.InvokeRecordMethod("append_for_widget", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(widget)
@@ -1203,7 +1283,9 @@ func (path *WidgetPath) AppendWithSiblings(siblings *WidgetPath, siblingIndex ui
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(siblings)))
 	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(siblingIndex)
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_gret := _info.InvokeRecordMethod("append_with_siblings", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(siblings)
@@ -1227,7 +1309,9 @@ func (path *WidgetPath) Copy() *WidgetPath {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 
@@ -1239,7 +1323,7 @@ func (path *WidgetPath) Copy() *WidgetPath {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "WidgetPath").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "WidgetPath").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -1263,6 +1347,9 @@ func (path *WidgetPath) IterAddClass(pos int32, name string) {
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_info.InvokeRecordMethod("iter_add_class", _args[:], nil)
+
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 	runtime.KeepAlive(name)
@@ -1280,6 +1367,9 @@ func (path *WidgetPath) IterClearClasses(pos int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
+
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_info.InvokeRecordMethod("iter_clear_classes", _args[:], nil)
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1299,6 +1389,9 @@ func (path *WidgetPath) IterClearRegions(pos int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
+
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_info.InvokeRecordMethod("iter_clear_regions", _args[:], nil)
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1321,7 +1414,9 @@ func (path *WidgetPath) IterGetName(pos int32) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_gret := _info.InvokeRecordMethod("iter_get_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1352,7 +1447,9 @@ func (path *WidgetPath) IterGetObjectName(pos int32) string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_gret := _info.InvokeRecordMethod("iter_get_object_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1385,7 +1482,9 @@ func (path *WidgetPath) IterGetSiblingIndex(pos int32) uint32 {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
 
-	_cret = *(*C.guint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_gret := _info.InvokeRecordMethod("iter_get_sibling_index", _args[:], nil)
+	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1414,7 +1513,9 @@ func (path *WidgetPath) IterGetSiblings(pos int32) *WidgetPath {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_gret := _info.InvokeRecordMethod("iter_get_siblings", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1428,7 +1529,7 @@ func (path *WidgetPath) IterGetSiblings(pos int32) *WidgetPath {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "WidgetPath").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "WidgetPath").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -1456,7 +1557,9 @@ func (path *WidgetPath) IterHasClass(pos int32, name string) bool {
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_gret := _info.InvokeRecordMethod("iter_has_class", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1491,7 +1594,9 @@ func (path *WidgetPath) IterHasName(pos int32, name string) bool {
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_gret := _info.InvokeRecordMethod("iter_has_name", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1525,7 +1630,9 @@ func (path *WidgetPath) IterHasQclass(pos int32, qname glib.Quark) bool {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
 	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(qname)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_gret := _info.InvokeRecordMethod("iter_has_qclass", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1559,7 +1666,9 @@ func (path *WidgetPath) IterHasQname(pos int32, qname glib.Quark) bool {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
 	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(qname)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_gret := _info.InvokeRecordMethod("iter_has_qname", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1597,7 +1706,9 @@ func (path *WidgetPath) IterHasQregion(pos int32, qname glib.Quark) (RegionFlags
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
 	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(qname)
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_gret := _info.InvokeRecordMethod("iter_has_qregion", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1638,7 +1749,9 @@ func (path *WidgetPath) IterHasRegion(pos int32, name string) (RegionFlags, bool
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_gret := _info.InvokeRecordMethod("iter_has_region", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1673,7 +1786,9 @@ func (path *WidgetPath) IterListClasses(pos int32) []string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_gret := _info.InvokeRecordMethod("iter_list_classes", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1711,7 +1826,9 @@ func (path *WidgetPath) IterListRegions(pos int32) []string {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_gret := _info.InvokeRecordMethod("iter_list_regions", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1745,6 +1862,9 @@ func (path *WidgetPath) IterRemoveClass(pos int32, name string) {
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_info.InvokeRecordMethod("iter_remove_class", _args[:], nil)
+
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 	runtime.KeepAlive(name)
@@ -1768,6 +1888,9 @@ func (path *WidgetPath) IterRemoveRegion(pos int32, name string) {
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[2]))
 
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_info.InvokeRecordMethod("iter_remove_region", _args[:], nil)
+
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 	runtime.KeepAlive(name)
@@ -1788,6 +1911,9 @@ func (path *WidgetPath) IterSetName(pos int32, name string) {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(pos)
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[2]))
+
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_info.InvokeRecordMethod("iter_set_name", _args[:], nil)
 
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
@@ -1814,6 +1940,9 @@ func (path *WidgetPath) IterSetObjectName(pos int32, name string) {
 		defer C.free(unsafe.Pointer(_args[2]))
 	}
 
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_info.InvokeRecordMethod("iter_set_object_name", _args[:], nil)
+
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(pos)
 	runtime.KeepAlive(name)
@@ -1831,7 +1960,9 @@ func (path *WidgetPath) Length() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_gret := _info.InvokeRecordMethod("length", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 
@@ -1858,7 +1989,9 @@ func (path *WidgetPath) String() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WidgetPath")
+	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(path)
 

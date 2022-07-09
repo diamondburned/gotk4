@@ -124,7 +124,8 @@ func SelectionRemoveAll(widget Widgetter) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
-	girepository.MustFind("Gtk", "selection_remove_all").Invoke(_args[:], nil)
+	_info := girepository.MustFind("Gtk", "selection_remove_all")
+	_info.Invoke(_args[:], nil)
 
 	runtime.KeepAlive(widget)
 }
@@ -156,7 +157,9 @@ func NewTargetEntry(target string, flags uint32, info uint32) *TargetEntry {
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(flags)
 	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(info)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TargetEntry")
+	_gret := _info.InvokeRecordMethod("new", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(target)
 	runtime.KeepAlive(flags)
@@ -170,7 +173,7 @@ func NewTargetEntry(target string, flags uint32, info uint32) *TargetEntry {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "TargetEntry").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "TargetEntry").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -235,7 +238,9 @@ func (data *TargetEntry) Copy() *TargetEntry {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(data)))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "TargetEntry")
+	_gret := _info.InvokeRecordMethod("copy", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(data)
 
@@ -247,7 +252,7 @@ func (data *TargetEntry) Copy() *TargetEntry {
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
 				args := [1]girepository.Argument{(*C.void)(intern.C)}
-				girepository.MustFind("Gtk", "TargetEntry").InvokeMethod("free", args[:], nil)
+				girepository.MustFind("Gtk", "TargetEntry").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
 	)
@@ -291,6 +296,9 @@ func (list *TargetList) AddImageTargets(info uint32, writable bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
+	_info := girepository.MustFind("Gtk", "TargetList")
+	_info.InvokeRecordMethod("add_image_targets", _args[:], nil)
+
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(writable)
@@ -318,6 +326,9 @@ func (list *TargetList) AddRichTextTargets(info uint32, deserializable bool, buf
 	}
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 
+	_info := girepository.MustFind("Gtk", "TargetList")
+	_info.InvokeRecordMethod("add_rich_text_targets", _args[:], nil)
+
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(deserializable)
@@ -337,6 +348,9 @@ func (list *TargetList) AddTextTargets(info uint32) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(info)
 
+	_info := girepository.MustFind("Gtk", "TargetList")
+	_info.InvokeRecordMethod("add_text_targets", _args[:], nil)
+
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(info)
 }
@@ -353,6 +367,9 @@ func (list *TargetList) AddURITargets(info uint32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(info)
+
+	_info := girepository.MustFind("Gtk", "TargetList")
+	_info.InvokeRecordMethod("add_uri_targets", _args[:], nil)
 
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(info)

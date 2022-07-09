@@ -14,11 +14,11 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern AtkHyperlink* _gotk4_atk1_HypertextIface_get_link(void*, gint);
 // extern gint _gotk4_atk1_HypertextIface_get_link_index(void*, gint);
 // extern gint _gotk4_atk1_HypertextIface_get_n_links(void*);
 // extern void _gotk4_atk1_HypertextIface_link_selected(void*, gint);
 // extern void _gotk4_atk1_Hypertext_ConnectLinkSelected(gpointer, gint, guintptr);
+// extern void* _gotk4_atk1_HypertextIface_get_link(void*, gint);
 import "C"
 
 // GTypeHypertext returns the GType for the type Hypertext.
@@ -117,7 +117,7 @@ func ifaceInitHypertexter(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_atk1_HypertextIface_get_link
-func _gotk4_atk1_HypertextIface_get_link(arg0 *C.void, arg1 C.gint) (cret *C.AtkHyperlink) {
+func _gotk4_atk1_HypertextIface_get_link(arg0 *C.void, arg1 C.gint) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(HypertextOverrider)
 
@@ -224,7 +224,9 @@ func (hypertext *Hypertext) Link(linkIndex int32) *Hyperlink {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(linkIndex)
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Hypertext")
+	_gret := _info.InvokeIfaceMethod("get_link", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(hypertext)
 	runtime.KeepAlive(linkIndex)
@@ -254,7 +256,9 @@ func (hypertext *Hypertext) LinkIndex(charIndex int32) int32 {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(charIndex)
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Hypertext")
+	_gret := _info.InvokeIfaceMethod("get_link_index", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(hypertext)
 	runtime.KeepAlive(charIndex)
@@ -277,7 +281,9 @@ func (hypertext *Hypertext) NLinks() int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
 
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "Hypertext")
+	_gret := _info.InvokeIfaceMethod("get_n_links", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(hypertext)
 

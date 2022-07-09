@@ -519,8 +519,9 @@ func NewCursorFromName(display *Display, name string) *Cursor {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("new_Cursor_from_name", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Cursor")
+	_gret := _info.InvokeClassMethod("new_Cursor_from_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(name)
@@ -569,8 +570,9 @@ func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x, y int32)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(x)
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(y)
 
-	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("new_Cursor_from_pixbuf", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Cursor")
+	_gret := _info.InvokeClassMethod("new_Cursor_from_pixbuf", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(pixbuf)
@@ -615,8 +617,9 @@ func NewCursorFromSurface(display *Display, surface *cairo.Surface, x, y float64
 	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(x)
 	*(*C.gdouble)(unsafe.Pointer(&_args[3])) = C.gdouble(y)
 
-	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("new_Cursor_from_surface", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Cursor")
+	_gret := _info.InvokeClassMethod("new_Cursor_from_surface", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(surface)
@@ -641,8 +644,9 @@ func (cursor *Cursor) Display() *Display {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_display", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Cursor")
+	_gret := _info.InvokeClassMethod("get_display", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cursor)
 
@@ -668,8 +672,9 @@ func (cursor *Cursor) Image() *gdkpixbuf.Pixbuf {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_image", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Cursor")
+	_gret := _info.InvokeClassMethod("get_image", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cursor)
 
@@ -711,8 +716,9 @@ func (cursor *Cursor) Surface() (xHot, yHot float64, surface *cairo.Surface) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
 
-	_gret := girepository.MustFind("Gdk", "Cursor").InvokeMethod("get_surface", _args[:], _outs[:])
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "Cursor")
+	_gret := _info.InvokeClassMethod("get_surface", _args[:], _outs[:])
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cursor)
 

@@ -34,8 +34,9 @@ func NewSimplePermission(allowed bool) *SimplePermission {
 		*(*C.gboolean)(unsafe.Pointer(&_args[0])) = C.TRUE
 	}
 
-	_gret := girepository.MustFind("Gio", "SimplePermission").InvokeMethod("new_SimplePermission", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "SimplePermission")
+	_gret := _info.InvokeClassMethod("new_SimplePermission", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(allowed)
 

@@ -200,8 +200,9 @@ func marshalToolPalette(p uintptr) (interface{}, error) {
 //    - toolPalette: new ToolPalette.
 //
 func NewToolPalette() *ToolPalette {
-	_gret := girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("new_ToolPalette", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToolPalette")
+	_gret := _info.InvokeClassMethod("new_ToolPalette", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _toolPalette *ToolPalette // out
 
@@ -227,8 +228,9 @@ func (palette *ToolPalette) DragItem(selection *SelectionData) Widgetter {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(selection)))
 
-	_gret := girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("get_drag_item", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToolPalette")
+	_gret := _info.InvokeClassMethod("get_drag_item", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(palette)
 	runtime.KeepAlive(selection)
@@ -274,8 +276,9 @@ func (palette *ToolPalette) DropGroup(x, y int32) *ToolItemGroup {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(x)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(y)
 
-	_gret := girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("get_drop_group", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToolPalette")
+	_gret := _info.InvokeClassMethod("get_drop_group", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(palette)
 	runtime.KeepAlive(x)
@@ -309,8 +312,9 @@ func (palette *ToolPalette) DropItem(x, y int32) *ToolItem {
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(x)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(y)
 
-	_gret := girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("get_drop_item", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToolPalette")
+	_gret := _info.InvokeClassMethod("get_drop_item", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(palette)
 	runtime.KeepAlive(x)
@@ -342,8 +346,9 @@ func (palette *ToolPalette) Exclusive(group *ToolItemGroup) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("get_exclusive", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToolPalette")
+	_gret := _info.InvokeClassMethod("get_exclusive", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(palette)
 	runtime.KeepAlive(group)
@@ -374,8 +379,9 @@ func (palette *ToolPalette) Expand(group *ToolItemGroup) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("get_expand", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToolPalette")
+	_gret := _info.InvokeClassMethod("get_expand", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(palette)
 	runtime.KeepAlive(group)
@@ -406,8 +412,9 @@ func (palette *ToolPalette) GroupPosition(group *ToolItemGroup) int32 {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("get_group_position", _args[:], nil)
-	_cret = *(*C.gint)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToolPalette")
+	_gret := _info.InvokeClassMethod("get_group_position", _args[:], nil)
+	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(palette)
 	runtime.KeepAlive(group)
@@ -432,8 +439,9 @@ func (palette *ToolPalette) HAdjustment() *Adjustment {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("get_hadjustment", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToolPalette")
+	_gret := _info.InvokeClassMethod("get_hadjustment", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(palette)
 
@@ -457,8 +465,9 @@ func (palette *ToolPalette) VAdjustment() *Adjustment {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
 
-	_gret := girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("get_vadjustment", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "ToolPalette")
+	_gret := _info.InvokeClassMethod("get_vadjustment", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(palette)
 
@@ -486,7 +495,8 @@ func (palette *ToolPalette) SetExclusive(group *ToolItemGroup, exclusive bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("set_exclusive", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ToolPalette")
+	_info.InvokeClassMethod("set_exclusive", _args[:], nil)
 
 	runtime.KeepAlive(palette)
 	runtime.KeepAlive(group)
@@ -509,7 +519,8 @@ func (palette *ToolPalette) SetExpand(group *ToolItemGroup, expand bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("set_expand", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ToolPalette")
+	_info.InvokeClassMethod("set_expand", _args[:], nil)
 
 	runtime.KeepAlive(palette)
 	runtime.KeepAlive(group)
@@ -532,7 +543,8 @@ func (palette *ToolPalette) SetGroupPosition(group *ToolItemGroup, position int3
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(position)
 
-	girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("set_group_position", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ToolPalette")
+	_info.InvokeClassMethod("set_group_position", _args[:], nil)
 
 	runtime.KeepAlive(palette)
 	runtime.KeepAlive(group)
@@ -547,7 +559,8 @@ func (palette *ToolPalette) UnsetIconSize() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
 
-	girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("unset_icon_size", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ToolPalette")
+	_info.InvokeClassMethod("unset_icon_size", _args[:], nil)
 
 	runtime.KeepAlive(palette)
 }
@@ -559,7 +572,8 @@ func (palette *ToolPalette) UnsetStyle() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
 
-	girepository.MustFind("Gtk", "ToolPalette").InvokeMethod("unset_style", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "ToolPalette")
+	_info.InvokeClassMethod("unset_style", _args[:], nil)
 
 	runtime.KeepAlive(palette)
 }
@@ -572,8 +586,9 @@ func (palette *ToolPalette) UnsetStyle() {
 //    - targetEntry for a dragged group.
 //
 func ToolPaletteGetDragTargetGroup() *TargetEntry {
-	_gret := girepository.MustFind("Gtk", "get_drag_target_group").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "get_drag_target_group")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _targetEntry *TargetEntry // out
 
@@ -589,8 +604,9 @@ func ToolPaletteGetDragTargetGroup() *TargetEntry {
 //    - targetEntry for a dragged item.
 //
 func ToolPaletteGetDragTargetItem() *TargetEntry {
-	_gret := girepository.MustFind("Gtk", "get_drag_target_item").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "get_drag_target_item")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _targetEntry *TargetEntry // out
 

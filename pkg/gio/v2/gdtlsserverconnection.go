@@ -98,8 +98,9 @@ func NewDTLSServerConnection(baseSocket DatagramBasedder, certificate TLSCertifi
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(certificate).Native()))
 	}
 
-	_gret := girepository.MustFind("Gio", "new").Invoke(_args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "new")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseSocket)
 	runtime.KeepAlive(certificate)

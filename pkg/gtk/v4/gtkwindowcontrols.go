@@ -131,8 +131,9 @@ func (self *WindowControls) DecorationLayout() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "WindowControls").InvokeMethod("get_decoration_layout", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WindowControls")
+	_gret := _info.InvokeClassMethod("get_decoration_layout", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -156,8 +157,9 @@ func (self *WindowControls) Empty() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "WindowControls").InvokeMethod("get_empty", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "WindowControls")
+	_gret := _info.InvokeClassMethod("get_empty", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -198,7 +200,8 @@ func (self *WindowControls) SetDecorationLayout(layout string) {
 		defer C.free(unsafe.Pointer(_args[1]))
 	}
 
-	girepository.MustFind("Gtk", "WindowControls").InvokeMethod("set_decoration_layout", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "WindowControls")
+	_info.InvokeClassMethod("set_decoration_layout", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(layout)

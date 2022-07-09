@@ -150,8 +150,9 @@ func (gesture *GestureDrag) ConnectDragUpdate(f func(offsetX, offsetY float64)) 
 //    - gestureDrag: newly created GtkGestureDrag.
 //
 func NewGestureDrag() *GestureDrag {
-	_gret := girepository.MustFind("Gtk", "GestureDrag").InvokeMethod("new_GestureDrag", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureDrag")
+	_gret := _info.InvokeClassMethod("new_GestureDrag", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _gestureDrag *GestureDrag // out
 
@@ -178,8 +179,9 @@ func (gesture *GestureDrag) Offset() (x, y float64, ok bool) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureDrag").InvokeMethod("get_offset", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureDrag")
+	_gret := _info.InvokeClassMethod("get_offset", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)
 
@@ -217,8 +219,9 @@ func (gesture *GestureDrag) StartPoint() (x, y float64, ok bool) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
 
-	_gret := girepository.MustFind("Gtk", "GestureDrag").InvokeMethod("get_start_point", _args[:], _outs[:])
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "GestureDrag")
+	_gret := _info.InvokeClassMethod("get_start_point", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)
 

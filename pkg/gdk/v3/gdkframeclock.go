@@ -365,7 +365,8 @@ func (frameClock *FrameClock) BeginUpdating() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
 
-	girepository.MustFind("Gdk", "FrameClock").InvokeMethod("begin_updating", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "FrameClock")
+	_info.InvokeClassMethod("begin_updating", _args[:], nil)
 
 	runtime.KeepAlive(frameClock)
 }
@@ -377,7 +378,8 @@ func (frameClock *FrameClock) EndUpdating() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
 
-	girepository.MustFind("Gdk", "FrameClock").InvokeMethod("end_updating", _args[:], nil)
+	_info := girepository.MustFind("Gdk", "FrameClock")
+	_info.InvokeClassMethod("end_updating", _args[:], nil)
 
 	runtime.KeepAlive(frameClock)
 }
@@ -395,8 +397,9 @@ func (frameClock *FrameClock) CurrentTimings() *FrameTimings {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
 
-	_gret := girepository.MustFind("Gdk", "FrameClock").InvokeMethod("get_current_timings", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "FrameClock")
+	_gret := _info.InvokeClassMethod("get_current_timings", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(frameClock)
 
@@ -429,8 +432,9 @@ func (frameClock *FrameClock) FrameCounter() int64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
 
-	_gret := girepository.MustFind("Gdk", "FrameClock").InvokeMethod("get_frame_counter", _args[:], nil)
-	_cret = *(*C.gint64)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "FrameClock")
+	_gret := _info.InvokeClassMethod("get_frame_counter", _args[:], nil)
+	_cret := *(*C.gint64)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(frameClock)
 
@@ -457,8 +461,9 @@ func (frameClock *FrameClock) FrameTime() int64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
 
-	_gret := girepository.MustFind("Gdk", "FrameClock").InvokeMethod("get_frame_time", _args[:], nil)
-	_cret = *(*C.gint64)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "FrameClock")
+	_gret := _info.InvokeClassMethod("get_frame_time", _args[:], nil)
+	_cret := *(*C.gint64)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(frameClock)
 
@@ -485,8 +490,9 @@ func (frameClock *FrameClock) HistoryStart() int64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
 
-	_gret := girepository.MustFind("Gdk", "FrameClock").InvokeMethod("get_history_start", _args[:], nil)
-	_cret = *(*C.gint64)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "FrameClock")
+	_gret := _info.InvokeClassMethod("get_history_start", _args[:], nil)
+	_cret := *(*C.gint64)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(frameClock)
 
@@ -523,7 +529,8 @@ func (frameClock *FrameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
 	*(*C.gint64)(unsafe.Pointer(&_args[1])) = C.gint64(baseTime)
 
-	girepository.MustFind("Gdk", "FrameClock").InvokeMethod("get_refresh_info", _args[:], _outs[:])
+	_info := girepository.MustFind("Gdk", "FrameClock")
+	_info.InvokeClassMethod("get_refresh_info", _args[:], _outs[:])
 
 	runtime.KeepAlive(frameClock)
 	runtime.KeepAlive(baseTime)
@@ -558,8 +565,9 @@ func (frameClock *FrameClock) Timings(frameCounter int64) *FrameTimings {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frameClock).Native()))
 	*(*C.gint64)(unsafe.Pointer(&_args[1])) = C.gint64(frameCounter)
 
-	_gret := girepository.MustFind("Gdk", "FrameClock").InvokeMethod("get_timings", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gdk", "FrameClock")
+	_gret := _info.InvokeClassMethod("get_timings", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(frameClock)
 	runtime.KeepAlive(frameCounter)

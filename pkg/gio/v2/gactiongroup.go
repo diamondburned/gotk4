@@ -16,13 +16,8 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern GVariant* _gotk4_gio2_ActionGroupInterface_get_action_state(void*, void*);
-// extern GVariant* _gotk4_gio2_ActionGroupInterface_get_action_state_hint(void*, void*);
-// extern GVariantType* _gotk4_gio2_ActionGroupInterface_get_action_parameter_type(void*, void*);
-// extern GVariantType* _gotk4_gio2_ActionGroupInterface_get_action_state_type(void*, void*);
 // extern gboolean _gotk4_gio2_ActionGroupInterface_get_action_enabled(void*, void*);
 // extern gboolean _gotk4_gio2_ActionGroupInterface_has_action(void*, void*);
-// extern gchar** _gotk4_gio2_ActionGroupInterface_list_actions(void*);
 // extern void _gotk4_gio2_ActionGroupInterface_action_added(void*, void*);
 // extern void _gotk4_gio2_ActionGroupInterface_action_enabled_changed(void*, void*, gboolean);
 // extern void _gotk4_gio2_ActionGroupInterface_action_removed(void*, void*);
@@ -33,6 +28,11 @@ import (
 // extern void _gotk4_gio2_ActionGroup_ConnectActionEnabledChanged(gpointer, void*, gboolean, guintptr);
 // extern void _gotk4_gio2_ActionGroup_ConnectActionRemoved(gpointer, void*, guintptr);
 // extern void _gotk4_gio2_ActionGroup_ConnectActionStateChanged(gpointer, void*, void*, guintptr);
+// extern void* _gotk4_gio2_ActionGroupInterface_get_action_parameter_type(void*, void*);
+// extern void* _gotk4_gio2_ActionGroupInterface_get_action_state(void*, void*);
+// extern void* _gotk4_gio2_ActionGroupInterface_get_action_state_hint(void*, void*);
+// extern void* _gotk4_gio2_ActionGroupInterface_get_action_state_type(void*, void*);
+// extern void** _gotk4_gio2_ActionGroupInterface_list_actions(void*);
 import "C"
 
 // GTypeActionGroup returns the GType for the type ActionGroup.
@@ -299,6 +299,9 @@ func (actionGroup *ActionGroup) ActionAdded(actionName string) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
+	_info := girepository.MustFind("Gio", "ActionGroup")
+	_info.InvokeIfaceMethod("action_added", _args[:], nil)
+
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 }
@@ -323,6 +326,9 @@ func (actionGroup *ActionGroup) ActionEnabledChanged(actionName string, enabled 
 		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
 	}
 
+	_info := girepository.MustFind("Gio", "ActionGroup")
+	_info.InvokeIfaceMethod("action_enabled_changed", _args[:], nil)
+
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 	runtime.KeepAlive(enabled)
@@ -342,6 +348,9 @@ func (actionGroup *ActionGroup) ActionRemoved(actionName string) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_args[1]))
+
+	_info := girepository.MustFind("Gio", "ActionGroup")
+	_info.InvokeIfaceMethod("action_removed", _args[:], nil)
 
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
@@ -364,6 +373,9 @@ func (actionGroup *ActionGroup) ActionStateChanged(actionName string, state *gli
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(state)))
+
+	_info := girepository.MustFind("Gio", "ActionGroup")
+	_info.InvokeIfaceMethod("action_state_changed", _args[:], nil)
 
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
@@ -415,6 +427,9 @@ func (actionGroup *ActionGroup) ActivateAction(actionName string, parameter *gli
 		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parameter)))
 	}
 
+	_info := girepository.MustFind("Gio", "ActionGroup")
+	_info.InvokeIfaceMethod("activate_action", _args[:], nil)
+
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 	runtime.KeepAlive(parameter)
@@ -445,6 +460,9 @@ func (actionGroup *ActionGroup) ChangeActionState(actionName string, value *glib
 	defer C.free(unsafe.Pointer(_args[1]))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
 
+	_info := girepository.MustFind("Gio", "ActionGroup")
+	_info.InvokeIfaceMethod("change_action_state", _args[:], nil)
+
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
 	runtime.KeepAlive(value)
@@ -471,7 +489,9 @@ func (actionGroup *ActionGroup) ActionEnabled(actionName string) bool {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ActionGroup")
+	_gret := _info.InvokeIfaceMethod("get_action_enabled", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
@@ -514,7 +534,9 @@ func (actionGroup *ActionGroup) ActionParameterType(actionName string) *glib.Var
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ActionGroup")
+	_gret := _info.InvokeIfaceMethod("get_action_parameter_type", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
@@ -553,7 +575,9 @@ func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ActionGroup")
+	_gret := _info.InvokeIfaceMethod("get_action_state", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
@@ -606,7 +630,9 @@ func (actionGroup *ActionGroup) ActionStateHint(actionName string) *glib.Variant
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ActionGroup")
+	_gret := _info.InvokeIfaceMethod("get_action_state_hint", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
@@ -657,7 +683,9 @@ func (actionGroup *ActionGroup) ActionStateType(actionName string) *glib.Variant
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ActionGroup")
+	_gret := _info.InvokeIfaceMethod("get_action_state_type", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
@@ -688,7 +716,9 @@ func (actionGroup *ActionGroup) HasAction(actionName string) bool {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ActionGroup")
+	_gret := _info.InvokeIfaceMethod("has_action", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
@@ -716,7 +746,9 @@ func (actionGroup *ActionGroup) ListActions() []string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 
-	_cret = *(***C.gchar)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ActionGroup")
+	_gret := _info.InvokeIfaceMethod("list_actions", _args[:], nil)
+	_cret := *(***C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(actionGroup)
 
@@ -789,7 +821,9 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ActionGroup")
+	_gret := _info.InvokeIfaceMethod("query_action", _args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(actionName)
@@ -811,7 +845,7 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("GLib", "VariantType").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("GLib", "VariantType").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
@@ -823,7 +857,7 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
 					args := [1]girepository.Argument{(*C.void)(intern.C)}
-					girepository.MustFind("GLib", "VariantType").InvokeMethod("free", args[:], nil)
+					girepository.MustFind("GLib", "VariantType").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)

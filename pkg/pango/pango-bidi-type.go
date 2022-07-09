@@ -150,8 +150,9 @@ func GetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 	*(*C.gunichar)(unsafe.Pointer(&_args[0])) = C.gunichar(ch)
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(mirroredCh))
 
-	_gret := girepository.MustFind("Pango", "get_mirror_char").Invoke(_args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Pango", "get_mirror_char")
+	_gret := _info.Invoke(_args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(ch)
 	runtime.KeepAlive(mirroredCh)

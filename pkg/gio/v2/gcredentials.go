@@ -85,8 +85,9 @@ func marshalCredentials(p uintptr) (interface{}, error) {
 //    - credentials Free with g_object_unref().
 //
 func NewCredentials() *Credentials {
-	_gret := girepository.MustFind("Gio", "Credentials").InvokeMethod("new_Credentials", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Credentials")
+	_gret := _info.InvokeClassMethod("new_Credentials", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _credentials *Credentials // out
 
@@ -109,7 +110,8 @@ func (credentials *Credentials) IsSameUser(otherCredentials *Credentials) error 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(credentials).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(otherCredentials).Native()))
 
-	girepository.MustFind("Gio", "Credentials").InvokeMethod("is_same_user", _args[:], nil)
+	_info := girepository.MustFind("Gio", "Credentials")
+	_info.InvokeClassMethod("is_same_user", _args[:], nil)
 
 	runtime.KeepAlive(credentials)
 	runtime.KeepAlive(otherCredentials)
@@ -136,8 +138,9 @@ func (credentials *Credentials) String() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(credentials).Native()))
 
-	_gret := girepository.MustFind("Gio", "Credentials").InvokeMethod("to_string", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "Credentials")
+	_gret := _info.InvokeClassMethod("to_string", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(credentials)
 

@@ -19,9 +19,9 @@ import (
 // #include <glib.h>
 // #include <glib-object.h>
 // extern gboolean _gotk4_gio2_ProxyResolverInterface_is_supported(void*);
-// extern gchar** _gotk4_gio2_ProxyResolverInterface_lookup(void*, void*, void*, GError**);
-// extern gchar** _gotk4_gio2_ProxyResolverInterface_lookup_finish(void*, void*, GError**);
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void** _gotk4_gio2_ProxyResolverInterface_lookup(void*, void*, void*, GError**);
+// extern void** _gotk4_gio2_ProxyResolverInterface_lookup_finish(void*, void*, GError**);
 import "C"
 
 // GTypeProxyResolver returns the GType for the type ProxyResolver.
@@ -99,7 +99,9 @@ func (resolver *ProxyResolver) IsSupported() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
 
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ProxyResolver")
+	_gret := _info.InvokeIfaceMethod("is_supported", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(resolver)
 
@@ -147,7 +149,9 @@ func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(_args[1]))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ProxyResolver")
+	_gret := _info.InvokeIfaceMethod("lookup", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(ctx)
@@ -203,6 +207,9 @@ func (resolver *ProxyResolver) LookupAsync(ctx context.Context, uri string, call
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
 	}
 
+	_info := girepository.MustFind("Gio", "ProxyResolver")
+	_info.InvokeIfaceMethod("lookup_async", _args[:], nil)
+
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(uri)
@@ -228,7 +235,9 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "ProxyResolver")
+	_gret := _info.InvokeIfaceMethod("lookup_finish", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(result)
@@ -266,8 +275,9 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 //      resolver is available.
 //
 func ProxyResolverGetDefault() *ProxyResolver {
-	_gret := girepository.MustFind("Gio", "get_default").Invoke(nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gio", "get_default")
+	_gret := _info.Invoke(nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _proxyResolver *ProxyResolver // out
 

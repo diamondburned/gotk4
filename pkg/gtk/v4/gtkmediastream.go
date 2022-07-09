@@ -317,7 +317,8 @@ func (self *MediaStream) Ended() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	girepository.MustFind("Gtk", "MediaStream").InvokeMethod("ended", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_info.InvokeClassMethod("ended", _args[:], nil)
 
 	runtime.KeepAlive(self)
 }
@@ -346,7 +347,8 @@ func (self *MediaStream) GError(err error) {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gerror.New(err))
 	}
 
-	girepository.MustFind("Gtk", "MediaStream").InvokeMethod("gerror", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_info.InvokeClassMethod("gerror", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(err)
@@ -365,8 +367,9 @@ func (self *MediaStream) Duration() int64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MediaStream").InvokeMethod("get_duration", _args[:], nil)
-	_cret = *(*C.gint64)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_gret := _info.InvokeClassMethod("get_duration", _args[:], nil)
+	_cret := *(*C.gint64)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -388,8 +391,9 @@ func (self *MediaStream) GetEnded() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MediaStream").InvokeMethod("get_ended", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_gret := _info.InvokeClassMethod("get_ended", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -425,8 +429,9 @@ func (self *MediaStream) Error() error {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MediaStream").InvokeMethod("get_error", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_gret := _info.InvokeClassMethod("get_error", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -452,8 +457,9 @@ func (self *MediaStream) Loop() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MediaStream").InvokeMethod("get_loop", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_gret := _info.InvokeClassMethod("get_loop", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -479,8 +485,9 @@ func (self *MediaStream) Muted() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MediaStream").InvokeMethod("get_muted", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_gret := _info.InvokeClassMethod("get_muted", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -504,8 +511,9 @@ func (self *MediaStream) Playing() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MediaStream").InvokeMethod("get_playing", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_gret := _info.InvokeClassMethod("get_playing", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -529,8 +537,9 @@ func (self *MediaStream) Timestamp() int64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MediaStream").InvokeMethod("get_timestamp", _args[:], nil)
-	_cret = *(*C.gint64)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_gret := _info.InvokeClassMethod("get_timestamp", _args[:], nil)
+	_cret := *(*C.gint64)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -554,8 +563,9 @@ func (self *MediaStream) Volume() float64 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MediaStream").InvokeMethod("get_volume", _args[:], nil)
-	_cret = *(*C.double)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_gret := _info.InvokeClassMethod("get_volume", _args[:], nil)
+	_cret := *(*C.double)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -577,8 +587,9 @@ func (self *MediaStream) HasAudio() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MediaStream").InvokeMethod("has_audio", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_gret := _info.InvokeClassMethod("has_audio", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -602,8 +613,9 @@ func (self *MediaStream) HasVideo() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MediaStream").InvokeMethod("has_video", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_gret := _info.InvokeClassMethod("has_video", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -629,8 +641,9 @@ func (self *MediaStream) IsPrepared() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MediaStream").InvokeMethod("is_prepared", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_gret := _info.InvokeClassMethod("is_prepared", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -662,8 +675,9 @@ func (self *MediaStream) IsSeekable() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MediaStream").InvokeMethod("is_seekable", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_gret := _info.InvokeClassMethod("is_seekable", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -687,8 +701,9 @@ func (self *MediaStream) IsSeeking() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_gret := girepository.MustFind("Gtk", "MediaStream").InvokeMethod("is_seeking", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_gret := _info.InvokeClassMethod("is_seeking", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -709,7 +724,8 @@ func (self *MediaStream) Pause() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	girepository.MustFind("Gtk", "MediaStream").InvokeMethod("pause", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_info.InvokeClassMethod("pause", _args[:], nil)
 
 	runtime.KeepAlive(self)
 }
@@ -722,7 +738,8 @@ func (self *MediaStream) Play() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	girepository.MustFind("Gtk", "MediaStream").InvokeMethod("play", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_info.InvokeClassMethod("play", _args[:], nil)
 
 	runtime.KeepAlive(self)
 }
@@ -760,7 +777,8 @@ func (self *MediaStream) Prepared(hasAudio, hasVideo, seekable bool, duration in
 	}
 	*(*C.gint64)(unsafe.Pointer(&_args[4])) = C.gint64(duration)
 
-	girepository.MustFind("Gtk", "MediaStream").InvokeMethod("prepared", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_info.InvokeClassMethod("prepared", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(hasAudio)
@@ -796,7 +814,8 @@ func (self *MediaStream) Realize(surface gdk.Surfacer) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	girepository.MustFind("Gtk", "MediaStream").InvokeMethod("realize", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_info.InvokeClassMethod("realize", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(surface)
@@ -822,7 +841,8 @@ func (self *MediaStream) Seek(timestamp int64) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(*C.gint64)(unsafe.Pointer(&_args[1])) = C.gint64(timestamp)
 
-	girepository.MustFind("Gtk", "MediaStream").InvokeMethod("seek", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_info.InvokeClassMethod("seek", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(timestamp)
@@ -840,7 +860,8 @@ func (self *MediaStream) SeekFailed() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	girepository.MustFind("Gtk", "MediaStream").InvokeMethod("seek_failed", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_info.InvokeClassMethod("seek_failed", _args[:], nil)
 
 	runtime.KeepAlive(self)
 }
@@ -856,7 +877,8 @@ func (self *MediaStream) SeekSuccess() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	girepository.MustFind("Gtk", "MediaStream").InvokeMethod("seek_success", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_info.InvokeClassMethod("seek_success", _args[:], nil)
 
 	runtime.KeepAlive(self)
 }
@@ -881,7 +903,8 @@ func (self *MediaStream) SetLoop(loop bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "MediaStream").InvokeMethod("set_loop", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_info.InvokeClassMethod("set_loop", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(loop)
@@ -908,7 +931,8 @@ func (self *MediaStream) SetMuted(muted bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "MediaStream").InvokeMethod("set_muted", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_info.InvokeClassMethod("set_muted", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(muted)
@@ -928,7 +952,8 @@ func (self *MediaStream) SetPlaying(playing bool) {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
-	girepository.MustFind("Gtk", "MediaStream").InvokeMethod("set_playing", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_info.InvokeClassMethod("set_playing", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(playing)
@@ -955,7 +980,8 @@ func (self *MediaStream) SetVolume(volume float64) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(volume)
 
-	girepository.MustFind("Gtk", "MediaStream").InvokeMethod("set_volume", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_info.InvokeClassMethod("set_volume", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(volume)
@@ -971,7 +997,8 @@ func (self *MediaStream) Unprepared() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	girepository.MustFind("Gtk", "MediaStream").InvokeMethod("unprepared", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_info.InvokeClassMethod("unprepared", _args[:], nil)
 
 	runtime.KeepAlive(self)
 }
@@ -991,7 +1018,8 @@ func (self *MediaStream) Unrealize(surface gdk.Surfacer) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
-	girepository.MustFind("Gtk", "MediaStream").InvokeMethod("unrealize", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_info.InvokeClassMethod("unrealize", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(surface)
@@ -1015,7 +1043,8 @@ func (self *MediaStream) Update(timestamp int64) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	*(*C.gint64)(unsafe.Pointer(&_args[1])) = C.gint64(timestamp)
 
-	girepository.MustFind("Gtk", "MediaStream").InvokeMethod("update", _args[:], nil)
+	_info := girepository.MustFind("Gtk", "MediaStream")
+	_info.InvokeClassMethod("update", _args[:], nil)
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(timestamp)

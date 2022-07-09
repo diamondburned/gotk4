@@ -105,7 +105,9 @@ func (self *AppChooser) AppInfo() *gio.AppInfo {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AppChooser")
+	_gret := _info.InvokeIfaceMethod("get_app_info", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -135,7 +137,9 @@ func (self *AppChooser) ContentType() string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Gtk", "AppChooser")
+	_gret := _info.InvokeIfaceMethod("get_content_type", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
@@ -152,6 +156,9 @@ func (self *AppChooser) Refresh() {
 	var _args [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_info := girepository.MustFind("Gtk", "AppChooser")
+	_info.InvokeIfaceMethod("refresh", _args[:], nil)
 
 	runtime.KeepAlive(self)
 }

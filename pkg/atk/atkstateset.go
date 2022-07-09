@@ -68,8 +68,9 @@ func marshalStateSet(p uintptr) (interface{}, error) {
 //    - stateSet: new StateSet.
 //
 func NewStateSet() *StateSet {
-	_gret := girepository.MustFind("Atk", "StateSet").InvokeMethod("new_StateSet", nil, nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "StateSet")
+	_gret := _info.InvokeClassMethod("new_StateSet", nil, nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _stateSet *StateSet // out
 
@@ -95,8 +96,9 @@ func (set *StateSet) AndSets(compareSet *StateSet) *StateSet {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(compareSet).Native()))
 
-	_gret := girepository.MustFind("Atk", "StateSet").InvokeMethod("and_sets", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "StateSet")
+	_gret := _info.InvokeClassMethod("and_sets", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(set)
 	runtime.KeepAlive(compareSet)
@@ -114,7 +116,8 @@ func (set *StateSet) ClearStates() {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
 
-	girepository.MustFind("Atk", "StateSet").InvokeMethod("clear_states", _args[:], nil)
+	_info := girepository.MustFind("Atk", "StateSet")
+	_info.InvokeClassMethod("clear_states", _args[:], nil)
 
 	runtime.KeepAlive(set)
 }
@@ -130,8 +133,9 @@ func (set *StateSet) IsEmpty() bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
 
-	_gret := girepository.MustFind("Atk", "StateSet").InvokeMethod("is_empty", _args[:], nil)
-	_cret = *(*C.gboolean)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "StateSet")
+	_gret := _info.InvokeClassMethod("is_empty", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(set)
 
@@ -161,8 +165,9 @@ func (set *StateSet) OrSets(compareSet *StateSet) *StateSet {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(compareSet).Native()))
 
-	_gret := girepository.MustFind("Atk", "StateSet").InvokeMethod("or_sets", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "StateSet")
+	_gret := _info.InvokeClassMethod("or_sets", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(set)
 	runtime.KeepAlive(compareSet)
@@ -195,8 +200,9 @@ func (set *StateSet) XorSets(compareSet *StateSet) *StateSet {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(set).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(compareSet).Native()))
 
-	_gret := girepository.MustFind("Atk", "StateSet").InvokeMethod("xor_sets", _args[:], nil)
-	_cret = *(**C.void)(unsafe.Pointer(&_gret))
+	_info := girepository.MustFind("Atk", "StateSet")
+	_gret := _info.InvokeClassMethod("xor_sets", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(set)
 	runtime.KeepAlive(compareSet)

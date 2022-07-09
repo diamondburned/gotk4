@@ -132,12 +132,12 @@ var _ EditableTexter = (*EditableText)(nil)
 
 func ifaceInitEditableTexter(gifacePtr, data C.gpointer) {
 	iface := girepository.MustFind("Atk", "EditableTextIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("copy_text"))) = unsafe.Pointer(C._gotk4_atk1_EditableTextIface_copy_text)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("cut_text"))) = unsafe.Pointer(C._gotk4_atk1_EditableTextIface_cut_text)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("delete_text"))) = unsafe.Pointer(C._gotk4_atk1_EditableTextIface_delete_text)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("insert_text"))) = unsafe.Pointer(C._gotk4_atk1_EditableTextIface_insert_text)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("paste_text"))) = unsafe.Pointer(C._gotk4_atk1_EditableTextIface_paste_text)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("set_text_contents"))) = unsafe.Pointer(C._gotk4_atk1_EditableTextIface_set_text_contents)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("copy_text"))) = unsafe.Pointer(C._gotk4_atk1_EditableTextIface_copy_text)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("cut_text"))) = unsafe.Pointer(C._gotk4_atk1_EditableTextIface_cut_text)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("delete_text"))) = unsafe.Pointer(C._gotk4_atk1_EditableTextIface_delete_text)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("insert_text"))) = unsafe.Pointer(C._gotk4_atk1_EditableTextIface_insert_text)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("paste_text"))) = unsafe.Pointer(C._gotk4_atk1_EditableTextIface_paste_text)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("set_text_contents"))) = unsafe.Pointer(C._gotk4_atk1_EditableTextIface_set_text_contents)
 }
 
 //export _gotk4_atk1_EditableTextIface_copy_text

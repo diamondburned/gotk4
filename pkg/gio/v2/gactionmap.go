@@ -102,9 +102,9 @@ var _ ActionMapper = (*ActionMap)(nil)
 
 func ifaceInitActionMapper(gifacePtr, data C.gpointer) {
 	iface := girepository.MustFind("Gio", "ActionMapInterface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("add_action"))) = unsafe.Pointer(C._gotk4_gio2_ActionMapInterface_add_action)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("lookup_action"))) = unsafe.Pointer(C._gotk4_gio2_ActionMapInterface_lookup_action)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("remove_action"))) = unsafe.Pointer(C._gotk4_gio2_ActionMapInterface_remove_action)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("add_action"))) = unsafe.Pointer(C._gotk4_gio2_ActionMapInterface_add_action)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("lookup_action"))) = unsafe.Pointer(C._gotk4_gio2_ActionMapInterface_lookup_action)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("remove_action"))) = unsafe.Pointer(C._gotk4_gio2_ActionMapInterface_remove_action)
 }
 
 //export _gotk4_gio2_ActionMapInterface_add_action

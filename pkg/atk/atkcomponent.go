@@ -235,13 +235,13 @@ var _ Componenter = (*Component)(nil)
 
 func ifaceInitComponenter(gifacePtr, data C.gpointer) {
 	iface := girepository.MustFind("Atk", "ComponentIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("bounds_changed"))) = unsafe.Pointer(C._gotk4_atk1_ComponentIface_bounds_changed)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_alpha"))) = unsafe.Pointer(C._gotk4_atk1_ComponentIface_get_alpha)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_mdi_zorder"))) = unsafe.Pointer(C._gotk4_atk1_ComponentIface_get_mdi_zorder)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_size"))) = unsafe.Pointer(C._gotk4_atk1_ComponentIface_get_size)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("grab_focus"))) = unsafe.Pointer(C._gotk4_atk1_ComponentIface_grab_focus)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("remove_focus_handler"))) = unsafe.Pointer(C._gotk4_atk1_ComponentIface_remove_focus_handler)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("set_size"))) = unsafe.Pointer(C._gotk4_atk1_ComponentIface_set_size)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("bounds_changed"))) = unsafe.Pointer(C._gotk4_atk1_ComponentIface_bounds_changed)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_alpha"))) = unsafe.Pointer(C._gotk4_atk1_ComponentIface_get_alpha)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_mdi_zorder"))) = unsafe.Pointer(C._gotk4_atk1_ComponentIface_get_mdi_zorder)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_size"))) = unsafe.Pointer(C._gotk4_atk1_ComponentIface_get_size)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("grab_focus"))) = unsafe.Pointer(C._gotk4_atk1_ComponentIface_grab_focus)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("remove_focus_handler"))) = unsafe.Pointer(C._gotk4_atk1_ComponentIface_remove_focus_handler)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("set_size"))) = unsafe.Pointer(C._gotk4_atk1_ComponentIface_set_size)
 }
 
 //export _gotk4_atk1_ComponentIface_bounds_changed

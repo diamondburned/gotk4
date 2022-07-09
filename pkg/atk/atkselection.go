@@ -185,14 +185,14 @@ var _ Selectioner = (*Selection)(nil)
 
 func ifaceInitSelectioner(gifacePtr, data C.gpointer) {
 	iface := girepository.MustFind("Atk", "SelectionIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("add_selection"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_add_selection)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("clear_selection"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_clear_selection)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_selection_count"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_get_selection_count)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("is_child_selected"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_is_child_selected)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("ref_selection"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_ref_selection)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("remove_selection"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_remove_selection)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("select_all_selection"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_select_all_selection)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("selection_changed"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_selection_changed)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("add_selection"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_add_selection)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("clear_selection"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_clear_selection)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_selection_count"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_get_selection_count)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("is_child_selected"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_is_child_selected)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("ref_selection"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_ref_selection)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("remove_selection"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_remove_selection)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("select_all_selection"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_select_all_selection)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("selection_changed"))) = unsafe.Pointer(C._gotk4_atk1_SelectionIface_selection_changed)
 }
 
 //export _gotk4_atk1_SelectionIface_add_selection

@@ -174,9 +174,9 @@ var _ AsyncResulter = (*AsyncResult)(nil)
 
 func ifaceInitAsyncResulter(gifacePtr, data C.gpointer) {
 	iface := girepository.MustFind("Gio", "AsyncResultIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_source_object"))) = unsafe.Pointer(C._gotk4_gio2_AsyncResultIface_get_source_object)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_user_data"))) = unsafe.Pointer(C._gotk4_gio2_AsyncResultIface_get_user_data)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("is_tagged"))) = unsafe.Pointer(C._gotk4_gio2_AsyncResultIface_is_tagged)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_source_object"))) = unsafe.Pointer(C._gotk4_gio2_AsyncResultIface_get_source_object)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_user_data"))) = unsafe.Pointer(C._gotk4_gio2_AsyncResultIface_get_user_data)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("is_tagged"))) = unsafe.Pointer(C._gotk4_gio2_AsyncResultIface_is_tagged)
 }
 
 //export _gotk4_gio2_AsyncResultIface_get_source_object

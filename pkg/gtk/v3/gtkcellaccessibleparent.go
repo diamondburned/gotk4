@@ -110,14 +110,14 @@ var _ CellAccessibleParenter = (*CellAccessibleParent)(nil)
 
 func ifaceInitCellAccessibleParenter(gifacePtr, data C.gpointer) {
 	iface := girepository.MustFind("Gtk", "CellAccessibleParentIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("activate"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_activate)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("edit"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_edit)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("expand_collapse"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_expand_collapse)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_cell_area"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_get_cell_area)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_cell_position"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_get_cell_position)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_child_index"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_get_child_index)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("grab_focus"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_grab_focus)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("update_relationset"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_update_relationset)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("activate"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_activate)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("edit"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_edit)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("expand_collapse"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_expand_collapse)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_cell_area"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_get_cell_area)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_cell_position"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_get_cell_position)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_child_index"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_get_child_index)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("grab_focus"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_grab_focus)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("update_relationset"))) = unsafe.Pointer(C._gotk4_gtk3_CellAccessibleParentIface_update_relationset)
 }
 
 //export _gotk4_gtk3_CellAccessibleParentIface_activate

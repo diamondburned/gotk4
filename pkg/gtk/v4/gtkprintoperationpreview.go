@@ -120,11 +120,11 @@ var _ PrintOperationPreviewer = (*PrintOperationPreview)(nil)
 
 func ifaceInitPrintOperationPreviewer(gifacePtr, data C.gpointer) {
 	iface := girepository.MustFind("Gtk", "PrintOperationPreviewIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("end_preview"))) = unsafe.Pointer(C._gotk4_gtk4_PrintOperationPreviewIface_end_preview)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("got_page_size"))) = unsafe.Pointer(C._gotk4_gtk4_PrintOperationPreviewIface_got_page_size)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("is_selected"))) = unsafe.Pointer(C._gotk4_gtk4_PrintOperationPreviewIface_is_selected)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("ready"))) = unsafe.Pointer(C._gotk4_gtk4_PrintOperationPreviewIface_ready)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("render_page"))) = unsafe.Pointer(C._gotk4_gtk4_PrintOperationPreviewIface_render_page)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("end_preview"))) = unsafe.Pointer(C._gotk4_gtk4_PrintOperationPreviewIface_end_preview)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("got_page_size"))) = unsafe.Pointer(C._gotk4_gtk4_PrintOperationPreviewIface_got_page_size)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("is_selected"))) = unsafe.Pointer(C._gotk4_gtk4_PrintOperationPreviewIface_is_selected)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("ready"))) = unsafe.Pointer(C._gotk4_gtk4_PrintOperationPreviewIface_ready)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("render_page"))) = unsafe.Pointer(C._gotk4_gtk4_PrintOperationPreviewIface_render_page)
 }
 
 //export _gotk4_gtk4_PrintOperationPreviewIface_end_preview

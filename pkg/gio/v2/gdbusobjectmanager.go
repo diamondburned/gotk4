@@ -149,14 +149,14 @@ var _ DBusObjectManagerer = (*DBusObjectManager)(nil)
 
 func ifaceInitDBusObjectManagerer(gifacePtr, data C.gpointer) {
 	iface := girepository.MustFind("Gio", "DBusObjectManagerIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_interface"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_get_interface)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_object"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_get_object)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_object_path"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_get_object_path)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_objects"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_get_objects)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("interface_added"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_interface_added)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("interface_removed"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_interface_removed)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("object_added"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_object_added)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("object_removed"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_object_removed)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_interface"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_get_interface)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_object"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_get_object)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_object_path"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_get_object_path)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_objects"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_get_objects)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("interface_added"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_interface_added)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("interface_removed"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_interface_removed)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("object_added"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_object_added)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("object_removed"))) = unsafe.Pointer(C._gotk4_gio2_DBusObjectManagerIface_object_removed)
 }
 
 //export _gotk4_gio2_DBusObjectManagerIface_get_interface

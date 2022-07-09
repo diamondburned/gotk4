@@ -125,8 +125,8 @@ var _ StyleProviderer = (*StyleProvider)(nil)
 
 func ifaceInitStyleProviderer(gifacePtr, data C.gpointer) {
 	iface := girepository.MustFind("Gtk", "StyleProviderIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_icon_factory"))) = unsafe.Pointer(C._gotk4_gtk3_StyleProviderIface_get_icon_factory)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_style"))) = unsafe.Pointer(C._gotk4_gtk3_StyleProviderIface_get_style)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_icon_factory"))) = unsafe.Pointer(C._gotk4_gtk3_StyleProviderIface_get_icon_factory)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_style"))) = unsafe.Pointer(C._gotk4_gtk3_StyleProviderIface_get_style)
 }
 
 //export _gotk4_gtk3_StyleProviderIface_get_icon_factory

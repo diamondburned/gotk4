@@ -87,8 +87,8 @@ var _ Seekabler = (*Seekable)(nil)
 
 func ifaceInitSeekabler(gifacePtr, data C.gpointer) {
 	iface := girepository.MustFind("Gio", "SeekableIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("can_seek"))) = unsafe.Pointer(C._gotk4_gio2_SeekableIface_can_seek)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("can_truncate"))) = unsafe.Pointer(C._gotk4_gio2_SeekableIface_can_truncate)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("can_seek"))) = unsafe.Pointer(C._gotk4_gio2_SeekableIface_can_seek)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("can_truncate"))) = unsafe.Pointer(C._gotk4_gio2_SeekableIface_can_truncate)
 }
 
 //export _gotk4_gio2_SeekableIface_can_seek

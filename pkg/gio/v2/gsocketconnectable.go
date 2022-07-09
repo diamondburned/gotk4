@@ -150,9 +150,9 @@ var _ SocketConnectabler = (*SocketConnectable)(nil)
 
 func ifaceInitSocketConnectabler(gifacePtr, data C.gpointer) {
 	iface := girepository.MustFind("Gio", "SocketConnectableIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("enumerate"))) = unsafe.Pointer(C._gotk4_gio2_SocketConnectableIface_enumerate)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("proxy_enumerate"))) = unsafe.Pointer(C._gotk4_gio2_SocketConnectableIface_proxy_enumerate)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("to_string"))) = unsafe.Pointer(C._gotk4_gio2_SocketConnectableIface_to_string)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("enumerate"))) = unsafe.Pointer(C._gotk4_gio2_SocketConnectableIface_enumerate)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("proxy_enumerate"))) = unsafe.Pointer(C._gotk4_gio2_SocketConnectableIface_proxy_enumerate)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("to_string"))) = unsafe.Pointer(C._gotk4_gio2_SocketConnectableIface_to_string)
 }
 
 //export _gotk4_gio2_SocketConnectableIface_enumerate

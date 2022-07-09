@@ -327,8 +327,8 @@ var _ Activatabler = (*Activatable)(nil)
 
 func ifaceInitActivatabler(gifacePtr, data C.gpointer) {
 	iface := girepository.MustFind("Gtk", "ActivatableIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("sync_action_properties"))) = unsafe.Pointer(C._gotk4_gtk3_ActivatableIface_sync_action_properties)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("update"))) = unsafe.Pointer(C._gotk4_gtk3_ActivatableIface_update)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("sync_action_properties"))) = unsafe.Pointer(C._gotk4_gtk3_ActivatableIface_sync_action_properties)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("update"))) = unsafe.Pointer(C._gotk4_gtk3_ActivatableIface_update)
 }
 
 //export _gotk4_gtk3_ActivatableIface_sync_action_properties

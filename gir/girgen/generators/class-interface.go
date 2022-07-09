@@ -126,7 +126,7 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 		{{- if .IsRuntimeLinkMode}}
 			iface := girepository.MustFind({{ Quote .Root.Namespace.Name }}, {{ Quote .GLibTypeStruct.Record.Name }})
 			{{- range .GLibTypeStruct.Methods}}
-			*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset({{ Quote .FieldName }}))) = unsafe.Pointer(C.{{ .C.Name }})
+			*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset({{ Quote .FieldName }}))) = unsafe.Pointer(C.{{ .C.Name }})
 			{{- end }}
 		{{- else }}
 			iface := (*C.{{ .GLibTypeStruct.CType }})(unsafe.Pointer(gifacePtr))

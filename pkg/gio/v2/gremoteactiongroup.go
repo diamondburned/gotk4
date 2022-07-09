@@ -110,8 +110,8 @@ var _ RemoteActionGrouper = (*RemoteActionGroup)(nil)
 
 func ifaceInitRemoteActionGrouper(gifacePtr, data C.gpointer) {
 	iface := girepository.MustFind("Gio", "RemoteActionGroupInterface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("activate_action_full"))) = unsafe.Pointer(C._gotk4_gio2_RemoteActionGroupInterface_activate_action_full)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("change_action_state_full"))) = unsafe.Pointer(C._gotk4_gio2_RemoteActionGroupInterface_change_action_state_full)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("activate_action_full"))) = unsafe.Pointer(C._gotk4_gio2_RemoteActionGroupInterface_activate_action_full)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("change_action_state_full"))) = unsafe.Pointer(C._gotk4_gio2_RemoteActionGroupInterface_change_action_state_full)
 }
 
 //export _gotk4_gio2_RemoteActionGroupInterface_activate_action_full

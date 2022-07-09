@@ -66,7 +66,7 @@ var _ Converterer = (*Converter)(nil)
 
 func ifaceInitConverterer(gifacePtr, data C.gpointer) {
 	iface := girepository.MustFind("Gio", "ConverterIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("reset"))) = unsafe.Pointer(C._gotk4_gio2_ConverterIface_reset)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("reset"))) = unsafe.Pointer(C._gotk4_gio2_ConverterIface_reset)
 }
 
 //export _gotk4_gio2_ConverterIface_reset

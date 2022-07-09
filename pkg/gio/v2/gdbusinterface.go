@@ -91,9 +91,9 @@ var _ DBusInterfacer = (*DBusInterface)(nil)
 
 func ifaceInitDBusInterfacer(gifacePtr, data C.gpointer) {
 	iface := girepository.MustFind("Gio", "DBusInterfaceIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("dup_object"))) = unsafe.Pointer(C._gotk4_gio2_DBusInterfaceIface_dup_object)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_info"))) = unsafe.Pointer(C._gotk4_gio2_DBusInterfaceIface_get_info)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("set_object"))) = unsafe.Pointer(C._gotk4_gio2_DBusInterfaceIface_set_object)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("dup_object"))) = unsafe.Pointer(C._gotk4_gio2_DBusInterfaceIface_dup_object)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_info"))) = unsafe.Pointer(C._gotk4_gio2_DBusInterfaceIface_get_info)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("set_object"))) = unsafe.Pointer(C._gotk4_gio2_DBusInterfaceIface_set_object)
 }
 
 //export _gotk4_gio2_DBusInterfaceIface_dup_object

@@ -117,9 +117,9 @@ var _ PollableOutputStreamer = (*PollableOutputStream)(nil)
 
 func ifaceInitPollableOutputStreamer(gifacePtr, data C.gpointer) {
 	iface := girepository.MustFind("Gio", "PollableOutputStreamInterface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("can_poll"))) = unsafe.Pointer(C._gotk4_gio2_PollableOutputStreamInterface_can_poll)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("create_source"))) = unsafe.Pointer(C._gotk4_gio2_PollableOutputStreamInterface_create_source)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("is_writable"))) = unsafe.Pointer(C._gotk4_gio2_PollableOutputStreamInterface_is_writable)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("can_poll"))) = unsafe.Pointer(C._gotk4_gio2_PollableOutputStreamInterface_can_poll)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("create_source"))) = unsafe.Pointer(C._gotk4_gio2_PollableOutputStreamInterface_create_source)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("is_writable"))) = unsafe.Pointer(C._gotk4_gio2_PollableOutputStreamInterface_is_writable)
 }
 
 //export _gotk4_gio2_PollableOutputStreamInterface_can_poll

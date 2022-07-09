@@ -95,9 +95,9 @@ var _ TLSBackender = (*TLSBackend)(nil)
 
 func ifaceInitTLSBackender(gifacePtr, data C.gpointer) {
 	iface := girepository.MustFind("Gio", "TlsBackendInterface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("get_default_database"))) = unsafe.Pointer(C._gotk4_gio2_TlsBackendInterface_get_default_database)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("supports_dtls"))) = unsafe.Pointer(C._gotk4_gio2_TlsBackendInterface_supports_dtls)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), pclass.StructFieldOffset("supports_tls"))) = unsafe.Pointer(C._gotk4_gio2_TlsBackendInterface_supports_tls)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_default_database"))) = unsafe.Pointer(C._gotk4_gio2_TlsBackendInterface_get_default_database)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("supports_dtls"))) = unsafe.Pointer(C._gotk4_gio2_TlsBackendInterface_supports_dtls)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("supports_tls"))) = unsafe.Pointer(C._gotk4_gio2_TlsBackendInterface_supports_tls)
 }
 
 //export _gotk4_gio2_TlsBackendInterface_get_default_database

@@ -744,9 +744,12 @@ func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 	// code written below, but consistency is still more ideal, I think.
 	p.Line(`
 		func init() {
-			LogUseDefaultLogger() // see gotk4's gendata.go
+			if os.Getenv("G_DEBUG") == "" {
+				LogUseDefaultLogger() // see gotk4's gendata.go
+			}
 		}
 	`)
+
 	p.Line(`
 		// LogSetHandler sets the handler used for GLib logging and returns the
 		// new handler ID. It is a wrapper around g_log_set_handler and

@@ -913,7 +913,9 @@ func (l *LogField) Key() string {
 }
 
 func init() {
-	LogUseDefaultLogger() // see gotk4's gendata.go
+	if os.Getenv("G_DEBUG") == "" {
+		LogUseDefaultLogger() // see gotk4's gendata.go
+	}
 }
 
 // LogSetHandler sets the handler used for GLib logging and returns the

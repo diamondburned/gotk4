@@ -140,6 +140,18 @@ func (g *Generator) DynamicLinkNamespaces(versionedNamespaces []string) {
 	}
 }
 
+// NamespaceLinkMode returns the link mode for the given namespace.
+func (g *Generator) NamespaceLinkMode(namespace *gir.Namespace) types.LinkMode {
+	versioned := gir.VersionedNamespace(namespace)
+
+	mode := g.defaultMode
+	if override, ok := g.modes[versioned]; ok {
+		mode = override
+	}
+
+	return mode
+}
+
 // UseNamespace creates a new namespace generator using the given namespace.
 func (g *Generator) UseNamespace(namespace, version string) *NamespaceGenerator {
 	versioned := gir.VersionedName(namespace, version)

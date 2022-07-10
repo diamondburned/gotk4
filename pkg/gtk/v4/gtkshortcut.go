@@ -164,15 +164,15 @@ func (self *Shortcut) Arguments() *glib.Variant {
 
 	_info := girepository.MustFind("Gtk", "Shortcut")
 	_gret := _info.InvokeClassMethod("get_arguments", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
 	var _variant *glib.Variant // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		C.g_variant_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	if *(**C.GVariant)(unsafe.Pointer(&_cret)) != nil {
+		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
+		C.g_variant_ref(*(**C.GVariant)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -257,7 +257,7 @@ func (self *Shortcut) SetArguments(args *glib.Variant) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if args != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
+		*(**C.GVariant)(unsafe.Pointer(&_args[1])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(args)))
 	}
 
 	_info := girepository.MustFind("Gtk", "Shortcut")

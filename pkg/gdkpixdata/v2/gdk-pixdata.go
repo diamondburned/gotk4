@@ -216,7 +216,7 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, er
 
 	_info := girepository.MustFind("GdkPixdata", "pixbuf_from_pixdata")
 	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pixdata)
 	runtime.KeepAlive(copyPixels)
@@ -225,7 +225,7 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, er
 	var _goerr error              // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&_cret))))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
 			LoadableIcon: gio.LoadableIcon{
@@ -235,8 +235,8 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, er
 			},
 		}
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _pixbuf, _goerr
@@ -301,8 +301,8 @@ func (pixdata *Pixdata) Deserialize(stream []byte) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

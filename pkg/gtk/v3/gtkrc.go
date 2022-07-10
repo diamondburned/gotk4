@@ -20,7 +20,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern guint _gotk4_gtk3_RcStyleClass_parse(void*, void*, void*);
+// extern guint _gotk4_gtk3_RcStyleClass_parse(void*, void*, GScanner*);
 // extern void _gotk4_gtk3_RcStyleClass_merge(void*, void*);
 import "C"
 
@@ -472,7 +472,7 @@ func RCFindPixmapInPath(settings *Settings, scanner *glib.Scanner, pixmapFile st
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(scanner)))
+	*(**C.GScanner)(unsafe.Pointer(&_args[1])) = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(pixmapFile)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
 
@@ -633,6 +633,72 @@ func RCGetStyle(widget Widgetter) *Style {
 	return _style
 }
 
+// RCGetStyleByPaths creates up a Style from styles defined in a RC file by
+// providing the raw components used in matching. This function may be useful
+// when creating pseudo-widgets that should be themed like widgets but don’t
+// actually have corresponding GTK+ widgets. An example of this would be items
+// inside a GNOME canvas widget.
+//
+// The action of gtk_rc_get_style() is similar to:
+//
+//    gtk_widget_path (widget, NULL, &path, NULL);
+//    gtk_widget_class_path (widget, NULL, &class_path, NULL);
+//    gtk_rc_get_style_by_paths (gtk_widget_get_settings (widget),
+//                               path, class_path,
+//                               G_OBJECT_TYPE (widget));
+//
+// Deprecated: Use StyleContext instead.
+//
+// The function takes the following parameters:
+//
+//    - settings Settings object.
+//    - widgetPath (optional): widget path to use when looking up the style, or
+//      NULL if no matching against the widget path should be done.
+//    - classPath (optional) class path to use when looking up the style, or NULL
+//      if no matching against the class path should be done.
+//    - typ: type that will be used along with parent types of this type when
+//      matching against class styles, or TYPE_NONE.
+//
+// The function returns the following values:
+//
+//    - style (optional) created by matching with the supplied paths, or NULL if
+//      nothing matching was specified and the default style should be used. The
+//      returned value is owned by GTK+ as part of an internal cache, so you must
+//      call g_object_ref() on the returned value if you want to keep a reference
+//      to it.
+//
+func RCGetStyleByPaths(settings *Settings, widgetPath, classPath string, typ coreglib.Type) *Style {
+	var _args [4]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
+	if widgetPath != "" {
+		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(widgetPath)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	}
+	if classPath != "" {
+		*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(classPath)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
+	}
+	*(*C.GType)(unsafe.Pointer(&_args[3])) = C.GType(typ)
+
+	_info := girepository.MustFind("Gtk", "rc_get_style_by_paths")
+	_gret := _info.InvokeFunction(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(widgetPath)
+	runtime.KeepAlive(classPath)
+	runtime.KeepAlive(typ)
+
+	var _style *Style // out
+
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+		_style = wrapStyle(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	}
+
+	return _style
+}
+
 // RCGetThemeDir returns the standard directory in which themes should be
 // installed. (GTK+ does not actually use this directory itself.)
 //
@@ -697,7 +763,7 @@ func RCParseColor(scanner *glib.Scanner) (*gdk.Color, uint32) {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(scanner)))
+	*(**C.GScanner)(unsafe.Pointer(&_args[0])) = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	_info := girepository.MustFind("Gtk", "rc_parse_color")
 	_gret := _info.InvokeFunction(_args[:], _outs[:])
@@ -734,7 +800,7 @@ func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (*gdk.Color, uint32
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(scanner)))
+	*(**C.GScanner)(unsafe.Pointer(&_args[0])) = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 	if style != nil {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(style).Native()))
 	}
@@ -774,7 +840,7 @@ func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (*gdk.Color, uint32
 func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint32 {
 	var _args [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(scanner)))
+	*(**C.GScanner)(unsafe.Pointer(&_args[0])) = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(priority))
 
 	_info := girepository.MustFind("Gtk", "rc_parse_priority")
@@ -810,7 +876,7 @@ func RCParseState(scanner *glib.Scanner) (StateType, uint32) {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(scanner)))
+	*(**C.GScanner)(unsafe.Pointer(&_args[0])) = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	_info := girepository.MustFind("Gtk", "rc_parse_state")
 	_gret := _info.InvokeFunction(_args[:], _outs[:])
@@ -1030,7 +1096,7 @@ func _gotk4_gtk3_RcStyleClass_merge(arg0 *C.void, arg1 *C.void) {
 }
 
 //export _gotk4_gtk3_RcStyleClass_parse
-func _gotk4_gtk3_RcStyleClass_parse(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret C.guint) {
+func _gotk4_gtk3_RcStyleClass_parse(arg0 *C.void, arg1 *C.void, arg2 *C.GScanner) (cret C.guint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Parse(settings *Settings, scanner *glib.Scanner) uint32
@@ -1124,7 +1190,7 @@ func (r *RCProperty) TypeName() glib.Quark {
 	offset := girepository.MustFind("Gtk", "RcProperty").StructFieldOffset("type_name")
 	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v glib.Quark // out
-	v = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&*valptr)))))
+	v = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -1133,7 +1199,7 @@ func (r *RCProperty) PropertyName() glib.Quark {
 	offset := girepository.MustFind("Gtk", "RcProperty").StructFieldOffset("property_name")
 	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v glib.Quark // out
-	v = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&*valptr)))))
+	v = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 

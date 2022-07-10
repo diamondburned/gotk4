@@ -17,10 +17,10 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern GVariant* _gotk4_gtk3_ActionableInterface_get_action_target_value(void*);
 // extern gchar* _gotk4_gtk3_ActionableInterface_get_action_name(void*);
 // extern void _gotk4_gtk3_ActionableInterface_set_action_name(void*, gchar*);
-// extern void _gotk4_gtk3_ActionableInterface_set_action_target_value(void*, void*);
-// extern void* _gotk4_gtk3_ActionableInterface_get_action_target_value(void*);
+// extern void _gotk4_gtk3_ActionableInterface_set_action_target_value(void*, GVariant*);
 import "C"
 
 // GTypeActionable returns the GType for the type Actionable.
@@ -164,13 +164,13 @@ func _gotk4_gtk3_ActionableInterface_get_action_name(arg0 *C.void) (cret *C.gcha
 }
 
 //export _gotk4_gtk3_ActionableInterface_get_action_target_value
-func _gotk4_gtk3_ActionableInterface_get_action_target_value(arg0 *C.void) (cret *C.void) {
+func _gotk4_gtk3_ActionableInterface_get_action_target_value(arg0 *C.void) (cret *C.GVariant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionableOverrider)
 
 	variant := iface.ActionTargetValue()
 
-	cret = (*C.void)(gextras.StructNative(unsafe.Pointer(variant)))
+	cret = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
 
 	return cret
 }
@@ -190,7 +190,7 @@ func _gotk4_gtk3_ActionableInterface_set_action_name(arg0 *C.void, arg1 *C.gchar
 }
 
 //export _gotk4_gtk3_ActionableInterface_set_action_target_value
-func _gotk4_gtk3_ActionableInterface_set_action_target_value(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gtk3_ActionableInterface_set_action_target_value(arg0 *C.void, arg1 *C.GVariant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionableOverrider)
 
@@ -274,14 +274,14 @@ func (actionable *Actionable) ActionTargetValue() *glib.Variant {
 
 	_info := girepository.MustFind("Gtk", "Actionable")
 	_gret := _info.InvokeIfaceMethod("get_action_target_value", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(actionable)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	C.g_variant_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
+	C.g_variant_ref(*(**C.GVariant)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -350,7 +350,7 @@ func (actionable *Actionable) SetActionTargetValue(targetValue *glib.Variant) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
 	if targetValue != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(targetValue)))
+		*(**C.GVariant)(unsafe.Pointer(&_args[1])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(targetValue)))
 	}
 
 	_info := girepository.MustFind("Gtk", "Actionable")

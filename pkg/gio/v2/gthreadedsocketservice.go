@@ -15,7 +15,8 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gio2_ThreadedSocketServiceClass_run(void*, void*, void*);
+// extern gboolean _gotk4_gio2_ThreadedSocketServiceClass_run(void*, void*, GObject*);
+// extern gboolean _gotk4_gio2_ThreadedSocketService_ConnectRun(gpointer, void*, GObject, guintptr);
 import "C"
 
 // GTypeThreadedSocketService returns the GType for the type ThreadedSocketService.
@@ -81,7 +82,7 @@ func classInitThreadedSocketServicer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_ThreadedSocketServiceClass_run
-func _gotk4_gio2_ThreadedSocketServiceClass_run(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret C.gboolean) {
+func _gotk4_gio2_ThreadedSocketServiceClass_run(arg0 *C.void, arg1 *C.void, arg2 *C.GObject) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Run(connection *SocketConnection, sourceObject *coreglib.Object) bool
@@ -114,6 +115,42 @@ func wrapThreadedSocketService(obj *coreglib.Object) *ThreadedSocketService {
 
 func marshalThreadedSocketService(p uintptr) (interface{}, error) {
 	return wrapThreadedSocketService(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+//export _gotk4_gio2_ThreadedSocketService_ConnectRun
+func _gotk4_gio2_ThreadedSocketService_ConnectRun(arg0 C.gpointer, arg1 *C.void, arg2 C.GObject, arg3 C.guintptr) (cret C.gboolean) {
+	var f func(connection *SocketConnection, sourceObject *coreglib.Object) (ok bool)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(connection *SocketConnection, sourceObject *coreglib.Object) (ok bool))
+	}
+
+	var _connection *SocketConnection  // out
+	var _sourceObject *coreglib.Object // out
+
+	_connection = wrapSocketConnection(coreglib.Take(unsafe.Pointer(arg1)))
+	_sourceObject = coreglib.Take(unsafe.Pointer(&arg2))
+
+	ok := f(_connection, _sourceObject)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+// ConnectRun signal is emitted in a worker thread in response to an incoming
+// connection. This thread is dedicated to handling connection and may perform
+// blocking IO. The signal handler need not return until the connection is
+// closed.
+func (service *ThreadedSocketService) ConnectRun(f func(connection *SocketConnection, sourceObject *coreglib.Object) (ok bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(service, "run", false, unsafe.Pointer(C._gotk4_gio2_ThreadedSocketService_ConnectRun), f)
 }
 
 // NewThreadedSocketService creates a new SocketService with no listeners.

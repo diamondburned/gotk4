@@ -190,11 +190,11 @@ func (f FileChooserError) String() string {
 func FileChooserErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gtk", "quark")
 	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
+	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -732,8 +732,8 @@ func (chooser *FileChooser) AddShortcutFolder(folder string) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -763,8 +763,8 @@ func (chooser *FileChooser) AddShortcutFolderURI(uri string) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -1129,14 +1129,14 @@ func (chooser *FileChooser) Filenames() []string {
 
 	_info := girepository.MustFind("Gtk", "FileChooser")
 	_gret := _info.InvokeIfaceMethod("get_filenames", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 
 	var _sList []string // out
 
-	_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.gchar)(v)
 		var dst string // out
 		dst = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src)))))
@@ -1163,14 +1163,14 @@ func (chooser *FileChooser) Files() []*gio.File {
 
 	_info := girepository.MustFind("Gtk", "FileChooser")
 	_gret := _info.InvokeIfaceMethod("get_files", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 
 	var _sList []*gio.File // out
 
-	_sList = make([]*gio.File, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_sList = make([]*gio.File, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *gio.File // out
 		{
@@ -1501,14 +1501,14 @@ func (chooser *FileChooser) URIs() []string {
 
 	_info := girepository.MustFind("Gtk", "FileChooser")
 	_gret := _info.InvokeIfaceMethod("get_uris", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 
 	var _sList []string // out
 
-	_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.gchar)(v)
 		var dst string // out
 		dst = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src)))))
@@ -1563,14 +1563,14 @@ func (chooser *FileChooser) ListFilters() []*FileFilter {
 
 	_info := girepository.MustFind("Gtk", "FileChooser")
 	_gret := _info.InvokeIfaceMethod("list_filters", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 
 	var _sList []*FileFilter // out
 
-	_sList = make([]*FileFilter, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_sList = make([]*FileFilter, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *FileFilter // out
 		dst = wrapFileFilter(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
@@ -1596,15 +1596,15 @@ func (chooser *FileChooser) ListShortcutFolderURIs() []string {
 
 	_info := girepository.MustFind("Gtk", "FileChooser")
 	_gret := _info.InvokeIfaceMethod("list_shortcut_folder_uris", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 
 	var _sList []string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	if *(**C.GSList)(unsafe.Pointer(&_cret)) != nil {
+		_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
+		gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 			src := (*C.gchar)(v)
 			var dst string // out
 			dst = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src)))))
@@ -1632,15 +1632,15 @@ func (chooser *FileChooser) ListShortcutFolders() []string {
 
 	_info := girepository.MustFind("Gtk", "FileChooser")
 	_gret := _info.InvokeIfaceMethod("list_shortcut_folders", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 
 	var _sList []string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	if *(**C.GSList)(unsafe.Pointer(&_cret)) != nil {
+		_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
+		gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 			src := (*C.gchar)(v)
 			var dst string // out
 			dst = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src)))))
@@ -1715,8 +1715,8 @@ func (chooser *FileChooser) RemoveShortcutFolder(folder string) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -1744,8 +1744,8 @@ func (chooser *FileChooser) RemoveShortcutFolderURI(uri string) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -1784,8 +1784,8 @@ func (chooser *FileChooser) SelectFile(file gio.Filer) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -1972,8 +1972,8 @@ func (chooser *FileChooser) SetCurrentFolderFile(file gio.Filer) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -2148,8 +2148,8 @@ func (chooser *FileChooser) SetFile(file gio.Filer) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

@@ -112,7 +112,7 @@ func NewMemoryInputStream() *MemoryInputStream {
 func NewMemoryInputStreamFromBytes(bytes *glib.Bytes) *MemoryInputStream {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bytes)))
+	*(**C.GBytes)(unsafe.Pointer(&_args[0])) = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
 
 	_info := girepository.MustFind("Gio", "MemoryInputStream")
 	_gret := _info.InvokeClassMethod("new_MemoryInputStream_from_bytes", _args[:], nil)
@@ -137,7 +137,7 @@ func (stream *MemoryInputStream) AddBytes(bytes *glib.Bytes) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bytes)))
+	*(**C.GBytes)(unsafe.Pointer(&_args[1])) = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
 
 	_info := girepository.MustFind("Gio", "MemoryInputStream")
 	_info.InvokeClassMethod("add_bytes", _args[:], nil)

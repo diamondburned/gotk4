@@ -271,7 +271,7 @@ func (accelLabel *AccelLabel) SetAccelClosure(accelClosure coreglib.AnyClosure) 
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelLabel).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(accelLabel), accelClosure))
+	*(**C.GClosure)(unsafe.Pointer(&_args[1])) = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(accelLabel), accelClosure))
 
 	_info := girepository.MustFind("Gtk", "AccelLabel")
 	_info.InvokeClassMethod("set_accel_closure", _args[:], nil)

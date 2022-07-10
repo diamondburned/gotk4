@@ -95,11 +95,11 @@ func init() {
 func BuilderErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gtk", "quark")
 	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
+	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -109,11 +109,11 @@ func BuilderErrorQuark() glib.Quark {
 func CSSProviderErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gtk", "quark")
 	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
+	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -123,11 +123,11 @@ func CSSProviderErrorQuark() glib.Quark {
 func IconThemeErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gtk", "quark")
 	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
+	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -217,11 +217,11 @@ func (n NotebookTab) String() string {
 func RecentChooserErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gtk", "quark")
 	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
+	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -231,11 +231,11 @@ func RecentChooserErrorQuark() glib.Quark {
 func RecentManagerErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gtk", "quark")
 	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
+	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }

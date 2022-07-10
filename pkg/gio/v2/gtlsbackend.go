@@ -78,8 +78,25 @@ var (
 type TLSBackender interface {
 	coreglib.Objector
 
+	// CertificateType gets the #GType of backend's Certificate implementation.
+	CertificateType() coreglib.Type
+	// ClientConnectionType gets the #GType of backend's ClientConnection
+	// implementation.
+	ClientConnectionType() coreglib.Type
 	// DefaultDatabase gets the default Database used to verify TLS connections.
 	DefaultDatabase() TLSDatabaser
+	// DTLSClientConnectionType gets the #GType of backend’s ClientConnection
+	// implementation.
+	DTLSClientConnectionType() coreglib.Type
+	// DTLSServerConnectionType gets the #GType of backend’s ServerConnection
+	// implementation.
+	DTLSServerConnectionType() coreglib.Type
+	// FileDatabaseType gets the #GType of backend's FileDatabase
+	// implementation.
+	FileDatabaseType() coreglib.Type
+	// ServerConnectionType gets the #GType of backend's ServerConnection
+	// implementation.
+	ServerConnectionType() coreglib.Type
 	// SetDefaultDatabase: set the default Database used to verify TLS
 	// connections Any subsequent call to g_tls_backend_get_default_database()
 	// will return the database set in this call.
@@ -151,6 +168,55 @@ func marshalTLSBackend(p uintptr) (interface{}, error) {
 	return wrapTLSBackend(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// CertificateType gets the #GType of backend's Certificate implementation.
+//
+// The function returns the following values:
+//
+//    - gType of backend's Certificate implementation.
+//
+func (backend *TLSBackend) CertificateType() coreglib.Type {
+	var _args [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
+
+	_info := girepository.MustFind("Gio", "TlsBackend")
+	_gret := _info.InvokeIfaceMethod("get_certificate_type", _args[:], nil)
+	_cret := *(*C.GType)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(backend)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(*(*C.GType)(unsafe.Pointer(&_cret)))
+
+	return _gType
+}
+
+// ClientConnectionType gets the #GType of backend's ClientConnection
+// implementation.
+//
+// The function returns the following values:
+//
+//    - gType of backend's ClientConnection implementation.
+//
+func (backend *TLSBackend) ClientConnectionType() coreglib.Type {
+	var _args [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
+
+	_info := girepository.MustFind("Gio", "TlsBackend")
+	_gret := _info.InvokeIfaceMethod("get_client_connection_type", _args[:], nil)
+	_cret := *(*C.GType)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(backend)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(*(*C.GType)(unsafe.Pointer(&_cret)))
+
+	return _gType
+}
+
 // DefaultDatabase gets the default Database used to verify TLS connections.
 //
 // The function returns the following values:
@@ -189,6 +255,107 @@ func (backend *TLSBackend) DefaultDatabase() TLSDatabaser {
 	}
 
 	return _tlsDatabase
+}
+
+// DTLSClientConnectionType gets the #GType of backend’s ClientConnection
+// implementation.
+//
+// The function returns the following values:
+//
+//    - gType of backend’s ClientConnection implementation, or G_TYPE_INVALID if
+//      this backend doesn’t support DTLS.
+//
+func (backend *TLSBackend) DTLSClientConnectionType() coreglib.Type {
+	var _args [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
+
+	_info := girepository.MustFind("Gio", "TlsBackend")
+	_gret := _info.InvokeIfaceMethod("get_dtls_client_connection_type", _args[:], nil)
+	_cret := *(*C.GType)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(backend)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(*(*C.GType)(unsafe.Pointer(&_cret)))
+
+	return _gType
+}
+
+// DTLSServerConnectionType gets the #GType of backend’s ServerConnection
+// implementation.
+//
+// The function returns the following values:
+//
+//    - gType of backend’s ServerConnection implementation, or G_TYPE_INVALID if
+//      this backend doesn’t support DTLS.
+//
+func (backend *TLSBackend) DTLSServerConnectionType() coreglib.Type {
+	var _args [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
+
+	_info := girepository.MustFind("Gio", "TlsBackend")
+	_gret := _info.InvokeIfaceMethod("get_dtls_server_connection_type", _args[:], nil)
+	_cret := *(*C.GType)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(backend)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(*(*C.GType)(unsafe.Pointer(&_cret)))
+
+	return _gType
+}
+
+// FileDatabaseType gets the #GType of backend's FileDatabase implementation.
+//
+// The function returns the following values:
+//
+//    - gType of backend's FileDatabase implementation.
+//
+func (backend *TLSBackend) FileDatabaseType() coreglib.Type {
+	var _args [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
+
+	_info := girepository.MustFind("Gio", "TlsBackend")
+	_gret := _info.InvokeIfaceMethod("get_file_database_type", _args[:], nil)
+	_cret := *(*C.GType)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(backend)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(*(*C.GType)(unsafe.Pointer(&_cret)))
+
+	return _gType
+}
+
+// ServerConnectionType gets the #GType of backend's ServerConnection
+// implementation.
+//
+// The function returns the following values:
+//
+//    - gType of backend's ServerConnection implementation.
+//
+func (backend *TLSBackend) ServerConnectionType() coreglib.Type {
+	var _args [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
+
+	_info := girepository.MustFind("Gio", "TlsBackend")
+	_gret := _info.InvokeIfaceMethod("get_server_connection_type", _args[:], nil)
+	_cret := *(*C.GType)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(backend)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(*(*C.GType)(unsafe.Pointer(&_cret)))
+
+	return _gType
 }
 
 // SetDefaultDatabase: set the default Database used to verify TLS connections

@@ -539,7 +539,7 @@ func (display *Display) Setting(name string, value *coreglib.Value) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**C.GValue)(unsafe.Pointer(&_args[2])) = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gdk", "Display")
 	_gret := _info.InvokeClassMethod("get_setting", _args[:], nil)
@@ -695,14 +695,14 @@ func (display *Display) ListSeats() []Seater {
 
 	_info := girepository.MustFind("Gdk", "Display")
 	_gret := _info.InvokeClassMethod("list_seats", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)
 
 	var _list []Seater // out
 
-	_list = make([]Seater, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]Seater, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Seater // out
 		{

@@ -57,7 +57,7 @@ func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGro
 
 	_info := girepository.MustFind("Gio", "DBusConnection")
 	_gret := _info.InvokeClassMethod("export_action_group", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(objectPath)
@@ -67,8 +67,8 @@ func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGro
 	var _goerr error  // out
 
 	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _guint, _goerr

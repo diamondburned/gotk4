@@ -643,14 +643,14 @@ func (application *Application) Windows() []*Window {
 
 	_info := girepository.MustFind("Gtk", "Application")
 	_gret := _info.InvokeClassMethod("get_windows", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 
 	var _list []*Window // out
 
-	_list = make([]*Window, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
+	_list = make([]*Window, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Window // out
 		dst = wrapWindow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))

@@ -547,14 +547,14 @@ func (about *AboutDialog) Logo() *gdkpixbuf.Pixbuf {
 
 	_info := girepository.MustFind("Gtk", "AboutDialog")
 	_gret := _info.InvokeClassMethod("get_logo", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GdkPixbuf)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(about)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+		obj := coreglib.Take(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&_cret))))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
 			LoadableIcon: gio.LoadableIcon{
@@ -924,7 +924,7 @@ func (about *AboutDialog) SetLogo(logo *gdkpixbuf.Pixbuf) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(about).Native()))
 	if logo != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(logo).Native()))
+		*(**C.GdkPixbuf)(unsafe.Pointer(&_args[1])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(logo).Native()))
 	}
 
 	_info := girepository.MustFind("Gtk", "AboutDialog")

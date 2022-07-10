@@ -16,6 +16,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern GList* _gotk4_gtk3_CellLayoutIface_get_cells(void*);
 // extern void _gotk4_gtk3_CellLayoutDataFunc(void*, void*, void*, void*, gpointer);
 // extern void _gotk4_gtk3_CellLayoutIface_add_attribute(void*, void*, gchar*, gint);
 // extern void _gotk4_gtk3_CellLayoutIface_clear(void*);
@@ -25,7 +26,6 @@ import (
 // extern void _gotk4_gtk3_CellLayoutIface_reorder(void*, void*, gint);
 // extern void callbackDelete(gpointer);
 // extern void* _gotk4_gtk3_CellLayoutIface_get_area(void*);
-// extern void* _gotk4_gtk3_CellLayoutIface_get_cells(void*);
 import "C"
 
 // GTypeCellLayout returns the GType for the type CellLayout.
@@ -372,14 +372,14 @@ func (cellLayout *CellLayout) Cells() []CellRendererer {
 
 	_info := girepository.MustFind("Gtk", "CellLayout")
 	_gret := _info.InvokeIfaceMethod("get_cells", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cellLayout)
 
 	var _list []CellRendererer // out
 
-	_list = make([]CellRendererer, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]CellRendererer, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst CellRendererer // out
 		{

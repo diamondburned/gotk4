@@ -18,6 +18,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern GType _gotk4_gtk3_ContainerClass_child_type(void*);
 // extern gchar* _gotk4_gtk3_ContainerClass_composite_name(void*, void*);
 // extern void _gotk4_gtk3_Callback(void*, gpointer);
 // extern void _gotk4_gtk3_ContainerClass_add(void*, void*);
@@ -61,6 +62,16 @@ type ContainerOverrider interface {
 	//
 	Add(widget Widgetter)
 	CheckResize()
+	// ChildType returns the type of the children supported by the container.
+	//
+	// Note that this may return G_TYPE_NONE to indicate that no more children
+	// can be added, e.g. for a Paned which already has two children.
+	//
+	// The function returns the following values:
+	//
+	//    - gType: #GType.
+	//
+	ChildType() coreglib.Type
 	// The function takes the following parameters:
 	//
 	// The function returns the following values:
@@ -322,6 +333,11 @@ func classInitContainerer(gclassPtr, data C.gpointer) {
 		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ContainerClass_check_resize)
 	}
 
+	if _, ok := goval.(interface{ ChildType() coreglib.Type }); ok {
+		o := pclass.StructFieldOffset("child_type")
+		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ContainerClass_child_type)
+	}
+
 	if _, ok := goval.(interface{ CompositeName(child Widgetter) string }); ok {
 		o := pclass.StructFieldOffset("composite_name")
 		*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gclassPtr), o)) = unsafe.Pointer(C._gotk4_gtk3_ContainerClass_composite_name)
@@ -379,6 +395,18 @@ func _gotk4_gtk3_ContainerClass_check_resize(arg0 *C.void) {
 	iface := goval.(interface{ CheckResize() })
 
 	iface.CheckResize()
+}
+
+//export _gotk4_gtk3_ContainerClass_child_type
+func _gotk4_gtk3_ContainerClass_child_type(arg0 *C.void) (cret C.GType) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(interface{ ChildType() coreglib.Type })
+
+	gType := iface.ChildType()
+
+	cret = C.GType(gType)
+
+	return cret
 }
 
 //export _gotk4_gtk3_ContainerClass_composite_name
@@ -726,7 +754,7 @@ func (container *Container) ChildGetProperty(child Widgetter, propertyName strin
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**C.GValue)(unsafe.Pointer(&_args[3])) = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gtk", "Container")
 	_info.InvokeClassMethod("child_get_property", _args[:], nil)
@@ -781,7 +809,7 @@ func (container *Container) ChildSetProperty(child Widgetter, propertyName strin
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**C.GValue)(unsafe.Pointer(&_args[3])) = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gtk", "Container")
 	_info.InvokeClassMethod("child_set_property", _args[:], nil)
@@ -790,6 +818,33 @@ func (container *Container) ChildSetProperty(child Widgetter, propertyName strin
 	runtime.KeepAlive(child)
 	runtime.KeepAlive(propertyName)
 	runtime.KeepAlive(value)
+}
+
+// ChildType returns the type of the children supported by the container.
+//
+// Note that this may return G_TYPE_NONE to indicate that no more children can
+// be added, e.g. for a Paned which already has two children.
+//
+// The function returns the following values:
+//
+//    - gType: #GType.
+//
+func (container *Container) ChildType() coreglib.Type {
+	var _args [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
+
+	_info := girepository.MustFind("Gtk", "Container")
+	_gret := _info.InvokeClassMethod("child_type", _args[:], nil)
+	_cret := *(*C.GType)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(container)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(*(*C.GType)(unsafe.Pointer(&_cret)))
+
+	return _gType
 }
 
 // Forall invokes callback on each direct child of container, including children
@@ -888,14 +943,14 @@ func (container *Container) Children() []Widgetter {
 
 	_info := girepository.MustFind("Gtk", "Container")
 	_gret := _info.InvokeClassMethod("get_children", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(container)
 
 	var _list []Widgetter // out
 
-	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Widgetter // out
 		{
@@ -952,8 +1007,8 @@ func (container *Container) FocusChain() ([]Widgetter, bool) {
 	var _focusableWidgets []Widgetter // out
 	var _ok bool                      // out
 
-	_focusableWidgets = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))), true, func(v unsafe.Pointer) {
+	_focusableWidgets = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_outs[0])))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_outs[0]))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Widgetter // out
 		{
@@ -1248,7 +1303,7 @@ func (container *Container) SetFocusChain(focusableWidgets []Widgetter) {
 		src := focusableWidgets[i]
 		var dst *C.void // out
 		*(**C.void)(unsafe.Pointer(&dst)) = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
-		*(**C.void)(unsafe.Pointer(&_args[1])) = C.g_list_prepend(*(**C.void)(unsafe.Pointer(&_args[1])), C.gpointer(unsafe.Pointer(dst)))
+		*(**C.GList)(unsafe.Pointer(&_args[1])) = C.g_list_prepend(*(**C.GList)(unsafe.Pointer(&_args[1])), C.gpointer(unsafe.Pointer(dst)))
 	}
 	defer C.g_list_free(_args[1])
 

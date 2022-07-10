@@ -662,12 +662,12 @@ func (menuItem *MenuItem) AttributeValue(attribute string, expectedType *glib.Va
 	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	if expectedType != nil {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(expectedType)))
+		*(**C.GVariantType)(unsafe.Pointer(&_args[2])) = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(expectedType)))
 	}
 
 	_info := girepository.MustFind("Gio", "MenuItem")
 	_gret := _info.InvokeClassMethod("get_attribute_value", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(attribute)
@@ -675,8 +675,8 @@ func (menuItem *MenuItem) AttributeValue(attribute string, expectedType *glib.Va
 
 	var _variant *glib.Variant // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if *(**C.GVariant)(unsafe.Pointer(&_cret)) != nil {
+		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -784,7 +784,7 @@ func (menuItem *MenuItem) SetActionAndTargetValue(action string, targetValue *gl
 		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 	if targetValue != nil {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(targetValue)))
+		*(**C.GVariant)(unsafe.Pointer(&_args[2])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(targetValue)))
 	}
 
 	_info := girepository.MustFind("Gio", "MenuItem")
@@ -825,7 +825,7 @@ func (menuItem *MenuItem) SetAttributeValue(attribute string, value *glib.Varian
 	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	if value != nil {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
+		*(**C.GVariant)(unsafe.Pointer(&_args[2])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 	}
 
 	_info := girepository.MustFind("Gio", "MenuItem")

@@ -19,10 +19,10 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gio2_SettingsClass_change_event(void*, void*, gint);
-// extern gboolean _gotk4_gio2_SettingsClass_writable_change_event(void*, guint32);
-// extern gboolean _gotk4_gio2_SettingsGetMapping(void*, void*, gpointer);
-// extern gboolean _gotk4_gio2_Settings_ConnectChangeEvent(gpointer, guint32*, gint, guintptr);
+// extern gboolean _gotk4_gio2_SettingsClass_change_event(void*, const GQuark*, gint);
+// extern gboolean _gotk4_gio2_SettingsClass_writable_change_event(void*, GQuark);
+// extern gboolean _gotk4_gio2_SettingsGetMapping(GVariant*, gpointer*, gpointer);
+// extern gboolean _gotk4_gio2_Settings_ConnectChangeEvent(gpointer, GQuark*, gint, guintptr);
 // extern gboolean _gotk4_gio2_Settings_ConnectWritableChangeEvent(gpointer, guint, guintptr);
 // extern void _gotk4_gio2_SettingsClass_changed(void*, gchar*);
 // extern void _gotk4_gio2_SettingsClass_writable_changed(void*, gchar*);
@@ -132,7 +132,7 @@ func (s SettingsBindFlags) Has(other SettingsBindFlags) bool {
 type SettingsBindGetMapping func(value *coreglib.Value, variant *glib.Variant) (ok bool)
 
 //export _gotk4_gio2_SettingsBindGetMapping
-func _gotk4_gio2_SettingsBindGetMapping(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) (cret C.gboolean) {
+func _gotk4_gio2_SettingsBindGetMapping(arg1 *C.GValue, arg2 *C.GVariant, arg3 C.gpointer) (cret C.gboolean) {
 	var fn SettingsBindGetMapping
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -169,7 +169,7 @@ func _gotk4_gio2_SettingsBindGetMapping(arg1 *C.void, arg2 *C.void, arg3 C.gpoin
 type SettingsBindSetMapping func(value *coreglib.Value, expectedType *glib.VariantType) (variant *glib.Variant)
 
 //export _gotk4_gio2_SettingsBindSetMapping
-func _gotk4_gio2_SettingsBindSetMapping(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) (cret *C.void) {
+func _gotk4_gio2_SettingsBindSetMapping(arg1 *C.GValue, arg2 *C.GVariantType, arg3 C.gpointer) (cret *C.GVariant) {
 	var fn SettingsBindSetMapping
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -187,7 +187,7 @@ func _gotk4_gio2_SettingsBindSetMapping(arg1 *C.void, arg2 *C.void, arg3 C.gpoin
 
 	variant := fn(_value, _expectedType)
 
-	cret = (*C.void)(gextras.StructNative(unsafe.Pointer(variant)))
+	cret = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
 
 	return cret
 }
@@ -205,7 +205,7 @@ func _gotk4_gio2_SettingsBindSetMapping(arg1 *C.void, arg2 *C.void, arg3 C.gpoin
 type SettingsGetMapping func(value *glib.Variant) (result unsafe.Pointer, ok bool)
 
 //export _gotk4_gio2_SettingsGetMapping
-func _gotk4_gio2_SettingsGetMapping(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) (cret C.gboolean) {
+func _gotk4_gio2_SettingsGetMapping(arg1 *C.GVariant, arg2 *C.gpointer, arg3 C.gpointer) (cret C.gboolean) {
 	var fn SettingsGetMapping
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -228,7 +228,7 @@ func _gotk4_gio2_SettingsGetMapping(arg1 *C.void, arg2 *C.void, arg3 C.gpointer)
 
 	result, ok := fn(_value)
 
-	*arg2 = (*C.void)(unsafe.Pointer(result))
+	*arg2 = (*C.gpointer)(unsafe.Pointer(result))
 	if ok {
 		cret = C.TRUE
 	}
@@ -574,7 +574,7 @@ func classInitSettingser(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_SettingsClass_change_event
-func _gotk4_gio2_SettingsClass_change_event(arg0 *C.void, arg1 *C.void, arg2 C.gint) (cret C.gboolean) {
+func _gotk4_gio2_SettingsClass_change_event(arg0 *C.void, arg1 *C.GQuark, arg2 C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ChangeEvent(keys *glib.Quark, nKeys int32) bool
@@ -608,7 +608,7 @@ func _gotk4_gio2_SettingsClass_changed(arg0 *C.void, arg1 *C.gchar) {
 }
 
 //export _gotk4_gio2_SettingsClass_writable_change_event
-func _gotk4_gio2_SettingsClass_writable_change_event(arg0 *C.void, arg1 C.guint32) (cret C.gboolean) {
+func _gotk4_gio2_SettingsClass_writable_change_event(arg0 *C.void, arg1 C.GQuark) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ WritableChangeEvent(key glib.Quark) bool })
 
@@ -648,7 +648,7 @@ func marshalSettings(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gio2_Settings_ConnectChangeEvent
-func _gotk4_gio2_Settings_ConnectChangeEvent(arg0 C.gpointer, arg1 *C.guint32, arg2 C.gint, arg3 C.guintptr) (cret C.gboolean) {
+func _gotk4_gio2_Settings_ConnectChangeEvent(arg0 C.gpointer, arg1 *C.GQuark, arg2 C.gint, arg3 C.guintptr) (cret C.gboolean) {
 	var f func(keys []glib.Quark) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -663,7 +663,7 @@ func _gotk4_gio2_Settings_ConnectChangeEvent(arg0 C.gpointer, arg1 *C.guint32, a
 	var _keys []glib.Quark // out
 
 	{
-		src := unsafe.Slice((*C.guint32)(arg1), arg2)
+		src := unsafe.Slice((*C.GQuark)(arg1), arg2)
 		_keys = make([]glib.Quark, arg2)
 		for i := 0; i < int(arg2); i++ {
 			_keys[i] = uint32(src[i])
@@ -1120,15 +1120,15 @@ func (settings *Settings) DefaultValue(key string) *glib.Variant {
 
 	_info := girepository.MustFind("Gio", "Settings")
 	_gret := _info.InvokeClassMethod("get_default_value", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
 
 	var _variant *glib.Variant // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if *(**C.GVariant)(unsafe.Pointer(&_cret)) != nil {
+		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -1438,14 +1438,14 @@ func (settings *Settings) Range(key string) *glib.Variant {
 
 	_info := girepository.MustFind("Gio", "Settings")
 	_gret := _info.InvokeClassMethod("get_range", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -1649,15 +1649,15 @@ func (settings *Settings) UserValue(key string) *glib.Variant {
 
 	_info := girepository.MustFind("Gio", "Settings")
 	_gret := _info.InvokeClassMethod("get_user_value", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
 
 	var _variant *glib.Variant // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if *(**C.GVariant)(unsafe.Pointer(&_cret)) != nil {
+		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -1691,14 +1691,14 @@ func (settings *Settings) Value(key string) *glib.Variant {
 
 	_info := girepository.MustFind("Gio", "Settings")
 	_gret := _info.InvokeClassMethod("get_value", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
 	runtime.KeepAlive(key)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -1855,7 +1855,7 @@ func (settings *Settings) RangeCheck(key string, value *glib.Variant) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
+	*(**C.GVariant)(unsafe.Pointer(&_args[2])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_info := girepository.MustFind("Gio", "Settings")
 	_gret := _info.InvokeClassMethod("range_check", _args[:], nil)
@@ -2368,7 +2368,7 @@ func (settings *Settings) SetValue(key string, value *glib.Variant) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(key)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
+	*(**C.GVariant)(unsafe.Pointer(&_args[2])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_info := girepository.MustFind("Gio", "Settings")
 	_gret := _info.InvokeClassMethod("set_value", _args[:], nil)

@@ -699,7 +699,7 @@ func (assistant *Assistant) PageHeaderImage(page Widgetter) *gdkpixbuf.Pixbuf {
 
 	_info := girepository.MustFind("Gtk", "Assistant")
 	_gret := _info.InvokeClassMethod("get_page_header_image", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GdkPixbuf)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
@@ -707,7 +707,7 @@ func (assistant *Assistant) PageHeaderImage(page Widgetter) *gdkpixbuf.Pixbuf {
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+		obj := coreglib.Take(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&_cret))))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
 			LoadableIcon: gio.LoadableIcon{
@@ -742,7 +742,7 @@ func (assistant *Assistant) PageSideImage(page Widgetter) *gdkpixbuf.Pixbuf {
 
 	_info := girepository.MustFind("Gtk", "Assistant")
 	_gret := _info.InvokeClassMethod("get_page_side_image", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GdkPixbuf)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(assistant)
 	runtime.KeepAlive(page)
@@ -750,7 +750,7 @@ func (assistant *Assistant) PageSideImage(page Widgetter) *gdkpixbuf.Pixbuf {
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+		obj := coreglib.Take(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&_cret))))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
 			LoadableIcon: gio.LoadableIcon{
@@ -1051,7 +1051,7 @@ func (assistant *Assistant) SetPageHeaderImage(page Widgetter, pixbuf *gdkpixbuf
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
 	if pixbuf != nil {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+		*(**C.GdkPixbuf)(unsafe.Pointer(&_args[2])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	}
 
 	_info := girepository.MustFind("Gtk", "Assistant")
@@ -1080,7 +1080,7 @@ func (assistant *Assistant) SetPageSideImage(page Widgetter, pixbuf *gdkpixbuf.P
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(assistant).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(page).Native()))
 	if pixbuf != nil {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+		*(**C.GdkPixbuf)(unsafe.Pointer(&_args[2])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	}
 
 	_info := girepository.MustFind("Gtk", "Assistant")

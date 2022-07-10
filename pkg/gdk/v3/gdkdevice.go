@@ -861,15 +861,15 @@ func (device *Device) ListSlaveDevices() []Devicer {
 
 	_info := girepository.MustFind("Gdk", "Device")
 	_gret := _info.InvokeClassMethod("list_slave_devices", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)
 
 	var _list []Devicer // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_list = make([]Devicer, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	if *(**C.GList)(unsafe.Pointer(&_cret)) != nil {
+		_list = make([]Devicer, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+		gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 			src := (*C.void)(v)
 			var dst Devicer // out
 			{

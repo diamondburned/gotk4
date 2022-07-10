@@ -231,7 +231,7 @@ func NewFileFilter() *FileFilter {
 func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(variant)))
+	*(**C.GVariant)(unsafe.Pointer(&_args[0])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
 
 	_info := girepository.MustFind("Gtk", "FileFilter")
 	_gret := _info.InvokeClassMethod("new_FileFilter_from_gvariant", _args[:], nil)
@@ -401,14 +401,14 @@ func (filter *FileFilter) ToGVariant() *glib.Variant {
 
 	_info := girepository.MustFind("Gtk", "FileFilter")
 	_gret := _info.InvokeClassMethod("to_gvariant", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(filter)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	C.g_variant_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
+	C.g_variant_ref(*(**C.GVariant)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {

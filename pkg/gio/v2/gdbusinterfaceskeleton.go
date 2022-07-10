@@ -18,11 +18,11 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern GVariant* _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties(void*);
 // extern gboolean _gotk4_gio2_DBusInterfaceSkeletonClass_g_authorize_method(void*, void*);
 // extern gboolean _gotk4_gio2_DBusInterfaceSkeleton_ConnectGAuthorizeMethod(gpointer, void*, guintptr);
 // extern void _gotk4_gio2_DBusInterfaceSkeletonClass_flush(void*);
 // extern void* _gotk4_gio2_DBusInterfaceSkeletonClass_get_info(void*);
-// extern void* _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties(void*);
 import "C"
 
 // GTypeDBusInterfaceSkeleton returns the GType for the type DBusInterfaceSkeleton.
@@ -166,13 +166,13 @@ func _gotk4_gio2_DBusInterfaceSkeletonClass_get_info(arg0 *C.void) (cret *C.void
 }
 
 //export _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties
-func _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties(arg0 *C.void) (cret *C.void) {
+func _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties(arg0 *C.void) (cret *C.GVariant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Properties() *glib.Variant })
 
 	variant := iface.Properties()
 
-	cret = (*C.void)(gextras.StructNative(unsafe.Pointer(variant)))
+	cret = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
 
 	return cret
 }
@@ -288,8 +288,8 @@ func (interface_ *DBusInterfaceSkeleton) Export(connection *DBusConnection, obje
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -355,14 +355,14 @@ func (interface_ *DBusInterfaceSkeleton) Connections() []*DBusConnection {
 
 	_info := girepository.MustFind("Gio", "DBusInterfaceSkeleton")
 	_gret := _info.InvokeClassMethod("get_connections", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(interface_)
 
 	var _list []*DBusConnection // out
 
-	_list = make([]*DBusConnection, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]*DBusConnection, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *DBusConnection // out
 		dst = wrapDBusConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
@@ -445,13 +445,13 @@ func (interface_ *DBusInterfaceSkeleton) Properties() *glib.Variant {
 
 	_info := girepository.MustFind("Gio", "DBusInterfaceSkeleton")
 	_gret := _info.InvokeClassMethod("get_properties", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(interface_)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {

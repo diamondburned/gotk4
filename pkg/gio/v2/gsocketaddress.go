@@ -133,7 +133,7 @@ func _gotk4_gio2_SocketAddressClass_to_native(arg0 *C.void, arg1 C.gpointer, arg
 	_goerr := iface.ToNative(_dest, _destlen)
 
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -249,8 +249,8 @@ func (address *SocketAddress) ToNative(dest unsafe.Pointer, destlen uint) error 
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

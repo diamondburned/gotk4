@@ -71,7 +71,7 @@ func Itemize(context *Context, text string, startIndex, length int32, attrs *Att
 
 	_info := girepository.MustFind("Pango", "itemize")
 	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(text)
@@ -82,8 +82,8 @@ func Itemize(context *Context, text string, startIndex, length int32, attrs *Att
 
 	var _list []*Item // out
 
-	_list = make([]*Item, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]*Item, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Item // out
 		dst = (*Item)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))

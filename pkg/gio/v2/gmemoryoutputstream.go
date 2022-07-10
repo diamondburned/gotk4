@@ -202,13 +202,13 @@ func (ostream *MemoryOutputStream) StealAsBytes() *glib.Bytes {
 
 	_info := girepository.MustFind("Gio", "MemoryOutputStream")
 	_gret := _info.InvokeClassMethod("steal_as_bytes", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GBytes)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(ostream)
 
 	var _bytes *glib.Bytes // out
 
-	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(*(**C.GBytes)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {

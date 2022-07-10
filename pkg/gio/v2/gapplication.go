@@ -23,14 +23,14 @@ import (
 // extern gboolean _gotk4_gio2_ApplicationClass_dbus_register(void*, void*, gchar*, GError**);
 // extern gboolean _gotk4_gio2_ApplicationClass_name_lost(void*);
 // extern gboolean _gotk4_gio2_Application_ConnectNameLost(gpointer, guintptr);
-// extern gint _gotk4_gio2_ApplicationClass_handle_local_options(void*, void*);
+// extern gint _gotk4_gio2_ApplicationClass_handle_local_options(void*, GVariantDict*);
 // extern gint _gotk4_gio2_Application_ConnectCommandLine(gpointer, void*, guintptr);
-// extern gint _gotk4_gio2_Application_ConnectHandleLocalOptions(gpointer, void*, guintptr);
+// extern gint _gotk4_gio2_Application_ConnectHandleLocalOptions(gpointer, GVariantDict*, guintptr);
 // extern int _gotk4_gio2_ApplicationClass_command_line(void*, void*);
 // extern void _gotk4_gio2_ApplicationClass_activate(void*);
-// extern void _gotk4_gio2_ApplicationClass_add_platform_data(void*, void*);
-// extern void _gotk4_gio2_ApplicationClass_after_emit(void*, void*);
-// extern void _gotk4_gio2_ApplicationClass_before_emit(void*, void*);
+// extern void _gotk4_gio2_ApplicationClass_add_platform_data(void*, GVariantBuilder*);
+// extern void _gotk4_gio2_ApplicationClass_after_emit(void*, GVariant*);
+// extern void _gotk4_gio2_ApplicationClass_before_emit(void*, GVariant*);
 // extern void _gotk4_gio2_ApplicationClass_dbus_unregister(void*, void*, gchar*);
 // extern void _gotk4_gio2_ApplicationClass_open(void*, void**, gint, gchar*);
 // extern void _gotk4_gio2_ApplicationClass_quit_mainloop(void*);
@@ -349,7 +349,7 @@ func _gotk4_gio2_ApplicationClass_activate(arg0 *C.void) {
 }
 
 //export _gotk4_gio2_ApplicationClass_add_platform_data
-func _gotk4_gio2_ApplicationClass_add_platform_data(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gio2_ApplicationClass_add_platform_data(arg0 *C.void, arg1 *C.GVariantBuilder) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		AddPlatformData(builder *glib.VariantBuilder)
@@ -370,7 +370,7 @@ func _gotk4_gio2_ApplicationClass_add_platform_data(arg0 *C.void, arg1 *C.void) 
 }
 
 //export _gotk4_gio2_ApplicationClass_after_emit
-func _gotk4_gio2_ApplicationClass_after_emit(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gio2_ApplicationClass_after_emit(arg0 *C.void, arg1 *C.GVariant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		AfterEmit(platformData *glib.Variant)
@@ -391,7 +391,7 @@ func _gotk4_gio2_ApplicationClass_after_emit(arg0 *C.void, arg1 *C.void) {
 }
 
 //export _gotk4_gio2_ApplicationClass_before_emit
-func _gotk4_gio2_ApplicationClass_before_emit(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gio2_ApplicationClass_before_emit(arg0 *C.void, arg1 *C.GVariant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		BeforeEmit(platformData *glib.Variant)
@@ -445,7 +445,7 @@ func _gotk4_gio2_ApplicationClass_dbus_register(arg0 *C.void, arg1 *C.void, arg2
 	_goerr := iface.DBusRegister(_connection, _objectPath)
 
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -468,7 +468,7 @@ func _gotk4_gio2_ApplicationClass_dbus_unregister(arg0 *C.void, arg1 *C.void, ar
 }
 
 //export _gotk4_gio2_ApplicationClass_handle_local_options
-func _gotk4_gio2_ApplicationClass_handle_local_options(arg0 *C.void, arg1 *C.void) (cret C.gint) {
+func _gotk4_gio2_ApplicationClass_handle_local_options(arg0 *C.void, arg1 *C.GVariantDict) (cret C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		HandleLocalOptions(options *glib.VariantDict) int32
@@ -646,7 +646,7 @@ func (application *Application) ConnectCommandLine(f func(commandLine *Applicati
 }
 
 //export _gotk4_gio2_Application_ConnectHandleLocalOptions
-func _gotk4_gio2_Application_ConnectHandleLocalOptions(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) (cret C.gint) {
+func _gotk4_gio2_Application_ConnectHandleLocalOptions(arg0 C.gpointer, arg1 *C.GVariantDict, arg2 C.guintptr) (cret C.gint) {
 	var f func(options *glib.VariantDict) (gint int32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -859,6 +859,146 @@ func (application *Application) Activate() {
 	runtime.KeepAlive(application)
 }
 
+// AddMainOption: add an option to be handled by application.
+//
+// Calling this function is the equivalent of calling
+// g_application_add_main_option_entries() with a single Entry that has its
+// arg_data member set to NULL.
+//
+// The parsed arguments will be packed into a Dict which is passed to
+// #GApplication::handle-local-options. If G_APPLICATION_HANDLES_COMMAND_LINE is
+// set, then it will also be sent to the primary instance. See
+// g_application_add_main_option_entries() for more details.
+//
+// See Entry for more documentation of the arguments.
+//
+// The function takes the following parameters:
+//
+//    - longName: long name of an option used to specify it in a commandline.
+//    - shortName: short name of an option.
+//    - flags from Flags.
+//    - arg: type of the option, as a Arg.
+//    - description for the option in --help output.
+//    - argDescription (optional): placeholder to use for the extra argument
+//      parsed by the option in --help output.
+//
+func (application *Application) AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description, argDescription string) {
+	var _args [7]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(longName)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	*(*C.char)(unsafe.Pointer(&_args[2])) = C.char(shortName)
+	*(*C.GOptionFlags)(unsafe.Pointer(&_args[3])) = C.GOptionFlags(flags)
+	*(*C.GOptionArg)(unsafe.Pointer(&_args[4])) = C.GOptionArg(arg)
+	*(**C.char)(unsafe.Pointer(&_args[5])) = (*C.char)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[5]))))
+	if argDescription != "" {
+		*(**C.char)(unsafe.Pointer(&_args[6])) = (*C.char)(unsafe.Pointer(C.CString(argDescription)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[6]))))
+	}
+
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("add_main_option", _args[:], nil)
+
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(longName)
+	runtime.KeepAlive(shortName)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(arg)
+	runtime.KeepAlive(description)
+	runtime.KeepAlive(argDescription)
+}
+
+// AddMainOptionEntries adds main option entries to be handled by application.
+//
+// This function is comparable to g_option_context_add_main_entries().
+//
+// After the commandline arguments are parsed, the
+// #GApplication::handle-local-options signal will be emitted. At this point,
+// the application can inspect the values pointed to by arg_data in the given
+// Entrys.
+//
+// Unlike Context, #GApplication supports giving a NULL arg_data for a
+// non-callback Entry. This results in the argument in question being packed
+// into a Dict which is also passed to #GApplication::handle-local-options,
+// where it can be inspected and modified. If G_APPLICATION_HANDLES_COMMAND_LINE
+// is set, then the resulting dictionary is sent to the primary instance, where
+// g_application_command_line_get_options_dict() will return it. This "packing"
+// is done according to the type of the argument -- booleans for normal flags,
+// strings for strings, bytestrings for filenames, etc. The packing only occurs
+// if the flag is given (ie: we do not pack a "false" #GVariant in the case that
+// a flag is missing).
+//
+// In general, it is recommended that all commandline arguments are parsed
+// locally. The options dictionary should then be used to transmit the result of
+// the parsing to the primary instance, where g_variant_dict_lookup() can be
+// used. For local options, it is possible to either use arg_data in the usual
+// way, or to consult (and potentially remove) the option from the options
+// dictionary.
+//
+// This function is new in GLib 2.40. Before then, the only real choice was to
+// send all of the commandline arguments (options and all) to the primary
+// instance for handling. #GApplication ignored them completely on the local
+// side. Calling this function "opts in" to the new behaviour, and in
+// particular, means that unrecognised options will be treated as errors.
+// Unrecognised options have never been ignored when
+// G_APPLICATION_HANDLES_COMMAND_LINE is unset.
+//
+// If #GApplication::handle-local-options needs to see the list of filenames,
+// then the use of G_OPTION_REMAINING is recommended. If arg_data is NULL then
+// G_OPTION_REMAINING can be used as a key into the options dictionary. If you
+// do use G_OPTION_REMAINING then you need to handle these arguments for
+// yourself because once they are consumed, they will no longer be visible to
+// the default handling (which treats them as filenames to be opened).
+//
+// It is important to use the proper GVariant format when retrieving the options
+// with g_variant_dict_lookup():
+//
+// - for G_OPTION_ARG_NONE, use b
+//
+// - for G_OPTION_ARG_STRING, use &s
+//
+// - for G_OPTION_ARG_INT, use i
+//
+// - for G_OPTION_ARG_INT64, use x
+//
+// - for G_OPTION_ARG_DOUBLE, use d
+//
+// - for G_OPTION_ARG_FILENAME, use ^&ay
+//
+// - for G_OPTION_ARG_STRING_ARRAY, use ^a&s
+//
+// - for G_OPTION_ARG_FILENAME_ARRAY, use ^a&ay.
+//
+// The function takes the following parameters:
+//
+//    - entries: a NULL-terminated list of Entrys.
+//
+func (application *Application) AddMainOptionEntries(entries []glib.OptionEntry) {
+	var _args [2]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
+	{
+		*(**C.GOptionEntry)(unsafe.Pointer(&_args[1])) = (*C.GOptionEntry)(C.calloc(C.size_t((len(entries) + 1)), C.size_t(C.sizeof_GOptionEntry)))
+		defer C.free(unsafe.Pointer(*(**C.GOptionEntry)(unsafe.Pointer(&_args[1]))))
+		{
+			out := unsafe.Slice(_args[1], len(entries)+1)
+			var zero C.GOptionEntry
+			out[len(entries)] = zero
+			for i := range entries {
+				*(*C.GOptionEntry)(unsafe.Pointer(&out[i])) = *(*C.GOptionEntry)(gextras.StructNative(unsafe.Pointer((&entries[i]))))
+			}
+		}
+	}
+
+	_info := girepository.MustFind("Gio", "Application")
+	_info.InvokeClassMethod("add_main_option_entries", _args[:], nil)
+
+	runtime.KeepAlive(application)
+	runtime.KeepAlive(entries)
+}
+
 // AddOptionGroup adds a Group to the commandline handling of application.
 //
 // This function is comparable to g_option_context_add_group().
@@ -891,7 +1031,7 @@ func (application *Application) AddOptionGroup(group *glib.OptionGroup) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(group)))
+	*(**C.GOptionGroup)(unsafe.Pointer(&_args[1])) = (*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(group)))
 
 	_info := girepository.MustFind("Gio", "Application")
 	_info.InvokeClassMethod("add_option_group", _args[:], nil)
@@ -1320,7 +1460,7 @@ func (application *Application) Register(ctx context.Context) error {
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
 	_info := girepository.MustFind("Gio", "Application")
@@ -1331,8 +1471,8 @@ func (application *Application) Register(ctx context.Context) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

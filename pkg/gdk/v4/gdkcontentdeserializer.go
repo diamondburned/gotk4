@@ -3,9 +3,12 @@
 package gdk
 
 import (
+	"context"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -16,6 +19,8 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern void _gotk4_gdk4_AsyncReadyCallback(GObject*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
 import "C"
 
 // GTypeContentDeserializer returns the GType for the type ContentDeserializer.
@@ -29,6 +34,53 @@ func GTypeContentDeserializer() coreglib.Type {
 	return gtype
 }
 
+// ContentDeserializeAsync: read content from the given input stream and
+// deserialize it, asynchronously.
+//
+// The default I/O priority is G_PRIORITY_DEFAULT (i.e. 0), and lower numbers
+// indicate a higher priority.
+//
+// When the operation is finished, callback will be called. You must then call
+// content_deserialize_finish to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional GCancellable object.
+//    - stream: GInputStream to read the serialized content from.
+//    - mimeType: mime type to deserialize from.
+//    - typ: GType to deserialize from.
+//    - ioPriority: i/O priority of the operation.
+//    - callback (optional) to call when the operation is done.
+//
+func ContentDeserializeAsync(ctx context.Context, stream gio.InputStreamer, mimeType string, typ coreglib.Type, ioPriority int32, callback gio.AsyncReadyCallback) {
+	var _args [7]girepository.Argument
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_args[4] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	*(*C.GType)(unsafe.Pointer(&_args[2])) = C.GType(typ)
+	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(ioPriority)
+	if callback != nil {
+		*(*C.gpointer)(unsafe.Pointer(&_args[5])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[6] = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	_info := girepository.MustFind("Gdk", "content_deserialize_async")
+	_info.InvokeFunction(_args[:], nil)
+
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(mimeType)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // ContentDeserializeFinish finishes a content deserialization operation.
 //
 // The function takes the following parameters:
@@ -40,7 +92,7 @@ func ContentDeserializeFinish(result gio.AsyncResulter, value *coreglib.Value) e
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**C.GValue)(unsafe.Pointer(&_args[1])) = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gdk", "content_deserialize_finish")
 	_info.InvokeFunction(_args[:], nil)
@@ -50,8 +102,8 @@ func ContentDeserializeFinish(result gio.AsyncResulter, value *coreglib.Value) e
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -121,6 +173,30 @@ func (deserializer *ContentDeserializer) Cancellable() *gio.Cancellable {
 	}
 
 	return _cancellable
+}
+
+// GType gets the GType to create an instance of.
+//
+// The function returns the following values:
+//
+//    - gType: GType for the current operation.
+//
+func (deserializer *ContentDeserializer) GType() coreglib.Type {
+	var _args [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(deserializer).Native()))
+
+	_info := girepository.MustFind("Gdk", "ContentDeserializer")
+	_gret := _info.InvokeClassMethod("get_gtype", _args[:], nil)
+	_cret := *(*C.GType)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(deserializer)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(*(*C.GType)(unsafe.Pointer(&_cret)))
+
+	return _gType
 }
 
 // InputStream gets the input stream for the current operation.
@@ -279,13 +355,13 @@ func (deserializer *ContentDeserializer) Value() *coreglib.Value {
 
 	_info := girepository.MustFind("Gdk", "ContentDeserializer")
 	_gret := _info.InvokeClassMethod("get_value", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GValue)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(deserializer)
 
 	var _value *coreglib.Value // out
 
-	_value = coreglib.ValueFromNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+	_value = coreglib.ValueFromNative(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_cret))))
 
 	return _value
 }
@@ -303,7 +379,7 @@ func (deserializer *ContentDeserializer) ReturnError(err error) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(deserializer).Native()))
 	if err != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gerror.New(err))
+		*(**C.GError)(unsafe.Pointer(&_args[1])) = (*C.GError)(gerror.New(err))
 	}
 
 	_info := girepository.MustFind("Gdk", "ContentDeserializer")

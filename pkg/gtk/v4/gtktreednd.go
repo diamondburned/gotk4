@@ -16,8 +16,8 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gtk4_TreeDragDestIface_drag_data_received(void*, void*, void*);
-// extern gboolean _gotk4_gtk4_TreeDragDestIface_row_drop_possible(void*, void*, void*);
+// extern gboolean _gotk4_gtk4_TreeDragDestIface_drag_data_received(void*, void*, const GValue*);
+// extern gboolean _gotk4_gtk4_TreeDragDestIface_row_drop_possible(void*, void*, const GValue*);
 // extern gboolean _gotk4_gtk4_TreeDragSourceIface_drag_data_delete(void*, void*);
 // extern gboolean _gotk4_gtk4_TreeDragSourceIface_row_draggable(void*, void*);
 // extern void* _gotk4_gtk4_TreeDragSourceIface_drag_data_get(void*, void*);
@@ -102,7 +102,7 @@ func TreeGetRowDragData(value *coreglib.Value) (*TreeModel, *TreePath, bool) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**C.GValue)(unsafe.Pointer(&_args[0])) = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gtk", "tree_get_row_drag_data")
 	_gret := _info.InvokeFunction(_args[:], _outs[:])
@@ -208,7 +208,7 @@ func ifaceInitTreeDragDester(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk4_TreeDragDestIface_drag_data_received
-func _gotk4_gtk4_TreeDragDestIface_drag_data_received(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret C.gboolean) {
+func _gotk4_gtk4_TreeDragDestIface_drag_data_received(arg0 *C.void, arg1 *C.void, arg2 *C.GValue) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TreeDragDestOverrider)
 
@@ -228,7 +228,7 @@ func _gotk4_gtk4_TreeDragDestIface_drag_data_received(arg0 *C.void, arg1 *C.void
 }
 
 //export _gotk4_gtk4_TreeDragDestIface_row_drop_possible
-func _gotk4_gtk4_TreeDragDestIface_row_drop_possible(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret C.gboolean) {
+func _gotk4_gtk4_TreeDragDestIface_row_drop_possible(arg0 *C.void, arg1 *C.void, arg2 *C.GValue) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TreeDragDestOverrider)
 
@@ -277,7 +277,7 @@ func (dragDest *TreeDragDest) DragDataReceived(dest *TreePath, value *coreglib.V
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragDest).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(dest)))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**C.GValue)(unsafe.Pointer(&_args[2])) = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gtk", "TreeDragDest")
 	_gret := _info.InvokeIfaceMethod("drag_data_received", _args[:], nil)
@@ -316,7 +316,7 @@ func (dragDest *TreeDragDest) RowDropPossible(destPath *TreePath, value *coregli
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(dragDest).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(destPath)))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**C.GValue)(unsafe.Pointer(&_args[2])) = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gtk", "TreeDragDest")
 	_gret := _info.InvokeIfaceMethod("row_drop_possible", _args[:], nil)

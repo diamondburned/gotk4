@@ -132,7 +132,7 @@ func marshalNoOpObject(p uintptr) (interface{}, error) {
 func NewNoOpObject(obj *coreglib.Object) *NoOpObject {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(obj.Native()))
+	*(**C.GObject)(unsafe.Pointer(&_args[0])) = (*C.GObject)(unsafe.Pointer(obj.Native()))
 
 	_info := girepository.MustFind("Atk", "NoOpObject")
 	_gret := _info.InvokeClassMethod("new_NoOpObject", _args[:], nil)

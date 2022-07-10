@@ -380,6 +380,48 @@ func NewButton() *Button {
 	return _button
 }
 
+// NewButtonFromIconName creates a new button containing an icon from the
+// current icon theme.
+//
+// If the icon name isn’t known, a “broken image” icon will be displayed
+// instead. If the current icon theme is changed, the icon will be updated
+// appropriately.
+//
+// This function is a convenience wrapper around gtk_button_new() and
+// gtk_button_set_image().
+//
+// The function takes the following parameters:
+//
+//    - iconName (optional): icon name or NULL.
+//    - size: icon size (IconSize).
+//
+// The function returns the following values:
+//
+//    - button: new Button displaying the themed icon.
+//
+func NewButtonFromIconName(iconName string, size int32) *Button {
+	var _args [2]girepository.Argument
+
+	if iconName != "" {
+		*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	}
+	*(*C.GtkIconSize)(unsafe.Pointer(&_args[1])) = C.GtkIconSize(size)
+
+	_info := girepository.MustFind("Gtk", "Button")
+	_gret := _info.InvokeClassMethod("new_Button_from_icon_name", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(iconName)
+	runtime.KeepAlive(size)
+
+	var _button *Button // out
+
+	_button = wrapButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+
+	return _button
+}
+
 // NewButtonFromStock creates a new Button containing the image and text from a
 // [stock item][gtkstock]. Some stock ids have preprocessor macros like
 // K_STOCK_OK and K_STOCK_APPLY.

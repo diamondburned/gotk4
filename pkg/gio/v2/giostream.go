@@ -20,7 +20,7 @@ import (
 // #include <glib-object.h>
 // extern gboolean _gotk4_gio2_IOStreamClass_close_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_IOStreamClass_close_fn(void*, void*, GError**);
-// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
 // extern void* _gotk4_gio2_IOStreamClass_get_input_stream(void*);
 // extern void* _gotk4_gio2_IOStreamClass_get_output_stream(void*);
 import "C"
@@ -194,7 +194,7 @@ func _gotk4_gio2_IOStreamClass_close_finish(arg0 *C.void, arg1 *C.void, _cerr **
 	_goerr := iface.CloseFinish(_result)
 
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -216,7 +216,7 @@ func _gotk4_gio2_IOStreamClass_close_fn(arg0 *C.void, arg1 *C.void, _cerr **C.GE
 	_goerr := iface.CloseFn(_cancellable)
 
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -321,7 +321,7 @@ func (stream *IOStream) Close(ctx context.Context) error {
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
 	_info := girepository.MustFind("Gio", "IOStream")
@@ -332,8 +332,8 @@ func (stream *IOStream) Close(ctx context.Context) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -362,7 +362,7 @@ func (stream *IOStream) CloseAsync(ctx context.Context, ioPriority int32, callba
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
 	if callback != nil {
@@ -399,8 +399,8 @@ func (stream *IOStream) CloseFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -553,8 +553,8 @@ func (stream *IOStream) SetPending() error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -578,8 +578,8 @@ func IOStreamSpliceFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

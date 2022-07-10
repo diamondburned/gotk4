@@ -77,13 +77,13 @@ func (obj *GObjectAccessible) Object() *coreglib.Object {
 
 	_info := girepository.MustFind("Atk", "GObjectAccessible")
 	_gret := _info.InvokeClassMethod("get_object", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GObject)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(obj)
 
 	var _object *coreglib.Object // out
 
-	_object = coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+	_object = coreglib.Take(unsafe.Pointer(*(**C.GObject)(unsafe.Pointer(&_cret))))
 
 	return _object
 }
@@ -101,7 +101,7 @@ func (obj *GObjectAccessible) Object() *coreglib.Object {
 func GObjectAccessibleForObject(obj *coreglib.Object) *ObjectClass {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(obj.Native()))
+	*(**C.GObject)(unsafe.Pointer(&_args[0])) = (*C.GObject)(unsafe.Pointer(obj.Native()))
 
 	_info := girepository.MustFind("Atk", "for_object")
 	_gret := _info.InvokeFunction(_args[:], nil)

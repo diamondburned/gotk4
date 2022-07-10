@@ -201,7 +201,7 @@ func NewCellViewWithMarkup(markup string) *CellView {
 func NewCellViewWithPixbuf(pixbuf *gdkpixbuf.Pixbuf) *CellView {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+	*(**C.GdkPixbuf)(unsafe.Pointer(&_args[0])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 
 	_info := girepository.MustFind("Gtk", "CellView")
 	_gret := _info.InvokeClassMethod("new_CellView_with_pixbuf", _args[:], nil)

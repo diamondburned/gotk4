@@ -46,7 +46,7 @@ import (
 // extern gboolean _gotk4_gio2_FileIface_unmount_mountable_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_FileIface_unmount_mountable_with_operation_finish(void*, void*, GError**);
 // extern guint _gotk4_gio2_FileIface_hash(void*);
-// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
 // extern void* _gotk4_gio2_FileIface_append_to_finish(void*, void*, GError**);
 // extern void* _gotk4_gio2_FileIface_create_finish(void*, void*, GError**);
 // extern void* _gotk4_gio2_FileIface_create_readwrite_finish(void*, void*, GError**);
@@ -414,7 +414,7 @@ func (file *File) AppendToFinish(res AsyncResulter) (*FileOutputStream, error) {
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("append_to_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -423,8 +423,8 @@ func (file *File) AppendToFinish(res AsyncResulter) (*FileOutputStream, error) {
 	var _goerr error                        // out
 
 	_fileOutputStream = wrapFileOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _fileOutputStream, _goerr
@@ -450,8 +450,8 @@ func (file *File) CopyFinish(res AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -477,7 +477,7 @@ func (file *File) CreateFinish(res AsyncResulter) (*FileOutputStream, error) {
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("create_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -486,8 +486,8 @@ func (file *File) CreateFinish(res AsyncResulter) (*FileOutputStream, error) {
 	var _goerr error                        // out
 
 	_fileOutputStream = wrapFileOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _fileOutputStream, _goerr
@@ -513,7 +513,7 @@ func (file *File) CreateReadwriteFinish(res AsyncResulter) (*FileIOStream, error
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("create_readwrite_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -522,8 +522,8 @@ func (file *File) CreateReadwriteFinish(res AsyncResulter) (*FileIOStream, error
 	var _goerr error                // out
 
 	_fileIOStream = wrapFileIOStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _fileIOStream, _goerr
@@ -561,7 +561,7 @@ func (file *File) Delete(ctx context.Context) error {
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
 	_info := girepository.MustFind("Gio", "File")
@@ -572,8 +572,8 @@ func (file *File) Delete(ctx context.Context) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -596,7 +596,7 @@ func (file *File) DeleteAsync(ctx context.Context, ioPriority int32, callback As
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
 	if callback != nil {
@@ -633,8 +633,8 @@ func (file *File) DeleteFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -696,8 +696,8 @@ func (file *File) EjectMountableFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -724,8 +724,8 @@ func (file *File) EjectMountableWithOperationFinish(result AsyncResulter) error 
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -751,7 +751,7 @@ func (file *File) EnumerateChildrenFinish(res AsyncResulter) (*FileEnumerator, e
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("enumerate_children_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -760,8 +760,8 @@ func (file *File) EnumerateChildrenFinish(res AsyncResulter) (*FileEnumerator, e
 	var _goerr error                    // out
 
 	_fileEnumerator = wrapFileEnumerator(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _fileEnumerator, _goerr
@@ -830,12 +830,12 @@ func (file *File) FindEnclosingMount(ctx context.Context) (*Mount, error) {
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("find_enclosing_mount", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
@@ -844,8 +844,8 @@ func (file *File) FindEnclosingMount(ctx context.Context) (*Mount, error) {
 	var _goerr error  // out
 
 	_mount = wrapMount(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _mount, _goerr
@@ -872,7 +872,7 @@ func (file *File) FindEnclosingMountAsync(ctx context.Context, ioPriority int32,
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
 	if callback != nil {
@@ -909,7 +909,7 @@ func (file *File) FindEnclosingMountFinish(res AsyncResulter) (*Mount, error) {
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("find_enclosing_mount_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -918,8 +918,8 @@ func (file *File) FindEnclosingMountFinish(res AsyncResulter) (*Mount, error) {
 	var _goerr error  // out
 
 	_mount = wrapMount(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _mount, _goerr
@@ -1031,7 +1031,7 @@ func (file *File) ChildForDisplayName(displayName string) (*File, error) {
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("get_child_for_display_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(displayName)
@@ -1040,8 +1040,8 @@ func (file *File) ChildForDisplayName(displayName string) (*File, error) {
 	var _goerr error // out
 
 	_ret = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _ret, _goerr
@@ -1464,12 +1464,12 @@ func (file *File) LoadBytes(ctx context.Context) (string, *glib.Bytes, error) {
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("load_bytes", _args[:], _outs[:])
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
@@ -1482,15 +1482,15 @@ func (file *File) LoadBytes(ctx context.Context) (string, *glib.Bytes, error) {
 		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[0])))))
 		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[0]))))
 	}
-	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(*(**C.GBytes)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.free(intern.C)
 		},
 	)
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _etagOut, _bytes, _goerr
@@ -1519,7 +1519,7 @@ func (file *File) LoadBytesAsync(ctx context.Context, callback AsyncReadyCallbac
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if callback != nil {
 		*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -1564,7 +1564,7 @@ func (file *File) LoadBytesFinish(result AsyncResulter) (string, *glib.Bytes, er
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("load_bytes_finish", _args[:], _outs[:])
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
@@ -1577,15 +1577,15 @@ func (file *File) LoadBytesFinish(result AsyncResulter) (string, *glib.Bytes, er
 		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[0])))))
 		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[0]))))
 	}
-	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(*(**C.GBytes)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.free(intern.C)
 		},
 	)
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _etagOut, _bytes, _goerr
@@ -1617,7 +1617,7 @@ func (file *File) LoadContents(ctx context.Context) ([]byte, string, error) {
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
 	_info := girepository.MustFind("Gio", "File")
@@ -1637,8 +1637,8 @@ func (file *File) LoadContents(ctx context.Context) ([]byte, string, error) {
 		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[2])))))
 		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[2]))))
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _contents, _etagOut, _goerr
@@ -1669,7 +1669,7 @@ func (file *File) LoadContentsAsync(ctx context.Context, callback AsyncReadyCall
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if callback != nil {
 		*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -1724,8 +1724,8 @@ func (file *File) LoadContentsFinish(res AsyncResulter) ([]byte, string, error) 
 		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[2])))))
 		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[2]))))
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _contents, _etagOut, _goerr
@@ -1770,8 +1770,8 @@ func (file *File) LoadPartialContentsFinish(res AsyncResulter) ([]byte, string, 
 		_etagOut = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[2])))))
 		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[2]))))
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _contents, _etagOut, _goerr
@@ -1803,7 +1803,7 @@ func (file *File) MakeDirectory(ctx context.Context) error {
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
 	_info := girepository.MustFind("Gio", "File")
@@ -1814,8 +1814,8 @@ func (file *File) MakeDirectory(ctx context.Context) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -1836,7 +1836,7 @@ func (file *File) MakeDirectoryAsync(ctx context.Context, ioPriority int32, call
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
 	if callback != nil {
@@ -1874,8 +1874,8 @@ func (file *File) MakeDirectoryFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -1906,7 +1906,7 @@ func (file *File) MakeDirectoryWithParents(ctx context.Context) error {
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
 	_info := girepository.MustFind("Gio", "File")
@@ -1917,8 +1917,8 @@ func (file *File) MakeDirectoryWithParents(ctx context.Context) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -1943,7 +1943,7 @@ func (file *File) MakeSymbolicLink(ctx context.Context, symlinkValue string) err
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(symlinkValue)))
 	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
@@ -1957,8 +1957,8 @@ func (file *File) MakeSymbolicLink(ctx context.Context, symlinkValue string) err
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -1999,8 +1999,8 @@ func (file *File) MeasureDiskUsageFinish(result AsyncResulter) (diskUsage, numDi
 	_diskUsage = uint64(*(*C.guint64)(unsafe.Pointer(&_outs[0])))
 	_numDirs = uint64(*(*C.guint64)(unsafe.Pointer(&_outs[1])))
 	_numFiles = uint64(*(*C.guint64)(unsafe.Pointer(&_outs[2])))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _diskUsage, _numDirs, _numFiles, _goerr
@@ -2027,8 +2027,8 @@ func (location *File) MountEnclosingVolumeFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -2056,7 +2056,7 @@ func (file *File) MountMountableFinish(result AsyncResulter) (*File, error) {
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("mount_mountable_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
@@ -2065,8 +2065,8 @@ func (file *File) MountMountableFinish(result AsyncResulter) (*File, error) {
 	var _goerr error // out
 
 	_ret = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _ret, _goerr
@@ -2102,12 +2102,12 @@ func (file *File) OpenReadwrite(ctx context.Context) (*FileIOStream, error) {
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("open_readwrite", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
@@ -2116,8 +2116,8 @@ func (file *File) OpenReadwrite(ctx context.Context) (*FileIOStream, error) {
 	var _goerr error                // out
 
 	_fileIOStream = wrapFileIOStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _fileIOStream, _goerr
@@ -2144,7 +2144,7 @@ func (file *File) OpenReadwriteAsync(ctx context.Context, ioPriority int32, call
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
 	if callback != nil {
@@ -2181,7 +2181,7 @@ func (file *File) OpenReadwriteFinish(res AsyncResulter) (*FileIOStream, error) 
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("open_readwrite_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -2190,8 +2190,8 @@ func (file *File) OpenReadwriteFinish(res AsyncResulter) (*FileIOStream, error) 
 	var _goerr error                // out
 
 	_fileIOStream = wrapFileIOStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _fileIOStream, _goerr
@@ -2250,7 +2250,7 @@ func (file *File) PollMountable(ctx context.Context, callback AsyncReadyCallback
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if callback != nil {
 		*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -2289,8 +2289,8 @@ func (file *File) PollMountableFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -2319,12 +2319,12 @@ func (file *File) QueryDefaultHandler(ctx context.Context) (*AppInfo, error) {
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("query_default_handler", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
@@ -2333,8 +2333,8 @@ func (file *File) QueryDefaultHandler(ctx context.Context) (*AppInfo, error) {
 	var _goerr error      // out
 
 	_appInfo = wrapAppInfo(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _appInfo, _goerr
@@ -2355,7 +2355,7 @@ func (file *File) QueryDefaultHandlerAsync(ctx context.Context, ioPriority int32
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
 	if callback != nil {
@@ -2392,7 +2392,7 @@ func (file *File) QueryDefaultHandlerFinish(result AsyncResulter) (*AppInfo, err
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("query_default_handler_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(result)
@@ -2401,8 +2401,8 @@ func (file *File) QueryDefaultHandlerFinish(result AsyncResulter) (*AppInfo, err
 	var _goerr error      // out
 
 	_appInfo = wrapAppInfo(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _appInfo, _goerr
@@ -2448,7 +2448,7 @@ func (file *File) QueryExists(ctx context.Context) bool {
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
 	_info := girepository.MustFind("Gio", "File")
@@ -2507,14 +2507,14 @@ func (file *File) QueryFilesystemInfo(ctx context.Context, attributes string) (*
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(attributes)))
 	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("query_filesystem_info", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
@@ -2524,8 +2524,8 @@ func (file *File) QueryFilesystemInfo(ctx context.Context, attributes string) (*
 	var _goerr error        // out
 
 	_fileInfo = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _fileInfo, _goerr
@@ -2555,7 +2555,7 @@ func (file *File) QueryFilesystemInfoAsync(ctx context.Context, attributes strin
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(attributes)))
 	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
@@ -2595,7 +2595,7 @@ func (file *File) QueryFilesystemInfoFinish(res AsyncResulter) (*FileInfo, error
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("query_filesystem_info_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -2604,8 +2604,8 @@ func (file *File) QueryFilesystemInfoFinish(res AsyncResulter) (*FileInfo, error
 	var _goerr error        // out
 
 	_fileInfo = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _fileInfo, _goerr
@@ -2631,7 +2631,7 @@ func (file *File) QueryInfoFinish(res AsyncResulter) (*FileInfo, error) {
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("query_info_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -2640,8 +2640,8 @@ func (file *File) QueryInfoFinish(res AsyncResulter) (*FileInfo, error) {
 	var _goerr error        // out
 
 	_fileInfo = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _fileInfo, _goerr
@@ -2674,12 +2674,12 @@ func (file *File) QuerySettableAttributes(ctx context.Context) (*FileAttributeIn
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("query_settable_attributes", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
@@ -2694,8 +2694,8 @@ func (file *File) QuerySettableAttributes(ctx context.Context) (*FileAttributeIn
 			C.free(intern.C)
 		},
 	)
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _fileAttributeInfoList, _goerr
@@ -2725,12 +2725,12 @@ func (file *File) QueryWritableNamespaces(ctx context.Context) (*FileAttributeIn
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("query_writable_namespaces", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
@@ -2745,8 +2745,8 @@ func (file *File) QueryWritableNamespaces(ctx context.Context) (*FileAttributeIn
 			C.free(intern.C)
 		},
 	)
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _fileAttributeInfoList, _goerr
@@ -2780,12 +2780,12 @@ func (file *File) Read(ctx context.Context) (*FileInputStream, error) {
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("read", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
@@ -2794,8 +2794,8 @@ func (file *File) Read(ctx context.Context) (*FileInputStream, error) {
 	var _goerr error                      // out
 
 	_fileInputStream = wrapFileInputStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _fileInputStream, _goerr
@@ -2822,7 +2822,7 @@ func (file *File) ReadAsync(ctx context.Context, ioPriority int32, callback Asyn
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
 	if callback != nil {
@@ -2859,7 +2859,7 @@ func (file *File) ReadFinish(res AsyncResulter) (*FileInputStream, error) {
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("read_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -2868,8 +2868,8 @@ func (file *File) ReadFinish(res AsyncResulter) (*FileInputStream, error) {
 	var _goerr error                      // out
 
 	_fileInputStream = wrapFileInputStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _fileInputStream, _goerr
@@ -2909,8 +2909,8 @@ func (file *File) ReplaceContentsFinish(res AsyncResulter) (string, error) {
 		_newEtag = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0])))))
 		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0]))))
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _newEtag, _goerr
@@ -2936,7 +2936,7 @@ func (file *File) ReplaceFinish(res AsyncResulter) (*FileOutputStream, error) {
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("replace_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -2945,8 +2945,8 @@ func (file *File) ReplaceFinish(res AsyncResulter) (*FileOutputStream, error) {
 	var _goerr error                        // out
 
 	_fileOutputStream = wrapFileOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _fileOutputStream, _goerr
@@ -2972,7 +2972,7 @@ func (file *File) ReplaceReadwriteFinish(res AsyncResulter) (*FileIOStream, erro
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("replace_readwrite_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -2981,8 +2981,8 @@ func (file *File) ReplaceReadwriteFinish(res AsyncResulter) (*FileIOStream, erro
 	var _goerr error                // out
 
 	_fileIOStream = wrapFileIOStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _fileIOStream, _goerr
@@ -3050,8 +3050,8 @@ func (file *File) SetAttributesFinish(result AsyncResulter) (*FileInfo, error) {
 	var _goerr error    // out
 
 	_info = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _info, _goerr
@@ -3090,14 +3090,14 @@ func (file *File) SetDisplayName(ctx context.Context, displayName string) (*File
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(displayName)))
 	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("set_display_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(ctx)
@@ -3107,8 +3107,8 @@ func (file *File) SetDisplayName(ctx context.Context, displayName string) (*File
 	var _goerr error // out
 
 	_ret = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _ret, _goerr
@@ -3136,7 +3136,7 @@ func (file *File) SetDisplayNameAsync(ctx context.Context, displayName string, i
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(displayName)))
 	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
@@ -3175,7 +3175,7 @@ func (file *File) SetDisplayNameFinish(res AsyncResulter) (*File, error) {
 
 	_info := girepository.MustFind("Gio", "File")
 	_gret := _info.InvokeIfaceMethod("set_display_name_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 	runtime.KeepAlive(res)
@@ -3184,8 +3184,8 @@ func (file *File) SetDisplayNameFinish(res AsyncResulter) (*File, error) {
 	var _goerr error // out
 
 	_ret = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _ret, _goerr
@@ -3215,8 +3215,8 @@ func (file *File) StartMountableFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -3246,8 +3246,8 @@ func (file *File) StopMountableFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -3304,7 +3304,7 @@ func (file *File) Trash(ctx context.Context) error {
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
 	_info := girepository.MustFind("Gio", "File")
@@ -3315,8 +3315,8 @@ func (file *File) Trash(ctx context.Context) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -3337,7 +3337,7 @@ func (file *File) TrashAsync(ctx context.Context, ioPriority int32, callback Asy
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
 	if callback != nil {
@@ -3375,8 +3375,8 @@ func (file *File) TrashFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -3408,8 +3408,8 @@ func (file *File) UnmountMountableFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -3439,8 +3439,8 @@ func (file *File) UnmountMountableWithOperationFinish(result AsyncResulter) erro
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -3627,7 +3627,7 @@ func NewFileTmp(tmpl string) (*FileIOStream, *File, error) {
 
 	_info := girepository.MustFind("Gio", "new_tmp")
 	_gret := _info.InvokeFunction(_args[:], _outs[:])
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(tmpl)
 
@@ -3637,8 +3637,8 @@ func NewFileTmp(tmpl string) (*FileIOStream, *File, error) {
 
 	_iostream = wrapFileIOStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _iostream, _file, _goerr

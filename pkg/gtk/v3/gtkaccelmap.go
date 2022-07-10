@@ -195,7 +195,7 @@ func AccelMapLoadFd(fd int32) {
 func AccelMapLoadScanner(scanner *glib.Scanner) {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(scanner)))
+	*(**C.GScanner)(unsafe.Pointer(&_args[0])) = (*C.GScanner)(gextras.StructNative(unsafe.Pointer(scanner)))
 
 	_info := girepository.MustFind("Gtk", "load_scanner")
 	_info.InvokeFunction(_args[:], nil)

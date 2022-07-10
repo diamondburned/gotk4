@@ -125,20 +125,20 @@ func ReorderItems(logicalItems []*Item) []*Item {
 		src := logicalItems[i]
 		var dst *C.void // out
 		*(**C.void)(unsafe.Pointer(&dst)) = (*C.void)(gextras.StructNative(unsafe.Pointer(src)))
-		*(**C.void)(unsafe.Pointer(&_args[0])) = C.g_list_prepend(*(**C.void)(unsafe.Pointer(&_args[0])), C.gpointer(unsafe.Pointer(dst)))
+		*(**C.GList)(unsafe.Pointer(&_args[0])) = C.g_list_prepend(*(**C.GList)(unsafe.Pointer(&_args[0])), C.gpointer(unsafe.Pointer(dst)))
 	}
 	defer C.g_list_free(_args[0])
 
 	_info := girepository.MustFind("Pango", "reorder_items")
 	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(logicalItems)
 
 	var _list []*Item // out
 
-	_list = make([]*Item, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]*Item, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Item // out
 		dst = (*Item)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))

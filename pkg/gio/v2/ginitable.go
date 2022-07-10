@@ -142,7 +142,7 @@ func _gotk4_gio2_InitableIface_init(arg0 *C.void, arg1 *C.void, _cerr **C.GError
 	_goerr := iface.Init(_cancellable)
 
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -207,7 +207,7 @@ func (initable *Initable) Init(ctx context.Context) error {
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
 	_info := girepository.MustFind("Gio", "Initable")
@@ -218,8 +218,8 @@ func (initable *Initable) Init(ctx context.Context) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

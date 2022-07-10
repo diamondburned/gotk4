@@ -571,14 +571,14 @@ func (actionGroup *ActionGroup) ListActions() []*Action {
 
 	_info := girepository.MustFind("Gtk", "ActionGroup")
 	_gret := _info.InvokeClassMethod("list_actions", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(actionGroup)
 
 	var _list []*Action // out
 
-	_list = make([]*Action, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]*Action, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Action // out
 		dst = wrapAction(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))

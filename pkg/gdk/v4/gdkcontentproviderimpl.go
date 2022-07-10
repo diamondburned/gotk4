@@ -35,7 +35,7 @@ func NewContentProviderForBytes(mimeType string, bytes *glib.Bytes) *ContentProv
 
 	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bytes)))
+	*(**C.GBytes)(unsafe.Pointer(&_args[1])) = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
 
 	_info := girepository.MustFind("Gdk", "ContentProvider")
 	_gret := _info.InvokeClassMethod("new_ContentProvider_for_bytes", _args[:], nil)
@@ -65,7 +65,7 @@ func NewContentProviderForBytes(mimeType string, bytes *glib.Bytes) *ContentProv
 func NewContentProviderForValue(value *coreglib.Value) *ContentProvider {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**C.GValue)(unsafe.Pointer(&_args[0])) = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gdk", "ContentProvider")
 	_gret := _info.InvokeClassMethod("new_ContentProvider_for_value", _args[:], nil)

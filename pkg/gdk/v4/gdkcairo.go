@@ -170,7 +170,7 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX, 
 	var _args [4]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+	*(**C.GdkPixbuf)(unsafe.Pointer(&_args[1])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(pixbufX)
 	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(pixbufY)
 

@@ -18,9 +18,9 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gio2_DBusProxyClass_g_signal(void*, gchar*, gchar*, void*);
-// extern void _gotk4_gio2_DBusProxy_ConnectGPropertiesChanged(gpointer, void*, gchar**, guintptr);
-// extern void _gotk4_gio2_DBusProxy_ConnectGSignal(gpointer, gchar*, gchar*, void*, guintptr);
+// extern void _gotk4_gio2_DBusProxyClass_g_signal(void*, gchar*, gchar*, GVariant*);
+// extern void _gotk4_gio2_DBusProxy_ConnectGPropertiesChanged(gpointer, GVariant*, gchar**, guintptr);
+// extern void _gotk4_gio2_DBusProxy_ConnectGSignal(gpointer, gchar*, gchar*, GVariant*, guintptr);
 import "C"
 
 // GTypeDBusProxy returns the GType for the type DBusProxy.
@@ -112,7 +112,7 @@ func classInitDBusProxier(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_DBusProxyClass_g_signal
-func _gotk4_gio2_DBusProxyClass_g_signal(arg0 *C.void, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.void) {
+func _gotk4_gio2_DBusProxyClass_g_signal(arg0 *C.void, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.GVariant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		GSignal(senderName, signalName string, parameters *glib.Variant)
@@ -156,7 +156,7 @@ func marshalDBusProxy(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gio2_DBusProxy_ConnectGPropertiesChanged
-func _gotk4_gio2_DBusProxy_ConnectGPropertiesChanged(arg0 C.gpointer, arg1 *C.void, arg2 **C.gchar, arg3 C.guintptr) {
+func _gotk4_gio2_DBusProxy_ConnectGPropertiesChanged(arg0 C.gpointer, arg1 *C.GVariant, arg2 **C.gchar, arg3 C.guintptr) {
 	var f func(changedProperties *glib.Variant, invalidatedProperties []string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -211,7 +211,7 @@ func (proxy *DBusProxy) ConnectGPropertiesChanged(f func(changedProperties *glib
 }
 
 //export _gotk4_gio2_DBusProxy_ConnectGSignal
-func _gotk4_gio2_DBusProxy_ConnectGSignal(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.void, arg4 C.guintptr) {
+func _gotk4_gio2_DBusProxy_ConnectGSignal(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.GVariant, arg4 C.guintptr) {
 	var f func(senderName, signalName string, parameters *glib.Variant)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
@@ -267,7 +267,7 @@ func NewDBusProxyFinish(res AsyncResulter) (*DBusProxy, error) {
 
 	_info := girepository.MustFind("Gio", "DBusProxy")
 	_gret := _info.InvokeClassMethod("new_DBusProxy_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(res)
 
@@ -275,8 +275,8 @@ func NewDBusProxyFinish(res AsyncResulter) (*DBusProxy, error) {
 	var _goerr error          // out
 
 	_dBusProxy = wrapDBusProxy(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _dBusProxy, _goerr
@@ -300,7 +300,7 @@ func NewDBusProxyForBusFinish(res AsyncResulter) (*DBusProxy, error) {
 
 	_info := girepository.MustFind("Gio", "DBusProxy")
 	_gret := _info.InvokeClassMethod("new_DBusProxy_for_bus_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(res)
 
@@ -308,8 +308,8 @@ func NewDBusProxyForBusFinish(res AsyncResulter) (*DBusProxy, error) {
 	var _goerr error          // out
 
 	_dBusProxy = wrapDBusProxy(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _dBusProxy, _goerr
@@ -334,7 +334,7 @@ func (proxy *DBusProxy) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 
 	_info := girepository.MustFind("Gio", "DBusProxy")
 	_gret := _info.InvokeClassMethod("call_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(proxy)
 	runtime.KeepAlive(res)
@@ -342,15 +342,15 @@ func (proxy *DBusProxy) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 	var _variant *glib.Variant // out
 	var _goerr error           // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.free(intern.C)
 		},
 	)
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _variant, _goerr
@@ -382,15 +382,15 @@ func (proxy *DBusProxy) CachedProperty(propertyName string) *glib.Variant {
 
 	_info := girepository.MustFind("Gio", "DBusProxy")
 	_gret := _info.InvokeClassMethod("get_cached_property", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(proxy)
 	runtime.KeepAlive(propertyName)
 
 	var _variant *glib.Variant // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if *(**C.GVariant)(unsafe.Pointer(&_cret)) != nil {
+		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -677,7 +677,7 @@ func (proxy *DBusProxy) SetCachedProperty(propertyName string, value *glib.Varia
 	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	if value != nil {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
+		*(**C.GVariant)(unsafe.Pointer(&_args[2])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 	}
 
 	_info := girepository.MustFind("Gio", "DBusProxy")

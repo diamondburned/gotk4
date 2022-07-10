@@ -171,14 +171,14 @@ func (self *DirectoryList) Error() error {
 
 	_info := girepository.MustFind("Gtk", "DirectoryList")
 	_gret := _info.InvokeClassMethod("get_error", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
 	var _err error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_err = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+	if *(**C.GError)(unsafe.Pointer(&_cret)) != nil {
+		_err = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cret))))
 	}
 
 	return _err

@@ -107,18 +107,18 @@ func (a AccelFlags) Has(other AccelFlags) bool {
 func AccelGroupsFromObject(object *coreglib.Object) []*AccelGroup {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(object.Native()))
+	*(**C.GObject)(unsafe.Pointer(&_args[0])) = (*C.GObject)(unsafe.Pointer(object.Native()))
 
 	_info := girepository.MustFind("Gtk", "accel_groups_from_object")
 	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(object)
 
 	var _sList []*AccelGroup // out
 
-	_sList = make([]*AccelGroup, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
+	_sList = make([]*AccelGroup, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *AccelGroup // out
 		dst = wrapAccelGroup(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
@@ -327,7 +327,7 @@ func (accelGroup *AccelGroup) ConnectByPath(accelPath string, closure coreglib.A
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
 	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(accelGroup), closure))
+	*(**C.GClosure)(unsafe.Pointer(&_args[2])) = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(accelGroup), closure))
 
 	_info := girepository.MustFind("Gtk", "AccelGroup")
 	_info.InvokeClassMethod("connect_by_path", _args[:], nil)
@@ -355,7 +355,7 @@ func (accelGroup *AccelGroup) Disconnect(closure coreglib.AnyClosure) bool {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(accelGroup), closure))
+	*(**C.GClosure)(unsafe.Pointer(&_args[1])) = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(accelGroup), closure))
 
 	_info := girepository.MustFind("Gtk", "AccelGroup")
 	_gret := _info.InvokeClassMethod("disconnect", _args[:], nil)

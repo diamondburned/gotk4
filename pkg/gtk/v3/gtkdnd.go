@@ -215,7 +215,7 @@ func DragSetIconPixbuf(context *gdk.DragContext, pixbuf *gdkpixbuf.Pixbuf, hotX,
 	var _args [4]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+	*(**C.GdkPixbuf)(unsafe.Pointer(&_args[1])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(hotX)
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(hotY)
 

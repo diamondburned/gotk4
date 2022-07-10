@@ -10,6 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gobject-2.0
@@ -33,7 +34,7 @@ import "C"
 func BindingsActivateEvent(object *coreglib.Object, event *gdk.EventKey) bool {
 	var _args [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(object.Native()))
+	*(**C.GObject)(unsafe.Pointer(&_args[0])) = (*C.GObject)(unsafe.Pointer(object.Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
 
 	_info := girepository.MustFind("Gtk", "bindings_activate_event")
@@ -65,6 +66,15 @@ type bindingArg struct {
 	native unsafe.Pointer
 }
 
+// ArgType: implementation detail.
+func (b *BindingArg) ArgType() coreglib.Type {
+	offset := girepository.MustFind("Gtk", "BindingArg").StructFieldOffset("arg_type")
+	valptr := (*uintptr)(unsafe.Add(b.native, offset))
+	var v coreglib.Type // out
+	v = coreglib.Type(*(*C.GType)(unsafe.Pointer(&*valptr)))
+	return v
+}
+
 // BindingEntry: each key binding element of a binding sets binding list is
 // represented by a GtkBindingEntry.
 //
@@ -76,6 +86,54 @@ type BindingEntry struct {
 // bindingEntry is the struct that's finalized.
 type bindingEntry struct {
 	native unsafe.Pointer
+}
+
+// BindingEntryAddSignalFromString parses a signal description from signal_desc
+// and incorporates it into binding_set.
+//
+// Signal descriptions may either bind a key combination to one or more signals:
+//
+//    bind "key" {
+//      "signalname" (param, ...)
+//      ...
+//    }
+//
+// Or they may also unbind a key combination:
+//
+//    unbind "key"
+//
+// Key combinations must be in a format that can be parsed by
+// gtk_accelerator_parse().
+//
+// The function takes the following parameters:
+//
+//    - bindingSet: BindingSet.
+//    - signalDesc: signal description.
+//
+// The function returns the following values:
+//
+//    - tokenType: G_TOKEN_NONE if the signal was successfully parsed and added,
+//      the expected token otherwise.
+//
+func BindingEntryAddSignalFromString(bindingSet *BindingSet, signalDesc string) glib.TokenType {
+	var _args [2]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bindingSet)))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(signalDesc)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+
+	_info := girepository.MustFind("Gtk", "add_signal_from_string")
+	_gret := _info.InvokeFunction(_args[:], nil)
+	_cret := *(*C.GTokenType)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(bindingSet)
+	runtime.KeepAlive(signalDesc)
+
+	var _tokenType glib.TokenType // out
+
+	_tokenType = glib.TokenType(*(*C.GTokenType)(unsafe.Pointer(&_cret)))
+
+	return _tokenType
 }
 
 // BindingSet: binding set maintains a list of activatable key bindings. A

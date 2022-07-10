@@ -556,13 +556,13 @@ func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
 
 	_info := girepository.MustFind("Gtk", "get_option_group")
 	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GOptionGroup)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(openDefaultDisplay)
 
 	var _optionGroup *glib.OptionGroup // out
 
-	_optionGroup = (*glib.OptionGroup)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_optionGroup = (*glib.OptionGroup)(gextras.NewStructNative(unsafe.Pointer(*(**C.GOptionGroup)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_optionGroup)),
 		func(intern *struct{ C unsafe.Pointer }) {

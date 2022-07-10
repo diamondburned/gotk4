@@ -19,8 +19,8 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk3_CssProviderClass_parsing_error(void*, void*, void*);
-// extern void _gotk4_gtk3_CssProvider_ConnectParsingError(gpointer, void*, void*, guintptr);
+// extern void _gotk4_gtk3_CssProviderClass_parsing_error(void*, void*, GError*);
+// extern void _gotk4_gtk3_CssProvider_ConnectParsingError(gpointer, void*, GError*, guintptr);
 import "C"
 
 // GTypeCSSProviderError returns the GType for the type CSSProviderError.
@@ -149,7 +149,7 @@ func classInitCSSProviderer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_CssProviderClass_parsing_error
-func _gotk4_gtk3_CssProviderClass_parsing_error(arg0 *C.void, arg1 *C.void, arg2 *C.void) {
+func _gotk4_gtk3_CssProviderClass_parsing_error(arg0 *C.void, arg1 *C.void, arg2 *C.GError) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ParsingError(section *CSSSection, err error)
@@ -185,7 +185,7 @@ func marshalCSSProvider(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk3_CssProvider_ConnectParsingError
-func _gotk4_gtk3_CssProvider_ConnectParsingError(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.guintptr) {
+func _gotk4_gtk3_CssProvider_ConnectParsingError(arg0 C.gpointer, arg1 *C.void, arg2 *C.GError, arg3 C.guintptr) {
 	var f func(section *CSSSection, err error)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -270,8 +270,8 @@ func (cssProvider *CSSProvider) LoadFromData(data string) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -298,8 +298,8 @@ func (cssProvider *CSSProvider) LoadFromFile(file gio.Filer) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -327,8 +327,8 @@ func (cssProvider *CSSProvider) LoadFromPath(path string) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

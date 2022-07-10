@@ -114,7 +114,7 @@ func (stream *DataOutputStream) PutByte(ctx context.Context, data byte) error {
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.guchar)(unsafe.Pointer(&_args[1])) = C.guchar(data)
 
@@ -127,8 +127,8 @@ func (stream *DataOutputStream) PutByte(ctx context.Context, data byte) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -148,7 +148,7 @@ func (stream *DataOutputStream) PutInt16(ctx context.Context, data int16) error 
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.gint16)(unsafe.Pointer(&_args[1])) = C.gint16(data)
 
@@ -161,8 +161,8 @@ func (stream *DataOutputStream) PutInt16(ctx context.Context, data int16) error 
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -182,7 +182,7 @@ func (stream *DataOutputStream) PutInt32(ctx context.Context, data int32) error 
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.gint32)(unsafe.Pointer(&_args[1])) = C.gint32(data)
 
@@ -195,8 +195,8 @@ func (stream *DataOutputStream) PutInt32(ctx context.Context, data int32) error 
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -216,7 +216,7 @@ func (stream *DataOutputStream) PutInt64(ctx context.Context, data int64) error 
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.gint64)(unsafe.Pointer(&_args[1])) = C.gint64(data)
 
@@ -229,8 +229,8 @@ func (stream *DataOutputStream) PutInt64(ctx context.Context, data int64) error 
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -250,7 +250,7 @@ func (stream *DataOutputStream) PutString(ctx context.Context, str string) error
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(str)))
 	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
@@ -264,8 +264,8 @@ func (stream *DataOutputStream) PutString(ctx context.Context, str string) error
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -285,7 +285,7 @@ func (stream *DataOutputStream) PutUint16(ctx context.Context, data uint16) erro
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.guint16)(unsafe.Pointer(&_args[1])) = C.guint16(data)
 
@@ -298,8 +298,8 @@ func (stream *DataOutputStream) PutUint16(ctx context.Context, data uint16) erro
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -319,7 +319,7 @@ func (stream *DataOutputStream) PutUint32(ctx context.Context, data uint32) erro
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(data)
 
@@ -332,8 +332,8 @@ func (stream *DataOutputStream) PutUint32(ctx context.Context, data uint32) erro
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -353,7 +353,7 @@ func (stream *DataOutputStream) PutUint64(ctx context.Context, data uint64) erro
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.guint64)(unsafe.Pointer(&_args[1])) = C.guint64(data)
 
@@ -366,8 +366,8 @@ func (stream *DataOutputStream) PutUint64(ctx context.Context, data uint64) erro
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

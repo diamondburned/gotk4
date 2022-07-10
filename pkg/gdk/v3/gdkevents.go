@@ -1134,7 +1134,7 @@ func SettingGet(name string, value *coreglib.Value) bool {
 
 	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**C.GValue)(unsafe.Pointer(&_args[1])) = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gdk", "setting_get")
 	_gret := _info.InvokeFunction(_args[:], nil)

@@ -20,7 +20,7 @@ import (
 // #include <glib-object.h>
 // extern gboolean _gotk4_gio2_NetworkMonitorInterface_can_reach(void*, void*, void*, GError**);
 // extern gboolean _gotk4_gio2_NetworkMonitorInterface_can_reach_finish(void*, void*, GError**);
-// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
 // extern void _gotk4_gio2_NetworkMonitorInterface_network_changed(void*, gboolean);
 // extern void _gotk4_gio2_NetworkMonitor_ConnectNetworkChanged(gpointer, gboolean, guintptr);
 import "C"
@@ -146,7 +146,7 @@ func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketC
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
 
@@ -159,8 +159,8 @@ func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketC
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -188,7 +188,7 @@ func (monitor *NetworkMonitor) CanReachAsync(ctx context.Context, connectable So
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
 	if callback != nil {
@@ -226,8 +226,8 @@ func (monitor *NetworkMonitor) CanReachFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

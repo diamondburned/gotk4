@@ -34,7 +34,7 @@ import "C"
 func NewBytesIcon(bytes *glib.Bytes) *BytesIcon {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bytes)))
+	*(**C.GBytes)(unsafe.Pointer(&_args[0])) = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
 
 	_info := girepository.MustFind("Gio", "BytesIcon")
 	_gret := _info.InvokeClassMethod("new_BytesIcon", _args[:], nil)
@@ -62,14 +62,14 @@ func (icon *BytesIcon) Bytes() *glib.Bytes {
 
 	_info := girepository.MustFind("Gio", "BytesIcon")
 	_gret := _info.InvokeClassMethod("get_bytes", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GBytes)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(icon)
 
 	var _bytes *glib.Bytes // out
 
-	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	C.g_bytes_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(*(**C.GBytes)(unsafe.Pointer(&_cret)))))
+	C.g_bytes_ref(*(**C.GBytes)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {

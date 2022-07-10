@@ -225,7 +225,7 @@ func NewRadioButton(group []*RadioButton) *RadioButton {
 			src := group[i]
 			var dst *C.void // out
 			*(**C.void)(unsafe.Pointer(&dst)) = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
-			*(**C.void)(unsafe.Pointer(&_args[0])) = C.g_slist_prepend(*(**C.void)(unsafe.Pointer(&_args[0])), C.gpointer(unsafe.Pointer(dst)))
+			*(**C.GSList)(unsafe.Pointer(&_args[0])) = C.g_slist_prepend(*(**C.GSList)(unsafe.Pointer(&_args[0])), C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_args[0])
 	}
@@ -295,7 +295,7 @@ func NewRadioButtonWithLabel(group []*RadioButton, label string) *RadioButton {
 			src := group[i]
 			var dst *C.void // out
 			*(**C.void)(unsafe.Pointer(&dst)) = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
-			*(**C.void)(unsafe.Pointer(&_args[0])) = C.g_slist_prepend(*(**C.void)(unsafe.Pointer(&_args[0])), C.gpointer(unsafe.Pointer(dst)))
+			*(**C.GSList)(unsafe.Pointer(&_args[0])) = C.g_slist_prepend(*(**C.GSList)(unsafe.Pointer(&_args[0])), C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_args[0])
 	}
@@ -374,7 +374,7 @@ func NewRadioButtonWithMnemonic(group []*RadioButton, label string) *RadioButton
 			src := group[i]
 			var dst *C.void // out
 			*(**C.void)(unsafe.Pointer(&dst)) = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
-			*(**C.void)(unsafe.Pointer(&_args[0])) = C.g_slist_prepend(*(**C.void)(unsafe.Pointer(&_args[0])), C.gpointer(unsafe.Pointer(dst)))
+			*(**C.GSList)(unsafe.Pointer(&_args[0])) = C.g_slist_prepend(*(**C.GSList)(unsafe.Pointer(&_args[0])), C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_args[0])
 	}
@@ -447,14 +447,14 @@ func (radioButton *RadioButton) Group() []*RadioButton {
 
 	_info := girepository.MustFind("Gtk", "RadioButton")
 	_gret := _info.InvokeClassMethod("get_group", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(radioButton)
 
 	var _sList []*RadioButton // out
 
-	_sList = make([]*RadioButton, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
+	_sList = make([]*RadioButton, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *RadioButton // out
 		dst = wrapRadioButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
@@ -522,7 +522,7 @@ func (radioButton *RadioButton) SetGroup(group []*RadioButton) {
 			src := group[i]
 			var dst *C.void // out
 			*(**C.void)(unsafe.Pointer(&dst)) = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
-			*(**C.void)(unsafe.Pointer(&_args[1])) = C.g_slist_prepend(*(**C.void)(unsafe.Pointer(&_args[1])), C.gpointer(unsafe.Pointer(dst)))
+			*(**C.GSList)(unsafe.Pointer(&_args[1])) = C.g_slist_prepend(*(**C.GSList)(unsafe.Pointer(&_args[1])), C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_args[1])
 	}

@@ -1309,7 +1309,7 @@ func (widget *Widget) ActivateAction(name string, args *glib.Variant) bool {
 	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	if args != nil {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
+		*(**C.GVariant)(unsafe.Pointer(&_args[2])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(args)))
 	}
 
 	_info := girepository.MustFind("Gtk", "Widget")
@@ -1542,7 +1542,7 @@ func (widget *Widget) ComputeBounds(target Widgetter) (*graphene.Rect, bool) {
 	var _outBounds *graphene.Rect // out
 	var _ok bool                  // out
 
-	_outBounds = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_outBounds = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(*(**C.graphene_rect_t)(unsafe.Pointer(&_outs[0])))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -1574,7 +1574,7 @@ func (widget *Widget) ComputePoint(target Widgetter, point *graphene.Point) (*gr
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(target).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
+	*(**C.graphene_point_t)(unsafe.Pointer(&_args[2])) = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_info := girepository.MustFind("Gtk", "Widget")
 	_gret := _info.InvokeClassMethod("compute_point", _args[:], _outs[:])
@@ -1587,7 +1587,7 @@ func (widget *Widget) ComputePoint(target Widgetter, point *graphene.Point) (*gr
 	var _outPoint *graphene.Point // out
 	var _ok bool                  // out
 
-	_outPoint = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_outPoint = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(*(**C.graphene_point_t)(unsafe.Pointer(&_outs[0])))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -1627,7 +1627,7 @@ func (widget *Widget) ComputeTransform(target Widgetter) (*graphene.Matrix, bool
 	var _outTransform *graphene.Matrix // out
 	var _ok bool                       // out
 
-	_outTransform = (*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_outTransform = (*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer(*(**C.graphene_matrix_t)(unsafe.Pointer(&_outs[0])))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -1844,6 +1844,58 @@ func (widget *Widget) AllocatedWidth() int32 {
 	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 
 	return _gint
+}
+
+// Ancestor gets the first ancestor of widget with type widget_type.
+//
+// For example, gtk_widget_get_ancestor (widget, GTK_TYPE_BOX) gets the first
+// GtkBox that’s an ancestor of widget. No reference will be added to the
+// returned widget; it should not be unreferenced.
+//
+// Note that unlike gtk.Widget.IsAncestor(), this function considers widget to
+// be an ancestor of itself.
+//
+// The function takes the following parameters:
+//
+//    - widgetType: ancestor type.
+//
+// The function returns the following values:
+//
+//    - ret (optional): ancestor widget, or NULL if not found.
+//
+func (widget *Widget) Ancestor(widgetType coreglib.Type) Widgetter {
+	var _args [2]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(widgetType)
+
+	_info := girepository.MustFind("Gtk", "Widget")
+	_gret := _info.InvokeClassMethod("get_ancestor", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(widgetType)
+
+	var _ret Widgetter // out
+
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+		{
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_ret = rv
+		}
+	}
+
+	return _ret
 }
 
 // CanFocus determines whether the input focus can enter widget or any of its
@@ -3256,6 +3308,48 @@ func (widget *Widget) StyleContext() *StyleContext {
 	return _styleContext
 }
 
+// TemplateChild: fetch an object build from the template XML for widget_type in
+// this widget instance.
+//
+// This will only report children which were previously declared with
+// gtk.WidgetClass.BindTemplateChildFull() or one of its variants.
+//
+// This function is only meant to be called for code which is private to the
+// widget_type which declared the child and is meant for language bindings which
+// cannot easily make use of the GObject structure offsets.
+//
+// The function takes the following parameters:
+//
+//    - widgetType to get a template child for.
+//    - name: “id” of the child defined in the template XML.
+//
+// The function returns the following values:
+//
+//    - object built in the template XML with the id name.
+//
+func (widget *Widget) TemplateChild(widgetType coreglib.Type, name string) *coreglib.Object {
+	var _args [3]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(widgetType)
+	*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
+
+	_info := girepository.MustFind("Gtk", "Widget")
+	_gret := _info.InvokeClassMethod("get_template_child", _args[:], nil)
+	_cret := *(**C.GObject)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(widgetType)
+	runtime.KeepAlive(name)
+
+	var _object *coreglib.Object // out
+
+	_object = coreglib.Take(unsafe.Pointer(*(**C.GObject)(unsafe.Pointer(&_cret))))
+
+	return _object
+}
+
 // TooltipMarkup gets the contents of the tooltip for widget.
 //
 // If the tooltip has not been set using gtk.Widget.SetTooltipMarkup(), this
@@ -3946,14 +4040,14 @@ func (widget *Widget) ListMnemonicLabels() []Widgetter {
 
 	_info := girepository.MustFind("Gtk", "Widget")
 	_gret := _info.InvokeClassMethod("list_mnemonic_labels", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
 
 	var _list []Widgetter // out
 
-	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Widgetter // out
 		{

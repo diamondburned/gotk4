@@ -784,7 +784,7 @@ func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
 
 	_info := girepository.MustFind("Gio", "DBusNodeInfo")
 	_gret := _info.InvokeRecordMethod("new_for_xml", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(xmlData)
 
@@ -798,8 +798,8 @@ func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
 			C.free(intern.C)
 		},
 	)
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _dBusNodeInfo, _goerr

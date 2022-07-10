@@ -16,8 +16,8 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gio2_RemoteActionGroupInterface_activate_action_full(void*, gchar*, void*, void*);
-// extern void _gotk4_gio2_RemoteActionGroupInterface_change_action_state_full(void*, gchar*, void*, void*);
+// extern void _gotk4_gio2_RemoteActionGroupInterface_activate_action_full(void*, gchar*, GVariant*, GVariant*);
+// extern void _gotk4_gio2_RemoteActionGroupInterface_change_action_state_full(void*, gchar*, GVariant*, GVariant*);
 import "C"
 
 // GTypeRemoteActionGroup returns the GType for the type RemoteActionGroup.
@@ -115,7 +115,7 @@ func ifaceInitRemoteActionGrouper(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_RemoteActionGroupInterface_activate_action_full
-func _gotk4_gio2_RemoteActionGroupInterface_activate_action_full(arg0 *C.void, arg1 *C.gchar, arg2 *C.void, arg3 *C.void) {
+func _gotk4_gio2_RemoteActionGroupInterface_activate_action_full(arg0 *C.void, arg1 *C.gchar, arg2 *C.GVariant, arg3 *C.GVariant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(RemoteActionGroupOverrider)
 
@@ -147,7 +147,7 @@ func _gotk4_gio2_RemoteActionGroupInterface_activate_action_full(arg0 *C.void, a
 }
 
 //export _gotk4_gio2_RemoteActionGroupInterface_change_action_state_full
-func _gotk4_gio2_RemoteActionGroupInterface_change_action_state_full(arg0 *C.void, arg1 *C.gchar, arg2 *C.void, arg3 *C.void) {
+func _gotk4_gio2_RemoteActionGroupInterface_change_action_state_full(arg0 *C.void, arg1 *C.gchar, arg2 *C.GVariant, arg3 *C.GVariant) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(RemoteActionGroupOverrider)
 
@@ -211,9 +211,9 @@ func (remote *RemoteActionGroup) ActivateActionFull(actionName string, parameter
 	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	if parameter != nil {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parameter)))
+		*(**C.GVariant)(unsafe.Pointer(&_args[2])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameter)))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(platformData)))
+	*(**C.GVariant)(unsafe.Pointer(&_args[3])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(platformData)))
 
 	_info := girepository.MustFind("Gio", "RemoteActionGroup")
 	_info.InvokeIfaceMethod("activate_action_full", _args[:], nil)
@@ -246,8 +246,8 @@ func (remote *RemoteActionGroup) ChangeActionStateFull(actionName string, value,
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(remote).Native()))
 	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(platformData)))
+	*(**C.GVariant)(unsafe.Pointer(&_args[2])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
+	*(**C.GVariant)(unsafe.Pointer(&_args[3])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(platformData)))
 
 	_info := girepository.MustFind("Gio", "RemoteActionGroup")
 	_info.InvokeIfaceMethod("change_action_state_full", _args[:], nil)

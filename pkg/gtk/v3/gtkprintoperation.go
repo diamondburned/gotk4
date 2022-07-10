@@ -18,6 +18,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern GObject _gotk4_gtk3_PrintOperation_ConnectCreateCustomWidget(gpointer, guintptr);
 // extern gboolean _gotk4_gtk3_PrintOperationClass_paginate(void*, void*);
 // extern gboolean _gotk4_gtk3_PrintOperationClass_preview(void*, void*, void*, void*);
 // extern gboolean _gotk4_gtk3_PrintOperation_ConnectPaginate(gpointer, void*, guintptr);
@@ -139,11 +140,11 @@ func (p PrintError) String() string {
 func PrintErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gtk", "quark")
 	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
+	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -799,6 +800,39 @@ func (op *PrintOperation) ConnectBeginPrint(f func(context *PrintContext)) coreg
 	return coreglib.ConnectGeneratedClosure(op, "begin-print", false, unsafe.Pointer(C._gotk4_gtk3_PrintOperation_ConnectBeginPrint), f)
 }
 
+//export _gotk4_gtk3_PrintOperation_ConnectCreateCustomWidget
+func _gotk4_gtk3_PrintOperation_ConnectCreateCustomWidget(arg0 C.gpointer, arg1 C.guintptr) (cret C.GObject) {
+	var f func() (object *coreglib.Object)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func() (object *coreglib.Object))
+	}
+
+	object := f()
+
+	cret = *(*C.GObject)(unsafe.Pointer(object.Native()))
+
+	return cret
+}
+
+// ConnectCreateCustomWidget is emitted when displaying the print dialog. If you
+// return a widget in a handler for this signal it will be added to a custom tab
+// in the print dialog. You typically return a container widget with multiple
+// widgets in it.
+//
+// The print dialog owns the returned widget, and its lifetime is not controlled
+// by the application. However, the widget is guaranteed to stay around until
+// the PrintOperation::custom-widget-apply signal is emitted on the operation.
+// Then you can read out any information you need from the widgets.
+func (op *PrintOperation) ConnectCreateCustomWidget(f func() (object *coreglib.Object)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(op, "create-custom-widget", false, unsafe.Pointer(C._gotk4_gtk3_PrintOperation_ConnectCreateCustomWidget), f)
+}
+
 //export _gotk4_gtk3_PrintOperation_ConnectCustomWidgetApply
 func _gotk4_gtk3_PrintOperation_ConnectCustomWidgetApply(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
 	var f func(widget Widgetter)
@@ -1272,8 +1306,8 @@ func (op *PrintOperation) Error() error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

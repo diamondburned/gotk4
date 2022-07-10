@@ -99,7 +99,7 @@ func (factory *ObjectFactory) CreateAccessible(obj *coreglib.Object) *ObjectClas
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(obj.Native()))
+	*(**C.GObject)(unsafe.Pointer(&_args[1])) = (*C.GObject)(unsafe.Pointer(obj.Native()))
 
 	_info := girepository.MustFind("Atk", "ObjectFactory")
 	_gret := _info.InvokeClassMethod("create_accessible", _args[:], nil)
@@ -113,6 +113,32 @@ func (factory *ObjectFactory) CreateAccessible(obj *coreglib.Object) *ObjectClas
 	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _object
+}
+
+// AccessibleType gets the GType of the accessible which is created by the
+// factory.
+//
+// The function returns the following values:
+//
+//    - gType: type of the accessible which is created by the factory. The value
+//      G_TYPE_INVALID is returned if no type if found.
+//
+func (factory *ObjectFactory) AccessibleType() coreglib.Type {
+	var _args [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+
+	_info := girepository.MustFind("Atk", "ObjectFactory")
+	_gret := _info.InvokeClassMethod("get_accessible_type", _args[:], nil)
+	_cret := *(*C.GType)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(factory)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(*(*C.GType)(unsafe.Pointer(&_cret)))
+
+	return _gType
 }
 
 // Invalidate: inform factory that it is no longer being used to create

@@ -102,7 +102,7 @@ func (notification *Notification) AddButtonWithTarget(label, action string, targ
 	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(action)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
 	if target != nil {
-		*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
+		*(**C.GVariant)(unsafe.Pointer(&_args[3])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(target)))
 	}
 
 	_info := girepository.MustFind("Gio", "Notification")
@@ -187,7 +187,7 @@ func (notification *Notification) SetDefaultActionAndTarget(action string, targe
 	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(action)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	if target != nil {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(target)))
+		*(**C.GVariant)(unsafe.Pointer(&_args[2])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(target)))
 	}
 
 	_info := girepository.MustFind("Gio", "Notification")

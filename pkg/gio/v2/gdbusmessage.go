@@ -137,7 +137,7 @@ func (message *DBusMessage) Copy() (*DBusMessage, error) {
 
 	_info := girepository.MustFind("Gio", "DBusMessage")
 	_gret := _info.InvokeClassMethod("copy", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
 
@@ -145,8 +145,8 @@ func (message *DBusMessage) Copy() (*DBusMessage, error) {
 	var _goerr error              // out
 
 	_dBusMessage = wrapDBusMessage(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _dBusMessage, _goerr
@@ -193,15 +193,15 @@ func (message *DBusMessage) Body() *glib.Variant {
 
 	_info := girepository.MustFind("Gio", "DBusMessage")
 	_gret := _info.InvokeClassMethod("get_body", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(message)
 
 	var _variant *glib.Variant // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		C.g_variant_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	if *(**C.GVariant)(unsafe.Pointer(&_cret)) != nil {
+		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
+		C.g_variant_ref(*(**C.GVariant)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -663,7 +663,7 @@ func (message *DBusMessage) SetBody(body *glib.Variant) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(body)))
+	*(**C.GVariant)(unsafe.Pointer(&_args[1])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(body)))
 
 	_info := girepository.MustFind("Gio", "DBusMessage")
 	_info.InvokeClassMethod("set_body", _args[:], nil)
@@ -891,8 +891,8 @@ func (message *DBusMessage) ToGError() error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -921,7 +921,7 @@ func DBusMessageBytesNeeded(blob []byte) (int, error) {
 
 	_info := girepository.MustFind("Gio", "bytes_needed")
 	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(blob)
 
@@ -929,8 +929,8 @@ func DBusMessageBytesNeeded(blob []byte) (int, error) {
 	var _goerr error // out
 
 	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _gssize, _goerr

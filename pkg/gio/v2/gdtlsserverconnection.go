@@ -100,7 +100,7 @@ func NewDTLSServerConnection(baseSocket DatagramBasedder, certificate TLSCertifi
 
 	_info := girepository.MustFind("Gio", "new")
 	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseSocket)
 	runtime.KeepAlive(certificate)
@@ -109,8 +109,8 @@ func NewDTLSServerConnection(baseSocket DatagramBasedder, certificate TLSCertifi
 	var _goerr error                                // out
 
 	_dtlsServerConnection = wrapDTLSServerConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _dtlsServerConnection, _goerr

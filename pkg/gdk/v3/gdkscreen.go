@@ -809,7 +809,7 @@ func (screen *Screen) Setting(name string, value *coreglib.Value) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**C.GValue)(unsafe.Pointer(&_args[2])) = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gdk", "Screen")
 	_gret := _info.InvokeClassMethod("get_setting", _args[:], nil)
@@ -871,14 +871,14 @@ func (screen *Screen) ToplevelWindows() []Windower {
 
 	_info := girepository.MustFind("Gdk", "Screen")
 	_gret := _info.InvokeClassMethod("get_toplevel_windows", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)
 
 	var _list []Windower // out
 
-	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Windower // out
 		{
@@ -988,15 +988,15 @@ func (screen *Screen) WindowStack() []Windower {
 
 	_info := girepository.MustFind("Gdk", "Screen")
 	_gret := _info.InvokeClassMethod("get_window_stack", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)
 
 	var _list []Windower // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-		gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	if *(**C.GList)(unsafe.Pointer(&_cret)) != nil {
+		_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+		gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 			src := (*C.void)(v)
 			var dst Windower // out
 			{
@@ -1072,14 +1072,14 @@ func (screen *Screen) ListVisuals() []*Visual {
 
 	_info := girepository.MustFind("Gdk", "Screen")
 	_gret := _info.InvokeClassMethod("list_visuals", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)
 
 	var _list []*Visual // out
 
-	_list = make([]*Visual, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]*Visual, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Visual // out
 		dst = wrapVisual(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))

@@ -21,7 +21,7 @@ import (
 // extern gboolean _gotk4_gio2_ProxyResolverInterface_is_supported(void*);
 // extern gchar** _gotk4_gio2_ProxyResolverInterface_lookup(void*, gchar*, void*, GError**);
 // extern gchar** _gotk4_gio2_ProxyResolverInterface_lookup_finish(void*, void*, GError**);
-// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
 import "C"
 
 // GTypeProxyResolver returns the GType for the type ProxyResolver.
@@ -144,14 +144,14 @@ func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "ProxyResolver")
 	_gret := _info.InvokeIfaceMethod("lookup", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(ctx)
@@ -175,8 +175,8 @@ func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string
 			defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i]))))
 		}
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _utf8s, _goerr
@@ -198,7 +198,7 @@ func (resolver *ProxyResolver) LookupAsync(ctx context.Context, uri string, call
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
@@ -237,7 +237,7 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 
 	_info := girepository.MustFind("Gio", "ProxyResolver")
 	_gret := _info.InvokeIfaceMethod("lookup_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(resolver)
 	runtime.KeepAlive(result)
@@ -260,8 +260,8 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 			defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i]))))
 		}
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _utf8s, _goerr

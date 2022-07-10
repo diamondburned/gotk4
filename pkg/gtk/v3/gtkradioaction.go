@@ -232,14 +232,14 @@ func (action *RadioAction) Group() []*RadioAction {
 
 	_info := girepository.MustFind("Gtk", "RadioAction")
 	_gret := _info.InvokeClassMethod("get_group", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(action)
 
 	var _sList []*RadioAction // out
 
-	_sList = make([]*RadioAction, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
+	_sList = make([]*RadioAction, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *RadioAction // out
 		dst = wrapRadioAction(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
@@ -329,7 +329,7 @@ func (action *RadioAction) SetGroup(group []*RadioAction) {
 			src := group[i]
 			var dst *C.void // out
 			*(**C.void)(unsafe.Pointer(&dst)) = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
-			*(**C.void)(unsafe.Pointer(&_args[1])) = C.g_slist_prepend(*(**C.void)(unsafe.Pointer(&_args[1])), C.gpointer(unsafe.Pointer(dst)))
+			*(**C.GSList)(unsafe.Pointer(&_args[1])) = C.g_slist_prepend(*(**C.GSList)(unsafe.Pointer(&_args[1])), C.gpointer(unsafe.Pointer(dst)))
 		}
 		defer C.g_slist_free(_args[1])
 	}

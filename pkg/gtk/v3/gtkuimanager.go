@@ -919,7 +919,7 @@ func (manager *UIManager) AddUiFromFile(filename string) (uint32, error) {
 
 	_info := girepository.MustFind("Gtk", "UIManager")
 	_gret := _info.InvokeClassMethod("add_ui_from_file", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(filename)
@@ -928,8 +928,8 @@ func (manager *UIManager) AddUiFromFile(filename string) (uint32, error) {
 	var _goerr error  // out
 
 	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _guint, _goerr
@@ -959,7 +959,7 @@ func (manager *UIManager) AddUiFromResource(resourcePath string) (uint32, error)
 
 	_info := girepository.MustFind("Gtk", "UIManager")
 	_gret := _info.InvokeClassMethod("add_ui_from_resource", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(resourcePath)
@@ -968,8 +968,8 @@ func (manager *UIManager) AddUiFromResource(resourcePath string) (uint32, error)
 	var _goerr error  // out
 
 	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _guint, _goerr
@@ -1002,7 +1002,7 @@ func (manager *UIManager) AddUiFromString(buffer string, length int) (uint32, er
 
 	_info := girepository.MustFind("Gtk", "UIManager")
 	_gret := _info.InvokeClassMethod("add_ui_from_string", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(buffer)
@@ -1012,8 +1012,8 @@ func (manager *UIManager) AddUiFromString(buffer string, length int) (uint32, er
 	var _goerr error  // out
 
 	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _guint, _goerr
@@ -1123,14 +1123,14 @@ func (manager *UIManager) ActionGroups() []*ActionGroup {
 
 	_info := girepository.MustFind("Gtk", "UIManager")
 	_gret := _info.InvokeClassMethod("get_action_groups", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 
 	var _list []*ActionGroup // out
 
-	_list = make([]*ActionGroup, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
+	_list = make([]*ActionGroup, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *ActionGroup // out
 		dst = wrapActionGroup(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))

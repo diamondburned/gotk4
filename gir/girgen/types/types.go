@@ -384,10 +384,18 @@ func AnyTypeCPrimitive(gen FileGenerator, any gir.AnyType) string {
 	case any.Type != nil:
 		cType := AnyTypeC(any)
 
-		if prim := CTypeToPrimitive(cType); prim != "" {
-			return prim
+		if CountPtr(cType) == 0 && GIRIsPrimitive(cType) {
+			return cType
 		}
-		if prim := Resolve(gen, *any.Type).AsPrimitiveCType(gen); prim != "" {
+
+		resolved := Resolve(gen, *any.Type)
+		if resolved != nil {
+			if prim := resolved.AsDynamicLinkedCType(gen); prim != "" {
+				return prim
+			}
+		}
+
+		if prim := CTypeToPrimitive(cType); prim != "" {
 			return prim
 		}
 	}

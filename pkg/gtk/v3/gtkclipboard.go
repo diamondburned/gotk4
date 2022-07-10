@@ -19,7 +19,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk3_ClipboardImageReceivedFunc(void*, void*, gpointer);
+// extern void _gotk4_gtk3_ClipboardImageReceivedFunc(void*, GdkPixbuf*, gpointer);
 // extern void _gotk4_gtk3_ClipboardTextReceivedFunc(void*, gchar*, gpointer);
 // extern void _gotk4_gtk3_ClipboardURIReceivedFunc(void*, gchar**, gpointer);
 // extern void _gotk4_gtk3_Clipboard_ConnectOwnerChange(gpointer, void*, guintptr);
@@ -41,7 +41,7 @@ func GTypeClipboard() coreglib.Type {
 type ClipboardImageReceivedFunc func(clipboard *Clipboard, pixbuf *gdkpixbuf.Pixbuf)
 
 //export _gotk4_gtk3_ClipboardImageReceivedFunc
-func _gotk4_gtk3_ClipboardImageReceivedFunc(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) {
+func _gotk4_gtk3_ClipboardImageReceivedFunc(arg1 *C.void, arg2 *C.GdkPixbuf, arg3 C.gpointer) {
 	var fn ClipboardImageReceivedFunc
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -312,14 +312,14 @@ func (clipboard *Clipboard) Owner() *coreglib.Object {
 
 	_info := girepository.MustFind("Gtk", "Clipboard")
 	_gret := _info.InvokeClassMethod("get_owner", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GObject)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
 
 	var _object *coreglib.Object // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_object = coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+	if *(**C.GObject)(unsafe.Pointer(&_cret)) != nil {
+		_object = coreglib.Take(unsafe.Pointer(*(**C.GObject)(unsafe.Pointer(&_cret))))
 	}
 
 	return _object
@@ -420,7 +420,7 @@ func (clipboard *Clipboard) SetImage(pixbuf *gdkpixbuf.Pixbuf) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+	*(**C.GdkPixbuf)(unsafe.Pointer(&_args[1])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 
 	_info := girepository.MustFind("Gtk", "Clipboard")
 	_info.InvokeClassMethod("set_image", _args[:], nil)
@@ -487,15 +487,15 @@ func (clipboard *Clipboard) WaitForImage() *gdkpixbuf.Pixbuf {
 
 	_info := girepository.MustFind("Gtk", "Clipboard")
 	_gret := _info.InvokeClassMethod("wait_for_image", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GdkPixbuf)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if *(**C.GdkPixbuf)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&_cret))))
 			_pixbuf = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{

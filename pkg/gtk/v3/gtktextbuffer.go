@@ -25,7 +25,7 @@ import (
 // extern void _gotk4_gtk3_TextBufferClass_delete_range(void*, void*, void*);
 // extern void _gotk4_gtk3_TextBufferClass_end_user_action(void*);
 // extern void _gotk4_gtk3_TextBufferClass_insert_child_anchor(void*, void*, void*);
-// extern void _gotk4_gtk3_TextBufferClass_insert_pixbuf(void*, void*, void*);
+// extern void _gotk4_gtk3_TextBufferClass_insert_pixbuf(void*, void*, GdkPixbuf*);
 // extern void _gotk4_gtk3_TextBufferClass_insert_text(void*, void*, gchar*, gint);
 // extern void _gotk4_gtk3_TextBufferClass_mark_deleted(void*, void*);
 // extern void _gotk4_gtk3_TextBufferClass_mark_set(void*, void*, void*);
@@ -38,7 +38,7 @@ import (
 // extern void _gotk4_gtk3_TextBuffer_ConnectDeleteRange(gpointer, void*, void*, guintptr);
 // extern void _gotk4_gtk3_TextBuffer_ConnectEndUserAction(gpointer, guintptr);
 // extern void _gotk4_gtk3_TextBuffer_ConnectInsertChildAnchor(gpointer, void*, void*, guintptr);
-// extern void _gotk4_gtk3_TextBuffer_ConnectInsertPixbuf(gpointer, void*, void*, guintptr);
+// extern void _gotk4_gtk3_TextBuffer_ConnectInsertPixbuf(gpointer, void*, GdkPixbuf*, guintptr);
 // extern void _gotk4_gtk3_TextBuffer_ConnectInsertText(gpointer, void*, gchar*, gint, guintptr);
 // extern void _gotk4_gtk3_TextBuffer_ConnectMarkDeleted(gpointer, void*, guintptr);
 // extern void _gotk4_gtk3_TextBuffer_ConnectMarkSet(gpointer, void*, void*, guintptr);
@@ -381,7 +381,7 @@ func _gotk4_gtk3_TextBufferClass_insert_child_anchor(arg0 *C.void, arg1 *C.void,
 }
 
 //export _gotk4_gtk3_TextBufferClass_insert_pixbuf
-func _gotk4_gtk3_TextBufferClass_insert_pixbuf(arg0 *C.void, arg1 *C.void, arg2 *C.void) {
+func _gotk4_gtk3_TextBufferClass_insert_pixbuf(arg0 *C.void, arg1 *C.void, arg2 *C.GdkPixbuf) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		InsertPixbuf(iter *TextIter, pixbuf *gdkpixbuf.Pixbuf)
@@ -684,7 +684,7 @@ func (buffer *TextBuffer) ConnectInsertChildAnchor(f func(location *TextIter, an
 }
 
 //export _gotk4_gtk3_TextBuffer_ConnectInsertPixbuf
-func _gotk4_gtk3_TextBuffer_ConnectInsertPixbuf(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.guintptr) {
+func _gotk4_gtk3_TextBuffer_ConnectInsertPixbuf(arg0 C.gpointer, arg1 *C.void, arg2 *C.GdkPixbuf, arg3 C.guintptr) {
 	var f func(location *TextIter, pixbuf *gdkpixbuf.Pixbuf)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -2358,7 +2358,7 @@ func (buffer *TextBuffer) InsertPixbuf(iter *TextIter, pixbuf *gdkpixbuf.Pixbuf)
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+	*(**C.GdkPixbuf)(unsafe.Pointer(&_args[2])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 
 	_info := girepository.MustFind("Gtk", "TextBuffer")
 	_info.InvokeClassMethod("insert_pixbuf", _args[:], nil)

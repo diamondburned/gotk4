@@ -171,7 +171,7 @@ func NewPrintSettingsFromFile(fileName string) (*PrintSettings, error) {
 
 	_info := girepository.MustFind("Gtk", "PrintSettings")
 	_gret := _info.InvokeClassMethod("new_PrintSettings_from_file", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(fileName)
 
@@ -179,8 +179,8 @@ func NewPrintSettingsFromFile(fileName string) (*PrintSettings, error) {
 	var _goerr error                  // out
 
 	_printSettings = wrapPrintSettings(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _printSettings, _goerr
@@ -200,7 +200,7 @@ func NewPrintSettingsFromFile(fileName string) (*PrintSettings, error) {
 func NewPrintSettingsFromGVariant(variant *glib.Variant) *PrintSettings {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(variant)))
+	*(**C.GVariant)(unsafe.Pointer(&_args[0])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
 
 	_info := girepository.MustFind("Gtk", "PrintSettings")
 	_gret := _info.InvokeClassMethod("new_PrintSettings_from_gvariant", _args[:], nil)
@@ -233,7 +233,7 @@ func NewPrintSettingsFromGVariant(variant *glib.Variant) *PrintSettings {
 func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PrintSettings, error) {
 	var _args [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(keyFile)))
+	*(**C.GKeyFile)(unsafe.Pointer(&_args[0])) = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	if groupName != "" {
 		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
@@ -241,7 +241,7 @@ func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (*Prin
 
 	_info := girepository.MustFind("Gtk", "PrintSettings")
 	_gret := _info.InvokeClassMethod("new_PrintSettings_from_key_file", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyFile)
 	runtime.KeepAlive(groupName)
@@ -250,8 +250,8 @@ func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (*Prin
 	var _goerr error                  // out
 
 	_printSettings = wrapPrintSettings(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _printSettings, _goerr
@@ -988,8 +988,8 @@ func (settings *PrintSettings) LoadFile(fileName string) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -1009,7 +1009,7 @@ func (settings *PrintSettings) LoadKeyFile(keyFile *glib.KeyFile, groupName stri
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(keyFile)))
+	*(**C.GKeyFile)(unsafe.Pointer(&_args[1])) = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	if groupName != "" {
 		*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
@@ -1024,8 +1024,8 @@ func (settings *PrintSettings) LoadKeyFile(keyFile *glib.KeyFile, groupName stri
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -1476,8 +1476,8 @@ func (settings *PrintSettings) ToFile(fileName string) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -1496,14 +1496,14 @@ func (settings *PrintSettings) ToGVariant() *glib.Variant {
 
 	_info := girepository.MustFind("Gtk", "PrintSettings")
 	_gret := _info.InvokeClassMethod("to_gvariant", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(settings)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	C.g_variant_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
+	C.g_variant_ref(*(**C.GVariant)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -1526,7 +1526,7 @@ func (settings *PrintSettings) ToKeyFile(keyFile *glib.KeyFile, groupName string
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(keyFile)))
+	*(**C.GKeyFile)(unsafe.Pointer(&_args[1])) = (*C.GKeyFile)(gextras.StructNative(unsafe.Pointer(keyFile)))
 	if groupName != "" {
 		*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
 		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))

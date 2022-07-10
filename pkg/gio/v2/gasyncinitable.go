@@ -19,7 +19,7 @@ import (
 // #include <glib.h>
 // #include <glib-object.h>
 // extern gboolean _gotk4_gio2_AsyncInitableIface_init_finish(void*, void*, GError**);
-// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
 import "C"
 
 // GTypeAsyncInitable returns the GType for the type AsyncInitable.
@@ -218,7 +218,7 @@ func (initable *AsyncInitable) InitAsync(ctx context.Context, ioPriority int32, 
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
 	if callback != nil {
@@ -256,8 +256,8 @@ func (initable *AsyncInitable) InitFinish(res AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -283,7 +283,7 @@ func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*coreglib.Object, e
 
 	_info := girepository.MustFind("Gio", "AsyncInitable")
 	_gret := _info.InvokeIfaceMethod("new_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(initable)
 	runtime.KeepAlive(res)
@@ -291,9 +291,9 @@ func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*coreglib.Object, e
 	var _object *coreglib.Object // out
 	var _goerr error             // out
 
-	_object = coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	_object = coreglib.AssumeOwnership(unsafe.Pointer(*(**C.GObject)(unsafe.Pointer(&_cret))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _object, _goerr

@@ -452,6 +452,31 @@ func (palette *ToolPalette) HAdjustment() *Adjustment {
 	return _adjustment
 }
 
+// IconSize gets the size of icons in the tool palette. See
+// gtk_tool_palette_set_icon_size().
+//
+// The function returns the following values:
+//
+//    - gint of icons in the tool palette.
+//
+func (palette *ToolPalette) IconSize() int32 {
+	var _args [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
+
+	_info := girepository.MustFind("Gtk", "ToolPalette")
+	_gret := _info.InvokeClassMethod("get_icon_size", _args[:], nil)
+	_cret := *(*C.GtkIconSize)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(palette)
+
+	var _gint int32 // out
+
+	_gint = int32(*(*C.GtkIconSize)(unsafe.Pointer(&_cret)))
+
+	return _gint
+}
+
 // VAdjustment gets the vertical adjustment of the tool palette.
 //
 // Deprecated: Use gtk_scrollable_get_vadjustment().
@@ -549,6 +574,25 @@ func (palette *ToolPalette) SetGroupPosition(group *ToolItemGroup, position int3
 	runtime.KeepAlive(palette)
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(position)
+}
+
+// SetIconSize sets the size of icons in the tool palette.
+//
+// The function takes the following parameters:
+//
+//    - iconSize that icons in the tool palette shall have.
+//
+func (palette *ToolPalette) SetIconSize(iconSize int32) {
+	var _args [2]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(palette).Native()))
+	*(*C.GtkIconSize)(unsafe.Pointer(&_args[1])) = C.GtkIconSize(iconSize)
+
+	_info := girepository.MustFind("Gtk", "ToolPalette")
+	_info.InvokeClassMethod("set_icon_size", _args[:], nil)
+
+	runtime.KeepAlive(palette)
+	runtime.KeepAlive(iconSize)
 }
 
 // UnsetIconSize unsets the tool palette icon size set with

@@ -28,6 +28,222 @@ func GTypeIconFactory() coreglib.Type {
 	return gtype
 }
 
+// IconSizeFromName looks up the icon size associated with name.
+//
+// Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - name to look up.
+//
+// The function returns the following values:
+//
+//    - gint: icon size (IconSize).
+//
+func IconSizeFromName(name string) int32 {
+	var _args [1]girepository.Argument
+
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+
+	_info := girepository.MustFind("Gtk", "from_name")
+	_gret := _info.InvokeFunction(_args[:], nil)
+	_cret := *(*C.GtkIconSize)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(name)
+
+	var _gint int32 // out
+
+	_gint = int32(*(*C.GtkIconSize)(unsafe.Pointer(&_cret)))
+
+	return _gint
+}
+
+// IconSizeGetName gets the canonical name of the given icon size. The returned
+// string is statically allocated and should not be freed.
+//
+// Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - size: IconSize.
+//
+// The function returns the following values:
+//
+//    - utf8: name of the given icon size.
+//
+func IconSizeGetName(size int32) string {
+	var _args [1]girepository.Argument
+
+	*(*C.GtkIconSize)(unsafe.Pointer(&_args[0])) = C.GtkIconSize(size)
+
+	_info := girepository.MustFind("Gtk", "get_name")
+	_gret := _info.InvokeFunction(_args[:], nil)
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(size)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+
+	return _utf8
+}
+
+// IconSizeLookup obtains the pixel size of a semantic icon size size:
+// K_ICON_SIZE_MENU, K_ICON_SIZE_BUTTON, etc. This function isn’t normally
+// needed, gtk_icon_theme_load_icon() is the usual way to get an icon for
+// rendering, then just look at the size of the rendered pixbuf. The rendered
+// pixbuf may not even correspond to the width/height returned by
+// gtk_icon_size_lookup(), because themes are free to render the pixbuf however
+// they like, including changing the usual size.
+//
+// The function takes the following parameters:
+//
+//    - size: icon size (IconSize).
+//
+// The function returns the following values:
+//
+//    - width (optional): location to store icon width.
+//    - height (optional): location to store icon height.
+//    - ok: TRUE if size was a valid size.
+//
+func IconSizeLookup(size int32) (width, height int32, ok bool) {
+	var _args [1]girepository.Argument
+	var _outs [2]girepository.Argument
+
+	*(*C.GtkIconSize)(unsafe.Pointer(&_args[0])) = C.GtkIconSize(size)
+
+	_info := girepository.MustFind("Gtk", "lookup")
+	_gret := _info.InvokeFunction(_args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(size)
+
+	var _width int32  // out
+	var _height int32 // out
+	var _ok bool      // out
+
+	_width = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_height = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+		_ok = true
+	}
+
+	return _width, _height, _ok
+}
+
+// IconSizeLookupForSettings obtains the pixel size of a semantic icon size,
+// possibly modified by user preferences for a particular Settings. Normally
+// size would be K_ICON_SIZE_MENU, K_ICON_SIZE_BUTTON, etc. This function isn’t
+// normally needed, gtk_widget_render_icon_pixbuf() is the usual way to get an
+// icon for rendering, then just look at the size of the rendered pixbuf. The
+// rendered pixbuf may not even correspond to the width/height returned by
+// gtk_icon_size_lookup(), because themes are free to render the pixbuf however
+// they like, including changing the usual size.
+//
+// Deprecated: Use gtk_icon_size_lookup() instead.
+//
+// The function takes the following parameters:
+//
+//    - settings object, used to determine which set of user preferences to used.
+//    - size: icon size (IconSize).
+//
+// The function returns the following values:
+//
+//    - width (optional): location to store icon width.
+//    - height (optional): location to store icon height.
+//    - ok: TRUE if size was a valid size.
+//
+func IconSizeLookupForSettings(settings *Settings, size int32) (width, height int32, ok bool) {
+	var _args [2]girepository.Argument
+	var _outs [2]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
+	*(*C.GtkIconSize)(unsafe.Pointer(&_args[1])) = C.GtkIconSize(size)
+
+	_info := girepository.MustFind("Gtk", "lookup_for_settings")
+	_gret := _info.InvokeFunction(_args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(size)
+
+	var _width int32  // out
+	var _height int32 // out
+	var _ok bool      // out
+
+	_width = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_height = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+		_ok = true
+	}
+
+	return _width, _height, _ok
+}
+
+// IconSizeRegister registers a new icon size, along the same lines as
+// K_ICON_SIZE_MENU, etc. Returns the integer value for the size.
+//
+// Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - name of the icon size.
+//    - width: icon width.
+//    - height: icon height.
+//
+// The function returns the following values:
+//
+//    - gint: integer value representing the size (IconSize).
+//
+func IconSizeRegister(name string, width, height int32) int32 {
+	var _args [3]girepository.Argument
+
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(width)
+	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(height)
+
+	_info := girepository.MustFind("Gtk", "register")
+	_gret := _info.InvokeFunction(_args[:], nil)
+	_cret := *(*C.GtkIconSize)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+
+	var _gint int32 // out
+
+	_gint = int32(*(*C.GtkIconSize)(unsafe.Pointer(&_cret)))
+
+	return _gint
+}
+
+// IconSizeRegisterAlias registers alias as another name for target. So calling
+// gtk_icon_size_from_name() with alias as argument will return target.
+//
+// Deprecated: Use IconTheme instead.
+//
+// The function takes the following parameters:
+//
+//    - alias for target.
+//    - target: existing icon size (IconSize).
+//
+func IconSizeRegisterAlias(alias string, target int32) {
+	var _args [2]girepository.Argument
+
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(alias)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	*(*C.GtkIconSize)(unsafe.Pointer(&_args[1])) = C.GtkIconSize(target)
+
+	_info := girepository.MustFind("Gtk", "register_alias")
+	_info.InvokeFunction(_args[:], nil)
+
+	runtime.KeepAlive(alias)
+	runtime.KeepAlive(target)
+}
+
 // IconFactoryOverrider contains methods that are overridable.
 type IconFactoryOverrider interface {
 }

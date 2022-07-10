@@ -48,7 +48,7 @@ func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuMo
 
 	_info := girepository.MustFind("Gio", "DBusConnection")
 	_gret := _info.InvokeClassMethod("export_menu_model", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
 	runtime.KeepAlive(objectPath)
@@ -58,8 +58,8 @@ func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuMo
 	var _goerr error  // out
 
 	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _guint, _goerr

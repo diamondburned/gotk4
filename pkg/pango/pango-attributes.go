@@ -425,7 +425,7 @@ func (s ShowFlags) Has(other ShowFlags) bool {
 type AttrDataCopyFunc func() (gpointer unsafe.Pointer)
 
 //export _gotk4_pango1_AttrDataCopyFunc
-func _gotk4_pango1_AttrDataCopyFunc(arg1 C.gpointer) (cret C.gpointer) {
+func _gotk4_pango1_AttrDataCopyFunc(arg1 C.gconstpointer) (cret C.gpointer) {
 	var fn AttrDataCopyFunc
 	{
 		v := gbox.Get(uintptr(arg1))
@@ -1142,7 +1142,7 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, ui
 	var _args [1]girepository.Argument
 	var _outs [3]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(context)))
+	*(**C.GMarkupParseContext)(unsafe.Pointer(&_args[0])) = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
 
 	_info := girepository.MustFind("Pango", "markup_parser_finish")
 	_info.InvokeFunction(_args[:], _outs[:])
@@ -1168,8 +1168,8 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, ui
 		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[1]))))
 	}
 	_accelChar = uint32(*(*C.gunichar)(unsafe.Pointer(&_outs[2])))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _attrList, _text, _accelChar, _goerr
@@ -1214,14 +1214,14 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 
 	_info := girepository.MustFind("Pango", "markup_parser_new")
 	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GMarkupParseContext)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(accelMarker)
 
 	var _markupParseContext *glib.MarkupParseContext // out
 
-	_markupParseContext = (*glib.MarkupParseContext)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	C.g_markup_parse_context_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	_markupParseContext = (*glib.MarkupParseContext)(gextras.NewStructNative(unsafe.Pointer(*(**C.GMarkupParseContext)(unsafe.Pointer(&_cret)))))
+	C.g_markup_parse_context_ref(*(**C.GMarkupParseContext)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_markupParseContext)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -1304,8 +1304,8 @@ func ParseMarkup(markupText string, length int32, accelMarker uint32) (*AttrList
 		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[1]))))
 	}
 	_accelChar = uint32(*(*C.gunichar)(unsafe.Pointer(&_outs[2])))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _attrList, _text, _accelChar, _goerr
@@ -1542,14 +1542,14 @@ func (iterator *AttrIterator) Attrs() []*Attribute {
 
 	_info := girepository.MustFind("Pango", "AttrIterator")
 	_gret := _info.InvokeRecordMethod("get_attrs", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iterator)
 
 	var _sList []*Attribute // out
 
-	_sList = make([]*Attribute, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_sList = make([]*Attribute, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Attribute // out
 		dst = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
@@ -1879,14 +1879,14 @@ func (list *AttrList) Attributes() []*Attribute {
 
 	_info := girepository.MustFind("Pango", "AttrList")
 	_gret := _info.InvokeRecordMethod("get_attributes", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(list)
 
 	var _sList []*Attribute // out
 
-	_sList = make([]*Attribute, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_sList = make([]*Attribute, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Attribute // out
 		dst = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))

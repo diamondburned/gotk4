@@ -16,10 +16,10 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern GIOChannel* _gotk4_atk1_StreamableContentIface_get_stream(void*, gchar*);
 // extern gchar* _gotk4_atk1_StreamableContentIface_get_mime_type(void*, gint);
 // extern gchar* _gotk4_atk1_StreamableContentIface_get_uri(void*, gchar*);
 // extern gint _gotk4_atk1_StreamableContentIface_get_n_mime_types(void*);
-// extern void* _gotk4_atk1_StreamableContentIface_get_stream(void*, gchar*);
 import "C"
 
 // GTypeStreamableContent returns the GType for the type StreamableContent.
@@ -171,7 +171,7 @@ func _gotk4_atk1_StreamableContentIface_get_n_mime_types(arg0 *C.void) (cret C.g
 }
 
 //export _gotk4_atk1_StreamableContentIface_get_stream
-func _gotk4_atk1_StreamableContentIface_get_stream(arg0 *C.void, arg1 *C.gchar) (cret *C.void) {
+func _gotk4_atk1_StreamableContentIface_get_stream(arg0 *C.void, arg1 *C.gchar) (cret *C.GIOChannel) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(StreamableContentOverrider)
 
@@ -181,7 +181,7 @@ func _gotk4_atk1_StreamableContentIface_get_stream(arg0 *C.void, arg1 *C.gchar) 
 
 	ioChannel := iface.Stream(_mimeType)
 
-	cret = (*C.void)(gextras.StructNative(unsafe.Pointer(ioChannel)))
+	cret = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(ioChannel)))
 
 	return cret
 }
@@ -290,14 +290,14 @@ func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
 
 	_info := girepository.MustFind("Atk", "StreamableContent")
 	_gret := _info.InvokeIfaceMethod("get_stream", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GIOChannel)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(streamable)
 	runtime.KeepAlive(mimeType)
 
 	var _ioChannel *glib.IOChannel // out
 
-	_ioChannel = (*glib.IOChannel)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_ioChannel = (*glib.IOChannel)(gextras.NewStructNative(unsafe.Pointer(*(**C.GIOChannel)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_ioChannel)),
 		func(intern *struct{ C unsafe.Pointer }) {

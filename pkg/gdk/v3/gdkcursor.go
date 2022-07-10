@@ -566,7 +566,7 @@ func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x, y int32)
 	var _args [4]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+	*(**C.GdkPixbuf)(unsafe.Pointer(&_args[1])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(x)
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(y)
 
@@ -674,15 +674,15 @@ func (cursor *Cursor) Image() *gdkpixbuf.Pixbuf {
 
 	_info := girepository.MustFind("Gdk", "Cursor")
 	_gret := _info.InvokeClassMethod("get_image", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GdkPixbuf)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cursor)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if *(**C.GdkPixbuf)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&_cret))))
 			_pixbuf = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{

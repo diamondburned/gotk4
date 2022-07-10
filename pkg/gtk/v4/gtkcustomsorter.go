@@ -16,8 +16,8 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern gint _gotk4_glib2_CompareDataFunc(gpointer, gpointer, gpointer);
-// extern gint _gotk4_gtk4_CompareDataFunc(gpointer, gpointer, gpointer);
+// extern gint _gotk4_glib2_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
+// extern gint _gotk4_gtk4_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -84,7 +84,7 @@ func NewCustomSorter(sortFunc glib.CompareDataFunc) *CustomSorter {
 	var _args [3]girepository.Argument
 
 	if sortFunc != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[0])) = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
+		*(*C.GCompareDataFunc)(unsafe.Pointer(&_args[0])) = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
 		_args[1] = C.gpointer(gbox.Assign(sortFunc))
 		_args[2] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}
@@ -120,7 +120,7 @@ func (self *CustomSorter) SetSortFunc(sortFunc glib.CompareDataFunc) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if sortFunc != nil {
-		*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
+		*(*C.GCompareDataFunc)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
 		_args[2] = C.gpointer(gbox.Assign(sortFunc))
 		_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 	}

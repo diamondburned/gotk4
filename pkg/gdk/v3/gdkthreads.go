@@ -73,7 +73,7 @@ func ThreadsAddIdle(priority int32, function glib.SourceFunc) uint32 {
 	var _args [4]girepository.Argument
 
 	*(*C.gint)(unsafe.Pointer(&_args[0])) = C.gint(priority)
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_glib2_SourceFunc)
+	*(*C.GSourceFunc)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_glib2_SourceFunc)
 	_args[2] = C.gpointer(gbox.Assign(function))
 	_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
@@ -150,7 +150,7 @@ func ThreadsAddTimeout(priority int32, interval uint32, function glib.SourceFunc
 
 	*(*C.gint)(unsafe.Pointer(&_args[0])) = C.gint(priority)
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(interval)
-	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_glib2_SourceFunc)
+	*(*C.GSourceFunc)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_glib2_SourceFunc)
 	_args[3] = C.gpointer(gbox.Assign(function))
 	_args[4] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
@@ -189,7 +189,7 @@ func ThreadsAddTimeoutSeconds(priority int32, interval uint32, function glib.Sou
 
 	*(*C.gint)(unsafe.Pointer(&_args[0])) = C.gint(priority)
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(interval)
-	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_glib2_SourceFunc)
+	*(*C.GSourceFunc)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_glib2_SourceFunc)
 	_args[3] = C.gpointer(gbox.Assign(function))
 	_args[4] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 

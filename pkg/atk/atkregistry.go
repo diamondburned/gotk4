@@ -3,6 +3,7 @@
 package atk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
@@ -83,4 +84,91 @@ func wrapRegistry(obj *coreglib.Object) *Registry {
 
 func marshalRegistry(p uintptr) (interface{}, error) {
 	return wrapRegistry(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// Factory gets an ObjectFactory appropriate for creating Objects appropriate
+// for type.
+//
+// The function takes the following parameters:
+//
+//    - typ with which to look up the associated ObjectFactory.
+//
+// The function returns the following values:
+//
+//    - objectFactory appropriate for creating Objects appropriate for type.
+//
+func (registry *Registry) Factory(typ coreglib.Type) *ObjectFactory {
+	var _args [2]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(registry).Native()))
+	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(typ)
+
+	_info := girepository.MustFind("Atk", "Registry")
+	_gret := _info.InvokeClassMethod("get_factory", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(registry)
+	runtime.KeepAlive(typ)
+
+	var _objectFactory *ObjectFactory // out
+
+	_objectFactory = wrapObjectFactory(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+
+	return _objectFactory
+}
+
+// FactoryType provides a #GType indicating the ObjectFactory subclass
+// associated with type.
+//
+// The function takes the following parameters:
+//
+//    - typ with which to look up the associated ObjectFactory subclass.
+//
+// The function returns the following values:
+//
+//    - gType associated with type type.
+//
+func (registry *Registry) FactoryType(typ coreglib.Type) coreglib.Type {
+	var _args [2]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(registry).Native()))
+	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(typ)
+
+	_info := girepository.MustFind("Atk", "Registry")
+	_gret := _info.InvokeClassMethod("get_factory_type", _args[:], nil)
+	_cret := *(*C.GType)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(registry)
+	runtime.KeepAlive(typ)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(*(*C.GType)(unsafe.Pointer(&_cret)))
+
+	return _gType
+}
+
+// SetFactoryType: associate an ObjectFactory subclass with a #GType. Note: The
+// associated factory_type will thereafter be responsible for the creation of
+// new Object implementations for instances appropriate for type.
+//
+// The function takes the following parameters:
+//
+//    - typ: Object type.
+//    - factoryType type to associate with type. Must implement AtkObject
+//      appropriate for type.
+//
+func (registry *Registry) SetFactoryType(typ, factoryType coreglib.Type) {
+	var _args [3]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(registry).Native()))
+	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(typ)
+	*(*C.GType)(unsafe.Pointer(&_args[2])) = C.GType(factoryType)
+
+	_info := girepository.MustFind("Atk", "Registry")
+	_info.InvokeClassMethod("set_factory_type", _args[:], nil)
+
+	runtime.KeepAlive(registry)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(factoryType)
 }

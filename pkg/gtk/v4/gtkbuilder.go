@@ -485,8 +485,8 @@ func (builder *Builder) AddFromFile(filename string) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -524,8 +524,8 @@ func (builder *Builder) AddFromResource(resourcePath string) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -566,8 +566,8 @@ func (builder *Builder) AddFromString(buffer string, length int) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -617,8 +617,8 @@ func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) 
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -669,8 +669,8 @@ func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -724,8 +724,8 @@ func (builder *Builder) AddObjectsFromString(buffer string, length int, objectId
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -745,7 +745,7 @@ func (builder *Builder) ExposeObject(name string, object *coreglib.Object) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
 	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(object.Native()))
+	*(**C.GObject)(unsafe.Pointer(&_args[2])) = (*C.GObject)(unsafe.Pointer(object.Native()))
 
 	_info := girepository.MustFind("Gtk", "Builder")
 	_info.InvokeClassMethod("expose_object", _args[:], nil)
@@ -753,6 +753,47 @@ func (builder *Builder) ExposeObject(name string, object *coreglib.Object) {
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(object)
+}
+
+// ExtendWithTemplate: main private entry point for building composite
+// components from template XML.
+//
+// This is exported purely to let gtk-builder-tool validate templates,
+// applications have no need to call this function.
+//
+// The function takes the following parameters:
+//
+//    - object that is being extended.
+//    - templateType: type that the template is for.
+//    - buffer: string to parse.
+//    - length of buffer (may be -1 if buffer is nul-terminated).
+//
+func (builder *Builder) ExtendWithTemplate(object *coreglib.Object, templateType coreglib.Type, buffer string, length int) error {
+	var _args [5]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	*(**C.GObject)(unsafe.Pointer(&_args[1])) = (*C.GObject)(unsafe.Pointer(object.Native()))
+	*(*C.GType)(unsafe.Pointer(&_args[2])) = C.GType(templateType)
+	*(**C.char)(unsafe.Pointer(&_args[3])) = (*C.char)(unsafe.Pointer(C.CString(buffer)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[3]))))
+	*(*C.gssize)(unsafe.Pointer(&_args[4])) = C.gssize(length)
+
+	_info := girepository.MustFind("Gtk", "Builder")
+	_info.InvokeClassMethod("extend_with_template", _args[:], nil)
+
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(templateType)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(length)
+
+	var _goerr error // out
+
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	}
+
+	return _goerr
 }
 
 // CurrentObject gets the current object set via
@@ -769,14 +810,14 @@ func (builder *Builder) CurrentObject() *coreglib.Object {
 
 	_info := girepository.MustFind("Gtk", "Builder")
 	_gret := _info.InvokeClassMethod("get_current_object", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GObject)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(builder)
 
 	var _object *coreglib.Object // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_object = coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+	if *(**C.GObject)(unsafe.Pointer(&_cret)) != nil {
+		_object = coreglib.Take(unsafe.Pointer(*(**C.GObject)(unsafe.Pointer(&_cret))))
 	}
 
 	return _object
@@ -805,15 +846,15 @@ func (builder *Builder) GetObject(name string) *coreglib.Object {
 
 	_info := girepository.MustFind("Gtk", "Builder")
 	_gret := _info.InvokeClassMethod("get_object", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GObject)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(name)
 
 	var _object *coreglib.Object // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_object = coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+	if *(**C.GObject)(unsafe.Pointer(&_cret)) != nil {
+		_object = coreglib.Take(unsafe.Pointer(*(**C.GObject)(unsafe.Pointer(&_cret))))
 	}
 
 	return _object
@@ -836,17 +877,17 @@ func (builder *Builder) Objects() []*coreglib.Object {
 
 	_info := girepository.MustFind("Gtk", "Builder")
 	_gret := _info.InvokeClassMethod("get_objects", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(builder)
 
 	var _sList []*coreglib.Object // out
 
-	_sList = make([]*coreglib.Object, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_sList = make([]*coreglib.Object, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+		src := (*C.GObject)(v)
 		var dst *coreglib.Object // out
-		dst = coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src))))
+		dst = coreglib.Take(unsafe.Pointer(*(**C.GObject)(unsafe.Pointer(&src))))
 		_sList = append(_sList, dst)
 	})
 
@@ -904,6 +945,40 @@ func (builder *Builder) TranslationDomain() string {
 	return _utf8
 }
 
+// TypeFromName looks up a type by name.
+//
+// This is using the virtual function that GtkBuilder has for that purpose. This
+// is mainly used when implementing the GtkBuildable interface on a type.
+//
+// The function takes the following parameters:
+//
+//    - typeName: type name to lookup.
+//
+// The function returns the following values:
+//
+//    - gType: GType found for type_name or G_TYPE_INVALID if no type was found.
+//
+func (builder *Builder) TypeFromName(typeName string) coreglib.Type {
+	var _args [2]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(typeName)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+
+	_info := girepository.MustFind("Gtk", "Builder")
+	_gret := _info.InvokeClassMethod("get_type_from_name", _args[:], nil)
+	_cret := *(*C.GType)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(typeName)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(*(*C.GType)(unsafe.Pointer(&_cret)))
+
+	return _gType
+}
+
 // SetCurrentObject sets the current object for the builder.
 //
 // The current object can be thought of as the this object that the builder is
@@ -923,7 +998,7 @@ func (builder *Builder) SetCurrentObject(currentObject *coreglib.Object) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
 	if currentObject != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(currentObject.Native()))
+		*(**C.GObject)(unsafe.Pointer(&_args[1])) = (*C.GObject)(unsafe.Pointer(currentObject.Native()))
 	}
 
 	_info := girepository.MustFind("Gtk", "Builder")
@@ -976,4 +1051,51 @@ func (builder *Builder) SetTranslationDomain(domain string) {
 
 	runtime.KeepAlive(builder)
 	runtime.KeepAlive(domain)
+}
+
+// ValueFromStringType demarshals a value from a string.
+//
+// Unlike gtk.Builder.ValueFromString(), this function takes a GType instead of
+// GParamSpec.
+//
+// Calls g_value_init() on the value argument, so it need not be initialised
+// beforehand.
+//
+// Upon errors FALSE will be returned and error will be assigned a GError from
+// the GTK_BUILDER_ERROR domain.
+//
+// The function takes the following parameters:
+//
+//    - typ: GType of the value.
+//    - str: string representation of the value.
+//
+// The function returns the following values:
+//
+//    - value to store the result in.
+//
+func (builder *Builder) ValueFromStringType(typ coreglib.Type, str string) (coreglib.Value, error) {
+	var _args [3]girepository.Argument
+	var _outs [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
+	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(typ)
+	*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
+
+	_info := girepository.MustFind("Gtk", "Builder")
+	_info.InvokeClassMethod("value_from_string_type", _args[:], _outs[:])
+
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(str)
+
+	var _value coreglib.Value // out
+	var _goerr error          // out
+
+	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_outs[0]))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	}
+
+	return _value, _goerr
 }

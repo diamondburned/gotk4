@@ -1249,7 +1249,7 @@ func (area *CellArea) CellGetProperty(renderer CellRendererer, propertyName stri
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**C.GValue)(unsafe.Pointer(&_args[3])) = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gtk", "CellArea")
 	_info.InvokeClassMethod("cell_get_property", _args[:], nil)
@@ -1275,7 +1275,7 @@ func (area *CellArea) CellSetProperty(renderer CellRendererer, propertyName stri
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**C.GValue)(unsafe.Pointer(&_args[3])) = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gtk", "CellArea")
 	_info.InvokeClassMethod("cell_set_property", _args[:], nil)
@@ -1715,15 +1715,15 @@ func (area *CellArea) FocusSiblings(renderer CellRendererer) []CellRendererer {
 
 	_info := girepository.MustFind("Gtk", "CellArea")
 	_gret := _info.InvokeClassMethod("get_focus_siblings", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(renderer)
 
 	var _list []CellRendererer // out
 
-	_list = make([]CellRendererer, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
+	_list = make([]CellRendererer, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst CellRendererer // out
 		{

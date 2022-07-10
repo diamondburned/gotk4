@@ -19,7 +19,7 @@ import (
 // #include <glib.h>
 // #include <glib-object.h>
 // extern gboolean _gotk4_gio2_ProxyInterface_supports_hostname(void*);
-// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
 // extern void* _gotk4_gio2_ProxyInterface_connect(void*, void*, void*, void*, GError**);
 // extern void* _gotk4_gio2_ProxyInterface_connect_finish(void*, void*, GError**);
 import "C"
@@ -109,14 +109,14 @@ func (proxy *Proxy) ConnectProxy(ctx context.Context, connection IOStreamer, pro
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxyAddress).Native()))
 
 	_info := girepository.MustFind("Gio", "Proxy")
 	_gret := _info.InvokeIfaceMethod("connect", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(proxy)
 	runtime.KeepAlive(ctx)
@@ -143,8 +143,8 @@ func (proxy *Proxy) ConnectProxy(ctx context.Context, connection IOStreamer, pro
 		}
 		_ioStream = rv
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _ioStream, _goerr
@@ -166,7 +166,7 @@ func (proxy *Proxy) ConnectAsync(ctx context.Context, connection IOStreamer, pro
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(proxyAddress).Native()))
@@ -203,7 +203,7 @@ func (proxy *Proxy) ConnectFinish(result AsyncResulter) (IOStreamer, error) {
 
 	_info := girepository.MustFind("Gio", "Proxy")
 	_gret := _info.InvokeIfaceMethod("connect_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(proxy)
 	runtime.KeepAlive(result)
@@ -228,8 +228,8 @@ func (proxy *Proxy) ConnectFinish(result AsyncResulter) (IOStreamer, error) {
 		}
 		_ioStream = rv
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _ioStream, _goerr

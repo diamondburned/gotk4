@@ -16,6 +16,9 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern GList* _gotk4_gio2_VolumeMonitorClass_get_connected_drives(void*);
+// extern GList* _gotk4_gio2_VolumeMonitorClass_get_mounts(void*);
+// extern GList* _gotk4_gio2_VolumeMonitorClass_get_volumes(void*);
 // extern void _gotk4_gio2_VolumeMonitorClass_drive_changed(void*, void*);
 // extern void _gotk4_gio2_VolumeMonitorClass_drive_connected(void*, void*);
 // extern void _gotk4_gio2_VolumeMonitorClass_drive_disconnected(void*, void*);
@@ -40,11 +43,8 @@ import (
 // extern void _gotk4_gio2_VolumeMonitor_ConnectVolumeAdded(gpointer, void*, guintptr);
 // extern void _gotk4_gio2_VolumeMonitor_ConnectVolumeChanged(gpointer, void*, guintptr);
 // extern void _gotk4_gio2_VolumeMonitor_ConnectVolumeRemoved(gpointer, void*, guintptr);
-// extern void* _gotk4_gio2_VolumeMonitorClass_get_connected_drives(void*);
 // extern void* _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid(void*, char*);
-// extern void* _gotk4_gio2_VolumeMonitorClass_get_mounts(void*);
 // extern void* _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid(void*, char*);
-// extern void* _gotk4_gio2_VolumeMonitorClass_get_volumes(void*);
 import "C"
 
 // GTypeVolumeMonitor returns the GType for the type VolumeMonitor.
@@ -412,7 +412,7 @@ func _gotk4_gio2_VolumeMonitorClass_drive_stop_button(arg0 *C.void, arg1 *C.void
 }
 
 //export _gotk4_gio2_VolumeMonitorClass_get_connected_drives
-func _gotk4_gio2_VolumeMonitorClass_get_connected_drives(arg0 *C.void) (cret *C.void) {
+func _gotk4_gio2_VolumeMonitorClass_get_connected_drives(arg0 *C.void) (cret *C.GList) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ConnectedDrives() []*Drive })
 
@@ -449,7 +449,7 @@ func _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid(arg0 *C.void, arg1 *C.cha
 }
 
 //export _gotk4_gio2_VolumeMonitorClass_get_mounts
-func _gotk4_gio2_VolumeMonitorClass_get_mounts(arg0 *C.void) (cret *C.void) {
+func _gotk4_gio2_VolumeMonitorClass_get_mounts(arg0 *C.void) (cret *C.GList) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Mounts() []*Mount })
 
@@ -486,7 +486,7 @@ func _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid(arg0 *C.void, arg1 *C.ch
 }
 
 //export _gotk4_gio2_VolumeMonitorClass_get_volumes
-func _gotk4_gio2_VolumeMonitorClass_get_volumes(arg0 *C.void) (cret *C.void) {
+func _gotk4_gio2_VolumeMonitorClass_get_volumes(arg0 *C.void) (cret *C.GList) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Volumes() []*Volume })
 
@@ -1222,14 +1222,14 @@ func (volumeMonitor *VolumeMonitor) ConnectedDrives() []*Drive {
 
 	_info := girepository.MustFind("Gio", "VolumeMonitor")
 	_gret := _info.InvokeClassMethod("get_connected_drives", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(volumeMonitor)
 
 	var _list []*Drive // out
 
-	_list = make([]*Drive, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]*Drive, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Drive // out
 		dst = wrapDrive(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
@@ -1289,14 +1289,14 @@ func (volumeMonitor *VolumeMonitor) Mounts() []*Mount {
 
 	_info := girepository.MustFind("Gio", "VolumeMonitor")
 	_gret := _info.InvokeClassMethod("get_mounts", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(volumeMonitor)
 
 	var _list []*Mount // out
 
-	_list = make([]*Mount, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]*Mount, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Mount // out
 		dst = wrapMount(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
@@ -1356,14 +1356,14 @@ func (volumeMonitor *VolumeMonitor) Volumes() []*Volume {
 
 	_info := girepository.MustFind("Gio", "VolumeMonitor")
 	_gret := _info.InvokeClassMethod("get_volumes", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(volumeMonitor)
 
 	var _list []*Volume // out
 
-	_list = make([]*Volume, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]*Volume, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Volume // out
 		dst = wrapVolume(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))

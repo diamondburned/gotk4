@@ -1111,7 +1111,7 @@ func (context *StyleContext) StyleProperty(propertyName string) coreglib.Value {
 
 	var _value coreglib.Value // out
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_outs[0]))))
 
 	return _value
 }
@@ -1222,14 +1222,14 @@ func (context *StyleContext) ListClasses() []string {
 
 	_info := girepository.MustFind("Gtk", "StyleContext")
 	_gret := _info.InvokeClassMethod("list_classes", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
 	var _list []string // out
 
-	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.gchar)(v)
 		var dst string // out
 		dst = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src)))))
@@ -1256,14 +1256,14 @@ func (context *StyleContext) ListRegions() []string {
 
 	_info := girepository.MustFind("Gtk", "StyleContext")
 	_gret := _info.InvokeClassMethod("list_regions", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
 	var _list []string // out
 
-	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.gchar)(v)
 		var dst string // out
 		dst = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src)))))

@@ -393,6 +393,10 @@ func (typ *Resolved) IsContainerBuiltin() bool {
 	return false
 }
 
+func (typ *Resolved) DynamicLinked(gen FileGenerator) bool {
+	return typ.Builtin != nil || (typ.Extern != nil && gen.NamespaceLinkMode(typ.Extern.Namespace) == DynamicLinkMode)
+}
+
 // CanCast returns true if the resolved type is a builtin type that can be
 // directly casted to an equivalent C type OR a record..
 func (typ *Resolved) CanCast(gen FileGenerator) bool {
@@ -691,6 +695,18 @@ func (typ *Resolved) ImportImpl(gen FileGenerator, h *file.Header) {
 // CGoType returns the CGo type. Its pointer count does not follow Ptr.
 func (typ *Resolved) CGoType() string {
 	return CGoTypeFromC(typ.CType)
+}
+
+// AsDynamicLinkedCType is a variant of AsPrimitiveCType that returns the
+// original C type if it's from a dynamically linked package.
+func (typ *Resolved) AsDynamicLinkedCType(gen FileGenerator) string {
+	if typ == nil {
+		return ""
+	}
+	if typ.DynamicLinked(gen) {
+		return typ.CType
+	}
+	return typ.AsPrimitiveCType(gen)
 }
 
 // AsPrimitiveCType resolves Resolved's CType to a primitive type if possible.

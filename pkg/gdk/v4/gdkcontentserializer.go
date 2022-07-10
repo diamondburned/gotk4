@@ -19,8 +19,8 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gdk4_AsyncReadyCallback(void*, void*, gpointer);
-// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gdk4_AsyncReadyCallback(GObject*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
 import "C"
 
 // GTypeContentSerializer returns the GType for the type ContentSerializer.
@@ -58,12 +58,12 @@ func ContentSerializeAsync(ctx context.Context, stream gio.OutputStreamer, mimeT
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[4] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[4] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
 	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**C.GValue)(unsafe.Pointer(&_args[2])) = (*C.GValue)(unsafe.Pointer(value.Native()))
 	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(ioPriority)
 	if callback != nil {
 		*(*C.gpointer)(unsafe.Pointer(&_args[5])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -99,8 +99,8 @@ func ContentSerializeFinish(result gio.AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -171,6 +171,30 @@ func (serializer *ContentSerializer) Cancellable() *gio.Cancellable {
 	}
 
 	return _cancellable
+}
+
+// GType gets the GType to of the object to serialize.
+//
+// The function returns the following values:
+//
+//    - gType: GType for the current operation.
+//
+func (serializer *ContentSerializer) GType() coreglib.Type {
+	var _args [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(serializer).Native()))
+
+	_info := girepository.MustFind("Gdk", "ContentSerializer")
+	_gret := _info.InvokeClassMethod("get_gtype", _args[:], nil)
+	_cret := *(*C.GType)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(serializer)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(*(*C.GType)(unsafe.Pointer(&_cret)))
+
+	return _gType
 }
 
 // MIMEType gets the mime type to serialize to.
@@ -329,13 +353,13 @@ func (serializer *ContentSerializer) Value() *coreglib.Value {
 
 	_info := girepository.MustFind("Gdk", "ContentSerializer")
 	_gret := _info.InvokeClassMethod("get_value", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GValue)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(serializer)
 
 	var _value *coreglib.Value // out
 
-	_value = coreglib.ValueFromNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+	_value = coreglib.ValueFromNative(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_cret))))
 
 	return _value
 }
@@ -353,7 +377,7 @@ func (serializer *ContentSerializer) ReturnError(err error) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(serializer).Native()))
 	if err != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gerror.New(err))
+		*(**C.GError)(unsafe.Pointer(&_args[1])) = (*C.GError)(gerror.New(err))
 	}
 
 	_info := girepository.MustFind("Gdk", "ContentSerializer")

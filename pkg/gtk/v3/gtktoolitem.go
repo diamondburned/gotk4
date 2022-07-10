@@ -285,6 +285,32 @@ func (toolItem *ToolItem) Homogeneous() bool {
 	return _ok
 }
 
+// IconSize returns the icon size used for tool_item. Custom subclasses of
+// ToolItem should call this function to find out what size icons they should
+// use.
+//
+// The function returns the following values:
+//
+//    - gint indicating the icon size used for tool_item.
+//
+func (toolItem *ToolItem) IconSize() int32 {
+	var _args [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
+
+	_info := girepository.MustFind("Gtk", "ToolItem")
+	_gret := _info.InvokeClassMethod("get_icon_size", _args[:], nil)
+	_cret := *(*C.GtkIconSize)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(toolItem)
+
+	var _gint int32 // out
+
+	_gint = int32(*(*C.GtkIconSize)(unsafe.Pointer(&_cret)))
+
+	return _gint
+}
+
 // IsImportant returns whether tool_item is considered important. See
 // gtk_tool_item_set_is_important().
 //

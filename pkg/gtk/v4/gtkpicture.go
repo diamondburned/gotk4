@@ -262,7 +262,7 @@ func NewPictureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Picture {
 	var _args [1]girepository.Argument
 
 	if pixbuf != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+		*(**C.GdkPixbuf)(unsafe.Pointer(&_args[0])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	}
 
 	_info := girepository.MustFind("Gtk", "Picture")
@@ -635,7 +635,7 @@ func (self *Picture) SetPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if pixbuf != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+		*(**C.GdkPixbuf)(unsafe.Pointer(&_args[1])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	}
 
 	_info := girepository.MustFind("Gtk", "Picture")

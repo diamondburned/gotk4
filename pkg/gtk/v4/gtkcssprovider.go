@@ -17,7 +17,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk4_CssProvider_ConnectParsingError(gpointer, void*, void*, guintptr);
+// extern void _gotk4_gtk4_CssProvider_ConnectParsingError(gpointer, void*, GError*, guintptr);
 import "C"
 
 // GTypeCSSProvider returns the GType for the type CSSProvider.
@@ -83,7 +83,7 @@ func marshalCSSProvider(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk4_CssProvider_ConnectParsingError
-func _gotk4_gtk4_CssProvider_ConnectParsingError(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.guintptr) {
+func _gotk4_gtk4_CssProvider_ConnectParsingError(arg0 C.gpointer, arg1 *C.void, arg2 *C.GError, arg3 C.guintptr) {
 	var f func(section *CSSSection, err error)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))

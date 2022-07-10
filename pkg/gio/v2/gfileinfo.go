@@ -789,8 +789,8 @@ func (info *FileInfo) AttributeData(attribute string) (FileAttributeType, unsafe
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
 		_typ = *(*FileAttributeType)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_valuePp = (unsafe.Pointer)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1]))))
+	if *(**C.gpointer)(unsafe.Pointer(&_outs[1])) != nil {
+		_valuePp = (unsafe.Pointer)(unsafe.Pointer(*(**C.gpointer)(unsafe.Pointer(&_outs[1]))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
 		_status = *(*FileAttributeStatus)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[2]))))
@@ -888,15 +888,15 @@ func (info *FileInfo) AttributeObject(attribute string) *coreglib.Object {
 
 	_info := girepository.MustFind("Gio", "FileInfo")
 	_gret := _info.InvokeClassMethod("get_attribute_object", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GObject)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 
 	var _object *coreglib.Object // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_object = coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+	if *(**C.GObject)(unsafe.Pointer(&_cret)) != nil {
+		_object = coreglib.Take(unsafe.Pointer(*(**C.GObject)(unsafe.Pointer(&_cret))))
 	}
 
 	return _object
@@ -1092,14 +1092,14 @@ func (info *FileInfo) DeletionDate() *glib.DateTime {
 
 	_info := girepository.MustFind("Gio", "FileInfo")
 	_gret := _info.InvokeClassMethod("get_deletion_date", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GDateTime)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(info)
 
 	var _dateTime *glib.DateTime // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if *(**C.GDateTime)(unsafe.Pointer(&_cret)) != nil {
+		_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(*(**C.GDateTime)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -1310,14 +1310,14 @@ func (info *FileInfo) ModificationDateTime() *glib.DateTime {
 
 	_info := girepository.MustFind("Gio", "FileInfo")
 	_gret := _info.InvokeClassMethod("get_modification_date_time", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GDateTime)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(info)
 
 	var _dateTime *glib.DateTime // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if *(**C.GDateTime)(unsafe.Pointer(&_cret)) != nil {
+		_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(*(**C.GDateTime)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -1352,7 +1352,7 @@ func (info *FileInfo) ModificationTime() *glib.TimeVal {
 
 	var _result *glib.TimeVal // out
 
-	_result = (*glib.TimeVal)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_result = (*glib.TimeVal)(gextras.NewStructNative(unsafe.Pointer(*(**C.GTimeVal)(unsafe.Pointer(&_outs[0])))))
 
 	return _result
 }
@@ -1379,6 +1379,32 @@ func (info *FileInfo) Name() string {
 	_filename = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 
 	return _filename
+}
+
+// Size gets the file's size (in bytes). The size is retrieved through the value
+// of the G_FILE_ATTRIBUTE_STANDARD_SIZE attribute and is converted from
+// #guint64 to #goffset before returning the result.
+//
+// The function returns the following values:
+//
+//    - gint64 containing the file's size (in bytes).
+//
+func (info *FileInfo) Size() int64 {
+	var _args [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+
+	_info := girepository.MustFind("Gio", "FileInfo")
+	_gret := _info.InvokeClassMethod("get_size", _args[:], nil)
+	_cret := *(*C.goffset)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(info)
+
+	var _gint64 int64 // out
+
+	_gint64 = int64(*(*C.goffset)(unsafe.Pointer(&_cret)))
+
+	return _gint64
 }
 
 // SortOrder gets the value of the sort_order attribute from the Info. See
@@ -1729,7 +1755,7 @@ func (info *FileInfo) SetAttributeObject(attribute string, attrValue *coreglib.O
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
 	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(attribute)))
 	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(attrValue.Native()))
+	*(**C.GObject)(unsafe.Pointer(&_args[2])) = (*C.GObject)(unsafe.Pointer(attrValue.Native()))
 
 	_info := girepository.MustFind("Gio", "FileInfo")
 	_info.InvokeClassMethod("set_attribute_object", _args[:], nil)
@@ -1988,7 +2014,7 @@ func (info *FileInfo) SetModificationDateTime(mtime *glib.DateTime) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(mtime)))
+	*(**C.GDateTime)(unsafe.Pointer(&_args[1])) = (*C.GDateTime)(gextras.StructNative(unsafe.Pointer(mtime)))
 
 	_info := girepository.MustFind("Gio", "FileInfo")
 	_info.InvokeClassMethod("set_modification_date_time", _args[:], nil)
@@ -2012,7 +2038,7 @@ func (info *FileInfo) SetModificationTime(mtime *glib.TimeVal) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(mtime)))
+	*(**C.GTimeVal)(unsafe.Pointer(&_args[1])) = (*C.GTimeVal)(gextras.StructNative(unsafe.Pointer(mtime)))
 
 	_info := girepository.MustFind("Gio", "FileInfo")
 	_info.InvokeClassMethod("set_modification_time", _args[:], nil)
@@ -2040,6 +2066,26 @@ func (info *FileInfo) SetName(name string) {
 
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(name)
+}
+
+// SetSize sets the G_FILE_ATTRIBUTE_STANDARD_SIZE attribute in the file info to
+// the given size.
+//
+// The function takes the following parameters:
+//
+//    - size containing the file's size.
+//
+func (info *FileInfo) SetSize(size int64) {
+	var _args [2]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	*(*C.goffset)(unsafe.Pointer(&_args[1])) = C.goffset(size)
+
+	_info := girepository.MustFind("Gio", "FileInfo")
+	_info.InvokeClassMethod("set_size", _args[:], nil)
+
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(size)
 }
 
 // SetSortOrder sets the sort order attribute in the file info structure. See

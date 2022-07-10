@@ -52,7 +52,7 @@ func _gotk4_gtk3_TextBufferDeserializeFunc(arg1 *C.void, arg2 *C.void, arg3 *C.v
 	_goerr := fn(_registerBuffer, _contentBuffer, _iter, _data, _createTags)
 
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret

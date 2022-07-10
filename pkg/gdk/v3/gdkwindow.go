@@ -1604,7 +1604,7 @@ func (window *Window) CreateGLContext() (GLContexter, error) {
 
 	_info := girepository.MustFind("Gdk", "Window")
 	_gret := _info.InvokeClassMethod("create_gl_context", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
@@ -1628,8 +1628,8 @@ func (window *Window) CreateGLContext() (GLContexter, error) {
 		}
 		_glContext = rv
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _glContext, _goerr
@@ -1969,14 +1969,14 @@ func (window *Window) Children() []Windower {
 
 	_info := girepository.MustFind("Gdk", "Window")
 	_gret := _info.InvokeClassMethod("get_children", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
 	var _list []Windower // out
 
-	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Windower // out
 		{
@@ -2026,15 +2026,15 @@ func (window *Window) ChildrenWithUserData(userData unsafe.Pointer) []Windower {
 
 	_info := girepository.MustFind("Gdk", "Window")
 	_gret := _info.InvokeClassMethod("get_children_with_user_data", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(userData)
 
 	var _list []Windower // out
 
-	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Windower // out
 		{
@@ -3209,8 +3209,8 @@ func (window *Window) UserData() unsafe.Pointer {
 
 	var _data unsafe.Pointer // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_data = (unsafe.Pointer)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
+	if *(**C.gpointer)(unsafe.Pointer(&_outs[0])) != nil {
+		_data = (unsafe.Pointer)(unsafe.Pointer(*(**C.gpointer)(unsafe.Pointer(&_outs[0]))))
 	}
 
 	return _data
@@ -3841,14 +3841,14 @@ func (window *Window) PeekChildren() []Windower {
 
 	_info := girepository.MustFind("Gdk", "Window")
 	_gret := _info.InvokeClassMethod("peek_children", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
 	var _list []Windower // out
 
-	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
+	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Windower // out
 		{
@@ -4388,9 +4388,9 @@ func (window *Window) SetIconList(pixbufs []*gdkpixbuf.Pixbuf) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	for i := len(pixbufs) - 1; i >= 0; i-- {
 		src := pixbufs[i]
-		var dst *C.void // out
-		*(**C.void)(unsafe.Pointer(&dst)) = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
-		*(**C.void)(unsafe.Pointer(&_args[1])) = C.g_list_prepend(*(**C.void)(unsafe.Pointer(&_args[1])), C.gpointer(unsafe.Pointer(dst)))
+		var dst *C.GdkPixbuf // out
+		*(**C.GdkPixbuf)(unsafe.Pointer(&dst)) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+		*(**C.GList)(unsafe.Pointer(&_args[1])) = C.g_list_prepend(*(**C.GList)(unsafe.Pointer(&_args[1])), C.gpointer(unsafe.Pointer(dst)))
 	}
 	defer C.g_list_free(_args[1])
 

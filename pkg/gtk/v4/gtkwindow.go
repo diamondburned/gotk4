@@ -1962,12 +1962,12 @@ func WindowGetToplevels() *gio.ListModel {
 func WindowListToplevels() []Widgetter {
 	_info := girepository.MustFind("Gtk", "list_toplevels")
 	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	var _list []Widgetter // out
 
-	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Widgetter // out
 		{

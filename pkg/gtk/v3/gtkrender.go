@@ -12,6 +12,7 @@ import (
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
@@ -381,7 +382,7 @@ func RenderIcon(context *StyleContext, cr *cairo.Context, pixbuf *gdkpixbuf.Pixb
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(cr.Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+	*(**C.GdkPixbuf)(unsafe.Pointer(&_args[2])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	*(*C.gdouble)(unsafe.Pointer(&_args[3])) = C.gdouble(x)
 	*(*C.gdouble)(unsafe.Pointer(&_args[4])) = C.gdouble(y)
 
@@ -393,6 +394,54 @@ func RenderIcon(context *StyleContext, cr *cairo.Context, pixbuf *gdkpixbuf.Pixb
 	runtime.KeepAlive(pixbuf)
 	runtime.KeepAlive(x)
 	runtime.KeepAlive(y)
+}
+
+// RenderIconPixbuf renders the icon specified by source at the given size,
+// returning the result in a pixbuf.
+//
+// Deprecated: Use gtk_icon_theme_load_icon() instead.
+//
+// The function takes the following parameters:
+//
+//    - context: StyleContext.
+//    - source specifying the icon to render.
+//    - size (IconSize) to render the icon at. A size of (GtkIconSize) -1 means
+//      render at the size of the source and don’t scale.
+//
+// The function returns the following values:
+//
+//    - pixbuf: newly-created Pixbuf containing the rendered icon.
+//
+func RenderIconPixbuf(context *StyleContext, source *IconSource, size int32) *gdkpixbuf.Pixbuf {
+	var _args [3]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(source)))
+	*(*C.GtkIconSize)(unsafe.Pointer(&_args[2])) = C.GtkIconSize(size)
+
+	_info := girepository.MustFind("Gtk", "render_icon_pixbuf")
+	_gret := _info.InvokeFunction(_args[:], nil)
+	_cret := *(**C.GdkPixbuf)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(size)
+
+	var _pixbuf *gdkpixbuf.Pixbuf // out
+
+	{
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&_cret))))
+		_pixbuf = &gdkpixbuf.Pixbuf{
+			Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
+			},
+		}
+	}
+
+	return _pixbuf
 }
 
 // RenderIconSurface renders the icon in surface at the specified x and y

@@ -90,7 +90,7 @@ func NewCharsetConverter(toCharset, fromCharset string) (*CharsetConverter, erro
 
 	_info := girepository.MustFind("Gio", "CharsetConverter")
 	_gret := _info.InvokeClassMethod("new_CharsetConverter", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(toCharset)
 	runtime.KeepAlive(fromCharset)
@@ -99,8 +99,8 @@ func NewCharsetConverter(toCharset, fromCharset string) (*CharsetConverter, erro
 	var _goerr error                        // out
 
 	_charsetConverter = wrapCharsetConverter(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _charsetConverter, _goerr

@@ -17,7 +17,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gtk3_TextTagClass_event(void*, void*, void*, void*);
+// extern gboolean _gotk4_gtk3_TextTagClass_event(void*, GObject*, void*, void*);
 import "C"
 
 // GTypeTextTag returns the GType for the type TextTag.
@@ -89,7 +89,7 @@ func classInitTextTagger(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_TextTagClass_event
-func _gotk4_gtk3_TextTagClass_event(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.void) (cret C.gboolean) {
+func _gotk4_gtk3_TextTagClass_event(arg0 *C.void, arg1 *C.GObject, arg2 *C.void, arg3 *C.void) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Event(eventObject *coreglib.Object, event *gdk.Event, iter *TextIter) bool
@@ -199,7 +199,7 @@ func (tag *TextTag) Event(eventObject *coreglib.Object, event *gdk.Event, iter *
 	var _args [4]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(eventObject.Native()))
+	*(**C.GObject)(unsafe.Pointer(&_args[1])) = (*C.GObject)(unsafe.Pointer(eventObject.Native()))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 

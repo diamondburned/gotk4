@@ -18,7 +18,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
 // extern void* _gotk4_gio2_LoadableIconIface_load(void*, int, char**, void*, GError**);
 // extern void* _gotk4_gio2_LoadableIconIface_load_finish(void*, void*, char**, GError**);
 import "C"
@@ -95,13 +95,13 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int32) (string, InputSt
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(size)
 
 	_info := girepository.MustFind("Gio", "LoadableIcon")
 	_gret := _info.InvokeIfaceMethod("load", _args[:], _outs[:])
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(icon)
 	runtime.KeepAlive(ctx)
@@ -132,8 +132,8 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int32) (string, InputSt
 		}
 		_inputStream = rv
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _typ, _inputStream, _goerr
@@ -156,7 +156,7 @@ func (icon *LoadableIcon) LoadAsync(ctx context.Context, size int32, callback As
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(size)
 	if callback != nil {
@@ -195,7 +195,7 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 
 	_info := girepository.MustFind("Gio", "LoadableIcon")
 	_gret := _info.InvokeIfaceMethod("load_finish", _args[:], _outs[:])
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(icon)
 	runtime.KeepAlive(res)
@@ -225,8 +225,8 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 		}
 		_inputStream = rv
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _typ, _inputStream, _goerr

@@ -343,13 +343,13 @@ func (key *SettingsSchemaKey) DefaultValue() *glib.Variant {
 
 	_info := girepository.MustFind("Gio", "SettingsSchemaKey")
 	_gret := _info.InvokeRecordMethod("get_default_value", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(key)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -467,13 +467,13 @@ func (key *SettingsSchemaKey) Range() *glib.Variant {
 
 	_info := girepository.MustFind("Gio", "SettingsSchemaKey")
 	_gret := _info.InvokeRecordMethod("get_range", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(key)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -533,13 +533,13 @@ func (key *SettingsSchemaKey) ValueType() *glib.VariantType {
 
 	_info := girepository.MustFind("Gio", "SettingsSchemaKey")
 	_gret := _info.InvokeRecordMethod("get_value_type", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GVariantType)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(key)
 
 	var _variantType *glib.VariantType // out
 
-	_variantType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_variantType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariantType)(unsafe.Pointer(&_cret)))))
 
 	return _variantType
 }
@@ -562,7 +562,7 @@ func (key *SettingsSchemaKey) RangeCheck(value *glib.Variant) bool {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(key)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
+	*(**C.GVariant)(unsafe.Pointer(&_args[1])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_info := girepository.MustFind("Gio", "SettingsSchemaKey")
 	_gret := _info.InvokeRecordMethod("range_check", _args[:], nil)
@@ -613,7 +613,7 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 
 	_info := girepository.MustFind("Gio", "SettingsSchemaSource")
 	_gret := _info.InvokeRecordMethod("new_from_directory", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(directory)
 	runtime.KeepAlive(parent)
@@ -629,8 +629,8 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 			C.free(intern.C)
 		},
 	)
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _settingsSchemaSource, _goerr

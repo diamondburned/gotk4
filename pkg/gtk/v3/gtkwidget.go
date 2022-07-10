@@ -14,6 +14,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
@@ -5300,6 +5301,58 @@ func (widget *Widget) AllocatedWidth() int32 {
 	return _gint
 }
 
+// Ancestor gets the first ancestor of widget with type widget_type. For
+// example, gtk_widget_get_ancestor (widget, GTK_TYPE_BOX) gets the first Box
+// that’s an ancestor of widget. No reference will be added to the returned
+// widget; it should not be unreferenced. See note about checking for a toplevel
+// Window in the docs for gtk_widget_get_toplevel().
+//
+// Note that unlike gtk_widget_is_ancestor(), gtk_widget_get_ancestor()
+// considers widget to be an ancestor of itself.
+//
+// The function takes the following parameters:
+//
+//    - widgetType: ancestor type.
+//
+// The function returns the following values:
+//
+//    - ret (optional): ancestor widget, or NULL if not found.
+//
+func (widget *Widget) Ancestor(widgetType coreglib.Type) Widgetter {
+	var _args [2]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(widgetType)
+
+	_info := girepository.MustFind("Gtk", "Widget")
+	_gret := _info.InvokeClassMethod("get_ancestor", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(widgetType)
+
+	var _ret Widgetter // out
+
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+		{
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_ret = rv
+		}
+	}
+
+	return _ret
+}
+
 // AppPaintable determines whether the application intends to draw on the widget
 // in an Widget::draw handler.
 //
@@ -6910,6 +6963,48 @@ func (widget *Widget) SupportMultidevice() bool {
 	return _ok
 }
 
+// TemplateChild: fetch an object build from the template XML for widget_type in
+// this widget instance.
+//
+// This will only report children which were previously declared with
+// gtk_widget_class_bind_template_child_full() or one of its variants.
+//
+// This function is only meant to be called for code which is private to the
+// widget_type which declared the child and is meant for language bindings which
+// cannot easily make use of the GObject structure offsets.
+//
+// The function takes the following parameters:
+//
+//    - widgetType to get a template child for.
+//    - name: “id” of the child defined in the template XML.
+//
+// The function returns the following values:
+//
+//    - object built in the template XML with the id name.
+//
+func (widget *Widget) TemplateChild(widgetType coreglib.Type, name string) *coreglib.Object {
+	var _args [3]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(widgetType)
+	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+
+	_info := girepository.MustFind("Gtk", "Widget")
+	_gret := _info.InvokeClassMethod("get_template_child", _args[:], nil)
+	_cret := *(**C.GObject)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(widgetType)
+	runtime.KeepAlive(name)
+
+	var _object *coreglib.Object // out
+
+	_object = coreglib.Take(unsafe.Pointer(*(**C.GObject)(unsafe.Pointer(&_cret))))
+
+	return _object
+}
+
 // TooltipMarkup gets the contents of the tooltip for widget.
 //
 // The function returns the following values:
@@ -7866,14 +7961,14 @@ func (widget *Widget) ListMnemonicLabels() []Widgetter {
 
 	_info := girepository.MustFind("Gtk", "Widget")
 	_gret := _info.InvokeClassMethod("list_mnemonic_labels", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(widget)
 
 	var _list []Widgetter // out
 
-	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Widgetter // out
 		{
@@ -8331,6 +8426,63 @@ func (widget *Widget) RemoveTickCallback(id uint32) {
 
 	runtime.KeepAlive(widget)
 	runtime.KeepAlive(id)
+}
+
+// RenderIconPixbuf: convenience function that uses the theme engine and style
+// settings for widget to look up stock_id and render it to a pixbuf. stock_id
+// should be a stock icon ID such as K_STOCK_OPEN or K_STOCK_OK. size should be
+// a size such as K_ICON_SIZE_MENU.
+//
+// The pixels in the returned Pixbuf are shared with the rest of the application
+// and should not be modified. The pixbuf should be freed after use with
+// g_object_unref().
+//
+// Deprecated: Use gtk_icon_theme_load_icon() instead.
+//
+// The function takes the following parameters:
+//
+//    - stockId: stock ID.
+//    - size: stock size (IconSize). A size of (GtkIconSize)-1 means render at
+//      the size of the source and don’t scale (if there are multiple source
+//      sizes, GTK+ picks one of the available sizes).
+//
+// The function returns the following values:
+//
+//    - pixbuf (optional): new pixbuf, or NULL if the stock ID wasn’t known.
+//
+func (widget *Widget) RenderIconPixbuf(stockId string, size int32) *gdkpixbuf.Pixbuf {
+	var _args [3]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	*(*C.GtkIconSize)(unsafe.Pointer(&_args[2])) = C.GtkIconSize(size)
+
+	_info := girepository.MustFind("Gtk", "Widget")
+	_gret := _info.InvokeClassMethod("render_icon_pixbuf", _args[:], nil)
+	_cret := *(**C.GdkPixbuf)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(stockId)
+	runtime.KeepAlive(size)
+
+	var _pixbuf *gdkpixbuf.Pixbuf // out
+
+	if *(**C.GdkPixbuf)(unsafe.Pointer(&_cret)) != nil {
+		{
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&_cret))))
+			_pixbuf = &gdkpixbuf.Pixbuf{
+				Object: obj,
+				LoadableIcon: gio.LoadableIcon{
+					Icon: gio.Icon{
+						Object: obj,
+					},
+				},
+			}
+		}
+	}
+
+	return _pixbuf
 }
 
 // Reparent moves a widget from one Container to another, handling reference
@@ -9853,7 +10005,7 @@ func (widget *Widget) StyleGetProperty(propertyName string, value *coreglib.Valu
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**C.GValue)(unsafe.Pointer(&_args[2])) = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gtk", "Widget")
 	_info.InvokeClassMethod("style_get_property", _args[:], nil)

@@ -20,8 +20,8 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gdk4_AsyncReadyCallback(void*, void*, gpointer);
-// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gdk4_AsyncReadyCallback(GObject*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
 import "C"
 
 // GTypeDrop returns the GType for the type Drop.
@@ -284,7 +284,7 @@ func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority 
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	{
 		*(***C.char)(unsafe.Pointer(&_args[1])) = (**C.char)(C.calloc(C.size_t((len(mimeTypes) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
@@ -342,7 +342,7 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 
 	_info := girepository.MustFind("Gdk", "Drop")
 	_gret := _info.InvokeClassMethod("read_finish", _args[:], _outs[:])
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(result)
@@ -369,11 +369,54 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 			_inputStream = rv
 		}
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _outMimeType, _inputStream, _goerr
+}
+
+// ReadValueAsync: asynchronously request the drag operation's contents
+// converted to the given type.
+//
+// When the operation is finished callback will be called. You must then call
+// gdk.Drop.ReadValueFinish() to get the resulting GValue.
+//
+// For local drag'n'drop operations that are available in the given GType, the
+// value will be copied directly. Otherwise, GDK will try to use
+// gdk.ContentDeserializeAsync() to convert the data.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional GCancellable object, NULL to ignore.
+//    - typ: GType to read.
+//    - ioPriority: i/O priority of the request.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (self *Drop) ReadValueAsync(ctx context.Context, typ coreglib.Type, ioPriority int32, callback gio.AsyncReadyCallback) {
+	var _args [6]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(typ)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(ioPriority)
+	if callback != nil {
+		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[5] = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	_info := girepository.MustFind("Gdk", "Drop")
+	_info.InvokeClassMethod("read_value_async", _args[:], nil)
+
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // ReadValueFinish finishes an async drop read.
@@ -396,7 +439,7 @@ func (self *Drop) ReadValueFinish(result gio.AsyncResulter) (*coreglib.Value, er
 
 	_info := girepository.MustFind("Gdk", "Drop")
 	_gret := _info.InvokeClassMethod("read_value_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(result)
@@ -404,9 +447,9 @@ func (self *Drop) ReadValueFinish(result gio.AsyncResulter) (*coreglib.Value, er
 	var _value *coreglib.Value // out
 	var _goerr error           // out
 
-	_value = coreglib.ValueFromNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	_value = coreglib.ValueFromNative(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_cret))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _value, _goerr

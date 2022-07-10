@@ -310,7 +310,7 @@ func (selection *TreeSelection) SelectedRows() (*TreeModel, []*TreePath) {
 
 	_info := girepository.MustFind("Gtk", "TreeSelection")
 	_gret := _info.InvokeClassMethod("get_selected_rows", _args[:], _outs[:])
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(selection)
 
@@ -320,8 +320,8 @@ func (selection *TreeSelection) SelectedRows() (*TreeModel, []*TreePath) {
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
 		_model = wrapTreeModel(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
-	_list = make([]*TreePath, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]*TreePath, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *TreePath // out
 		dst = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))

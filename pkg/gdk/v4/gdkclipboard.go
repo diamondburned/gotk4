@@ -20,9 +20,9 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gdk4_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gdk4_AsyncReadyCallback(GObject*, void*, gpointer);
 // extern void _gotk4_gdk4_Clipboard_ConnectChanged(gpointer, guintptr);
-// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
 import "C"
 
 // GTypeClipboard returns the GType for the type Clipboard.
@@ -231,7 +231,7 @@ func (clipboard *Clipboard) ReadAsync(ctx context.Context, mimeTypes []string, i
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	{
 		*(***C.char)(unsafe.Pointer(&_args[1])) = (**C.char)(C.calloc(C.size_t((len(mimeTypes) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
@@ -284,7 +284,7 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.In
 
 	_info := girepository.MustFind("Gdk", "Clipboard")
 	_gret := _info.InvokeClassMethod("read_finish", _args[:], _outs[:])
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(result)
@@ -312,8 +312,8 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.In
 			_inputStream = rv
 		}
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _outMimeType, _inputStream, _goerr
@@ -341,7 +341,7 @@ func (clipboard *Clipboard) ReadTextAsync(ctx context.Context, callback gio.Asyn
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if callback != nil {
 		*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -376,7 +376,7 @@ func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, er
 
 	_info := girepository.MustFind("Gdk", "Clipboard")
 	_gret := _info.InvokeClassMethod("read_text_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(result)
@@ -388,8 +388,8 @@ func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, er
 		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _utf8, _goerr
@@ -417,7 +417,7 @@ func (clipboard *Clipboard) ReadTextureAsync(ctx context.Context, callback gio.A
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if callback != nil {
 		*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -452,7 +452,7 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texture
 
 	_info := girepository.MustFind("Gdk", "Clipboard")
 	_gret := _info.InvokeClassMethod("read_texture_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(result)
@@ -476,11 +476,54 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texture
 			_texture = rv
 		}
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _texture, _goerr
+}
+
+// ReadValueAsync: asynchronously request the clipboard contents converted to
+// the given type.
+//
+// When the operation is finished callback will be called. You must then call
+// gdk.Clipboard.ReadValueFinish() to get the resulting GValue.
+//
+// For local clipboard contents that are available in the given GType, the value
+// will be copied directly. Otherwise, GDK will try to use
+// content_deserialize_async to convert the clipboard's data.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - typ: GType to read.
+//    - ioPriority: i/O priority of the request.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (clipboard *Clipboard) ReadValueAsync(ctx context.Context, typ coreglib.Type, ioPriority int32, callback gio.AsyncReadyCallback) {
+	var _args [6]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(typ)
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(ioPriority)
+	if callback != nil {
+		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[5] = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	_info := girepository.MustFind("Gdk", "Clipboard")
+	_info.InvokeClassMethod("read_value_async", _args[:], nil)
+
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // ReadValueFinish finishes an asynchronous clipboard read.
@@ -503,7 +546,7 @@ func (clipboard *Clipboard) ReadValueFinish(result gio.AsyncResulter) (*coreglib
 
 	_info := girepository.MustFind("Gdk", "Clipboard")
 	_gret := _info.InvokeClassMethod("read_value_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(result)
@@ -511,9 +554,9 @@ func (clipboard *Clipboard) ReadValueFinish(result gio.AsyncResulter) (*coreglib
 	var _value *coreglib.Value // out
 	var _goerr error           // out
 
-	_value = coreglib.ValueFromNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	_value = coreglib.ValueFromNative(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_cret))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _value, _goerr
@@ -613,7 +656,7 @@ func (clipboard *Clipboard) Set(value *coreglib.Value) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**C.GValue)(unsafe.Pointer(&_args[1])) = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gdk", "Clipboard")
 	_info.InvokeClassMethod("set_value", _args[:], nil)
@@ -650,7 +693,7 @@ func (clipboard *Clipboard) StoreAsync(ctx context.Context, ioPriority int32, ca
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
 	if callback != nil {
@@ -689,8 +732,8 @@ func (clipboard *Clipboard) StoreFinish(result gio.AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

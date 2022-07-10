@@ -446,14 +446,14 @@ func (cmdline *ApplicationCommandLine) OptionsDict() *glib.VariantDict {
 
 	_info := girepository.MustFind("Gio", "ApplicationCommandLine")
 	_gret := _info.InvokeClassMethod("get_options_dict", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GVariantDict)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cmdline)
 
 	var _variantDict *glib.VariantDict // out
 
-	_variantDict = (*glib.VariantDict)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	C.g_variant_dict_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	_variantDict = (*glib.VariantDict)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariantDict)(unsafe.Pointer(&_cret)))))
+	C.g_variant_dict_ref(*(**C.GVariantDict)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variantDict)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -484,14 +484,14 @@ func (cmdline *ApplicationCommandLine) PlatformData() *glib.Variant {
 
 	_info := girepository.MustFind("Gio", "ApplicationCommandLine")
 	_gret := _info.InvokeClassMethod("get_platform_data", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cmdline)
 
 	var _variant *glib.Variant // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	if *(**C.GVariant)(unsafe.Pointer(&_cret)) != nil {
+		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {

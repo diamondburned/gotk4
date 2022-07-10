@@ -14,6 +14,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern GType _gotk4_gio2_ListModelInterface_get_item_type(void*);
 // extern gpointer _gotk4_gio2_ListModelInterface_get_item(void*, guint);
 // extern guint _gotk4_gio2_ListModelInterface_get_n_items(void*);
 // extern void _gotk4_gio2_ListModel_ConnectItemsChanged(gpointer, guint, guint, guint, guintptr);
@@ -47,6 +48,17 @@ type ListModelOverrider interface {
 	//    - object (optional) at position.
 	//
 	Item(position uint32) *coreglib.Object
+	// ItemType gets the type of the items in list. All items returned from
+	// g_list_model_get_type() are of that type or a subtype, or are an
+	// implementation of that interface.
+	//
+	// The item type of a Model can not change during the life of the model.
+	//
+	// The function returns the following values:
+	//
+	//    - gType of the items contained in list.
+	//
+	ItemType() coreglib.Type
 	// NItems gets the number of items in list.
 	//
 	// Depending on the model implementation, calling this function may be less
@@ -118,6 +130,8 @@ var (
 type ListModeller interface {
 	coreglib.Objector
 
+	// ItemType gets the type of the items in list.
+	ItemType() coreglib.Type
 	// NItems gets the number of items in list.
 	NItems() uint32
 	// Item: get the item at position.
@@ -135,6 +149,7 @@ var _ ListModeller = (*ListModel)(nil)
 func ifaceInitListModeller(gifacePtr, data C.gpointer) {
 	iface := girepository.MustFind("Gio", "ListModelInterface")
 	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_item"))) = unsafe.Pointer(C._gotk4_gio2_ListModelInterface_get_item)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_item_type"))) = unsafe.Pointer(C._gotk4_gio2_ListModelInterface_get_item_type)
 	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_n_items"))) = unsafe.Pointer(C._gotk4_gio2_ListModelInterface_get_n_items)
 }
 
@@ -151,6 +166,18 @@ func _gotk4_gio2_ListModelInterface_get_item(arg0 *C.void, arg1 C.guint) (cret C
 
 	cret = C.gpointer(unsafe.Pointer(object.Native()))
 	C.g_object_ref(C.gpointer(object.Native()))
+
+	return cret
+}
+
+//export _gotk4_gio2_ListModelInterface_get_item_type
+func _gotk4_gio2_ListModelInterface_get_item_type(arg0 *C.void) (cret C.GType) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(ListModelOverrider)
+
+	gType := iface.ItemType()
+
+	cret = C.GType(gType)
 
 	return cret
 }
@@ -211,6 +238,34 @@ func (list *ListModel) ConnectItemsChanged(f func(position, removed, added uint3
 	return coreglib.ConnectGeneratedClosure(list, "items-changed", false, unsafe.Pointer(C._gotk4_gio2_ListModel_ConnectItemsChanged), f)
 }
 
+// ItemType gets the type of the items in list. All items returned from
+// g_list_model_get_type() are of that type or a subtype, or are an
+// implementation of that interface.
+//
+// The item type of a Model can not change during the life of the model.
+//
+// The function returns the following values:
+//
+//    - gType of the items contained in list.
+//
+func (list *ListModel) ItemType() coreglib.Type {
+	var _args [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(list).Native()))
+
+	_info := girepository.MustFind("Gio", "ListModel")
+	_gret := _info.InvokeIfaceMethod("get_item_type", _args[:], nil)
+	_cret := *(*C.GType)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(list)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(*(*C.GType)(unsafe.Pointer(&_cret)))
+
+	return _gType
+}
+
 // NItems gets the number of items in list.
 //
 // Depending on the model implementation, calling this function may be less
@@ -261,15 +316,15 @@ func (list *ListModel) Item(position uint32) *coreglib.Object {
 
 	_info := girepository.MustFind("Gio", "ListModel")
 	_gret := _info.InvokeIfaceMethod("get_object", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GObject)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(list)
 	runtime.KeepAlive(position)
 
 	var _object *coreglib.Object // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_object = coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+	if *(**C.GObject)(unsafe.Pointer(&_cret)) != nil {
+		_object = coreglib.AssumeOwnership(unsafe.Pointer(*(**C.GObject)(unsafe.Pointer(&_cret))))
 	}
 
 	return _object

@@ -168,19 +168,19 @@ func DBusGenerateGUID() string {
 func DBusGValueToGVariant(gvalue *coreglib.Value, typ *glib.VariantType) *glib.Variant {
 	var _args [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(gvalue.Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(typ)))
+	*(**C.GValue)(unsafe.Pointer(&_args[0])) = (*C.GValue)(unsafe.Pointer(gvalue.Native()))
+	*(**C.GVariantType)(unsafe.Pointer(&_args[1])) = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_info := girepository.MustFind("Gio", "dbus_gvalue_to_gvariant")
 	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gvalue)
 	runtime.KeepAlive(typ)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -216,7 +216,7 @@ func DBusGVariantToGValue(value *glib.Variant) coreglib.Value {
 	var _args [1]girepository.Argument
 	var _outs [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
+	*(**C.GVariant)(unsafe.Pointer(&_args[0])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_info := girepository.MustFind("Gio", "dbus_gvariant_to_gvalue")
 	_info.InvokeFunction(_args[:], _outs[:])
@@ -225,7 +225,7 @@ func DBusGVariantToGValue(value *glib.Variant) coreglib.Value {
 
 	var _outGvalue coreglib.Value // out
 
-	_outGvalue = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
+	_outGvalue = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_outs[0]))))
 
 	return _outGvalue
 }

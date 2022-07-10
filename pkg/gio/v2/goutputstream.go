@@ -27,7 +27,7 @@ import (
 // extern gboolean _gotk4_gio2_OutputStreamClass_writev_finish(void*, void*, gsize*, GError**);
 // extern gssize _gotk4_gio2_OutputStreamClass_splice_finish(void*, void*, GError**);
 // extern gssize _gotk4_gio2_OutputStreamClass_write_finish(void*, void*, GError**);
-// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
 import "C"
 
 // GTypeOutputStream returns the GType for the type OutputStream.
@@ -233,7 +233,7 @@ func _gotk4_gio2_OutputStreamClass_close_finish(arg0 *C.void, arg1 *C.void, _cer
 	_goerr := iface.CloseFinish(_result)
 
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -255,7 +255,7 @@ func _gotk4_gio2_OutputStreamClass_close_fn(arg0 *C.void, arg1 *C.void, _cerr **
 	_goerr := iface.CloseFn(_cancellable)
 
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -277,7 +277,7 @@ func _gotk4_gio2_OutputStreamClass_flush(arg0 *C.void, arg1 *C.void, _cerr **C.G
 	_goerr := iface.Flush(_cancellable)
 
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -313,7 +313,7 @@ func _gotk4_gio2_OutputStreamClass_flush_finish(arg0 *C.void, arg1 *C.void, _cer
 	_goerr := iface.FlushFinish(_result)
 
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -350,7 +350,7 @@ func _gotk4_gio2_OutputStreamClass_splice_finish(arg0 *C.void, arg1 *C.void, _ce
 
 	cret = C.gssize(gssize)
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -387,7 +387,7 @@ func _gotk4_gio2_OutputStreamClass_write_finish(arg0 *C.void, arg1 *C.void, _cer
 
 	cret = C.gssize(gssize)
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -424,7 +424,7 @@ func _gotk4_gio2_OutputStreamClass_writev_finish(arg0 *C.void, arg1 *C.void, arg
 
 	*arg2 = C.gsize(bytesWritten)
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -501,7 +501,7 @@ func (stream *OutputStream) Close(ctx context.Context) error {
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
 	_info := girepository.MustFind("Gio", "OutputStream")
@@ -512,8 +512,8 @@ func (stream *OutputStream) Close(ctx context.Context) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -543,7 +543,7 @@ func (stream *OutputStream) CloseAsync(ctx context.Context, ioPriority int32, ca
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
 	if callback != nil {
@@ -580,8 +580,8 @@ func (stream *OutputStream) CloseFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -608,7 +608,7 @@ func (stream *OutputStream) Flush(ctx context.Context) error {
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
 	_info := girepository.MustFind("Gio", "OutputStream")
@@ -619,8 +619,8 @@ func (stream *OutputStream) Flush(ctx context.Context) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -645,7 +645,7 @@ func (stream *OutputStream) FlushAsync(ctx context.Context, ioPriority int32, ca
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
 	if callback != nil {
@@ -682,8 +682,8 @@ func (stream *OutputStream) FlushFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -783,8 +783,8 @@ func (stream *OutputStream) SetPending() error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -810,7 +810,7 @@ func (stream *OutputStream) SpliceFinish(result AsyncResulter) (int, error) {
 
 	_info := girepository.MustFind("Gio", "OutputStream")
 	_gret := _info.InvokeClassMethod("splice_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
@@ -819,11 +819,187 @@ func (stream *OutputStream) SpliceFinish(result AsyncResulter) (int, error) {
 	var _goerr error // out
 
 	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _gssize, _goerr
+}
+
+// Write tries to write count bytes from buffer into the stream. Will block
+// during the operation.
+//
+// If count is 0, returns 0 and does nothing. A value of count larger than
+// G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
+//
+// On success, the number of bytes written to the stream is returned. It is not
+// an error if this is not the same as the requested size, as it can happen e.g.
+// on a partial I/O error, or if there is not enough storage in the stream. All
+// writes block until at least one byte is written or an error occurs; 0 is
+// never returned (unless count is 0).
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned. If an operation was
+// partially finished when the operation was cancelled the partial result will
+// be returned, without an error.
+//
+// On error -1 is returned and error is set accordingly.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional cancellable object.
+//    - buffer containing the data to write.
+//
+// The function returns the following values:
+//
+//    - gssize: number of bytes written, or -1 on error.
+//
+func (stream *OutputStream) Write(ctx context.Context, buffer []byte) (int, error) {
+	var _args [4]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	*(*C.gsize)(unsafe.Pointer(&_args[2])) = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
+
+	_info := girepository.MustFind("Gio", "OutputStream")
+	_gret := _info.InvokeClassMethod("write", _args[:], nil)
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+
+	var _gssize int  // out
+	var _goerr error // out
+
+	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	}
+
+	return _gssize, _goerr
+}
+
+// WriteAll tries to write count bytes from buffer into the stream. Will block
+// during the operation.
+//
+// This function is similar to g_output_stream_write(), except it tries to write
+// as many bytes as requested, only stopping on an error.
+//
+// On a successful write of count bytes, TRUE is returned, and bytes_written is
+// set to count.
+//
+// If there is an error during the operation FALSE is returned and error is set
+// to indicate the error status.
+//
+// As a special exception to the normal conventions for functions that use
+// #GError, if this function returns FALSE (and sets error) then bytes_written
+// will be set to the number of bytes that were successfully written before the
+// error was encountered. This functionality is only available from C. If you
+// need it from another language then you must write your own loop around
+// g_output_stream_write().
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - buffer containing the data to write.
+//
+// The function returns the following values:
+//
+//    - bytesWritten (optional): location to store the number of bytes that was
+//      written to the stream.
+//
+func (stream *OutputStream) WriteAll(ctx context.Context, buffer []byte) (uint, error) {
+	var _args [4]girepository.Argument
+	var _outs [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	*(*C.gsize)(unsafe.Pointer(&_args[2])) = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
+
+	_info := girepository.MustFind("Gio", "OutputStream")
+	_info.InvokeClassMethod("write_all", _args[:], _outs[:])
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+
+	var _bytesWritten uint // out
+	var _goerr error       // out
+
+	_bytesWritten = uint(*(*C.gsize)(unsafe.Pointer(&_outs[0])))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	}
+
+	return _bytesWritten, _goerr
+}
+
+// WriteAllAsync: request an asynchronous write of count bytes from buffer into
+// the stream. When the operation is finished callback will be called. You can
+// then call g_output_stream_write_all_finish() to get the result of the
+// operation.
+//
+// This is the asynchronous version of g_output_stream_write_all().
+//
+// Call g_output_stream_write_all_finish() to collect the result.
+//
+// Any outstanding I/O request with higher priority (lower numerical value) will
+// be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// Note that no copy of buffer will be made, so it must stay valid until
+// callback is called.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - buffer containing the data to write.
+//    - ioPriority: io priority of the request.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (stream *OutputStream) WriteAllAsync(ctx context.Context, buffer []byte, ioPriority int32, callback AsyncReadyCallback) {
+	var _args [7]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_args[4] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	*(*C.gsize)(unsafe.Pointer(&_args[2])) = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
+	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(ioPriority)
+	if callback != nil {
+		*(*C.gpointer)(unsafe.Pointer(&_args[5])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[6] = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	_info := girepository.MustFind("Gio", "OutputStream")
+	_info.InvokeClassMethod("write_all_async", _args[:], nil)
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // WriteAllFinish finishes an asynchronous stream write operation started with
@@ -862,11 +1038,82 @@ func (stream *OutputStream) WriteAllFinish(result AsyncResulter) (uint, error) {
 	var _goerr error       // out
 
 	_bytesWritten = uint(*(*C.gsize)(unsafe.Pointer(&_outs[0])))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _bytesWritten, _goerr
+}
+
+// WriteAsync: request an asynchronous write of count bytes from buffer into the
+// stream. When the operation is finished callback will be called. You can then
+// call g_output_stream_write_finish() to get the result of the operation.
+//
+// During an async request no other sync and async calls are allowed, and will
+// result in G_IO_ERROR_PENDING errors.
+//
+// A value of count larger than G_MAXSSIZE will cause a
+// G_IO_ERROR_INVALID_ARGUMENT error.
+//
+// On success, the number of bytes written will be passed to the callback. It is
+// not an error if this is not the same as the requested size, as it can happen
+// e.g. on a partial I/O error, but generally we try to write as many bytes as
+// requested.
+//
+// You are guaranteed that this method will never fail with
+// G_IO_ERROR_WOULD_BLOCK - if stream can't accept more data, the method will
+// just wait until this changes.
+//
+// Any outstanding I/O request with higher priority (lower numerical value) will
+// be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one you must override all.
+//
+// For the synchronous, blocking version of this function, see
+// g_output_stream_write().
+//
+// Note that no copy of buffer will be made, so it must stay valid until
+// callback is called. See g_output_stream_write_bytes_async() for a #GBytes
+// version that will automatically hold a reference to the contents (without
+// copying) for the duration of the call.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - buffer containing the data to write.
+//    - ioPriority: io priority of the request.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (stream *OutputStream) WriteAsync(ctx context.Context, buffer []byte, ioPriority int32, callback AsyncReadyCallback) {
+	var _args [7]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_args[4] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	*(*C.gsize)(unsafe.Pointer(&_args[2])) = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
+	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(ioPriority)
+	if callback != nil {
+		*(*C.gpointer)(unsafe.Pointer(&_args[5])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[6] = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	_info := girepository.MustFind("Gio", "OutputStream")
+	_info.InvokeClassMethod("write_async", _args[:], nil)
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // WriteBytes: wrapper function for g_output_stream_write() which takes a
@@ -896,13 +1143,13 @@ func (stream *OutputStream) WriteBytes(ctx context.Context, bytes *glib.Bytes) (
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bytes)))
+	*(**C.GBytes)(unsafe.Pointer(&_args[1])) = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
 
 	_info := girepository.MustFind("Gio", "OutputStream")
 	_gret := _info.InvokeClassMethod("write_bytes", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -912,8 +1159,8 @@ func (stream *OutputStream) WriteBytes(ctx context.Context, bytes *glib.Bytes) (
 	var _goerr error // out
 
 	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _gssize, _goerr
@@ -946,9 +1193,9 @@ func (stream *OutputStream) WriteBytesAsync(ctx context.Context, bytes *glib.Byt
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bytes)))
+	*(**C.GBytes)(unsafe.Pointer(&_args[1])) = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(ioPriority)
 	if callback != nil {
 		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -983,7 +1230,7 @@ func (stream *OutputStream) WriteBytesFinish(result AsyncResulter) (int, error) 
 
 	_info := girepository.MustFind("Gio", "OutputStream")
 	_gret := _info.InvokeClassMethod("write_bytes_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
@@ -992,8 +1239,8 @@ func (stream *OutputStream) WriteBytesFinish(result AsyncResulter) (int, error) 
 	var _goerr error // out
 
 	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _gssize, _goerr
@@ -1017,7 +1264,7 @@ func (stream *OutputStream) WriteFinish(result AsyncResulter) (int, error) {
 
 	_info := girepository.MustFind("Gio", "OutputStream")
 	_gret := _info.InvokeClassMethod("write_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
@@ -1026,8 +1273,8 @@ func (stream *OutputStream) WriteFinish(result AsyncResulter) (int, error) {
 	var _goerr error // out
 
 	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _gssize, _goerr
@@ -1069,8 +1316,8 @@ func (stream *OutputStream) WritevAllFinish(result AsyncResulter) (uint, error) 
 	var _goerr error       // out
 
 	_bytesWritten = uint(*(*C.gsize)(unsafe.Pointer(&_outs[0])))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _bytesWritten, _goerr
@@ -1104,8 +1351,8 @@ func (stream *OutputStream) WritevFinish(result AsyncResulter) (uint, error) {
 	var _goerr error       // out
 
 	_bytesWritten = uint(*(*C.gsize)(unsafe.Pointer(&_outs[0])))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _bytesWritten, _goerr

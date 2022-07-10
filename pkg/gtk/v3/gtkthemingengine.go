@@ -29,7 +29,7 @@ import (
 // extern void _gotk4_gtk3_ThemingEngineClass_render_focus(void*, void*, gdouble, gdouble, gdouble, gdouble);
 // extern void _gotk4_gtk3_ThemingEngineClass_render_frame(void*, void*, gdouble, gdouble, gdouble, gdouble);
 // extern void _gotk4_gtk3_ThemingEngineClass_render_handle(void*, void*, gdouble, gdouble, gdouble, gdouble);
-// extern void _gotk4_gtk3_ThemingEngineClass_render_icon(void*, void*, void*, gdouble, gdouble);
+// extern void _gotk4_gtk3_ThemingEngineClass_render_icon(void*, void*, GdkPixbuf*, gdouble, gdouble);
 // extern void _gotk4_gtk3_ThemingEngineClass_render_icon_surface(void*, void*, void*, gdouble, gdouble);
 // extern void _gotk4_gtk3_ThemingEngineClass_render_layout(void*, void*, gdouble, gdouble, void*);
 // extern void _gotk4_gtk3_ThemingEngineClass_render_line(void*, void*, gdouble, gdouble, gdouble, gdouble);
@@ -491,7 +491,7 @@ func _gotk4_gtk3_ThemingEngineClass_render_handle(arg0 *C.void, arg1 *C.void, ar
 }
 
 //export _gotk4_gtk3_ThemingEngineClass_render_icon
-func _gotk4_gtk3_ThemingEngineClass_render_icon(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 C.gdouble, arg4 C.gdouble) {
+func _gotk4_gtk3_ThemingEngineClass_render_icon(arg0 *C.void, arg1 *C.void, arg2 *C.GdkPixbuf, arg3 C.gdouble, arg4 C.gdouble) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		RenderIcon(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, x, y float64)
@@ -742,7 +742,7 @@ func (engine *ThemingEngine) StyleProperty(propertyName string) coreglib.Value {
 
 	var _value coreglib.Value // out
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_outs[0]))))
 
 	return _value
 }

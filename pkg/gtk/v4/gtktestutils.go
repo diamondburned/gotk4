@@ -16,6 +16,33 @@ import (
 // #include <glib-object.h>
 import "C"
 
+// TestListAllTypes: return the type ids that have been registered after calling
+// gtk_test_register_all_types().
+//
+// The function returns the following values:
+//
+//    - gTypes: 0-terminated array of type ids.
+//
+func TestListAllTypes() []coreglib.Type {
+	var _outs [1]girepository.Argument
+
+	_info := girepository.MustFind("Gtk", "test_list_all_types")
+	_gret := _info.InvokeFunction(nil, _outs[:])
+	_cret := *(**C.GType)(unsafe.Pointer(&_gret))
+
+	var _gTypes []coreglib.Type // out
+
+	{
+		src := unsafe.Slice((*C.GType)(*(**C.GType)(unsafe.Pointer(&_cret))), *(*C.guint)(unsafe.Pointer(&_outs[0])))
+		_gTypes = make([]coreglib.Type, *(*C.guint)(unsafe.Pointer(&_outs[0])))
+		for i := 0; i < int(*(*C.guint)(unsafe.Pointer(&_outs[0]))); i++ {
+			_gTypes[i] = coreglib.Type(*(*C.GType)(unsafe.Pointer(&src[i])))
+		}
+	}
+
+	return _gTypes
+}
+
 // TestRegisterAllTypes: force registration of all core GTK object types.
 //
 // This allowes to refer to any of those object types via g_type_from_name()

@@ -15,9 +15,9 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern GObject* _gotk4_gio2_AsyncResultIface_get_source_object(void*);
 // extern gboolean _gotk4_gio2_AsyncResultIface_is_tagged(void*, gpointer);
 // extern gpointer _gotk4_gio2_AsyncResultIface_get_user_data(void*);
-// extern void* _gotk4_gio2_AsyncResultIface_get_source_object(void*);
 import "C"
 
 // GTypeAsyncResult returns the GType for the type AsyncResult.
@@ -180,14 +180,14 @@ func ifaceInitAsyncResulter(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_AsyncResultIface_get_source_object
-func _gotk4_gio2_AsyncResultIface_get_source_object(arg0 *C.void) (cret *C.void) {
+func _gotk4_gio2_AsyncResultIface_get_source_object(arg0 *C.void) (cret *C.GObject) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(AsyncResultOverrider)
 
 	object := iface.SourceObject()
 
 	if object != nil {
-		cret = (*C.void)(unsafe.Pointer(object.Native()))
+		cret = (*C.GObject)(unsafe.Pointer(object.Native()))
 		C.g_object_ref(C.gpointer(object.Native()))
 	}
 
@@ -248,14 +248,14 @@ func (res *AsyncResult) SourceObject() *coreglib.Object {
 
 	_info := girepository.MustFind("Gio", "AsyncResult")
 	_gret := _info.InvokeIfaceMethod("get_source_object", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GObject)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(res)
 
 	var _object *coreglib.Object // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_object = coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+	if *(**C.GObject)(unsafe.Pointer(&_cret)) != nil {
+		_object = coreglib.AssumeOwnership(unsafe.Pointer(*(**C.GObject)(unsafe.Pointer(&_cret))))
 	}
 
 	return _object
@@ -338,8 +338,8 @@ func (res *AsyncResult) LegacyPropagateError() error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

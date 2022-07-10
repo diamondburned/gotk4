@@ -19,8 +19,8 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
-// extern void _gotk4_gtk4_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
+// extern void _gotk4_gtk4_AsyncReadyCallback(GObject*, void*, gpointer);
 import "C"
 
 // ShowURI: this function launches the default application for showing a given
@@ -73,7 +73,7 @@ func ShowURIFull(ctx context.Context, parent *Window, uri string, timestamp uint
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if parent != nil {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
@@ -118,8 +118,8 @@ func ShowURIFullFinish(parent *Window, result gio.AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

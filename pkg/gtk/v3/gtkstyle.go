@@ -12,6 +12,8 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
@@ -306,6 +308,41 @@ func (style *Style) Detach() {
 	_info.InvokeClassMethod("detach", _args[:], nil)
 
 	runtime.KeepAlive(style)
+}
+
+// StyleProperty queries the value of a style property corresponding to a widget
+// class is in the given style.
+//
+// The function takes the following parameters:
+//
+//    - widgetType of a descendant of Widget.
+//    - propertyName: name of the style property to get.
+//
+// The function returns the following values:
+//
+//    - value where the value of the property being queried will be stored.
+//
+func (style *Style) StyleProperty(widgetType coreglib.Type, propertyName string) coreglib.Value {
+	var _args [3]girepository.Argument
+	var _outs [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(style).Native()))
+	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(widgetType)
+	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+
+	_info := girepository.MustFind("Gtk", "Style")
+	_info.InvokeClassMethod("get_style_property", _args[:], _outs[:])
+
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(widgetType)
+	runtime.KeepAlive(propertyName)
+
+	var _value coreglib.Value // out
+
+	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_outs[0]))))
+
+	return _value
 }
 
 // HasContext returns whether style has an associated StyleContext.
@@ -717,6 +754,71 @@ func (widget *Widget) Path() (pathLength uint32, path, pathReversed string) {
 	}
 
 	return _pathLength, _path, _pathReversed
+}
+
+// RenderIcon: convenience function that uses the theme settings for widget to
+// look up stock_id and render it to a pixbuf. stock_id should be a stock icon
+// ID such as K_STOCK_OPEN or K_STOCK_OK. size should be a size such as
+// K_ICON_SIZE_MENU. detail should be a string that identifies the widget or
+// code doing the rendering, so that theme engines can special-case rendering
+// for that widget or code.
+//
+// The pixels in the returned Pixbuf are shared with the rest of the application
+// and should not be modified. The pixbuf should be freed after use with
+// g_object_unref().
+//
+// Deprecated: Use gtk_widget_render_icon_pixbuf() instead.
+//
+// The function takes the following parameters:
+//
+//    - stockId: stock ID.
+//    - size: stock size (IconSize). A size of (GtkIconSize)-1 means render at
+//      the size of the source and don’t scale (if there are multiple source
+//      sizes, GTK+ picks one of the available sizes).
+//    - detail (optional): render detail to pass to theme engine.
+//
+// The function returns the following values:
+//
+//    - pixbuf (optional): new pixbuf, or NULL if the stock ID wasn’t known.
+//
+func (widget *Widget) RenderIcon(stockId string, size int32, detail string) *gdkpixbuf.Pixbuf {
+	var _args [4]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	*(*C.GtkIconSize)(unsafe.Pointer(&_args[2])) = C.GtkIconSize(size)
+	if detail != "" {
+		*(**C.gchar)(unsafe.Pointer(&_args[3])) = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[3]))))
+	}
+
+	_info := girepository.MustFind("Gtk", "Widget")
+	_gret := _info.InvokeClassMethod("render_icon", _args[:], nil)
+	_cret := *(**C.GdkPixbuf)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(stockId)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(detail)
+
+	var _pixbuf *gdkpixbuf.Pixbuf // out
+
+	if *(**C.GdkPixbuf)(unsafe.Pointer(&_cret)) != nil {
+		{
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&_cret))))
+			_pixbuf = &gdkpixbuf.Pixbuf{
+				Object: obj,
+				LoadableIcon: gio.LoadableIcon{
+					Icon: gio.Icon{
+						Object: obj,
+					},
+				},
+			}
+		}
+	}
+
+	return _pixbuf
 }
 
 // ResetRCStyles: reset the styles of widget and all descendents, so when they

@@ -25,7 +25,7 @@ import (
 // extern gssize _gotk4_gio2_InputStreamClass_read_finish(void*, void*, GError**);
 // extern gssize _gotk4_gio2_InputStreamClass_skip(void*, gsize, void*, GError**);
 // extern gssize _gotk4_gio2_InputStreamClass_skip_finish(void*, void*, GError**);
-// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
 import "C"
 
 // GTypeInputStream returns the GType for the type InputStream.
@@ -208,7 +208,7 @@ func _gotk4_gio2_InputStreamClass_close_finish(arg0 *C.void, arg1 *C.void, _cerr
 	_goerr := iface.CloseFinish(_result)
 
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -230,7 +230,7 @@ func _gotk4_gio2_InputStreamClass_close_fn(arg0 *C.void, arg1 *C.void, _cerr **C
 	_goerr := iface.CloseFn(_cancellable)
 
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -267,7 +267,7 @@ func _gotk4_gio2_InputStreamClass_read_finish(arg0 *C.void, arg1 *C.void, _cerr 
 
 	cret = C.gssize(gssize)
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -292,7 +292,7 @@ func _gotk4_gio2_InputStreamClass_skip(arg0 *C.void, arg1 C.gsize, arg2 *C.void,
 
 	cret = C.gssize(gssize)
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -329,7 +329,7 @@ func _gotk4_gio2_InputStreamClass_skip_finish(arg0 *C.void, arg1 *C.void, _cerr 
 
 	cret = C.gssize(gssize)
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -401,7 +401,7 @@ func (stream *InputStream) Close(ctx context.Context) error {
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
 	_info := girepository.MustFind("Gio", "InputStream")
@@ -412,8 +412,8 @@ func (stream *InputStream) Close(ctx context.Context) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -443,7 +443,7 @@ func (stream *InputStream) CloseAsync(ctx context.Context, ioPriority int32, cal
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(ioPriority)
 	if callback != nil {
@@ -481,8 +481,8 @@ func (stream *InputStream) CloseFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -540,6 +540,183 @@ func (stream *InputStream) IsClosed() bool {
 	return _ok
 }
 
+// Read tries to read count bytes from the stream into the buffer starting at
+// buffer. Will block during this read.
+//
+// If count is zero returns zero and does nothing. A value of count larger than
+// G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
+//
+// On success, the number of bytes read into the buffer is returned. It is not
+// an error if this is not the same as the requested size, as it can happen e.g.
+// near the end of a file. Zero is returned on end of file (or if count is
+// zero), but never otherwise.
+//
+// The returned buffer is not a nul-terminated string, it can contain nul bytes
+// at any position, and this function doesn't nul-terminate the buffer.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned. If an operation was
+// partially finished when the operation was cancelled the partial result will
+// be returned, without an error.
+//
+// On error -1 is returned and error is set accordingly.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - buffer: a buffer to read data into (which should be at least count bytes
+//      long).
+//
+// The function returns the following values:
+//
+//    - gssize: number of bytes read, or -1 on error, or 0 on end of file.
+//
+func (stream *InputStream) Read(ctx context.Context, buffer []byte) (int, error) {
+	var _args [4]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	*(*C.gsize)(unsafe.Pointer(&_args[2])) = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
+
+	_info := girepository.MustFind("Gio", "InputStream")
+	_gret := _info.InvokeClassMethod("read", _args[:], nil)
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+
+	var _gssize int  // out
+	var _goerr error // out
+
+	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	}
+
+	return _gssize, _goerr
+}
+
+// ReadAll tries to read count bytes from the stream into the buffer starting at
+// buffer. Will block during this read.
+//
+// This function is similar to g_input_stream_read(), except it tries to read as
+// many bytes as requested, only stopping on an error or end of stream.
+//
+// On a successful read of count bytes, or if we reached the end of the stream,
+// TRUE is returned, and bytes_read is set to the number of bytes read into
+// buffer.
+//
+// If there is an error during the operation FALSE is returned and error is set
+// to indicate the error status.
+//
+// As a special exception to the normal conventions for functions that use
+// #GError, if this function returns FALSE (and sets error) then bytes_read will
+// be set to the number of bytes that were successfully read before the error
+// was encountered. This functionality is only available from C. If you need it
+// from another language then you must write your own loop around
+// g_input_stream_read().
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - buffer: a buffer to read data into (which should be at least count bytes
+//      long).
+//
+// The function returns the following values:
+//
+//    - bytesRead: location to store the number of bytes that was read from the
+//      stream.
+//
+func (stream *InputStream) ReadAll(ctx context.Context, buffer []byte) (uint, error) {
+	var _args [4]girepository.Argument
+	var _outs [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	*(*C.gsize)(unsafe.Pointer(&_args[2])) = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
+
+	_info := girepository.MustFind("Gio", "InputStream")
+	_info.InvokeClassMethod("read_all", _args[:], _outs[:])
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+
+	var _bytesRead uint // out
+	var _goerr error    // out
+
+	_bytesRead = uint(*(*C.gsize)(unsafe.Pointer(&_outs[0])))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	}
+
+	return _bytesRead, _goerr
+}
+
+// ReadAllAsync: request an asynchronous read of count bytes from the stream
+// into the buffer starting at buffer.
+//
+// This is the asynchronous equivalent of g_input_stream_read_all().
+//
+// Call g_input_stream_read_all_finish() to collect the result.
+//
+// Any outstanding I/O request with higher priority (lower numerical value) will
+// be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - buffer: a buffer to read data into (which should be at least count bytes
+//      long).
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (stream *InputStream) ReadAllAsync(ctx context.Context, buffer []byte, ioPriority int32, callback AsyncReadyCallback) {
+	var _args [7]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_args[4] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	*(*C.gsize)(unsafe.Pointer(&_args[2])) = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
+	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(ioPriority)
+	if callback != nil {
+		*(*C.gpointer)(unsafe.Pointer(&_args[5])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[6] = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	_info := girepository.MustFind("Gio", "InputStream")
+	_info.InvokeClassMethod("read_all_async", _args[:], nil)
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // ReadAllFinish finishes an asynchronous stream read operation started with
 // g_input_stream_read_all_async().
 //
@@ -576,11 +753,73 @@ func (stream *InputStream) ReadAllFinish(result AsyncResulter) (uint, error) {
 	var _goerr error    // out
 
 	_bytesRead = uint(*(*C.gsize)(unsafe.Pointer(&_outs[0])))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _bytesRead, _goerr
+}
+
+// ReadAsync: request an asynchronous read of count bytes from the stream into
+// the buffer starting at buffer. When the operation is finished callback will
+// be called. You can then call g_input_stream_read_finish() to get the result
+// of the operation.
+//
+// During an async request no other sync and async calls are allowed on stream,
+// and will result in G_IO_ERROR_PENDING errors.
+//
+// A value of count larger than G_MAXSSIZE will cause a
+// G_IO_ERROR_INVALID_ARGUMENT error.
+//
+// On success, the number of bytes read into the buffer will be passed to the
+// callback. It is not an error if this is not the same as the requested size,
+// as it can happen e.g. near the end of a file, but generally we try to read as
+// many bytes as requested. Zero is returned on end of file (or if count is
+// zero), but never otherwise.
+//
+// Any outstanding i/o request with higher priority (lower numerical value) will
+// be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one you must override all.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - buffer: a buffer to read data into (which should be at least count bytes
+//      long).
+//    - ioPriority: [I/O priority][io-priority] of the request.
+//    - callback (optional) to call when the request is satisfied.
+//
+func (stream *InputStream) ReadAsync(ctx context.Context, buffer []byte, ioPriority int32, callback AsyncReadyCallback) {
+	var _args [7]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_args[4] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	*(*C.gsize)(unsafe.Pointer(&_args[2])) = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
+	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(ioPriority)
+	if callback != nil {
+		*(*C.gpointer)(unsafe.Pointer(&_args[5])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_args[6] = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	_info := girepository.MustFind("Gio", "InputStream")
+	_info.InvokeClassMethod("read_async", _args[:], nil)
+
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // ReadBytes: like g_input_stream_read(), this tries to read count bytes from
@@ -621,13 +860,13 @@ func (stream *InputStream) ReadBytes(ctx context.Context, count uint) (*glib.Byt
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.gsize)(unsafe.Pointer(&_args[1])) = C.gsize(count)
 
 	_info := girepository.MustFind("Gio", "InputStream")
 	_gret := _info.InvokeClassMethod("read_bytes", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -636,15 +875,15 @@ func (stream *InputStream) ReadBytes(ctx context.Context, count uint) (*glib.Byt
 	var _bytes *glib.Bytes // out
 	var _goerr error       // out
 
-	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(*(**C.GBytes)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.free(intern.C)
 		},
 	)
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _bytes, _goerr
@@ -684,7 +923,7 @@ func (stream *InputStream) ReadBytesAsync(ctx context.Context, count uint, ioPri
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.gsize)(unsafe.Pointer(&_args[1])) = C.gsize(count)
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(ioPriority)
@@ -721,7 +960,7 @@ func (stream *InputStream) ReadBytesFinish(result AsyncResulter) (*glib.Bytes, e
 
 	_info := girepository.MustFind("Gio", "InputStream")
 	_gret := _info.InvokeClassMethod("read_bytes_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
@@ -729,15 +968,15 @@ func (stream *InputStream) ReadBytesFinish(result AsyncResulter) (*glib.Bytes, e
 	var _bytes *glib.Bytes // out
 	var _goerr error       // out
 
-	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(*(**C.GBytes)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.free(intern.C)
 		},
 	)
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _bytes, _goerr
@@ -761,7 +1000,7 @@ func (stream *InputStream) ReadFinish(result AsyncResulter) (int, error) {
 
 	_info := girepository.MustFind("Gio", "InputStream")
 	_gret := _info.InvokeClassMethod("read_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
@@ -770,8 +1009,8 @@ func (stream *InputStream) ReadFinish(result AsyncResulter) (int, error) {
 	var _goerr error // out
 
 	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _gssize, _goerr
@@ -791,8 +1030,8 @@ func (stream *InputStream) SetPending() error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -830,13 +1069,13 @@ func (stream *InputStream) Skip(ctx context.Context, count uint) (int, error) {
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.gsize)(unsafe.Pointer(&_args[1])) = C.gsize(count)
 
 	_info := girepository.MustFind("Gio", "InputStream")
 	_gret := _info.InvokeClassMethod("skip", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(ctx)
@@ -846,8 +1085,8 @@ func (stream *InputStream) Skip(ctx context.Context, count uint) (int, error) {
 	var _goerr error // out
 
 	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _gssize, _goerr
@@ -891,7 +1130,7 @@ func (stream *InputStream) SkipAsync(ctx context.Context, count uint, ioPriority
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(*C.gsize)(unsafe.Pointer(&_args[1])) = C.gsize(count)
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(ioPriority)
@@ -928,7 +1167,7 @@ func (stream *InputStream) SkipFinish(result AsyncResulter) (int, error) {
 
 	_info := girepository.MustFind("Gio", "InputStream")
 	_gret := _info.InvokeClassMethod("skip_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
@@ -937,8 +1176,8 @@ func (stream *InputStream) SkipFinish(result AsyncResulter) (int, error) {
 	var _goerr error // out
 
 	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _gssize, _goerr

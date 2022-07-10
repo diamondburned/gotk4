@@ -22,7 +22,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gsk4_ParseErrorFunc(void*, void*, void*, gpointer);
+// extern void _gotk4_gsk4_ParseErrorFunc(void*, void*, GError*, gpointer);
 import "C"
 
 // GTypeRenderNode returns the GType for the type RenderNode.
@@ -41,7 +41,7 @@ func GTypeRenderNode() coreglib.Type {
 type ParseErrorFunc func(start, end *ParseLocation, err error)
 
 //export _gotk4_gsk4_ParseErrorFunc
-func _gotk4_gsk4_ParseErrorFunc(arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 C.gpointer) {
+func _gotk4_gsk4_ParseErrorFunc(arg1 *C.void, arg2 *C.void, arg3 *C.GError, arg4 C.gpointer) {
 	var fn ParseErrorFunc
 	{
 		v := gbox.Get(uintptr(arg4))
@@ -327,7 +327,7 @@ func (node *BorderNode) Widths() [4]float32 {
 func NewCairoNode(bounds *graphene.Rect) *CairoNode {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
+	*(**C.graphene_rect_t)(unsafe.Pointer(&_args[0])) = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	_info := girepository.MustFind("Gsk", "CairoNode")
 	_gret := _info.InvokeClassMethod("new_CairoNode", _args[:], nil)
@@ -418,7 +418,7 @@ func NewClipNode(child RenderNoder, clip *graphene.Rect) *ClipNode {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(clip)))
+	*(**C.graphene_rect_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(clip)))
 
 	_info := girepository.MustFind("Gsk", "ClipNode")
 	_gret := _info.InvokeClassMethod("new_ClipNode", _args[:], nil)
@@ -487,13 +487,13 @@ func (node *ClipNode) Clip() *graphene.Rect {
 
 	_info := girepository.MustFind("Gsk", "ClipNode")
 	_gret := _info.InvokeClassMethod("get_clip", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.graphene_rect_t)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
 
 	var _rect *graphene.Rect // out
 
-	_rect = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_rect = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(*(**C.graphene_rect_t)(unsafe.Pointer(&_cret)))))
 
 	return _rect
 }
@@ -521,8 +521,8 @@ func NewColorMatrixNode(child RenderNoder, colorMatrix *graphene.Matrix, colorOf
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(colorMatrix)))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(colorOffset)))
+	*(**C.graphene_matrix_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(colorMatrix)))
+	*(**C.graphene_vec4_t)(unsafe.Pointer(&_args[2])) = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(colorOffset)))
 
 	_info := girepository.MustFind("Gsk", "ColorMatrixNode")
 	_gret := _info.InvokeClassMethod("new_ColorMatrixNode", _args[:], nil)
@@ -593,13 +593,13 @@ func (node *ColorMatrixNode) ColorMatrix() *graphene.Matrix {
 
 	_info := girepository.MustFind("Gsk", "ColorMatrixNode")
 	_gret := _info.InvokeClassMethod("get_color_matrix", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.graphene_matrix_t)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
 
 	var _matrix *graphene.Matrix // out
 
-	_matrix = (*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_matrix = (*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer(*(**C.graphene_matrix_t)(unsafe.Pointer(&_cret)))))
 
 	return _matrix
 }
@@ -617,13 +617,13 @@ func (node *ColorMatrixNode) ColorOffset() *graphene.Vec4 {
 
 	_info := girepository.MustFind("Gsk", "ColorMatrixNode")
 	_gret := _info.InvokeClassMethod("get_color_offset", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.graphene_vec4_t)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
 
 	var _vec4 *graphene.Vec4 // out
 
-	_vec4 = (*graphene.Vec4)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_vec4 = (*graphene.Vec4)(gextras.NewStructNative(unsafe.Pointer(*(**C.graphene_vec4_t)(unsafe.Pointer(&_cret)))))
 
 	return _vec4
 }
@@ -644,7 +644,7 @@ func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) *ColorNode {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
+	*(**C.graphene_rect_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	_info := girepository.MustFind("Gsk", "ColorNode")
 	_gret := _info.InvokeClassMethod("new_ColorNode", _args[:], nil)
@@ -727,13 +727,13 @@ func (node *ConicGradientNode) Center() *graphene.Point {
 
 	_info := girepository.MustFind("Gsk", "ConicGradientNode")
 	_gret := _info.InvokeClassMethod("get_center", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.graphene_point_t)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
 
 	var _point *graphene.Point // out
 
-	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(*(**C.graphene_point_t)(unsafe.Pointer(&_cret)))))
 
 	return _point
 }
@@ -1168,8 +1168,8 @@ func NewGLShaderNode(shader *GLShader, bounds *graphene.Rect, args *glib.Bytes, 
 	var _args [5]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
+	*(**C.graphene_rect_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
+	*(**C.GBytes)(unsafe.Pointer(&_args[2])) = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(args)))
 	*(*C.guint)(unsafe.Pointer(&_args[4])) = (C.guint)(len(children))
 	*(***C.void)(unsafe.Pointer(&_args[3])) = (**C.void)(C.calloc(C.size_t(len(children)), C.size_t(unsafe.Sizeof(uint(0)))))
 	defer C.free(unsafe.Pointer(*(***C.void)(unsafe.Pointer(&_args[3]))))
@@ -1209,14 +1209,14 @@ func (node *GLShaderNode) Args() *glib.Bytes {
 
 	_info := girepository.MustFind("Gsk", "GLShaderNode")
 	_gret := _info.InvokeClassMethod("get_args", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GBytes)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
 
 	var _bytes *glib.Bytes // out
 
-	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	C.g_bytes_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(*(**C.GBytes)(unsafe.Pointer(&_cret)))))
+	C.g_bytes_ref(*(**C.GBytes)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -1522,13 +1522,13 @@ func (node *LinearGradientNode) End() *graphene.Point {
 
 	_info := girepository.MustFind("Gsk", "LinearGradientNode")
 	_gret := _info.InvokeClassMethod("get_end", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.graphene_point_t)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
 
 	var _point *graphene.Point // out
 
-	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(*(**C.graphene_point_t)(unsafe.Pointer(&_cret)))))
 
 	return _point
 }
@@ -1570,13 +1570,13 @@ func (node *LinearGradientNode) Start() *graphene.Point {
 
 	_info := girepository.MustFind("Gsk", "LinearGradientNode")
 	_gret := _info.InvokeClassMethod("get_start", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.graphene_point_t)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
 
 	var _point *graphene.Point // out
 
-	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(*(**C.graphene_point_t)(unsafe.Pointer(&_cret)))))
 
 	return _point
 }
@@ -1878,13 +1878,13 @@ func (node *RadialGradientNode) Center() *graphene.Point {
 
 	_info := girepository.MustFind("Gsk", "RadialGradientNode")
 	_gret := _info.InvokeClassMethod("get_center", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.graphene_point_t)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
 
 	var _point *graphene.Point // out
 
-	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(*(**C.graphene_point_t)(unsafe.Pointer(&_cret)))))
 
 	return _point
 }
@@ -2108,7 +2108,7 @@ func (node *RenderNode) Bounds() *graphene.Rect {
 
 	var _bounds *graphene.Rect // out
 
-	_bounds = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_bounds = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(*(**C.graphene_rect_t)(unsafe.Pointer(&_outs[0])))))
 
 	return _bounds
 }
@@ -2134,13 +2134,13 @@ func (node *RenderNode) Serialize() *glib.Bytes {
 
 	_info := girepository.MustFind("Gsk", "RenderNode")
 	_gret := _info.InvokeClassMethod("serialize", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GBytes)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
 
 	var _bytes *glib.Bytes // out
 
-	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(*(**C.GBytes)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -2178,8 +2178,8 @@ func (node *RenderNode) WriteToFile(filename string) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -2202,7 +2202,7 @@ func (node *RenderNode) WriteToFile(filename string) error {
 func RenderNodeDeserialize(bytes *glib.Bytes, errorFunc ParseErrorFunc) RenderNoder {
 	var _args [3]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bytes)))
+	*(**C.GBytes)(unsafe.Pointer(&_args[0])) = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
 	if errorFunc != nil {
 		*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gsk4_ParseErrorFunc)
 		_args[2] = C.gpointer(gbox.Assign(errorFunc))
@@ -2255,10 +2255,10 @@ func RenderNodeDeserialize(bytes *glib.Bytes, errorFunc ParseErrorFunc) RenderNo
 func NewRepeatNode(bounds *graphene.Rect, child RenderNoder, childBounds *graphene.Rect) *RepeatNode {
 	var _args [3]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
+	*(**C.graphene_rect_t)(unsafe.Pointer(&_args[0])) = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
 	if childBounds != nil {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(childBounds)))
+		*(**C.graphene_rect_t)(unsafe.Pointer(&_args[2])) = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(childBounds)))
 	}
 
 	_info := girepository.MustFind("Gsk", "RepeatNode")
@@ -2329,13 +2329,13 @@ func (node *RepeatNode) ChildBounds() *graphene.Rect {
 
 	_info := girepository.MustFind("Gsk", "RepeatNode")
 	_gret := _info.InvokeClassMethod("get_child_bounds", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.graphene_rect_t)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
 
 	var _rect *graphene.Rect // out
 
-	_rect = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_rect = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(*(**C.graphene_rect_t)(unsafe.Pointer(&_cret)))))
 
 	return _rect
 }
@@ -2551,7 +2551,7 @@ func NewTextNode(font pango.Fonter, glyphs *pango.GlyphString, color *gdk.RGBA, 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphs)))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(offset)))
+	*(**C.graphene_point_t)(unsafe.Pointer(&_args[3])) = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(offset)))
 
 	_info := girepository.MustFind("Gsk", "TextNode")
 	_gret := _info.InvokeClassMethod("new_TextNode", _args[:], nil)
@@ -2672,13 +2672,13 @@ func (node *TextNode) Offset() *graphene.Point {
 
 	_info := girepository.MustFind("Gsk", "TextNode")
 	_gret := _info.InvokeClassMethod("get_offset", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.graphene_point_t)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
 
 	var _point *graphene.Point // out
 
-	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(*(**C.graphene_point_t)(unsafe.Pointer(&_cret)))))
 
 	return _point
 }
@@ -2725,7 +2725,7 @@ func NewTextureNode(texture gdk.Texturer, bounds *graphene.Rect) *TextureNode {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
+	*(**C.graphene_rect_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	_info := girepository.MustFind("Gsk", "TextureNode")
 	_gret := _info.InvokeClassMethod("new_TextureNode", _args[:], nil)

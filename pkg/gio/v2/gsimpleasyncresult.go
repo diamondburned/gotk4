@@ -18,7 +18,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
 import "C"
 
 // GTypeSimpleAsyncResult returns the GType for the type SimpleAsyncResult.
@@ -48,14 +48,14 @@ func SimpleAsyncReportGErrorInIdle(object *coreglib.Object, callback AsyncReadyC
 	var _args [4]girepository.Argument
 
 	if object != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(object.Native()))
+		*(**C.GObject)(unsafe.Pointer(&_args[0])) = (*C.GObject)(unsafe.Pointer(object.Native()))
 	}
 	if callback != nil {
 		*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 		_args[2] = C.gpointer(gbox.AssignOnce(callback))
 	}
 	if err != nil {
-		*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gerror.New(err))
+		*(**C.GError)(unsafe.Pointer(&_args[3])) = (*C.GError)(gerror.New(err))
 	}
 
 	_info := girepository.MustFind("Gio", "simple_async_report_gerror_in_idle")
@@ -274,7 +274,7 @@ func NewSimpleAsyncResult(sourceObject *coreglib.Object, callback AsyncReadyCall
 	var _args [4]girepository.Argument
 
 	if sourceObject != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(sourceObject.Native()))
+		*(**C.GObject)(unsafe.Pointer(&_args[0])) = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
 	}
 	if callback != nil {
 		*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -315,14 +315,14 @@ func NewSimpleAsyncResultFromError(sourceObject *coreglib.Object, callback Async
 	var _args [4]girepository.Argument
 
 	if sourceObject != nil {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(sourceObject.Native()))
+		*(**C.GObject)(unsafe.Pointer(&_args[0])) = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
 	}
 	if callback != nil {
 		*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 		_args[2] = C.gpointer(gbox.AssignOnce(callback))
 	}
 	if err != nil {
-		*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gerror.New(err))
+		*(**C.GError)(unsafe.Pointer(&_args[3])) = (*C.GError)(gerror.New(err))
 	}
 
 	_info := girepository.MustFind("Gio", "SimpleAsyncResult")
@@ -456,8 +456,8 @@ func (simple *SimpleAsyncResult) PropagateError() error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -492,7 +492,7 @@ func (simple *SimpleAsyncResult) SetCheckCancellable(ctx context.Context) {
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 
 	_info := girepository.MustFind("Gio", "SimpleAsyncResult")
@@ -515,7 +515,7 @@ func (simple *SimpleAsyncResult) SetFromError(err error) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
 	if err != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gerror.New(err))
+		*(**C.GError)(unsafe.Pointer(&_args[1])) = (*C.GError)(gerror.New(err))
 	}
 
 	_info := girepository.MustFind("Gio", "SimpleAsyncResult")
@@ -627,7 +627,7 @@ func SimpleAsyncResultIsValid(result AsyncResulter, source *coreglib.Object, sou
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 	if source != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(source.Native()))
+		*(**C.GObject)(unsafe.Pointer(&_args[1])) = (*C.GObject)(unsafe.Pointer(source.Native()))
 	}
 	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (C.gpointer)(unsafe.Pointer(sourceTag))
 

@@ -19,6 +19,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern GList* _gotk4_gio2_DriveIface_get_volumes(void*);
 // extern char* _gotk4_gio2_DriveIface_get_identifier(void*, char*);
 // extern char* _gotk4_gio2_DriveIface_get_name(void*);
 // extern char** _gotk4_gio2_DriveIface_enumerate_identifiers(void*);
@@ -38,7 +39,7 @@ import (
 // extern gboolean _gotk4_gio2_DriveIface_start_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_DriveIface_stop_finish(void*, void*, GError**);
 // extern gchar* _gotk4_gio2_DriveIface_get_sort_key(void*);
-// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
 // extern void _gotk4_gio2_DriveIface_changed(void*);
 // extern void _gotk4_gio2_DriveIface_disconnected(void*);
 // extern void _gotk4_gio2_DriveIface_eject_button(void*);
@@ -49,7 +50,6 @@ import (
 // extern void _gotk4_gio2_Drive_ConnectStopButton(gpointer, guintptr);
 // extern void* _gotk4_gio2_DriveIface_get_icon(void*);
 // extern void* _gotk4_gio2_DriveIface_get_symbolic_icon(void*);
-// extern void* _gotk4_gio2_DriveIface_get_volumes(void*);
 import "C"
 
 // GTypeDrive returns the GType for the type Drive.
@@ -423,8 +423,8 @@ func (drive *Drive) EjectFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -452,8 +452,8 @@ func (drive *Drive) EjectWithOperationFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -653,14 +653,14 @@ func (drive *Drive) Volumes() []*Volume {
 
 	_info := girepository.MustFind("Gio", "Drive")
 	_gret := _info.InvokeIfaceMethod("get_volumes", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drive)
 
 	var _list []*Volume // out
 
-	_list = make([]*Volume, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]*Volume, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Volume // out
 		dst = wrapVolume(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
@@ -824,7 +824,7 @@ func (drive *Drive) PollForMedia(ctx context.Context, callback AsyncReadyCallbac
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[1] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[1] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if callback != nil {
 		*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -860,8 +860,8 @@ func (drive *Drive) PollForMediaFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -887,8 +887,8 @@ func (drive *Drive) StartFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -914,8 +914,8 @@ func (drive *Drive) StopFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

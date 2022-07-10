@@ -79,6 +79,8 @@ var (
 type ToolSheller interface {
 	coreglib.Objector
 
+	// IconSize retrieves the icon size for the tool shell.
+	IconSize() int32
 	// TextAlignment retrieves the current text alignment for the tool shell.
 	TextAlignment() float32
 	// TextSizeGroup retrieves the current text size group for the tool shell.
@@ -148,6 +150,31 @@ func wrapToolShell(obj *coreglib.Object) *ToolShell {
 
 func marshalToolShell(p uintptr) (interface{}, error) {
 	return wrapToolShell(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// IconSize retrieves the icon size for the tool shell. Tool items must not call
+// this function directly, but rely on gtk_tool_item_get_icon_size() instead.
+//
+// The function returns the following values:
+//
+//    - gint: current size (IconSize) for icons of shell.
+//
+func (shell *ToolShell) IconSize() int32 {
+	var _args [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(shell).Native()))
+
+	_info := girepository.MustFind("Gtk", "ToolShell")
+	_gret := _info.InvokeIfaceMethod("get_icon_size", _args[:], nil)
+	_cret := *(*C.GtkIconSize)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(shell)
+
+	var _gint int32 // out
+
+	_gint = int32(*(*C.GtkIconSize)(unsafe.Pointer(&_cret)))
+
+	return _gint
 }
 
 // TextAlignment retrieves the current text alignment for the tool shell. Tool

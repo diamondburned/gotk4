@@ -41,6 +41,29 @@ type roundedRect struct {
 	native unsafe.Pointer
 }
 
+// Bounds bounds of the rectangle.
+func (r *RoundedRect) Bounds() *graphene.Rect {
+	offset := girepository.MustFind("Gsk", "RoundedRect").StructFieldOffset("bounds")
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	var v *graphene.Rect // out
+	v = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer((&*(*C.graphene_rect_t)(unsafe.Pointer(&*valptr))))))
+	return v
+}
+
+// Corner: size of the 4 rounded corners.
+func (r *RoundedRect) Corner() [4]graphene.Size {
+	offset := girepository.MustFind("Gsk", "RoundedRect").StructFieldOffset("corner")
+	valptr := (*uintptr)(unsafe.Add(r.native, offset))
+	var v [4]graphene.Size // out
+	{
+		src := &*(*C.graphene_size_t)(unsafe.Pointer(&*valptr))
+		for i := 0; i < 4; i++ {
+			v[i] = *(*graphene.Size)(gextras.NewStructNative(unsafe.Pointer((&*(*C.graphene_size_t)(unsafe.Pointer(&src[i]))))))
+		}
+	}
+	return v
+}
+
 // ContainsPoint checks if the given point is inside the rounded rectangle.
 //
 // The function takes the following parameters:
@@ -55,7 +78,7 @@ func (self *RoundedRect) ContainsPoint(point *graphene.Point) bool {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
+	*(**C.graphene_point_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_info := girepository.MustFind("Gsk", "RoundedRect")
 	_gret := _info.InvokeRecordMethod("contains_point", _args[:], nil)
@@ -88,7 +111,7 @@ func (self *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
+	*(**C.graphene_rect_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(rect)))
 
 	_info := girepository.MustFind("Gsk", "RoundedRect")
 	_gret := _info.InvokeRecordMethod("contains_rect", _args[:], nil)
@@ -126,11 +149,11 @@ func (self *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, top
 	var _args [6]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(topLeft)))
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(topRight)))
-	*(**C.void)(unsafe.Pointer(&_args[4])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bottomRight)))
-	*(**C.void)(unsafe.Pointer(&_args[5])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bottomLeft)))
+	*(**C.graphene_rect_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
+	*(**C.graphene_size_t)(unsafe.Pointer(&_args[2])) = (*C.graphene_size_t)(gextras.StructNative(unsafe.Pointer(topLeft)))
+	*(**C.graphene_size_t)(unsafe.Pointer(&_args[3])) = (*C.graphene_size_t)(gextras.StructNative(unsafe.Pointer(topRight)))
+	*(**C.graphene_size_t)(unsafe.Pointer(&_args[4])) = (*C.graphene_size_t)(gextras.StructNative(unsafe.Pointer(bottomRight)))
+	*(**C.graphene_size_t)(unsafe.Pointer(&_args[5])) = (*C.graphene_size_t)(gextras.StructNative(unsafe.Pointer(bottomLeft)))
 
 	_info := girepository.MustFind("Gsk", "RoundedRect")
 	_gret := _info.InvokeRecordMethod("init", _args[:], nil)
@@ -199,7 +222,7 @@ func (self *RoundedRect) InitFromRect(bounds *graphene.Rect, radius float32) *Ro
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
+	*(**C.graphene_rect_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 	*(*C.float)(unsafe.Pointer(&_args[2])) = C.float(radius)
 
 	_info := girepository.MustFind("Gsk", "RoundedRect")
@@ -232,7 +255,7 @@ func (self *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
+	*(**C.graphene_rect_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(rect)))
 
 	_info := girepository.MustFind("Gsk", "RoundedRect")
 	_gret := _info.InvokeRecordMethod("intersects_rect", _args[:], nil)

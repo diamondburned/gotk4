@@ -715,7 +715,7 @@ func NewStatusIconFromIconName(iconName string) *StatusIcon {
 func NewStatusIconFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *StatusIcon {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+	*(**C.GdkPixbuf)(unsafe.Pointer(&_args[0])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 
 	_info := girepository.MustFind("Gtk", "StatusIcon")
 	_gret := _info.InvokeClassMethod("new_StatusIcon_from_pixbuf", _args[:], nil)
@@ -952,15 +952,15 @@ func (statusIcon *StatusIcon) Pixbuf() *gdkpixbuf.Pixbuf {
 
 	_info := girepository.MustFind("Gtk", "StatusIcon")
 	_gret := _info.InvokeClassMethod("get_pixbuf", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GdkPixbuf)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(statusIcon)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if *(**C.GdkPixbuf)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&_cret))))
 			_pixbuf = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{
@@ -1352,7 +1352,7 @@ func (statusIcon *StatusIcon) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusIcon).Native()))
 	if pixbuf != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+		*(**C.GdkPixbuf)(unsafe.Pointer(&_args[1])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	}
 
 	_info := girepository.MustFind("Gtk", "StatusIcon")

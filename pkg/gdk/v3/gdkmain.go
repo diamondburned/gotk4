@@ -29,7 +29,7 @@ import "C"
 func AddOptionEntriesLibgtkOnly(group *glib.OptionGroup) {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(group)))
+	*(**C.GOptionGroup)(unsafe.Pointer(&_args[0])) = (*C.GOptionGroup)(gextras.StructNative(unsafe.Pointer(group)))
 
 	_info := girepository.MustFind("Gdk", "add_option_entries_libgtk_only")
 	_info.InvokeFunction(_args[:], nil)

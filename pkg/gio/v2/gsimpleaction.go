@@ -39,7 +39,7 @@ func NewSimpleAction(name string, parameterType *glib.VariantType) *SimpleAction
 	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	if parameterType != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parameterType)))
+		*(**C.GVariantType)(unsafe.Pointer(&_args[1])) = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(parameterType)))
 	}
 
 	_info := girepository.MustFind("Gio", "SimpleAction")
@@ -79,9 +79,9 @@ func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state
 	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	if parameterType != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parameterType)))
+		*(**C.GVariantType)(unsafe.Pointer(&_args[1])) = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(parameterType)))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(state)))
+	*(**C.GVariant)(unsafe.Pointer(&_args[2])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(state)))
 
 	_info := girepository.MustFind("Gio", "SimpleAction")
 	_gret := _info.InvokeClassMethod("new_SimpleAction_stateful", _args[:], nil)
@@ -143,7 +143,7 @@ func (simple *SimpleAction) SetState(value *glib.Variant) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(value)))
+	*(**C.GVariant)(unsafe.Pointer(&_args[1])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_info := girepository.MustFind("Gio", "SimpleAction")
 	_info.InvokeClassMethod("set_state", _args[:], nil)
@@ -165,7 +165,7 @@ func (simple *SimpleAction) SetStateHint(stateHint *glib.Variant) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
 	if stateHint != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(stateHint)))
+		*(**C.GVariant)(unsafe.Pointer(&_args[1])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(stateHint)))
 	}
 
 	_info := girepository.MustFind("Gio", "SimpleAction")

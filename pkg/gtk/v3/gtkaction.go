@@ -428,6 +428,56 @@ func (action *Action) ConnectAccelerator() {
 	runtime.KeepAlive(action)
 }
 
+// CreateIcon: this function is intended for use by action implementations to
+// create icons displayed in the proxy widgets.
+//
+// Deprecated: Use g_menu_item_set_icon() to set an icon on a Item, or
+// gtk_container_add() to add a Image to a Button.
+//
+// The function takes the following parameters:
+//
+//    - iconSize: size of the icon (IconSize) that should be created.
+//
+// The function returns the following values:
+//
+//    - widget that displays the icon for this action.
+//
+func (action *Action) CreateIcon(iconSize int32) Widgetter {
+	var _args [2]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	*(*C.GtkIconSize)(unsafe.Pointer(&_args[1])) = C.GtkIconSize(iconSize)
+
+	_info := girepository.MustFind("Gtk", "Action")
+	_gret := _info.InvokeClassMethod("create_icon", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(iconSize)
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	return _widget
+}
+
 // CreateMenu: if action provides a Menu widget as a submenu for the menu item
 // or the toolbar item it creates, this function returns an instance of that
 // menu.
@@ -792,14 +842,14 @@ func (action *Action) Proxies() []Widgetter {
 
 	_info := girepository.MustFind("Gtk", "Action")
 	_gret := _info.InvokeClassMethod("get_proxies", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(action)
 
 	var _sList []Widgetter // out
 
-	_sList = make([]Widgetter, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
+	_sList = make([]Widgetter, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Widgetter // out
 		{

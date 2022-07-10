@@ -112,7 +112,7 @@ func NewTLSCertificateFromFile(file string) (*TLSCertificate, error) {
 
 	_info := girepository.MustFind("Gio", "TlsCertificate")
 	_gret := _info.InvokeClassMethod("new_TlsCertificate_from_file", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 
@@ -120,8 +120,8 @@ func NewTLSCertificateFromFile(file string) (*TLSCertificate, error) {
 	var _goerr error                    // out
 
 	_tlsCertificate = wrapTLSCertificate(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _tlsCertificate, _goerr
@@ -158,7 +158,7 @@ func NewTLSCertificateFromFiles(certFile, keyFile string) (*TLSCertificate, erro
 
 	_info := girepository.MustFind("Gio", "TlsCertificate")
 	_gret := _info.InvokeClassMethod("new_TlsCertificate_from_files", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(certFile)
 	runtime.KeepAlive(keyFile)
@@ -167,8 +167,8 @@ func NewTLSCertificateFromFiles(certFile, keyFile string) (*TLSCertificate, erro
 	var _goerr error                    // out
 
 	_tlsCertificate = wrapTLSCertificate(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _tlsCertificate, _goerr
@@ -206,7 +206,7 @@ func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) 
 
 	_info := girepository.MustFind("Gio", "TlsCertificate")
 	_gret := _info.InvokeClassMethod("new_TlsCertificate_from_pem", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(data)
 	runtime.KeepAlive(length)
@@ -215,8 +215,8 @@ func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) 
 	var _goerr error                    // out
 
 	_tlsCertificate = wrapTLSCertificate(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _tlsCertificate, _goerr
@@ -269,7 +269,7 @@ func NewTLSCertificateFromPKCS11URIs(pkcs11Uri, privateKeyPkcs11Uri string) (*TL
 
 	_info := girepository.MustFind("Gio", "TlsCertificate")
 	_gret := _info.InvokeClassMethod("new_TlsCertificate_from_pkcs11_uris", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pkcs11Uri)
 	runtime.KeepAlive(privateKeyPkcs11Uri)
@@ -278,8 +278,8 @@ func NewTLSCertificateFromPKCS11URIs(pkcs11Uri, privateKeyPkcs11Uri string) (*TL
 	var _goerr error                    // out
 
 	_tlsCertificate = wrapTLSCertificate(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _tlsCertificate, _goerr
@@ -383,15 +383,15 @@ func TLSCertificateListNewFromFile(file string) ([]TLSCertificater, error) {
 
 	_info := girepository.MustFind("Gio", "list_new_from_file")
 	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 
 	var _list []TLSCertificater // out
 	var _goerr error            // out
 
-	_list = make([]TLSCertificater, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]TLSCertificater, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst TLSCertificater // out
 		{
@@ -413,8 +413,8 @@ func TLSCertificateListNewFromFile(file string) ([]TLSCertificater, error) {
 		}
 		_list = append(_list, dst)
 	})
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _list, _goerr

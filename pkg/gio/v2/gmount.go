@@ -30,7 +30,7 @@ import (
 // extern gchar* _gotk4_gio2_MountIface_get_sort_key(void*);
 // extern gchar** _gotk4_gio2_MountIface_guess_content_type_finish(void*, void*, GError**);
 // extern gchar** _gotk4_gio2_MountIface_guess_content_type_sync(void*, gboolean, void*, GError**);
-// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
 // extern void _gotk4_gio2_MountIface_changed(void*);
 // extern void _gotk4_gio2_MountIface_pre_unmount(void*);
 // extern void _gotk4_gio2_MountIface_unmounted(void*);
@@ -301,8 +301,8 @@ func (mount *Mount) EjectFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -330,8 +330,8 @@ func (mount *Mount) EjectWithOperationFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -607,7 +607,7 @@ func (mount *Mount) GuessContentType(ctx context.Context, forceRescan bool, call
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if forceRescan {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
@@ -648,7 +648,7 @@ func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, erro
 
 	_info := girepository.MustFind("Gio", "Mount")
 	_gret := _info.InvokeIfaceMethod("guess_content_type_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mount)
 	runtime.KeepAlive(result)
@@ -671,8 +671,8 @@ func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, erro
 			defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i]))))
 		}
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _utf8s, _goerr
@@ -706,7 +706,7 @@ func (mount *Mount) GuessContentTypeSync(ctx context.Context, forceRescan bool) 
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	if forceRescan {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
@@ -714,7 +714,7 @@ func (mount *Mount) GuessContentTypeSync(ctx context.Context, forceRescan bool) 
 
 	_info := girepository.MustFind("Gio", "Mount")
 	_gret := _info.InvokeIfaceMethod("guess_content_type_sync", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mount)
 	runtime.KeepAlive(ctx)
@@ -738,8 +738,8 @@ func (mount *Mount) GuessContentTypeSync(ctx context.Context, forceRescan bool) 
 			defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i]))))
 		}
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _utf8s, _goerr
@@ -812,8 +812,8 @@ func (mount *Mount) RemountFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -858,8 +858,8 @@ func (mount *Mount) UnmountFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -887,8 +887,8 @@ func (mount *Mount) UnmountWithOperationFinish(result AsyncResulter) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

@@ -631,12 +631,12 @@ func _gotk4_gtk3_TranslateFunc(arg1 *C.gchar, arg2 C.gpointer) (cret *C.gchar) {
 func StockListIDs() []string {
 	_info := girepository.MustFind("Gtk", "stock_list_ids")
 	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
 
 	var _sList []string // out
 
-	_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_sList = make([]string, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.gchar)(v)
 		var dst string // out
 		dst = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src)))))

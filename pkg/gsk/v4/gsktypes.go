@@ -165,7 +165,7 @@ func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 	if next != nil {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
+	*(**C.graphene_matrix_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(matrix)))
 
 	_info := girepository.MustFind("Gsk", "Transform")
 	_gret := _info.InvokeRecordMethod("matrix", _args[:], nil)
@@ -288,7 +288,7 @@ func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
 	}
 	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(angle)
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(axis)))
+	*(**C.graphene_vec3_t)(unsafe.Pointer(&_args[2])) = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(axis)))
 
 	_info := girepository.MustFind("Gsk", "Transform")
 	_gret := _info.InvokeRecordMethod("rotate_3d", _args[:], nil)
@@ -509,7 +509,7 @@ func (self *Transform) ToMatrix() *graphene.Matrix {
 
 	var _outMatrix *graphene.Matrix // out
 
-	_outMatrix = (*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_outMatrix = (*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer(*(**C.graphene_matrix_t)(unsafe.Pointer(&_outs[0])))))
 
 	return _outMatrix
 }
@@ -632,7 +632,7 @@ func (self *Transform) TransformBounds(rect *graphene.Rect) *graphene.Rect {
 	var _outs [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rect)))
+	*(**C.graphene_rect_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(rect)))
 
 	_info := girepository.MustFind("Gsk", "Transform")
 	_info.InvokeRecordMethod("transform_bounds", _args[:], _outs[:])
@@ -642,7 +642,7 @@ func (self *Transform) TransformBounds(rect *graphene.Rect) *graphene.Rect {
 
 	var _outRect *graphene.Rect // out
 
-	_outRect = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_outRect = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(*(**C.graphene_rect_t)(unsafe.Pointer(&_outs[0])))))
 
 	return _outRect
 }
@@ -662,7 +662,7 @@ func (self *Transform) TransformPoint(point *graphene.Point) *graphene.Point {
 	var _outs [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(self)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
+	*(**C.graphene_point_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_info := girepository.MustFind("Gsk", "Transform")
 	_info.InvokeRecordMethod("transform_point", _args[:], _outs[:])
@@ -672,7 +672,7 @@ func (self *Transform) TransformPoint(point *graphene.Point) *graphene.Point {
 
 	var _outPoint *graphene.Point // out
 
-	_outPoint = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_outPoint = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(*(**C.graphene_point_t)(unsafe.Pointer(&_outs[0])))))
 
 	return _outPoint
 }
@@ -693,7 +693,7 @@ func (next *Transform) Translate(point *graphene.Point) *Transform {
 	if next != nil {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
+	*(**C.graphene_point_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_info := girepository.MustFind("Gsk", "Transform")
 	_gret := _info.InvokeRecordMethod("translate", _args[:], nil)
@@ -731,7 +731,7 @@ func (next *Transform) Translate3D(point *graphene.Point3D) *Transform {
 	if next != nil {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(next)))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
+	*(**C.graphene_point3d_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_info := girepository.MustFind("Gsk", "Transform")
 	_gret := _info.InvokeRecordMethod("translate_3d", _args[:], nil)

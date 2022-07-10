@@ -11,6 +11,7 @@ import (
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
 // #cgo pkg-config: gobject-2.0
@@ -120,7 +121,7 @@ func (tooltip *Tooltip) SetIcon(pixbuf *gdkpixbuf.Pixbuf) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
 	if pixbuf != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+		*(**C.GdkPixbuf)(unsafe.Pointer(&_args[1])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 	}
 
 	_info := girepository.MustFind("Gtk", "Tooltip")
@@ -128,6 +129,88 @@ func (tooltip *Tooltip) SetIcon(pixbuf *gdkpixbuf.Pixbuf) {
 
 	runtime.KeepAlive(tooltip)
 	runtime.KeepAlive(pixbuf)
+}
+
+// SetIconFromGIcon sets the icon of the tooltip (which is in front of the text)
+// to be the icon indicated by gicon with the size indicated by size. If gicon
+// is NULL, the image will be hidden.
+//
+// The function takes the following parameters:
+//
+//    - gicon (optional) representing the icon, or NULL.
+//    - size: stock icon size (IconSize).
+//
+func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner, size int32) {
+	var _args [3]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
+	if gicon != nil {
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(gicon).Native()))
+	}
+	*(*C.GtkIconSize)(unsafe.Pointer(&_args[2])) = C.GtkIconSize(size)
+
+	_info := girepository.MustFind("Gtk", "Tooltip")
+	_info.InvokeClassMethod("set_icon_from_gicon", _args[:], nil)
+
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(gicon)
+	runtime.KeepAlive(size)
+}
+
+// SetIconFromIconName sets the icon of the tooltip (which is in front of the
+// text) to be the icon indicated by icon_name with the size indicated by size.
+// If icon_name is NULL, the image will be hidden.
+//
+// The function takes the following parameters:
+//
+//    - iconName (optional): icon name, or NULL.
+//    - size: stock icon size (IconSize).
+//
+func (tooltip *Tooltip) SetIconFromIconName(iconName string, size int32) {
+	var _args [3]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
+	if iconName != "" {
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	}
+	*(*C.GtkIconSize)(unsafe.Pointer(&_args[2])) = C.GtkIconSize(size)
+
+	_info := girepository.MustFind("Gtk", "Tooltip")
+	_info.InvokeClassMethod("set_icon_from_icon_name", _args[:], nil)
+
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(iconName)
+	runtime.KeepAlive(size)
+}
+
+// SetIconFromStock sets the icon of the tooltip (which is in front of the text)
+// to be the stock item indicated by stock_id with the size indicated by size.
+// If stock_id is NULL, the image will be hidden.
+//
+// Deprecated: Use gtk_tooltip_set_icon_from_icon_name() instead.
+//
+// The function takes the following parameters:
+//
+//    - stockId (optional): stock id, or NULL.
+//    - size: stock icon size (IconSize).
+//
+func (tooltip *Tooltip) SetIconFromStock(stockId string, size int32) {
+	var _args [3]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
+	if stockId != "" {
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	}
+	*(*C.GtkIconSize)(unsafe.Pointer(&_args[2])) = C.GtkIconSize(size)
+
+	_info := girepository.MustFind("Gtk", "Tooltip")
+	_info.InvokeClassMethod("set_icon_from_stock", _args[:], nil)
+
+	runtime.KeepAlive(tooltip)
+	runtime.KeepAlive(stockId)
+	runtime.KeepAlive(size)
 }
 
 // SetMarkup sets the text of the tooltip to be markup, which is marked up with

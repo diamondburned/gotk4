@@ -587,7 +587,7 @@ func (toplevel *Toplevel) SetIconList(surfaces []Texturer) {
 		src := surfaces[i]
 		var dst *C.void // out
 		*(**C.void)(unsafe.Pointer(&dst)) = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
-		*(**C.void)(unsafe.Pointer(&_args[1])) = C.g_list_prepend(*(**C.void)(unsafe.Pointer(&_args[1])), C.gpointer(unsafe.Pointer(dst)))
+		*(**C.GList)(unsafe.Pointer(&_args[1])) = C.g_list_prepend(*(**C.GList)(unsafe.Pointer(&_args[1])), C.gpointer(unsafe.Pointer(dst)))
 	}
 	defer C.g_list_free(_args[1])
 

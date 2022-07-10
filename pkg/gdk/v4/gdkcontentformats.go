@@ -118,6 +118,25 @@ func (builder *ContentFormatsBuilder) AddFormats(formats *ContentFormats) {
 	runtime.KeepAlive(formats)
 }
 
+// AddGType appends type to builder if it has not already been added.
+//
+// The function takes the following parameters:
+//
+//    - typ: GType.
+//
+func (builder *ContentFormatsBuilder) AddGType(typ coreglib.Type) {
+	var _args [2]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(builder)))
+	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(typ)
+
+	_info := girepository.MustFind("Gdk", "ContentFormatsBuilder")
+	_info.InvokeRecordMethod("add_gtype", _args[:], nil)
+
+	runtime.KeepAlive(builder)
+	runtime.KeepAlive(typ)
+}
+
 // AddMIMEType appends mime_type to builder if it has not already been added.
 //
 // The function takes the following parameters:

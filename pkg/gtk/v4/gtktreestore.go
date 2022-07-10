@@ -103,6 +103,43 @@ func marshalTreeStore(p uintptr) (interface{}, error) {
 	return wrapTreeStore(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// NewTreeStore: non vararg creation function. Used primarily by language
+// bindings.
+//
+// The function takes the following parameters:
+//
+//    - types: array of #GType types for the columns, from first to last.
+//
+// The function returns the following values:
+//
+//    - treeStore: new TreeStore.
+//
+func NewTreeStore(types []coreglib.Type) *TreeStore {
+	var _args [2]girepository.Argument
+
+	*(*C.int)(unsafe.Pointer(&_args[0])) = (C.int)(len(types))
+	*(**C.GType)(unsafe.Pointer(&_args[1])) = (*C.GType)(C.calloc(C.size_t(len(types)), C.size_t(C.sizeof_GType)))
+	defer C.free(unsafe.Pointer(*(**C.GType)(unsafe.Pointer(&_args[1]))))
+	{
+		out := unsafe.Slice((*C.GType)(*(**C.GType)(unsafe.Pointer(&_args[1]))), len(types))
+		for i := range types {
+			*(*C.GType)(unsafe.Pointer(&out[i])) = C.GType(types[i])
+		}
+	}
+
+	_info := girepository.MustFind("Gtk", "TreeStore")
+	_gret := _info.InvokeClassMethod("new_TreeStore", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(types)
+
+	var _treeStore *TreeStore // out
+
+	_treeStore = wrapTreeStore(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+
+	return _treeStore
+}
+
 // Append appends a new row to tree_store. If parent is non-NULL, then it will
 // append the new row after the last child of parent, otherwise it will append a
 // row to the top level. iter will be changed to point to this new row. The row
@@ -278,6 +315,67 @@ func (treeStore *TreeStore) InsertBefore(parent, sibling *TreeIter) *TreeIter {
 	var _iter *TreeIter // out
 
 	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+
+	return _iter
+}
+
+// InsertWithValues: variant of gtk_tree_store_insert_with_values() which takes
+// the columns and values as two arrays, instead of varargs. This function is
+// mainly intended for language bindings.
+//
+// The function takes the following parameters:
+//
+//    - parent (optional): valid TreeIter, or NULL.
+//    - position to insert the new row, or -1 for last.
+//    - columns: array of column numbers.
+//    - values: array of GValues.
+//
+// The function returns the following values:
+//
+//    - iter (optional): unset TreeIter to set the new row, or NULL.
+//
+func (treeStore *TreeStore) InsertWithValues(parent *TreeIter, position int32, columns []int32, values []coreglib.Value) *TreeIter {
+	var _args [6]girepository.Argument
+	var _outs [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
+	if parent != nil {
+		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parent)))
+	}
+	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(position)
+	*(*C.int)(unsafe.Pointer(&_args[5])) = (C.int)(len(columns))
+	*(**C.int)(unsafe.Pointer(&_args[3])) = (*C.int)(C.calloc(C.size_t(len(columns)), C.size_t(C.sizeof_int)))
+	defer C.free(unsafe.Pointer(*(**C.int)(unsafe.Pointer(&_args[3]))))
+	{
+		out := unsafe.Slice((*C.int)(*(**C.int)(unsafe.Pointer(&_args[3]))), len(columns))
+		for i := range columns {
+			*(*C.int)(unsafe.Pointer(&out[i])) = C.int(columns[i])
+		}
+	}
+	*(*C.int)(unsafe.Pointer(&_args[5])) = (C.int)(len(values))
+	*(**C.GValue)(unsafe.Pointer(&_args[4])) = (*C.GValue)(C.calloc(C.size_t(len(values)), C.size_t(C.sizeof_GValue)))
+	defer C.free(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_args[4]))))
+	{
+		out := unsafe.Slice((*C.GValue)(*(**C.GValue)(unsafe.Pointer(&_args[4]))), len(values))
+		for i := range values {
+			*(*C.GValue)(unsafe.Pointer(&out[i])) = *(*C.GValue)(unsafe.Pointer((&values[i]).Native()))
+		}
+	}
+
+	_info := girepository.MustFind("Gtk", "TreeStore")
+	_info.InvokeClassMethod("insert_with_valuesv", _args[:], _outs[:])
+
+	runtime.KeepAlive(treeStore)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(columns)
+	runtime.KeepAlive(values)
+
+	var _iter *TreeIter // out
+
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	}
 
 	return _iter
 }
@@ -508,6 +606,36 @@ func (treeStore *TreeStore) Remove(iter *TreeIter) bool {
 	return _ok
 }
 
+// SetColumnTypes: this function is meant primarily for #GObjects that inherit
+// from TreeStore, and should only be used when constructing a new TreeStore. It
+// will not function after a row has been added, or a method on the TreeModel
+// interface is called.
+//
+// The function takes the following parameters:
+//
+//    - types: array of #GType types, one for each column.
+//
+func (treeStore *TreeStore) SetColumnTypes(types []coreglib.Type) {
+	var _args [3]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = (C.int)(len(types))
+	*(**C.GType)(unsafe.Pointer(&_args[2])) = (*C.GType)(C.calloc(C.size_t(len(types)), C.size_t(C.sizeof_GType)))
+	defer C.free(unsafe.Pointer(*(**C.GType)(unsafe.Pointer(&_args[2]))))
+	{
+		out := unsafe.Slice((*C.GType)(*(**C.GType)(unsafe.Pointer(&_args[2]))), len(types))
+		for i := range types {
+			*(*C.GType)(unsafe.Pointer(&out[i])) = C.GType(types[i])
+		}
+	}
+
+	_info := girepository.MustFind("Gtk", "TreeStore")
+	_info.InvokeClassMethod("set_column_types", _args[:], nil)
+
+	runtime.KeepAlive(treeStore)
+	runtime.KeepAlive(types)
+}
+
 // SetValue sets the data in the cell specified by iter and column. The type of
 // value must be convertible to the type of the column.
 //
@@ -523,7 +651,7 @@ func (treeStore *TreeStore) SetValue(iter *TreeIter, column int32, value *coregl
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(column)
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**C.GValue)(unsafe.Pointer(&_args[3])) = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gtk", "TreeStore")
 	_info.InvokeClassMethod("set_value", _args[:], nil)
@@ -532,6 +660,50 @@ func (treeStore *TreeStore) SetValue(iter *TreeIter, column int32, value *coregl
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(column)
 	runtime.KeepAlive(value)
+}
+
+// Set: variant of gtk_tree_store_set_valist() which takes the columns and
+// values as two arrays, instead of varargs. This function is mainly intended
+// for language bindings or in case the number of columns to change is not known
+// until run-time.
+//
+// The function takes the following parameters:
+//
+//    - iter: valid TreeIter for the row being modified.
+//    - columns: array of column numbers.
+//    - values: array of GValues.
+//
+func (treeStore *TreeStore) Set(iter *TreeIter, columns []int32, values []coreglib.Value) {
+	var _args [5]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeStore).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.int)(unsafe.Pointer(&_args[4])) = (C.int)(len(columns))
+	*(**C.int)(unsafe.Pointer(&_args[2])) = (*C.int)(C.calloc(C.size_t(len(columns)), C.size_t(C.sizeof_int)))
+	defer C.free(unsafe.Pointer(*(**C.int)(unsafe.Pointer(&_args[2]))))
+	{
+		out := unsafe.Slice((*C.int)(*(**C.int)(unsafe.Pointer(&_args[2]))), len(columns))
+		for i := range columns {
+			*(*C.int)(unsafe.Pointer(&out[i])) = C.int(columns[i])
+		}
+	}
+	*(*C.int)(unsafe.Pointer(&_args[4])) = (C.int)(len(values))
+	*(**C.GValue)(unsafe.Pointer(&_args[3])) = (*C.GValue)(C.calloc(C.size_t(len(values)), C.size_t(C.sizeof_GValue)))
+	defer C.free(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_args[3]))))
+	{
+		out := unsafe.Slice((*C.GValue)(*(**C.GValue)(unsafe.Pointer(&_args[3]))), len(values))
+		for i := range values {
+			*(*C.GValue)(unsafe.Pointer(&out[i])) = *(*C.GValue)(unsafe.Pointer((&values[i]).Native()))
+		}
+	}
+
+	_info := girepository.MustFind("Gtk", "TreeStore")
+	_info.InvokeClassMethod("set_valuesv", _args[:], nil)
+
+	runtime.KeepAlive(treeStore)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(columns)
+	runtime.KeepAlive(values)
 }
 
 // Swap swaps a and b in the same level of tree_store. Note that this function

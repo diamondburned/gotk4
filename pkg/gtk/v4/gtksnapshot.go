@@ -101,7 +101,7 @@ func (snapshot *Snapshot) AppendCairo(bounds *graphene.Rect) *cairo.Context {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
+	*(**C.graphene_rect_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	_info := girepository.MustFind("Gtk", "Snapshot")
 	_gret := _info.InvokeClassMethod("append_cairo", _args[:], nil)
@@ -135,7 +135,7 @@ func (snapshot *Snapshot) AppendColor(color *gdk.RGBA, bounds *graphene.Rect) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
+	*(**C.graphene_rect_t)(unsafe.Pointer(&_args[2])) = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	_info := girepository.MustFind("Gtk", "Snapshot")
 	_info.InvokeClassMethod("append_color", _args[:], nil)
@@ -270,7 +270,7 @@ func (snapshot *Snapshot) AppendTexture(texture gdk.Texturer, bounds *graphene.R
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
+	*(**C.graphene_rect_t)(unsafe.Pointer(&_args[2])) = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	_info := girepository.MustFind("Gtk", "Snapshot")
 	_info.InvokeClassMethod("append_texture", _args[:], nil)
@@ -363,7 +363,7 @@ func (snapshot *Snapshot) PushClip(bounds *graphene.Rect) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
+	*(**C.graphene_rect_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 
 	_info := girepository.MustFind("Gtk", "Snapshot")
 	_info.InvokeClassMethod("push_clip", _args[:], nil)
@@ -386,8 +386,8 @@ func (snapshot *Snapshot) PushColorMatrix(colorMatrix *graphene.Matrix, colorOff
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(colorMatrix)))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(colorOffset)))
+	*(**C.graphene_matrix_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(colorMatrix)))
+	*(**C.graphene_vec4_t)(unsafe.Pointer(&_args[2])) = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(colorOffset)))
 
 	_info := girepository.MustFind("Gtk", "Snapshot")
 	_info.InvokeClassMethod("push_color_matrix", _args[:], nil)
@@ -467,8 +467,8 @@ func (snapshot *Snapshot) PushGLShader(shader *gsk.GLShader, bounds *graphene.Re
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(takeArgs)))
+	*(**C.graphene_rect_t)(unsafe.Pointer(&_args[2])) = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
+	*(**C.GBytes)(unsafe.Pointer(&_args[3])) = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(takeArgs)))
 
 	_info := girepository.MustFind("Gtk", "Snapshot")
 	_info.InvokeClassMethod("push_gl_shader", _args[:], nil)
@@ -514,9 +514,9 @@ func (snapshot *Snapshot) PushRepeat(bounds, childBounds *graphene.Rect) {
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bounds)))
+	*(**C.graphene_rect_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 	if childBounds != nil {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(childBounds)))
+		*(**C.graphene_rect_t)(unsafe.Pointer(&_args[2])) = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(childBounds)))
 	}
 
 	_info := girepository.MustFind("Gtk", "Snapshot")
@@ -750,7 +750,7 @@ func (snapshot *Snapshot) Rotate3D(angle float32, axis *graphene.Vec3) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
 	*(*C.float)(unsafe.Pointer(&_args[1])) = C.float(angle)
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(axis)))
+	*(**C.graphene_vec3_t)(unsafe.Pointer(&_args[2])) = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(axis)))
 
 	_info := girepository.MustFind("Gtk", "Snapshot")
 	_info.InvokeClassMethod("rotate_3d", _args[:], nil)
@@ -896,7 +896,7 @@ func (snapshot *Snapshot) ToPaintable(size *graphene.Size) *gdk.Paintable {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
 	if size != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(size)))
+		*(**C.graphene_size_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_size_t)(gextras.StructNative(unsafe.Pointer(size)))
 	}
 
 	_info := girepository.MustFind("Gtk", "Snapshot")
@@ -950,7 +950,7 @@ func (snapshot *Snapshot) TransformMatrix(matrix *graphene.Matrix) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(matrix)))
+	*(**C.graphene_matrix_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(matrix)))
 
 	_info := girepository.MustFind("Gtk", "Snapshot")
 	_info.InvokeClassMethod("transform_matrix", _args[:], nil)
@@ -970,7 +970,7 @@ func (snapshot *Snapshot) Translate(point *graphene.Point) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
+	*(**C.graphene_point_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_info := girepository.MustFind("Gtk", "Snapshot")
 	_info.InvokeClassMethod("translate", _args[:], nil)
@@ -989,7 +989,7 @@ func (snapshot *Snapshot) Translate3D(point *graphene.Point3D) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(point)))
+	*(**C.graphene_point3d_t)(unsafe.Pointer(&_args[1])) = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
 
 	_info := girepository.MustFind("Gtk", "Snapshot")
 	_info.InvokeClassMethod("translate_3d", _args[:], nil)

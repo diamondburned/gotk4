@@ -174,14 +174,12 @@ func CGoTail(gen types.FileGenerator, g *gir.CallableAttrs) (string, error) {
 			addParam = func(ix int, param *gir.ParameterAttrs) bool {
 				anyType := types.ResolveAnyType(gen, param.AnyType)
 
-				// Keep in sync with types.CallbackCHeader.
-				cType := types.AnyTypeCPrimitive(gen, anyType)
-				if cType == "" {
+				anyTypeCGo := types.AnyTypeCGoPrimitive(gen, anyType)
+				if anyTypeCGo == "" {
 					return false
 				}
 
-				cgoType := types.CGoTypeFromC(cType)
-				cgotail.Addf("%s %s", CallbackArg(ix), cgoType)
+				cgotail.Addf("%s %s", CallbackArg(ix), anyTypeCGo)
 				return true
 			}
 		}

@@ -493,14 +493,14 @@ func (area *GLArea) Error() error {
 
 	_info := girepository.MustFind("Gtk", "GLArea")
 	_gret := _info.InvokeClassMethod("get_error", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 
 	var _err error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_err = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+	if *(**C.GError)(unsafe.Pointer(&_cret)) != nil {
+		_err = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cret))))
 	}
 
 	return _err
@@ -697,7 +697,7 @@ func (area *GLArea) SetError(err error) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	if err != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gerror.New(err))
+		*(**C.GError)(unsafe.Pointer(&_args[1])) = (*C.GError)(gerror.New(err))
 	}
 
 	_info := girepository.MustFind("Gtk", "GLArea")

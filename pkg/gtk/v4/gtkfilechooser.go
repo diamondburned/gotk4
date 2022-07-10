@@ -133,11 +133,11 @@ func (f FileChooserError) String() string {
 func FileChooserErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gtk", "quark")
 	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
+	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -380,8 +380,8 @@ func (chooser *FileChooser) AddShortcutFolder(folder gio.Filer) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -755,8 +755,8 @@ func (chooser *FileChooser) RemoveShortcutFolder(folder gio.Filer) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -833,8 +833,8 @@ func (chooser *FileChooser) SetCurrentFolder(file gio.Filer) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -931,8 +931,8 @@ func (chooser *FileChooser) SetFile(file gio.Filer) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

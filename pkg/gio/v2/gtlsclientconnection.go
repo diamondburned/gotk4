@@ -329,7 +329,7 @@ func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnec
 
 	_info := girepository.MustFind("Gio", "new")
 	_gret := _info.InvokeFunction(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseIoStream)
 	runtime.KeepAlive(serverIdentity)
@@ -338,8 +338,8 @@ func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnec
 	var _goerr error                              // out
 
 	_tlsClientConnection = wrapTLSClientConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _tlsClientConnection, _goerr

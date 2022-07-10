@@ -64,7 +64,7 @@ func GTypeSrvTarget() coreglib.Type {
 type AsyncReadyCallback func(res AsyncResulter)
 
 //export _gotk4_gio2_AsyncReadyCallback
-func _gotk4_gio2_AsyncReadyCallback(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) {
+func _gotk4_gio2_AsyncReadyCallback(arg1 *C.GObject, arg2 *C.void, arg3 C.gpointer) {
 	var fn AsyncReadyCallback
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -119,6 +119,88 @@ func _gotk4_gio2_CancellableSourceFunc(arg1 *C.void, arg2 C.gpointer) (cret C.gb
 	}
 
 	ok := fn(_cancellable)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+// DBusProxyTypeFunc: function signature for a function used to determine the
+// #GType to use for an interface proxy (if interface_name is not NULL) or
+// object proxy (if interface_name is NULL).
+//
+// This function is called in the [thread-default main
+// loop][g-main-context-push-thread-default] that manager was constructed in.
+type DBusProxyTypeFunc func(manager *DBusObjectManagerClient, objectPath, interfaceName string) (gType coreglib.Type)
+
+//export _gotk4_gio2_DBusProxyTypeFunc
+func _gotk4_gio2_DBusProxyTypeFunc(arg1 *C.void, arg2 *C.gchar, arg3 *C.gchar, arg4 C.gpointer) (cret C.GType) {
+	var fn DBusProxyTypeFunc
+	{
+		v := gbox.Get(uintptr(arg4))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(DBusProxyTypeFunc)
+	}
+
+	var _manager *DBusObjectManagerClient // out
+	var _objectPath string                // out
+	var _interfaceName string             // out
+
+	_manager = wrapDBusObjectManagerClient(coreglib.Take(unsafe.Pointer(arg1)))
+	_objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	if arg3 != nil {
+		_interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+	}
+
+	gType := fn(_manager, _objectPath, _interfaceName)
+
+	cret = C.GType(gType)
+
+	return cret
+}
+
+// DatagramBasedSourceFunc: this is the function type of the callback used for
+// the #GSource returned by g_datagram_based_create_source().
+type DatagramBasedSourceFunc func(datagramBased DatagramBasedder, condition glib.IOCondition) (ok bool)
+
+//export _gotk4_gio2_DatagramBasedSourceFunc
+func _gotk4_gio2_DatagramBasedSourceFunc(arg1 *C.void, arg2 C.GIOCondition, arg3 C.gpointer) (cret C.gboolean) {
+	var fn DatagramBasedSourceFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(DatagramBasedSourceFunc)
+	}
+
+	var _datagramBased DatagramBasedder // out
+	var _condition glib.IOCondition     // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.DatagramBasedder is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(DatagramBasedder)
+			return ok
+		})
+		rv, ok := casted.(DatagramBasedder)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DatagramBasedder")
+		}
+		_datagramBased = rv
+	}
+	_condition = glib.IOCondition(arg2)
+
+	ok := fn(_datagramBased, _condition)
 
 	if ok {
 		cret = C.TRUE
@@ -182,13 +264,71 @@ func _gotk4_gio2_FileMeasureProgressCallback(arg1 C.gboolean, arg2 C.guint64, ar
 	fn(_reporting, _currentSize, _numDirs, _numFiles)
 }
 
+// FileProgressCallback: when doing file operations that may take a while, such
+// as moving a file or copying a file, a progress callback is used to pass how
+// far along that operation is to the application.
+type FileProgressCallback func(currentNumBytes, totalNumBytes int64)
+
+//export _gotk4_gio2_FileProgressCallback
+func _gotk4_gio2_FileProgressCallback(arg1 C.goffset, arg2 C.goffset, arg3 C.gpointer) {
+	var fn FileProgressCallback
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(FileProgressCallback)
+	}
+
+	var _currentNumBytes int64 // out
+	var _totalNumBytes int64   // out
+
+	_currentNumBytes = int64(arg1)
+	_totalNumBytes = int64(arg2)
+
+	fn(_currentNumBytes, _totalNumBytes)
+}
+
+// FileReadMoreCallback: when loading the partial contents of a file with
+// g_file_load_partial_contents_async(), it may become necessary to determine if
+// any more data from the file should be loaded. A ReadMoreCallback function
+// facilitates this by returning TRUE if more data should be read, or FALSE
+// otherwise.
+type FileReadMoreCallback func(fileContents string, fileSize int64) (ok bool)
+
+//export _gotk4_gio2_FileReadMoreCallback
+func _gotk4_gio2_FileReadMoreCallback(arg1 *C.char, arg2 C.goffset, arg3 C.gpointer) (cret C.gboolean) {
+	var fn FileReadMoreCallback
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(FileReadMoreCallback)
+	}
+
+	var _fileContents string // out
+	var _fileSize int64      // out
+
+	_fileContents = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_fileSize = int64(arg2)
+
+	ok := fn(_fileContents, _fileSize)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 // PollableSourceFunc: this is the function type of the callback used for the
 // #GSource returned by g_pollable_input_stream_create_source() and
 // g_pollable_output_stream_create_source().
 type PollableSourceFunc func(pollableStream *coreglib.Object) (ok bool)
 
 //export _gotk4_gio2_PollableSourceFunc
-func _gotk4_gio2_PollableSourceFunc(arg1 *C.void, arg2 C.gpointer) (cret C.gboolean) {
+func _gotk4_gio2_PollableSourceFunc(arg1 *C.GObject, arg2 C.gpointer) (cret C.gboolean) {
 	var fn PollableSourceFunc
 	{
 		v := gbox.Get(uintptr(arg2))
@@ -203,6 +343,36 @@ func _gotk4_gio2_PollableSourceFunc(arg1 *C.void, arg2 C.gpointer) (cret C.gbool
 	_pollableStream = coreglib.Take(unsafe.Pointer(arg1))
 
 	ok := fn(_pollableStream)
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+// SocketSourceFunc: this is the function type of the callback used for the
+// #GSource returned by g_socket_create_source().
+type SocketSourceFunc func(socket *Socket, condition glib.IOCondition) (ok bool)
+
+//export _gotk4_gio2_SocketSourceFunc
+func _gotk4_gio2_SocketSourceFunc(arg1 *C.void, arg2 C.GIOCondition, arg3 C.gpointer) (cret C.gboolean) {
+	var fn SocketSourceFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(SocketSourceFunc)
+	}
+
+	var _socket *Socket             // out
+	var _condition glib.IOCondition // out
+
+	_socket = wrapSocket(coreglib.Take(unsafe.Pointer(arg1)))
+	_condition = glib.IOCondition(arg2)
+
+	ok := fn(_socket, _condition)
 
 	if ok {
 		cret = C.TRUE
@@ -575,7 +745,7 @@ func (o *OutputVector) Buffer() unsafe.Pointer {
 	offset := girepository.MustFind("Gio", "OutputVector").StructFieldOffset("buffer")
 	valptr := (*uintptr)(unsafe.Add(o.native, offset))
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&*valptr))))
+	v = (unsafe.Pointer)(unsafe.Pointer(*(*C.gconstpointer)(unsafe.Pointer(&*valptr))))
 	return v
 }
 
@@ -761,11 +931,11 @@ func marshalResource(p uintptr) (interface{}, error) {
 func NewResourceFromData(data *glib.Bytes) (*Resource, error) {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(data)))
+	*(**C.GBytes)(unsafe.Pointer(&_args[0])) = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(data)))
 
 	_info := girepository.MustFind("Gio", "Resource")
 	_gret := _info.InvokeRecordMethod("new_from_data", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(data)
 
@@ -779,8 +949,8 @@ func NewResourceFromData(data *glib.Bytes) (*Resource, error) {
 			C.free(intern.C)
 		},
 	)
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _resource, _goerr

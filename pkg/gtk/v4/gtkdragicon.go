@@ -189,7 +189,7 @@ func (self *DragIcon) SetChild(child Widgetter) {
 func DragIconCreateWidgetForValue(value *coreglib.Value) Widgetter {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**C.GValue)(unsafe.Pointer(&_args[0])) = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gtk", "create_widget_for_value")
 	_gret := _info.InvokeFunction(_args[:], nil)

@@ -16,8 +16,8 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern gint _gotk4_gio2_CompareDataFunc(gpointer, gpointer, gpointer);
-// extern gint _gotk4_glib2_CompareDataFunc(gpointer, gpointer, gpointer);
+// extern gint _gotk4_gio2_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
+// extern gint _gotk4_glib2_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
 import "C"
 
 // GTypeListStore returns the GType for the type ListStore.
@@ -70,6 +70,35 @@ func wrapListStore(obj *coreglib.Object) *ListStore {
 
 func marshalListStore(p uintptr) (interface{}, error) {
 	return wrapListStore(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewListStore creates a new Store with items of type item_type. item_type must
+// be a subclass of #GObject.
+//
+// The function takes the following parameters:
+//
+//    - itemType of items in the list.
+//
+// The function returns the following values:
+//
+//    - listStore: new Store.
+//
+func NewListStore(itemType coreglib.Type) *ListStore {
+	var _args [1]girepository.Argument
+
+	*(*C.GType)(unsafe.Pointer(&_args[0])) = C.GType(itemType)
+
+	_info := girepository.MustFind("Gio", "ListStore")
+	_gret := _info.InvokeClassMethod("new_ListStore", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(itemType)
+
+	var _listStore *ListStore // out
+
+	_listStore = wrapListStore(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+
+	return _listStore
 }
 
 // Append appends item to store. item must be of type Store:item-type.
@@ -190,7 +219,7 @@ func (store *ListStore) InsertSorted(item *coreglib.Object, compareFunc glib.Com
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(store).Native()))
 	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = C.gpointer(unsafe.Pointer(item.Native()))
-	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
+	*(*C.GCompareDataFunc)(unsafe.Pointer(&_args[2])) = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
 	_args[3] = C.gpointer(gbox.Assign(compareFunc))
 	defer gbox.Delete(uintptr(_args[3]))
 
@@ -254,7 +283,7 @@ func (store *ListStore) Sort(compareFunc glib.CompareDataFunc) {
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(store).Native()))
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
+	*(*C.GCompareDataFunc)(unsafe.Pointer(&_args[1])) = (*[0]byte)(C._gotk4_glib2_CompareDataFunc)
 	_args[2] = C.gpointer(gbox.Assign(compareFunc))
 	defer gbox.Delete(uintptr(_args[2]))
 
@@ -292,10 +321,10 @@ func (store *ListStore) Splice(position, nRemovals uint32, additions []*coreglib
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(position)
 	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(nRemovals)
 	*(*C.guint)(unsafe.Pointer(&_args[4])) = (C.guint)(len(additions))
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(C.calloc(C.size_t(len(additions)), C.size_t(C.sizeof_gpointer)))
-	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[3]))))
+	*(**C.gpointer)(unsafe.Pointer(&_args[3])) = (*C.gpointer)(C.calloc(C.size_t(len(additions)), C.size_t(C.sizeof_gpointer)))
+	defer C.free(unsafe.Pointer(*(**C.gpointer)(unsafe.Pointer(&_args[3]))))
 	{
-		out := unsafe.Slice((*C.gpointer)(*(**C.void)(unsafe.Pointer(&_args[3]))), len(additions))
+		out := unsafe.Slice((*C.gpointer)(*(**C.gpointer)(unsafe.Pointer(&_args[3]))), len(additions))
 		for i := range additions {
 			*(*C.gpointer)(unsafe.Pointer(&out[i])) = C.gpointer(unsafe.Pointer(additions[i].Native()))
 		}

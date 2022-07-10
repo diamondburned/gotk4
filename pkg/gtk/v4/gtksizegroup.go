@@ -157,14 +157,14 @@ func (sizeGroup *SizeGroup) Widgets() []Widgetter {
 
 	_info := girepository.MustFind("Gtk", "SizeGroup")
 	_gret := _info.InvokeClassMethod("get_widgets", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(sizeGroup)
 
 	var _sList []Widgetter // out
 
-	_sList = make([]Widgetter, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
+	_sList = make([]Widgetter, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Widgetter // out
 		{

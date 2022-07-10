@@ -15,13 +15,13 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern GList* _gotk4_gio2_DBusObjectIface_get_interfaces(void*);
 // extern gchar* _gotk4_gio2_DBusObjectIface_get_object_path(void*);
 // extern void _gotk4_gio2_DBusObjectIface_interface_added(void*, void*);
 // extern void _gotk4_gio2_DBusObjectIface_interface_removed(void*, void*);
 // extern void _gotk4_gio2_DBusObject_ConnectInterfaceAdded(gpointer, void*, guintptr);
 // extern void _gotk4_gio2_DBusObject_ConnectInterfaceRemoved(gpointer, void*, guintptr);
 // extern void* _gotk4_gio2_DBusObjectIface_get_interface(void*, gchar*);
-// extern void* _gotk4_gio2_DBusObjectIface_get_interfaces(void*);
 import "C"
 
 // GTypeDBusObject returns the GType for the type DBusObject.
@@ -138,7 +138,7 @@ func _gotk4_gio2_DBusObjectIface_get_interface(arg0 *C.void, arg1 *C.gchar) (cre
 }
 
 //export _gotk4_gio2_DBusObjectIface_get_interfaces
-func _gotk4_gio2_DBusObjectIface_get_interfaces(arg0 *C.void) (cret *C.void) {
+func _gotk4_gio2_DBusObjectIface_get_interfaces(arg0 *C.void) (cret *C.GList) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectOverrider)
 
@@ -365,14 +365,14 @@ func (object *DBusObject) Interfaces() []*DBusInterface {
 
 	_info := girepository.MustFind("Gio", "DBusObject")
 	_gret := _info.InvokeIfaceMethod("get_interfaces", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(object)
 
 	var _list []*DBusInterface // out
 
-	_list = make([]*DBusInterface, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]*DBusInterface, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *DBusInterface // out
 		dst = wrapDBusInterface(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))

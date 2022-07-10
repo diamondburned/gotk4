@@ -18,6 +18,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern GType _gotk4_gtk4_TreeModelIface_get_column_type(void*, int);
 // extern gboolean _gotk4_gtk4_TreeModelForEachFunc(void*, void*, void*, gpointer);
 // extern gboolean _gotk4_gtk4_TreeModelIface_get_iter(void*, void*, void*);
 // extern gboolean _gotk4_gtk4_TreeModelIface_iter_children(void*, void*, void*);
@@ -28,7 +29,7 @@ import (
 // extern gboolean _gotk4_gtk4_TreeModelIface_iter_previous(void*, void*);
 // extern int _gotk4_gtk4_TreeModelIface_get_n_columns(void*);
 // extern int _gotk4_gtk4_TreeModelIface_iter_n_children(void*, void*);
-// extern void _gotk4_gtk4_TreeModelIface_get_value(void*, void*, int, void*);
+// extern void _gotk4_gtk4_TreeModelIface_get_value(void*, void*, int, GValue*);
 // extern void _gotk4_gtk4_TreeModelIface_ref_node(void*, void*);
 // extern void _gotk4_gtk4_TreeModelIface_row_changed(void*, void*, void*);
 // extern void _gotk4_gtk4_TreeModelIface_row_deleted(void*, void*);
@@ -199,6 +200,17 @@ func _gotk4_gtk4_TreeModelForEachFunc(arg1 *C.void, arg2 *C.void, arg3 *C.void, 
 
 // TreeModelOverrider contains methods that are overridable.
 type TreeModelOverrider interface {
+	// ColumnType returns the type of the column.
+	//
+	// The function takes the following parameters:
+	//
+	//    - index_: column index.
+	//
+	// The function returns the following values:
+	//
+	//    - gType: type of the column.
+	//
+	ColumnType(index_ int32) coreglib.Type
 	// Iter sets iter to a valid iterator pointing to path. If path does not
 	// exist, iter is set to an invalid iterator and FALSE is returned.
 	//
@@ -637,6 +649,8 @@ type TreeModeller interface {
 
 	// ForEach calls func on each node in model in a depth-first fashion.
 	ForEach(fn TreeModelForEachFunc)
+	// ColumnType returns the type of the column.
+	ColumnType(index_ int32) coreglib.Type
 	// Iter sets iter to a valid iterator pointing to path.
 	Iter(path *TreePath) (*TreeIter, bool)
 	// IterFirst initializes iter with the first iterator in the tree (the one
@@ -704,6 +718,7 @@ var _ TreeModeller = (*TreeModel)(nil)
 
 func ifaceInitTreeModeller(gifacePtr, data C.gpointer) {
 	iface := girepository.MustFind("Gtk", "TreeModelIface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_column_type"))) = unsafe.Pointer(C._gotk4_gtk4_TreeModelIface_get_column_type)
 	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_iter"))) = unsafe.Pointer(C._gotk4_gtk4_TreeModelIface_get_iter)
 	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_n_columns"))) = unsafe.Pointer(C._gotk4_gtk4_TreeModelIface_get_n_columns)
 	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_path"))) = unsafe.Pointer(C._gotk4_gtk4_TreeModelIface_get_path)
@@ -721,6 +736,22 @@ func ifaceInitTreeModeller(gifacePtr, data C.gpointer) {
 	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("row_has_child_toggled"))) = unsafe.Pointer(C._gotk4_gtk4_TreeModelIface_row_has_child_toggled)
 	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("row_inserted"))) = unsafe.Pointer(C._gotk4_gtk4_TreeModelIface_row_inserted)
 	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("unref_node"))) = unsafe.Pointer(C._gotk4_gtk4_TreeModelIface_unref_node)
+}
+
+//export _gotk4_gtk4_TreeModelIface_get_column_type
+func _gotk4_gtk4_TreeModelIface_get_column_type(arg0 *C.void, arg1 C.int) (cret C.GType) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(TreeModelOverrider)
+
+	var _index_ int32 // out
+
+	_index_ = int32(arg1)
+
+	gType := iface.ColumnType(_index_)
+
+	cret = C.GType(gType)
+
+	return cret
 }
 
 //export _gotk4_gtk4_TreeModelIface_get_iter
@@ -772,7 +803,7 @@ func _gotk4_gtk4_TreeModelIface_get_path(arg0 *C.void, arg1 *C.void) (cret *C.vo
 }
 
 //export _gotk4_gtk4_TreeModelIface_get_value
-func _gotk4_gtk4_TreeModelIface_get_value(arg0 *C.void, arg1 *C.void, arg2 C.int, arg3 *C.void) {
+func _gotk4_gtk4_TreeModelIface_get_value(arg0 *C.void, arg1 *C.void, arg2 C.int, arg3 *C.GValue) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TreeModelOverrider)
 
@@ -784,7 +815,7 @@ func _gotk4_gtk4_TreeModelIface_get_value(arg0 *C.void, arg1 *C.void, arg2 C.int
 
 	value := iface.Value(_iter, _column)
 
-	*arg3 = (*C.void)(unsafe.Pointer((&value).Native()))
+	*arg3 = (*C.GValue)(unsafe.Pointer((&value).Native()))
 }
 
 //export _gotk4_gtk4_TreeModelIface_iter_children
@@ -1187,6 +1218,36 @@ func (model *TreeModel) ForEach(fn TreeModelForEachFunc) {
 	runtime.KeepAlive(fn)
 }
 
+// ColumnType returns the type of the column.
+//
+// The function takes the following parameters:
+//
+//    - index_: column index.
+//
+// The function returns the following values:
+//
+//    - gType: type of the column.
+//
+func (treeModel *TreeModel) ColumnType(index_ int32) coreglib.Type {
+	var _args [2]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(index_)
+
+	_info := girepository.MustFind("Gtk", "TreeModel")
+	_gret := _info.InvokeIfaceMethod("get_column_type", _args[:], nil)
+	_cret := *(*C.GType)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(treeModel)
+	runtime.KeepAlive(index_)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(*(*C.GType)(unsafe.Pointer(&_cret)))
+
+	return _gType
+}
+
 // Iter sets iter to a valid iterator pointing to path. If path does not exist,
 // iter is set to an invalid iterator and FALSE is returned.
 //
@@ -1426,7 +1487,7 @@ func (treeModel *TreeModel) Value(iter *TreeIter, column int32) coreglib.Value {
 
 	var _value coreglib.Value // out
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_outs[0]))))
 
 	return _value
 }
@@ -2518,7 +2579,7 @@ func NewTreeRowReference(model TreeModeller, path *TreePath) *TreeRowReference {
 func NewTreeRowReferenceProxy(proxy *coreglib.Object, model TreeModeller, path *TreePath) *TreeRowReference {
 	var _args [3]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(proxy.Native()))
+	*(**C.GObject)(unsafe.Pointer(&_args[0])) = (*C.GObject)(unsafe.Pointer(proxy.Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
@@ -2685,7 +2746,7 @@ func (reference *TreeRowReference) Valid() bool {
 func TreeRowReferenceDeleted(proxy *coreglib.Object, path *TreePath) {
 	var _args [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(proxy.Native()))
+	*(**C.GObject)(unsafe.Pointer(&_args[0])) = (*C.GObject)(unsafe.Pointer(proxy.Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_info := girepository.MustFind("Gtk", "deleted")
@@ -2707,7 +2768,7 @@ func TreeRowReferenceDeleted(proxy *coreglib.Object, path *TreePath) {
 func TreeRowReferenceInserted(proxy *coreglib.Object, path *TreePath) {
 	var _args [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(proxy.Native()))
+	*(**C.GObject)(unsafe.Pointer(&_args[0])) = (*C.GObject)(unsafe.Pointer(proxy.Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_info := girepository.MustFind("Gtk", "inserted")

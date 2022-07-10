@@ -205,8 +205,8 @@ func (renderer *Renderer) Realize(surface gdk.Surfacer) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -270,7 +270,7 @@ func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rec
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(root).Native()))
 	if viewport != nil {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(viewport)))
+		*(**C.graphene_rect_t)(unsafe.Pointer(&_args[2])) = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(viewport)))
 	}
 
 	_info := girepository.MustFind("Gsk", "Renderer")

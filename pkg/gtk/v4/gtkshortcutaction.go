@@ -19,7 +19,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gtk4_ShortcutFunc(void*, void*, gpointer);
+// extern gboolean _gotk4_gtk4_ShortcutFunc(void*, GVariant*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -162,7 +162,7 @@ func (s ShortcutActionFlags) Has(other ShortcutActionFlags) bool {
 type ShortcutFunc func(widget Widgetter, args *glib.Variant) (ok bool)
 
 //export _gotk4_gtk4_ShortcutFunc
-func _gotk4_gtk4_ShortcutFunc(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) (cret C.gboolean) {
+func _gotk4_gtk4_ShortcutFunc(arg1 *C.void, arg2 *C.GVariant, arg3 C.gpointer) (cret C.gboolean) {
 	var fn ShortcutFunc
 	{
 		v := gbox.Get(uintptr(arg3))

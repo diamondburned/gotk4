@@ -398,8 +398,8 @@ func (cancellable *Cancellable) SetErrorIfCancelled() error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -428,13 +428,13 @@ func (cancellable *Cancellable) NewSource() *glib.Source {
 
 	_info := girepository.MustFind("Gio", "Cancellable")
 	_gret := _info.InvokeClassMethod("source_new", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GSource)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cancellable)
 
 	var _source *glib.Source // out
 
-	_source = (*glib.Source)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_source = (*glib.Source)(gextras.NewStructNative(unsafe.Pointer(*(**C.GSource)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_source)),
 		func(intern *struct{ C unsafe.Pointer }) {

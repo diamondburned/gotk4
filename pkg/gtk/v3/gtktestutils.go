@@ -124,6 +124,141 @@ func TestFindLabel(widget Widgetter, labelPattern string) Widgetter {
 	return _ret
 }
 
+// TestFindSibling: this function will search siblings of base_widget and
+// siblings of its ancestors for all widgets matching widget_type. Of the
+// matching widgets, the one that is geometrically closest to base_widget will
+// be returned. The general purpose of this function is to find the most likely
+// “action” widget, relative to another labeling widget. Such as finding a
+// button or text entry widget, given its corresponding label widget.
+//
+// The function takes the following parameters:
+//
+//    - baseWidget: valid widget, part of a widget hierarchy.
+//    - widgetType: type of a aearched for sibling widget.
+//
+// The function returns the following values:
+//
+//    - widget of type widget_type if any is found.
+//
+func TestFindSibling(baseWidget Widgetter, widgetType coreglib.Type) Widgetter {
+	var _args [2]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseWidget).Native()))
+	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(widgetType)
+
+	_info := girepository.MustFind("Gtk", "test_find_sibling")
+	_gret := _info.InvokeFunction(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(baseWidget)
+	runtime.KeepAlive(widgetType)
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	return _widget
+}
+
+// TestFindWidget: this function will search the descendants of widget for a
+// widget of type widget_type that has a label matching label_pattern next to
+// it. This is most useful for automated GUI testing, e.g. to find the “OK”
+// button in a dialog and synthesize clicks on it. However see
+// gtk_test_find_label(), gtk_test_find_sibling() and gtk_test_widget_click()
+// for possible caveats involving the search of such widgets and synthesizing
+// widget events.
+//
+// The function takes the following parameters:
+//
+//    - widget: container widget, usually a GtkWindow.
+//    - labelPattern: shell-glob pattern to match a label string.
+//    - widgetType: type of a aearched for label sibling widget.
+//
+// The function returns the following values:
+//
+//    - ret (optional): valid widget if any is found or NULL.
+//
+func TestFindWidget(widget Widgetter, labelPattern string, widgetType coreglib.Type) Widgetter {
+	var _args [3]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(labelPattern)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	*(*C.GType)(unsafe.Pointer(&_args[2])) = C.GType(widgetType)
+
+	_info := girepository.MustFind("Gtk", "test_find_widget")
+	_gret := _info.InvokeFunction(_args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(labelPattern)
+	runtime.KeepAlive(widgetType)
+
+	var _ret Widgetter // out
+
+	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+		{
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_ret = rv
+		}
+	}
+
+	return _ret
+}
+
+// TestListAllTypes: return the type ids that have been registered after calling
+// gtk_test_register_all_types().
+//
+// The function returns the following values:
+//
+//    - gTypes: 0-terminated array of type ids.
+//
+func TestListAllTypes() []coreglib.Type {
+	var _outs [1]girepository.Argument
+
+	_info := girepository.MustFind("Gtk", "test_list_all_types")
+	_gret := _info.InvokeFunction(nil, _outs[:])
+	_cret := *(**C.GType)(unsafe.Pointer(&_gret))
+
+	var _gTypes []coreglib.Type // out
+
+	{
+		src := unsafe.Slice((*C.GType)(*(**C.GType)(unsafe.Pointer(&_cret))), *(*C.guint)(unsafe.Pointer(&_outs[0])))
+		_gTypes = make([]coreglib.Type, *(*C.guint)(unsafe.Pointer(&_outs[0])))
+		for i := 0; i < int(*(*C.guint)(unsafe.Pointer(&_outs[0]))); i++ {
+			_gTypes[i] = coreglib.Type(*(*C.GType)(unsafe.Pointer(&src[i])))
+		}
+	}
+
+	return _gTypes
+}
+
 // TestRegisterAllTypes: force registration of all core Gtk+ and Gdk object
 // types. This allowes to refer to any of those object types via
 // g_type_from_name() after calling this function.

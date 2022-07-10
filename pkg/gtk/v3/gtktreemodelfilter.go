@@ -18,7 +18,8 @@ import (
 // #include <glib-object.h>
 // extern gboolean _gotk4_gtk3_TreeModelFilterClass_visible(void*, void*, void*);
 // extern gboolean _gotk4_gtk3_TreeModelFilterVisibleFunc(void*, void*, gpointer);
-// extern void _gotk4_gtk3_TreeModelFilterClass_modify(void*, void*, void*, void*, gint);
+// extern void _gotk4_gtk3_TreeModelFilterClass_modify(void*, void*, void*, GValue*, gint);
+// extern void _gotk4_gtk3_TreeModelFilterModifyFunc(void*, void*, GValue*, gint, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -42,7 +43,7 @@ func GTypeTreeModelFilter() coreglib.Type {
 type TreeModelFilterModifyFunc func(model TreeModeller, iter *TreeIter, column int32) (value coreglib.Value)
 
 //export _gotk4_gtk3_TreeModelFilterModifyFunc
-func _gotk4_gtk3_TreeModelFilterModifyFunc(arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 C.gint, arg5 C.gpointer) {
+func _gotk4_gtk3_TreeModelFilterModifyFunc(arg1 *C.void, arg2 *C.void, arg3 *C.GValue, arg4 C.gint, arg5 C.gpointer) {
 	var fn TreeModelFilterModifyFunc
 	{
 		v := gbox.Get(uintptr(arg5))
@@ -78,7 +79,7 @@ func _gotk4_gtk3_TreeModelFilterModifyFunc(arg1 *C.void, arg2 *C.void, arg3 *C.v
 
 	value := fn(_model, _iter, _column)
 
-	*arg3 = (*C.void)(unsafe.Pointer((&value).Native()))
+	*arg3 = (*C.GValue)(unsafe.Pointer((&value).Native()))
 }
 
 // TreeModelFilterVisibleFunc: function which decides whether the row indicated
@@ -278,7 +279,7 @@ func classInitTreeModelFilterer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_TreeModelFilterClass_modify
-func _gotk4_gtk3_TreeModelFilterClass_modify(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 C.gint) {
+func _gotk4_gtk3_TreeModelFilterClass_modify(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.GValue, arg4 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Modify(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int32)
@@ -581,6 +582,46 @@ func (filter *TreeModelFilter) Refilter() {
 	_info.InvokeClassMethod("refilter", _args[:], nil)
 
 	runtime.KeepAlive(filter)
+}
+
+// SetModifyFunc: with the n_columns and types parameters, you give an array of
+// column types for this model (which will be exposed to the parent model/view).
+// The func, data and destroy parameters are for specifying the modify function.
+// The modify function will get called for each data access, the goal of the
+// modify function is to return the data which should be displayed at the
+// location specified using the parameters of the modify function.
+//
+// Note that gtk_tree_model_filter_set_modify_func() can only be called once for
+// a given filter model.
+//
+// The function takes the following parameters:
+//
+//    - types of the columns.
+//    - fn: TreeModelFilterModifyFunc.
+//
+func (filter *TreeModelFilter) SetModifyFunc(types []coreglib.Type, fn TreeModelFilterModifyFunc) {
+	var _args [6]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = (C.gint)(len(types))
+	*(**C.GType)(unsafe.Pointer(&_args[2])) = (*C.GType)(C.calloc(C.size_t(len(types)), C.size_t(C.sizeof_GType)))
+	defer C.free(unsafe.Pointer(*(**C.GType)(unsafe.Pointer(&_args[2]))))
+	{
+		out := unsafe.Slice((*C.GType)(*(**C.GType)(unsafe.Pointer(&_args[2]))), len(types))
+		for i := range types {
+			*(*C.GType)(unsafe.Pointer(&out[i])) = C.GType(types[i])
+		}
+	}
+	*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gtk3_TreeModelFilterModifyFunc)
+	_args[4] = C.gpointer(gbox.Assign(fn))
+	_args[5] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	_info := girepository.MustFind("Gtk", "TreeModelFilter")
+	_info.InvokeClassMethod("set_modify_func", _args[:], nil)
+
+	runtime.KeepAlive(filter)
+	runtime.KeepAlive(types)
+	runtime.KeepAlive(fn)
 }
 
 // SetVisibleColumn sets column of the child_model to be the column where filter

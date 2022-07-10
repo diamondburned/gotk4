@@ -649,6 +649,63 @@ func NewContentFormats(mimeTypes []string) *ContentFormats {
 	return _contentFormats
 }
 
+// NewContentFormatsForGType constructs a struct ContentFormats.
+func NewContentFormatsForGType(typ coreglib.Type) *ContentFormats {
+	var _args [1]girepository.Argument
+
+	*(*C.GType)(unsafe.Pointer(&_args[0])) = C.GType(typ)
+
+	_info := girepository.MustFind("Gdk", "ContentFormats")
+	_gret := _info.InvokeRecordMethod("new_for_gtype", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(typ)
+
+	var _contentFormats *ContentFormats // out
+
+	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
+
+	return _contentFormats
+}
+
+// ContainGType checks if a given GType is part of the given formats.
+//
+// The function takes the following parameters:
+//
+//    - typ: GType to search for.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the #GType was found.
+//
+func (formats *ContentFormats) ContainGType(typ coreglib.Type) bool {
+	var _args [2]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
+	*(*C.GType)(unsafe.Pointer(&_args[1])) = C.GType(typ)
+
+	_info := girepository.MustFind("Gdk", "ContentFormats")
+	_gret := _info.InvokeRecordMethod("contain_gtype", _args[:], nil)
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(formats)
+	runtime.KeepAlive(typ)
+
+	var _ok bool // out
+
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // ContainMIMEType checks if a given mime type is part of the given formats.
 //
 // The function takes the following parameters:
@@ -680,6 +737,43 @@ func (formats *ContentFormats) ContainMIMEType(mimeType string) bool {
 	}
 
 	return _ok
+}
+
+// GTypes gets the GTypes included in formats.
+//
+// Note that formats may not contain any #GTypes, in particular when they are
+// empty. In that case NULL will be returned.
+//
+// The function returns the following values:
+//
+//    - gTypes (optional): G_TYPE_INVALID-terminated array of types included in
+//      formats or NULL if none.
+//
+func (formats *ContentFormats) GTypes() []coreglib.Type {
+	var _args [1]girepository.Argument
+	var _outs [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
+
+	_info := girepository.MustFind("Gdk", "ContentFormats")
+	_gret := _info.InvokeRecordMethod("get_gtypes", _args[:], _outs[:])
+	_cret := *(**C.GType)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(formats)
+
+	var _gTypes []coreglib.Type // out
+
+	if *(**C.GType)(unsafe.Pointer(&_cret)) != nil {
+		{
+			src := unsafe.Slice((*C.GType)(*(**C.GType)(unsafe.Pointer(&_cret))), *(*C.gsize)(unsafe.Pointer(&_outs[0])))
+			_gTypes = make([]coreglib.Type, *(*C.gsize)(unsafe.Pointer(&_outs[0])))
+			for i := 0; i < int(*(*C.gsize)(unsafe.Pointer(&_outs[0]))); i++ {
+				_gTypes[i] = coreglib.Type(*(*C.GType)(unsafe.Pointer(&src[i])))
+			}
+		}
+	}
+
+	return _gTypes
 }
 
 // MIMETypes gets the mime types included in formats.
@@ -749,6 +843,38 @@ func (first *ContentFormats) Match(second *ContentFormats) bool {
 	}
 
 	return _ok
+}
+
+// MatchGType finds the first GType from first that is also contained in second.
+//
+// If no matching GType is found, G_TYPE_INVALID is returned.
+//
+// The function takes the following parameters:
+//
+//    - second: GdkContentFormats to intersect with.
+//
+// The function returns the following values:
+//
+//    - gType: first common GType or G_TYPE_INVALID if none.
+//
+func (first *ContentFormats) MatchGType(second *ContentFormats) coreglib.Type {
+	var _args [2]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(first)))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(second)))
+
+	_info := girepository.MustFind("Gdk", "ContentFormats")
+	_gret := _info.InvokeRecordMethod("match_gtype", _args[:], nil)
+	_cret := *(*C.GType)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(first)
+	runtime.KeepAlive(second)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(*(*C.GType)(unsafe.Pointer(&_cret)))
+
+	return _gType
 }
 
 // MatchMIMEType finds the first mime type from first that is also contained in

@@ -425,14 +425,14 @@ func (gesture *Gesture) GetGroup() []Gesturer {
 
 	_info := girepository.MustFind("Gtk", "Gesture")
 	_gret := _info.InvokeClassMethod("get_group", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)
 
 	var _list []Gesturer // out
 
-	_list = make([]Gesturer, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]Gesturer, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Gesturer // out
 		{
@@ -596,14 +596,14 @@ func (gesture *Gesture) Sequences() []*gdk.EventSequence {
 
 	_info := girepository.MustFind("Gtk", "Gesture")
 	_gret := _info.InvokeClassMethod("get_sequences", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gesture)
 
 	var _list []*gdk.EventSequence // out
 
-	_list = make([]*gdk.EventSequence, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]*gdk.EventSequence, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *gdk.EventSequence // out
 		dst = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))

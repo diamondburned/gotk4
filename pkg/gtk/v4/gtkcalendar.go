@@ -263,13 +263,13 @@ func (self *Calendar) Date() *glib.DateTime {
 
 	_info := girepository.MustFind("Gtk", "Calendar")
 	_gret := _info.InvokeClassMethod("get_date", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GDateTime)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
 	var _dateTime *glib.DateTime // out
 
-	_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(*(**C.GDateTime)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_dateTime)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -426,7 +426,7 @@ func (self *Calendar) SelectDay(date *glib.DateTime) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(date)))
+	*(**C.GDateTime)(unsafe.Pointer(&_args[1])) = (*C.GDateTime)(gextras.StructNative(unsafe.Pointer(date)))
 
 	_info := girepository.MustFind("Gtk", "Calendar")
 	_info.InvokeClassMethod("select_day", _args[:], nil)

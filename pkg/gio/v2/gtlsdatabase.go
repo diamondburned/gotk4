@@ -17,10 +17,10 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern GList* _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish(void*, void*, GError**);
 // extern gchar* _gotk4_gio2_TlsDatabaseClass_create_certificate_handle(void*, void*);
 // extern void* _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle_finish(void*, void*, GError**);
 // extern void* _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer_finish(void*, void*, GError**);
-// extern void* _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish(void*, void*, GError**);
 import "C"
 
 // GTypeTLSDatabase returns the GType for the type TLSDatabase.
@@ -246,7 +246,7 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle_finish(arg0 *C.v
 	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(tlsCertificate).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(tlsCertificate).Native()))
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -284,14 +284,14 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer_finish(arg0 *C.void,
 	cret = (*C.void)(unsafe.Pointer(coreglib.InternObject(tlsCertificate).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(tlsCertificate).Native()))
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret
 }
 
 //export _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish
-func _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.void) {
+func _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.GList) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupCertificatesIssuedByFinish(result AsyncResulter) ([]TLSCertificater, error)
@@ -327,7 +327,7 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish(arg0 *C.v
 		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
 	}
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -416,7 +416,7 @@ func (self *TLSDatabase) LookupCertificateForHandleFinish(result AsyncResulter) 
 
 	_info := girepository.MustFind("Gio", "TlsDatabase")
 	_gret := _info.InvokeClassMethod("lookup_certificate_for_handle_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(result)
@@ -441,8 +441,8 @@ func (self *TLSDatabase) LookupCertificateForHandleFinish(result AsyncResulter) 
 		}
 		_tlsCertificate = rv
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _tlsCertificate, _goerr
@@ -469,7 +469,7 @@ func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (TL
 
 	_info := girepository.MustFind("Gio", "TlsDatabase")
 	_gret := _info.InvokeClassMethod("lookup_certificate_issuer_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(result)
@@ -494,8 +494,8 @@ func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (TL
 		}
 		_tlsCertificate = rv
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _tlsCertificate, _goerr
@@ -522,7 +522,7 @@ func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) 
 
 	_info := girepository.MustFind("Gio", "TlsDatabase")
 	_gret := _info.InvokeClassMethod("lookup_certificates_issued_by_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(result)
@@ -530,8 +530,8 @@ func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) 
 	var _list []TLSCertificater // out
 	var _goerr error            // out
 
-	_list = make([]TLSCertificater, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]TLSCertificater, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst TLSCertificater // out
 		{
@@ -553,8 +553,8 @@ func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) 
 		}
 		_list = append(_list, dst)
 	})
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _list, _goerr

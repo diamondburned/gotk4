@@ -224,14 +224,14 @@ func (invocation *DBusMethodInvocation) Parameters() *glib.Variant {
 
 	_info := girepository.MustFind("Gio", "DBusMethodInvocation")
 	_gret := _info.InvokeClassMethod("get_parameters", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GVariant)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(invocation)
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	C.g_variant_ref(*(**C.void)(unsafe.Pointer(&_cret)))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.GVariant)(unsafe.Pointer(&_cret)))))
+	C.g_variant_ref(*(**C.GVariant)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -384,7 +384,7 @@ func (invocation *DBusMethodInvocation) ReturnGError(err error) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(invocation).Native()))
 	if err != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gerror.New(err))
+		*(**C.GError)(unsafe.Pointer(&_args[1])) = (*C.GError)(gerror.New(err))
 	}
 
 	_info := girepository.MustFind("Gio", "DBusMethodInvocation")
@@ -434,7 +434,7 @@ func (invocation *DBusMethodInvocation) ReturnValue(parameters *glib.Variant) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(invocation).Native()))
 	if parameters != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parameters)))
+		*(**C.GVariant)(unsafe.Pointer(&_args[1])) = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
 	}
 
 	_info := girepository.MustFind("Gio", "DBusMethodInvocation")

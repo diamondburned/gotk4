@@ -114,6 +114,43 @@ func marshalListStore(p uintptr) (interface{}, error) {
 	return wrapListStore(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// NewListStore: non-vararg creation function. Used primarily by language
+// bindings.
+//
+// The function takes the following parameters:
+//
+//    - types: array of #GType types for the columns, from first to last.
+//
+// The function returns the following values:
+//
+//    - listStore: new ListStore.
+//
+func NewListStore(types []coreglib.Type) *ListStore {
+	var _args [2]girepository.Argument
+
+	*(*C.gint)(unsafe.Pointer(&_args[0])) = (C.gint)(len(types))
+	*(**C.GType)(unsafe.Pointer(&_args[1])) = (*C.GType)(C.calloc(C.size_t(len(types)), C.size_t(C.sizeof_GType)))
+	defer C.free(unsafe.Pointer(*(**C.GType)(unsafe.Pointer(&_args[1]))))
+	{
+		out := unsafe.Slice((*C.GType)(*(**C.GType)(unsafe.Pointer(&_args[1]))), len(types))
+		for i := range types {
+			*(*C.GType)(unsafe.Pointer(&out[i])) = C.GType(types[i])
+		}
+	}
+
+	_info := girepository.MustFind("Gtk", "ListStore")
+	_gret := _info.InvokeClassMethod("new_ListStore", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(types)
+
+	var _listStore *ListStore // out
+
+	_listStore = wrapListStore(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+
+	return _listStore
+}
+
 // Append appends a new row to list_store. iter will be changed to point to this
 // new row. The row will be empty after this function is called. To fill in
 // values, you need to call gtk_list_store_set() or gtk_list_store_set_value().
@@ -253,6 +290,62 @@ func (listStore *ListStore) InsertBefore(sibling *TreeIter) *TreeIter {
 	var _iter *TreeIter // out
 
 	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+
+	return _iter
+}
+
+// InsertWithValuesv: variant of gtk_list_store_insert_with_values() which takes
+// the columns and values as two arrays, instead of varargs. This function is
+// mainly intended for language-bindings.
+//
+// The function takes the following parameters:
+//
+//    - position to insert the new row, or -1 for last.
+//    - columns: array of column numbers.
+//    - values: array of GValues.
+//
+// The function returns the following values:
+//
+//    - iter (optional): unset TreeIter to set to the new row, or NULL.
+//
+func (listStore *ListStore) InsertWithValuesv(position int32, columns []int32, values []coreglib.Value) *TreeIter {
+	var _args [5]girepository.Argument
+	var _outs [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(position)
+	*(*C.gint)(unsafe.Pointer(&_args[4])) = (C.gint)(len(columns))
+	*(**C.gint)(unsafe.Pointer(&_args[2])) = (*C.gint)(C.calloc(C.size_t(len(columns)), C.size_t(C.sizeof_gint)))
+	defer C.free(unsafe.Pointer(*(**C.gint)(unsafe.Pointer(&_args[2]))))
+	{
+		out := unsafe.Slice((*C.gint)(*(**C.gint)(unsafe.Pointer(&_args[2]))), len(columns))
+		for i := range columns {
+			*(*C.gint)(unsafe.Pointer(&out[i])) = C.gint(columns[i])
+		}
+	}
+	*(*C.gint)(unsafe.Pointer(&_args[4])) = (C.gint)(len(values))
+	*(**C.GValue)(unsafe.Pointer(&_args[3])) = (*C.GValue)(C.calloc(C.size_t(len(values)), C.size_t(C.sizeof_GValue)))
+	defer C.free(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_args[3]))))
+	{
+		out := unsafe.Slice((*C.GValue)(*(**C.GValue)(unsafe.Pointer(&_args[3]))), len(values))
+		for i := range values {
+			*(*C.GValue)(unsafe.Pointer(&out[i])) = *(*C.GValue)(unsafe.Pointer((&values[i]).Native()))
+		}
+	}
+
+	_info := girepository.MustFind("Gtk", "ListStore")
+	_info.InvokeClassMethod("insert_with_valuesv", _args[:], _outs[:])
+
+	runtime.KeepAlive(listStore)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(columns)
+	runtime.KeepAlive(values)
+
+	var _iter *TreeIter // out
+
+	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
+		_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	}
 
 	return _iter
 }
@@ -437,6 +530,36 @@ func (store *ListStore) Reorder(newOrder []int32) {
 	runtime.KeepAlive(newOrder)
 }
 
+// SetColumnTypes: this function is meant primarily for #GObjects that inherit
+// from ListStore, and should only be used when constructing a new ListStore. It
+// will not function after a row has been added, or a method on the TreeModel
+// interface is called.
+//
+// The function takes the following parameters:
+//
+//    - types: array length n of #GTypes.
+//
+func (listStore *ListStore) SetColumnTypes(types []coreglib.Type) {
+	var _args [3]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
+	*(*C.gint)(unsafe.Pointer(&_args[1])) = (C.gint)(len(types))
+	*(**C.GType)(unsafe.Pointer(&_args[2])) = (*C.GType)(C.calloc(C.size_t(len(types)), C.size_t(C.sizeof_GType)))
+	defer C.free(unsafe.Pointer(*(**C.GType)(unsafe.Pointer(&_args[2]))))
+	{
+		out := unsafe.Slice((*C.GType)(*(**C.GType)(unsafe.Pointer(&_args[2]))), len(types))
+		for i := range types {
+			*(*C.GType)(unsafe.Pointer(&out[i])) = C.GType(types[i])
+		}
+	}
+
+	_info := girepository.MustFind("Gtk", "ListStore")
+	_info.InvokeClassMethod("set_column_types", _args[:], nil)
+
+	runtime.KeepAlive(listStore)
+	runtime.KeepAlive(types)
+}
+
 // SetValue sets the data in the cell specified by iter and column. The type of
 // value must be convertible to the type of the column.
 //
@@ -452,7 +575,7 @@ func (listStore *ListStore) SetValue(iter *TreeIter, column int32, value *coregl
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(column)
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**C.GValue)(unsafe.Pointer(&_args[3])) = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gtk", "ListStore")
 	_info.InvokeClassMethod("set_value", _args[:], nil)
@@ -461,6 +584,50 @@ func (listStore *ListStore) SetValue(iter *TreeIter, column int32, value *coregl
 	runtime.KeepAlive(iter)
 	runtime.KeepAlive(column)
 	runtime.KeepAlive(value)
+}
+
+// Set: variant of gtk_list_store_set_valist() which takes the columns and
+// values as two arrays, instead of varargs. This function is mainly intended
+// for language-bindings and in case the number of columns to change is not
+// known until run-time.
+//
+// The function takes the following parameters:
+//
+//    - iter: valid TreeIter for the row being modified.
+//    - columns: array of column numbers.
+//    - values: array of GValues.
+//
+func (listStore *ListStore) Set(iter *TreeIter, columns []int32, values []coreglib.Value) {
+	var _args [5]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(listStore).Native()))
+	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
+	*(*C.gint)(unsafe.Pointer(&_args[4])) = (C.gint)(len(columns))
+	*(**C.gint)(unsafe.Pointer(&_args[2])) = (*C.gint)(C.calloc(C.size_t(len(columns)), C.size_t(C.sizeof_gint)))
+	defer C.free(unsafe.Pointer(*(**C.gint)(unsafe.Pointer(&_args[2]))))
+	{
+		out := unsafe.Slice((*C.gint)(*(**C.gint)(unsafe.Pointer(&_args[2]))), len(columns))
+		for i := range columns {
+			*(*C.gint)(unsafe.Pointer(&out[i])) = C.gint(columns[i])
+		}
+	}
+	*(*C.gint)(unsafe.Pointer(&_args[4])) = (C.gint)(len(values))
+	*(**C.GValue)(unsafe.Pointer(&_args[3])) = (*C.GValue)(C.calloc(C.size_t(len(values)), C.size_t(C.sizeof_GValue)))
+	defer C.free(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_args[3]))))
+	{
+		out := unsafe.Slice((*C.GValue)(*(**C.GValue)(unsafe.Pointer(&_args[3]))), len(values))
+		for i := range values {
+			*(*C.GValue)(unsafe.Pointer(&out[i])) = *(*C.GValue)(unsafe.Pointer((&values[i]).Native()))
+		}
+	}
+
+	_info := girepository.MustFind("Gtk", "ListStore")
+	_info.InvokeClassMethod("set_valuesv", _args[:], nil)
+
+	runtime.KeepAlive(listStore)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(columns)
+	runtime.KeepAlive(values)
 }
 
 // Swap swaps a and b in store. Note that this function only works with unsorted

@@ -213,6 +213,61 @@ func (button *ScaleButton) ConnectValueChanged(f func(value float64)) coreglib.S
 	return coreglib.ConnectGeneratedClosure(button, "value-changed", false, unsafe.Pointer(C._gotk4_gtk3_ScaleButton_ConnectValueChanged), f)
 }
 
+// NewScaleButton creates a ScaleButton, with a range between min and max, with
+// a stepping of step.
+//
+// The function takes the following parameters:
+//
+//    - size: stock icon size (IconSize).
+//    - min: minimum value of the scale (usually 0).
+//    - max: maximum value of the scale (usually 100).
+//    - step: stepping of value when a scroll-wheel event, or up/down arrow event
+//      occurs (usually 2).
+//    - icons (optional): NULL-terminated array of icon names, or NULL if you
+//      want to set the list later with gtk_scale_button_set_icons().
+//
+// The function returns the following values:
+//
+//    - scaleButton: new ScaleButton.
+//
+func NewScaleButton(size int32, min, max, step float64, icons []string) *ScaleButton {
+	var _args [5]girepository.Argument
+
+	*(*C.GtkIconSize)(unsafe.Pointer(&_args[0])) = C.GtkIconSize(size)
+	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(min)
+	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(max)
+	*(*C.gdouble)(unsafe.Pointer(&_args[3])) = C.gdouble(step)
+	{
+		*(***C.gchar)(unsafe.Pointer(&_args[4])) = (**C.gchar)(C.calloc(C.size_t((len(icons) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(*(***C.gchar)(unsafe.Pointer(&_args[4]))))
+		{
+			out := unsafe.Slice(_args[4], len(icons)+1)
+			var zero *C.gchar
+			out[len(icons)] = zero
+			for i := range icons {
+				*(**C.gchar)(unsafe.Pointer(&out[i])) = (*C.gchar)(unsafe.Pointer(C.CString(icons[i])))
+				defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&out[i]))))
+			}
+		}
+	}
+
+	_info := girepository.MustFind("Gtk", "ScaleButton")
+	_gret := _info.InvokeClassMethod("new_ScaleButton", _args[:], nil)
+	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(min)
+	runtime.KeepAlive(max)
+	runtime.KeepAlive(step)
+	runtime.KeepAlive(icons)
+
+	var _scaleButton *ScaleButton // out
+
+	_scaleButton = wrapScaleButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+
+	return _scaleButton
+}
+
 // Adjustment gets the Adjustment associated with the ScaleButton’s scale. See
 // gtk_range_get_adjustment() for details.
 //

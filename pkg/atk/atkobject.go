@@ -23,7 +23,7 @@ import (
 // extern gint _gotk4_atk1_ObjectClass_get_index_in_parent(void*);
 // extern gint _gotk4_atk1_ObjectClass_get_mdi_zorder(void*);
 // extern gint _gotk4_atk1_ObjectClass_get_n_children(void*);
-// extern void _gotk4_atk1_ObjectClass_active_descendant_changed(void*, void*);
+// extern void _gotk4_atk1_ObjectClass_active_descendant_changed(void*, gpointer*);
 // extern void _gotk4_atk1_ObjectClass_children_changed(void*, guint, gpointer);
 // extern void _gotk4_atk1_ObjectClass_focus_event(void*, gboolean);
 // extern void _gotk4_atk1_ObjectClass_initialize(void*, gpointer);
@@ -1205,7 +1205,7 @@ func classInitObjectClasser(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_atk1_ObjectClass_active_descendant_changed
-func _gotk4_atk1_ObjectClass_active_descendant_changed(arg0 *C.void, arg1 *C.void) {
+func _gotk4_atk1_ObjectClass_active_descendant_changed(arg0 *C.void, arg1 *C.gpointer) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ActiveDescendantChanged(child *unsafe.Pointer) })
 

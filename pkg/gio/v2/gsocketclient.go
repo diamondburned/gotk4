@@ -18,7 +18,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
 import "C"
 
 // GTypeSocketClient returns the GType for the type SocketClient.
@@ -165,13 +165,13 @@ func (client *SocketClient) ConnectSocketClient(ctx context.Context, connectable
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
 
 	_info := girepository.MustFind("Gio", "SocketClient")
 	_gret := _info.InvokeClassMethod("connect", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(ctx)
@@ -181,8 +181,8 @@ func (client *SocketClient) ConnectSocketClient(ctx context.Context, connectable
 	var _goerr error                        // out
 
 	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _socketConnection, _goerr
@@ -214,7 +214,7 @@ func (client *SocketClient) ConnectAsync(ctx context.Context, connectable Socket
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
 	if callback != nil {
@@ -250,7 +250,7 @@ func (client *SocketClient) ConnectFinish(result AsyncResulter) (*SocketConnecti
 
 	_info := girepository.MustFind("Gio", "SocketClient")
 	_gret := _info.InvokeClassMethod("connect_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(result)
@@ -259,8 +259,8 @@ func (client *SocketClient) ConnectFinish(result AsyncResulter) (*SocketConnecti
 	var _goerr error                        // out
 
 	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _socketConnection, _goerr
@@ -313,7 +313,7 @@ func (client *SocketClient) ConnectToHost(ctx context.Context, hostAndPort strin
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(hostAndPort)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
@@ -321,7 +321,7 @@ func (client *SocketClient) ConnectToHost(ctx context.Context, hostAndPort strin
 
 	_info := girepository.MustFind("Gio", "SocketClient")
 	_gret := _info.InvokeClassMethod("connect_to_host", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(ctx)
@@ -332,8 +332,8 @@ func (client *SocketClient) ConnectToHost(ctx context.Context, hostAndPort strin
 	var _goerr error                        // out
 
 	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _socketConnection, _goerr
@@ -359,7 +359,7 @@ func (client *SocketClient) ConnectToHostAsync(ctx context.Context, hostAndPort 
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(hostAndPort)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
@@ -398,7 +398,7 @@ func (client *SocketClient) ConnectToHostFinish(result AsyncResulter) (*SocketCo
 
 	_info := girepository.MustFind("Gio", "SocketClient")
 	_gret := _info.InvokeClassMethod("connect_to_host_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(result)
@@ -407,8 +407,8 @@ func (client *SocketClient) ConnectToHostFinish(result AsyncResulter) (*SocketCo
 	var _goerr error                        // out
 
 	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _socketConnection, _goerr
@@ -445,7 +445,7 @@ func (client *SocketClient) ConnectToService(ctx context.Context, domain, servic
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
@@ -454,7 +454,7 @@ func (client *SocketClient) ConnectToService(ctx context.Context, domain, servic
 
 	_info := girepository.MustFind("Gio", "SocketClient")
 	_gret := _info.InvokeClassMethod("connect_to_service", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(ctx)
@@ -465,8 +465,8 @@ func (client *SocketClient) ConnectToService(ctx context.Context, domain, servic
 	var _goerr error                        // out
 
 	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _socketConnection, _goerr
@@ -489,7 +489,7 @@ func (client *SocketClient) ConnectToServiceAsync(ctx context.Context, domain, s
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
@@ -529,7 +529,7 @@ func (client *SocketClient) ConnectToServiceFinish(result AsyncResulter) (*Socke
 
 	_info := girepository.MustFind("Gio", "SocketClient")
 	_gret := _info.InvokeClassMethod("connect_to_service_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(result)
@@ -538,8 +538,8 @@ func (client *SocketClient) ConnectToServiceFinish(result AsyncResulter) (*Socke
 	var _goerr error                        // out
 
 	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _socketConnection, _goerr
@@ -582,7 +582,7 @@ func (client *SocketClient) ConnectToURI(ctx context.Context, uri string, defaul
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
@@ -590,7 +590,7 @@ func (client *SocketClient) ConnectToURI(ctx context.Context, uri string, defaul
 
 	_info := girepository.MustFind("Gio", "SocketClient")
 	_gret := _info.InvokeClassMethod("connect_to_uri", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(ctx)
@@ -601,8 +601,8 @@ func (client *SocketClient) ConnectToURI(ctx context.Context, uri string, defaul
 	var _goerr error                        // out
 
 	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _socketConnection, _goerr
@@ -628,7 +628,7 @@ func (client *SocketClient) ConnectToURIAsync(ctx context.Context, uri string, d
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
 	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
@@ -667,7 +667,7 @@ func (client *SocketClient) ConnectToURIFinish(result AsyncResulter) (*SocketCon
 
 	_info := girepository.MustFind("Gio", "SocketClient")
 	_gret := _info.InvokeClassMethod("connect_to_uri_finish", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(result)
@@ -676,8 +676,8 @@ func (client *SocketClient) ConnectToURIFinish(result AsyncResulter) (*SocketCon
 	var _goerr error                        // out
 
 	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _socketConnection, _goerr

@@ -16,17 +16,17 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_atk1_ValueIface_set_current_value(void*, void*);
+// extern GSList* _gotk4_atk1_ValueIface_get_sub_ranges(void*);
+// extern gboolean _gotk4_atk1_ValueIface_set_current_value(void*, const GValue*);
 // extern gdouble _gotk4_atk1_ValueIface_get_increment(void*);
-// extern void _gotk4_atk1_ValueIface_get_current_value(void*, void*);
-// extern void _gotk4_atk1_ValueIface_get_maximum_value(void*, void*);
-// extern void _gotk4_atk1_ValueIface_get_minimum_increment(void*, void*);
-// extern void _gotk4_atk1_ValueIface_get_minimum_value(void*, void*);
+// extern void _gotk4_atk1_ValueIface_get_current_value(void*, GValue*);
+// extern void _gotk4_atk1_ValueIface_get_maximum_value(void*, GValue*);
+// extern void _gotk4_atk1_ValueIface_get_minimum_increment(void*, GValue*);
+// extern void _gotk4_atk1_ValueIface_get_minimum_value(void*, GValue*);
 // extern void _gotk4_atk1_ValueIface_get_value_and_text(void*, gdouble*, gchar**);
 // extern void _gotk4_atk1_ValueIface_set_value(void*, gdouble);
 // extern void _gotk4_atk1_Value_ConnectValueChanged(gpointer, gdouble, gchar*, guintptr);
 // extern void* _gotk4_atk1_ValueIface_get_range(void*);
-// extern void* _gotk4_atk1_ValueIface_get_sub_ranges(void*);
 import "C"
 
 // GTypeValueType returns the GType for the type ValueType.
@@ -388,13 +388,13 @@ func ifaceInitValueer(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_atk1_ValueIface_get_current_value
-func _gotk4_atk1_ValueIface_get_current_value(arg0 *C.void, arg1 *C.void) {
+func _gotk4_atk1_ValueIface_get_current_value(arg0 *C.void, arg1 *C.GValue) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ValueOverrider)
 
 	value := iface.CurrentValue()
 
-	*arg1 = (*C.void)(unsafe.Pointer((&value).Native()))
+	*arg1 = (*C.GValue)(unsafe.Pointer((&value).Native()))
 }
 
 //export _gotk4_atk1_ValueIface_get_increment
@@ -410,33 +410,33 @@ func _gotk4_atk1_ValueIface_get_increment(arg0 *C.void) (cret C.gdouble) {
 }
 
 //export _gotk4_atk1_ValueIface_get_maximum_value
-func _gotk4_atk1_ValueIface_get_maximum_value(arg0 *C.void, arg1 *C.void) {
+func _gotk4_atk1_ValueIface_get_maximum_value(arg0 *C.void, arg1 *C.GValue) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ValueOverrider)
 
 	value := iface.MaximumValue()
 
-	*arg1 = (*C.void)(unsafe.Pointer((&value).Native()))
+	*arg1 = (*C.GValue)(unsafe.Pointer((&value).Native()))
 }
 
 //export _gotk4_atk1_ValueIface_get_minimum_increment
-func _gotk4_atk1_ValueIface_get_minimum_increment(arg0 *C.void, arg1 *C.void) {
+func _gotk4_atk1_ValueIface_get_minimum_increment(arg0 *C.void, arg1 *C.GValue) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ValueOverrider)
 
 	value := iface.MinimumIncrement()
 
-	*arg1 = (*C.void)(unsafe.Pointer((&value).Native()))
+	*arg1 = (*C.GValue)(unsafe.Pointer((&value).Native()))
 }
 
 //export _gotk4_atk1_ValueIface_get_minimum_value
-func _gotk4_atk1_ValueIface_get_minimum_value(arg0 *C.void, arg1 *C.void) {
+func _gotk4_atk1_ValueIface_get_minimum_value(arg0 *C.void, arg1 *C.GValue) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ValueOverrider)
 
 	value := iface.MinimumValue()
 
-	*arg1 = (*C.void)(unsafe.Pointer((&value).Native()))
+	*arg1 = (*C.GValue)(unsafe.Pointer((&value).Native()))
 }
 
 //export _gotk4_atk1_ValueIface_get_range
@@ -455,7 +455,7 @@ func _gotk4_atk1_ValueIface_get_range(arg0 *C.void) (cret *C.void) {
 }
 
 //export _gotk4_atk1_ValueIface_get_sub_ranges
-func _gotk4_atk1_ValueIface_get_sub_ranges(arg0 *C.void) (cret *C.void) {
+func _gotk4_atk1_ValueIface_get_sub_ranges(arg0 *C.void) (cret *C.GSList) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ValueOverrider)
 
@@ -486,7 +486,7 @@ func _gotk4_atk1_ValueIface_get_value_and_text(arg0 *C.void, arg1 *C.gdouble, ar
 }
 
 //export _gotk4_atk1_ValueIface_set_current_value
-func _gotk4_atk1_ValueIface_set_current_value(arg0 *C.void, arg1 *C.void) (cret C.gboolean) {
+func _gotk4_atk1_ValueIface_set_current_value(arg0 *C.void, arg1 *C.GValue) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ValueOverrider)
 
@@ -581,7 +581,7 @@ func (obj *Value) CurrentValue() coreglib.Value {
 
 	var _value coreglib.Value // out
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_outs[0]))))
 
 	return _value
 }
@@ -634,7 +634,7 @@ func (obj *Value) MaximumValue() coreglib.Value {
 
 	var _value coreglib.Value // out
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_outs[0]))))
 
 	return _value
 }
@@ -663,7 +663,7 @@ func (obj *Value) MinimumIncrement() coreglib.Value {
 
 	var _value coreglib.Value // out
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_outs[0]))))
 
 	return _value
 }
@@ -689,7 +689,7 @@ func (obj *Value) MinimumValue() coreglib.Value {
 
 	var _value coreglib.Value // out
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.GValue)(unsafe.Pointer(&_outs[0]))))
 
 	return _value
 }
@@ -747,14 +747,14 @@ func (obj *Value) SubRanges() []*Range {
 
 	_info := girepository.MustFind("Atk", "Value")
 	_gret := _info.InvokeIfaceMethod("get_sub_ranges", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(obj)
 
 	var _sList []*Range // out
 
-	_sList = make([]*Range, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_sList = make([]*Range, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Range // out
 		dst = (*Range)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
@@ -823,7 +823,7 @@ func (obj *Value) SetCurrentValue(value *coreglib.Value) bool {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**C.GValue)(unsafe.Pointer(&_args[1])) = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Atk", "Value")
 	_gret := _info.InvokeIfaceMethod("set_current_value", _args[:], nil)

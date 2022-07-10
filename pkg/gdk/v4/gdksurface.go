@@ -387,7 +387,7 @@ func (surface *Surface) CreateGLContext() (GLContexter, error) {
 
 	_info := girepository.MustFind("Gdk", "Surface")
 	_gret := _info.InvokeClassMethod("create_gl_context", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 
@@ -411,8 +411,8 @@ func (surface *Surface) CreateGLContext() (GLContexter, error) {
 		}
 		_glContext = rv
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _glContext, _goerr
@@ -433,7 +433,7 @@ func (surface *Surface) CreateVulkanContext() (VulkanContexter, error) {
 
 	_info := girepository.MustFind("Gdk", "Surface")
 	_gret := _info.InvokeClassMethod("create_vulkan_context", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 
@@ -457,8 +457,8 @@ func (surface *Surface) CreateVulkanContext() (VulkanContexter, error) {
 		}
 		_vulkanContext = rv
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _vulkanContext, _goerr

@@ -1185,15 +1185,15 @@ func (window *Window) Icon() *gdkpixbuf.Pixbuf {
 
 	_info := girepository.MustFind("Gtk", "Window")
 	_gret := _info.InvokeClassMethod("get_icon", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GdkPixbuf)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if *(**C.GdkPixbuf)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&_cret))))
 			_pixbuf = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{
@@ -1222,18 +1222,18 @@ func (window *Window) IconList() []*gdkpixbuf.Pixbuf {
 
 	_info := girepository.MustFind("Gtk", "Window")
 	_gret := _info.InvokeClassMethod("get_icon_list", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
 	var _list []*gdkpixbuf.Pixbuf // out
 
-	_list = make([]*gdkpixbuf.Pixbuf, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]*gdkpixbuf.Pixbuf, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+		src := (*C.GdkPixbuf)(v)
 		var dst *gdkpixbuf.Pixbuf // out
 		{
-			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src))))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&src))))
 			dst = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{
@@ -2801,7 +2801,7 @@ func (window *Window) SetIcon(icon *gdkpixbuf.Pixbuf) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if icon != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+		*(**C.GdkPixbuf)(unsafe.Pointer(&_args[1])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 	}
 
 	_info := girepository.MustFind("Gtk", "Window")
@@ -2835,8 +2835,8 @@ func (window *Window) SetIconFromFile(filename string) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -2878,9 +2878,9 @@ func (window *Window) SetIconList(list []*gdkpixbuf.Pixbuf) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	for i := len(list) - 1; i >= 0; i-- {
 		src := list[i]
-		var dst *C.void // out
-		*(**C.void)(unsafe.Pointer(&dst)) = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
-		*(**C.void)(unsafe.Pointer(&_args[1])) = C.g_list_prepend(*(**C.void)(unsafe.Pointer(&_args[1])), C.gpointer(unsafe.Pointer(dst)))
+		var dst *C.GdkPixbuf // out
+		*(**C.GdkPixbuf)(unsafe.Pointer(&dst)) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+		*(**C.GList)(unsafe.Pointer(&_args[1])) = C.g_list_prepend(*(**C.GList)(unsafe.Pointer(&_args[1])), C.gpointer(unsafe.Pointer(dst)))
 	}
 	defer C.g_list_free(_args[1])
 
@@ -3446,16 +3446,16 @@ func (window *Window) Unstick() {
 func WindowGetDefaultIconList() []*gdkpixbuf.Pixbuf {
 	_info := girepository.MustFind("Gtk", "get_default_icon_list")
 	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	var _list []*gdkpixbuf.Pixbuf // out
 
-	_list = make([]*gdkpixbuf.Pixbuf, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]*gdkpixbuf.Pixbuf, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+		src := (*C.GdkPixbuf)(v)
 		var dst *gdkpixbuf.Pixbuf // out
 		{
-			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src))))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&src))))
 			dst = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{
@@ -3505,12 +3505,12 @@ func WindowGetDefaultIconName() string {
 func WindowListToplevels() []Widgetter {
 	_info := girepository.MustFind("Gtk", "list_toplevels")
 	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	var _list []Widgetter // out
 
-	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Widgetter // out
 		{
@@ -3573,7 +3573,7 @@ func WindowSetAutoStartupNotification(setting bool) {
 func WindowSetDefaultIcon(icon *gdkpixbuf.Pixbuf) {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	*(**C.GdkPixbuf)(unsafe.Pointer(&_args[0])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 
 	_info := girepository.MustFind("Gtk", "set_default_icon")
 	_info.InvokeFunction(_args[:], nil)
@@ -3602,8 +3602,8 @@ func WindowSetDefaultIconFromFile(filename string) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -3625,9 +3625,9 @@ func WindowSetDefaultIconList(list []*gdkpixbuf.Pixbuf) {
 
 	for i := len(list) - 1; i >= 0; i-- {
 		src := list[i]
-		var dst *C.void // out
-		*(**C.void)(unsafe.Pointer(&dst)) = (*C.void)(unsafe.Pointer(coreglib.InternObject(src).Native()))
-		*(**C.void)(unsafe.Pointer(&_args[0])) = C.g_list_prepend(*(**C.void)(unsafe.Pointer(&_args[0])), C.gpointer(unsafe.Pointer(dst)))
+		var dst *C.GdkPixbuf // out
+		*(**C.GdkPixbuf)(unsafe.Pointer(&dst)) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+		*(**C.GList)(unsafe.Pointer(&_args[0])) = C.g_list_prepend(*(**C.GList)(unsafe.Pointer(&_args[0])), C.gpointer(unsafe.Pointer(dst)))
 	}
 
 	_info := girepository.MustFind("Gtk", "set_default_icon_list")

@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #cgo pkg-config: gobject-2.0
@@ -93,6 +94,67 @@ func Log2VisGetEmbeddingLevels(text string, length int32, pbaseDir *Direction) *
 	_guint8 = (*byte)(unsafe.Pointer(*(**C.guint8)(unsafe.Pointer(&_cret))))
 
 	return _guint8
+}
+
+// ParseEnum parses an enum type and stores the result in value.
+//
+// If str does not match the nick name of any of the possible values for the
+// enum and is not an integer, FALSE is returned, a warning is issued if warn is
+// TRUE, and a string representing the list of possible values is stored in
+// possible_values. The list is slash-separated, eg. "none/start/middle/end". If
+// failed and possible_values is not NULL, returned string should be freed using
+// g_free().
+//
+// Deprecated: since version 1.38.
+//
+// The function takes the following parameters:
+//
+//    - typ: enum type to parse, eg. PANGO_TYPE_ELLIPSIZE_MODE.
+//    - str (optional): string to parse. May be NULL.
+//    - warn: if TRUE, issue a g_warning() on bad input.
+//
+// The function returns the following values:
+//
+//    - value (optional): integer to store the result in, or NULL.
+//    - possibleValues (optional): place to store list of possible values on
+//      failure, or NULL.
+//    - ok: TRUE if str was successfully parsed.
+//
+func ParseEnum(typ coreglib.Type, str string, warn bool) (int32, string, bool) {
+	var _args [3]girepository.Argument
+	var _outs [2]girepository.Argument
+
+	*(*C.GType)(unsafe.Pointer(&_args[0])) = C.GType(typ)
+	if str != "" {
+		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(str)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	}
+	if warn {
+		*(*C.gboolean)(unsafe.Pointer(&_args[2])) = C.TRUE
+	}
+
+	_info := girepository.MustFind("Pango", "parse_enum")
+	_gret := _info.InvokeFunction(_args[:], _outs[:])
+	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(warn)
+
+	var _value int32           // out
+	var _possibleValues string // out
+	var _ok bool               // out
+
+	_value = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	if *(**C.char)(unsafe.Pointer(&_outs[1])) != nil {
+		_possibleValues = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[1])))))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[1]))))
+	}
+	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
+		_ok = true
+	}
+
+	return _value, _possibleValues, _ok
 }
 
 // ParseStretch parses a font stretch.

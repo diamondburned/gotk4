@@ -21,9 +21,9 @@ import (
 // extern gboolean _gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer(gpointer, void*, void*, guintptr);
 // extern gboolean _gotk4_gio2_DBusServer_ConnectNewConnection(gpointer, void*, guintptr);
 // extern void _gotk4_gio2_AppInfoMonitor_ConnectChanged(gpointer, guintptr);
-// extern void _gotk4_gio2_DBusConnection_ConnectClosed(gpointer, gboolean, void*, guintptr);
-// extern void _gotk4_gio2_SimpleAction_ConnectActivate(gpointer, void*, guintptr);
-// extern void _gotk4_gio2_SimpleAction_ConnectChangeState(gpointer, void*, guintptr);
+// extern void _gotk4_gio2_DBusConnection_ConnectClosed(gpointer, gboolean, GError*, guintptr);
+// extern void _gotk4_gio2_SimpleAction_ConnectActivate(gpointer, GVariant*, guintptr);
+// extern void _gotk4_gio2_SimpleAction_ConnectChangeState(gpointer, GVariant*, guintptr);
 import "C"
 
 // GTypeAppInfoMonitor returns the GType for the type AppInfoMonitor.
@@ -222,11 +222,11 @@ func GTypeTestDBus() coreglib.Type {
 func ResolverErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gio", "quark")
 	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
+	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -240,11 +240,11 @@ func ResolverErrorQuark() glib.Quark {
 func ResourceErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gio", "quark")
 	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
+	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -258,11 +258,11 @@ func ResourceErrorQuark() glib.Quark {
 func TLSChannelBindingErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gio", "quark")
 	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
+	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -276,11 +276,11 @@ func TLSChannelBindingErrorQuark() glib.Quark {
 func TLSErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gio", "quark")
 	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
+	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -294,11 +294,11 @@ func TLSErrorQuark() glib.Quark {
 func IOErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gio", "io_error_quark")
 	_gret := _info.InvokeFunction(nil, nil)
-	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
+	_cret := *(*C.GQuark)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.GQuark)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -632,7 +632,7 @@ func marshalDBusConnection(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gio2_DBusConnection_ConnectClosed
-func _gotk4_gio2_DBusConnection_ConnectClosed(arg0 C.gpointer, arg1 C.gboolean, arg2 *C.void, arg3 C.guintptr) {
+func _gotk4_gio2_DBusConnection_ConnectClosed(arg0 C.gpointer, arg1 C.gboolean, arg2 *C.GError, arg3 C.guintptr) {
 	var f func(remotePeerVanished bool, err error)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -1030,7 +1030,7 @@ func marshalSimpleAction(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gio2_SimpleAction_ConnectActivate
-func _gotk4_gio2_SimpleAction_ConnectActivate(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gio2_SimpleAction_ConnectActivate(arg0 C.gpointer, arg1 *C.GVariant, arg2 C.guintptr) {
 	var f func(parameter *glib.Variant)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -1075,7 +1075,7 @@ func (simple *SimpleAction) ConnectActivate(f func(parameter *glib.Variant)) cor
 }
 
 //export _gotk4_gio2_SimpleAction_ConnectChangeState
-func _gotk4_gio2_SimpleAction_ConnectChangeState(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gio2_SimpleAction_ConnectChangeState(arg0 C.gpointer, arg1 *C.GVariant, arg2 C.guintptr) {
 	var f func(value *glib.Variant)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))

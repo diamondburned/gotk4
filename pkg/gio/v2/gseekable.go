@@ -3,11 +3,15 @@
 package gio
 
 import (
+	"context"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/girepository"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gobject-2.0
@@ -16,6 +20,8 @@ import (
 // #include <glib-object.h>
 // extern gboolean _gotk4_gio2_SeekableIface_can_seek(void*);
 // extern gboolean _gotk4_gio2_SeekableIface_can_truncate(void*);
+// extern gboolean _gotk4_gio2_SeekableIface_seek(void*, goffset, GSeekType, void*, GError**);
+// extern goffset _gotk4_gio2_SeekableIface_tell(void*);
 import "C"
 
 // GTypeSeekable returns the GType for the type Seekable.
@@ -27,25 +33,6 @@ func GTypeSeekable() coreglib.Type {
 	gtype := coreglib.Type(girepository.MustFind("Gio", "Seekable").RegisteredGType())
 	coreglib.RegisterGValueMarshaler(gtype, marshalSeekable)
 	return gtype
-}
-
-// SeekableOverrider contains methods that are overridable.
-type SeekableOverrider interface {
-	// CanSeek tests if the stream supports the Iface.
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if seekable can be seeked. FALSE otherwise.
-	//
-	CanSeek() bool
-	// CanTruncate tests if the length of the stream can be adjusted with
-	// g_seekable_truncate().
-	//
-	// The function returns the following values:
-	//
-	//    - ok: TRUE if the stream can be truncated, FALSE otherwise.
-	//
-	CanTruncate() bool
 }
 
 // Seekable is implemented by streams (implementations of Stream or Stream) that
@@ -81,43 +68,15 @@ type Seekabler interface {
 	// CanTruncate tests if the length of the stream can be adjusted with
 	// g_seekable_truncate().
 	CanTruncate() bool
+	// Seek seeks in the stream by the given offset, modified by type.
+	Seek(ctx context.Context, offset int64, typ glib.SeekType) error
+	// Tell tells the current position within the stream.
+	Tell() int64
+	// Truncate sets the length of the stream to offset.
+	Truncate(ctx context.Context, offset int64) error
 }
 
 var _ Seekabler = (*Seekable)(nil)
-
-func ifaceInitSeekabler(gifacePtr, data C.gpointer) {
-	iface := girepository.MustFind("Gio", "SeekableIface")
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("can_seek"))) = unsafe.Pointer(C._gotk4_gio2_SeekableIface_can_seek)
-	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("can_truncate"))) = unsafe.Pointer(C._gotk4_gio2_SeekableIface_can_truncate)
-}
-
-//export _gotk4_gio2_SeekableIface_can_seek
-func _gotk4_gio2_SeekableIface_can_seek(arg0 *C.void) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(SeekableOverrider)
-
-	ok := iface.CanSeek()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_SeekableIface_can_truncate
-func _gotk4_gio2_SeekableIface_can_truncate(arg0 *C.void) (cret C.gboolean) {
-	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
-	iface := goval.(SeekableOverrider)
-
-	ok := iface.CanTruncate()
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
 
 func wrapSeekable(obj *coreglib.Object) *Seekable {
 	return &Seekable{
@@ -180,4 +139,120 @@ func (seekable *Seekable) CanTruncate() bool {
 	}
 
 	return _ok
+}
+
+// Seek seeks in the stream by the given offset, modified by type.
+//
+// Attempting to seek past the end of the stream will have different results
+// depending on if the stream is fixed-sized or resizable. If the stream is
+// resizable then seeking past the end and then writing will result in zeros
+// filling the empty space. Seeking past the end of a resizable stream and
+// reading will result in EOF. Seeking past the end of a fixed-sized stream will
+// fail.
+//
+// Any operation that would result in a negative offset will fail.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - offset: #goffset.
+//    - typ: Type.
+//
+func (seekable *Seekable) Seek(ctx context.Context, offset int64, typ glib.SeekType) error {
+	var _args [4]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(seekable).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_args[3] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	*(*C.goffset)(unsafe.Pointer(&_args[1])) = C.goffset(offset)
+	*(*C.GSeekType)(unsafe.Pointer(&_args[2])) = C.GSeekType(typ)
+
+	_info := girepository.MustFind("Gio", "Seekable")
+	_info.InvokeIfaceMethod("seek", _args[:], nil)
+
+	runtime.KeepAlive(seekable)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(typ)
+
+	var _goerr error // out
+
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	}
+
+	return _goerr
+}
+
+// Tell tells the current position within the stream.
+//
+// The function returns the following values:
+//
+//    - gint64: offset from the beginning of the buffer.
+//
+func (seekable *Seekable) Tell() int64 {
+	var _args [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(seekable).Native()))
+
+	_info := girepository.MustFind("Gio", "Seekable")
+	_gret := _info.InvokeIfaceMethod("tell", _args[:], nil)
+	_cret := *(*C.goffset)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(seekable)
+
+	var _gint64 int64 // out
+
+	_gint64 = int64(*(*C.goffset)(unsafe.Pointer(&_cret)))
+
+	return _gint64
+}
+
+// Truncate sets the length of the stream to offset. If the stream was
+// previously larger than offset, the extra data is discarded. If the stream was
+// previously shorter than offset, it is extended with NUL ('\0') bytes.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned. If an operation was
+// partially finished when the operation was cancelled the partial result will
+// be returned, without an error.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - offset: new length for seekable, in bytes.
+//
+func (seekable *Seekable) Truncate(ctx context.Context, offset int64) error {
+	var _args [3]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(seekable).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_args[2] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	*(*C.goffset)(unsafe.Pointer(&_args[1])) = C.goffset(offset)
+
+	_info := girepository.MustFind("Gio", "Seekable")
+	_info.InvokeIfaceMethod("truncate", _args[:], nil)
+
+	runtime.KeepAlive(seekable)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(offset)
+
+	var _goerr error // out
+
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
+	}
+
+	return _goerr
 }

@@ -147,14 +147,14 @@ func (emblemed *EmblemedIcon) Emblems() []*Emblem {
 
 	_info := girepository.MustFind("Gio", "EmblemedIcon")
 	_gret := _info.InvokeClassMethod("get_emblems", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(emblemed)
 
 	var _list []*Emblem // out
 
-	_list = make([]*Emblem, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
+	_list = make([]*Emblem, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Emblem // out
 		dst = wrapEmblem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))

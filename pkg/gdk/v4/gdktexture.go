@@ -100,7 +100,7 @@ func BaseTexture(obj Texturer) *Texture {
 func NewTextureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Texture {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+	*(**C.GdkPixbuf)(unsafe.Pointer(&_args[0])) = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 
 	_info := girepository.MustFind("Gdk", "Texture")
 	_gret := _info.InvokeClassMethod("new_Texture_for_pixbuf", _args[:], nil)
@@ -137,7 +137,7 @@ func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 
 	_info := girepository.MustFind("Gdk", "Texture")
 	_gret := _info.InvokeClassMethod("new_Texture_from_file", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
 
@@ -145,8 +145,8 @@ func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 	var _goerr error      // out
 
 	_texture = wrapTexture(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _texture, _goerr

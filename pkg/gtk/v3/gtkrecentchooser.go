@@ -18,6 +18,8 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern GList* _gotk4_gtk3_RecentChooserIface_get_items(void*);
+// extern GSList* _gotk4_gtk3_RecentChooserIface_list_filters(void*);
 // extern gboolean _gotk4_gtk3_RecentChooserIface_select_uri(void*, gchar*, GError**);
 // extern gboolean _gotk4_gtk3_RecentChooserIface_set_current_uri(void*, gchar*, GError**);
 // extern gchar* _gotk4_gtk3_RecentChooserIface_get_current_uri(void*);
@@ -32,8 +34,6 @@ import (
 // extern void _gotk4_gtk3_RecentChooser_ConnectItemActivated(gpointer, guintptr);
 // extern void _gotk4_gtk3_RecentChooser_ConnectSelectionChanged(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
-// extern void* _gotk4_gtk3_RecentChooserIface_get_items(void*);
-// extern void* _gotk4_gtk3_RecentChooserIface_list_filters(void*);
 import "C"
 
 // GTypeRecentChooserError returns the GType for the type RecentChooserError.
@@ -463,14 +463,14 @@ func (chooser *RecentChooser) Items() []*RecentInfo {
 
 	_info := girepository.MustFind("Gtk", "RecentChooser")
 	_gret := _info.InvokeIfaceMethod("get_items", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 
 	var _list []*RecentInfo // out
 
-	_list = make([]*RecentInfo, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]*RecentInfo, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *RecentInfo // out
 		dst = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
@@ -726,14 +726,14 @@ func (chooser *RecentChooser) ListFilters() []*RecentFilter {
 
 	_info := girepository.MustFind("Gtk", "RecentChooser")
 	_gret := _info.InvokeIfaceMethod("list_filters", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GSList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 
 	var _sList []*RecentFilter // out
 
-	_sList = make([]*RecentFilter, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_sList = make([]*RecentFilter, 0, gextras.SListSize(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.GSList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *RecentFilter // out
 		dst = wrapRecentFilter(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
@@ -797,8 +797,8 @@ func (chooser *RecentChooser) SelectURI(uri string) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -825,8 +825,8 @@ func (chooser *RecentChooser) SetCurrentURI(uri string) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

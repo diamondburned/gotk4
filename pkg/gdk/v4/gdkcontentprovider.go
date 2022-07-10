@@ -20,14 +20,14 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gdk4_ContentProviderClass_get_value(void*, void*, GError**);
+// extern gboolean _gotk4_gdk4_ContentProviderClass_get_value(void*, GValue*, GError**);
 // extern gboolean _gotk4_gdk4_ContentProviderClass_write_mime_type_finish(void*, void*, GError**);
-// extern void _gotk4_gdk4_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gdk4_AsyncReadyCallback(GObject*, void*, gpointer);
 // extern void _gotk4_gdk4_ContentProviderClass_attach_clipboard(void*, void*);
 // extern void _gotk4_gdk4_ContentProviderClass_content_changed(void*);
 // extern void _gotk4_gdk4_ContentProviderClass_detach_clipboard(void*, void*);
 // extern void _gotk4_gdk4_ContentProvider_ConnectContentChanged(gpointer, guintptr);
-// extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, void*, gpointer);
 // extern void* _gotk4_gdk4_ContentProviderClass_ref_formats(void*);
 // extern void* _gotk4_gdk4_ContentProviderClass_ref_storable_formats(void*);
 import "C"
@@ -197,7 +197,7 @@ func _gotk4_gdk4_ContentProviderClass_detach_clipboard(arg0 *C.void, arg1 *C.voi
 }
 
 //export _gotk4_gdk4_ContentProviderClass_get_value
-func _gotk4_gdk4_ContentProviderClass_get_value(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret C.gboolean) {
+func _gotk4_gdk4_ContentProviderClass_get_value(arg0 *C.void, arg1 *C.GValue, _cerr **C.GError) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Value(value *coreglib.Value) error
@@ -210,7 +210,7 @@ func _gotk4_gdk4_ContentProviderClass_get_value(arg0 *C.void, arg1 *C.void, _cer
 	_goerr := iface.Value(_value)
 
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -270,7 +270,7 @@ func _gotk4_gdk4_ContentProviderClass_write_mime_type_finish(arg0 *C.void, arg1 
 	_goerr := iface.WriteMIMETypeFinish(_result)
 
 	if _goerr != nil && _cerr != nil {
-		*_cerr = (*C.void)(gerror.New(_goerr))
+		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
 
 	return cret
@@ -336,7 +336,7 @@ func (provider *ContentProvider) Value(value *coreglib.Value) error {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(value.Native()))
+	*(**C.GValue)(unsafe.Pointer(&_args[1])) = (*C.GValue)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gdk", "ContentProvider")
 	_info.InvokeClassMethod("get_value", _args[:], nil)
@@ -346,8 +346,8 @@ func (provider *ContentProvider) Value(value *coreglib.Value) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -446,7 +446,7 @@ func (provider *ContentProvider) WriteMIMETypeAsync(ctx context.Context, mimeTyp
 	{
 		cancellable := gcancel.GCancellableFromContext(ctx)
 		defer runtime.KeepAlive(cancellable)
-		_args[4] = (*C.void)(unsafe.Pointer(cancellable.Native()))
+		_args[4] = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 	}
 	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
 	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
@@ -490,8 +490,8 @@ func (provider *ContentProvider) WriteMIMETypeFinish(result gio.AsyncResulter) e
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

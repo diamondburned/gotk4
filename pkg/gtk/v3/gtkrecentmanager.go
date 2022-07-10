@@ -352,14 +352,14 @@ func (manager *RecentManager) Items() []*RecentInfo {
 
 	_info := girepository.MustFind("Gtk", "RecentManager")
 	_gret := _info.InvokeClassMethod("get_items", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GList)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 
 	var _list []*RecentInfo // out
 
-	_list = make([]*RecentInfo, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
-	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+	_list = make([]*RecentInfo, 0, gextras.ListSize(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.GList)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *RecentInfo // out
 		dst = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
@@ -432,7 +432,7 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 
 	_info := girepository.MustFind("Gtk", "RecentManager")
 	_gret := _info.InvokeClassMethod("lookup_item", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 	runtime.KeepAlive(uri)
@@ -449,8 +449,8 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 			},
 		)
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _recentInfo, _goerr
@@ -488,8 +488,8 @@ func (manager *RecentManager) MoveItem(uri, newUri string) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -509,7 +509,7 @@ func (manager *RecentManager) PurgeItems() (int32, error) {
 
 	_info := girepository.MustFind("Gtk", "RecentManager")
 	_gret := _info.InvokeClassMethod("purge_items", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 
@@ -517,8 +517,8 @@ func (manager *RecentManager) PurgeItems() (int32, error) {
 	var _goerr error // out
 
 	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _gint, _goerr
@@ -546,8 +546,8 @@ func (manager *RecentManager) RemoveItem(uri string) error {
 
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -723,7 +723,7 @@ func (info *RecentInfo) CreateAppInfo(appName string) (*gio.AppInfo, error) {
 
 	_info := girepository.MustFind("Gtk", "RecentInfo")
 	_gret := _info.InvokeRecordMethod("create_app_info", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GError)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(appName)
@@ -739,8 +739,8 @@ func (info *RecentInfo) CreateAppInfo(appName string) (*gio.AppInfo, error) {
 			}
 		}
 	}
-	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
+	if *(**C.GError)(unsafe.Pointer(&_cerr)) != nil {
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.GError)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _appInfo, _goerr
@@ -771,6 +771,32 @@ func (info *RecentInfo) Exists() bool {
 	}
 
 	return _ok
+}
+
+// Added gets the timestamp (seconds from system’s Epoch) when the resource was
+// added to the recently used resources list.
+//
+// The function returns the following values:
+//
+//    - glong: number of seconds elapsed from system’s Epoch when the resource
+//      was added to the list, or -1 on failure.
+//
+func (info *RecentInfo) Added() int32 {
+	var _args [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+
+	_info := girepository.MustFind("Gtk", "RecentInfo")
+	_gret := _info.InvokeRecordMethod("get_added", _args[:], nil)
+	_cret := *(*C.time_t)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(info)
+
+	var _glong int32 // out
+
+	_glong = int32(*(*C.time_t)(unsafe.Pointer(&_cret)))
+
+	return _glong
 }
 
 // Age gets the number of days elapsed since the last update of the resource
@@ -841,7 +867,7 @@ func (info *RecentInfo) ApplicationInfo(appName string) (string, uint32, int32, 
 
 	_appExec = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[0])))))
 	_count = uint32(*(*C.guint)(unsafe.Pointer(&_outs[1])))
-	_time_ = *(*int32)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[2]))))
+	_time_ = *(*int32)(unsafe.Pointer(*(**C.time_t)(unsafe.Pointer(&_outs[2]))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -1022,16 +1048,16 @@ func (info *RecentInfo) Icon(size int32) *gdkpixbuf.Pixbuf {
 
 	_info := girepository.MustFind("Gtk", "RecentInfo")
 	_gret := _info.InvokeRecordMethod("get_icon", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.GdkPixbuf)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(size)
 
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
+	if *(**C.GdkPixbuf)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.GdkPixbuf)(unsafe.Pointer(&_cret))))
 			_pixbuf = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{
@@ -1069,6 +1095,32 @@ func (info *RecentInfo) MIMEType() string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
+}
+
+// Modified gets the timestamp (seconds from system’s Epoch) when the meta-data
+// for the resource was last modified.
+//
+// The function returns the following values:
+//
+//    - glong: number of seconds elapsed from system’s Epoch when the resource
+//      was last modified, or -1 on failure.
+//
+func (info *RecentInfo) Modified() int32 {
+	var _args [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+
+	_info := girepository.MustFind("Gtk", "RecentInfo")
+	_gret := _info.InvokeRecordMethod("get_modified", _args[:], nil)
+	_cret := *(*C.time_t)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(info)
+
+	var _glong int32 // out
+
+	_glong = int32(*(*C.time_t)(unsafe.Pointer(&_cret)))
+
+	return _glong
 }
 
 // PrivateHint gets the value of the “private” flag. Resources in the recently
@@ -1179,6 +1231,32 @@ func (info *RecentInfo) URIDisplay() string {
 	}
 
 	return _utf8
+}
+
+// Visited gets the timestamp (seconds from system’s Epoch) when the meta-data
+// for the resource was last visited.
+//
+// The function returns the following values:
+//
+//    - glong: number of seconds elapsed from system’s Epoch when the resource
+//      was last visited, or -1 on failure.
+//
+func (info *RecentInfo) Visited() int32 {
+	var _args [1]girepository.Argument
+
+	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
+
+	_info := girepository.MustFind("Gtk", "RecentInfo")
+	_gret := _info.InvokeRecordMethod("get_visited", _args[:], nil)
+	_cret := *(*C.time_t)(unsafe.Pointer(&_gret))
+
+	runtime.KeepAlive(info)
+
+	var _glong int32 // out
+
+	_glong = int32(*(*C.time_t)(unsafe.Pointer(&_cret)))
+
+	return _glong
 }
 
 // HasApplication checks whether an application registered this resource using

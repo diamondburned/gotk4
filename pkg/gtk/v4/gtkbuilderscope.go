@@ -15,6 +15,8 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern GType _gotk4_gtk4_BuilderScopeInterface_get_type_from_function(void*, void*, char*);
+// extern GType _gotk4_gtk4_BuilderScopeInterface_get_type_from_name(void*, void*, char*);
 import "C"
 
 // GTypeBuilderClosureFlags returns the GType for the type BuilderClosureFlags.
@@ -102,6 +104,22 @@ func (b BuilderClosureFlags) Has(other BuilderClosureFlags) bool {
 
 // BuilderScopeOverrider contains methods that are overridable.
 type BuilderScopeOverrider interface {
+	// The function takes the following parameters:
+	//
+	//    - builder
+	//    - functionName
+	//
+	// The function returns the following values:
+	//
+	TypeFromFunction(builder *Builder, functionName string) coreglib.Type
+	// The function takes the following parameters:
+	//
+	//    - builder
+	//    - typeName
+	//
+	// The function returns the following values:
+	//
+	TypeFromName(builder *Builder, typeName string) coreglib.Type
 }
 
 // BuilderScope: GtkBuilderScope is an interface to provide language binding
@@ -140,6 +158,45 @@ type BuilderScoper interface {
 var _ BuilderScoper = (*BuilderScope)(nil)
 
 func ifaceInitBuilderScoper(gifacePtr, data C.gpointer) {
+	iface := girepository.MustFind("Gtk", "BuilderScopeInterface")
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_type_from_function"))) = unsafe.Pointer(C._gotk4_gtk4_BuilderScopeInterface_get_type_from_function)
+	*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset("get_type_from_name"))) = unsafe.Pointer(C._gotk4_gtk4_BuilderScopeInterface_get_type_from_name)
+}
+
+//export _gotk4_gtk4_BuilderScopeInterface_get_type_from_function
+func _gotk4_gtk4_BuilderScopeInterface_get_type_from_function(arg0 *C.void, arg1 *C.void, arg2 *C.char) (cret C.GType) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(BuilderScopeOverrider)
+
+	var _builder *Builder    // out
+	var _functionName string // out
+
+	_builder = wrapBuilder(coreglib.Take(unsafe.Pointer(arg1)))
+	_functionName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	gType := iface.TypeFromFunction(_builder, _functionName)
+
+	cret = C.GType(gType)
+
+	return cret
+}
+
+//export _gotk4_gtk4_BuilderScopeInterface_get_type_from_name
+func _gotk4_gtk4_BuilderScopeInterface_get_type_from_name(arg0 *C.void, arg1 *C.void, arg2 *C.char) (cret C.GType) {
+	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
+	iface := goval.(BuilderScopeOverrider)
+
+	var _builder *Builder // out
+	var _typeName string  // out
+
+	_builder = wrapBuilder(coreglib.Take(unsafe.Pointer(arg1)))
+	_typeName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	gType := iface.TypeFromName(_builder, _typeName)
+
+	cret = C.GType(gType)
+
+	return cret
 }
 
 func wrapBuilderScope(obj *coreglib.Object) *BuilderScope {
@@ -152,8 +209,8 @@ func marshalBuilderScope(p uintptr) (interface{}, error) {
 	return wrapBuilderScope(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (v *BuilderScope) baseBuilderScope() *BuilderScope {
-	return v
+func (self *BuilderScope) baseBuilderScope() *BuilderScope {
+	return self
 }
 
 // BaseBuilderScope returns the underlying base object.

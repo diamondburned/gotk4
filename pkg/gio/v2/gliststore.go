@@ -130,9 +130,7 @@ func (store *ListStore) Find(item *coreglib.Object) (uint32, bool) {
 	var _position uint32 // out
 	var _ok bool         // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_position = *(*uint32)(unsafe.Pointer(_outs[0]))
-	}
+	_position = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -295,7 +293,7 @@ func (store *ListStore) Splice(position, nRemovals uint32, additions []*coreglib
 	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(nRemovals)
 	*(*C.guint)(unsafe.Pointer(&_args[4])) = (C.guint)(len(additions))
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(C.calloc(C.size_t(len(additions)), C.size_t(C.sizeof_gpointer)))
-	defer C.free(unsafe.Pointer(_args[3]))
+	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[3]))))
 	{
 		out := unsafe.Slice((*C.gpointer)(*(**C.void)(unsafe.Pointer(&_args[3]))), len(additions))
 		for i := range additions {

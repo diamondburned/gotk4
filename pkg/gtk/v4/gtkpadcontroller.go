@@ -177,7 +177,7 @@ func NewPadController(group gio.ActionGrouper, pad gdk.Devicer) *PadController {
 
 	var _padController *PadController // out
 
-	_padController = wrapPadController(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_padController = wrapPadController(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _padController
 }

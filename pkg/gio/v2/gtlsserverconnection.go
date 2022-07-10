@@ -106,7 +106,7 @@ func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater
 	}
 
 	_info := girepository.MustFind("Gio", "new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseIoStream)
@@ -115,9 +115,9 @@ func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater
 	var _tlsServerConnection *TLSServerConnection // out
 	var _goerr error                              // out
 
-	_tlsServerConnection = wrapTLSServerConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_tlsServerConnection = wrapTLSServerConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _tlsServerConnection, _goerr

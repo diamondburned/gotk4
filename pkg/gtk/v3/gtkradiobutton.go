@@ -238,7 +238,7 @@ func NewRadioButton(group []*RadioButton) *RadioButton {
 
 	var _radioButton *RadioButton // out
 
-	_radioButton = wrapRadioButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_radioButton = wrapRadioButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _radioButton
 }
@@ -270,7 +270,7 @@ func NewRadioButtonFromWidget(radioGroupMember *RadioButton) *RadioButton {
 
 	var _radioButton *RadioButton // out
 
-	_radioButton = wrapRadioButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_radioButton = wrapRadioButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _radioButton
 }
@@ -299,8 +299,8 @@ func NewRadioButtonWithLabel(group []*RadioButton, label string) *RadioButton {
 		}
 		defer C.g_slist_free(_args[0])
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "RadioButton")
 	_gret := _info.InvokeClassMethod("new_RadioButton_with_label", _args[:], nil)
@@ -311,7 +311,7 @@ func NewRadioButtonWithLabel(group []*RadioButton, label string) *RadioButton {
 
 	var _radioButton *RadioButton // out
 
-	_radioButton = wrapRadioButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_radioButton = wrapRadioButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _radioButton
 }
@@ -334,8 +334,8 @@ func NewRadioButtonWithLabelFromWidget(radioGroupMember *RadioButton, label stri
 	if radioGroupMember != nil {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(radioGroupMember).Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "RadioButton")
 	_gret := _info.InvokeClassMethod("new_RadioButton_with_label_from_widget", _args[:], nil)
@@ -346,7 +346,7 @@ func NewRadioButtonWithLabelFromWidget(radioGroupMember *RadioButton, label stri
 
 	var _radioButton *RadioButton // out
 
-	_radioButton = wrapRadioButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_radioButton = wrapRadioButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _radioButton
 }
@@ -378,8 +378,8 @@ func NewRadioButtonWithMnemonic(group []*RadioButton, label string) *RadioButton
 		}
 		defer C.g_slist_free(_args[0])
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "RadioButton")
 	_gret := _info.InvokeClassMethod("new_RadioButton_with_mnemonic", _args[:], nil)
@@ -390,7 +390,7 @@ func NewRadioButtonWithMnemonic(group []*RadioButton, label string) *RadioButton
 
 	var _radioButton *RadioButton // out
 
-	_radioButton = wrapRadioButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_radioButton = wrapRadioButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _radioButton
 }
@@ -415,8 +415,8 @@ func NewRadioButtonWithMnemonicFromWidget(radioGroupMember *RadioButton, label s
 	if radioGroupMember != nil {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(radioGroupMember).Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "RadioButton")
 	_gret := _info.InvokeClassMethod("new_RadioButton_with_mnemonic_from_widget", _args[:], nil)
@@ -427,7 +427,7 @@ func NewRadioButtonWithMnemonicFromWidget(radioGroupMember *RadioButton, label s
 
 	var _radioButton *RadioButton // out
 
-	_radioButton = wrapRadioButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_radioButton = wrapRadioButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _radioButton
 }
@@ -453,11 +453,11 @@ func (radioButton *RadioButton) Group() []*RadioButton {
 
 	var _sList []*RadioButton // out
 
-	_sList = make([]*RadioButton, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+	_sList = make([]*RadioButton, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *RadioButton // out
-		dst = wrapRadioButton(coreglib.Take(unsafe.Pointer(src)))
+		dst = wrapRadioButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_sList = append(_sList, dst)
 	})
 

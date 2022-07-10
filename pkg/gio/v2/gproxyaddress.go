@@ -92,18 +92,18 @@ func NewProxyAddress(inetaddr *InetAddress, port uint16, protocol, destHostname 
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(inetaddr).Native()))
 	*(*C.guint16)(unsafe.Pointer(&_args[1])) = C.guint16(port)
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(protocol)))
-	defer C.free(unsafe.Pointer(_args[2]))
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(C.CString(destHostname)))
-	defer C.free(unsafe.Pointer(_args[3]))
+	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(protocol)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	*(**C.gchar)(unsafe.Pointer(&_args[3])) = (*C.gchar)(unsafe.Pointer(C.CString(destHostname)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[3]))))
 	*(*C.guint16)(unsafe.Pointer(&_args[4])) = C.guint16(destPort)
 	if username != "" {
-		*(**C.void)(unsafe.Pointer(&_args[5])) = (*C.void)(unsafe.Pointer(C.CString(username)))
-		defer C.free(unsafe.Pointer(_args[5]))
+		*(**C.gchar)(unsafe.Pointer(&_args[5])) = (*C.gchar)(unsafe.Pointer(C.CString(username)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[5]))))
 	}
 	if password != "" {
-		*(**C.void)(unsafe.Pointer(&_args[6])) = (*C.void)(unsafe.Pointer(C.CString(password)))
-		defer C.free(unsafe.Pointer(_args[6]))
+		*(**C.gchar)(unsafe.Pointer(&_args[6])) = (*C.gchar)(unsafe.Pointer(C.CString(password)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[6]))))
 	}
 
 	_info := girepository.MustFind("Gio", "ProxyAddress")
@@ -120,7 +120,7 @@ func NewProxyAddress(inetaddr *InetAddress, port uint16, protocol, destHostname 
 
 	var _proxyAddress *ProxyAddress // out
 
-	_proxyAddress = wrapProxyAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_proxyAddress = wrapProxyAddress(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _proxyAddress
 }
@@ -140,13 +140,13 @@ func (proxy *ProxyAddress) DestinationHostname() string {
 
 	_info := girepository.MustFind("Gio", "ProxyAddress")
 	_gret := _info.InvokeClassMethod("get_destination_hostname", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(proxy)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -191,13 +191,13 @@ func (proxy *ProxyAddress) DestinationProtocol() string {
 
 	_info := girepository.MustFind("Gio", "ProxyAddress")
 	_gret := _info.InvokeClassMethod("get_destination_protocol", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(proxy)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -215,14 +215,14 @@ func (proxy *ProxyAddress) Password() string {
 
 	_info := girepository.MustFind("Gio", "ProxyAddress")
 	_gret := _info.InvokeClassMethod("get_password", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(proxy)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -241,13 +241,13 @@ func (proxy *ProxyAddress) Protocol() string {
 
 	_info := girepository.MustFind("Gio", "ProxyAddress")
 	_gret := _info.InvokeClassMethod("get_protocol", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(proxy)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -265,14 +265,14 @@ func (proxy *ProxyAddress) URI() string {
 
 	_info := girepository.MustFind("Gio", "ProxyAddress")
 	_gret := _info.InvokeClassMethod("get_uri", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(proxy)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -291,14 +291,14 @@ func (proxy *ProxyAddress) Username() string {
 
 	_info := girepository.MustFind("Gio", "ProxyAddress")
 	_gret := _info.InvokeClassMethod("get_username", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(proxy)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8

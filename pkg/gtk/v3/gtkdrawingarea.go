@@ -158,7 +158,7 @@ func NewDrawingArea() *DrawingArea {
 
 	var _drawingArea *DrawingArea // out
 
-	_drawingArea = wrapDrawingArea(coreglib.Take(unsafe.Pointer(_cret)))
+	_drawingArea = wrapDrawingArea(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _drawingArea
 }

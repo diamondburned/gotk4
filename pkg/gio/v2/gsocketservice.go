@@ -142,7 +142,7 @@ func NewSocketService() *SocketService {
 
 	var _socketService *SocketService // out
 
-	_socketService = wrapSocketService(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_socketService = wrapSocketService(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _socketService
 }

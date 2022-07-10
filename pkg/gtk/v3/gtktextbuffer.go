@@ -26,7 +26,7 @@ import (
 // extern void _gotk4_gtk3_TextBufferClass_end_user_action(void*);
 // extern void _gotk4_gtk3_TextBufferClass_insert_child_anchor(void*, void*, void*);
 // extern void _gotk4_gtk3_TextBufferClass_insert_pixbuf(void*, void*, void*);
-// extern void _gotk4_gtk3_TextBufferClass_insert_text(void*, void*, void*, gint);
+// extern void _gotk4_gtk3_TextBufferClass_insert_text(void*, void*, gchar*, gint);
 // extern void _gotk4_gtk3_TextBufferClass_mark_deleted(void*, void*);
 // extern void _gotk4_gtk3_TextBufferClass_mark_set(void*, void*, void*);
 // extern void _gotk4_gtk3_TextBufferClass_modified_changed(void*);
@@ -39,7 +39,7 @@ import (
 // extern void _gotk4_gtk3_TextBuffer_ConnectEndUserAction(gpointer, guintptr);
 // extern void _gotk4_gtk3_TextBuffer_ConnectInsertChildAnchor(gpointer, void*, void*, guintptr);
 // extern void _gotk4_gtk3_TextBuffer_ConnectInsertPixbuf(gpointer, void*, void*, guintptr);
-// extern void _gotk4_gtk3_TextBuffer_ConnectInsertText(gpointer, void*, void*, gint, guintptr);
+// extern void _gotk4_gtk3_TextBuffer_ConnectInsertText(gpointer, void*, gchar*, gint, guintptr);
 // extern void _gotk4_gtk3_TextBuffer_ConnectMarkDeleted(gpointer, void*, guintptr);
 // extern void _gotk4_gtk3_TextBuffer_ConnectMarkSet(gpointer, void*, void*, guintptr);
 // extern void _gotk4_gtk3_TextBuffer_ConnectModifiedChanged(gpointer, guintptr);
@@ -407,7 +407,7 @@ func _gotk4_gtk3_TextBufferClass_insert_pixbuf(arg0 *C.void, arg1 *C.void, arg2 
 }
 
 //export _gotk4_gtk3_TextBufferClass_insert_text
-func _gotk4_gtk3_TextBufferClass_insert_text(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 C.gint) {
+func _gotk4_gtk3_TextBufferClass_insert_text(arg0 *C.void, arg1 *C.void, arg2 *C.gchar, arg3 C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		InsertText(pos *TextIter, newText string, newTextLength int32)
@@ -728,7 +728,7 @@ func (buffer *TextBuffer) ConnectInsertPixbuf(f func(location *TextIter, pixbuf 
 }
 
 //export _gotk4_gtk3_TextBuffer_ConnectInsertText
-func _gotk4_gtk3_TextBuffer_ConnectInsertText(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.gint, arg4 C.guintptr) {
+func _gotk4_gtk3_TextBuffer_ConnectInsertText(arg0 C.gpointer, arg1 *C.void, arg2 *C.gchar, arg3 C.gint, arg4 C.guintptr) {
 	var f func(location *TextIter, text string, len int32)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
@@ -932,7 +932,7 @@ func NewTextBuffer(table *TextTagTable) *TextBuffer {
 
 	var _textBuffer *TextBuffer // out
 
-	_textBuffer = wrapTextBuffer(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_textBuffer = wrapTextBuffer(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _textBuffer
 }
@@ -1025,8 +1025,8 @@ func (buffer *TextBuffer) ApplyTagByName(name string, start, end *TextIter) {
 	var _args [4]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 
@@ -1163,7 +1163,7 @@ func (buffer *TextBuffer) CreateChildAnchor(iter *TextIter) *TextChildAnchor {
 
 	var _textChildAnchor *TextChildAnchor // out
 
-	_textChildAnchor = wrapTextChildAnchor(coreglib.Take(unsafe.Pointer(_cret)))
+	_textChildAnchor = wrapTextChildAnchor(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _textChildAnchor
 }
@@ -1199,8 +1199,8 @@ func (buffer *TextBuffer) CreateMark(markName string, where *TextIter, leftGravi
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 	if markName != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(markName)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(markName)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(where)))
 	if leftGravity {
@@ -1218,7 +1218,7 @@ func (buffer *TextBuffer) CreateMark(markName string, where *TextIter, leftGravi
 
 	var _textMark *TextMark // out
 
-	_textMark = wrapTextMark(coreglib.Take(unsafe.Pointer(_cret)))
+	_textMark = wrapTextMark(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _textMark
 }
@@ -1355,8 +1355,8 @@ func (buffer *TextBuffer) DeleteMarkByName(name string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "TextBuffer")
 	_info.InvokeClassMethod("delete_mark_by_name", _args[:], nil)
@@ -1443,8 +1443,8 @@ func (buffer *TextBuffer) Bounds() (start, end *TextIter) {
 	var _start *TextIter // out
 	var _end *TextIter   // out
 
-	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
-	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
+	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
 
 	return _start, _end
 }
@@ -1499,8 +1499,8 @@ func (buffer *TextBuffer) CopyTargetList() *TargetList {
 
 	var _targetList *TargetList // out
 
-	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_target_list_ref(_cret)
+	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.gtk_target_list_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_targetList)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -1535,7 +1535,7 @@ func (buffer *TextBuffer) EndIter() *TextIter {
 
 	var _iter *TextIter // out
 
-	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _iter
 }
@@ -1587,7 +1587,7 @@ func (buffer *TextBuffer) GetInsert() *TextMark {
 
 	var _textMark *TextMark // out
 
-	_textMark = wrapTextMark(coreglib.Take(unsafe.Pointer(_cret)))
+	_textMark = wrapTextMark(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _textMark
 }
@@ -1617,7 +1617,7 @@ func (buffer *TextBuffer) IterAtChildAnchor(anchor *TextChildAnchor) *TextIter {
 
 	var _iter *TextIter // out
 
-	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _iter
 }
@@ -1648,7 +1648,7 @@ func (buffer *TextBuffer) IterAtLine(lineNumber int32) *TextIter {
 
 	var _iter *TextIter // out
 
-	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _iter
 }
@@ -1689,7 +1689,7 @@ func (buffer *TextBuffer) IterAtLineIndex(lineNumber, byteIndex int32) *TextIter
 
 	var _iter *TextIter // out
 
-	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _iter
 }
@@ -1730,7 +1730,7 @@ func (buffer *TextBuffer) IterAtLineOffset(lineNumber, charOffset int32) *TextIt
 
 	var _iter *TextIter // out
 
-	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _iter
 }
@@ -1760,7 +1760,7 @@ func (buffer *TextBuffer) IterAtMark(mark *TextMark) *TextIter {
 
 	var _iter *TextIter // out
 
-	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _iter
 }
@@ -1793,7 +1793,7 @@ func (buffer *TextBuffer) IterAtOffset(charOffset int32) *TextIter {
 
 	var _iter *TextIter // out
 
-	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _iter
 }
@@ -1838,8 +1838,8 @@ func (buffer *TextBuffer) Mark(name string) *TextMark {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "TextBuffer")
 	_gret := _info.InvokeClassMethod("get_mark", _args[:], nil)
@@ -1851,7 +1851,7 @@ func (buffer *TextBuffer) Mark(name string) *TextMark {
 	var _textMark *TextMark // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_textMark = wrapTextMark(coreglib.Take(unsafe.Pointer(_cret)))
+		_textMark = wrapTextMark(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _textMark
@@ -1908,8 +1908,8 @@ func (buffer *TextBuffer) PasteTargetList() *TargetList {
 
 	var _targetList *TargetList // out
 
-	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_target_list_ref(_cret)
+	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.gtk_target_list_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_targetList)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -1949,7 +1949,7 @@ func (buffer *TextBuffer) SelectionBound() *TextMark {
 
 	var _textMark *TextMark // out
 
-	_textMark = wrapTextMark(coreglib.Take(unsafe.Pointer(_cret)))
+	_textMark = wrapTextMark(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _textMark
 }
@@ -1982,8 +1982,8 @@ func (buffer *TextBuffer) SelectionBounds() (start, end *TextIter, ok bool) {
 	var _end *TextIter   // out
 	var _ok bool         // out
 
-	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
-	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
+	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -2022,7 +2022,7 @@ func (buffer *TextBuffer) Slice(start, end *TextIter, includeHiddenChars bool) s
 
 	_info := girepository.MustFind("Gtk", "TextBuffer")
 	_gret := _info.InvokeClassMethod("get_slice", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(start)
@@ -2031,8 +2031,8 @@ func (buffer *TextBuffer) Slice(start, end *TextIter, includeHiddenChars bool) s
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }
@@ -2058,7 +2058,7 @@ func (buffer *TextBuffer) StartIter() *TextIter {
 
 	var _iter *TextIter // out
 
-	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _iter
 }
@@ -2082,7 +2082,7 @@ func (buffer *TextBuffer) TagTable() *TextTagTable {
 
 	var _textTagTable *TextTagTable // out
 
-	_textTagTable = wrapTextTagTable(coreglib.Take(unsafe.Pointer(_cret)))
+	_textTagTable = wrapTextTagTable(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _textTagTable
 }
@@ -2116,7 +2116,7 @@ func (buffer *TextBuffer) Text(start, end *TextIter, includeHiddenChars bool) st
 
 	_info := girepository.MustFind("Gtk", "TextBuffer")
 	_gret := _info.InvokeClassMethod("get_text", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(buffer)
 	runtime.KeepAlive(start)
@@ -2125,8 +2125,8 @@ func (buffer *TextBuffer) Text(start, end *TextIter, includeHiddenChars bool) st
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }
@@ -2149,9 +2149,9 @@ func (buffer *TextBuffer) Insert(iter *TextIter, text string) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = (C.gint)(len(text))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
-	copy(unsafe.Slice((*byte)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[2])))), len(text)), text)
-	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[2]))))
+	*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2])))), len(text)), text)
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
 
 	_info := girepository.MustFind("Gtk", "TextBuffer")
 	_info.InvokeClassMethod("insert", _args[:], nil)
@@ -2173,9 +2173,9 @@ func (buffer *TextBuffer) InsertAtCursor(text string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = (C.gint)(len(text))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
-	copy(unsafe.Slice((*byte)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[1])))), len(text)), text)
-	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[1]))))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1])))), len(text)), text)
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "TextBuffer")
 	_info.InvokeClassMethod("insert_at_cursor", _args[:], nil)
@@ -2240,9 +2240,9 @@ func (buffer *TextBuffer) InsertInteractive(iter *TextIter, text string, default
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = (C.gint)(len(text))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
-	copy(unsafe.Slice((*byte)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[2])))), len(text)), text)
-	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[2]))))
+	*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2])))), len(text)), text)
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
 	if defaultEditable {
 		*(*C.gboolean)(unsafe.Pointer(&_args[4])) = C.TRUE
 	}
@@ -2286,9 +2286,9 @@ func (buffer *TextBuffer) InsertInteractiveAtCursor(text string, defaultEditable
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = (C.gint)(len(text))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
-	copy(unsafe.Slice((*byte)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[1])))), len(text)), text)
-	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[1]))))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1])))), len(text)), text)
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	if defaultEditable {
 		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
 	}
@@ -2328,9 +2328,9 @@ func (buffer *TextBuffer) InsertMarkup(iter *TextIter, markup string) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = (C.gint)(len(markup))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(C.calloc(C.size_t((len(markup) + 1)), C.size_t(C.sizeof_char)))
-	copy(unsafe.Slice((*byte)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[2])))), len(markup)), markup)
-	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[2]))))
+	*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(C.calloc(C.size_t((len(markup) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2])))), len(markup)), markup)
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
 
 	_info := girepository.MustFind("Gtk", "TextBuffer")
 	_info.InvokeClassMethod("insert_markup", _args[:], nil)
@@ -2482,8 +2482,8 @@ func (buffer *TextBuffer) MoveMarkByName(name string, where *TextIter) {
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(where)))
 
 	_info := girepository.MustFind("Gtk", "TextBuffer")
@@ -2638,8 +2638,8 @@ func (buffer *TextBuffer) RemoveTagByName(name string, start, end *TextIter) {
 	var _args [4]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(start)))
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(gextras.StructNative(unsafe.Pointer(end)))
 
@@ -2716,9 +2716,9 @@ func (buffer *TextBuffer) SetText(text string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = (C.gint)(len(text))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
-	copy(unsafe.Slice((*byte)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[1])))), len(text)), text)
-	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_args[1]))))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(C.calloc(C.size_t((len(text) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1])))), len(text)), text)
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "TextBuffer")
 	_info.InvokeClassMethod("set_text", _args[:], nil)

@@ -16,7 +16,7 @@ import (
 // #include <glib.h>
 // #include <glib-object.h>
 // extern void _gotk4_gtk4_AppChooserButton_ConnectChanged(gpointer, guintptr);
-// extern void _gotk4_gtk4_AppChooserButton_ConnectCustomItemActivated(gpointer, void*, guintptr);
+// extern void _gotk4_gtk4_AppChooserButton_ConnectCustomItemActivated(gpointer, gchar*, guintptr);
 import "C"
 
 // GTypeAppChooserButton returns the GType for the type AppChooserButton.
@@ -134,7 +134,7 @@ func (self *AppChooserButton) ConnectChanged(f func()) coreglib.SignalHandle {
 }
 
 //export _gotk4_gtk4_AppChooserButton_ConnectCustomItemActivated
-func _gotk4_gtk4_AppChooserButton_ConnectCustomItemActivated(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk4_AppChooserButton_ConnectCustomItemActivated(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
 	var f func(itemName string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -174,8 +174,8 @@ func (self *AppChooserButton) ConnectCustomItemActivated(f func(itemName string)
 func NewAppChooserButton(contentType string) *AppChooserButton {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(contentType)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(contentType)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "AppChooserButton")
 	_gret := _info.InvokeClassMethod("new_AppChooserButton", _args[:], nil)
@@ -185,7 +185,7 @@ func NewAppChooserButton(contentType string) *AppChooserButton {
 
 	var _appChooserButton *AppChooserButton // out
 
-	_appChooserButton = wrapAppChooserButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_appChooserButton = wrapAppChooserButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _appChooserButton
 }
@@ -209,10 +209,10 @@ func (self *AppChooserButton) AppendCustomItem(name, label string, icon gio.Icon
 	var _args [4]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
 
 	_info := girepository.MustFind("Gtk", "AppChooserButton")
@@ -251,14 +251,14 @@ func (self *AppChooserButton) Heading() string {
 
 	_info := girepository.MustFind("Gtk", "AppChooserButton")
 	_gret := _info.InvokeClassMethod("get_heading", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -358,8 +358,8 @@ func (self *AppChooserButton) SetActiveCustomItem(name string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "AppChooserButton")
 	_info.InvokeClassMethod("set_active_custom_item", _args[:], nil)
@@ -380,8 +380,8 @@ func (self *AppChooserButton) SetHeading(heading string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(heading)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(heading)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "AppChooserButton")
 	_info.InvokeClassMethod("set_heading", _args[:], nil)

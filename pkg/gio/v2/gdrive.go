@@ -19,6 +19,9 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern char* _gotk4_gio2_DriveIface_get_identifier(void*, char*);
+// extern char* _gotk4_gio2_DriveIface_get_name(void*);
+// extern char** _gotk4_gio2_DriveIface_enumerate_identifiers(void*);
 // extern gboolean _gotk4_gio2_DriveIface_can_eject(void*);
 // extern gboolean _gotk4_gio2_DriveIface_can_poll_for_media(void*);
 // extern gboolean _gotk4_gio2_DriveIface_can_start(void*);
@@ -34,6 +37,7 @@ import (
 // extern gboolean _gotk4_gio2_DriveIface_poll_for_media_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_DriveIface_start_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_DriveIface_stop_finish(void*, void*, GError**);
+// extern gchar* _gotk4_gio2_DriveIface_get_sort_key(void*);
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 // extern void _gotk4_gio2_DriveIface_changed(void*);
 // extern void _gotk4_gio2_DriveIface_disconnected(void*);
@@ -44,12 +48,8 @@ import (
 // extern void _gotk4_gio2_Drive_ConnectEjectButton(gpointer, guintptr);
 // extern void _gotk4_gio2_Drive_ConnectStopButton(gpointer, guintptr);
 // extern void* _gotk4_gio2_DriveIface_get_icon(void*);
-// extern void* _gotk4_gio2_DriveIface_get_identifier(void*, void*);
-// extern void* _gotk4_gio2_DriveIface_get_name(void*);
-// extern void* _gotk4_gio2_DriveIface_get_sort_key(void*);
 // extern void* _gotk4_gio2_DriveIface_get_symbolic_icon(void*);
 // extern void* _gotk4_gio2_DriveIface_get_volumes(void*);
-// extern void** _gotk4_gio2_DriveIface_enumerate_identifiers(void*);
 import "C"
 
 // GTypeDrive returns the GType for the type Drive.
@@ -424,7 +424,7 @@ func (drive *Drive) EjectFinish(result AsyncResulter) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -453,7 +453,7 @@ func (drive *Drive) EjectWithOperationFinish(result AsyncResulter) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -480,19 +480,19 @@ func (drive *Drive) EnumerateIdentifiers() []string {
 
 	var _utf8s []string // out
 
-	defer C.free(unsafe.Pointer(_cret))
+	defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_cret))))
 	{
 		var i int
-		var z *C.void
-		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.char
+		for p := *(***C.char)(unsafe.Pointer(&_cret)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(_cret, i)
+		src := unsafe.Slice(*(***C.char)(unsafe.Pointer(&_cret)), i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i])))))
+			defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i]))))
 		}
 	}
 
@@ -518,7 +518,7 @@ func (drive *Drive) Icon() *Icon {
 
 	var _icon *Icon // out
 
-	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _icon
 }
@@ -539,21 +539,21 @@ func (drive *Drive) Identifier(kind string) string {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(kind)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(kind)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "Drive")
 	_gret := _info.InvokeIfaceMethod("get_identifier", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drive)
 	runtime.KeepAlive(kind)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 	}
 
 	return _utf8
@@ -573,14 +573,14 @@ func (drive *Drive) Name() string {
 
 	_info := girepository.MustFind("Gio", "Drive")
 	_gret := _info.InvokeIfaceMethod("get_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drive)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }
@@ -599,14 +599,14 @@ func (drive *Drive) SortKey() string {
 
 	_info := girepository.MustFind("Gio", "Drive")
 	_gret := _info.InvokeIfaceMethod("get_sort_key", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drive)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -632,7 +632,7 @@ func (drive *Drive) SymbolicIcon() *Icon {
 
 	var _icon *Icon // out
 
-	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _icon
 }
@@ -659,11 +659,11 @@ func (drive *Drive) Volumes() []*Volume {
 
 	var _list []*Volume // out
 
-	_list = make([]*Volume, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*Volume, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Volume // out
-		dst = wrapVolume(coreglib.AssumeOwnership(unsafe.Pointer(src)))
+		dst = wrapVolume(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 
@@ -861,7 +861,7 @@ func (drive *Drive) PollForMediaFinish(result AsyncResulter) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -888,7 +888,7 @@ func (drive *Drive) StartFinish(result AsyncResulter) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -915,7 +915,7 @@ func (drive *Drive) StopFinish(result AsyncResulter) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

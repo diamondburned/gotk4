@@ -86,14 +86,14 @@ func (plug *PlugAccessible) ID() string {
 
 	_info := girepository.MustFind("Gtk", "PlugAccessible")
 	_gret := _info.InvokeClassMethod("get_id", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(plug)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }

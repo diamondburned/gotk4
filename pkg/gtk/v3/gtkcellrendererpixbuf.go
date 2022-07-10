@@ -90,7 +90,7 @@ func NewCellRendererPixbuf() *CellRendererPixbuf {
 
 	var _cellRendererPixbuf *CellRendererPixbuf // out
 
-	_cellRendererPixbuf = wrapCellRendererPixbuf(coreglib.Take(unsafe.Pointer(_cret)))
+	_cellRendererPixbuf = wrapCellRendererPixbuf(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cellRendererPixbuf
 }

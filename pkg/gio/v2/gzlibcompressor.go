@@ -84,7 +84,7 @@ func (compressor *ZlibCompressor) FileInfo() *FileInfo {
 	var _fileInfo *FileInfo // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_fileInfo = wrapFileInfo(coreglib.Take(unsafe.Pointer(_cret)))
+		_fileInfo = wrapFileInfo(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _fileInfo

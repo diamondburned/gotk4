@@ -199,7 +199,7 @@ func (dialog *MessageDialog) Image() Widgetter {
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -243,7 +243,7 @@ func (messageDialog *MessageDialog) MessageArea() Widgetter {
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -295,8 +295,8 @@ func (messageDialog *MessageDialog) SetMarkup(str string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(messageDialog).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "MessageDialog")
 	_info.InvokeClassMethod("set_markup", _args[:], nil)

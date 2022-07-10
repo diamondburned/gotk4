@@ -74,7 +74,7 @@ func NewStateSet() *StateSet {
 
 	var _stateSet *StateSet // out
 
-	_stateSet = wrapStateSet(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_stateSet = wrapStateSet(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _stateSet
 }
@@ -105,7 +105,7 @@ func (set *StateSet) AndSets(compareSet *StateSet) *StateSet {
 
 	var _stateSet *StateSet // out
 
-	_stateSet = wrapStateSet(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_stateSet = wrapStateSet(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _stateSet
 }
@@ -175,7 +175,7 @@ func (set *StateSet) OrSets(compareSet *StateSet) *StateSet {
 	var _stateSet *StateSet // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_stateSet = wrapStateSet(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_stateSet = wrapStateSet(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _stateSet
@@ -209,7 +209,7 @@ func (set *StateSet) XorSets(compareSet *StateSet) *StateSet {
 
 	var _stateSet *StateSet // out
 
-	_stateSet = wrapStateSet(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_stateSet = wrapStateSet(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _stateSet
 }

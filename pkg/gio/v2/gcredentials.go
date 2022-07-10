@@ -91,7 +91,7 @@ func NewCredentials() *Credentials {
 
 	var _credentials *Credentials // out
 
-	_credentials = wrapCredentials(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_credentials = wrapCredentials(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _credentials
 }
@@ -119,7 +119,7 @@ func (credentials *Credentials) IsSameUser(otherCredentials *Credentials) error 
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -140,14 +140,14 @@ func (credentials *Credentials) String() string {
 
 	_info := girepository.MustFind("Gio", "Credentials")
 	_gret := _info.InvokeClassMethod("to_string", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(credentials)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }

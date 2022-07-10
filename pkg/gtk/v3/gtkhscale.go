@@ -112,7 +112,7 @@ func NewHScale(adjustment *Adjustment) *HScale {
 
 	var _hScale *HScale // out
 
-	_hScale = wrapHScale(coreglib.Take(unsafe.Pointer(_cret)))
+	_hScale = wrapHScale(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _hScale
 }
@@ -156,7 +156,7 @@ func NewHScaleWithRange(min, max, step float64) *HScale {
 
 	var _hScale *HScale // out
 
-	_hScale = wrapHScale(coreglib.Take(unsafe.Pointer(_cret)))
+	_hScale = wrapHScale(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _hScale
 }

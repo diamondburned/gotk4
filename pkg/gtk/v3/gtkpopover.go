@@ -201,7 +201,7 @@ func NewPopover(relativeTo Widgetter) *Popover {
 
 	var _popover *Popover // out
 
-	_popover = wrapPopover(coreglib.Take(unsafe.Pointer(_cret)))
+	_popover = wrapPopover(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _popover
 }
@@ -242,7 +242,7 @@ func NewPopoverFromModel(relativeTo Widgetter, model gio.MenuModeller) *Popover 
 
 	var _popover *Popover // out
 
-	_popover = wrapPopover(coreglib.Take(unsafe.Pointer(_cret)))
+	_popover = wrapPopover(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _popover
 }
@@ -281,8 +281,8 @@ func (popover *Popover) BindModel(model gio.MenuModeller, actionNamespace string
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
 	if actionNamespace != "" {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(actionNamespace)))
-		defer C.free(unsafe.Pointer(_args[2]))
+		*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(actionNamespace)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "Popover")
@@ -315,7 +315,7 @@ func (popover *Popover) DefaultWidget() Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -384,7 +384,7 @@ func (popover *Popover) PointingTo() (*gdk.Rectangle, bool) {
 	var _rect *gdk.Rectangle // out
 	var _ok bool             // out
 
-	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -412,7 +412,7 @@ func (popover *Popover) RelativeTo() Widgetter {
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}

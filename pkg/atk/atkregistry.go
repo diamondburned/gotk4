@@ -39,12 +39,12 @@ func GTypeRegistry() coreglib.Type {
 //
 func GetDefaultRegistry() *Registry {
 	_info := girepository.MustFind("Atk", "get_default_registry")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _registry *Registry // out
 
-	_registry = wrapRegistry(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_registry = wrapRegistry(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _registry
 }

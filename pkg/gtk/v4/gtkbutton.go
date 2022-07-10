@@ -221,7 +221,7 @@ func NewButton() *Button {
 
 	var _button *Button // out
 
-	_button = wrapButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_button = wrapButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _button
 }
@@ -245,8 +245,8 @@ func NewButtonFromIconName(iconName string) *Button {
 	var _args [1]girepository.Argument
 
 	if iconName != "" {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(iconName)))
-		defer C.free(unsafe.Pointer(_args[0]))
+		*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "Button")
@@ -257,7 +257,7 @@ func NewButtonFromIconName(iconName string) *Button {
 
 	var _button *Button // out
 
-	_button = wrapButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_button = wrapButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _button
 }
@@ -275,8 +275,8 @@ func NewButtonFromIconName(iconName string) *Button {
 func NewButtonWithLabel(label string) *Button {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "Button")
 	_gret := _info.InvokeClassMethod("new_Button_with_label", _args[:], nil)
@@ -286,7 +286,7 @@ func NewButtonWithLabel(label string) *Button {
 
 	var _button *Button // out
 
-	_button = wrapButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_button = wrapButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _button
 }
@@ -311,8 +311,8 @@ func NewButtonWithLabel(label string) *Button {
 func NewButtonWithMnemonic(label string) *Button {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "Button")
 	_gret := _info.InvokeClassMethod("new_Button_with_mnemonic", _args[:], nil)
@@ -322,7 +322,7 @@ func NewButtonWithMnemonic(label string) *Button {
 
 	var _button *Button // out
 
-	_button = wrapButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_button = wrapButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _button
 }
@@ -348,7 +348,7 @@ func (button *Button) Child() Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -409,14 +409,14 @@ func (button *Button) IconName() string {
 
 	_info := girepository.MustFind("Gtk", "Button")
 	_gret := _info.InvokeClassMethod("get_icon_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -440,14 +440,14 @@ func (button *Button) Label() string {
 
 	_info := girepository.MustFind("Gtk", "Button")
 	_gret := _info.InvokeClassMethod("get_label", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -539,8 +539,8 @@ func (button *Button) SetIconName(iconName string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "Button")
 	_info.InvokeClassMethod("set_icon_name", _args[:], nil)
@@ -561,8 +561,8 @@ func (button *Button) SetLabel(label string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "Button")
 	_info.InvokeClassMethod("set_label", _args[:], nil)

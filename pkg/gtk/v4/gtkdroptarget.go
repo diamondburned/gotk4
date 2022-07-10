@@ -228,7 +228,7 @@ func (self *DropTarget) Drop() gdk.Dropper {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -268,7 +268,7 @@ func (self *DropTarget) Formats() *gdk.ContentFormats {
 	var _contentFormats *gdk.ContentFormats // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_contentFormats = (*gdk.ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_contentFormats = (*gdk.ContentFormats)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_contentFormats)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -326,7 +326,7 @@ func (self *DropTarget) Value() *coreglib.Value {
 	var _value *coreglib.Value // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_value = coreglib.ValueFromNative(unsafe.Pointer(_cret))
+		_value = coreglib.ValueFromNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 	}
 
 	return _value

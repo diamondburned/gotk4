@@ -103,7 +103,7 @@ func (self *CairoContext) CairoCreate() *cairo.Context {
 	var _context *cairo.Context // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_context = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
+		_context = cairo.WrapContext(uintptr(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(_context, func(v *cairo.Context) {
 			C.cairo_destroy((*C.void)(unsafe.Pointer(v.Native())))
 		})

@@ -190,7 +190,7 @@ func NewFileChooserButtonWithDialog(dialog *Dialog) *FileChooserButton {
 
 	var _fileChooserButton *FileChooserButton // out
 
-	_fileChooserButton = wrapFileChooserButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_fileChooserButton = wrapFileChooserButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _fileChooserButton
 }
@@ -238,13 +238,13 @@ func (button *FileChooserButton) Title() string {
 
 	_info := girepository.MustFind("Gtk", "FileChooserButton")
 	_gret := _info.InvokeClassMethod("get_title", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -311,8 +311,8 @@ func (button *FileChooserButton) SetTitle(title string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "FileChooserButton")
 	_info.InvokeClassMethod("set_title", _args[:], nil)

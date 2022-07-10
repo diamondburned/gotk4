@@ -226,7 +226,7 @@ func NewToolItem() *ToolItem {
 
 	var _toolItem *ToolItem // out
 
-	_toolItem = wrapToolItem(coreglib.Take(unsafe.Pointer(_cret)))
+	_toolItem = wrapToolItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _toolItem
 }
@@ -333,8 +333,8 @@ func (toolItem *ToolItem) ProxyMenuItem(menuItemId string) Widgetter {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(menuItemId)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(menuItemId)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "ToolItem")
 	_gret := _info.InvokeClassMethod("get_proxy_menu_item", _args[:], nil)
@@ -347,7 +347,7 @@ func (toolItem *ToolItem) ProxyMenuItem(menuItemId string) Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -412,7 +412,7 @@ func (toolItem *ToolItem) TextSizeGroup() *SizeGroup {
 
 	var _sizeGroup *SizeGroup // out
 
-	_sizeGroup = wrapSizeGroup(coreglib.Take(unsafe.Pointer(_cret)))
+	_sizeGroup = wrapSizeGroup(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _sizeGroup
 }
@@ -538,7 +538,7 @@ func (toolItem *ToolItem) RetrieveProxyMenuItem() Widgetter {
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -646,8 +646,8 @@ func (toolItem *ToolItem) SetProxyMenuItem(menuItemId string, menuItem Widgetter
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(menuItemId)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(menuItemId)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	if menuItem != nil {
 		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 	}
@@ -671,8 +671,8 @@ func (toolItem *ToolItem) SetTooltipMarkup(markup string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(markup)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(markup)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "ToolItem")
 	_info.InvokeClassMethod("set_tooltip_markup", _args[:], nil)
@@ -692,8 +692,8 @@ func (toolItem *ToolItem) SetTooltipText(text string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toolItem).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "ToolItem")
 	_info.InvokeClassMethod("set_tooltip_text", _args[:], nil)

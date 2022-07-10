@@ -141,7 +141,7 @@ func NewThreadedSocketService(maxThreads int32) *ThreadedSocketService {
 
 	var _threadedSocketService *ThreadedSocketService // out
 
-	_threadedSocketService = wrapThreadedSocketService(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_threadedSocketService = wrapThreadedSocketService(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _threadedSocketService
 }

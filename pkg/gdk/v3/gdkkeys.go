@@ -50,15 +50,15 @@ func KeyvalConvertCase(symbol uint32) (lower, upper uint32) {
 	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(symbol)
 
 	_info := girepository.MustFind("Gdk", "keyval_convert_case")
-	_info.Invoke(_args[:], _outs[:])
+	_info.InvokeFunction(_args[:], _outs[:])
 
 	runtime.KeepAlive(symbol)
 
 	var _lower uint32 // out
 	var _upper uint32 // out
 
-	_lower = *(*uint32)(unsafe.Pointer(_outs[0]))
-	_upper = *(*uint32)(unsafe.Pointer(_outs[1]))
+	_lower = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
+	_upper = uint32(*(*C.guint)(unsafe.Pointer(&_outs[1])))
 
 	return _lower, _upper
 }
@@ -80,11 +80,11 @@ func KeyvalConvertCase(symbol uint32) (lower, upper uint32) {
 func KeyvalFromName(keyvalName string) uint32 {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(keyvalName)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(keyvalName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gdk", "keyval_from_name")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyvalName)
@@ -113,7 +113,7 @@ func KeyvalIsLower(keyval uint32) bool {
 	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(keyval)
 
 	_info := girepository.MustFind("Gdk", "keyval_is_lower")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyval)
@@ -144,7 +144,7 @@ func KeyvalIsUpper(keyval uint32) bool {
 	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(keyval)
 
 	_info := girepository.MustFind("Gdk", "keyval_is_upper")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyval)
@@ -178,15 +178,15 @@ func KeyvalName(keyval uint32) string {
 	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(keyval)
 
 	_info := girepository.MustFind("Gdk", "keyval_name")
-	_gret := _info.Invoke(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_gret := _info.InvokeFunction(_args[:], nil)
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyval)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -209,7 +209,7 @@ func KeyvalToLower(keyval uint32) uint32 {
 	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(keyval)
 
 	_info := girepository.MustFind("Gdk", "keyval_to_lower")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyval)
@@ -239,7 +239,7 @@ func KeyvalToUnicode(keyval uint32) uint32 {
 	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(keyval)
 
 	_info := girepository.MustFind("Gdk", "keyval_to_unicode")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyval)
@@ -268,7 +268,7 @@ func KeyvalToUpper(keyval uint32) uint32 {
 	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(keyval)
 
 	_info := girepository.MustFind("Gdk", "keyval_to_upper")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(keyval)
@@ -297,7 +297,7 @@ func UnicodeToKeyval(wc uint32) uint32 {
 	*(*C.guint32)(unsafe.Pointer(&_args[0])) = C.guint32(wc)
 
 	_info := girepository.MustFind("Gdk", "unicode_to_keyval")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(wc)
@@ -461,12 +461,12 @@ func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint32) ([]KeymapKey, []
 	var _ok bool          // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		defer C.free(unsafe.Pointer(_outs[0]))
+		defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 		{
-			src := unsafe.Slice((**C.void)(_outs[0]), _outs[2])
-			_keys = make([]KeymapKey, _outs[2])
-			for i := 0; i < int(_outs[2]); i++ {
-				_keys[i] = *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			src := unsafe.Slice((**C.void)(*(**C.void)(unsafe.Pointer(&_outs[0]))), *(*C.gint)(unsafe.Pointer(&_outs[2])))
+			_keys = make([]KeymapKey, *(*C.gint)(unsafe.Pointer(&_outs[2])))
+			for i := 0; i < int(*(*C.gint)(unsafe.Pointer(&_outs[2]))); i++ {
+				_keys[i] = *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
 				runtime.SetFinalizer(
 					gextras.StructIntern(unsafe.Pointer(&_keys[i])),
 					func(intern *struct{ C unsafe.Pointer }) {
@@ -476,13 +476,13 @@ func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint32) ([]KeymapKey, []
 			}
 		}
 	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		defer C.free(unsafe.Pointer(_outs[1]))
+	if *(**C.guint)(unsafe.Pointer(&_outs[1])) != nil {
+		defer C.free(unsafe.Pointer(*(**C.guint)(unsafe.Pointer(&_outs[1]))))
 		{
-			src := unsafe.Slice((**C.void)(_outs[1]), _outs[2])
-			_keyvals = make([]uint32, _outs[2])
-			for i := 0; i < int(_outs[2]); i++ {
-				_keyvals[i] = *(*uint32)(unsafe.Pointer(src[i]))
+			src := unsafe.Slice((*C.guint)(*(**C.guint)(unsafe.Pointer(&_outs[1]))), *(*C.gint)(unsafe.Pointer(&_outs[2])))
+			_keyvals = make([]uint32, *(*C.gint)(unsafe.Pointer(&_outs[2])))
+			for i := 0; i < int(*(*C.gint)(unsafe.Pointer(&_outs[2]))); i++ {
+				_keyvals[i] = uint32(*(*C.guint)(unsafe.Pointer(&src[i])))
 			}
 		}
 	}
@@ -529,12 +529,12 @@ func (keymap *Keymap) EntriesForKeyval(keyval uint32) ([]KeymapKey, bool) {
 	var _keys []KeymapKey // out
 	var _ok bool          // out
 
-	defer C.free(unsafe.Pointer(_outs[0]))
+	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 	{
-		src := unsafe.Slice((**C.void)(_outs[0]), _outs[1])
-		_keys = make([]KeymapKey, _outs[1])
-		for i := 0; i < int(_outs[1]); i++ {
-			_keys[i] = *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+		src := unsafe.Slice((**C.void)(*(**C.void)(unsafe.Pointer(&_outs[0]))), *(*C.gint)(unsafe.Pointer(&_outs[1])))
+		_keys = make([]KeymapKey, *(*C.gint)(unsafe.Pointer(&_outs[1])))
+		for i := 0; i < int(*(*C.gint)(unsafe.Pointer(&_outs[1]))); i++ {
+			_keys[i] = *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(&_keys[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -696,12 +696,12 @@ func (keymap *Keymap) LookupKey(key *KeymapKey) uint32 {
 //
 func KeymapGetDefault() *Keymap {
 	_info := girepository.MustFind("Gdk", "get_default")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _keymap *Keymap // out
 
-	_keymap = wrapKeymap(coreglib.Take(unsafe.Pointer(_cret)))
+	_keymap = wrapKeymap(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _keymap
 }
@@ -722,14 +722,14 @@ func KeymapGetForDisplay(display *Display) *Keymap {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_info := girepository.MustFind("Gdk", "get_for_display")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)
 
 	var _keymap *Keymap // out
 
-	_keymap = wrapKeymap(coreglib.Take(unsafe.Pointer(_cret)))
+	_keymap = wrapKeymap(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _keymap
 }

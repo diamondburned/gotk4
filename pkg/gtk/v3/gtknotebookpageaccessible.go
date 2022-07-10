@@ -90,7 +90,7 @@ func NewNotebookPageAccessible(notebook *NotebookAccessible, child Widgetter) *N
 
 	var _notebookPageAccessible *NotebookPageAccessible // out
 
-	_notebookPageAccessible = wrapNotebookPageAccessible(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_notebookPageAccessible = wrapNotebookPageAccessible(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _notebookPageAccessible
 }

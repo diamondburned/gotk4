@@ -91,7 +91,7 @@ func NewInetSocketAddress(address *InetAddress, port uint16) *InetSocketAddress 
 
 	var _inetSocketAddress *InetSocketAddress // out
 
-	_inetSocketAddress = wrapInetSocketAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_inetSocketAddress = wrapInetSocketAddress(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _inetSocketAddress
 }
@@ -115,8 +115,8 @@ func NewInetSocketAddress(address *InetAddress, port uint16) *InetSocketAddress 
 func NewInetSocketAddressFromString(address string, port uint32) *InetSocketAddress {
 	var _args [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(address)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(address)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(port)
 
 	_info := girepository.MustFind("Gio", "InetSocketAddress")
@@ -129,7 +129,7 @@ func NewInetSocketAddressFromString(address string, port uint32) *InetSocketAddr
 	var _inetSocketAddress *InetSocketAddress // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_inetSocketAddress = wrapInetSocketAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_inetSocketAddress = wrapInetSocketAddress(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _inetSocketAddress
@@ -155,7 +155,7 @@ func (address *InetSocketAddress) Address() *InetAddress {
 
 	var _inetAddress *InetAddress // out
 
-	_inetAddress = wrapInetAddress(coreglib.Take(unsafe.Pointer(_cret)))
+	_inetAddress = wrapInetAddress(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _inetAddress
 }

@@ -121,8 +121,8 @@ func NewColorChooserDialog(title string, parent *Window) *ColorChooserDialog {
 	var _args [2]girepository.Argument
 
 	if title != "" {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(title)))
-		defer C.free(unsafe.Pointer(_args[0]))
+		*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(title)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	}
 	if parent != nil {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
@@ -137,7 +137,7 @@ func NewColorChooserDialog(title string, parent *Window) *ColorChooserDialog {
 
 	var _colorChooserDialog *ColorChooserDialog // out
 
-	_colorChooserDialog = wrapColorChooserDialog(coreglib.Take(unsafe.Pointer(_cret)))
+	_colorChooserDialog = wrapColorChooserDialog(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _colorChooserDialog
 }

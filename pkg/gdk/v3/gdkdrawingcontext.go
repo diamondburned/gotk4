@@ -82,8 +82,8 @@ func (context *DrawingContext) CairoContext() *cairo.Context {
 
 	var _ret *cairo.Context // out
 
-	_ret = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
-	C.cairo_reference(_cret)
+	_ret = cairo.WrapContext(uintptr(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.cairo_reference(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(_ret, func(v *cairo.Context) {
 		C.cairo_destroy((*C.void)(unsafe.Pointer(v.Native())))
 	})
@@ -112,7 +112,7 @@ func (context *DrawingContext) Clip() *cairo.Region {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+			_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))}
 			_region = (*cairo.Region)(unsafe.Pointer(_pp))
 		}
 		runtime.SetFinalizer(_region, func(v *cairo.Region) {
@@ -143,7 +143,7 @@ func (context *DrawingContext) Window() Windower {
 	var _window Windower // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}

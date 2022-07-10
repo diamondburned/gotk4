@@ -79,7 +79,7 @@ func NewEmblem(icon Iconner) *Emblem {
 
 	var _emblem *Emblem // out
 
-	_emblem = wrapEmblem(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_emblem = wrapEmblem(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _emblem
 }
@@ -104,7 +104,7 @@ func (emblem *Emblem) GetIcon() *Icon {
 
 	var _icon *Icon // out
 
-	_icon = wrapIcon(coreglib.Take(unsafe.Pointer(_cret)))
+	_icon = wrapIcon(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _icon
 }

@@ -106,7 +106,7 @@ func NewSocketListener() *SocketListener {
 
 	var _socketListener *SocketListener // out
 
-	_socketListener = wrapSocketListener(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_socketListener = wrapSocketListener(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _socketListener
 }
@@ -154,11 +154,11 @@ func (listener *SocketListener) Accept(ctx context.Context) (*coreglib.Object, *
 	var _goerr error                        // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_sourceObject = coreglib.Take(unsafe.Pointer(_outs[0]))
+		_sourceObject = coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 	}
-	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _sourceObject, _socketConnection, _goerr
@@ -227,11 +227,11 @@ func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*coreglib.Ob
 	var _goerr error                        // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_sourceObject = coreglib.Take(unsafe.Pointer(_outs[0]))
+		_sourceObject = coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 	}
-	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _sourceObject, _socketConnection, _goerr
@@ -283,11 +283,11 @@ func (listener *SocketListener) AcceptSocket(ctx context.Context) (*coreglib.Obj
 	var _goerr error                   // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_sourceObject = coreglib.Take(unsafe.Pointer(_outs[0]))
+		_sourceObject = coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 	}
-	_socket = wrapSocket(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_socket = wrapSocket(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _sourceObject, _socket, _goerr
@@ -357,11 +357,11 @@ func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*coreg
 	var _goerr error                   // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_sourceObject = coreglib.Take(unsafe.Pointer(_outs[0]))
+		_sourceObject = coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 	}
-	_socket = wrapSocket(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_socket = wrapSocket(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _sourceObject, _socket, _goerr
@@ -405,7 +405,7 @@ func (listener *SocketListener) AddAnyInetPort(sourceObject *coreglib.Object) (u
 
 	_guint16 = uint16(*(*C.guint16)(unsafe.Pointer(&_cret)))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _guint16, _goerr
@@ -447,7 +447,7 @@ func (listener *SocketListener) AddInetPort(port uint16, sourceObject *coreglib.
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -489,7 +489,7 @@ func (listener *SocketListener) AddSocket(socket *Socket, sourceObject *coreglib
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

@@ -193,7 +193,7 @@ func NewCheckMenuItem() *CheckMenuItem {
 
 	var _checkMenuItem *CheckMenuItem // out
 
-	_checkMenuItem = wrapCheckMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
+	_checkMenuItem = wrapCheckMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _checkMenuItem
 }
@@ -211,8 +211,8 @@ func NewCheckMenuItem() *CheckMenuItem {
 func NewCheckMenuItemWithLabel(label string) *CheckMenuItem {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "CheckMenuItem")
 	_gret := _info.InvokeClassMethod("new_CheckMenuItem_with_label", _args[:], nil)
@@ -222,7 +222,7 @@ func NewCheckMenuItemWithLabel(label string) *CheckMenuItem {
 
 	var _checkMenuItem *CheckMenuItem // out
 
-	_checkMenuItem = wrapCheckMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
+	_checkMenuItem = wrapCheckMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _checkMenuItem
 }
@@ -242,8 +242,8 @@ func NewCheckMenuItemWithLabel(label string) *CheckMenuItem {
 func NewCheckMenuItemWithMnemonic(label string) *CheckMenuItem {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "CheckMenuItem")
 	_gret := _info.InvokeClassMethod("new_CheckMenuItem_with_mnemonic", _args[:], nil)
@@ -253,7 +253,7 @@ func NewCheckMenuItemWithMnemonic(label string) *CheckMenuItem {
 
 	var _checkMenuItem *CheckMenuItem // out
 
-	_checkMenuItem = wrapCheckMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
+	_checkMenuItem = wrapCheckMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _checkMenuItem
 }

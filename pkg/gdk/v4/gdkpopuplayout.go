@@ -197,7 +197,7 @@ func (layout *PopupLayout) Copy() *PopupLayout {
 
 	var _popupLayout *PopupLayout // out
 
-	_popupLayout = (*PopupLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_popupLayout = (*PopupLayout)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_popupLayout)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -260,7 +260,7 @@ func (layout *PopupLayout) AnchorRect() *Rectangle {
 
 	var _rectangle *Rectangle // out
 
-	_rectangle = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_rectangle = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _rectangle
 }
@@ -286,8 +286,8 @@ func (layout *PopupLayout) Offset() (dx int32, dy int32) {
 	var _dx int32 // out
 	var _dy int32 // out
 
-	_dx = *(*int32)(unsafe.Pointer(_outs[0]))
-	_dy = *(*int32)(unsafe.Pointer(_outs[1]))
+	_dx = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_dy = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
 
 	return _dx, _dy
 }
@@ -317,10 +317,10 @@ func (layout *PopupLayout) ShadowWidth() (left int32, right int32, top int32, bo
 	var _top int32    // out
 	var _bottom int32 // out
 
-	_left = *(*int32)(unsafe.Pointer(_outs[0]))
-	_right = *(*int32)(unsafe.Pointer(_outs[1]))
-	_top = *(*int32)(unsafe.Pointer(_outs[2]))
-	_bottom = *(*int32)(unsafe.Pointer(_outs[3]))
+	_left = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_right = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
+	_top = int32(*(*C.int)(unsafe.Pointer(&_outs[2])))
+	_bottom = int32(*(*C.int)(unsafe.Pointer(&_outs[3])))
 
 	return _left, _right, _top, _bottom
 }

@@ -85,8 +85,8 @@ func (widget *Widget) DragSourceGetTargetList() *TargetList {
 	var _targetList *TargetList // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.gtk_target_list_ref(_cret)
+		_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.gtk_target_list_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_targetList)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -130,8 +130,8 @@ func (widget *Widget) DragSourceSetIconName(iconName string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "Widget")
 	_info.InvokeClassMethod("drag_source_set_icon_name", _args[:], nil)
@@ -174,8 +174,8 @@ func (widget *Widget) DragSourceSetIconStock(stockId string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "Widget")
 	_info.InvokeClassMethod("drag_source_set_icon_stock", _args[:], nil)

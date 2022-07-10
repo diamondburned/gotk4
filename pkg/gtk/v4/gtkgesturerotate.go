@@ -97,7 +97,7 @@ func NewGestureRotate() *GestureRotate {
 
 	var _gestureRotate *GestureRotate // out
 
-	_gestureRotate = wrapGestureRotate(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_gestureRotate = wrapGestureRotate(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _gestureRotate
 }

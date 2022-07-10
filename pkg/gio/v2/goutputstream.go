@@ -24,7 +24,7 @@ import (
 // extern gboolean _gotk4_gio2_OutputStreamClass_close_fn(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_OutputStreamClass_flush(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_OutputStreamClass_flush_finish(void*, void*, GError**);
-// extern gboolean _gotk4_gio2_OutputStreamClass_writev_finish(void*, void*, void*, GError**);
+// extern gboolean _gotk4_gio2_OutputStreamClass_writev_finish(void*, void*, gsize*, GError**);
 // extern gssize _gotk4_gio2_OutputStreamClass_splice_finish(void*, void*, GError**);
 // extern gssize _gotk4_gio2_OutputStreamClass_write_finish(void*, void*, GError**);
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
@@ -394,7 +394,7 @@ func _gotk4_gio2_OutputStreamClass_write_finish(arg0 *C.void, arg1 *C.void, _cer
 }
 
 //export _gotk4_gio2_OutputStreamClass_writev_finish
-func _gotk4_gio2_OutputStreamClass_writev_finish(arg0 *C.void, arg1 *C.void, arg2 *C.void, _cerr **C.GError) (cret C.gboolean) {
+func _gotk4_gio2_OutputStreamClass_writev_finish(arg0 *C.void, arg1 *C.void, arg2 *C.gsize, _cerr **C.GError) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		WritevFinish(result AsyncResulter) (uint, error)
@@ -422,7 +422,7 @@ func _gotk4_gio2_OutputStreamClass_writev_finish(arg0 *C.void, arg1 *C.void, arg
 
 	bytesWritten, _goerr := iface.WritevFinish(_result)
 
-	*arg2 = (*C.void)(unsafe.Pointer(bytesWritten))
+	*arg2 = C.gsize(bytesWritten)
 	if _goerr != nil && _cerr != nil {
 		*_cerr = (*C.void)(gerror.New(_goerr))
 	}
@@ -513,7 +513,7 @@ func (stream *OutputStream) Close(ctx context.Context) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -581,7 +581,7 @@ func (stream *OutputStream) CloseFinish(result AsyncResulter) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -620,7 +620,7 @@ func (stream *OutputStream) Flush(ctx context.Context) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -683,7 +683,7 @@ func (stream *OutputStream) FlushFinish(result AsyncResulter) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -784,7 +784,7 @@ func (stream *OutputStream) SetPending() error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -820,7 +820,7 @@ func (stream *OutputStream) SpliceFinish(result AsyncResulter) (int, error) {
 
 	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _gssize, _goerr
@@ -861,11 +861,9 @@ func (stream *OutputStream) WriteAllFinish(result AsyncResulter) (uint, error) {
 	var _bytesWritten uint // out
 	var _goerr error       // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_bytesWritten = *(*uint)(unsafe.Pointer(_outs[0]))
-	}
+	_bytesWritten = uint(*(*C.gsize)(unsafe.Pointer(&_outs[0])))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _bytesWritten, _goerr
@@ -915,7 +913,7 @@ func (stream *OutputStream) WriteBytes(ctx context.Context, bytes *glib.Bytes) (
 
 	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _gssize, _goerr
@@ -995,7 +993,7 @@ func (stream *OutputStream) WriteBytesFinish(result AsyncResulter) (int, error) 
 
 	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _gssize, _goerr
@@ -1029,7 +1027,7 @@ func (stream *OutputStream) WriteFinish(result AsyncResulter) (int, error) {
 
 	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _gssize, _goerr
@@ -1070,11 +1068,9 @@ func (stream *OutputStream) WritevAllFinish(result AsyncResulter) (uint, error) 
 	var _bytesWritten uint // out
 	var _goerr error       // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_bytesWritten = *(*uint)(unsafe.Pointer(_outs[0]))
-	}
+	_bytesWritten = uint(*(*C.gsize)(unsafe.Pointer(&_outs[0])))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _bytesWritten, _goerr
@@ -1107,11 +1103,9 @@ func (stream *OutputStream) WritevFinish(result AsyncResulter) (uint, error) {
 	var _bytesWritten uint // out
 	var _goerr error       // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_bytesWritten = *(*uint)(unsafe.Pointer(_outs[0]))
-	}
+	_bytesWritten = uint(*(*C.gsize)(unsafe.Pointer(&_outs[0])))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _bytesWritten, _goerr

@@ -52,8 +52,8 @@ func (display *X11Display) GLXVersion() (major, minor int32, ok bool) {
 	var _minor int32 // out
 	var _ok bool     // out
 
-	_major = *(*int32)(unsafe.Pointer(_outs[0]))
-	_minor = *(*int32)(unsafe.Pointer(_outs[1]))
+	_major = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_minor = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}

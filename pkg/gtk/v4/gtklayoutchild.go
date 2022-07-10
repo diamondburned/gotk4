@@ -107,7 +107,7 @@ func (layoutChild *LayoutChild) ChildWidget() Widgetter {
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -148,7 +148,7 @@ func (layoutChild *LayoutChild) LayoutManager() LayoutManagerer {
 	var _layoutManager LayoutManagerer // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.LayoutManagerer is nil")
 		}

@@ -142,7 +142,8 @@ func _gotk4_gtk3_StyleProviderIface_get_icon_factory(arg0 *C.void, arg1 *C.void)
 		gextras.StructIntern(unsafe.Pointer(_path)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gtk", "WidgetPath").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -170,7 +171,8 @@ func _gotk4_gtk3_StyleProviderIface_get_style(arg0 *C.void, arg1 *C.void) (cret 
 		gextras.StructIntern(unsafe.Pointer(_path)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gtk", "WidgetPath").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -225,7 +227,7 @@ func (provider *StyleProvider) IconFactory(path *WidgetPath) *IconFactory {
 	var _iconFactory *IconFactory // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_iconFactory = wrapIconFactory(coreglib.Take(unsafe.Pointer(_cret)))
+		_iconFactory = wrapIconFactory(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _iconFactory
@@ -261,7 +263,7 @@ func (provider *StyleProvider) Style(path *WidgetPath) *StyleProperties {
 	var _styleProperties *StyleProperties // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_styleProperties = wrapStyleProperties(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_styleProperties = wrapStyleProperties(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _styleProperties

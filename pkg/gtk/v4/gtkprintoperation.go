@@ -138,12 +138,12 @@ func (p PrintError) String() string {
 //
 func PrintErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gtk", "quark")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -340,7 +340,7 @@ func PrintRunPageSetupDialog(parent *Window, pageSetup *PageSetup, settings *Pri
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
 
 	_info := girepository.MustFind("Gtk", "print_run_page_setup_dialog")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(parent)
@@ -349,7 +349,7 @@ func PrintRunPageSetupDialog(parent *Window, pageSetup *PageSetup, settings *Pri
 
 	var _pageSetup *PageSetup // out
 
-	_pageSetup = wrapPageSetup(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_pageSetup = wrapPageSetup(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _pageSetup
 }
@@ -382,7 +382,7 @@ func PrintRunPageSetupDialogAsync(parent *Window, pageSetup *PageSetup, settings
 	_args[4] = C.gpointer(gbox.AssignOnce(doneCb))
 
 	_info := girepository.MustFind("Gtk", "print_run_page_setup_dialog_async")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(pageSetup)
@@ -1181,7 +1181,7 @@ func NewPrintOperation() *PrintOperation {
 
 	var _printOperation *PrintOperation // out
 
-	_printOperation = wrapPrintOperation(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_printOperation = wrapPrintOperation(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _printOperation
 }
@@ -1238,7 +1238,7 @@ func (op *PrintOperation) DefaultPageSetup() *PageSetup {
 
 	var _pageSetup *PageSetup // out
 
-	_pageSetup = wrapPageSetup(coreglib.Take(unsafe.Pointer(_cret)))
+	_pageSetup = wrapPageSetup(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _pageSetup
 }
@@ -1289,7 +1289,7 @@ func (op *PrintOperation) Error() error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -1377,7 +1377,7 @@ func (op *PrintOperation) PrintSettings() *PrintSettings {
 
 	var _printSettings *PrintSettings // out
 
-	_printSettings = wrapPrintSettings(coreglib.Take(unsafe.Pointer(_cret)))
+	_printSettings = wrapPrintSettings(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _printSettings
 }
@@ -1402,13 +1402,13 @@ func (op *PrintOperation) StatusString() string {
 
 	_info := girepository.MustFind("Gtk", "PrintOperation")
 	_gret := _info.InvokeClassMethod("get_status_string", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(op)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -1532,8 +1532,8 @@ func (op *PrintOperation) SetCustomTabLabel(label string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	if label != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "PrintOperation")
@@ -1627,8 +1627,8 @@ func (op *PrintOperation) SetExportFilename(filename string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "PrintOperation")
 	_info.InvokeClassMethod("set_export_filename", _args[:], nil)
@@ -1678,8 +1678,8 @@ func (op *PrintOperation) SetJobName(jobName string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(op).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(jobName)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(jobName)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "PrintOperation")
 	_info.InvokeClassMethod("set_job_name", _args[:], nil)

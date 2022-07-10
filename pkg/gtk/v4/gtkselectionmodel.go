@@ -534,7 +534,7 @@ func (model *SelectionModel) Selection() *Bitset {
 
 	var _bitset *Bitset // out
 
-	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bitset)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -578,7 +578,7 @@ func (model *SelectionModel) SelectionInRange(position, nItems uint32) *Bitset {
 
 	var _bitset *Bitset // out
 
-	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bitset)),
 		func(intern *struct{ C unsafe.Pointer }) {

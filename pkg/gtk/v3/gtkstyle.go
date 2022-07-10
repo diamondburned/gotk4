@@ -262,7 +262,7 @@ func NewStyle() *Style {
 
 	var _style *Style // out
 
-	_style = wrapStyle(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_style = wrapStyle(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _style
 }
@@ -288,7 +288,7 @@ func (style *Style) Copy() *Style {
 
 	var _ret *Style // out
 
-	_ret = wrapStyle(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_ret = wrapStyle(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _ret
 }
@@ -355,8 +355,8 @@ func (style *Style) LookupColor(colorName string) (*gdk.Color, bool) {
 	var _outs [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(style).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(colorName)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(colorName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "Style")
 	_gret := _info.InvokeClassMethod("lookup_color", _args[:], _outs[:])
@@ -368,7 +368,7 @@ func (style *Style) LookupColor(colorName string) (*gdk.Color, bool) {
 	var _color *gdk.Color // out
 	var _ok bool          // out
 
-	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -393,8 +393,8 @@ func (style *Style) LookupIconSet(stockId string) *IconSet {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(style).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "Style")
 	_gret := _info.InvokeClassMethod("lookup_icon_set", _args[:], nil)
@@ -405,8 +405,8 @@ func (style *Style) LookupIconSet(stockId string) *IconSet {
 
 	var _iconSet *IconSet // out
 
-	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_icon_set_ref(_cret)
+	_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.gtk_icon_set_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_iconSet)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -446,16 +446,14 @@ func (widget *Widget) ClassPath() (pathLength uint32, path, pathReversed string)
 	var _path string         // out
 	var _pathReversed string // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_pathLength = *(*uint32)(unsafe.Pointer(_outs[0]))
+	_pathLength = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
+	if *(**C.gchar)(unsafe.Pointer(&_outs[1])) != nil {
+		_path = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[1])))))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[1]))))
 	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_path = C.GoString((*C.gchar)(unsafe.Pointer(_outs[1])))
-		defer C.free(unsafe.Pointer(_outs[1]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_pathReversed = C.GoString((*C.gchar)(unsafe.Pointer(_outs[2])))
-		defer C.free(unsafe.Pointer(_outs[2]))
+	if *(**C.gchar)(unsafe.Pointer(&_outs[2])) != nil {
+		_pathReversed = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[2])))))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[2]))))
 	}
 
 	return _pathLength, _path, _pathReversed
@@ -513,7 +511,7 @@ func (widget *Widget) ModifierStyle() *RCStyle {
 
 	var _rcStyle *RCStyle // out
 
-	_rcStyle = wrapRCStyle(coreglib.Take(unsafe.Pointer(_cret)))
+	_rcStyle = wrapRCStyle(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _rcStyle
 }
@@ -539,7 +537,7 @@ func (widget *Widget) Style() *Style {
 
 	var _style *Style // out
 
-	_style = wrapStyle(coreglib.Take(unsafe.Pointer(_cret)))
+	_style = wrapStyle(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _style
 }
@@ -708,16 +706,14 @@ func (widget *Widget) Path() (pathLength uint32, path, pathReversed string) {
 	var _path string         // out
 	var _pathReversed string // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_pathLength = *(*uint32)(unsafe.Pointer(_outs[0]))
+	_pathLength = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
+	if *(**C.gchar)(unsafe.Pointer(&_outs[1])) != nil {
+		_path = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[1])))))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[1]))))
 	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_path = C.GoString((*C.gchar)(unsafe.Pointer(_outs[1])))
-		defer C.free(unsafe.Pointer(_outs[1]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_pathReversed = C.GoString((*C.gchar)(unsafe.Pointer(_outs[2])))
-		defer C.free(unsafe.Pointer(_outs[2]))
+	if *(**C.gchar)(unsafe.Pointer(&_outs[2])) != nil {
+		_pathReversed = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[2])))))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[2]))))
 	}
 
 	return _pathLength, _path, _pathReversed
@@ -801,12 +797,12 @@ func (widget *Widget) StyleAttach() {
 //
 func WidgetGetDefaultStyle() *Style {
 	_info := girepository.MustFind("Gtk", "get_default_style")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _style *Style // out
 
-	_style = wrapStyle(coreglib.Take(unsafe.Pointer(_cret)))
+	_style = wrapStyle(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _style
 }

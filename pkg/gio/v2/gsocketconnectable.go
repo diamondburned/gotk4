@@ -14,9 +14,9 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern gchar* _gotk4_gio2_SocketConnectableIface_to_string(void*);
 // extern void* _gotk4_gio2_SocketConnectableIface_enumerate(void*);
 // extern void* _gotk4_gio2_SocketConnectableIface_proxy_enumerate(void*);
-// extern void* _gotk4_gio2_SocketConnectableIface_to_string(void*);
 import "C"
 
 // GTypeSocketConnectable returns the GType for the type SocketConnectable.
@@ -182,13 +182,13 @@ func _gotk4_gio2_SocketConnectableIface_proxy_enumerate(arg0 *C.void) (cret *C.v
 }
 
 //export _gotk4_gio2_SocketConnectableIface_to_string
-func _gotk4_gio2_SocketConnectableIface_to_string(arg0 *C.void) (cret *C.void) {
+func _gotk4_gio2_SocketConnectableIface_to_string(arg0 *C.void) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(SocketConnectableOverrider)
 
 	utf8 := iface.String()
 
-	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 
 	return cret
 }
@@ -223,7 +223,7 @@ func (connectable *SocketConnectable) Enumerate() SocketAddressEnumeratorrer {
 	var _socketAddressEnumerator SocketAddressEnumeratorrer // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gio.SocketAddressEnumeratorrer is nil")
 		}
@@ -267,7 +267,7 @@ func (connectable *SocketConnectable) ProxyEnumerate() SocketAddressEnumeratorre
 	var _socketAddressEnumerator SocketAddressEnumeratorrer // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gio.SocketAddressEnumeratorrer is nil")
 		}
@@ -306,14 +306,14 @@ func (connectable *SocketConnectable) String() string {
 
 	_info := girepository.MustFind("Gio", "SocketConnectable")
 	_gret := _info.InvokeIfaceMethod("to_string", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connectable)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }

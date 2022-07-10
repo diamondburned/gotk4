@@ -133,12 +133,13 @@ func (rgba *RGBA) Copy() *RGBA {
 
 	var _rgbA *RGBA // out
 
-	_rgbA = (*RGBA)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_rgbA = (*RGBA)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_rgbA)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "RGBA").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -160,8 +161,8 @@ func (rgba *RGBA) Copy() *RGBA {
 func (p1 *RGBA) Equal(p2 *RGBA) bool {
 	var _args [2]girepository.Argument
 
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = C.gpointer(gextras.StructNative(unsafe.Pointer(p1)))
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = C.gpointer(gextras.StructNative(unsafe.Pointer(p2)))
+	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = *(*C.gpointer)(gextras.StructNative(unsafe.Pointer(p1)))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = *(*C.gpointer)(gextras.StructNative(unsafe.Pointer(p2)))
 
 	_info := girepository.MustFind("Gdk", "RGBA")
 	_gret := _info.InvokeRecordMethod("equal", _args[:], nil)
@@ -188,7 +189,7 @@ func (p1 *RGBA) Equal(p2 *RGBA) bool {
 func (p *RGBA) Hash() uint32 {
 	var _args [1]girepository.Argument
 
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = C.gpointer(gextras.StructNative(unsafe.Pointer(p)))
+	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = *(*C.gpointer)(gextras.StructNative(unsafe.Pointer(p)))
 
 	_info := girepository.MustFind("Gdk", "RGBA")
 	_gret := _info.InvokeRecordMethod("hash", _args[:], nil)
@@ -235,8 +236,8 @@ func (rgba *RGBA) Parse(spec string) bool {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(spec)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(spec)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gdk", "RGBA")
 	_gret := _info.InvokeRecordMethod("parse", _args[:], nil)
@@ -278,14 +279,14 @@ func (rgba *RGBA) String() string {
 
 	_info := girepository.MustFind("Gdk", "RGBA")
 	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(rgba)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }

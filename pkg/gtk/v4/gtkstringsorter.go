@@ -97,7 +97,7 @@ func NewStringSorter(expression Expressioner) *StringSorter {
 
 	var _stringSorter *StringSorter // out
 
-	_stringSorter = wrapStringSorter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_stringSorter = wrapStringSorter(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _stringSorter
 }
@@ -124,7 +124,7 @@ func (self *StringSorter) Expression() Expressioner {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

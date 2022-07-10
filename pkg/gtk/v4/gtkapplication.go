@@ -381,8 +381,8 @@ func (application *Application) AccelsForAction(detailedActionName string) []str
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(detailedActionName)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(detailedActionName)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "Application")
 	_gret := _info.InvokeClassMethod("get_accels_for_action", _args[:], nil)
@@ -393,19 +393,19 @@ func (application *Application) AccelsForAction(detailedActionName string) []str
 
 	var _utf8s []string // out
 
-	defer C.free(unsafe.Pointer(_cret))
+	defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_cret))))
 	{
 		var i int
-		var z *C.void
-		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.char
+		for p := *(***C.char)(unsafe.Pointer(&_cret)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(_cret, i)
+		src := unsafe.Slice(*(***C.char)(unsafe.Pointer(&_cret)), i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i])))))
+			defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i]))))
 		}
 	}
 
@@ -442,8 +442,8 @@ func (application *Application) ActionsForAccel(accel string) []string {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(accel)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(accel)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "Application")
 	_gret := _info.InvokeClassMethod("get_actions_for_accel", _args[:], nil)
@@ -454,19 +454,19 @@ func (application *Application) ActionsForAccel(accel string) []string {
 
 	var _utf8s []string // out
 
-	defer C.free(unsafe.Pointer(_cret))
+	defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_cret))))
 	{
 		var i int
-		var z *C.void
-		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.char
+		for p := *(***C.char)(unsafe.Pointer(&_cret)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(_cret, i)
+		src := unsafe.Slice(*(***C.char)(unsafe.Pointer(&_cret)), i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i])))))
+			defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i]))))
 		}
 	}
 
@@ -498,7 +498,7 @@ func (application *Application) ActiveWindow() *Window {
 	var _window *Window // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_window = wrapWindow(coreglib.Take(unsafe.Pointer(_cret)))
+		_window = wrapWindow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _window
@@ -522,8 +522,8 @@ func (application *Application) MenuByID(id string) *gio.Menu {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(id)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(id)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "Application")
 	_gret := _info.InvokeClassMethod("get_menu_by_id", _args[:], nil)
@@ -536,7 +536,7 @@ func (application *Application) MenuByID(id string) *gio.Menu {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_menu = &gio.Menu{
 				MenuModel: gio.MenuModel{
 					Object: obj,
@@ -570,7 +570,7 @@ func (application *Application) Menubar() gio.MenuModeller {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -617,7 +617,7 @@ func (application *Application) WindowByID(id uint32) *Window {
 	var _window *Window // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_window = wrapWindow(coreglib.Take(unsafe.Pointer(_cret)))
+		_window = wrapWindow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _window
@@ -649,11 +649,11 @@ func (application *Application) Windows() []*Window {
 
 	var _list []*Window // out
 
-	_list = make([]*Window, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+	_list = make([]*Window, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Window // out
-		dst = wrapWindow(coreglib.Take(unsafe.Pointer(src)))
+		dst = wrapWindow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 
@@ -682,19 +682,19 @@ func (application *Application) ListActionDescriptions() []string {
 
 	var _utf8s []string // out
 
-	defer C.free(unsafe.Pointer(_cret))
+	defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_cret))))
 	{
 		var i int
-		var z *C.void
-		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.char
+		for p := *(***C.char)(unsafe.Pointer(&_cret)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(_cret, i)
+		src := unsafe.Slice(*(***C.char)(unsafe.Pointer(&_cret)), i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i])))))
+			defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i]))))
 		}
 	}
 
@@ -749,18 +749,18 @@ func (application *Application) SetAccelsForAction(detailedActionName string, ac
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(detailedActionName)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(detailedActionName)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	{
-		*(***C.void)(unsafe.Pointer(&_args[2])) = (**C.void)(C.calloc(C.size_t((len(accels) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_args[2]))
+		*(***C.char)(unsafe.Pointer(&_args[2])) = (**C.char)(C.calloc(C.size_t((len(accels) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_args[2]))))
 		{
 			out := unsafe.Slice(_args[2], len(accels)+1)
-			var zero *C.void
+			var zero *C.char
 			out[len(accels)] = zero
 			for i := range accels {
-				*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(accels[i])))
-				defer C.free(unsafe.Pointer(out[i]))
+				*(**C.char)(unsafe.Pointer(&out[i])) = (*C.char)(unsafe.Pointer(C.CString(accels[i])))
+				defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&out[i]))))
 			}
 		}
 	}

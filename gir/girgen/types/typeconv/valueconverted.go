@@ -167,7 +167,7 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 				typ.CType = types.CTypeFallback("", typ.Name)
 			} else {
 				// Dereference the inner type.
-				typ.CType = strings.Replace(value.Array.CType, "*", "", 1)
+				typ.CType = types.DecPtr(value.Array.CType)
 			}
 
 			array.Type = &typ
@@ -232,8 +232,13 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 	}
 
 	if value.ParameterIsOutput() {
-		// Output parameter, so neutralize the pointer type.
-		cgoType = strings.Replace(cgoType, "*", "", 1)
+		// Output parameter, so neutralize the C pointer type.
+		cgoType = types.DecPtr(cgoType)
+		cType = types.DecPtr(cType)
+		// // Also decrement this in case we use it.
+		// if value.Resolved.Ptr > 0 {
+		// 	value.Resolved.Ptr--
+		// }
 	}
 
 	if value.conv.isRuntimeLinking() {
@@ -241,13 +246,17 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		// types, since we intentionally don't want to import them.
 		// Instead, we must mask those types into primitive GLib types.
 		if ptr := types.CountPtr(cgoType); ptr > 0 {
-			// Using gpointer doesn't quite work right here, so we just use
-			// C.void.
-			cgoType = types.MovePtr(cgoType, "C.void")
+			// Check on the C type, NOT the Cgo type.
+			if !types.GIRIsPrimitive(types.CleanCType(cType, true)) {
+				// Using gpointer doesn't quite work right here, so we just use
+				// C.void.
+				cgoType = types.MovePtr(cgoType, "C.void")
+			}
 		} else if types.GIRIsPrimitive(cType) {
 			// cgoType OK as it is.
 		} else if prim := value.Resolved.AsPrimitiveCType(conv.fgen); prim != "" {
-			cgoType = types.MovePtr(cgoType, types.CGoTypeFromC(prim))
+			// cgoType = types.MovePtr(cgoType, types.CGoTypeFromC(prim))
+			cgoType = types.CGoTypeFromC(prim) // function already uses MovePtr
 		} else {
 			value.Logln(logger.Debug, "cType", cType, "is not primitive")
 			return false
@@ -505,7 +514,7 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 	if value.Resolved.IsExternGLib("Object") {
 		// Shortcut for GObject.
 		value.p.LineTmpl(m, `
-			<.Value.Out.Set> = coreglib.<.Func>(unsafe.Pointer(<.Value.InPtr 1><.Value.InName>))
+			<.Value.Out.Set> = coreglib.<.Func>(unsafe.Pointer(<.Value.InPtr 1><.Value.In.Name>))
 		`)
 		return true
 	}
@@ -517,7 +526,7 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 		value.header.NeedsExternGLib()
 		value.p.Descend()
 		value.p.LineTmpl(m, `
-			objptr := unsafe.Pointer(<.Value.InPtr 1><.Value.InName>)
+			objptr := unsafe.Pointer(<.Value.InPtr 1><.Value.In.Name>)
 			<if not (or .Value.Optional .Value.Nullable) ->
 			if objptr == nil {
 				panic("object of type <.GoType> is nil")
@@ -541,7 +550,7 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 	if !value.NeedsNamespace {
 		value.p.LineTmpl(m, `
 			<.Value.Out.Set> = <.Value.OutPtr 1><.Value.Resolved.WrapName false ->
-				(coreglib.<.Func>(unsafe.Pointer(<.Value.InPtr 1><.Value.InName>)))
+			                   (coreglib.<.Func>(unsafe.Pointer(<.Value.InPtr 1><.Value.In.Name>)))
 		`)
 		return true
 	}
@@ -555,7 +564,7 @@ func (value *ValueConverted) cgoSetObject(conv *Converter) bool {
 		m["Wrap"] = wrap
 
 		value.p.LineTmpl(m, `{
-			obj := coreglib.<.Func>(unsafe.Pointer(<.Value.InPtr 1><.Value.InName>))
+			obj := coreglib.<.Func>(unsafe.Pointer(<.Value.InPtr 1><.Value.In.Name>))
 			<.Value.Out.Set> = <.Wrap>
 		}`)
 
@@ -684,16 +693,24 @@ func (value *ValueConverted) castPrimitive() bool {
 		return true
 	}
 
-	// Difference is 1. Let the code figure it out.
-	value.p.Linef(
-		"%s = %s(unsafe.Pointer(%s))",
-		value.Out.Set,
-		// What have I done?! I think this only works if in is a pointer. It
-		// will explode otherwise. Which is fine, I guess. OutCast will fail
-		// otherwise.
-		value.OutCast(1),
-		value.InName,
-	)
+	if hasIn > hasOut {
+		value.p.Linef(
+			"%s = %s(unsafe.Pointer(%s))",
+			value.Out.Set,
+			// What have I done?! I think this only works if in is a pointer. It
+			// will explode otherwise. Which is fine, I guess. OutCast will fail
+			// otherwise.
+			value.OutCast(1),
+			value.In.Name,
+		)
+	} else {
+		value.p.Linef(
+			"%s = %s(unsafe.Pointer(%s)) // special case!!",
+			value.Out.Set,
+			value.OutCast(1),
+			value.In.Name,
+		)
+	}
 
 	return !value.fail
 }
@@ -738,9 +755,9 @@ func (value *ValueConverted) InNamePtrPubl(want int) string {
 func (value *ValueConverted) InNamePtr(want int) string {
 	ptr := value.InPtr(want)
 	if ptr == "" {
-		return value.InName
+		return value.In.Name
 	}
-	return fmt.Sprintf("(%s%s)", ptr, value.InName)
+	return fmt.Sprintf("(%s%s)", ptr, value.In.Name)
 }
 
 func (value *ValueConverted) InNPtr() int {

@@ -83,8 +83,8 @@ func NewColumnViewColumn(title string, factory *ListItemFactory) *ColumnViewColu
 	var _args [2]girepository.Argument
 
 	if title != "" {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(title)))
-		defer C.free(unsafe.Pointer(_args[0]))
+		*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(title)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	}
 	if factory != nil {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
@@ -100,7 +100,7 @@ func NewColumnViewColumn(title string, factory *ListItemFactory) *ColumnViewColu
 
 	var _columnViewColumn *ColumnViewColumn // out
 
-	_columnViewColumn = wrapColumnViewColumn(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_columnViewColumn = wrapColumnViewColumn(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _columnViewColumn
 }
@@ -127,7 +127,7 @@ func (self *ColumnViewColumn) ColumnView() *ColumnView {
 	var _columnView *ColumnView // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_columnView = wrapColumnView(coreglib.Take(unsafe.Pointer(_cret)))
+		_columnView = wrapColumnView(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _columnView
@@ -180,7 +180,7 @@ func (self *ColumnViewColumn) Factory() *ListItemFactory {
 	var _listItemFactory *ListItemFactory // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_listItemFactory = wrapListItemFactory(coreglib.Take(unsafe.Pointer(_cret)))
+		_listItemFactory = wrapListItemFactory(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _listItemFactory
@@ -232,7 +232,7 @@ func (self *ColumnViewColumn) HeaderMenu() gio.MenuModeller {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -296,7 +296,7 @@ func (self *ColumnViewColumn) Sorter() *Sorter {
 	var _sorter *Sorter // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_sorter = wrapSorter(coreglib.Take(unsafe.Pointer(_cret)))
+		_sorter = wrapSorter(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _sorter
@@ -315,14 +315,14 @@ func (self *ColumnViewColumn) Title() string {
 
 	_info := girepository.MustFind("Gtk", "ColumnViewColumn")
 	_gret := _info.InvokeClassMethod("get_title", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -510,8 +510,8 @@ func (self *ColumnViewColumn) SetTitle(title string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if title != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(title)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(title)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "ColumnViewColumn")

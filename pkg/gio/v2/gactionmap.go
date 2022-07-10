@@ -15,8 +15,8 @@ import (
 // #include <glib.h>
 // #include <glib-object.h>
 // extern void _gotk4_gio2_ActionMapInterface_add_action(void*, void*);
-// extern void _gotk4_gio2_ActionMapInterface_remove_action(void*, void*);
-// extern void* _gotk4_gio2_ActionMapInterface_lookup_action(void*, void*);
+// extern void _gotk4_gio2_ActionMapInterface_remove_action(void*, gchar*);
+// extern void* _gotk4_gio2_ActionMapInterface_lookup_action(void*, gchar*);
 import "C"
 
 // GTypeActionMap returns the GType for the type ActionMap.
@@ -136,7 +136,7 @@ func _gotk4_gio2_ActionMapInterface_add_action(arg0 *C.void, arg1 *C.void) {
 }
 
 //export _gotk4_gio2_ActionMapInterface_lookup_action
-func _gotk4_gio2_ActionMapInterface_lookup_action(arg0 *C.void, arg1 *C.void) (cret *C.void) {
+func _gotk4_gio2_ActionMapInterface_lookup_action(arg0 *C.void, arg1 *C.gchar) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionMapOverrider)
 
@@ -154,7 +154,7 @@ func _gotk4_gio2_ActionMapInterface_lookup_action(arg0 *C.void, arg1 *C.void) (c
 }
 
 //export _gotk4_gio2_ActionMapInterface_remove_action
-func _gotk4_gio2_ActionMapInterface_remove_action(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gio2_ActionMapInterface_remove_action(arg0 *C.void, arg1 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionMapOverrider)
 
@@ -215,8 +215,8 @@ func (actionMap *ActionMap) LookupAction(actionName string) *Action {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionMap).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "ActionMap")
 	_gret := _info.InvokeIfaceMethod("lookup_action", _args[:], nil)
@@ -228,7 +228,7 @@ func (actionMap *ActionMap) LookupAction(actionName string) *Action {
 	var _action *Action // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_action = wrapAction(coreglib.Take(unsafe.Pointer(_cret)))
+		_action = wrapAction(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _action
@@ -246,8 +246,8 @@ func (actionMap *ActionMap) RemoveAction(actionName string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionMap).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "ActionMap")
 	_info.InvokeIfaceMethod("remove_action", _args[:], nil)
@@ -281,7 +281,7 @@ func (a *ActionEntry) Name() string {
 	offset := girepository.MustFind("Gio", "ActionEntry").StructFieldOffset("name")
 	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -292,7 +292,7 @@ func (a *ActionEntry) ParameterType() string {
 	offset := girepository.MustFind("Gio", "ActionEntry").StructFieldOffset("parameter_type")
 	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -304,6 +304,6 @@ func (a *ActionEntry) State() string {
 	offset := girepository.MustFind("Gio", "ActionEntry").StructFieldOffset("state")
 	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }

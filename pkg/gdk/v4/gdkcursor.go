@@ -118,8 +118,8 @@ func marshalCursor(p uintptr) (interface{}, error) {
 func NewCursorFromName(name string, fallback *Cursor) *Cursor {
 	var _args [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	if fallback != nil {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fallback).Native()))
 	}
@@ -134,7 +134,7 @@ func NewCursorFromName(name string, fallback *Cursor) *Cursor {
 	var _cursor *Cursor // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_cursor = wrapCursor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_cursor = wrapCursor(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _cursor
@@ -175,7 +175,7 @@ func NewCursorFromTexture(texture Texturer, hotspotX, hotspotY int32, fallback *
 
 	var _cursor *Cursor // out
 
-	_cursor = wrapCursor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cursor = wrapCursor(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cursor
 }
@@ -207,7 +207,7 @@ func (cursor *Cursor) Fallback() *Cursor {
 	var _ret *Cursor // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_ret = wrapCursor(coreglib.Take(unsafe.Pointer(_cret)))
+		_ret = wrapCursor(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _ret
@@ -288,14 +288,14 @@ func (cursor *Cursor) Name() string {
 
 	_info := girepository.MustFind("Gdk", "Cursor")
 	_gret := _info.InvokeClassMethod("get_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cursor)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -324,7 +324,7 @@ func (cursor *Cursor) Texture() Texturer {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

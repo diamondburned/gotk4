@@ -162,7 +162,7 @@ func FocusTrackerNotify(object *ObjectClass) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
 
 	_info := girepository.MustFind("Atk", "focus_tracker_notify")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(object)
 }
@@ -175,12 +175,12 @@ func FocusTrackerNotify(object *ObjectClass) {
 //
 func GetFocusObject() *ObjectClass {
 	_info := girepository.MustFind("Atk", "get_focus_object")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _object *ObjectClass // out
 
-	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
+	_object = wrapObject(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _object
 }
@@ -193,12 +193,12 @@ func GetFocusObject() *ObjectClass {
 //
 func GetRoot() *ObjectClass {
 	_info := girepository.MustFind("Atk", "get_root")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _object *ObjectClass // out
 
-	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
+	_object = wrapObject(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _object
 }
@@ -213,12 +213,12 @@ func GetRoot() *ObjectClass {
 //
 func GetToolkitName() string {
 	_info := girepository.MustFind("Atk", "get_toolkit_name")
-	_gret := _info.Invoke(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_gret := _info.InvokeFunction(nil, nil)
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -233,12 +233,12 @@ func GetToolkitName() string {
 //
 func GetToolkitVersion() string {
 	_info := girepository.MustFind("Atk", "get_toolkit_version")
-	_gret := _info.Invoke(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_gret := _info.InvokeFunction(nil, nil)
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -251,12 +251,12 @@ func GetToolkitVersion() string {
 //
 func GetVersion() string {
 	_info := girepository.MustFind("Atk", "get_version")
-	_gret := _info.Invoke(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_gret := _info.InvokeFunction(nil, nil)
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -278,7 +278,7 @@ func RemoveFocusTracker(trackerId uint32) {
 	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(trackerId)
 
 	_info := girepository.MustFind("Atk", "remove_focus_tracker")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(trackerId)
 }
@@ -305,7 +305,7 @@ func RemoveGlobalEventListener(listenerId uint32) {
 	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(listenerId)
 
 	_info := girepository.MustFind("Atk", "remove_global_event_listener")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(listenerId)
 }
@@ -325,7 +325,7 @@ func RemoveKeyEventListener(listenerId uint32) {
 	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(listenerId)
 
 	_info := girepository.MustFind("Atk", "remove_key_event_listener")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(listenerId)
 }
@@ -427,7 +427,7 @@ func (k *KeyEventStruct) String() string {
 	offset := girepository.MustFind("Atk", "KeyEventStruct").StructFieldOffset("string")
 	valptr := (*uintptr)(unsafe.Add(k.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 

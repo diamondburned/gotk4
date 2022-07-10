@@ -155,7 +155,7 @@ func NewCheckButton() *CheckButton {
 
 	var _checkButton *CheckButton // out
 
-	_checkButton = wrapCheckButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_checkButton = wrapCheckButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _checkButton
 }
@@ -174,8 +174,8 @@ func NewCheckButton() *CheckButton {
 func NewCheckButtonWithLabel(label string) *CheckButton {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "CheckButton")
 	_gret := _info.InvokeClassMethod("new_CheckButton_with_label", _args[:], nil)
@@ -185,7 +185,7 @@ func NewCheckButtonWithLabel(label string) *CheckButton {
 
 	var _checkButton *CheckButton // out
 
-	_checkButton = wrapCheckButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_checkButton = wrapCheckButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _checkButton
 }
@@ -206,8 +206,8 @@ func NewCheckButtonWithLabel(label string) *CheckButton {
 func NewCheckButtonWithMnemonic(label string) *CheckButton {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "CheckButton")
 	_gret := _info.InvokeClassMethod("new_CheckButton_with_mnemonic", _args[:], nil)
@@ -217,7 +217,7 @@ func NewCheckButtonWithMnemonic(label string) *CheckButton {
 
 	var _checkButton *CheckButton // out
 
-	_checkButton = wrapCheckButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_checkButton = wrapCheckButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _checkButton
 }

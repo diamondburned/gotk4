@@ -156,7 +156,7 @@ func NewRevealer() *Revealer {
 
 	var _revealer *Revealer // out
 
-	_revealer = wrapRevealer(coreglib.Take(unsafe.Pointer(_cret)))
+	_revealer = wrapRevealer(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _revealer
 }

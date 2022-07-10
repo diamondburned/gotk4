@@ -44,7 +44,7 @@ func NewBytesIcon(bytes *glib.Bytes) *BytesIcon {
 
 	var _bytesIcon *BytesIcon // out
 
-	_bytesIcon = wrapBytesIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_bytesIcon = wrapBytesIcon(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _bytesIcon
 }
@@ -68,8 +68,8 @@ func (icon *BytesIcon) Bytes() *glib.Bytes {
 
 	var _bytes *glib.Bytes // out
 
-	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_bytes_ref(_cret)
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.g_bytes_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {

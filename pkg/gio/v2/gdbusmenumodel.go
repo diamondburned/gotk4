@@ -41,14 +41,14 @@ func DBusMenuModelGet(connection *DBusConnection, busName, objectPath string) *D
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
 	if busName != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(busName)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(busName)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
 
 	_info := girepository.MustFind("Gio", "get")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(connection)
@@ -57,7 +57,7 @@ func DBusMenuModelGet(connection *DBusConnection, busName, objectPath string) *D
 
 	var _dBusMenuModel *DBusMenuModel // out
 
-	_dBusMenuModel = wrapDBusMenuModel(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusMenuModel = wrapDBusMenuModel(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _dBusMenuModel
 }

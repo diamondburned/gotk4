@@ -64,7 +64,7 @@ func TreeCreateRowDragContent(treeModel TreeModeller, path *TreePath) *gdk.Conte
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_info := girepository.MustFind("Gtk", "tree_create_row_drag_content")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(treeModel)
@@ -73,7 +73,7 @@ func TreeCreateRowDragContent(treeModel TreeModeller, path *TreePath) *gdk.Conte
 	var _contentProvider *gdk.ContentProvider // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_contentProvider = &gdk.ContentProvider{
 			Object: obj,
 		}
@@ -105,7 +105,7 @@ func TreeGetRowDragData(value *coreglib.Value) (*TreeModel, *TreePath, bool) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gtk", "tree_get_row_drag_data")
-	_gret := _info.Invoke(_args[:], _outs[:])
+	_gret := _info.InvokeFunction(_args[:], _outs[:])
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(value)
@@ -115,15 +115,16 @@ func TreeGetRowDragData(value *coreglib.Value) (*TreeModel, *TreePath, bool) {
 	var _ok bool              // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_treeModel = wrapTreeModel(coreglib.Take(unsafe.Pointer(_outs[0])))
+		_treeModel = wrapTreeModel(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_path)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -543,7 +544,7 @@ func (dragSource *TreeDragSource) DragDataGet(path *TreePath) *gdk.ContentProvid
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_contentProvider = &gdk.ContentProvider{
 				Object: obj,
 			}

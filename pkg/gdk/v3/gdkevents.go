@@ -958,7 +958,7 @@ func EventsGetAngle(event1, event2 *Event) (float64, bool) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event2)))
 
 	_info := girepository.MustFind("Gdk", "events_get_angle")
-	_gret := _info.Invoke(_args[:], _outs[:])
+	_gret := _info.InvokeFunction(_args[:], _outs[:])
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event1)
@@ -967,7 +967,7 @@ func EventsGetAngle(event1, event2 *Event) (float64, bool) {
 	var _angle float64 // out
 	var _ok bool       // out
 
-	_angle = *(*float64)(unsafe.Pointer(_outs[0]))
+	_angle = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -997,7 +997,7 @@ func EventsGetCenter(event1, event2 *Event) (x, y float64, ok bool) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event2)))
 
 	_info := girepository.MustFind("Gdk", "events_get_center")
-	_gret := _info.Invoke(_args[:], _outs[:])
+	_gret := _info.InvokeFunction(_args[:], _outs[:])
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event1)
@@ -1007,8 +1007,8 @@ func EventsGetCenter(event1, event2 *Event) (x, y float64, ok bool) {
 	var _y float64 // out
 	var _ok bool   // out
 
-	_x = *(*float64)(unsafe.Pointer(_outs[0]))
-	_y = *(*float64)(unsafe.Pointer(_outs[1]))
+	_x = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
+	_y = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[1])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -1038,7 +1038,7 @@ func EventsGetDistance(event1, event2 *Event) (float64, bool) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event2)))
 
 	_info := girepository.MustFind("Gdk", "events_get_distance")
-	_gret := _info.Invoke(_args[:], _outs[:])
+	_gret := _info.InvokeFunction(_args[:], _outs[:])
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event1)
@@ -1047,7 +1047,7 @@ func EventsGetDistance(event1, event2 *Event) (float64, bool) {
 	var _distance float64 // out
 	var _ok bool          // out
 
-	_distance = *(*float64)(unsafe.Pointer(_outs[0]))
+	_distance = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -1063,7 +1063,7 @@ func EventsGetDistance(event1, event2 *Event) (float64, bool) {
 //
 func EventsPending() bool {
 	_info := girepository.MustFind("Gdk", "events_pending")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	var _ok bool // out
@@ -1083,7 +1083,7 @@ func EventsPending() bool {
 //
 func GetShowEvents() bool {
 	_info := girepository.MustFind("Gdk", "get_show_events")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	var _ok bool // out
@@ -1111,7 +1111,7 @@ func SetShowEvents(showEvents bool) {
 	}
 
 	_info := girepository.MustFind("Gdk", "set_show_events")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(showEvents)
 }
@@ -1132,12 +1132,12 @@ func SetShowEvents(showEvents bool) {
 func SettingGet(name string, value *coreglib.Value) bool {
 	var _args [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gdk", "setting_get")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
@@ -1600,7 +1600,8 @@ func CopyEventer(e Eventer) *Event {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1644,7 +1645,8 @@ func (e *Event) AsAny() *EventAny {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1669,7 +1671,8 @@ func (e *Event) AsExpose() *EventExpose {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1694,7 +1697,8 @@ func (e *Event) AsVisibility() *EventVisibility {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1719,7 +1723,8 @@ func (e *Event) AsMotion() *EventMotion {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1744,7 +1749,8 @@ func (e *Event) AsButton() *EventButton {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1769,7 +1775,8 @@ func (e *Event) AsTouch() *EventTouch {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1794,7 +1801,8 @@ func (e *Event) AsScroll() *EventScroll {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1819,7 +1827,8 @@ func (e *Event) AsKey() *EventKey {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1844,7 +1853,8 @@ func (e *Event) AsCrossing() *EventCrossing {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1869,7 +1879,8 @@ func (e *Event) AsFocusChange() *EventFocus {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1894,7 +1905,8 @@ func (e *Event) AsConfigure() *EventConfigure {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1919,7 +1931,8 @@ func (e *Event) AsProperty() *EventProperty {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1944,7 +1957,8 @@ func (e *Event) AsSelection() *EventSelection {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1969,7 +1983,8 @@ func (e *Event) AsOwnerChange() *EventOwnerChange {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1994,7 +2009,8 @@ func (e *Event) AsProximity() *EventProximity {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -2019,7 +2035,8 @@ func (e *Event) AsDND() *EventDND {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -2044,7 +2061,8 @@ func (e *Event) AsWindowState() *EventWindowState {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -2069,7 +2087,8 @@ func (e *Event) AsSetting() *EventSetting {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -2094,7 +2113,8 @@ func (e *Event) AsGrabBroken() *EventGrabBroken {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -2119,7 +2139,8 @@ func (e *Event) AsTouchpadSwipe() *EventTouchpadSwipe {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -2144,7 +2165,8 @@ func (e *Event) AsTouchpadPinch() *EventTouchpadPinch {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -2169,7 +2191,8 @@ func (e *Event) AsPadButton() *EventPadButton {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -2194,7 +2217,8 @@ func (e *Event) AsPadAxis() *EventPadAxis {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -2219,7 +2243,8 @@ func (e *Event) AsPadGroupMode() *EventPadGroupMode {
 		gextras.StructIntern(unsafe.Pointer(dst)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gdk", "Event").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -2239,14 +2264,14 @@ func (e *Event) AsPadGroupMode() *EventPadGroupMode {
 //
 func EventGet() *Event {
 	_info := girepository.MustFind("Gdk", "get")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _event *Event // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			v := (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+			v := (*Event)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 			_event = v
 		}
 	}
@@ -2272,7 +2297,7 @@ func EventHandlerSet(fn EventFunc) {
 	_args[2] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	_info := girepository.MustFind("Gdk", "handler_set")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(fn)
 }
@@ -2288,14 +2313,14 @@ func EventHandlerSet(fn EventFunc) {
 //
 func EventPeek() *Event {
 	_info := girepository.MustFind("Gdk", "peek")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _event *Event // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			v := (*Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+			v := (*Event)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 			_event = v
 		}
 	}
@@ -2330,7 +2355,7 @@ func EventRequestMotions(event *EventMotion) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
 
 	_info := girepository.MustFind("Gdk", "request_motions")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(event)
 }

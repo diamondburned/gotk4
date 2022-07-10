@@ -192,12 +192,13 @@ func (matrix *Matrix) Copy() *Matrix {
 	var _ret *Matrix // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_ret = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_ret = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_ret)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Pango", "Matrix").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -270,12 +271,8 @@ func (matrix *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 	var _xscale float64 // out
 	var _yscale float64 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_xscale = *(*float64)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_yscale = *(*float64)(unsafe.Pointer(_outs[1]))
-	}
+	_xscale = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
+	_yscale = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
 
 	return _xscale, _yscale
 }

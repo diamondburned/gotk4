@@ -83,10 +83,10 @@ func marshalCharsetConverter(p uintptr) (interface{}, error) {
 func NewCharsetConverter(toCharset, fromCharset string) (*CharsetConverter, error) {
 	var _args [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(toCharset)))
-	defer C.free(unsafe.Pointer(_args[0]))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(fromCharset)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(toCharset)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(fromCharset)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "CharsetConverter")
 	_gret := _info.InvokeClassMethod("new_CharsetConverter", _args[:], nil)
@@ -98,9 +98,9 @@ func NewCharsetConverter(toCharset, fromCharset string) (*CharsetConverter, erro
 	var _charsetConverter *CharsetConverter // out
 	var _goerr error                        // out
 
-	_charsetConverter = wrapCharsetConverter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_charsetConverter = wrapCharsetConverter(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _charsetConverter, _goerr

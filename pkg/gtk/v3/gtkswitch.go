@@ -237,7 +237,7 @@ func NewSwitch() *Switch {
 
 	var __switch *Switch // out
 
-	__switch = wrapSwitch(coreglib.Take(unsafe.Pointer(_cret)))
+	__switch = wrapSwitch(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return __switch
 }

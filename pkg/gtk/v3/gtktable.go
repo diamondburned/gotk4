@@ -199,7 +199,7 @@ func NewTable(rows, columns uint32, homogeneous bool) *Table {
 
 	var _table *Table // out
 
-	_table = wrapTable(coreglib.Take(unsafe.Pointer(_cret)))
+	_table = wrapTable(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _table
 }
@@ -418,12 +418,8 @@ func (table *Table) Size() (rows, columns uint32) {
 	var _rows uint32    // out
 	var _columns uint32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_rows = *(*uint32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_columns = *(*uint32)(unsafe.Pointer(_outs[1]))
-	}
+	_rows = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
+	_columns = uint32(*(*C.guint)(unsafe.Pointer(&_outs[1])))
 
 	return _rows, _columns
 }
@@ -592,7 +588,7 @@ func (t *TableChild) Widget() Widgetter {
 	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v Widgetter // out
 	{
-		objptr := unsafe.Pointer(*valptr)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&*valptr)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}

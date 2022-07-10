@@ -124,7 +124,7 @@ func NewTearoffMenuItem() *TearoffMenuItem {
 
 	var _tearoffMenuItem *TearoffMenuItem // out
 
-	_tearoffMenuItem = wrapTearoffMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
+	_tearoffMenuItem = wrapTearoffMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _tearoffMenuItem
 }

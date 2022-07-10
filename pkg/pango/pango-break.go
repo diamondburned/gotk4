@@ -34,8 +34,8 @@ import "C"
 func DefaultBreak(text string, length int32, analysis *Analysis, attrs *LogAttr, attrsLen int32) {
 	var _args [5]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(length)
 	if analysis != nil {
 		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(analysis)))
@@ -44,7 +44,7 @@ func DefaultBreak(text string, length int32, analysis *Analysis, attrs *LogAttr,
 	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(attrsLen)
 
 	_info := girepository.MustFind("Pango", "default_break")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(length)
@@ -79,12 +79,12 @@ func FindParagraphBoundary(text string, length int32) (paragraphDelimiterIndex, 
 	var _args [2]girepository.Argument
 	var _outs [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(length)
 
 	_info := girepository.MustFind("Pango", "find_paragraph_boundary")
-	_info.Invoke(_args[:], _outs[:])
+	_info.InvokeFunction(_args[:], _outs[:])
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(length)
@@ -92,8 +92,8 @@ func FindParagraphBoundary(text string, length int32) (paragraphDelimiterIndex, 
 	var _paragraphDelimiterIndex int32 // out
 	var _nextParagraphStart int32      // out
 
-	_paragraphDelimiterIndex = *(*int32)(unsafe.Pointer(_outs[0]))
-	_nextParagraphStart = *(*int32)(unsafe.Pointer(_outs[1]))
+	_paragraphDelimiterIndex = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_nextParagraphStart = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _paragraphDelimiterIndex, _nextParagraphStart
 }

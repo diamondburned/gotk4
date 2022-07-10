@@ -17,7 +17,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gio2_DBusAuthObserver_ConnectAllowMechanism(gpointer, void*, guintptr);
+// extern gboolean _gotk4_gio2_DBusAuthObserver_ConnectAllowMechanism(gpointer, gchar*, guintptr);
 // extern gboolean _gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer(gpointer, void*, void*, guintptr);
 // extern gboolean _gotk4_gio2_DBusServer_ConnectNewConnection(gpointer, void*, guintptr);
 // extern void _gotk4_gio2_AppInfoMonitor_ConnectChanged(gpointer, guintptr);
@@ -221,12 +221,12 @@ func GTypeTestDBus() coreglib.Type {
 //
 func ResolverErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gio", "quark")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -239,12 +239,12 @@ func ResolverErrorQuark() glib.Quark {
 //
 func ResourceErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gio", "quark")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -257,12 +257,12 @@ func ResourceErrorQuark() glib.Quark {
 //
 func TLSChannelBindingErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gio", "quark")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -275,12 +275,12 @@ func TLSChannelBindingErrorQuark() glib.Quark {
 //
 func TLSErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gio", "quark")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -293,12 +293,12 @@ func TLSErrorQuark() glib.Quark {
 //
 func IOErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gio", "io_error_quark")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -470,7 +470,7 @@ func marshalDBusAuthObserver(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gio2_DBusAuthObserver_ConnectAllowMechanism
-func _gotk4_gio2_DBusAuthObserver_ConnectAllowMechanism(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) (cret C.gboolean) {
+func _gotk4_gio2_DBusAuthObserver_ConnectAllowMechanism(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) (cret C.gboolean) {
 	var f func(mechanism string) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))

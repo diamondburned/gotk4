@@ -22,14 +22,14 @@ import (
 // extern gboolean _gotk4_gtk4_CellCallback(void*, gpointer);
 // extern void _gotk4_gtk4_CellAreaClass_add(void*, void*);
 // extern void _gotk4_gtk4_CellAreaClass_apply_attributes(void*, void*, void*, gboolean, gboolean);
-// extern void _gotk4_gtk4_CellAreaClass_get_preferred_height(void*, void*, void*, void*, void*);
-// extern void _gotk4_gtk4_CellAreaClass_get_preferred_height_for_width(void*, void*, void*, int, void*, void*);
-// extern void _gotk4_gtk4_CellAreaClass_get_preferred_width(void*, void*, void*, void*, void*);
-// extern void _gotk4_gtk4_CellAreaClass_get_preferred_width_for_height(void*, void*, void*, int, void*, void*);
+// extern void _gotk4_gtk4_CellAreaClass_get_preferred_height(void*, void*, void*, int*, int*);
+// extern void _gotk4_gtk4_CellAreaClass_get_preferred_height_for_width(void*, void*, void*, int, int*, int*);
+// extern void _gotk4_gtk4_CellAreaClass_get_preferred_width(void*, void*, void*, int*, int*);
+// extern void _gotk4_gtk4_CellAreaClass_get_preferred_width_for_height(void*, void*, void*, int, int*, int*);
 // extern void _gotk4_gtk4_CellAreaClass_remove(void*, void*);
-// extern void _gotk4_gtk4_CellArea_ConnectAddEditable(gpointer, void*, void*, void*, void*, guintptr);
+// extern void _gotk4_gtk4_CellArea_ConnectAddEditable(gpointer, void*, void*, void*, gchar*, guintptr);
 // extern void _gotk4_gtk4_CellArea_ConnectApplyAttributes(gpointer, void*, void*, gboolean, gboolean, guintptr);
-// extern void _gotk4_gtk4_CellArea_ConnectFocusChanged(gpointer, void*, void*, guintptr);
+// extern void _gotk4_gtk4_CellArea_ConnectFocusChanged(gpointer, void*, gchar*, guintptr);
 // extern void _gotk4_gtk4_CellArea_ConnectRemoveEditable(gpointer, void*, void*, guintptr);
 // extern void* _gotk4_gtk4_CellAreaClass_copy_context(void*, void*);
 // extern void* _gotk4_gtk4_CellAreaClass_create_context(void*);
@@ -631,7 +631,7 @@ func _gotk4_gtk4_CellAreaClass_create_context(arg0 *C.void) (cret *C.void) {
 }
 
 //export _gotk4_gtk4_CellAreaClass_get_preferred_height
-func _gotk4_gtk4_CellAreaClass_get_preferred_height(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.void) {
+func _gotk4_gtk4_CellAreaClass_get_preferred_height(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.int, arg4 *C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight, naturalHeight int32)
@@ -661,12 +661,12 @@ func _gotk4_gtk4_CellAreaClass_get_preferred_height(arg0 *C.void, arg1 *C.void, 
 
 	minimumHeight, naturalHeight := iface.PreferredHeight(_context, _widget)
 
-	*arg3 = (*C.void)(unsafe.Pointer(minimumHeight))
-	*arg4 = (*C.void)(unsafe.Pointer(naturalHeight))
+	*arg3 = C.int(minimumHeight)
+	*arg4 = C.int(naturalHeight)
 }
 
 //export _gotk4_gtk4_CellAreaClass_get_preferred_height_for_width
-func _gotk4_gtk4_CellAreaClass_get_preferred_height_for_width(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 C.int, arg4 *C.void, arg5 *C.void) {
+func _gotk4_gtk4_CellAreaClass_get_preferred_height_for_width(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 C.int, arg4 *C.int, arg5 *C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int32) (minimumHeight, naturalHeight int32)
@@ -698,12 +698,12 @@ func _gotk4_gtk4_CellAreaClass_get_preferred_height_for_width(arg0 *C.void, arg1
 
 	minimumHeight, naturalHeight := iface.PreferredHeightForWidth(_context, _widget, _width)
 
-	*arg4 = (*C.void)(unsafe.Pointer(minimumHeight))
-	*arg5 = (*C.void)(unsafe.Pointer(naturalHeight))
+	*arg4 = C.int(minimumHeight)
+	*arg5 = C.int(naturalHeight)
 }
 
 //export _gotk4_gtk4_CellAreaClass_get_preferred_width
-func _gotk4_gtk4_CellAreaClass_get_preferred_width(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.void) {
+func _gotk4_gtk4_CellAreaClass_get_preferred_width(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.int, arg4 *C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth, naturalWidth int32)
@@ -733,12 +733,12 @@ func _gotk4_gtk4_CellAreaClass_get_preferred_width(arg0 *C.void, arg1 *C.void, a
 
 	minimumWidth, naturalWidth := iface.PreferredWidth(_context, _widget)
 
-	*arg3 = (*C.void)(unsafe.Pointer(minimumWidth))
-	*arg4 = (*C.void)(unsafe.Pointer(naturalWidth))
+	*arg3 = C.int(minimumWidth)
+	*arg4 = C.int(naturalWidth)
 }
 
 //export _gotk4_gtk4_CellAreaClass_get_preferred_width_for_height
-func _gotk4_gtk4_CellAreaClass_get_preferred_width_for_height(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 C.int, arg4 *C.void, arg5 *C.void) {
+func _gotk4_gtk4_CellAreaClass_get_preferred_width_for_height(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 C.int, arg4 *C.int, arg5 *C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int32) (minimumWidth, naturalWidth int32)
@@ -770,8 +770,8 @@ func _gotk4_gtk4_CellAreaClass_get_preferred_width_for_height(arg0 *C.void, arg1
 
 	minimumWidth, naturalWidth := iface.PreferredWidthForHeight(_context, _widget, _height)
 
-	*arg4 = (*C.void)(unsafe.Pointer(minimumWidth))
-	*arg5 = (*C.void)(unsafe.Pointer(naturalWidth))
+	*arg4 = C.int(minimumWidth)
+	*arg5 = C.int(naturalWidth)
 }
 
 //export _gotk4_gtk4_CellAreaClass_is_activatable
@@ -845,7 +845,7 @@ func BaseCellArea(obj CellAreaer) *CellArea {
 }
 
 //export _gotk4_gtk4_CellArea_ConnectAddEditable
-func _gotk4_gtk4_CellArea_ConnectAddEditable(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.void, arg5 C.guintptr) {
+func _gotk4_gtk4_CellArea_ConnectAddEditable(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.gchar, arg5 C.guintptr) {
 	var f func(renderer CellRendererer, editable CellEditabler, cellArea *gdk.Rectangle, path string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
@@ -961,7 +961,7 @@ func (area *CellArea) ConnectApplyAttributes(f func(model TreeModeller, iter *Tr
 }
 
 //export _gotk4_gtk4_CellArea_ConnectFocusChanged
-func _gotk4_gtk4_CellArea_ConnectFocusChanged(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.guintptr) {
+func _gotk4_gtk4_CellArea_ConnectFocusChanged(arg0 C.gpointer, arg1 *C.void, arg2 *C.gchar, arg3 C.guintptr) {
 	var f func(renderer CellRendererer, path string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -1162,8 +1162,8 @@ func (area *CellArea) AttributeConnect(renderer CellRendererer, attribute string
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
 	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(column)
 
 	_info := girepository.MustFind("Gtk", "CellArea")
@@ -1188,8 +1188,8 @@ func (area *CellArea) AttributeDisconnect(renderer CellRendererer, attribute str
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
 
 	_info := girepository.MustFind("Gtk", "CellArea")
 	_info.InvokeClassMethod("attribute_disconnect", _args[:], nil)
@@ -1216,8 +1216,8 @@ func (area *CellArea) AttributeGetColumn(renderer CellRendererer, attribute stri
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
 
 	_info := girepository.MustFind("Gtk", "CellArea")
 	_gret := _info.InvokeClassMethod("attribute_get_column", _args[:], nil)
@@ -1247,8 +1247,8 @@ func (area *CellArea) CellGetProperty(renderer CellRendererer, propertyName stri
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gtk", "CellArea")
@@ -1273,8 +1273,8 @@ func (area *CellArea) CellSetProperty(renderer CellRendererer, propertyName stri
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(area).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gtk", "CellArea")
@@ -1319,7 +1319,7 @@ func (area *CellArea) CopyContext(context *CellAreaContext) *CellAreaContext {
 
 	var _cellAreaContext *CellAreaContext // out
 
-	_cellAreaContext = wrapCellAreaContext(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cellAreaContext = wrapCellAreaContext(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cellAreaContext
 }
@@ -1348,7 +1348,7 @@ func (area *CellArea) CreateContext() *CellAreaContext {
 
 	var _cellAreaContext *CellAreaContext // out
 
-	_cellAreaContext = wrapCellAreaContext(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cellAreaContext = wrapCellAreaContext(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cellAreaContext
 }
@@ -1443,7 +1443,7 @@ func (area *CellArea) CellAllocation(context *CellAreaContext, widget Widgetter,
 
 	var _allocation *gdk.Rectangle // out
 
-	_allocation = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_allocation = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _allocation
 }
@@ -1491,10 +1491,10 @@ func (area *CellArea) CellAtPosition(context *CellAreaContext, widget Widgetter,
 	var _cellRenderer CellRendererer // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_allocArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_allocArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.CellRendererer is nil")
 		}
@@ -1530,13 +1530,13 @@ func (area *CellArea) CurrentPathString() string {
 
 	_info := girepository.MustFind("Gtk", "CellArea")
 	_gret := _info.InvokeClassMethod("get_current_path_string", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(area)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -1561,7 +1561,7 @@ func (area *CellArea) EditWidget() *CellEditable {
 
 	var _cellEditable *CellEditable // out
 
-	_cellEditable = wrapCellEditable(coreglib.Take(unsafe.Pointer(_cret)))
+	_cellEditable = wrapCellEditable(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cellEditable
 }
@@ -1586,7 +1586,7 @@ func (area *CellArea) EditedCell() CellRendererer {
 	var _cellRenderer CellRendererer // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.CellRendererer is nil")
 		}
@@ -1626,7 +1626,7 @@ func (area *CellArea) FocusCell() CellRendererer {
 	var _cellRenderer CellRendererer // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.CellRendererer is nil")
 		}
@@ -1678,7 +1678,7 @@ func (area *CellArea) FocusFromSibling(renderer CellRendererer) CellRendererer {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -1722,12 +1722,12 @@ func (area *CellArea) FocusSiblings(renderer CellRendererer) []CellRendererer {
 
 	var _list []CellRendererer // out
 
-	_list = make([]CellRendererer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+	_list = make([]CellRendererer, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst CellRendererer // out
 		{
-			objptr := unsafe.Pointer(src)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
 			if objptr == nil {
 				panic("object of type gtk.CellRendererer is nil")
 			}
@@ -1785,12 +1785,8 @@ func (area *CellArea) PreferredHeight(context *CellAreaContext, widget Widgetter
 	var _minimumHeight int32 // out
 	var _naturalHeight int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_minimumHeight = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_naturalHeight = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_minimumHeight = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_naturalHeight = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
 
 	return _minimumHeight, _naturalHeight
 }
@@ -1840,12 +1836,8 @@ func (area *CellArea) PreferredHeightForWidth(context *CellAreaContext, widget W
 	var _minimumHeight int32 // out
 	var _naturalHeight int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_minimumHeight = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_naturalHeight = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_minimumHeight = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_naturalHeight = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
 
 	return _minimumHeight, _naturalHeight
 }
@@ -1885,12 +1877,8 @@ func (area *CellArea) PreferredWidth(context *CellAreaContext, widget Widgetter)
 	var _minimumWidth int32 // out
 	var _naturalWidth int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_minimumWidth = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_naturalWidth = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_minimumWidth = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_naturalWidth = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
 
 	return _minimumWidth, _naturalWidth
 }
@@ -1940,12 +1928,8 @@ func (area *CellArea) PreferredWidthForHeight(context *CellAreaContext, widget W
 	var _minimumWidth int32 // out
 	var _naturalWidth int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_minimumWidth = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_naturalWidth = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_minimumWidth = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_naturalWidth = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
 
 	return _minimumWidth, _naturalWidth
 }
@@ -2013,7 +1997,7 @@ func (area *CellArea) InnerCellArea(widget Widgetter, cellArea *gdk.Rectangle) *
 
 	var _innerArea *gdk.Rectangle // out
 
-	_innerArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_innerArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _innerArea
 }

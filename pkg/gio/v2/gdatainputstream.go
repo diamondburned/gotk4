@@ -97,7 +97,7 @@ func NewDataInputStream(baseStream InputStreamer) *DataInputStream {
 
 	var _dataInputStream *DataInputStream // out
 
-	_dataInputStream = wrapDataInputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dataInputStream = wrapDataInputStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _dataInputStream
 }
@@ -135,7 +135,7 @@ func (stream *DataInputStream) ReadByte(ctx context.Context) (byte, error) {
 
 	_guint8 = byte(*(*C.guchar)(unsafe.Pointer(&_cret)))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _guint8, _goerr
@@ -178,7 +178,7 @@ func (stream *DataInputStream) ReadInt16(ctx context.Context) (int16, error) {
 
 	_gint16 = int16(*(*C.gint16)(unsafe.Pointer(&_cret)))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _gint16, _goerr
@@ -225,7 +225,7 @@ func (stream *DataInputStream) ReadInt32(ctx context.Context) (int32, error) {
 
 	_gint32 = int32(*(*C.gint32)(unsafe.Pointer(&_cret)))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _gint32, _goerr
@@ -272,7 +272,7 @@ func (stream *DataInputStream) ReadInt64(ctx context.Context) (int64, error) {
 
 	_gint64 = int64(*(*C.gint64)(unsafe.Pointer(&_cret)))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _gint64, _goerr
@@ -321,19 +321,17 @@ func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, erro
 	var _guint8s []byte // out
 	var _goerr error    // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_length = *(*uint)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		defer C.free(unsafe.Pointer(_cret))
+	_length = uint(*(*C.gsize)(unsafe.Pointer(&_outs[0])))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 		{
 			var i int
 			var z C.char
-			for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+			for p := *(**C.char)(unsafe.Pointer(&_cret)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 				i++
 			}
 
-			src := unsafe.Slice(_cret, i)
+			src := unsafe.Slice(*(**C.char)(unsafe.Pointer(&_cret)), i)
 			_guint8s = make([]byte, i)
 			for i := range src {
 				_guint8s[i] = byte(*(*C.char)(unsafe.Pointer(&src[i])))
@@ -341,7 +339,7 @@ func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, erro
 		}
 	}
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _length, _guint8s, _goerr
@@ -418,19 +416,17 @@ func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byt
 	var _guint8s []byte // out
 	var _goerr error    // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_length = *(*uint)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		defer C.free(unsafe.Pointer(_cret))
+	_length = uint(*(*C.gsize)(unsafe.Pointer(&_outs[0])))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 		{
 			var i int
 			var z C.char
-			for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+			for p := *(**C.char)(unsafe.Pointer(&_cret)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 				i++
 			}
 
-			src := unsafe.Slice(_cret, i)
+			src := unsafe.Slice(*(**C.char)(unsafe.Pointer(&_cret)), i)
 			_guint8s = make([]byte, i)
 			for i := range src {
 				_guint8s[i] = byte(*(*C.char)(unsafe.Pointer(&src[i])))
@@ -438,7 +434,7 @@ func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byt
 		}
 	}
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _length, _guint8s, _goerr
@@ -478,15 +474,13 @@ func (stream *DataInputStream) ReadLineFinishUTF8(result AsyncResulter) (uint, s
 	var _utf8 string // out
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_length = *(*uint)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+	_length = uint(*(*C.gsize)(unsafe.Pointer(&_outs[0])))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _length, _utf8, _goerr
@@ -534,15 +528,13 @@ func (stream *DataInputStream) ReadLineUTF8(ctx context.Context) (uint, string, 
 	var _utf8 string // out
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_length = *(*uint)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+	_length = uint(*(*C.gsize)(unsafe.Pointer(&_outs[0])))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _length, _utf8, _goerr
@@ -585,7 +577,7 @@ func (stream *DataInputStream) ReadUint16(ctx context.Context) (uint16, error) {
 
 	_guint16 = uint16(*(*C.guint16)(unsafe.Pointer(&_cret)))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _guint16, _goerr
@@ -632,7 +624,7 @@ func (stream *DataInputStream) ReadUint32(ctx context.Context) (uint32, error) {
 
 	_guint32 = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _guint32, _goerr
@@ -678,7 +670,7 @@ func (stream *DataInputStream) ReadUint64(ctx context.Context) (uint64, error) {
 
 	_guint64 = uint64(*(*C.guint64)(unsafe.Pointer(&_cret)))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _guint64, _goerr
@@ -720,8 +712,8 @@ func (stream *DataInputStream) ReadUntil(ctx context.Context, stopChars string) 
 		defer runtime.KeepAlive(cancellable)
 		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(stopChars)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(stopChars)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "DataInputStream")
 	_gret := _info.InvokeClassMethod("read_until", _args[:], _outs[:])
@@ -735,13 +727,11 @@ func (stream *DataInputStream) ReadUntil(ctx context.Context, stopChars string) 
 	var _utf8 string // out
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_length = *(*uint)(unsafe.Pointer(_outs[0]))
-	}
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_length = uint(*(*C.gsize)(unsafe.Pointer(&_outs[0])))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _length, _utf8, _goerr
@@ -780,8 +770,8 @@ func (stream *DataInputStream) ReadUntilAsync(ctx context.Context, stopChars str
 		defer runtime.KeepAlive(cancellable)
 		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(stopChars)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(stopChars)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(ioPriority)
 	if callback != nil {
 		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -833,13 +823,11 @@ func (stream *DataInputStream) ReadUntilFinish(result AsyncResulter) (uint, stri
 	var _utf8 string // out
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_length = *(*uint)(unsafe.Pointer(_outs[0]))
-	}
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_length = uint(*(*C.gsize)(unsafe.Pointer(&_outs[0])))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _length, _utf8, _goerr
@@ -880,8 +868,8 @@ func (stream *DataInputStream) ReadUpto(ctx context.Context, stopChars string, s
 		defer runtime.KeepAlive(cancellable)
 		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(stopChars)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(stopChars)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	*(*C.gssize)(unsafe.Pointer(&_args[2])) = C.gssize(stopCharsLen)
 
 	_info := girepository.MustFind("Gio", "DataInputStream")
@@ -897,13 +885,11 @@ func (stream *DataInputStream) ReadUpto(ctx context.Context, stopChars string, s
 	var _utf8 string // out
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_length = *(*uint)(unsafe.Pointer(_outs[0]))
-	}
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_length = uint(*(*C.gsize)(unsafe.Pointer(&_outs[0])))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _length, _utf8, _goerr
@@ -939,8 +925,8 @@ func (stream *DataInputStream) ReadUptoAsync(ctx context.Context, stopChars stri
 		defer runtime.KeepAlive(cancellable)
 		_args[4] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(stopChars)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(stopChars)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	*(*C.gssize)(unsafe.Pointer(&_args[2])) = C.gssize(stopCharsLen)
 	*(*C.gint)(unsafe.Pointer(&_args[3])) = C.gint(ioPriority)
 	if callback != nil {
@@ -997,13 +983,11 @@ func (stream *DataInputStream) ReadUptoFinish(result AsyncResulter) (uint, strin
 	var _utf8 string // out
 	var _goerr error // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_length = *(*uint)(unsafe.Pointer(_outs[0]))
-	}
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_length = uint(*(*C.gsize)(unsafe.Pointer(&_outs[0])))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _length, _utf8, _goerr

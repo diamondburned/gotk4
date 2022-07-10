@@ -98,7 +98,7 @@ func NewHPaned() *HPaned {
 
 	var _hPaned *HPaned // out
 
-	_hPaned = wrapHPaned(coreglib.Take(unsafe.Pointer(_cret)))
+	_hPaned = wrapHPaned(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _hPaned
 }

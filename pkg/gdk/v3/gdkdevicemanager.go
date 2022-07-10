@@ -335,7 +335,7 @@ func (deviceManager *DeviceManager) ClientPointer() Devicer {
 	var _device Devicer // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Devicer is nil")
 		}
@@ -376,7 +376,7 @@ func (deviceManager *DeviceManager) Display() *Display {
 	var _display *Display // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
+		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _display

@@ -391,7 +391,7 @@ func NewIconView() *IconView {
 
 	var _iconView *IconView // out
 
-	_iconView = wrapIconView(coreglib.Take(unsafe.Pointer(_cret)))
+	_iconView = wrapIconView(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _iconView
 }
@@ -420,7 +420,7 @@ func NewIconViewWithArea(area CellAreaer) *IconView {
 
 	var _iconView *IconView // out
 
-	_iconView = wrapIconView(coreglib.Take(unsafe.Pointer(_cret)))
+	_iconView = wrapIconView(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _iconView
 }
@@ -448,7 +448,7 @@ func NewIconViewWithModel(model TreeModeller) *IconView {
 
 	var _iconView *IconView // out
 
-	_iconView = wrapIconView(coreglib.Take(unsafe.Pointer(_cret)))
+	_iconView = wrapIconView(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _iconView
 }
@@ -480,7 +480,7 @@ func (iconView *IconView) CreateDragIcon(path *TreePath) *gdk.Paintable {
 	var _paintable *gdk.Paintable // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_paintable = &gdk.Paintable{
 			Object: obj,
 		}
@@ -552,7 +552,7 @@ func (iconView *IconView) CellRect(path *TreePath, cell CellRendererer) (*gdk.Re
 	var _rect *gdk.Rectangle // out
 	var _ok bool             // out
 
-	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -637,12 +637,13 @@ func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
 	var _ok bool             // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_path)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -650,7 +651,7 @@ func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
 		{
-			objptr := unsafe.Pointer(_outs[1])
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -705,19 +706,20 @@ func (iconView *IconView) DestItemAtPos(dragX, dragY int32) (*TreePath, IconView
 	var _ok bool                  // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_path)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_pos = *(*IconViewDropPosition)(unsafe.Pointer(_outs[1]))
+		_pos = *(*IconViewDropPosition)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1]))))
 	}
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
@@ -750,19 +752,20 @@ func (iconView *IconView) DragDestItem() (*TreePath, IconViewDropPosition) {
 	var _pos IconViewDropPosition // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_path)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_pos = *(*IconViewDropPosition)(unsafe.Pointer(_outs[1]))
+		_pos = *(*IconViewDropPosition)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1]))))
 	}
 
 	return _path, _pos
@@ -803,12 +806,13 @@ func (iconView *IconView) ItemAtPos(x, y int32) (*TreePath, CellRendererer, bool
 	var _ok bool             // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_path)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -816,7 +820,7 @@ func (iconView *IconView) ItemAtPos(x, y int32) (*TreePath, CellRendererer, bool
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
 		{
-			objptr := unsafe.Pointer(_outs[1])
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -1016,7 +1020,7 @@ func (iconView *IconView) Model() *TreeModel {
 	var _treeModel *TreeModel // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_treeModel = wrapTreeModel(coreglib.Take(unsafe.Pointer(_cret)))
+		_treeModel = wrapTreeModel(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _treeModel
@@ -1052,12 +1056,13 @@ func (iconView *IconView) PathAtPos(x, y int32) *TreePath {
 	var _treePath *TreePath // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_treePath)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -1168,16 +1173,17 @@ func (iconView *IconView) SelectedItems() []*TreePath {
 
 	var _list []*TreePath // out
 
-	_list = make([]*TreePath, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*TreePath, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *TreePath // out
-		dst = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(src)))
+		dst = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -1312,22 +1318,23 @@ func (iconView *IconView) TooltipContext(x, y int32, keyboardTip bool) (*TreeMod
 	var _ok bool          // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_model = wrapTreeModel(coreglib.Take(unsafe.Pointer(_outs[0])))
+		_model = wrapTreeModel(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
+		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_path)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[2])))
+		_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[2])))))
 	}
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
@@ -1364,24 +1371,26 @@ func (iconView *IconView) VisibleRange() (startPath, endPath *TreePath, ok bool)
 	var _ok bool             // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_startPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_startPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_startPath)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
 		)
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_endPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
+		_endPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_endPath)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 				}
 			},

@@ -218,7 +218,7 @@ func (_range *Range) Adjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _adjustment
 }
@@ -325,7 +325,7 @@ func (_range *Range) RangeRect() *gdk.Rectangle {
 
 	var _rangeRect *gdk.Rectangle // out
 
-	_rangeRect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_rangeRect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _rangeRect
 }
@@ -432,12 +432,8 @@ func (_range *Range) SliderRange() (sliderStart, sliderEnd int32) {
 	var _sliderStart int32 // out
 	var _sliderEnd int32   // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_sliderStart = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_sliderEnd = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_sliderStart = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_sliderEnd = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
 
 	return _sliderStart, _sliderEnd
 }

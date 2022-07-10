@@ -71,7 +71,7 @@ func (monitor *X11Monitor) Workarea() *gdk.Rectangle {
 
 	var _workarea *gdk.Rectangle // out
 
-	_workarea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_workarea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _workarea
 }

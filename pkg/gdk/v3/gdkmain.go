@@ -32,7 +32,7 @@ func AddOptionEntriesLibgtkOnly(group *glib.OptionGroup) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(group)))
 
 	_info := girepository.MustFind("Gdk", "add_option_entries_libgtk_only")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(group)
 }
@@ -40,7 +40,7 @@ func AddOptionEntriesLibgtkOnly(group *glib.OptionGroup) {
 // Beep emits a short beep on the default display.
 func Beep() {
 	_info := girepository.MustFind("Gdk", "beep")
-	_info.Invoke(nil, nil)
+	_info.InvokeFunction(nil, nil)
 }
 
 // DisableMultidevice disables multidevice support in GDK. This call must happen
@@ -53,7 +53,7 @@ func Beep() {
 // presence of XInput 2.
 func DisableMultidevice() {
 	_info := girepository.MustFind("Gdk", "disable_multidevice")
-	_info.Invoke(nil, nil)
+	_info.InvokeFunction(nil, nil)
 }
 
 // ErrorTrapPop removes an error trap pushed with gdk_error_trap_push(). May
@@ -71,7 +71,7 @@ func DisableMultidevice() {
 //
 func ErrorTrapPop() int32 {
 	_info := girepository.MustFind("Gdk", "error_trap_pop")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	var _gint int32 // out
@@ -87,7 +87,7 @@ func ErrorTrapPop() int32 {
 // that error will be ignored.
 func ErrorTrapPopIgnored() {
 	_info := girepository.MustFind("Gdk", "error_trap_pop_ignored")
-	_info.Invoke(nil, nil)
+	_info.InvokeFunction(nil, nil)
 }
 
 // ErrorTrapPush: this function allows X errors to be trapped instead of the
@@ -117,14 +117,14 @@ func ErrorTrapPopIgnored() {
 //     }.
 func ErrorTrapPush() {
 	_info := girepository.MustFind("Gdk", "error_trap_push")
-	_info.Invoke(nil, nil)
+	_info.InvokeFunction(nil, nil)
 }
 
 // Flush flushes the output buffers of all display connections and waits until
 // all requests have been processed. This is rarely needed by applications.
 func Flush() {
 	_info := girepository.MustFind("Gdk", "flush")
-	_info.Invoke(nil, nil)
+	_info.InvokeFunction(nil, nil)
 }
 
 // GetDisplay gets the name of the display, which usually comes from the DISPLAY
@@ -138,13 +138,13 @@ func Flush() {
 //
 func GetDisplay() string {
 	_info := girepository.MustFind("Gdk", "get_display")
-	_gret := _info.Invoke(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_gret := _info.InvokeFunction(nil, nil)
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }
@@ -159,13 +159,13 @@ func GetDisplay() string {
 //
 func GetDisplayArgName() string {
 	_info := girepository.MustFind("Gdk", "get_display_arg_name")
-	_gret := _info.Invoke(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_gret := _info.InvokeFunction(nil, nil)
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -182,12 +182,12 @@ func GetDisplayArgName() string {
 //
 func GetProgramClass() string {
 	_info := girepository.MustFind("Gdk", "get_program_class")
-	_gret := _info.Invoke(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_gret := _info.InvokeFunction(nil, nil)
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -208,7 +208,7 @@ func KeyboardUngrab(time_ uint32) {
 	*(*C.guint32)(unsafe.Pointer(&_args[0])) = C.guint32(time_)
 
 	_info := girepository.MustFind("Gdk", "keyboard_ungrab")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(time_)
 }
@@ -222,7 +222,7 @@ func KeyboardUngrab(time_ uint32) {
 // feature.
 func NotifyStartupComplete() {
 	_info := girepository.MustFind("Gdk", "notify_startup_complete")
-	_info.Invoke(nil, nil)
+	_info.InvokeFunction(nil, nil)
 }
 
 // NotifyStartupCompleteWithID indicates to the GUI environment that the
@@ -240,11 +240,11 @@ func NotifyStartupComplete() {
 func NotifyStartupCompleteWithID(startupId string) {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(startupId)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(startupId)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gdk", "notify_startup_complete_with_id")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(startupId)
 }
@@ -263,7 +263,7 @@ func NotifyStartupCompleteWithID(startupId string) {
 //
 func PointerIsGrabbed() bool {
 	_info := girepository.MustFind("Gdk", "pointer_is_grabbed")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	var _ok bool // out
@@ -291,7 +291,7 @@ func PointerUngrab(time_ uint32) {
 	*(*C.guint32)(unsafe.Pointer(&_args[0])) = C.guint32(time_)
 
 	_info := girepository.MustFind("Gdk", "pointer_ungrab")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(time_)
 }
@@ -302,7 +302,7 @@ func PointerUngrab(time_ uint32) {
 // Deprecated: This symbol was never meant to be used outside of GTK+.
 func PreParseLibgtkOnly() {
 	_info := girepository.MustFind("Gdk", "pre_parse_libgtk_only")
-	_info.Invoke(nil, nil)
+	_info.InvokeFunction(nil, nil)
 }
 
 // SetAllowedBackends sets a list of backends that GDK should try to use.
@@ -336,11 +336,11 @@ func PreParseLibgtkOnly() {
 func SetAllowedBackends(backends string) {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(backends)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(backends)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gdk", "set_allowed_backends")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(backends)
 }
@@ -360,7 +360,7 @@ func SetDoubleClickTime(msec uint32) {
 	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(msec)
 
 	_info := girepository.MustFind("Gdk", "set_double_click_time")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(msec)
 }
@@ -379,11 +379,11 @@ func SetDoubleClickTime(msec uint32) {
 func SetProgramClass(programClass string) {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(programClass)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(programClass)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gdk", "set_program_class")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(programClass)
 }
@@ -400,7 +400,7 @@ func SetProgramClass(programClass string) {
 //
 func ScreenHeight() int32 {
 	_info := girepository.MustFind("Gdk", "height")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	var _gint int32 // out
@@ -422,7 +422,7 @@ func ScreenHeight() int32 {
 //
 func ScreenHeightMm() int32 {
 	_info := girepository.MustFind("Gdk", "height_mm")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	var _gint int32 // out
@@ -444,7 +444,7 @@ func ScreenHeightMm() int32 {
 //
 func ScreenWidth() int32 {
 	_info := girepository.MustFind("Gdk", "width")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	var _gint int32 // out
@@ -466,7 +466,7 @@ func ScreenWidth() int32 {
 //
 func ScreenWidthMm() int32 {
 	_info := girepository.MustFind("Gdk", "width_mm")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	var _gint int32 // out

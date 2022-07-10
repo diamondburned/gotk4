@@ -32,7 +32,7 @@ func TestRenderSync(window Windower) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
 	_info := girepository.MustFind("Gdk", "test_render_sync")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(window)
 }

@@ -620,13 +620,13 @@ func NewContentFormats(mimeTypes []string) *ContentFormats {
 	var _args [2]girepository.Argument
 
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = (C.guint)(len(mimeTypes))
-	*(***C.void)(unsafe.Pointer(&_args[0])) = (**C.void)(C.calloc(C.size_t(len(mimeTypes)), C.size_t(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(***C.char)(unsafe.Pointer(&_args[0])) = (**C.char)(C.calloc(C.size_t(len(mimeTypes)), C.size_t(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_args[0]))))
 	{
-		out := unsafe.Slice((**C.void)(*(***C.void)(unsafe.Pointer(&_args[0]))), len(mimeTypes))
+		out := unsafe.Slice((**C.char)(*(***C.char)(unsafe.Pointer(&_args[0]))), len(mimeTypes))
 		for i := range mimeTypes {
-			*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(mimeTypes[i])))
-			defer C.free(unsafe.Pointer(out[i]))
+			*(**C.char)(unsafe.Pointer(&out[i])) = (*C.char)(unsafe.Pointer(C.CString(mimeTypes[i])))
+			defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&out[i]))))
 		}
 	}
 
@@ -638,7 +638,7 @@ func NewContentFormats(mimeTypes []string) *ContentFormats {
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -663,8 +663,8 @@ func (formats *ContentFormats) ContainMIMEType(mimeType string) bool {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(formats)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gdk", "ContentFormats")
 	_gret := _info.InvokeRecordMethod("contain_mime_type", _args[:], nil)
@@ -706,12 +706,12 @@ func (formats *ContentFormats) MIMETypes() []string {
 
 	var _utf8s []string // out
 
-	if *(***C.void)(unsafe.Pointer(&_cret)) != nil {
+	if *(***C.char)(unsafe.Pointer(&_cret)) != nil {
 		{
-			src := unsafe.Slice((**C.void)(_cret), _outs[0])
-			_utf8s = make([]string, _outs[0])
-			for i := 0; i < int(_outs[0]); i++ {
-				_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			src := unsafe.Slice((**C.char)(*(***C.char)(unsafe.Pointer(&_cret))), *(*C.gsize)(unsafe.Pointer(&_outs[0])))
+			_utf8s = make([]string, *(*C.gsize)(unsafe.Pointer(&_outs[0])))
+			for i := 0; i < int(*(*C.gsize)(unsafe.Pointer(&_outs[0]))); i++ {
+				_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i])))))
 			}
 		}
 	}
@@ -772,15 +772,15 @@ func (first *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 
 	_info := girepository.MustFind("Gdk", "ContentFormats")
 	_gret := _info.InvokeRecordMethod("match_mime_type", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(first)
 	runtime.KeepAlive(second)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -802,14 +802,14 @@ func (formats *ContentFormats) String() string {
 
 	_info := girepository.MustFind("Gdk", "ContentFormats")
 	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(formats)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }
@@ -840,7 +840,7 @@ func (first *ContentFormats) Union(second *ContentFormats) *ContentFormats {
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -871,7 +871,7 @@ func (formats *ContentFormats) UnionDeserializeGTypes() *ContentFormats {
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -902,7 +902,7 @@ func (formats *ContentFormats) UnionDeserializeMIMETypes() *ContentFormats {
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -933,7 +933,7 @@ func (formats *ContentFormats) UnionSerializeGTypes() *ContentFormats {
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -964,7 +964,7 @@ func (formats *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
 
 	var _contentFormats *ContentFormats // out
 
-	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -1249,7 +1249,7 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
 	var _ok bool         // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
@@ -1290,7 +1290,7 @@ func (src1 *Rectangle) Union(src2 *Rectangle) *Rectangle {
 
 	var _dest *Rectangle // out
 
-	_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _dest
 }

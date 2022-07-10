@@ -15,7 +15,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void* _gotk4_atk1_PlugClass_get_object_id(void*);
+// extern gchar* _gotk4_atk1_PlugClass_get_object_id(void*);
 import "C"
 
 // GTypePlug returns the GType for the type Plug.
@@ -65,13 +65,13 @@ func classInitPlugger(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_atk1_PlugClass_get_object_id
-func _gotk4_atk1_PlugClass_get_object_id(arg0 *C.void) (cret *C.void) {
+func _gotk4_atk1_PlugClass_get_object_id(arg0 *C.void) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ObjectID() string })
 
 	utf8 := iface.ObjectID()
 
-	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 
 	return cret
 }
@@ -105,7 +105,7 @@ func NewPlug() *Plug {
 
 	var _plug *Plug // out
 
-	_plug = wrapPlug(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_plug = wrapPlug(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _plug
 }
@@ -129,14 +129,14 @@ func (plug *Plug) ID() string {
 
 	_info := girepository.MustFind("Atk", "Plug")
 	_gret := _info.InvokeClassMethod("get_id", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(plug)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }

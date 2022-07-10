@@ -579,7 +579,7 @@ func NewListBox() *ListBox {
 
 	var _listBox *ListBox // out
 
-	_listBox = wrapListBox(coreglib.Take(unsafe.Pointer(_cret)))
+	_listBox = wrapListBox(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _listBox
 }
@@ -708,7 +708,7 @@ func (box *ListBox) Adjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _adjustment
 }
@@ -740,7 +740,7 @@ func (box *ListBox) RowAtIndex(index_ int32) *ListBoxRow {
 	var _listBoxRow *ListBoxRow // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_listBoxRow = wrapListBoxRow(coreglib.Take(unsafe.Pointer(_cret)))
+		_listBoxRow = wrapListBoxRow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _listBoxRow
@@ -773,7 +773,7 @@ func (box *ListBox) RowAtY(y int32) *ListBoxRow {
 	var _listBoxRow *ListBoxRow // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_listBoxRow = wrapListBoxRow(coreglib.Take(unsafe.Pointer(_cret)))
+		_listBoxRow = wrapListBoxRow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _listBoxRow
@@ -801,7 +801,7 @@ func (box *ListBox) SelectedRow() *ListBoxRow {
 
 	var _listBoxRow *ListBoxRow // out
 
-	_listBoxRow = wrapListBoxRow(coreglib.Take(unsafe.Pointer(_cret)))
+	_listBoxRow = wrapListBoxRow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _listBoxRow
 }
@@ -826,11 +826,11 @@ func (box *ListBox) SelectedRows() []*ListBoxRow {
 
 	var _list []*ListBoxRow // out
 
-	_list = make([]*ListBoxRow, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*ListBoxRow, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *ListBoxRow // out
-		dst = wrapListBoxRow(coreglib.Take(unsafe.Pointer(src)))
+		dst = wrapListBoxRow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 
@@ -1311,7 +1311,7 @@ func NewListBoxRow() *ListBoxRow {
 
 	var _listBoxRow *ListBoxRow // out
 
-	_listBoxRow = wrapListBoxRow(coreglib.Take(unsafe.Pointer(_cret)))
+	_listBoxRow = wrapListBoxRow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _listBoxRow
 }
@@ -1392,7 +1392,7 @@ func (row *ListBoxRow) Header() Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

@@ -134,7 +134,7 @@ func NewImageMenuItem() *ImageMenuItem {
 
 	var _imageMenuItem *ImageMenuItem // out
 
-	_imageMenuItem = wrapImageMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
+	_imageMenuItem = wrapImageMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _imageMenuItem
 }
@@ -163,8 +163,8 @@ func NewImageMenuItem() *ImageMenuItem {
 func NewImageMenuItemFromStock(stockId string, accelGroup *AccelGroup) *ImageMenuItem {
 	var _args [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	if accelGroup != nil {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
 	}
@@ -178,7 +178,7 @@ func NewImageMenuItemFromStock(stockId string, accelGroup *AccelGroup) *ImageMen
 
 	var _imageMenuItem *ImageMenuItem // out
 
-	_imageMenuItem = wrapImageMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
+	_imageMenuItem = wrapImageMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _imageMenuItem
 }
@@ -198,8 +198,8 @@ func NewImageMenuItemFromStock(stockId string, accelGroup *AccelGroup) *ImageMen
 func NewImageMenuItemWithLabel(label string) *ImageMenuItem {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "ImageMenuItem")
 	_gret := _info.InvokeClassMethod("new_ImageMenuItem_with_label", _args[:], nil)
@@ -209,7 +209,7 @@ func NewImageMenuItemWithLabel(label string) *ImageMenuItem {
 
 	var _imageMenuItem *ImageMenuItem // out
 
-	_imageMenuItem = wrapImageMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
+	_imageMenuItem = wrapImageMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _imageMenuItem
 }
@@ -232,8 +232,8 @@ func NewImageMenuItemWithLabel(label string) *ImageMenuItem {
 func NewImageMenuItemWithMnemonic(label string) *ImageMenuItem {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "ImageMenuItem")
 	_gret := _info.InvokeClassMethod("new_ImageMenuItem_with_mnemonic", _args[:], nil)
@@ -243,7 +243,7 @@ func NewImageMenuItemWithMnemonic(label string) *ImageMenuItem {
 
 	var _imageMenuItem *ImageMenuItem // out
 
-	_imageMenuItem = wrapImageMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
+	_imageMenuItem = wrapImageMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _imageMenuItem
 }
@@ -300,7 +300,7 @@ func (imageMenuItem *ImageMenuItem) Image() Widgetter {
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}

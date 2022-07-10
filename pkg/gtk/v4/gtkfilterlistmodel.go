@@ -106,7 +106,7 @@ func NewFilterListModel(model gio.ListModeller, filter *Filter) *FilterListModel
 
 	var _filterListModel *FilterListModel // out
 
-	_filterListModel = wrapFilterListModel(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_filterListModel = wrapFilterListModel(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _filterListModel
 }
@@ -131,7 +131,7 @@ func (self *FilterListModel) Filter() *Filter {
 	var _filter *Filter // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_filter = wrapFilter(coreglib.Take(unsafe.Pointer(_cret)))
+		_filter = wrapFilter(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _filter
@@ -186,7 +186,7 @@ func (self *FilterListModel) Model() *gio.ListModel {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_listModel = &gio.ListModel{
 				Object: obj,
 			}

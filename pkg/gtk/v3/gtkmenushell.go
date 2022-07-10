@@ -598,8 +598,8 @@ func (menuShell *MenuShell) BindModel(model gio.MenuModeller, actionNamespace st
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(model).Native()))
 	}
 	if actionNamespace != "" {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(actionNamespace)))
-		defer C.free(unsafe.Pointer(_args[2]))
+		*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(actionNamespace)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
 	}
 	if withSeparators {
 		*(*C.gboolean)(unsafe.Pointer(&_args[3])) = C.TRUE
@@ -675,7 +675,7 @@ func (menuShell *MenuShell) ParentShell() Widgetter {
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -715,7 +715,7 @@ func (menuShell *MenuShell) SelectedItem() Widgetter {
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}

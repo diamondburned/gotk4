@@ -151,7 +151,7 @@ func NewLockButton(permission gio.Permissioner) *LockButton {
 
 	var _lockButton *LockButton // out
 
-	_lockButton = wrapLockButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_lockButton = wrapLockButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _lockButton
 }
@@ -176,7 +176,7 @@ func (button *LockButton) Permission() gio.Permissioner {
 	var _permission gio.Permissioner // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gio.Permissioner is nil")
 		}

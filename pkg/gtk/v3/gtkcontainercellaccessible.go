@@ -90,7 +90,7 @@ func NewContainerCellAccessible() *ContainerCellAccessible {
 
 	var _containerCellAccessible *ContainerCellAccessible // out
 
-	_containerCellAccessible = wrapContainerCellAccessible(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_containerCellAccessible = wrapContainerCellAccessible(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _containerCellAccessible
 }
@@ -127,11 +127,11 @@ func (container *ContainerCellAccessible) Children() []*CellAccessible {
 
 	var _list []*CellAccessible // out
 
-	_list = make([]*CellAccessible, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+	_list = make([]*CellAccessible, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *CellAccessible // out
-		dst = wrapCellAccessible(coreglib.Take(unsafe.Pointer(src)))
+		dst = wrapCellAccessible(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 

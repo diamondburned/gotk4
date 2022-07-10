@@ -107,8 +107,8 @@ func NewAspectFrame(label string, xalign, yalign, ratio float32, obeyChild bool)
 	var _args [5]girepository.Argument
 
 	if label != "" {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_args[0]))
+		*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	}
 	*(*C.gfloat)(unsafe.Pointer(&_args[1])) = C.gfloat(xalign)
 	*(*C.gfloat)(unsafe.Pointer(&_args[2])) = C.gfloat(yalign)
@@ -129,7 +129,7 @@ func NewAspectFrame(label string, xalign, yalign, ratio float32, obeyChild bool)
 
 	var _aspectFrame *AspectFrame // out
 
-	_aspectFrame = wrapAspectFrame(coreglib.Take(unsafe.Pointer(_cret)))
+	_aspectFrame = wrapAspectFrame(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _aspectFrame
 }

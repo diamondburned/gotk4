@@ -331,7 +331,7 @@ func (gesture *Gesture) BoundingBox() (*gdk.Rectangle, bool) {
 	var _rect *gdk.Rectangle // out
 	var _ok bool             // out
 
-	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -366,8 +366,8 @@ func (gesture *Gesture) BoundingBoxCenter() (x, y float64, ok bool) {
 	var _y float64 // out
 	var _ok bool   // out
 
-	_x = *(*float64)(unsafe.Pointer(_outs[0]))
-	_y = *(*float64)(unsafe.Pointer(_outs[1]))
+	_x = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
+	_y = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[1])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -397,7 +397,7 @@ func (gesture *Gesture) Device() gdk.Devicer {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -434,12 +434,12 @@ func (gesture *Gesture) GetGroup() []Gesturer {
 
 	var _list []Gesturer // out
 
-	_list = make([]Gesturer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]Gesturer, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Gesturer // out
 		{
-			objptr := unsafe.Pointer(src)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
 			if objptr == nil {
 				panic("object of type gtk.Gesturer is nil")
 			}
@@ -493,7 +493,7 @@ func (gesture *Gesture) LastEvent(sequence *gdk.EventSequence) *gdk.Event {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			v := (*gdk.Event)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+			v := (*gdk.Event)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 			v = gdk.CopyEventer(v)
 			_event = v
 		}
@@ -523,7 +523,7 @@ func (gesture *Gesture) LastUpdatedSequence() *gdk.EventSequence {
 	var _eventSequence *gdk.EventSequence // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_eventSequence = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_eventSequence = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _eventSequence
@@ -563,12 +563,8 @@ func (gesture *Gesture) Point(sequence *gdk.EventSequence) (x, y float64, ok boo
 	var _y float64 // out
 	var _ok bool   // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_x = *(*float64)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_y = *(*float64)(unsafe.Pointer(_outs[1]))
-	}
+	_x = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
+	_y = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[1])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -598,11 +594,11 @@ func (gesture *Gesture) Sequences() []*gdk.EventSequence {
 
 	var _list []*gdk.EventSequence // out
 
-	_list = make([]*gdk.EventSequence, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*gdk.EventSequence, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *gdk.EventSequence // out
-		dst = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(src)))
+		dst = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 
@@ -631,7 +627,7 @@ func (gesture *Gesture) Window() gdk.Windower {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

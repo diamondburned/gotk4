@@ -79,7 +79,7 @@ func NewCellRendererSpin() *CellRendererSpin {
 
 	var _cellRendererSpin *CellRendererSpin // out
 
-	_cellRendererSpin = wrapCellRendererSpin(coreglib.Take(unsafe.Pointer(_cret)))
+	_cellRendererSpin = wrapCellRendererSpin(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cellRendererSpin
 }

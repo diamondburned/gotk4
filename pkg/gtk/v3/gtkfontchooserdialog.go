@@ -109,8 +109,8 @@ func NewFontChooserDialog(title string, parent *Window) *FontChooserDialog {
 	var _args [2]girepository.Argument
 
 	if title != "" {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(title)))
-		defer C.free(unsafe.Pointer(_args[0]))
+		*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	}
 	if parent != nil {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
@@ -125,7 +125,7 @@ func NewFontChooserDialog(title string, parent *Window) *FontChooserDialog {
 
 	var _fontChooserDialog *FontChooserDialog // out
 
-	_fontChooserDialog = wrapFontChooserDialog(coreglib.Take(unsafe.Pointer(_cret)))
+	_fontChooserDialog = wrapFontChooserDialog(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _fontChooserDialog
 }

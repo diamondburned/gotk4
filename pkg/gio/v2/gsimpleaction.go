@@ -36,8 +36,8 @@ import "C"
 func NewSimpleAction(name string, parameterType *glib.VariantType) *SimpleAction {
 	var _args [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	if parameterType != nil {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parameterType)))
 	}
@@ -51,7 +51,7 @@ func NewSimpleAction(name string, parameterType *glib.VariantType) *SimpleAction
 
 	var _simpleAction *SimpleAction // out
 
-	_simpleAction = wrapSimpleAction(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_simpleAction = wrapSimpleAction(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _simpleAction
 }
@@ -76,8 +76,8 @@ func NewSimpleAction(name string, parameterType *glib.VariantType) *SimpleAction
 func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state *glib.Variant) *SimpleAction {
 	var _args [3]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	if parameterType != nil {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(parameterType)))
 	}
@@ -93,7 +93,7 @@ func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state
 
 	var _simpleAction *SimpleAction // out
 
-	_simpleAction = wrapSimpleAction(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_simpleAction = wrapSimpleAction(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _simpleAction
 }

@@ -13,7 +13,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk4_EmojiChooser_ConnectEmojiPicked(gpointer, void*, guintptr);
+// extern void _gotk4_gtk4_EmojiChooser_ConnectEmojiPicked(gpointer, gchar*, guintptr);
 import "C"
 
 // GTypeEmojiChooser returns the GType for the type EmojiChooser.
@@ -110,7 +110,7 @@ func marshalEmojiChooser(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk4_EmojiChooser_ConnectEmojiPicked
-func _gotk4_gtk4_EmojiChooser_ConnectEmojiPicked(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk4_EmojiChooser_ConnectEmojiPicked(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
 	var f func(text string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -147,7 +147,7 @@ func NewEmojiChooser() *EmojiChooser {
 
 	var _emojiChooser *EmojiChooser // out
 
-	_emojiChooser = wrapEmojiChooser(coreglib.Take(unsafe.Pointer(_cret)))
+	_emojiChooser = wrapEmojiChooser(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _emojiChooser
 }

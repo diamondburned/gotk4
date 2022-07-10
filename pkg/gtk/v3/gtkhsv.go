@@ -128,7 +128,7 @@ func NewHSV() *HSV {
 
 	var _hsV *HSV // out
 
-	_hsV = wrapHSV(coreglib.Take(unsafe.Pointer(_cret)))
+	_hsV = wrapHSV(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _hsV
 }
@@ -157,9 +157,9 @@ func (hsv *HSV) Color() (h, s, v float64) {
 	var _s float64 // out
 	var _v float64 // out
 
-	_h = *(*float64)(unsafe.Pointer(_outs[0]))
-	_s = *(*float64)(unsafe.Pointer(_outs[1]))
-	_v = *(*float64)(unsafe.Pointer(_outs[2]))
+	_h = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
+	_s = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[1])))
+	_v = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[2])))
 
 	return _h, _s, _v
 }
@@ -185,8 +185,8 @@ func (hsv *HSV) Metrics() (size, ringWidth int32) {
 	var _size int32      // out
 	var _ringWidth int32 // out
 
-	_size = *(*int32)(unsafe.Pointer(_outs[0]))
-	_ringWidth = *(*int32)(unsafe.Pointer(_outs[1]))
+	_size = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_ringWidth = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _size, _ringWidth
 }

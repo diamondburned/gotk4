@@ -236,7 +236,7 @@ func (device *Device) DeviceTool() *DeviceTool {
 
 	var _deviceTool *DeviceTool // out
 
-	_deviceTool = wrapDeviceTool(coreglib.Take(unsafe.Pointer(_cret)))
+	_deviceTool = wrapDeviceTool(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _deviceTool
 }
@@ -260,7 +260,7 @@ func (device *Device) Display() *Display {
 
 	var _display *Display // out
 
-	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
+	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _display
 }
@@ -306,13 +306,13 @@ func (device *Device) Name() string {
 
 	_info := girepository.MustFind("Gdk", "Device")
 	_gret := _info.InvokeClassMethod("get_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -386,14 +386,14 @@ func (device *Device) ProductID() string {
 
 	_info := girepository.MustFind("Gdk", "Device")
 	_gret := _info.InvokeClassMethod("get_product_id", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -448,7 +448,7 @@ func (device *Device) Seat() Seater {
 	var _seat Seater // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Seater is nil")
 		}
@@ -498,15 +498,11 @@ func (device *Device) SurfaceAtPosition() (winX, winY float64, surface Surfacer)
 	var _winY float64     // out
 	var _surface Surfacer // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_winX = *(*float64)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_winY = *(*float64)(unsafe.Pointer(_outs[1]))
-	}
+	_winX = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
+	_winY = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -588,14 +584,14 @@ func (device *Device) VendorID() string {
 
 	_info := girepository.MustFind("Gdk", "Device")
 	_gret := _info.InvokeClassMethod("get_vendor_id", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8

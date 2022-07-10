@@ -35,7 +35,7 @@ func IsZeroWidth(ch uint32) bool {
 	*(*C.gunichar)(unsafe.Pointer(&_args[0])) = C.gunichar(ch)
 
 	_info := girepository.MustFind("Pango", "is_zero_width")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(ch)
@@ -75,14 +75,14 @@ func IsZeroWidth(ch uint32) bool {
 func Log2VisGetEmbeddingLevels(text string, length int32, pbaseDir *Direction) *byte {
 	var _args [3]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(length)
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(pbaseDir))
 
 	_info := girepository.MustFind("Pango", "log2vis_get_embedding_levels")
-	_gret := _info.Invoke(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_gret := _info.InvokeFunction(_args[:], nil)
+	_cret := *(**C.guint8)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(length)
@@ -90,7 +90,7 @@ func Log2VisGetEmbeddingLevels(text string, length int32, pbaseDir *Direction) *
 
 	var _guint8 *byte // out
 
-	_guint8 = (*byte)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
+	_guint8 = (*byte)(unsafe.Pointer(*(**C.guint8)(unsafe.Pointer(&_cret))))
 
 	return _guint8
 }
@@ -116,14 +116,14 @@ func ParseStretch(str string, warn bool) (Stretch, bool) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	if warn {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
 	_info := girepository.MustFind("Pango", "parse_stretch")
-	_gret := _info.Invoke(_args[:], _outs[:])
+	_gret := _info.InvokeFunction(_args[:], _outs[:])
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
@@ -132,7 +132,7 @@ func ParseStretch(str string, warn bool) (Stretch, bool) {
 	var _stretch Stretch // out
 	var _ok bool         // out
 
-	_stretch = *(*Stretch)(unsafe.Pointer(_outs[0]))
+	_stretch = *(*Stretch)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -159,14 +159,14 @@ func ParseStyle(str string, warn bool) (Style, bool) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	if warn {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
 	_info := girepository.MustFind("Pango", "parse_style")
-	_gret := _info.Invoke(_args[:], _outs[:])
+	_gret := _info.InvokeFunction(_args[:], _outs[:])
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
@@ -175,7 +175,7 @@ func ParseStyle(str string, warn bool) (Style, bool) {
 	var _style Style // out
 	var _ok bool     // out
 
-	_style = *(*Style)(unsafe.Pointer(_outs[0]))
+	_style = *(*Style)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -202,14 +202,14 @@ func ParseVariant(str string, warn bool) (Variant, bool) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	if warn {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
 	_info := girepository.MustFind("Pango", "parse_variant")
-	_gret := _info.Invoke(_args[:], _outs[:])
+	_gret := _info.InvokeFunction(_args[:], _outs[:])
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
@@ -218,7 +218,7 @@ func ParseVariant(str string, warn bool) (Variant, bool) {
 	var _variant Variant // out
 	var _ok bool         // out
 
-	_variant = *(*Variant)(unsafe.Pointer(_outs[0]))
+	_variant = *(*Variant)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -245,14 +245,14 @@ func ParseWeight(str string, warn bool) (Weight, bool) {
 	var _args [2]girepository.Argument
 	var _outs [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	if warn {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
 	}
 
 	_info := girepository.MustFind("Pango", "parse_weight")
-	_gret := _info.Invoke(_args[:], _outs[:])
+	_gret := _info.InvokeFunction(_args[:], _outs[:])
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
@@ -261,7 +261,7 @@ func ParseWeight(str string, warn bool) (Weight, bool) {
 	var _weight Weight // out
 	var _ok bool       // out
 
-	_weight = *(*Weight)(unsafe.Pointer(_outs[0]))
+	_weight = *(*Weight)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -285,30 +285,30 @@ func ParseWeight(str string, warn bool) (Weight, bool) {
 func SplitFileList(str string) []string {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Pango", "split_file_list")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(***C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
 
 	var _utf8s []string // out
 
-	defer C.free(unsafe.Pointer(_cret))
+	defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_cret))))
 	{
 		var i int
-		var z *C.void
-		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.char
+		for p := *(***C.char)(unsafe.Pointer(&_cret)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(_cret, i)
+		src := unsafe.Slice(*(***C.char)(unsafe.Pointer(&_cret)), i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i])))))
+			defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i]))))
 		}
 	}
 
@@ -330,19 +330,19 @@ func SplitFileList(str string) []string {
 func TrimString(str string) string {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Pango", "trim_string")
-	_gret := _info.Invoke(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_gret := _info.InvokeFunction(_args[:], nil)
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }
@@ -359,7 +359,7 @@ func TrimString(str string) string {
 //
 func Version() int32 {
 	_info := girepository.MustFind("Pango", "version")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.int)(unsafe.Pointer(&_gret))
 
 	var _gint int32 // out
@@ -406,8 +406,8 @@ func VersionCheck(requiredMajor, requiredMinor, requiredMicro int32) string {
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(requiredMicro)
 
 	_info := girepository.MustFind("Pango", "version_check")
-	_gret := _info.Invoke(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_gret := _info.InvokeFunction(_args[:], nil)
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(requiredMajor)
 	runtime.KeepAlive(requiredMinor)
@@ -415,8 +415,8 @@ func VersionCheck(requiredMajor, requiredMinor, requiredMicro int32) string {
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -435,12 +435,12 @@ func VersionCheck(requiredMajor, requiredMinor, requiredMicro int32) string {
 //
 func VersionString() string {
 	_info := girepository.MustFind("Pango", "version_string")
-	_gret := _info.Invoke(nil, nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_gret := _info.InvokeFunction(nil, nil)
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }

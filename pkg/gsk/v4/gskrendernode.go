@@ -82,7 +82,7 @@ func (node *BlendNode) BottomChild() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gsk.RenderNoder is nil")
 		}
@@ -122,7 +122,7 @@ func (node *BlendNode) TopChild() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gsk.RenderNoder is nil")
 		}
@@ -168,7 +168,7 @@ func NewBlurNode(child RenderNoder, radius float32) *BlurNode {
 
 	var _blurNode *BlurNode // out
 
-	_blurNode = wrapBlurNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_blurNode = wrapBlurNode(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _blurNode
 }
@@ -193,7 +193,7 @@ func (node *BlurNode) Child() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gsk.RenderNoder is nil")
 		}
@@ -257,7 +257,7 @@ func (node *BorderNode) Colors() *gdk.RGBA {
 
 	var _rgbA *gdk.RGBA // out
 
-	_rgbA = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_rgbA = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _rgbA
 }
@@ -281,7 +281,7 @@ func (node *BorderNode) Outline() *RoundedRect {
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _roundedRect
 }
@@ -306,7 +306,7 @@ func (node *BorderNode) Widths() [4]float32 {
 
 	var _gfloats [4]float32 // out
 
-	_gfloats = *(*[4]float32)(unsafe.Pointer(&_cret))
+	_gfloats = *(*[4]float32)(unsafe.Pointer(&*(**C.float)(unsafe.Pointer(&_cret))))
 
 	return _gfloats
 }
@@ -337,7 +337,7 @@ func NewCairoNode(bounds *graphene.Rect) *CairoNode {
 
 	var _cairoNode *CairoNode // out
 
-	_cairoNode = wrapCairoNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cairoNode = wrapCairoNode(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cairoNode
 }
@@ -366,7 +366,7 @@ func (node *CairoNode) DrawContext() *cairo.Context {
 
 	var _context *cairo.Context // out
 
-	_context = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
+	_context = cairo.WrapContext(uintptr(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(_context, func(v *cairo.Context) {
 		C.cairo_destroy((*C.void)(unsafe.Pointer(v.Native())))
 	})
@@ -393,8 +393,8 @@ func (node *CairoNode) Surface() *cairo.Surface {
 
 	var _surface *cairo.Surface // out
 
-	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-	C.cairo_surface_reference(_cret)
+	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.cairo_surface_reference(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 		C.cairo_surface_destroy((*C.void)(unsafe.Pointer(v.Native())))
 	})
@@ -429,7 +429,7 @@ func NewClipNode(child RenderNoder, clip *graphene.Rect) *ClipNode {
 
 	var _clipNode *ClipNode // out
 
-	_clipNode = wrapClipNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_clipNode = wrapClipNode(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _clipNode
 }
@@ -454,7 +454,7 @@ func (node *ClipNode) Child() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gsk.RenderNoder is nil")
 		}
@@ -493,7 +493,7 @@ func (node *ClipNode) Clip() *graphene.Rect {
 
 	var _rect *graphene.Rect // out
 
-	_rect = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_rect = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _rect
 }
@@ -534,7 +534,7 @@ func NewColorMatrixNode(child RenderNoder, colorMatrix *graphene.Matrix, colorOf
 
 	var _colorMatrixNode *ColorMatrixNode // out
 
-	_colorMatrixNode = wrapColorMatrixNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_colorMatrixNode = wrapColorMatrixNode(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _colorMatrixNode
 }
@@ -560,7 +560,7 @@ func (node *ColorMatrixNode) Child() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gsk.RenderNoder is nil")
 		}
@@ -599,7 +599,7 @@ func (node *ColorMatrixNode) ColorMatrix() *graphene.Matrix {
 
 	var _matrix *graphene.Matrix // out
 
-	_matrix = (*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_matrix = (*graphene.Matrix)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _matrix
 }
@@ -623,7 +623,7 @@ func (node *ColorMatrixNode) ColorOffset() *graphene.Vec4 {
 
 	var _vec4 *graphene.Vec4 // out
 
-	_vec4 = (*graphene.Vec4)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_vec4 = (*graphene.Vec4)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _vec4
 }
@@ -655,7 +655,7 @@ func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) *ColorNode {
 
 	var _colorNode *ColorNode // out
 
-	_colorNode = wrapColorNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_colorNode = wrapColorNode(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _colorNode
 }
@@ -679,7 +679,7 @@ func (node *ColorNode) Color() *gdk.RGBA {
 
 	var _rgbA *gdk.RGBA // out
 
-	_rgbA = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_rgbA = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _rgbA
 }
@@ -733,7 +733,7 @@ func (node *ConicGradientNode) Center() *graphene.Point {
 
 	var _point *graphene.Point // out
 
-	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _point
 }
@@ -804,7 +804,7 @@ func NewContainerNode(children []RenderNoder) *ContainerNode {
 
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = (C.guint)(len(children))
 	*(***C.void)(unsafe.Pointer(&_args[0])) = (**C.void)(C.calloc(C.size_t(len(children)), C.size_t(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_args[0]))
+	defer C.free(unsafe.Pointer(*(***C.void)(unsafe.Pointer(&_args[0]))))
 	{
 		out := unsafe.Slice((**C.void)(*(***C.void)(unsafe.Pointer(&_args[0]))), len(children))
 		for i := range children {
@@ -820,7 +820,7 @@ func NewContainerNode(children []RenderNoder) *ContainerNode {
 
 	var _containerNode *ContainerNode // out
 
-	_containerNode = wrapContainerNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_containerNode = wrapContainerNode(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _containerNode
 }
@@ -851,7 +851,7 @@ func (node *ContainerNode) Child(idx uint32) RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gsk.RenderNoder is nil")
 		}
@@ -926,7 +926,7 @@ func NewCrossFadeNode(start, end RenderNoder, progress float32) *CrossFadeNode {
 
 	var _crossFadeNode *CrossFadeNode // out
 
-	_crossFadeNode = wrapCrossFadeNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_crossFadeNode = wrapCrossFadeNode(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _crossFadeNode
 }
@@ -951,7 +951,7 @@ func (node *CrossFadeNode) EndChild() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gsk.RenderNoder is nil")
 		}
@@ -1016,7 +1016,7 @@ func (node *CrossFadeNode) StartChild() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gsk.RenderNoder is nil")
 		}
@@ -1054,7 +1054,7 @@ func NewDebugNode(child RenderNoder, message string) *DebugNode {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(message)))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(message)))
 
 	_info := girepository.MustFind("Gsk", "DebugNode")
 	_gret := _info.InvokeClassMethod("new_DebugNode", _args[:], nil)
@@ -1065,7 +1065,7 @@ func NewDebugNode(child RenderNoder, message string) *DebugNode {
 
 	var _debugNode *DebugNode // out
 
-	_debugNode = wrapDebugNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_debugNode = wrapDebugNode(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _debugNode
 }
@@ -1090,7 +1090,7 @@ func (node *DebugNode) Child() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gsk.RenderNoder is nil")
 		}
@@ -1123,13 +1123,13 @@ func (node *DebugNode) Message() string {
 
 	_info := girepository.MustFind("Gsk", "DebugNode")
 	_gret := _info.InvokeClassMethod("get_message", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(node)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -1172,7 +1172,7 @@ func NewGLShaderNode(shader *GLShader, bounds *graphene.Rect, args *glib.Bytes, 
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(args)))
 	*(*C.guint)(unsafe.Pointer(&_args[4])) = (C.guint)(len(children))
 	*(***C.void)(unsafe.Pointer(&_args[3])) = (**C.void)(C.calloc(C.size_t(len(children)), C.size_t(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_args[3]))
+	defer C.free(unsafe.Pointer(*(***C.void)(unsafe.Pointer(&_args[3]))))
 	{
 		out := unsafe.Slice((**C.void)(*(***C.void)(unsafe.Pointer(&_args[3]))), len(children))
 		for i := range children {
@@ -1191,7 +1191,7 @@ func NewGLShaderNode(shader *GLShader, bounds *graphene.Rect, args *glib.Bytes, 
 
 	var _glShaderNode *GLShaderNode // out
 
-	_glShaderNode = wrapGLShaderNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_glShaderNode = wrapGLShaderNode(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _glShaderNode
 }
@@ -1215,8 +1215,8 @@ func (node *GLShaderNode) Args() *glib.Bytes {
 
 	var _bytes *glib.Bytes // out
 
-	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_bytes_ref(_cret)
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.g_bytes_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -1253,7 +1253,7 @@ func (node *GLShaderNode) Child(idx uint32) RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gsk.RenderNoder is nil")
 		}
@@ -1316,7 +1316,7 @@ func (node *GLShaderNode) Shader() *GLShader {
 
 	var _glShader *GLShader // out
 
-	_glShader = wrapGLShader(coreglib.Take(unsafe.Pointer(_cret)))
+	_glShader = wrapGLShader(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _glShader
 }
@@ -1360,7 +1360,7 @@ func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx, dy, spread, b
 
 	var _insetShadowNode *InsetShadowNode // out
 
-	_insetShadowNode = wrapInsetShadowNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_insetShadowNode = wrapInsetShadowNode(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _insetShadowNode
 }
@@ -1408,7 +1408,7 @@ func (node *InsetShadowNode) Color() *gdk.RGBA {
 
 	var _rgbA *gdk.RGBA // out
 
-	_rgbA = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_rgbA = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _rgbA
 }
@@ -1480,7 +1480,7 @@ func (node *InsetShadowNode) Outline() *RoundedRect {
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _roundedRect
 }
@@ -1528,7 +1528,7 @@ func (node *LinearGradientNode) End() *graphene.Point {
 
 	var _point *graphene.Point // out
 
-	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _point
 }
@@ -1576,7 +1576,7 @@ func (node *LinearGradientNode) Start() *graphene.Point {
 
 	var _point *graphene.Point // out
 
-	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _point
 }
@@ -1608,7 +1608,7 @@ func NewOpacityNode(child RenderNoder, opacity float32) *OpacityNode {
 
 	var _opacityNode *OpacityNode // out
 
-	_opacityNode = wrapOpacityNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_opacityNode = wrapOpacityNode(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _opacityNode
 }
@@ -1633,7 +1633,7 @@ func (node *OpacityNode) Child() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gsk.RenderNoder is nil")
 		}
@@ -1716,7 +1716,7 @@ func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx, dy, spread, 
 
 	var _outsetShadowNode *OutsetShadowNode // out
 
-	_outsetShadowNode = wrapOutsetShadowNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_outsetShadowNode = wrapOutsetShadowNode(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _outsetShadowNode
 }
@@ -1764,7 +1764,7 @@ func (node *OutsetShadowNode) Color() *gdk.RGBA {
 
 	var _rgbA *gdk.RGBA // out
 
-	_rgbA = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_rgbA = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _rgbA
 }
@@ -1836,7 +1836,7 @@ func (node *OutsetShadowNode) Outline() *RoundedRect {
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _roundedRect
 }
@@ -1884,7 +1884,7 @@ func (node *RadialGradientNode) Center() *graphene.Point {
 
 	var _point *graphene.Point // out
 
-	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _point
 }
@@ -2108,7 +2108,7 @@ func (node *RenderNode) Bounds() *graphene.Rect {
 
 	var _bounds *graphene.Rect // out
 
-	_bounds = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_bounds = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _bounds
 }
@@ -2140,7 +2140,7 @@ func (node *RenderNode) Serialize() *glib.Bytes {
 
 	var _bytes *glib.Bytes // out
 
-	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -2167,8 +2167,8 @@ func (node *RenderNode) WriteToFile(filename string) error {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(node).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gsk", "RenderNode")
 	_info.InvokeClassMethod("write_to_file", _args[:], nil)
@@ -2179,7 +2179,7 @@ func (node *RenderNode) WriteToFile(filename string) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -2210,7 +2210,7 @@ func RenderNodeDeserialize(bytes *glib.Bytes, errorFunc ParseErrorFunc) RenderNo
 	}
 
 	_info := girepository.MustFind("Gsk", "deserialize")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(bytes)
@@ -2220,7 +2220,7 @@ func RenderNodeDeserialize(bytes *glib.Bytes, errorFunc ParseErrorFunc) RenderNo
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -2271,7 +2271,7 @@ func NewRepeatNode(bounds *graphene.Rect, child RenderNoder, childBounds *graphe
 
 	var _repeatNode *RepeatNode // out
 
-	_repeatNode = wrapRepeatNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_repeatNode = wrapRepeatNode(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _repeatNode
 }
@@ -2296,7 +2296,7 @@ func (node *RepeatNode) Child() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gsk.RenderNoder is nil")
 		}
@@ -2335,7 +2335,7 @@ func (node *RepeatNode) ChildBounds() *graphene.Rect {
 
 	var _rect *graphene.Rect // out
 
-	_rect = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_rect = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _rect
 }
@@ -2367,7 +2367,7 @@ func NewRoundedClipNode(child RenderNoder, clip *RoundedRect) *RoundedClipNode {
 
 	var _roundedClipNode *RoundedClipNode // out
 
-	_roundedClipNode = wrapRoundedClipNode(coreglib.Take(unsafe.Pointer(_cret)))
+	_roundedClipNode = wrapRoundedClipNode(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _roundedClipNode
 }
@@ -2392,7 +2392,7 @@ func (node *RoundedClipNode) Child() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gsk.RenderNoder is nil")
 		}
@@ -2431,7 +2431,7 @@ func (node *RoundedClipNode) Clip() *RoundedRect {
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _roundedRect
 }
@@ -2456,7 +2456,7 @@ func (node *ShadowNode) Child() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gsk.RenderNoder is nil")
 		}
@@ -2525,7 +2525,7 @@ func (node *ShadowNode) Shadow(i uint) *Shadow {
 
 	var _shadow *Shadow // out
 
-	_shadow = (*Shadow)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_shadow = (*Shadow)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _shadow
 }
@@ -2565,7 +2565,7 @@ func NewTextNode(font pango.Fonter, glyphs *pango.GlyphString, color *gdk.RGBA, 
 	var _textNode *TextNode // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_textNode = wrapTextNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_textNode = wrapTextNode(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _textNode
@@ -2590,7 +2590,7 @@ func (node *TextNode) Color() *gdk.RGBA {
 
 	var _rgbA *gdk.RGBA // out
 
-	_rgbA = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_rgbA = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _rgbA
 }
@@ -2615,7 +2615,7 @@ func (node *TextNode) Font() pango.Fonter {
 	var _font pango.Fonter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type pango.Fonter is nil")
 		}
@@ -2678,7 +2678,7 @@ func (node *TextNode) Offset() *graphene.Point {
 
 	var _point *graphene.Point // out
 
-	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _point
 }
@@ -2736,7 +2736,7 @@ func NewTextureNode(texture gdk.Texturer, bounds *graphene.Rect) *TextureNode {
 
 	var _textureNode *TextureNode // out
 
-	_textureNode = wrapTextureNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_textureNode = wrapTextureNode(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _textureNode
 }
@@ -2761,7 +2761,7 @@ func (node *TextureNode) Texture() gdk.Texturer {
 	var _texture gdk.Texturer // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Texturer is nil")
 		}
@@ -2808,7 +2808,7 @@ func NewTransformNode(child RenderNoder, transform *Transform) *TransformNode {
 
 	var _transformNode *TransformNode // out
 
-	_transformNode = wrapTransformNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_transformNode = wrapTransformNode(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _transformNode
 }
@@ -2833,7 +2833,7 @@ func (node *TransformNode) Child() RenderNoder {
 	var _renderNode RenderNoder // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gsk.RenderNoder is nil")
 		}
@@ -2872,8 +2872,8 @@ func (node *TransformNode) Transform() *Transform {
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gsk_transform_ref(_cret)
+	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.gsk_transform_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
 		func(intern *struct{ C unsafe.Pointer }) {

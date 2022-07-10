@@ -105,7 +105,7 @@ func NewColorChooserWidget() *ColorChooserWidget {
 
 	var _colorChooserWidget *ColorChooserWidget // out
 
-	_colorChooserWidget = wrapColorChooserWidget(coreglib.Take(unsafe.Pointer(_cret)))
+	_colorChooserWidget = wrapColorChooserWidget(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _colorChooserWidget
 }

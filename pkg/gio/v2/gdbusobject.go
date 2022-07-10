@@ -15,13 +15,13 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern gchar* _gotk4_gio2_DBusObjectIface_get_object_path(void*);
 // extern void _gotk4_gio2_DBusObjectIface_interface_added(void*, void*);
 // extern void _gotk4_gio2_DBusObjectIface_interface_removed(void*, void*);
 // extern void _gotk4_gio2_DBusObject_ConnectInterfaceAdded(gpointer, void*, guintptr);
 // extern void _gotk4_gio2_DBusObject_ConnectInterfaceRemoved(gpointer, void*, guintptr);
-// extern void* _gotk4_gio2_DBusObjectIface_get_interface(void*, void*);
+// extern void* _gotk4_gio2_DBusObjectIface_get_interface(void*, gchar*);
 // extern void* _gotk4_gio2_DBusObjectIface_get_interfaces(void*);
-// extern void* _gotk4_gio2_DBusObjectIface_get_object_path(void*);
 import "C"
 
 // GTypeDBusObject returns the GType for the type DBusObject.
@@ -119,7 +119,7 @@ func ifaceInitDBusObjector(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_DBusObjectIface_get_interface
-func _gotk4_gio2_DBusObjectIface_get_interface(arg0 *C.void, arg1 *C.void) (cret *C.void) {
+func _gotk4_gio2_DBusObjectIface_get_interface(arg0 *C.void, arg1 *C.gchar) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectOverrider)
 
@@ -156,13 +156,13 @@ func _gotk4_gio2_DBusObjectIface_get_interfaces(arg0 *C.void) (cret *C.void) {
 }
 
 //export _gotk4_gio2_DBusObjectIface_get_object_path
-func _gotk4_gio2_DBusObjectIface_get_object_path(arg0 *C.void) (cret *C.void) {
+func _gotk4_gio2_DBusObjectIface_get_object_path(arg0 *C.void) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectOverrider)
 
 	utf8 := iface.ObjectPath()
 
-	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 	defer C.free(unsafe.Pointer(cret))
 
 	return cret
@@ -332,8 +332,8 @@ func (object *DBusObject) Interface(interfaceName string) *DBusInterface {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(interfaceName)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "DBusObject")
 	_gret := _info.InvokeIfaceMethod("get_interface", _args[:], nil)
@@ -345,7 +345,7 @@ func (object *DBusObject) Interface(interfaceName string) *DBusInterface {
 	var _dBusInterface *DBusInterface // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_dBusInterface = wrapDBusInterface(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_dBusInterface = wrapDBusInterface(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _dBusInterface
@@ -371,11 +371,11 @@ func (object *DBusObject) Interfaces() []*DBusInterface {
 
 	var _list []*DBusInterface // out
 
-	_list = make([]*DBusInterface, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*DBusInterface, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *DBusInterface // out
-		dst = wrapDBusInterface(coreglib.AssumeOwnership(unsafe.Pointer(src)))
+		dst = wrapDBusInterface(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 
@@ -395,13 +395,13 @@ func (object *DBusObject) ObjectPath() string {
 
 	_info := girepository.MustFind("Gio", "DBusObject")
 	_gret := _info.InvokeIfaceMethod("get_object_path", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(object)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }

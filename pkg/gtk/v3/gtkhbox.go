@@ -129,7 +129,7 @@ func NewHBox(homogeneous bool, spacing int32) *HBox {
 
 	var _hBox *HBox // out
 
-	_hBox = wrapHBox(coreglib.Take(unsafe.Pointer(_cret)))
+	_hBox = wrapHBox(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _hBox
 }

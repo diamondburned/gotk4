@@ -187,7 +187,7 @@ func NewAdjustment(value, lower, upper, stepIncrement, pageIncrement, pageSize f
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _adjustment
 }

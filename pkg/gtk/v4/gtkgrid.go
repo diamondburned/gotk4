@@ -176,7 +176,7 @@ func NewGrid() *Grid {
 
 	var _grid *Grid // out
 
-	_grid = wrapGrid(coreglib.Take(unsafe.Pointer(_cret)))
+	_grid = wrapGrid(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _grid
 }
@@ -270,7 +270,7 @@ func (grid *Grid) ChildAt(column, row int32) Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -465,18 +465,10 @@ func (grid *Grid) QueryChild(child Widgetter) (column, row, width, height int32)
 	var _width int32  // out
 	var _height int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_column = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_row = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_width = *(*int32)(unsafe.Pointer(_outs[2]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[3])) != nil {
-		_height = *(*int32)(unsafe.Pointer(_outs[3]))
-	}
+	_column = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_row = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
+	_width = int32(*(*C.int)(unsafe.Pointer(&_outs[2])))
+	_height = int32(*(*C.int)(unsafe.Pointer(&_outs[3])))
 
 	return _column, _row, _width, _height
 }

@@ -92,8 +92,8 @@ func (settings *Settings) ResetProperty(name string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "Settings")
 	_info.InvokeClassMethod("reset_property", _args[:], nil)
@@ -114,13 +114,13 @@ func (settings *Settings) ResetProperty(name string) {
 //
 func SettingsGetDefault() *Settings {
 	_info := girepository.MustFind("Gtk", "get_default")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _settings *Settings // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_settings = wrapSettings(coreglib.Take(unsafe.Pointer(_cret)))
+		_settings = wrapSettings(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _settings
@@ -143,14 +143,14 @@ func SettingsGetForDisplay(display *gdk.Display) *Settings {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_info := girepository.MustFind("Gtk", "get_for_display")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)
 
 	var _settings *Settings // out
 
-	_settings = wrapSettings(coreglib.Take(unsafe.Pointer(_cret)))
+	_settings = wrapSettings(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _settings
 }

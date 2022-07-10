@@ -89,8 +89,8 @@ func NewTextTag(name string) *TextTag {
 	var _args [1]girepository.Argument
 
 	if name != "" {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(_args[0]))
+		*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "TextTag")
@@ -101,7 +101,7 @@ func NewTextTag(name string) *TextTag {
 
 	var _textTag *TextTag // out
 
-	_textTag = wrapTextTag(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_textTag = wrapTextTag(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _textTag
 }

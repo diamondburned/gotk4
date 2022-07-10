@@ -55,7 +55,7 @@ func X11RegisterStandardEventType(display *X11Display, eventBase, nEvents int32)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(nEvents)
 
 	_info := girepository.MustFind("GdkX11", "x11_register_standard_event_type")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(eventBase)
@@ -78,12 +78,12 @@ func X11SetSmClientID(smClientId string) {
 	var _args [1]girepository.Argument
 
 	if smClientId != "" {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(smClientId)))
-		defer C.free(unsafe.Pointer(_args[0]))
+		*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(smClientId)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	}
 
 	_info := girepository.MustFind("GdkX11", "x11_set_sm_client_id")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(smClientId)
 }
@@ -188,13 +188,13 @@ func (display *X11Display) StartupNotificationID() string {
 
 	_info := girepository.MustFind("GdkX11", "X11Display")
 	_gret := _info.InvokeClassMethod("get_startup_notification_id", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -261,8 +261,8 @@ func (display *X11Display) SetCursorTheme(theme string, size int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 	if theme != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(theme)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(theme)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(size)
 
@@ -296,8 +296,8 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(startupId)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(startupId)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("GdkX11", "X11Display")
 	_info.InvokeClassMethod("set_startup_notification_id", _args[:], nil)

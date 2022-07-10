@@ -464,7 +464,7 @@ func NewSpinButton(adjustment *Adjustment, climbRate float64, digits uint32) *Sp
 
 	var _spinButton *SpinButton // out
 
-	_spinButton = wrapSpinButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_spinButton = wrapSpinButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _spinButton
 }
@@ -507,7 +507,7 @@ func NewSpinButtonWithRange(min, max, step float64) *SpinButton {
 
 	var _spinButton *SpinButton // out
 
-	_spinButton = wrapSpinButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_spinButton = wrapSpinButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _spinButton
 }
@@ -562,7 +562,7 @@ func (spinButton *SpinButton) Adjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _adjustment
 }
@@ -638,12 +638,8 @@ func (spinButton *SpinButton) Increments() (step, page float64) {
 	var _step float64 // out
 	var _page float64 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_step = *(*float64)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_page = *(*float64)(unsafe.Pointer(_outs[1]))
-	}
+	_step = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
+	_page = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
 
 	return _step, _page
 }
@@ -697,12 +693,8 @@ func (spinButton *SpinButton) Range() (min, max float64) {
 	var _min float64 // out
 	var _max float64 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_min = *(*float64)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_max = *(*float64)(unsafe.Pointer(_outs[1]))
-	}
+	_min = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
+	_max = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
 
 	return _min, _max
 }

@@ -22,12 +22,12 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern gchar* _gotk4_gio2_ResolverClass_lookup_by_address(void*, void*, void*, GError**);
+// extern gchar* _gotk4_gio2_ResolverClass_lookup_by_address_finish(void*, void*, GError**);
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 // extern void _gotk4_gio2_ResolverClass_reload(void*);
 // extern void _gotk4_gio2_Resolver_ConnectReload(gpointer, guintptr);
-// extern void* _gotk4_gio2_ResolverClass_lookup_by_address(void*, void*, void*, GError**);
-// extern void* _gotk4_gio2_ResolverClass_lookup_by_address_finish(void*, void*, GError**);
-// extern void* _gotk4_gio2_ResolverClass_lookup_by_name(void*, void*, void*, GError**);
+// extern void* _gotk4_gio2_ResolverClass_lookup_by_name(void*, gchar*, void*, GError**);
 // extern void* _gotk4_gio2_ResolverClass_lookup_by_name_finish(void*, void*, GError**);
 // extern void* _gotk4_gio2_ResolverClass_lookup_by_name_with_flags_finish(void*, void*, GError**);
 // extern void* _gotk4_gio2_ResolverClass_lookup_records_finish(void*, void*, GError**);
@@ -348,7 +348,7 @@ func classInitResolverer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_ResolverClass_lookup_by_address
-func _gotk4_gio2_ResolverClass_lookup_by_address(arg0 *C.void, arg1 *C.void, arg2 *C.void, _cerr **C.GError) (cret *C.void) {
+func _gotk4_gio2_ResolverClass_lookup_by_address(arg0 *C.void, arg1 *C.void, arg2 *C.void, _cerr **C.GError) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupByAddress(ctx context.Context, address *InetAddress) (string, error)
@@ -364,7 +364,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_address(arg0 *C.void, arg1 *C.void, arg
 
 	utf8, _goerr := iface.LookupByAddress(_cancellable, _address)
 
-	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 	if _goerr != nil && _cerr != nil {
 		*_cerr = (*C.void)(gerror.New(_goerr))
 	}
@@ -373,7 +373,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_address(arg0 *C.void, arg1 *C.void, arg
 }
 
 //export _gotk4_gio2_ResolverClass_lookup_by_address_finish
-func _gotk4_gio2_ResolverClass_lookup_by_address_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.void) {
+func _gotk4_gio2_ResolverClass_lookup_by_address_finish(arg0 *C.void, arg1 *C.void, _cerr **C.GError) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupByAddressFinish(result AsyncResulter) (string, error)
@@ -401,7 +401,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_address_finish(arg0 *C.void, arg1 *C.vo
 
 	utf8, _goerr := iface.LookupByAddressFinish(_result)
 
-	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 	if _goerr != nil && _cerr != nil {
 		*_cerr = (*C.void)(gerror.New(_goerr))
 	}
@@ -410,7 +410,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_address_finish(arg0 *C.void, arg1 *C.vo
 }
 
 //export _gotk4_gio2_ResolverClass_lookup_by_name
-func _gotk4_gio2_ResolverClass_lookup_by_name(arg0 *C.void, arg1 *C.void, arg2 *C.void, _cerr **C.GError) (cret *C.void) {
+func _gotk4_gio2_ResolverClass_lookup_by_name(arg0 *C.void, arg1 *C.gchar, arg2 *C.void, _cerr **C.GError) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		LookupByName(ctx context.Context, hostname string) ([]*InetAddress, error)
@@ -701,10 +701,10 @@ func (resolver *Resolver) LookupByAddress(ctx context.Context, address *InetAddr
 	var _utf8 string // out
 	var _goerr error // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _utf8, _goerr
@@ -776,10 +776,10 @@ func (resolver *Resolver) LookupByAddressFinish(result AsyncResulter) (string, e
 	var _utf8 string // out
 	var _goerr error // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _utf8, _goerr
@@ -826,8 +826,8 @@ func (resolver *Resolver) LookupByName(ctx context.Context, hostname string) ([]
 		defer runtime.KeepAlive(cancellable)
 		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(hostname)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "Resolver")
 	_gret := _info.InvokeClassMethod("lookup_by_name", _args[:], nil)
@@ -840,15 +840,15 @@ func (resolver *Resolver) LookupByName(ctx context.Context, hostname string) ([]
 	var _list []*InetAddress // out
 	var _goerr error         // out
 
-	_list = make([]*InetAddress, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*InetAddress, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *InetAddress // out
-		dst = wrapInetAddress(coreglib.AssumeOwnership(unsafe.Pointer(src)))
+		dst = wrapInetAddress(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _list, _goerr
@@ -874,8 +874,8 @@ func (resolver *Resolver) LookupByNameAsync(ctx context.Context, hostname string
 		defer runtime.KeepAlive(cancellable)
 		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(hostname)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	if callback != nil {
 		*(*C.gpointer)(unsafe.Pointer(&_args[3])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 		_args[4] = C.gpointer(gbox.AssignOnce(callback))
@@ -922,15 +922,15 @@ func (resolver *Resolver) LookupByNameFinish(result AsyncResulter) ([]*InetAddre
 	var _list []*InetAddress // out
 	var _goerr error         // out
 
-	_list = make([]*InetAddress, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*InetAddress, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *InetAddress // out
-		dst = wrapInetAddress(coreglib.AssumeOwnership(unsafe.Pointer(src)))
+		dst = wrapInetAddress(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _list, _goerr
@@ -968,15 +968,15 @@ func (resolver *Resolver) LookupByNameWithFlagsFinish(result AsyncResulter) ([]*
 	var _list []*InetAddress // out
 	var _goerr error         // out
 
-	_list = make([]*InetAddress, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*InetAddress, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *InetAddress // out
-		dst = wrapInetAddress(coreglib.AssumeOwnership(unsafe.Pointer(src)))
+		dst = wrapInetAddress(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _list, _goerr
@@ -1016,11 +1016,11 @@ func (resolver *Resolver) LookupRecordsFinish(result AsyncResulter) ([]*glib.Var
 	var _list []*glib.Variant // out
 	var _goerr error          // out
 
-	_list = make([]*glib.Variant, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*glib.Variant, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *glib.Variant // out
-		dst = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(src)))
+		dst = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -1030,7 +1030,7 @@ func (resolver *Resolver) LookupRecordsFinish(result AsyncResulter) ([]*glib.Var
 		_list = append(_list, dst)
 	})
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _list, _goerr
@@ -1077,12 +1077,12 @@ func (resolver *Resolver) LookupService(ctx context.Context, service, protocol, 
 		defer runtime.KeepAlive(cancellable)
 		_args[4] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(service)))
-	defer C.free(unsafe.Pointer(_args[1]))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(protocol)))
-	defer C.free(unsafe.Pointer(_args[2]))
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(C.CString(domain)))
-	defer C.free(unsafe.Pointer(_args[3]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(service)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(protocol)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	*(**C.gchar)(unsafe.Pointer(&_args[3])) = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[3]))))
 
 	_info := girepository.MustFind("Gio", "Resolver")
 	_gret := _info.InvokeClassMethod("lookup_service", _args[:], nil)
@@ -1097,16 +1097,17 @@ func (resolver *Resolver) LookupService(ctx context.Context, service, protocol, 
 	var _list []*SrvTarget // out
 	var _goerr error       // out
 
-	_list = make([]*SrvTarget, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*SrvTarget, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *SrvTarget // out
-		dst = (*SrvTarget)(gextras.NewStructNative(unsafe.Pointer(src)))
+		dst = (*SrvTarget)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Gio", "SrvTarget").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -1114,7 +1115,7 @@ func (resolver *Resolver) LookupService(ctx context.Context, service, protocol, 
 		_list = append(_list, dst)
 	})
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _list, _goerr
@@ -1142,12 +1143,12 @@ func (resolver *Resolver) LookupServiceAsync(ctx context.Context, service, proto
 		defer runtime.KeepAlive(cancellable)
 		_args[4] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(service)))
-	defer C.free(unsafe.Pointer(_args[1]))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(protocol)))
-	defer C.free(unsafe.Pointer(_args[2]))
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(C.CString(domain)))
-	defer C.free(unsafe.Pointer(_args[3]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(service)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(protocol)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
+	*(**C.gchar)(unsafe.Pointer(&_args[3])) = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[3]))))
 	if callback != nil {
 		*(*C.gpointer)(unsafe.Pointer(&_args[5])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
 		_args[6] = C.gpointer(gbox.AssignOnce(callback))
@@ -1196,16 +1197,17 @@ func (resolver *Resolver) LookupServiceFinish(result AsyncResulter) ([]*SrvTarge
 	var _list []*SrvTarget // out
 	var _goerr error       // out
 
-	_list = make([]*SrvTarget, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*SrvTarget, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *SrvTarget // out
-		dst = (*SrvTarget)(gextras.NewStructNative(unsafe.Pointer(src)))
+		dst = (*SrvTarget)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Gio", "SrvTarget").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -1213,7 +1215,7 @@ func (resolver *Resolver) LookupServiceFinish(result AsyncResulter) ([]*SrvTarge
 		_list = append(_list, dst)
 	})
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _list, _goerr
@@ -1249,13 +1251,13 @@ func (resolver *Resolver) SetDefault() {
 //
 func ResolverGetDefault() Resolverer {
 	_info := girepository.MustFind("Gio", "get_default")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _resolver Resolverer // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gio.Resolverer is nil")
 		}

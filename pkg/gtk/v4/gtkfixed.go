@@ -122,7 +122,7 @@ func NewFixed() *Fixed {
 
 	var _fixed *Fixed // out
 
-	_fixed = wrapFixed(coreglib.Take(unsafe.Pointer(_cret)))
+	_fixed = wrapFixed(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _fixed
 }
@@ -157,8 +157,8 @@ func (fixed *Fixed) ChildPosition(widget Widgetter) (x, y float64) {
 	var _x float64 // out
 	var _y float64 // out
 
-	_x = *(*float64)(unsafe.Pointer(_outs[0]))
-	_y = *(*float64)(unsafe.Pointer(_outs[1]))
+	_x = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
+	_y = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
 
 	return _x, _y
 }
@@ -191,8 +191,8 @@ func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
 	var _transform *gsk.Transform // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_transform = (*gsk.Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.gsk_transform_ref(_cret)
+		_transform = (*gsk.Transform)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.gsk_transform_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_transform)),
 			func(intern *struct{ C unsafe.Pointer }) {

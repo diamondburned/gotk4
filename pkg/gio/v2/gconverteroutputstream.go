@@ -108,7 +108,7 @@ func NewConverterOutputStream(baseStream OutputStreamer, converter Converterer) 
 
 	var _converterOutputStream *ConverterOutputStream // out
 
-	_converterOutputStream = wrapConverterOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_converterOutputStream = wrapConverterOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _converterOutputStream
 }
@@ -132,7 +132,7 @@ func (converterStream *ConverterOutputStream) Converter() *Converter {
 
 	var _converter *Converter // out
 
-	_converter = wrapConverter(coreglib.Take(unsafe.Pointer(_cret)))
+	_converter = wrapConverter(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _converter
 }

@@ -87,7 +87,7 @@ func NewWindowGroup() *WindowGroup {
 
 	var _windowGroup *WindowGroup // out
 
-	_windowGroup = wrapWindowGroup(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_windowGroup = wrapWindowGroup(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _windowGroup
 }
@@ -139,7 +139,7 @@ func (windowGroup *WindowGroup) CurrentDeviceGrab(device gdk.Devicer) Widgetter 
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -178,7 +178,7 @@ func (windowGroup *WindowGroup) CurrentGrab() Widgetter {
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -217,11 +217,11 @@ func (windowGroup *WindowGroup) ListWindows() []*Window {
 
 	var _list []*Window // out
 
-	_list = make([]*Window, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*Window, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Window // out
-		dst = wrapWindow(coreglib.Take(unsafe.Pointer(src)))
+		dst = wrapWindow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 

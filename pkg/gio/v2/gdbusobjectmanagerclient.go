@@ -18,9 +18,9 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal(void*, void*, void*, void*, void*, void*);
-// extern void _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxyPropertiesChanged(gpointer, void*, void*, void*, void**, guintptr);
-// extern void _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxySignal(gpointer, void*, void*, void*, void*, void*, guintptr);
+// extern void _gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal(void*, void*, void*, gchar*, gchar*, void*);
+// extern void _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxyPropertiesChanged(gpointer, void*, void*, void*, gchar**, guintptr);
+// extern void _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxySignal(gpointer, void*, void*, gchar*, gchar*, void*, guintptr);
 import "C"
 
 // GTypeDBusObjectManagerClient returns the GType for the type DBusObjectManagerClient.
@@ -141,7 +141,7 @@ func classInitDBusObjectManagerClienter(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal
-func _gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.void, arg5 *C.void) {
+func _gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		InterfaceProxySignal(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, senderName, signalName string, parameters *glib.Variant)
@@ -189,7 +189,7 @@ func marshalDBusObjectManagerClient(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxyPropertiesChanged
-func _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxyPropertiesChanged(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 **C.void, arg5 C.guintptr) {
+func _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxyPropertiesChanged(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 **C.gchar, arg5 C.guintptr) {
 	var f func(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, changedProperties *glib.Variant, invalidatedProperties []string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
@@ -218,7 +218,7 @@ func _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxyPropertiesChanged(
 	)
 	{
 		var i int
-		var z *C.void
+		var z *C.gchar
 		for p := arg4; *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
@@ -249,7 +249,7 @@ func (manager *DBusObjectManagerClient) ConnectInterfaceProxyPropertiesChanged(f
 }
 
 //export _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxySignal
-func _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxySignal(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.void, arg5 *C.void, arg6 C.guintptr) {
+func _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxySignal(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.void, arg6 C.guintptr) {
 	var f func(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, senderName, signalName string, parameters *glib.Variant)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg6))
@@ -322,9 +322,9 @@ func NewDBusObjectManagerClientFinish(res AsyncResulter) (*DBusObjectManagerClie
 	var _dBusObjectManagerClient *DBusObjectManagerClient // out
 	var _goerr error                                      // out
 
-	_dBusObjectManagerClient = wrapDBusObjectManagerClient(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusObjectManagerClient = wrapDBusObjectManagerClient(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _dBusObjectManagerClient, _goerr
@@ -357,9 +357,9 @@ func NewDBusObjectManagerClientForBusFinish(res AsyncResulter) (*DBusObjectManag
 	var _dBusObjectManagerClient *DBusObjectManagerClient // out
 	var _goerr error                                      // out
 
-	_dBusObjectManagerClient = wrapDBusObjectManagerClient(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusObjectManagerClient = wrapDBusObjectManagerClient(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _dBusObjectManagerClient, _goerr
@@ -384,7 +384,7 @@ func (manager *DBusObjectManagerClient) Connection() *DBusConnection {
 
 	var _dBusConnection *DBusConnection // out
 
-	_dBusConnection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(_cret)))
+	_dBusConnection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _dBusConnection
 }
@@ -404,13 +404,13 @@ func (manager *DBusObjectManagerClient) Name() string {
 
 	_info := girepository.MustFind("Gio", "DBusObjectManagerClient")
 	_gret := _info.InvokeClassMethod("get_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -431,15 +431,15 @@ func (manager *DBusObjectManagerClient) NameOwner() string {
 
 	_info := girepository.MustFind("Gio", "DBusObjectManagerClient")
 	_gret := _info.InvokeClassMethod("get_name_owner", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 	}
 
 	return _utf8

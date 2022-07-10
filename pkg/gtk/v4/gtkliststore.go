@@ -137,7 +137,7 @@ func (listStore *ListStore) Append() *TreeIter {
 
 	var _iter *TreeIter // out
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _iter
 }
@@ -183,7 +183,7 @@ func (listStore *ListStore) Insert(position int32) *TreeIter {
 
 	var _iter *TreeIter // out
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _iter
 }
@@ -219,7 +219,7 @@ func (listStore *ListStore) InsertAfter(sibling *TreeIter) *TreeIter {
 
 	var _iter *TreeIter // out
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _iter
 }
@@ -254,7 +254,7 @@ func (listStore *ListStore) InsertBefore(sibling *TreeIter) *TreeIter {
 
 	var _iter *TreeIter // out
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _iter
 }
@@ -367,7 +367,7 @@ func (listStore *ListStore) Prepend() *TreeIter {
 
 	var _iter *TreeIter // out
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _iter
 }
@@ -420,8 +420,8 @@ func (store *ListStore) Reorder(newOrder []int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(store).Native()))
 	{
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(C.calloc(C.size_t((len(newOrder) + 1)), C.size_t(C.sizeof_int)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.int)(unsafe.Pointer(&_args[1])) = (*C.int)(C.calloc(C.size_t((len(newOrder) + 1)), C.size_t(C.sizeof_int)))
+		defer C.free(unsafe.Pointer(*(**C.int)(unsafe.Pointer(&_args[1]))))
 		{
 			out := unsafe.Slice(_args[1], len(newOrder)+1)
 			var zero C.int

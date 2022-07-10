@@ -26,7 +26,7 @@ import "C"
 //
 func GetDebugFlags() uint32 {
 	_info := girepository.MustFind("Gtk", "get_debug_flags")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
@@ -46,7 +46,7 @@ func SetDebugFlags(flags uint32) {
 	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(flags)
 
 	_info := girepository.MustFind("Gtk", "set_debug_flags")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(flags)
 }

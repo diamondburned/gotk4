@@ -132,7 +132,7 @@ func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
 
 	var _viewport *Viewport // out
 
-	_viewport = wrapViewport(coreglib.Take(unsafe.Pointer(_cret)))
+	_viewport = wrapViewport(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _viewport
 }
@@ -157,7 +157,7 @@ func (viewport *Viewport) BinWindow() gdk.Windower {
 	var _window gdk.Windower // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -198,7 +198,7 @@ func (viewport *Viewport) HAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _adjustment
 }
@@ -224,7 +224,7 @@ func (viewport *Viewport) VAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _adjustment
 }
@@ -249,7 +249,7 @@ func (viewport *Viewport) ViewWindow() gdk.Windower {
 	var _window gdk.Windower // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}

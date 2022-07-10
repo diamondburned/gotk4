@@ -478,8 +478,8 @@ func (paintable *Paintable) ComputeConcreteSize(specifiedWidth, specifiedHeight,
 	var _concreteWidth float64  // out
 	var _concreteHeight float64 // out
 
-	_concreteWidth = *(*float64)(unsafe.Pointer(_outs[0]))
-	_concreteHeight = *(*float64)(unsafe.Pointer(_outs[1]))
+	_concreteWidth = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
+	_concreteHeight = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
 
 	return _concreteWidth, _concreteHeight
 }
@@ -509,7 +509,7 @@ func (paintable *Paintable) CurrentImage() *Paintable {
 
 	var _ret *Paintable // out
 
-	_ret = wrapPaintable(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_ret = wrapPaintable(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _ret
 }
@@ -716,7 +716,7 @@ func NewPaintableEmpty(intrinsicWidth, intrinsicHeight int32) *Paintable {
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(intrinsicHeight)
 
 	_info := girepository.MustFind("Gdk", "new_empty")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(intrinsicWidth)
@@ -724,7 +724,7 @@ func NewPaintableEmpty(intrinsicWidth, intrinsicHeight int32) *Paintable {
 
 	var _paintable *Paintable // out
 
-	_paintable = wrapPaintable(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_paintable = wrapPaintable(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _paintable
 }

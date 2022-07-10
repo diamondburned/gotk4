@@ -16,11 +16,12 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern gchar* _gotk4_gtk3_MenuItemClass_get_label(void*);
 // extern void _gotk4_gtk3_MenuItemClass_activate(void*);
 // extern void _gotk4_gtk3_MenuItemClass_activate_item(void*);
 // extern void _gotk4_gtk3_MenuItemClass_deselect(void*);
 // extern void _gotk4_gtk3_MenuItemClass_select(void*);
-// extern void _gotk4_gtk3_MenuItemClass_set_label(void*, void*);
+// extern void _gotk4_gtk3_MenuItemClass_set_label(void*, gchar*);
 // extern void _gotk4_gtk3_MenuItemClass_toggle_size_allocate(void*, gint);
 // extern void _gotk4_gtk3_MenuItem_ConnectActivate(gpointer, guintptr);
 // extern void _gotk4_gtk3_MenuItem_ConnectActivateItem(gpointer, guintptr);
@@ -28,7 +29,6 @@ import (
 // extern void _gotk4_gtk3_MenuItem_ConnectSelect(gpointer, guintptr);
 // extern void _gotk4_gtk3_MenuItem_ConnectToggleSizeAllocate(gpointer, gint, guintptr);
 // extern void _gotk4_gtk3_MenuItem_ConnectToggleSizeRequest(gpointer, gpointer, guintptr);
-// extern void* _gotk4_gtk3_MenuItemClass_get_label(void*);
 import "C"
 
 // GTypeMenuItem returns the GType for the type MenuItem.
@@ -180,13 +180,13 @@ func _gotk4_gtk3_MenuItemClass_deselect(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_MenuItemClass_get_label
-func _gotk4_gtk3_MenuItemClass_get_label(arg0 *C.void) (cret *C.void) {
+func _gotk4_gtk3_MenuItemClass_get_label(arg0 *C.void) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Label() string })
 
 	utf8 := iface.Label()
 
-	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 	defer C.free(unsafe.Pointer(cret))
 
 	return cret
@@ -201,7 +201,7 @@ func _gotk4_gtk3_MenuItemClass_select(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_MenuItemClass_set_label
-func _gotk4_gtk3_MenuItemClass_set_label(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gtk3_MenuItemClass_set_label(arg0 *C.void, arg1 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ SetLabel(label string) })
 
@@ -412,7 +412,7 @@ func NewMenuItem() *MenuItem {
 
 	var _menuItem *MenuItem // out
 
-	_menuItem = wrapMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
+	_menuItem = wrapMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _menuItem
 }
@@ -430,8 +430,8 @@ func NewMenuItem() *MenuItem {
 func NewMenuItemWithLabel(label string) *MenuItem {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "MenuItem")
 	_gret := _info.InvokeClassMethod("new_MenuItem_with_label", _args[:], nil)
@@ -441,7 +441,7 @@ func NewMenuItemWithLabel(label string) *MenuItem {
 
 	var _menuItem *MenuItem // out
 
-	_menuItem = wrapMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
+	_menuItem = wrapMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _menuItem
 }
@@ -463,8 +463,8 @@ func NewMenuItemWithLabel(label string) *MenuItem {
 func NewMenuItemWithMnemonic(label string) *MenuItem {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "MenuItem")
 	_gret := _info.InvokeClassMethod("new_MenuItem_with_mnemonic", _args[:], nil)
@@ -474,7 +474,7 @@ func NewMenuItemWithMnemonic(label string) *MenuItem {
 
 	var _menuItem *MenuItem // out
 
-	_menuItem = wrapMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
+	_menuItem = wrapMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _menuItem
 }
@@ -520,14 +520,14 @@ func (menuItem *MenuItem) AccelPath() string {
 
 	_info := girepository.MustFind("Gtk", "MenuItem")
 	_gret := _info.InvokeClassMethod("get_accel_path", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menuItem)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -547,13 +547,13 @@ func (menuItem *MenuItem) Label() string {
 
 	_info := girepository.MustFind("Gtk", "MenuItem")
 	_gret := _info.InvokeClassMethod("get_label", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(menuItem)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -637,7 +637,7 @@ func (menuItem *MenuItem) Submenu() Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -724,8 +724,8 @@ func (menuItem *MenuItem) SetAccelPath(accelPath string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
 	if accelPath != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(accelPath)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(accelPath)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "MenuItem")
@@ -745,8 +745,8 @@ func (menuItem *MenuItem) SetLabel(label string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "MenuItem")
 	_info.InvokeClassMethod("set_label", _args[:], nil)

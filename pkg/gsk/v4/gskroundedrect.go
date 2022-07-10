@@ -145,7 +145,7 @@ func (self *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, top
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _roundedRect
 }
@@ -178,7 +178,7 @@ func (self *RoundedRect) InitCopy(src *RoundedRect) *RoundedRect {
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _roundedRect
 }
@@ -212,7 +212,7 @@ func (self *RoundedRect) InitFromRect(bounds *graphene.Rect, radius float32) *Ro
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _roundedRect
 }
@@ -302,7 +302,7 @@ func (self *RoundedRect) Normalize() *RoundedRect {
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _roundedRect
 }
@@ -337,7 +337,7 @@ func (self *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _roundedRect
 }
@@ -383,7 +383,7 @@ func (self *RoundedRect) Shrink(top float32, right float32, bottom float32, left
 
 	var _roundedRect *RoundedRect // out
 
-	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_roundedRect = (*RoundedRect)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _roundedRect
 }

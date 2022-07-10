@@ -50,7 +50,7 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int3
 	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(height)
 
 	_info := girepository.MustFind("Gdk", "pixbuf_get_from_surface")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
@@ -63,7 +63,7 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int3
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_pixbuf = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{
@@ -97,7 +97,7 @@ func PixbufGetFromTexture(texture Texturer) *gdkpixbuf.Pixbuf {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
 
 	_info := girepository.MustFind("Gdk", "pixbuf_get_from_texture")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(texture)
@@ -106,7 +106,7 @@ func PixbufGetFromTexture(texture Texturer) *gdkpixbuf.Pixbuf {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_pixbuf = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{

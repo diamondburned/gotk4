@@ -181,7 +181,7 @@ func (interface_ *DBusInterface) GetObject() *DBusObject {
 	var _dBusObject *DBusObject // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_dBusObject = wrapDBusObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_dBusObject = wrapDBusObject(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _dBusObject
@@ -207,8 +207,8 @@ func (interface_ *DBusInterface) Info() *DBusInterfaceInfo {
 
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
-	_dBusInterfaceInfo = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_dbus_interface_info_ref(_cret)
+	_dBusInterfaceInfo = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.g_dbus_interface_info_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_dBusInterfaceInfo)),
 		func(intern *struct{ C unsafe.Pointer }) {

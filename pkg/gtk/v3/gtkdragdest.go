@@ -164,8 +164,8 @@ func (widget *Widget) DragDestGetTargetList() *TargetList {
 	var _targetList *TargetList // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.gtk_target_list_ref(_cret)
+		_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.gtk_target_list_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_targetList)),
 			func(intern *struct{ C unsafe.Pointer }) {

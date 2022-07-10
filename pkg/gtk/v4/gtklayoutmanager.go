@@ -351,7 +351,7 @@ func (manager *LayoutManager) LayoutChild(child Widgetter) LayoutChilder {
 	var _layoutChild LayoutChilder // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.LayoutChilder is nil")
 		}
@@ -392,7 +392,7 @@ func (manager *LayoutManager) Widget() Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

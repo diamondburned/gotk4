@@ -195,8 +195,8 @@ func (object *DBusObjectSkeleton) ConnectAuthorizeMethod(f func(iface DBusInterf
 func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeleton {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gio", "DBusObjectSkeleton")
 	_gret := _info.InvokeClassMethod("new_DBusObjectSkeleton", _args[:], nil)
@@ -206,7 +206,7 @@ func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeleton {
 
 	var _dBusObjectSkeleton *DBusObjectSkeleton // out
 
-	_dBusObjectSkeleton = wrapDBusObjectSkeleton(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusObjectSkeleton = wrapDBusObjectSkeleton(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _dBusObjectSkeleton
 }
@@ -282,8 +282,8 @@ func (object *DBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(interfaceName)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "DBusObjectSkeleton")
 	_info.InvokeClassMethod("remove_interface_by_name", _args[:], nil)
@@ -302,8 +302,8 @@ func (object *DBusObjectSkeleton) SetObjectPath(objectPath string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(object).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "DBusObjectSkeleton")
 	_info.InvokeClassMethod("set_object_path", _args[:], nil)

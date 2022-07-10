@@ -108,7 +108,7 @@ func NewOffscreenWindow() *OffscreenWindow {
 
 	var _offscreenWindow *OffscreenWindow // out
 
-	_offscreenWindow = wrapOffscreenWindow(coreglib.Take(unsafe.Pointer(_cret)))
+	_offscreenWindow = wrapOffscreenWindow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _offscreenWindow
 }
@@ -136,7 +136,7 @@ func (offscreen *OffscreenWindow) Pixbuf() *gdkpixbuf.Pixbuf {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_pixbuf = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{
@@ -173,8 +173,8 @@ func (offscreen *OffscreenWindow) Surface() *cairo.Surface {
 	var _surface *cairo.Surface // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-		C.cairo_surface_reference(_cret)
+		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.cairo_surface_reference(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 			C.cairo_surface_destroy((*C.void)(unsafe.Pointer(v.Native())))
 		})

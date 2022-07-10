@@ -38,12 +38,12 @@ func ShowURI(parent *Window, uri string, timestamp uint32) {
 	if parent != nil {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(timestamp)
 
 	_info := girepository.MustFind("Gtk", "show_uri")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(uri)
@@ -78,8 +78,8 @@ func ShowURIFull(ctx context.Context, parent *Window, uri string, timestamp uint
 	if parent != nil {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(timestamp)
 	if callback != nil {
 		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -87,7 +87,7 @@ func ShowURIFull(ctx context.Context, parent *Window, uri string, timestamp uint
 	}
 
 	_info := girepository.MustFind("Gtk", "show_uri_full")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(ctx)
 	runtime.KeepAlive(parent)
@@ -111,7 +111,7 @@ func ShowURIFullFinish(parent *Window, result gio.AsyncResulter) error {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
 	_info := girepository.MustFind("Gtk", "show_uri_full_finish")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(parent)
 	runtime.KeepAlive(result)
@@ -119,7 +119,7 @@ func ShowURIFullFinish(parent *Window, result gio.AsyncResulter) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

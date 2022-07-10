@@ -132,12 +132,12 @@ func (f FileChooserError) String() string {
 //
 func FileChooserErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gtk", "quark")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -292,33 +292,33 @@ func (chooser *FileChooser) AddChoice(id, label string, options, optionLabels []
 	var _args [5]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(id)))
-	defer C.free(unsafe.Pointer(_args[1]))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(id)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
 	{
-		*(***C.void)(unsafe.Pointer(&_args[3])) = (**C.void)(C.calloc(C.size_t((len(options) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_args[3]))
+		*(***C.char)(unsafe.Pointer(&_args[3])) = (**C.char)(C.calloc(C.size_t((len(options) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_args[3]))))
 		{
 			out := unsafe.Slice(_args[3], len(options)+1)
-			var zero *C.void
+			var zero *C.char
 			out[len(options)] = zero
 			for i := range options {
-				*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(options[i])))
-				defer C.free(unsafe.Pointer(out[i]))
+				*(**C.char)(unsafe.Pointer(&out[i])) = (*C.char)(unsafe.Pointer(C.CString(options[i])))
+				defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&out[i]))))
 			}
 		}
 	}
 	{
-		*(***C.void)(unsafe.Pointer(&_args[4])) = (**C.void)(C.calloc(C.size_t((len(optionLabels) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_args[4]))
+		*(***C.char)(unsafe.Pointer(&_args[4])) = (**C.char)(C.calloc(C.size_t((len(optionLabels) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_args[4]))))
 		{
 			out := unsafe.Slice(_args[4], len(optionLabels)+1)
-			var zero *C.void
+			var zero *C.char
 			out[len(optionLabels)] = zero
 			for i := range optionLabels {
-				*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(optionLabels[i])))
-				defer C.free(unsafe.Pointer(out[i]))
+				*(**C.char)(unsafe.Pointer(&out[i])) = (*C.char)(unsafe.Pointer(C.CString(optionLabels[i])))
+				defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&out[i]))))
 			}
 		}
 	}
@@ -381,7 +381,7 @@ func (chooser *FileChooser) AddShortcutFolder(folder gio.Filer) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -401,19 +401,19 @@ func (chooser *FileChooser) Choice(id string) string {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(id)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(id)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "FileChooser")
 	_gret := _info.InvokeIfaceMethod("get_choice", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(id)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -464,7 +464,7 @@ func (chooser *FileChooser) CurrentFolder() *gio.File {
 	var _file *gio.File // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_file = &gio.File{
 			Object: obj,
 		}
@@ -493,14 +493,14 @@ func (chooser *FileChooser) CurrentName() string {
 
 	_info := girepository.MustFind("Gtk", "FileChooser")
 	_gret := _info.InvokeIfaceMethod("get_current_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }
@@ -531,7 +531,7 @@ func (chooser *FileChooser) File() *gio.File {
 	var _file *gio.File // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_file = &gio.File{
 			Object: obj,
 		}
@@ -563,7 +563,7 @@ func (chooser *FileChooser) Files() *gio.ListModel {
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}
@@ -592,7 +592,7 @@ func (chooser *FileChooser) Filter() *FileFilter {
 	var _fileFilter *FileFilter // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_fileFilter = wrapFileFilter(coreglib.Take(unsafe.Pointer(_cret)))
+		_fileFilter = wrapFileFilter(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _fileFilter
@@ -625,7 +625,7 @@ func (chooser *FileChooser) Filters() *gio.ListModel {
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}
@@ -684,7 +684,7 @@ func (chooser *FileChooser) ShortcutFolders() *gio.ListModel {
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}
@@ -704,8 +704,8 @@ func (chooser *FileChooser) RemoveChoice(id string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(id)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(id)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "FileChooser")
 	_info.InvokeIfaceMethod("remove_choice", _args[:], nil)
@@ -756,7 +756,7 @@ func (chooser *FileChooser) RemoveShortcutFolder(folder gio.Filer) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -776,10 +776,10 @@ func (chooser *FileChooser) SetChoice(id, option string) {
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(id)))
-	defer C.free(unsafe.Pointer(_args[1]))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(option)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(id)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
+	*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(option)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
 
 	_info := girepository.MustFind("Gtk", "FileChooser")
 	_info.InvokeIfaceMethod("set_choice", _args[:], nil)
@@ -834,7 +834,7 @@ func (chooser *FileChooser) SetCurrentFolder(file gio.Filer) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -862,8 +862,8 @@ func (chooser *FileChooser) SetCurrentName(name string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "FileChooser")
 	_info.InvokeIfaceMethod("set_current_name", _args[:], nil)
@@ -932,7 +932,7 @@ func (chooser *FileChooser) SetFile(file gio.Filer) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

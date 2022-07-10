@@ -185,7 +185,7 @@ func NewRadioMenuItem(group []*RadioMenuItem) *RadioMenuItem {
 
 	var _radioMenuItem *RadioMenuItem // out
 
-	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
+	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _radioMenuItem
 }
@@ -216,7 +216,7 @@ func NewRadioMenuItemFromWidget(group *RadioMenuItem) *RadioMenuItem {
 
 	var _radioMenuItem *RadioMenuItem // out
 
-	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
+	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _radioMenuItem
 }
@@ -245,8 +245,8 @@ func NewRadioMenuItemWithLabel(group []*RadioMenuItem, label string) *RadioMenuI
 		}
 		defer C.g_slist_free(_args[0])
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "RadioMenuItem")
 	_gret := _info.InvokeClassMethod("new_RadioMenuItem_with_label", _args[:], nil)
@@ -257,7 +257,7 @@ func NewRadioMenuItemWithLabel(group []*RadioMenuItem, label string) *RadioMenuI
 
 	var _radioMenuItem *RadioMenuItem // out
 
-	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
+	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _radioMenuItem
 }
@@ -282,8 +282,8 @@ func NewRadioMenuItemWithLabelFromWidget(group *RadioMenuItem, label string) *Ra
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	}
 	if label != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "RadioMenuItem")
@@ -295,7 +295,7 @@ func NewRadioMenuItemWithLabelFromWidget(group *RadioMenuItem, label string) *Ra
 
 	var _radioMenuItem *RadioMenuItem // out
 
-	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
+	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _radioMenuItem
 }
@@ -326,8 +326,8 @@ func NewRadioMenuItemWithMnemonic(group []*RadioMenuItem, label string) *RadioMe
 		}
 		defer C.g_slist_free(_args[0])
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "RadioMenuItem")
 	_gret := _info.InvokeClassMethod("new_RadioMenuItem_with_mnemonic", _args[:], nil)
@@ -338,7 +338,7 @@ func NewRadioMenuItemWithMnemonic(group []*RadioMenuItem, label string) *RadioMe
 
 	var _radioMenuItem *RadioMenuItem // out
 
-	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
+	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _radioMenuItem
 }
@@ -367,8 +367,8 @@ func NewRadioMenuItemWithMnemonicFromWidget(group *RadioMenuItem, label string) 
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
 	}
 	if label != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "RadioMenuItem")
@@ -380,7 +380,7 @@ func NewRadioMenuItemWithMnemonicFromWidget(group *RadioMenuItem, label string) 
 
 	var _radioMenuItem *RadioMenuItem // out
 
-	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
+	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _radioMenuItem
 }
@@ -405,11 +405,11 @@ func (radioMenuItem *RadioMenuItem) Group() []*RadioMenuItem {
 
 	var _sList []*RadioMenuItem // out
 
-	_sList = make([]*RadioMenuItem, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+	_sList = make([]*RadioMenuItem, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *RadioMenuItem // out
-		dst = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(src)))
+		dst = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_sList = append(_sList, dst)
 	})
 

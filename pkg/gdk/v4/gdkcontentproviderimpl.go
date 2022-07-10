@@ -33,8 +33,8 @@ import "C"
 func NewContentProviderForBytes(mimeType string, bytes *glib.Bytes) *ContentProvider {
 	var _args [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(bytes)))
 
 	_info := girepository.MustFind("Gdk", "ContentProvider")
@@ -46,7 +46,7 @@ func NewContentProviderForBytes(mimeType string, bytes *glib.Bytes) *ContentProv
 
 	var _contentProvider *ContentProvider // out
 
-	_contentProvider = wrapContentProvider(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_contentProvider = wrapContentProvider(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _contentProvider
 }
@@ -75,7 +75,7 @@ func NewContentProviderForValue(value *coreglib.Value) *ContentProvider {
 
 	var _contentProvider *ContentProvider // out
 
-	_contentProvider = wrapContentProvider(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_contentProvider = wrapContentProvider(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _contentProvider
 }
@@ -127,7 +127,7 @@ func NewContentProviderUnion(providers []*ContentProvider) *ContentProvider {
 
 	var _contentProvider *ContentProvider // out
 
-	_contentProvider = wrapContentProvider(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_contentProvider = wrapContentProvider(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _contentProvider
 }

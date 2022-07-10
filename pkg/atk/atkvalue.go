@@ -22,9 +22,9 @@ import (
 // extern void _gotk4_atk1_ValueIface_get_maximum_value(void*, void*);
 // extern void _gotk4_atk1_ValueIface_get_minimum_increment(void*, void*);
 // extern void _gotk4_atk1_ValueIface_get_minimum_value(void*, void*);
-// extern void _gotk4_atk1_ValueIface_get_value_and_text(void*, void*, void**);
+// extern void _gotk4_atk1_ValueIface_get_value_and_text(void*, gdouble*, gchar**);
 // extern void _gotk4_atk1_ValueIface_set_value(void*, gdouble);
-// extern void _gotk4_atk1_Value_ConnectValueChanged(gpointer, gdouble, void*, guintptr);
+// extern void _gotk4_atk1_Value_ConnectValueChanged(gpointer, gdouble, gchar*, guintptr);
 // extern void* _gotk4_atk1_ValueIface_get_range(void*);
 // extern void* _gotk4_atk1_ValueIface_get_sub_ranges(void*);
 import "C"
@@ -473,15 +473,15 @@ func _gotk4_atk1_ValueIface_get_sub_ranges(arg0 *C.void) (cret *C.void) {
 }
 
 //export _gotk4_atk1_ValueIface_get_value_and_text
-func _gotk4_atk1_ValueIface_get_value_and_text(arg0 *C.void, arg1 *C.void, arg2 **C.void) {
+func _gotk4_atk1_ValueIface_get_value_and_text(arg0 *C.void, arg1 *C.gdouble, arg2 **C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ValueOverrider)
 
 	value, text := iface.ValueAndText()
 
-	*arg1 = (*C.void)(unsafe.Pointer(value))
+	*arg1 = C.gdouble(value)
 	if text != "" {
-		*arg2 = (*C.void)(unsafe.Pointer(C.CString(text)))
+		*arg2 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
 	}
 }
 
@@ -526,7 +526,7 @@ func marshalValue(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_atk1_Value_ConnectValueChanged
-func _gotk4_atk1_Value_ConnectValueChanged(arg0 C.gpointer, arg1 C.gdouble, arg2 *C.void, arg3 C.guintptr) {
+func _gotk4_atk1_Value_ConnectValueChanged(arg0 C.gpointer, arg1 C.gdouble, arg2 *C.gchar, arg3 C.guintptr) {
 	var f func(value float64, text string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -581,7 +581,7 @@ func (obj *Value) CurrentValue() coreglib.Value {
 
 	var _value coreglib.Value // out
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(_outs[0]))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 
 	return _value
 }
@@ -634,7 +634,7 @@ func (obj *Value) MaximumValue() coreglib.Value {
 
 	var _value coreglib.Value // out
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(_outs[0]))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 
 	return _value
 }
@@ -663,7 +663,7 @@ func (obj *Value) MinimumIncrement() coreglib.Value {
 
 	var _value coreglib.Value // out
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(_outs[0]))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 
 	return _value
 }
@@ -689,7 +689,7 @@ func (obj *Value) MinimumValue() coreglib.Value {
 
 	var _value coreglib.Value // out
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(_outs[0]))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 
 	return _value
 }
@@ -716,12 +716,13 @@ func (obj *Value) Range() *Range {
 	var __range *Range // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(__range)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Atk", "Range").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -752,16 +753,17 @@ func (obj *Value) SubRanges() []*Range {
 
 	var _sList []*Range // out
 
-	_sList = make([]*Range, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_sList = make([]*Range, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Range // out
-		dst = (*Range)(gextras.NewStructNative(unsafe.Pointer(src)))
+		dst = (*Range)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Atk", "Range").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -796,10 +798,10 @@ func (obj *Value) ValueAndText() (float64, string) {
 	var _value float64 // out
 	var _text string   // out
 
-	_value = *(*float64)(unsafe.Pointer(_outs[0]))
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_text = C.GoString((*C.gchar)(unsafe.Pointer(_outs[1])))
-		defer C.free(unsafe.Pointer(_outs[1]))
+	_value = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
+	if *(**C.gchar)(unsafe.Pointer(&_outs[1])) != nil {
+		_text = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[1])))))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[1]))))
 	}
 
 	return _value, _text

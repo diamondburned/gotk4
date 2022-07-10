@@ -114,7 +114,7 @@ func NewEventControllerLegacy() *EventControllerLegacy {
 
 	var _eventControllerLegacy *EventControllerLegacy // out
 
-	_eventControllerLegacy = wrapEventControllerLegacy(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_eventControllerLegacy = wrapEventControllerLegacy(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _eventControllerLegacy
 }

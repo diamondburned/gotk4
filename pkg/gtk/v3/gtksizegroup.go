@@ -205,12 +205,12 @@ func (sizeGroup *SizeGroup) Widgets() []Widgetter {
 
 	var _sList []Widgetter // out
 
-	_sList = make([]Widgetter, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+	_sList = make([]Widgetter, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Widgetter // out
 		{
-			objptr := unsafe.Pointer(src)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
 			if objptr == nil {
 				panic("object of type gtk.Widgetter is nil")
 			}

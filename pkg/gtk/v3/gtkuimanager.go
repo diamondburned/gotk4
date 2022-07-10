@@ -31,8 +31,8 @@ import (
 // extern void _gotk4_gtk3_UIManager_ConnectDisconnectProxy(gpointer, void*, void*, guintptr);
 // extern void _gotk4_gtk3_UIManager_ConnectPostActivate(gpointer, void*, guintptr);
 // extern void _gotk4_gtk3_UIManager_ConnectPreActivate(gpointer, void*, guintptr);
-// extern void* _gotk4_gtk3_UIManagerClass_get_action(void*, void*);
-// extern void* _gotk4_gtk3_UIManagerClass_get_widget(void*, void*);
+// extern void* _gotk4_gtk3_UIManagerClass_get_action(void*, gchar*);
+// extern void* _gotk4_gtk3_UIManagerClass_get_widget(void*, gchar*);
 import "C"
 
 // GTypeUIManagerItemType returns the GType for the type UIManagerItemType.
@@ -596,7 +596,7 @@ func _gotk4_gtk3_UIManagerClass_disconnect_proxy(arg0 *C.void, arg1 *C.void, arg
 }
 
 //export _gotk4_gtk3_UIManagerClass_get_action
-func _gotk4_gtk3_UIManagerClass_get_action(arg0 *C.void, arg1 *C.void) (cret *C.void) {
+func _gotk4_gtk3_UIManagerClass_get_action(arg0 *C.void, arg1 *C.gchar) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Action(path string) *Action })
 
@@ -612,7 +612,7 @@ func _gotk4_gtk3_UIManagerClass_get_action(arg0 *C.void, arg1 *C.void) (cret *C.
 }
 
 //export _gotk4_gtk3_UIManagerClass_get_widget
-func _gotk4_gtk3_UIManagerClass_get_widget(arg0 *C.void, arg1 *C.void) (cret *C.void) {
+func _gotk4_gtk3_UIManagerClass_get_widget(arg0 *C.void, arg1 *C.gchar) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Widget(path string) Widgetter })
 
@@ -890,7 +890,7 @@ func NewUIManager() *UIManager {
 
 	var _uiManager *UIManager // out
 
-	_uiManager = wrapUIManager(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_uiManager = wrapUIManager(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _uiManager
 }
@@ -914,8 +914,8 @@ func (manager *UIManager) AddUiFromFile(filename string) (uint32, error) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "UIManager")
 	_gret := _info.InvokeClassMethod("add_ui_from_file", _args[:], nil)
@@ -929,7 +929,7 @@ func (manager *UIManager) AddUiFromFile(filename string) (uint32, error) {
 
 	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _guint, _goerr
@@ -954,8 +954,8 @@ func (manager *UIManager) AddUiFromResource(resourcePath string) (uint32, error)
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "UIManager")
 	_gret := _info.InvokeClassMethod("add_ui_from_resource", _args[:], nil)
@@ -969,7 +969,7 @@ func (manager *UIManager) AddUiFromResource(resourcePath string) (uint32, error)
 
 	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _guint, _goerr
@@ -996,8 +996,8 @@ func (manager *UIManager) AddUiFromString(buffer string, length int) (uint32, er
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(buffer)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(buffer)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	*(*C.gssize)(unsafe.Pointer(&_args[2])) = C.gssize(length)
 
 	_info := girepository.MustFind("Gtk", "UIManager")
@@ -1013,7 +1013,7 @@ func (manager *UIManager) AddUiFromString(buffer string, length int) (uint32, er
 
 	_guint = uint32(*(*C.guint)(unsafe.Pointer(&_cret)))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _guint, _goerr
@@ -1067,7 +1067,7 @@ func (manager *UIManager) AccelGroup() *AccelGroup {
 
 	var _accelGroup *AccelGroup // out
 
-	_accelGroup = wrapAccelGroup(coreglib.Take(unsafe.Pointer(_cret)))
+	_accelGroup = wrapAccelGroup(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _accelGroup
 }
@@ -1090,8 +1090,8 @@ func (manager *UIManager) Action(path string) *Action {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "UIManager")
 	_gret := _info.InvokeClassMethod("get_action", _args[:], nil)
@@ -1102,7 +1102,7 @@ func (manager *UIManager) Action(path string) *Action {
 
 	var _action *Action // out
 
-	_action = wrapAction(coreglib.Take(unsafe.Pointer(_cret)))
+	_action = wrapAction(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _action
 }
@@ -1129,11 +1129,11 @@ func (manager *UIManager) ActionGroups() []*ActionGroup {
 
 	var _list []*ActionGroup // out
 
-	_list = make([]*ActionGroup, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+	_list = make([]*ActionGroup, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *ActionGroup // out
-		dst = wrapActionGroup(coreglib.Take(unsafe.Pointer(src)))
+		dst = wrapActionGroup(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 
@@ -1186,14 +1186,14 @@ func (manager *UIManager) Ui() string {
 
 	_info := girepository.MustFind("Gtk", "UIManager")
 	_gret := _info.InvokeClassMethod("get_ui", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }
@@ -1226,8 +1226,8 @@ func (manager *UIManager) Widget(path string) Widgetter {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "UIManager")
 	_gret := _info.InvokeClassMethod("get_widget", _args[:], nil)
@@ -1239,7 +1239,7 @@ func (manager *UIManager) Widget(path string) Widgetter {
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}

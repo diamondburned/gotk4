@@ -18,6 +18,8 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern char* _gotk4_gio2_MountIface_get_name(void*);
+// extern char* _gotk4_gio2_MountIface_get_uuid(void*);
 // extern gboolean _gotk4_gio2_MountIface_can_eject(void*);
 // extern gboolean _gotk4_gio2_MountIface_can_unmount(void*);
 // extern gboolean _gotk4_gio2_MountIface_eject_finish(void*, void*, GError**);
@@ -25,6 +27,9 @@ import (
 // extern gboolean _gotk4_gio2_MountIface_remount_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_MountIface_unmount_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_MountIface_unmount_with_operation_finish(void*, void*, GError**);
+// extern gchar* _gotk4_gio2_MountIface_get_sort_key(void*);
+// extern gchar** _gotk4_gio2_MountIface_guess_content_type_finish(void*, void*, GError**);
+// extern gchar** _gotk4_gio2_MountIface_guess_content_type_sync(void*, gboolean, void*, GError**);
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
 // extern void _gotk4_gio2_MountIface_changed(void*);
 // extern void _gotk4_gio2_MountIface_pre_unmount(void*);
@@ -35,14 +40,9 @@ import (
 // extern void* _gotk4_gio2_MountIface_get_default_location(void*);
 // extern void* _gotk4_gio2_MountIface_get_drive(void*);
 // extern void* _gotk4_gio2_MountIface_get_icon(void*);
-// extern void* _gotk4_gio2_MountIface_get_name(void*);
 // extern void* _gotk4_gio2_MountIface_get_root(void*);
-// extern void* _gotk4_gio2_MountIface_get_sort_key(void*);
 // extern void* _gotk4_gio2_MountIface_get_symbolic_icon(void*);
-// extern void* _gotk4_gio2_MountIface_get_uuid(void*);
 // extern void* _gotk4_gio2_MountIface_get_volume(void*);
-// extern void** _gotk4_gio2_MountIface_guess_content_type_finish(void*, void*, GError**);
-// extern void** _gotk4_gio2_MountIface_guess_content_type_sync(void*, gboolean, void*, GError**);
 import "C"
 
 // GTypeMount returns the GType for the type Mount.
@@ -302,7 +302,7 @@ func (mount *Mount) EjectFinish(result AsyncResulter) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -331,7 +331,7 @@ func (mount *Mount) EjectWithOperationFinish(result AsyncResulter) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -359,7 +359,7 @@ func (mount *Mount) DefaultLocation() *File {
 
 	var _file *File // out
 
-	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _file
 }
@@ -389,7 +389,7 @@ func (mount *Mount) Drive() *Drive {
 	var _drive *Drive // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_drive = wrapDrive(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_drive = wrapDrive(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _drive
@@ -415,7 +415,7 @@ func (mount *Mount) Icon() *Icon {
 
 	var _icon *Icon // out
 
-	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _icon
 }
@@ -434,14 +434,14 @@ func (mount *Mount) Name() string {
 
 	_info := girepository.MustFind("Gio", "Mount")
 	_gret := _info.InvokeIfaceMethod("get_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mount)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }
@@ -466,7 +466,7 @@ func (mount *Mount) Root() *File {
 
 	var _file *File // out
 
-	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _file
 }
@@ -485,14 +485,14 @@ func (mount *Mount) SortKey() string {
 
 	_info := girepository.MustFind("Gio", "Mount")
 	_gret := _info.InvokeIfaceMethod("get_sort_key", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mount)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -518,7 +518,7 @@ func (mount *Mount) SymbolicIcon() *Icon {
 
 	var _icon *Icon // out
 
-	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _icon
 }
@@ -539,15 +539,15 @@ func (mount *Mount) UUID() string {
 
 	_info := girepository.MustFind("Gio", "Mount")
 	_gret := _info.InvokeIfaceMethod("get_uuid", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mount)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 	}
 
 	return _utf8
@@ -575,7 +575,7 @@ func (mount *Mount) Volume() *Volume {
 	var _volume *Volume // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_volume = wrapVolume(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_volume = wrapVolume(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _volume
@@ -656,23 +656,23 @@ func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, erro
 	var _utf8s []string // out
 	var _goerr error    // out
 
-	defer C.free(unsafe.Pointer(_cret))
+	defer C.free(unsafe.Pointer(*(***C.gchar)(unsafe.Pointer(&_cret))))
 	{
 		var i int
-		var z *C.void
-		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.gchar
+		for p := *(***C.gchar)(unsafe.Pointer(&_cret)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(_cret, i)
+		src := unsafe.Slice(*(***C.gchar)(unsafe.Pointer(&_cret)), i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i])))))
+			defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i]))))
 		}
 	}
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _utf8s, _goerr
@@ -723,23 +723,23 @@ func (mount *Mount) GuessContentTypeSync(ctx context.Context, forceRescan bool) 
 	var _utf8s []string // out
 	var _goerr error    // out
 
-	defer C.free(unsafe.Pointer(_cret))
+	defer C.free(unsafe.Pointer(*(***C.gchar)(unsafe.Pointer(&_cret))))
 	{
 		var i int
-		var z *C.void
-		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.gchar
+		for p := *(***C.gchar)(unsafe.Pointer(&_cret)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(_cret, i)
+		src := unsafe.Slice(*(***C.gchar)(unsafe.Pointer(&_cret)), i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i])))))
+			defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i]))))
 		}
 	}
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _utf8s, _goerr
@@ -813,7 +813,7 @@ func (mount *Mount) RemountFinish(result AsyncResulter) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -859,7 +859,7 @@ func (mount *Mount) UnmountFinish(result AsyncResulter) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -888,7 +888,7 @@ func (mount *Mount) UnmountWithOperationFinish(result AsyncResulter) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

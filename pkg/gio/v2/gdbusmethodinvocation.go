@@ -59,7 +59,7 @@ func (invocation *DBusMethodInvocation) Connection() *DBusConnection {
 
 	var _dBusConnection *DBusConnection // out
 
-	_dBusConnection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(_cret)))
+	_dBusConnection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _dBusConnection
 }
@@ -81,13 +81,13 @@ func (invocation *DBusMethodInvocation) InterfaceName() string {
 
 	_info := girepository.MustFind("Gio", "DBusMethodInvocation")
 	_gret := _info.InvokeClassMethod("get_interface_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(invocation)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -117,7 +117,7 @@ func (invocation *DBusMethodInvocation) Message() *DBusMessage {
 
 	var _dBusMessage *DBusMessage // out
 
-	_dBusMessage = wrapDBusMessage(coreglib.Take(unsafe.Pointer(_cret)))
+	_dBusMessage = wrapDBusMessage(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _dBusMessage
 }
@@ -148,8 +148,8 @@ func (invocation *DBusMethodInvocation) MethodInfo() *DBusMethodInfo {
 	var _dBusMethodInfo *DBusMethodInfo // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_dBusMethodInfo = (*DBusMethodInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_dbus_method_info_ref(_cret)
+		_dBusMethodInfo = (*DBusMethodInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.g_dbus_method_info_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dBusMethodInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -174,13 +174,13 @@ func (invocation *DBusMethodInvocation) MethodName() string {
 
 	_info := girepository.MustFind("Gio", "DBusMethodInvocation")
 	_gret := _info.InvokeClassMethod("get_method_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(invocation)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -198,13 +198,13 @@ func (invocation *DBusMethodInvocation) ObjectPath() string {
 
 	_info := girepository.MustFind("Gio", "DBusMethodInvocation")
 	_gret := _info.InvokeClassMethod("get_object_path", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(invocation)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -230,8 +230,8 @@ func (invocation *DBusMethodInvocation) Parameters() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_ref(_cret)
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.g_variant_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -272,8 +272,8 @@ func (invocation *DBusMethodInvocation) PropertyInfo() *DBusPropertyInfo {
 	var _dBusPropertyInfo *DBusPropertyInfo // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_dBusPropertyInfo = (*DBusPropertyInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_dbus_property_info_ref(_cret)
+		_dBusPropertyInfo = (*DBusPropertyInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.g_dbus_property_info_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dBusPropertyInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -298,13 +298,13 @@ func (invocation *DBusMethodInvocation) Sender() string {
 
 	_info := girepository.MustFind("Gio", "DBusMethodInvocation")
 	_gret := _info.InvokeClassMethod("get_sender", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(invocation)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -324,10 +324,10 @@ func (invocation *DBusMethodInvocation) ReturnDBusError(errorName, errorMessage 
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(invocation).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(errorName)))
-	defer C.free(unsafe.Pointer(_args[1]))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(errorMessage)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(errorName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(errorMessage)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
 
 	_info := girepository.MustFind("Gio", "DBusMethodInvocation")
 	_info.InvokeClassMethod("return_dbus_error", _args[:], nil)
@@ -356,8 +356,8 @@ func (invocation *DBusMethodInvocation) ReturnErrorLiteral(domain glib.Quark, co
 	C.g_object_ref(C.gpointer(coreglib.InternObject(invocation).Native()))
 	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(domain)
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(code)
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(C.CString(message)))
-	defer C.free(unsafe.Pointer(_args[3]))
+	*(**C.gchar)(unsafe.Pointer(&_args[3])) = (*C.gchar)(unsafe.Pointer(C.CString(message)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[3]))))
 
 	_info := girepository.MustFind("Gio", "DBusMethodInvocation")
 	_info.InvokeClassMethod("return_error_literal", _args[:], nil)

@@ -143,19 +143,19 @@ func (action *RadioAction) ConnectChanged(f func(current *RadioAction)) coreglib
 func NewRadioAction(name, label, tooltip, stockId string, value int32) *RadioAction {
 	var _args [5]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	if label != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 	if tooltip != "" {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(tooltip)))
-		defer C.free(unsafe.Pointer(_args[2]))
+		*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
 	}
 	if stockId != "" {
-		*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
-		defer C.free(unsafe.Pointer(_args[3]))
+		*(**C.gchar)(unsafe.Pointer(&_args[3])) = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[3]))))
 	}
 	*(*C.gint)(unsafe.Pointer(&_args[4])) = C.gint(value)
 
@@ -171,7 +171,7 @@ func NewRadioAction(name, label, tooltip, stockId string, value int32) *RadioAct
 
 	var _radioAction *RadioAction // out
 
-	_radioAction = wrapRadioAction(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_radioAction = wrapRadioAction(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _radioAction
 }
@@ -238,11 +238,11 @@ func (action *RadioAction) Group() []*RadioAction {
 
 	var _sList []*RadioAction // out
 
-	_sList = make([]*RadioAction, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+	_sList = make([]*RadioAction, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *RadioAction // out
-		dst = wrapRadioAction(coreglib.Take(unsafe.Pointer(src)))
+		dst = wrapRadioAction(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_sList = append(_sList, dst)
 	})
 

@@ -189,7 +189,7 @@ func NewSocketAddressFromNative(native unsafe.Pointer, len uint) *SocketAddress 
 
 	var _socketAddress *SocketAddress // out
 
-	_socketAddress = wrapSocketAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_socketAddress = wrapSocketAddress(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _socketAddress
 }
@@ -250,7 +250,7 @@ func (address *SocketAddress) ToNative(dest unsafe.Pointer, destlen uint) error 
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

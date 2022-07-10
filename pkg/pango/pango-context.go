@@ -60,8 +60,8 @@ func Itemize(context *Context, text string, startIndex, length int32, attrs *Att
 	var _args [6]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(startIndex)
 	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(length)
 	*(**C.void)(unsafe.Pointer(&_args[4])) = (*C.void)(gextras.StructNative(unsafe.Pointer(attrs)))
@@ -70,7 +70,7 @@ func Itemize(context *Context, text string, startIndex, length int32, attrs *Att
 	}
 
 	_info := girepository.MustFind("Pango", "itemize")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
@@ -82,16 +82,17 @@ func Itemize(context *Context, text string, startIndex, length int32, attrs *Att
 
 	var _list []*Item // out
 
-	_list = make([]*Item, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*Item, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Item // out
-		dst = (*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
+		dst = (*Item)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Pango", "Item").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -152,7 +153,7 @@ func NewContext() *Context {
 
 	var _context *Context // out
 
-	_context = wrapContext(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_context = wrapContext(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _context
 }
@@ -194,7 +195,7 @@ func (context *Context) FontDescription() *FontDescription {
 
 	var _fontDescription *FontDescription // out
 
-	_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _fontDescription
 }
@@ -220,7 +221,7 @@ func (context *Context) FontMap() FontMapper {
 	var _fontMap FontMapper // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type pango.FontMapper is nil")
 		}
@@ -259,7 +260,7 @@ func (context *Context) Language() *Language {
 
 	var _language *Language // out
 
-	_language = (*Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_language = (*Language)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_language)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -295,7 +296,7 @@ func (context *Context) Matrix() *Matrix {
 	var _matrix *Matrix // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _matrix
@@ -348,7 +349,7 @@ func (context *Context) Metrics(desc *FontDescription, language *Language) *Font
 
 	var _fontMetrics *FontMetrics // out
 
-	_fontMetrics = (*FontMetrics)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_fontMetrics = (*FontMetrics)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fontMetrics)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -438,13 +439,13 @@ func (context *Context) ListFamilies() []FontFamilier {
 
 	var _families []FontFamilier // out
 
-	defer C.free(unsafe.Pointer(_outs[0]))
+	defer C.free(unsafe.Pointer(*(***C.void)(unsafe.Pointer(&_outs[0]))))
 	{
-		src := unsafe.Slice((**C.void)(_outs[0]), _outs[1])
-		_families = make([]FontFamilier, _outs[1])
-		for i := 0; i < int(_outs[1]); i++ {
+		src := unsafe.Slice((**C.void)(*(***C.void)(unsafe.Pointer(&_outs[0]))), *(*C.int)(unsafe.Pointer(&_outs[1])))
+		_families = make([]FontFamilier, *(*C.int)(unsafe.Pointer(&_outs[1])))
+		for i := 0; i < int(*(*C.int)(unsafe.Pointer(&_outs[1]))); i++ {
 			{
-				objptr := unsafe.Pointer(src[i])
+				objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))
 				if objptr == nil {
 					panic("object of type pango.FontFamilier is nil")
 				}
@@ -495,7 +496,7 @@ func (context *Context) LoadFont(desc *FontDescription) Fonter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -545,7 +546,7 @@ func (context *Context) LoadFontset(desc *FontDescription, language *Language) F
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

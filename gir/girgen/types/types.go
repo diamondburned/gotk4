@@ -146,8 +146,8 @@ func RecordPrintFreeMethod(gen FileGenerator, parent *gir.TypeFindResult, value 
 	switch gen.LinkMode() {
 	case RuntimeLinkMode:
 		p := pen.NewBlock()
-		p.Linef("args := [1]girepository.Argument{(%s)(%s)}",
-			AnyTypeCGoPrimitive(gen, free.Parameters.InstanceParameter.AnyType), value)
+		p.Linef("var args [1]girepository.Argument")
+		p.Linef("*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(%s)", value)
 		p.Linef("girepository.MustFind(%q, %q).InvokeRecordMethod(%q, args[:], nil)",
 			parent.Namespace.Name, rec.Name, "free")
 		return p.String()
@@ -260,6 +260,16 @@ func CountPtr(typ string) int {
 	return strings.Count(typ[:sliceIx], "*")
 }
 
+// DecPtr decrements a pointer in the type.
+func DecPtr(t string) string {
+	return strings.Replace(t, "*", "", 1)
+}
+
+// StripPtr removes all pointers from a type.
+func StripPtr(t string) string {
+	return strings.ReplaceAll(t, "*", "")
+}
+
 // MovePtr moves the same number of pointers from the given orig string into
 // another string.
 func MovePtr(orig, into string) string {
@@ -289,7 +299,7 @@ func CleanCType(cType string, stripPtr bool) string {
 	cType = cTypePrefixEraser.Replace(cType)
 	cType = strings.TrimSpace(cType)
 	if stripPtr {
-		cType = strings.ReplaceAll(cType, "*", "")
+		cType = StripPtr(cType)
 	}
 	return cType
 }
@@ -402,7 +412,12 @@ func CTypeToPrimitive(cType string) string {
 	}
 
 	if CountPtr(cType) > 0 {
-		return MoveCPtr(cType, "void")
+		baseCType := CleanCType(cType, true)
+		if GIRIsPrimitive(baseCType) {
+			return MoveCPtr(cType, baseCType)
+		} else {
+			return MoveCPtr(cType, "void")
+		}
 	}
 
 	if GIRIsPrimitive(cType) {
@@ -512,7 +527,8 @@ func GIRPrimitiveGo(typ string) string {
 // GIRIsPrimitive returns true if the Go primitive type of the GIR type is valid
 // and is not a string.
 func GIRIsPrimitive(typ string) bool {
-	return GIRPrimitiveGo(typ) != ""
+	t := GIRPrimitiveGo(typ)
+	return t != "" && t != "string"
 }
 
 // FindParameter finds a parameter.

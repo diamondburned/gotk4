@@ -80,13 +80,13 @@ func (language *Language) SampleString() string {
 
 	_info := girepository.MustFind("Pango", "Language")
 	_gret := _info.InvokeRecordMethod("get_sample_string", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(language)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -114,8 +114,8 @@ func (language *Language) Matches(rangeList string) bool {
 	if language != nil {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(language)))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(rangeList)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(rangeList)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Pango", "Language")
 	_gret := _info.InvokeRecordMethod("matches", _args[:], nil)
@@ -147,13 +147,13 @@ func (language *Language) String() string {
 
 	_info := girepository.MustFind("Pango", "Language")
 	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(language)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -184,12 +184,12 @@ func LanguageFromString(language string) *Language {
 	var _args [1]girepository.Argument
 
 	if language != "" {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(language)))
-		defer C.free(unsafe.Pointer(_args[0]))
+		*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(language)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	}
 
 	_info := girepository.MustFind("Pango", "from_string")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(language)
@@ -197,7 +197,7 @@ func LanguageFromString(language string) *Language {
 	var _ret *Language // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_ret = (*Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_ret = (*Language)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _ret
@@ -234,12 +234,12 @@ func LanguageFromString(language string) *Language {
 //
 func LanguageGetDefault() *Language {
 	_info := girepository.MustFind("Pango", "get_default")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _language *Language // out
 
-	_language = (*Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_language = (*Language)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _language
 }
@@ -260,13 +260,13 @@ func LanguageGetDefault() *Language {
 //
 func LanguageGetPreferred() *Language {
 	_info := girepository.MustFind("Pango", "get_preferred")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(***C.void)(unsafe.Pointer(&_gret))
 
 	var _language *Language // out
 
 	if *(***C.void)(unsafe.Pointer(&_cret)) != nil {
-		_language = (*Language)(gextras.NewStructNative(unsafe.Pointer((*_cret))))
+		_language = (*Language)(gextras.NewStructNative(unsafe.Pointer((**(***C.void)(unsafe.Pointer(&_cret))))))
 	}
 
 	return _language

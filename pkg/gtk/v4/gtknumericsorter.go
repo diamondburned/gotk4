@@ -92,7 +92,7 @@ func NewNumericSorter(expression Expressioner) *NumericSorter {
 
 	var _numericSorter *NumericSorter // out
 
-	_numericSorter = wrapNumericSorter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_numericSorter = wrapNumericSorter(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _numericSorter
 }
@@ -119,7 +119,7 @@ func (self *NumericSorter) Expression() Expressioner {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

@@ -126,7 +126,7 @@ func (d *DBusAnnotationInfo) Key() string {
 	offset := girepository.MustFind("Gio", "DBusAnnotationInfo").StructFieldOffset("key")
 	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -135,7 +135,7 @@ func (d *DBusAnnotationInfo) Value() string {
 	offset := girepository.MustFind("Gio", "DBusAnnotationInfo").StructFieldOffset("value")
 	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -148,15 +148,15 @@ func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
 	{
 		var i int
 		var z *C.void
-		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*valptr, i)
+		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
-			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
-			C.g_dbus_annotation_info_ref(src[i])
+			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
+			C.g_dbus_annotation_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -195,7 +195,7 @@ func DBusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) st
 	if annotations != nil {
 		{
 			*(***C.void)(unsafe.Pointer(&_args[0])) = (**C.void)(C.calloc(C.size_t((len(annotations) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-			defer C.free(unsafe.Pointer(_args[0]))
+			defer C.free(unsafe.Pointer(*(***C.void)(unsafe.Pointer(&_args[0]))))
 			{
 				out := unsafe.Slice(_args[0], len(annotations)+1)
 				var zero *C.void
@@ -206,20 +206,20 @@ func DBusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) st
 			}
 		}
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "lookup")
-	_gret := _info.Invoke(_args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_gret := _info.InvokeFunction(_args[:], nil)
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(annotations)
 	runtime.KeepAlive(name)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -256,7 +256,7 @@ func (d *DBusArgInfo) Name() string {
 	offset := girepository.MustFind("Gio", "DBusArgInfo").StructFieldOffset("name")
 	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -265,7 +265,7 @@ func (d *DBusArgInfo) Signature() string {
 	offset := girepository.MustFind("Gio", "DBusArgInfo").StructFieldOffset("signature")
 	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -278,15 +278,15 @@ func (d *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
 	{
 		var i int
 		var z *C.void
-		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*valptr, i)
+		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
-			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
-			C.g_dbus_annotation_info_ref(src[i])
+			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
+			C.g_dbus_annotation_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -336,7 +336,7 @@ func (d *DBusInterfaceInfo) Name() string {
 	offset := girepository.MustFind("Gio", "DBusInterfaceInfo").StructFieldOffset("name")
 	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -349,15 +349,15 @@ func (d *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
 	{
 		var i int
 		var z *C.void
-		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*valptr, i)
+		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
 		v = make([]*DBusMethodInfo, i)
 		for i := range src {
-			v[i] = (*DBusMethodInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
-			C.g_dbus_method_info_ref(src[i])
+			v[i] = (*DBusMethodInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
+			C.g_dbus_method_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -378,15 +378,15 @@ func (d *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
 	{
 		var i int
 		var z *C.void
-		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*valptr, i)
+		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
 		v = make([]*DBusSignalInfo, i)
 		for i := range src {
-			v[i] = (*DBusSignalInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
-			C.g_dbus_signal_info_ref(src[i])
+			v[i] = (*DBusSignalInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
+			C.g_dbus_signal_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -407,15 +407,15 @@ func (d *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
 	{
 		var i int
 		var z *C.void
-		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*valptr, i)
+		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
 		v = make([]*DBusPropertyInfo, i)
 		for i := range src {
-			v[i] = (*DBusPropertyInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
-			C.g_dbus_property_info_ref(src[i])
+			v[i] = (*DBusPropertyInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
+			C.g_dbus_property_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -436,15 +436,15 @@ func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
 	{
 		var i int
 		var z *C.void
-		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*valptr, i)
+		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
-			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
-			C.g_dbus_annotation_info_ref(src[i])
+			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
+			C.g_dbus_annotation_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -515,8 +515,8 @@ func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "DBusInterfaceInfo")
 	_gret := _info.InvokeRecordMethod("lookup_method", _args[:], nil)
@@ -528,8 +528,8 @@ func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 	var _dBusMethodInfo *DBusMethodInfo // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_dBusMethodInfo = (*DBusMethodInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_dbus_method_info_ref(_cret)
+		_dBusMethodInfo = (*DBusMethodInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.g_dbus_method_info_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dBusMethodInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -559,8 +559,8 @@ func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "DBusInterfaceInfo")
 	_gret := _info.InvokeRecordMethod("lookup_property", _args[:], nil)
@@ -572,8 +572,8 @@ func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 	var _dBusPropertyInfo *DBusPropertyInfo // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_dBusPropertyInfo = (*DBusPropertyInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_dbus_property_info_ref(_cret)
+		_dBusPropertyInfo = (*DBusPropertyInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.g_dbus_property_info_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dBusPropertyInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -603,8 +603,8 @@ func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "DBusInterfaceInfo")
 	_gret := _info.InvokeRecordMethod("lookup_signal", _args[:], nil)
@@ -616,8 +616,8 @@ func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 	var _dBusSignalInfo *DBusSignalInfo // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_dBusSignalInfo = (*DBusSignalInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_dbus_signal_info_ref(_cret)
+		_dBusSignalInfo = (*DBusSignalInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.g_dbus_signal_info_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dBusSignalInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -660,7 +660,7 @@ func (d *DBusMethodInfo) Name() string {
 	offset := girepository.MustFind("Gio", "DBusMethodInfo").StructFieldOffset("name")
 	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -673,15 +673,15 @@ func (d *DBusMethodInfo) InArgs() []*DBusArgInfo {
 	{
 		var i int
 		var z *C.void
-		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*valptr, i)
+		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
 		v = make([]*DBusArgInfo, i)
 		for i := range src {
-			v[i] = (*DBusArgInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
-			C.g_dbus_arg_info_ref(src[i])
+			v[i] = (*DBusArgInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
+			C.g_dbus_arg_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -702,15 +702,15 @@ func (d *DBusMethodInfo) OutArgs() []*DBusArgInfo {
 	{
 		var i int
 		var z *C.void
-		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*valptr, i)
+		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
 		v = make([]*DBusArgInfo, i)
 		for i := range src {
-			v[i] = (*DBusArgInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
-			C.g_dbus_arg_info_ref(src[i])
+			v[i] = (*DBusArgInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
+			C.g_dbus_arg_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -731,15 +731,15 @@ func (d *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
 	{
 		var i int
 		var z *C.void
-		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*valptr, i)
+		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
-			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
-			C.g_dbus_annotation_info_ref(src[i])
+			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
+			C.g_dbus_annotation_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -779,8 +779,8 @@ func marshalDBusNodeInfo(p uintptr) (interface{}, error) {
 func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(xmlData)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(xmlData)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gio", "DBusNodeInfo")
 	_gret := _info.InvokeRecordMethod("new_for_xml", _args[:], nil)
@@ -791,7 +791,7 @@ func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
 	var _dBusNodeInfo *DBusNodeInfo // out
 	var _goerr error                // out
 
-	_dBusNodeInfo = (*DBusNodeInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_dBusNodeInfo = (*DBusNodeInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_dBusNodeInfo)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -799,7 +799,7 @@ func NewDBusNodeInfoForXML(xmlData string) (*DBusNodeInfo, error) {
 		},
 	)
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _dBusNodeInfo, _goerr
@@ -820,7 +820,7 @@ func (d *DBusNodeInfo) Path() string {
 	offset := girepository.MustFind("Gio", "DBusNodeInfo").StructFieldOffset("path")
 	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -833,15 +833,15 @@ func (d *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
 	{
 		var i int
 		var z *C.void
-		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*valptr, i)
+		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
 		v = make([]*DBusInterfaceInfo, i)
 		for i := range src {
-			v[i] = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
-			C.g_dbus_interface_info_ref(src[i])
+			v[i] = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
+			C.g_dbus_interface_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -862,15 +862,15 @@ func (d *DBusNodeInfo) Nodes() []*DBusNodeInfo {
 	{
 		var i int
 		var z *C.void
-		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*valptr, i)
+		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
 		v = make([]*DBusNodeInfo, i)
 		for i := range src {
-			v[i] = (*DBusNodeInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
-			C.g_dbus_node_info_ref(src[i])
+			v[i] = (*DBusNodeInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
+			C.g_dbus_node_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -891,15 +891,15 @@ func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
 	{
 		var i int
 		var z *C.void
-		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*valptr, i)
+		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
-			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
-			C.g_dbus_annotation_info_ref(src[i])
+			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
+			C.g_dbus_annotation_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -935,8 +935,8 @@ func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(info)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "DBusNodeInfo")
 	_gret := _info.InvokeRecordMethod("lookup_interface", _args[:], nil)
@@ -948,8 +948,8 @@ func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_dBusInterfaceInfo = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_dbus_interface_info_ref(_cret)
+		_dBusInterfaceInfo = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.g_dbus_interface_info_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_dBusInterfaceInfo)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -1009,7 +1009,7 @@ func (d *DBusSignalInfo) Name() string {
 	offset := girepository.MustFind("Gio", "DBusSignalInfo").StructFieldOffset("name")
 	valptr := (*uintptr)(unsafe.Add(d.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -1022,15 +1022,15 @@ func (d *DBusSignalInfo) Args() []*DBusArgInfo {
 	{
 		var i int
 		var z *C.void
-		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*valptr, i)
+		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
 		v = make([]*DBusArgInfo, i)
 		for i := range src {
-			v[i] = (*DBusArgInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
-			C.g_dbus_arg_info_ref(src[i])
+			v[i] = (*DBusArgInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
+			C.g_dbus_arg_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -1051,15 +1051,15 @@ func (d *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
 	{
 		var i int
 		var z *C.void
-		for p := *valptr; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *(***C.void)(unsafe.Pointer(&*valptr)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(*valptr, i)
+		src := unsafe.Slice(*(***C.void)(unsafe.Pointer(&*valptr)), i)
 		v = make([]*DBusAnnotationInfo, i)
 		for i := range src {
-			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(src[i])))
-			C.g_dbus_annotation_info_ref(src[i])
+			v[i] = (*DBusAnnotationInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
+			C.g_dbus_annotation_info_ref(*(**C.void)(unsafe.Pointer(&src[i])))
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(v[i])),
 				func(intern *struct{ C unsafe.Pointer }) {

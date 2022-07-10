@@ -237,7 +237,7 @@ func NewBufferedInputStream(baseStream InputStreamer) *BufferedInputStream {
 
 	var _bufferedInputStream *BufferedInputStream // out
 
-	_bufferedInputStream = wrapBufferedInputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_bufferedInputStream = wrapBufferedInputStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _bufferedInputStream
 }
@@ -269,7 +269,7 @@ func NewBufferedInputStreamSized(baseStream InputStreamer, size uint) *BufferedI
 
 	var _bufferedInputStream *BufferedInputStream // out
 
-	_bufferedInputStream = wrapBufferedInputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_bufferedInputStream = wrapBufferedInputStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _bufferedInputStream
 }
@@ -333,7 +333,7 @@ func (stream *BufferedInputStream) Fill(ctx context.Context, count int) (int, er
 
 	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _gssize, _goerr
@@ -407,7 +407,7 @@ func (stream *BufferedInputStream) FillFinish(result AsyncResulter) (int, error)
 
 	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _gssize, _goerr
@@ -483,8 +483,8 @@ func (stream *BufferedInputStream) PeekBuffer() []byte {
 
 	var _guint8s []byte // out
 
-	_guint8s = make([]byte, _outs[0])
-	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _outs[0]))
+	_guint8s = make([]byte, *(*C.gsize)(unsafe.Pointer(&_outs[0])))
+	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))), *(*C.gsize)(unsafe.Pointer(&_outs[0]))))
 
 	return _guint8s
 }
@@ -533,7 +533,7 @@ func (stream *BufferedInputStream) ReadByte(ctx context.Context) (int32, error) 
 
 	_gint = int32(*(*C.int)(unsafe.Pointer(&_cret)))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _gint, _goerr

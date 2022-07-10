@@ -108,8 +108,8 @@ func NewTextMark(name string, leftGravity bool) *TextMark {
 	var _args [2]girepository.Argument
 
 	if name != "" {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(_args[0]))
+		*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	}
 	if leftGravity {
 		*(*C.gboolean)(unsafe.Pointer(&_args[1])) = C.TRUE
@@ -124,7 +124,7 @@ func NewTextMark(name string, leftGravity bool) *TextMark {
 
 	var _textMark *TextMark // out
 
-	_textMark = wrapTextMark(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_textMark = wrapTextMark(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _textMark
 }
@@ -149,7 +149,7 @@ func (mark *TextMark) Buffer() *TextBuffer {
 
 	var _textBuffer *TextBuffer // out
 
-	_textBuffer = wrapTextBuffer(coreglib.Take(unsafe.Pointer(_cret)))
+	_textBuffer = wrapTextBuffer(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _textBuffer
 }
@@ -221,14 +221,14 @@ func (mark *TextMark) Name() string {
 
 	_info := girepository.MustFind("Gtk", "TextMark")
 	_gret := _info.InvokeClassMethod("get_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mark)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8

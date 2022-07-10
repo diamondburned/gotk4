@@ -190,8 +190,8 @@ func (linkButton *LinkButton) ConnectActivateLink(f func() (ok bool)) coreglib.S
 func NewLinkButton(uri string) *LinkButton {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "LinkButton")
 	_gret := _info.InvokeClassMethod("new_LinkButton", _args[:], nil)
@@ -201,7 +201,7 @@ func NewLinkButton(uri string) *LinkButton {
 
 	var _linkButton *LinkButton // out
 
-	_linkButton = wrapLinkButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_linkButton = wrapLinkButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _linkButton
 }
@@ -220,11 +220,11 @@ func NewLinkButton(uri string) *LinkButton {
 func NewLinkButtonWithLabel(uri, label string) *LinkButton {
 	var _args [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	if label != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "LinkButton")
@@ -236,7 +236,7 @@ func NewLinkButtonWithLabel(uri, label string) *LinkButton {
 
 	var _linkButton *LinkButton // out
 
-	_linkButton = wrapLinkButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_linkButton = wrapLinkButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _linkButton
 }
@@ -255,13 +255,13 @@ func (linkButton *LinkButton) URI() string {
 
 	_info := girepository.MustFind("Gtk", "LinkButton")
 	_gret := _info.InvokeClassMethod("get_uri", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(linkButton)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -307,8 +307,8 @@ func (linkButton *LinkButton) SetURI(uri string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(linkButton).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "LinkButton")
 	_info.InvokeClassMethod("set_uri", _args[:], nil)

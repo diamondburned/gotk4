@@ -122,7 +122,7 @@ func (popup *Popup) Parent() Surfacer {
 	var _surface Surfacer // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Surfacer is nil")
 		}

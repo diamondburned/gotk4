@@ -14,8 +14,8 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_atk1_TableCellIface_get_position(void*, void*, void*);
-// extern gboolean _gotk4_atk1_TableCellIface_get_row_column_span(void*, void*, void*, void*, void*);
+// extern gboolean _gotk4_atk1_TableCellIface_get_position(void*, gint*, gint*);
+// extern gboolean _gotk4_atk1_TableCellIface_get_row_column_span(void*, gint*, gint*, gint*, gint*);
 // extern gint _gotk4_atk1_TableCellIface_get_column_span(void*);
 // extern gint _gotk4_atk1_TableCellIface_get_row_span(void*);
 // extern void* _gotk4_atk1_TableCellIface_get_table(void*);
@@ -144,14 +144,14 @@ func _gotk4_atk1_TableCellIface_get_column_span(arg0 *C.void) (cret C.gint) {
 }
 
 //export _gotk4_atk1_TableCellIface_get_position
-func _gotk4_atk1_TableCellIface_get_position(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret C.gboolean) {
+func _gotk4_atk1_TableCellIface_get_position(arg0 *C.void, arg1 *C.gint, arg2 *C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableCellOverrider)
 
 	row, column, ok := iface.Position()
 
-	*arg1 = (*C.void)(unsafe.Pointer(row))
-	*arg2 = (*C.void)(unsafe.Pointer(column))
+	*arg1 = C.gint(row)
+	*arg2 = C.gint(column)
 	if ok {
 		cret = C.TRUE
 	}
@@ -160,16 +160,16 @@ func _gotk4_atk1_TableCellIface_get_position(arg0 *C.void, arg1 *C.void, arg2 *C
 }
 
 //export _gotk4_atk1_TableCellIface_get_row_column_span
-func _gotk4_atk1_TableCellIface_get_row_column_span(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.void) (cret C.gboolean) {
+func _gotk4_atk1_TableCellIface_get_row_column_span(arg0 *C.void, arg1 *C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TableCellOverrider)
 
 	row, column, rowSpan, columnSpan, ok := iface.RowColumnSpan()
 
-	*arg1 = (*C.void)(unsafe.Pointer(row))
-	*arg2 = (*C.void)(unsafe.Pointer(column))
-	*arg3 = (*C.void)(unsafe.Pointer(rowSpan))
-	*arg4 = (*C.void)(unsafe.Pointer(columnSpan))
+	*arg1 = C.gint(row)
+	*arg2 = C.gint(column)
+	*arg3 = C.gint(rowSpan)
+	*arg4 = C.gint(columnSpan)
 	if ok {
 		cret = C.TRUE
 	}
@@ -263,8 +263,8 @@ func (cell *TableCell) Position() (row, column int32, ok bool) {
 	var _column int32 // out
 	var _ok bool      // out
 
-	_row = *(*int32)(unsafe.Pointer(_outs[0]))
-	_column = *(*int32)(unsafe.Pointer(_outs[1]))
+	_row = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_column = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -305,10 +305,10 @@ func (cell *TableCell) RowColumnSpan() (row, column, rowSpan, columnSpan int32, 
 	var _columnSpan int32 // out
 	var _ok bool          // out
 
-	_row = *(*int32)(unsafe.Pointer(_outs[0]))
-	_column = *(*int32)(unsafe.Pointer(_outs[1]))
-	_rowSpan = *(*int32)(unsafe.Pointer(_outs[2]))
-	_columnSpan = *(*int32)(unsafe.Pointer(_outs[3]))
+	_row = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_column = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_rowSpan = int32(*(*C.gint)(unsafe.Pointer(&_outs[2])))
+	_columnSpan = int32(*(*C.gint)(unsafe.Pointer(&_outs[3])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -360,7 +360,7 @@ func (cell *TableCell) Table() *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _object
 }

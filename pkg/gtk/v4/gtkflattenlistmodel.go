@@ -95,7 +95,7 @@ func NewFlattenListModel(model gio.ListModeller) *FlattenListModel {
 
 	var _flattenListModel *FlattenListModel // out
 
-	_flattenListModel = wrapFlattenListModel(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_flattenListModel = wrapFlattenListModel(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _flattenListModel
 }
@@ -121,7 +121,7 @@ func (self *FlattenListModel) Model() *gio.ListModel {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_listModel = &gio.ListModel{
 				Object: obj,
 			}
@@ -157,7 +157,7 @@ func (self *FlattenListModel) ModelForItem(position uint32) *gio.ListModel {
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}

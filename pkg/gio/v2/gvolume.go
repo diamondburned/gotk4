@@ -15,12 +15,17 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern char* _gotk4_gio2_VolumeIface_get_identifier(void*, char*);
+// extern char* _gotk4_gio2_VolumeIface_get_name(void*);
+// extern char* _gotk4_gio2_VolumeIface_get_uuid(void*);
+// extern char** _gotk4_gio2_VolumeIface_enumerate_identifiers(void*);
 // extern gboolean _gotk4_gio2_VolumeIface_can_eject(void*);
 // extern gboolean _gotk4_gio2_VolumeIface_can_mount(void*);
 // extern gboolean _gotk4_gio2_VolumeIface_eject_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_VolumeIface_eject_with_operation_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_VolumeIface_mount_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_VolumeIface_should_automount(void*);
+// extern gchar* _gotk4_gio2_VolumeIface_get_sort_key(void*);
 // extern void _gotk4_gio2_VolumeIface_changed(void*);
 // extern void _gotk4_gio2_VolumeIface_removed(void*);
 // extern void _gotk4_gio2_Volume_ConnectChanged(gpointer, guintptr);
@@ -28,13 +33,8 @@ import (
 // extern void* _gotk4_gio2_VolumeIface_get_activation_root(void*);
 // extern void* _gotk4_gio2_VolumeIface_get_drive(void*);
 // extern void* _gotk4_gio2_VolumeIface_get_icon(void*);
-// extern void* _gotk4_gio2_VolumeIface_get_identifier(void*, void*);
 // extern void* _gotk4_gio2_VolumeIface_get_mount(void*);
-// extern void* _gotk4_gio2_VolumeIface_get_name(void*);
-// extern void* _gotk4_gio2_VolumeIface_get_sort_key(void*);
 // extern void* _gotk4_gio2_VolumeIface_get_symbolic_icon(void*);
-// extern void* _gotk4_gio2_VolumeIface_get_uuid(void*);
-// extern void** _gotk4_gio2_VolumeIface_enumerate_identifiers(void*);
 import "C"
 
 // GTypeVolume returns the GType for the type Volume.
@@ -468,20 +468,20 @@ func _gotk4_gio2_VolumeIface_eject_with_operation_finish(arg0 *C.void, arg1 *C.v
 }
 
 //export _gotk4_gio2_VolumeIface_enumerate_identifiers
-func _gotk4_gio2_VolumeIface_enumerate_identifiers(arg0 *C.void) (cret **C.void) {
+func _gotk4_gio2_VolumeIface_enumerate_identifiers(arg0 *C.void) (cret **C.char) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(VolumeOverrider)
 
 	utf8s := iface.EnumerateIdentifiers()
 
 	{
-		cret = (**C.void)(C.calloc(C.size_t((len(utf8s) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		cret = (**C.char)(C.calloc(C.size_t((len(utf8s) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
 		{
 			out := unsafe.Slice(cret, len(utf8s)+1)
-			var zero *C.void
+			var zero *C.char
 			out[len(utf8s)] = zero
 			for i := range utf8s {
-				out[i] = (*C.void)(unsafe.Pointer(C.CString(utf8s[i])))
+				out[i] = (*C.char)(unsafe.Pointer(C.CString(utf8s[i])))
 			}
 		}
 	}
@@ -533,7 +533,7 @@ func _gotk4_gio2_VolumeIface_get_icon(arg0 *C.void) (cret *C.void) {
 }
 
 //export _gotk4_gio2_VolumeIface_get_identifier
-func _gotk4_gio2_VolumeIface_get_identifier(arg0 *C.void, arg1 *C.void) (cret *C.void) {
+func _gotk4_gio2_VolumeIface_get_identifier(arg0 *C.void, arg1 *C.char) (cret *C.char) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(VolumeOverrider)
 
@@ -544,7 +544,7 @@ func _gotk4_gio2_VolumeIface_get_identifier(arg0 *C.void, arg1 *C.void) (cret *C
 	utf8 := iface.Identifier(_kind)
 
 	if utf8 != "" {
-		cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+		cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
 	}
 
 	return cret
@@ -566,26 +566,26 @@ func _gotk4_gio2_VolumeIface_get_mount(arg0 *C.void) (cret *C.void) {
 }
 
 //export _gotk4_gio2_VolumeIface_get_name
-func _gotk4_gio2_VolumeIface_get_name(arg0 *C.void) (cret *C.void) {
+func _gotk4_gio2_VolumeIface_get_name(arg0 *C.void) (cret *C.char) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(VolumeOverrider)
 
 	utf8 := iface.Name()
 
-	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+	cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
 
 	return cret
 }
 
 //export _gotk4_gio2_VolumeIface_get_sort_key
-func _gotk4_gio2_VolumeIface_get_sort_key(arg0 *C.void) (cret *C.void) {
+func _gotk4_gio2_VolumeIface_get_sort_key(arg0 *C.void) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(VolumeOverrider)
 
 	utf8 := iface.SortKey()
 
 	if utf8 != "" {
-		cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 		defer C.free(unsafe.Pointer(cret))
 	}
 
@@ -606,14 +606,14 @@ func _gotk4_gio2_VolumeIface_get_symbolic_icon(arg0 *C.void) (cret *C.void) {
 }
 
 //export _gotk4_gio2_VolumeIface_get_uuid
-func _gotk4_gio2_VolumeIface_get_uuid(arg0 *C.void) (cret *C.void) {
+func _gotk4_gio2_VolumeIface_get_uuid(arg0 *C.void) (cret *C.char) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(VolumeOverrider)
 
 	utf8 := iface.UUID()
 
 	if utf8 != "" {
-		cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+		cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
 	}
 
 	return cret
@@ -806,7 +806,7 @@ func (volume *Volume) EjectFinish(result AsyncResulter) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -835,7 +835,7 @@ func (volume *Volume) EjectWithOperationFinish(result AsyncResulter) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -863,19 +863,19 @@ func (volume *Volume) EnumerateIdentifiers() []string {
 
 	var _utf8s []string // out
 
-	defer C.free(unsafe.Pointer(_cret))
+	defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_cret))))
 	{
 		var i int
-		var z *C.void
-		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.char
+		for p := *(***C.char)(unsafe.Pointer(&_cret)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(_cret, i)
+		src := unsafe.Slice(*(***C.char)(unsafe.Pointer(&_cret)), i)
 		_utf8s = make([]string, i)
 		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i])))))
+			defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&src[i]))))
 		}
 	}
 
@@ -915,7 +915,7 @@ func (volume *Volume) ActivationRoot() *File {
 	var _file *File // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _file
@@ -943,7 +943,7 @@ func (volume *Volume) Drive() *Drive {
 	var _drive *Drive // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_drive = wrapDrive(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_drive = wrapDrive(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _drive
@@ -969,7 +969,7 @@ func (volume *Volume) Icon() *Icon {
 
 	var _icon *Icon // out
 
-	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _icon
 }
@@ -991,21 +991,21 @@ func (volume *Volume) Identifier(kind string) string {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(kind)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(kind)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "Volume")
 	_gret := _info.InvokeIfaceMethod("get_identifier", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(volume)
 	runtime.KeepAlive(kind)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 	}
 
 	return _utf8
@@ -1032,7 +1032,7 @@ func (volume *Volume) Mount() *Mount {
 	var _mount *Mount // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_mount = wrapMount(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_mount = wrapMount(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _mount
@@ -1052,14 +1052,14 @@ func (volume *Volume) Name() string {
 
 	_info := girepository.MustFind("Gio", "Volume")
 	_gret := _info.InvokeIfaceMethod("get_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(volume)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }
@@ -1078,14 +1078,14 @@ func (volume *Volume) SortKey() string {
 
 	_info := girepository.MustFind("Gio", "Volume")
 	_gret := _info.InvokeIfaceMethod("get_sort_key", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(volume)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -1111,7 +1111,7 @@ func (volume *Volume) SymbolicIcon() *Icon {
 
 	var _icon *Icon // out
 
-	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _icon
 }
@@ -1132,15 +1132,15 @@ func (volume *Volume) UUID() string {
 
 	_info := girepository.MustFind("Gio", "Volume")
 	_gret := _info.InvokeIfaceMethod("get_uuid", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(volume)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 	}
 
 	return _utf8
@@ -1173,7 +1173,7 @@ func (volume *Volume) MountFinish(result AsyncResulter) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

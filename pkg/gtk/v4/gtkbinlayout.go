@@ -79,7 +79,7 @@ func NewBinLayout() *BinLayout {
 
 	var _binLayout *BinLayout // out
 
-	_binLayout = wrapBinLayout(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_binLayout = wrapBinLayout(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _binLayout
 }

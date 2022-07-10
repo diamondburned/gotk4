@@ -142,7 +142,7 @@ func NewNoOpObject(obj *coreglib.Object) *NoOpObject {
 
 	var _noOpObject *NoOpObject // out
 
-	_noOpObject = wrapNoOpObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_noOpObject = wrapNoOpObject(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _noOpObject
 }

@@ -15,7 +15,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_atk1_SocketClass_embed(void*, void*);
+// extern void _gotk4_atk1_SocketClass_embed(void*, gchar*);
 import "C"
 
 // GTypeSocket returns the GType for the type Socket.
@@ -95,7 +95,7 @@ func classInitSocketter(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_atk1_SocketClass_embed
-func _gotk4_atk1_SocketClass_embed(arg0 *C.void, arg1 *C.void) {
+func _gotk4_atk1_SocketClass_embed(arg0 *C.void, arg1 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Embed(plugId string) })
 
@@ -135,7 +135,7 @@ func NewSocket() *Socket {
 
 	var _socket *Socket // out
 
-	_socket = wrapSocket(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_socket = wrapSocket(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _socket
 }
@@ -157,8 +157,8 @@ func (obj *Socket) Embed(plugId string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(plugId)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(plugId)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Atk", "Socket")
 	_info.InvokeClassMethod("embed", _args[:], nil)

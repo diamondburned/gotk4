@@ -95,7 +95,7 @@ func NewMenuBar() *MenuBar {
 
 	var _menuBar *MenuBar // out
 
-	_menuBar = wrapMenuBar(coreglib.Take(unsafe.Pointer(_cret)))
+	_menuBar = wrapMenuBar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _menuBar
 }
@@ -128,7 +128,7 @@ func NewMenuBarFromModel(model gio.MenuModeller) *MenuBar {
 
 	var _menuBar *MenuBar // out
 
-	_menuBar = wrapMenuBar(coreglib.Take(unsafe.Pointer(_cret)))
+	_menuBar = wrapMenuBar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _menuBar
 }

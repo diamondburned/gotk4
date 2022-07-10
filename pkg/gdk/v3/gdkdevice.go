@@ -318,7 +318,7 @@ func (device *Device) AssociatedDevice() Devicer {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -355,7 +355,7 @@ func (device *Device) Display() *Display {
 
 	var _display *Display // out
 
-	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
+	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _display
 }
@@ -418,8 +418,8 @@ func (device *Device) Key(index_ uint32) (uint32, ModifierType, bool) {
 	var _modifiers ModifierType // out
 	var _ok bool                // out
 
-	_keyval = *(*uint32)(unsafe.Pointer(_outs[0]))
-	_modifiers = *(*ModifierType)(unsafe.Pointer(_outs[1]))
+	_keyval = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
+	_modifiers = *(*ModifierType)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1]))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -452,7 +452,7 @@ func (device *Device) LastEventWindow() Windower {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -531,13 +531,13 @@ func (device *Device) Name() string {
 
 	_info := girepository.MustFind("Gdk", "Device")
 	_gret := _info.InvokeClassMethod("get_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -572,14 +572,10 @@ func (device *Device) Position() (screen *Screen, x, y int32) {
 	var _y int32        // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_screen = wrapScreen(coreglib.Take(unsafe.Pointer(_outs[0])))
+		_screen = wrapScreen(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_x = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_y = *(*int32)(unsafe.Pointer(_outs[2]))
-	}
+	_x = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_y = int32(*(*C.gint)(unsafe.Pointer(&_outs[2])))
 
 	return _screen, _x, _y
 }
@@ -614,14 +610,10 @@ func (device *Device) PositionDouble() (screen *Screen, x, y float64) {
 	var _y float64      // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_screen = wrapScreen(coreglib.Take(unsafe.Pointer(_outs[0])))
+		_screen = wrapScreen(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_x = *(*float64)(unsafe.Pointer(_outs[1]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_y = *(*float64)(unsafe.Pointer(_outs[2]))
-	}
+	_x = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[1])))
+	_y = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[2])))
 
 	return _screen, _x, _y
 }
@@ -641,14 +633,14 @@ func (device *Device) ProductID() string {
 
 	_info := girepository.MustFind("Gdk", "Device")
 	_gret := _info.InvokeClassMethod("get_product_id", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -674,7 +666,7 @@ func (device *Device) Seat() Seater {
 	var _seat Seater // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Seater is nil")
 		}
@@ -730,14 +722,14 @@ func (device *Device) VendorID() string {
 
 	_info := girepository.MustFind("Gdk", "Device")
 	_gret := _info.InvokeClassMethod("get_vendor_id", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(device)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -775,15 +767,11 @@ func (device *Device) WindowAtPosition() (winX, winY int32, window Windower) {
 	var _winY int32      // out
 	var _window Windower // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_winX = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_winY = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_winX = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_winY = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -834,15 +822,11 @@ func (device *Device) WindowAtPositionDouble() (winX, winY float64, window Windo
 	var _winY float64    // out
 	var _window Windower // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_winX = *(*float64)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_winY = *(*float64)(unsafe.Pointer(_outs[1]))
-	}
+	_winX = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
+	_winY = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[1])))
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -884,12 +868,12 @@ func (device *Device) ListSlaveDevices() []Devicer {
 	var _list []Devicer // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_list = make([]Devicer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-		gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		_list = make([]Devicer, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 			src := (*C.void)(v)
 			var dst Devicer // out
 			{
-				objptr := unsafe.Pointer(src)
+				objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
 				if objptr == nil {
 					panic("object of type gdk.Devicer is nil")
 				}
@@ -990,7 +974,7 @@ func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow Wind
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(device).Native()))
 
 	_info := girepository.MustFind("Gdk", "grab_info_libgtk_only")
-	_gret := _info.Invoke(_args[:], _outs[:])
+	_gret := _info.InvokeFunction(_args[:], _outs[:])
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)
@@ -1001,7 +985,7 @@ func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow Wind
 	var _ok bool             // out
 
 	{
-		objptr := unsafe.Pointer(_outs[0])
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -1017,7 +1001,7 @@ func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow Wind
 		}
 		_grabWindow = rv
 	}
-	if **(**C.void)(unsafe.Pointer(&_outs[1])) != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_outs[1])) != 0 {
 		_ownerEvents = true
 	}
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
@@ -1053,7 +1037,7 @@ func (t *TimeCoord) Axes() [128]float64 {
 	offset := girepository.MustFind("Gdk", "TimeCoord").StructFieldOffset("axes")
 	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v [128]float64 // out
-	v = *(*[128]float64)(unsafe.Pointer(&*valptr))
+	v = *(*[128]float64)(unsafe.Pointer(&*(*C.gdouble)(unsafe.Pointer(&*valptr))))
 	return v
 }
 

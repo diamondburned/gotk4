@@ -110,7 +110,7 @@ func (factory *ObjectFactory) CreateAccessible(obj *coreglib.Object) *ObjectClas
 
 	var _object *ObjectClass // out
 
-	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _object
 }

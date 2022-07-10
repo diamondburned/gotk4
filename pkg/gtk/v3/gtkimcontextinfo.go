@@ -31,7 +31,7 @@ func (i *IMContextInfo) ContextID() string {
 	offset := girepository.MustFind("Gtk", "IMContextInfo").StructFieldOffset("context_id")
 	valptr := (*uintptr)(unsafe.Add(i.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -40,7 +40,7 @@ func (i *IMContextInfo) ContextName() string {
 	offset := girepository.MustFind("Gtk", "IMContextInfo").StructFieldOffset("context_name")
 	valptr := (*uintptr)(unsafe.Add(i.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -49,7 +49,7 @@ func (i *IMContextInfo) Domain() string {
 	offset := girepository.MustFind("Gtk", "IMContextInfo").StructFieldOffset("domain")
 	valptr := (*uintptr)(unsafe.Add(i.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -58,7 +58,7 @@ func (i *IMContextInfo) DomainDirname() string {
 	offset := girepository.MustFind("Gtk", "IMContextInfo").StructFieldOffset("domain_dirname")
 	valptr := (*uintptr)(unsafe.Add(i.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -68,6 +68,6 @@ func (i *IMContextInfo) DefaultLocales() string {
 	offset := girepository.MustFind("Gtk", "IMContextInfo").StructFieldOffset("default_locales")
 	valptr := (*uintptr)(unsafe.Add(i.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }

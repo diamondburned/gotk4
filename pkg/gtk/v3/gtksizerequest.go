@@ -43,7 +43,7 @@ func DistributeNaturalAllocation(extraSpace int32, nRequestedSizes uint32, sizes
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(sizes)))
 
 	_info := girepository.MustFind("Gtk", "distribute_natural_allocation")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(extraSpace)
@@ -76,7 +76,7 @@ func (r *RequestedSize) Data() unsafe.Pointer {
 	offset := girepository.MustFind("Gtk", "RequestedSize").StructFieldOffset("data")
 	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
+	v = (unsafe.Pointer)(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&*valptr))))
 	return v
 }
 

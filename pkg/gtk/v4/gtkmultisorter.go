@@ -93,7 +93,7 @@ func NewMultiSorter() *MultiSorter {
 
 	var _multiSorter *MultiSorter // out
 
-	_multiSorter = wrapMultiSorter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_multiSorter = wrapMultiSorter(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _multiSorter
 }

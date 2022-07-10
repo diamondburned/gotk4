@@ -131,7 +131,7 @@ func NewAlignment(xalign, yalign, xscale, yscale float32) *Alignment {
 
 	var _alignment *Alignment // out
 
-	_alignment = wrapAlignment(coreglib.Take(unsafe.Pointer(_cret)))
+	_alignment = wrapAlignment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _alignment
 }
@@ -168,18 +168,10 @@ func (alignment *Alignment) Padding() (paddingTop, paddingBottom, paddingLeft, p
 	var _paddingLeft uint32   // out
 	var _paddingRight uint32  // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_paddingTop = *(*uint32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_paddingBottom = *(*uint32)(unsafe.Pointer(_outs[1]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_paddingLeft = *(*uint32)(unsafe.Pointer(_outs[2]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[3])) != nil {
-		_paddingRight = *(*uint32)(unsafe.Pointer(_outs[3]))
-	}
+	_paddingTop = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
+	_paddingBottom = uint32(*(*C.guint)(unsafe.Pointer(&_outs[1])))
+	_paddingLeft = uint32(*(*C.guint)(unsafe.Pointer(&_outs[2])))
+	_paddingRight = uint32(*(*C.guint)(unsafe.Pointer(&_outs[3])))
 
 	return _paddingTop, _paddingBottom, _paddingLeft, _paddingRight
 }

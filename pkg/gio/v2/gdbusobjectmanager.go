@@ -15,6 +15,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern gchar* _gotk4_gio2_DBusObjectManagerIface_get_object_path(void*);
 // extern void _gotk4_gio2_DBusObjectManagerIface_interface_added(void*, void*, void*);
 // extern void _gotk4_gio2_DBusObjectManagerIface_interface_removed(void*, void*, void*);
 // extern void _gotk4_gio2_DBusObjectManagerIface_object_added(void*, void*);
@@ -23,9 +24,8 @@ import (
 // extern void _gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved(gpointer, void*, void*, guintptr);
 // extern void _gotk4_gio2_DBusObjectManager_ConnectObjectAdded(gpointer, void*, guintptr);
 // extern void _gotk4_gio2_DBusObjectManager_ConnectObjectRemoved(gpointer, void*, guintptr);
-// extern void* _gotk4_gio2_DBusObjectManagerIface_get_interface(void*, void*, void*);
-// extern void* _gotk4_gio2_DBusObjectManagerIface_get_object(void*, void*);
-// extern void* _gotk4_gio2_DBusObjectManagerIface_get_object_path(void*);
+// extern void* _gotk4_gio2_DBusObjectManagerIface_get_interface(void*, gchar*, gchar*);
+// extern void* _gotk4_gio2_DBusObjectManagerIface_get_object(void*, gchar*);
 // extern void* _gotk4_gio2_DBusObjectManagerIface_get_objects(void*);
 import "C"
 
@@ -160,7 +160,7 @@ func ifaceInitDBusObjectManagerer(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_DBusObjectManagerIface_get_interface
-func _gotk4_gio2_DBusObjectManagerIface_get_interface(arg0 *C.void, arg1 *C.void, arg2 *C.void) (cret *C.void) {
+func _gotk4_gio2_DBusObjectManagerIface_get_interface(arg0 *C.void, arg1 *C.gchar, arg2 *C.gchar) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
@@ -179,7 +179,7 @@ func _gotk4_gio2_DBusObjectManagerIface_get_interface(arg0 *C.void, arg1 *C.void
 }
 
 //export _gotk4_gio2_DBusObjectManagerIface_get_object
-func _gotk4_gio2_DBusObjectManagerIface_get_object(arg0 *C.void, arg1 *C.void) (cret *C.void) {
+func _gotk4_gio2_DBusObjectManagerIface_get_object(arg0 *C.void, arg1 *C.gchar) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
@@ -196,13 +196,13 @@ func _gotk4_gio2_DBusObjectManagerIface_get_object(arg0 *C.void, arg1 *C.void) (
 }
 
 //export _gotk4_gio2_DBusObjectManagerIface_get_object_path
-func _gotk4_gio2_DBusObjectManagerIface_get_object_path(arg0 *C.void) (cret *C.void) {
+func _gotk4_gio2_DBusObjectManagerIface_get_object_path(arg0 *C.void) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(DBusObjectManagerOverrider)
 
 	utf8 := iface.ObjectPath()
 
-	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 	defer C.free(unsafe.Pointer(cret))
 
 	return cret
@@ -606,10 +606,10 @@ func (manager *DBusObjectManager) Interface(objectPath, interfaceName string) *D
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_args[1]))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(interfaceName)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
 
 	_info := girepository.MustFind("Gio", "DBusObjectManager")
 	_gret := _info.InvokeIfaceMethod("get_interface", _args[:], nil)
@@ -621,7 +621,7 @@ func (manager *DBusObjectManager) Interface(objectPath, interfaceName string) *D
 
 	var _dBusInterface *DBusInterface // out
 
-	_dBusInterface = wrapDBusInterface(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusInterface = wrapDBusInterface(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _dBusInterface
 }
@@ -640,8 +640,8 @@ func (manager *DBusObjectManager) GetObject(objectPath string) *DBusObject {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "DBusObjectManager")
 	_gret := _info.InvokeIfaceMethod("get_object", _args[:], nil)
@@ -652,7 +652,7 @@ func (manager *DBusObjectManager) GetObject(objectPath string) *DBusObject {
 
 	var _dBusObject *DBusObject // out
 
-	_dBusObject = wrapDBusObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusObject = wrapDBusObject(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _dBusObject
 }
@@ -670,13 +670,13 @@ func (manager *DBusObjectManager) ObjectPath() string {
 
 	_info := girepository.MustFind("Gio", "DBusObjectManager")
 	_gret := _info.InvokeIfaceMethod("get_object_path", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(manager)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -701,11 +701,11 @@ func (manager *DBusObjectManager) Objects() []*DBusObject {
 
 	var _list []*DBusObject // out
 
-	_list = make([]*DBusObject, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*DBusObject, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *DBusObject // out
-		dst = wrapDBusObject(coreglib.AssumeOwnership(unsafe.Pointer(src)))
+		dst = wrapDBusObject(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 

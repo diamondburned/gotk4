@@ -19,6 +19,7 @@ import (
 // #include <glib-object.h>
 // extern gboolean _gotk4_atk1_HyperlinkClass_is_selected_link(void*);
 // extern gboolean _gotk4_atk1_HyperlinkClass_is_valid(void*);
+// extern gchar* _gotk4_atk1_HyperlinkClass_get_uri(void*, gint);
 // extern gint _gotk4_atk1_HyperlinkClass_get_end_index(void*);
 // extern gint _gotk4_atk1_HyperlinkClass_get_n_anchors(void*);
 // extern gint _gotk4_atk1_HyperlinkClass_get_start_index(void*);
@@ -26,7 +27,6 @@ import (
 // extern void _gotk4_atk1_HyperlinkClass_link_activated(void*);
 // extern void _gotk4_atk1_Hyperlink_ConnectLinkActivated(gpointer, guintptr);
 // extern void* _gotk4_atk1_HyperlinkClass_get_object(void*, gint);
-// extern void* _gotk4_atk1_HyperlinkClass_get_uri(void*, gint);
 import "C"
 
 // GTypeHyperlinkStateFlags returns the GType for the type HyperlinkStateFlags.
@@ -296,7 +296,7 @@ func _gotk4_atk1_HyperlinkClass_get_start_index(arg0 *C.void) (cret C.gint) {
 }
 
 //export _gotk4_atk1_HyperlinkClass_get_uri
-func _gotk4_atk1_HyperlinkClass_get_uri(arg0 *C.void, arg1 C.gint) (cret *C.void) {
+func _gotk4_atk1_HyperlinkClass_get_uri(arg0 *C.void, arg1 C.gint) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ URI(i int32) string })
 
@@ -306,7 +306,7 @@ func _gotk4_atk1_HyperlinkClass_get_uri(arg0 *C.void, arg1 C.gint) (cret *C.void
 
 	utf8 := iface.URI(_i)
 
-	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 
 	return cret
 }
@@ -471,7 +471,7 @@ func (link_ *Hyperlink) GetObject(i int32) *ObjectClass {
 
 	var _object *ObjectClass // out
 
-	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
+	_object = wrapObject(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _object
 }
@@ -521,15 +521,15 @@ func (link_ *Hyperlink) URI(i int32) string {
 
 	_info := girepository.MustFind("Atk", "Hyperlink")
 	_gret := _info.InvokeClassMethod("get_uri", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(link_)
 	runtime.KeepAlive(i)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }

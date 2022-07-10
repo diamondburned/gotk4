@@ -235,7 +235,7 @@ func NewIconInfoForPixbuf(iconTheme *IconTheme, pixbuf *gdkpixbuf.Pixbuf) *IconI
 
 	var _iconInfo *IconInfo // out
 
-	_iconInfo = wrapIconInfo(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_iconInfo = wrapIconInfo(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _iconInfo
 }
@@ -266,12 +266,12 @@ func (iconInfo *IconInfo) AttachPoints() ([]gdk.Point, bool) {
 	var _ok bool            // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		defer C.free(unsafe.Pointer(_outs[0]))
+		defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 		{
-			src := unsafe.Slice((**C.void)(_outs[0]), _outs[1])
-			_points = make([]gdk.Point, _outs[1])
-			for i := 0; i < int(_outs[1]); i++ {
-				_points[i] = *(*gdk.Point)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			src := unsafe.Slice((**C.void)(*(**C.void)(unsafe.Pointer(&_outs[0]))), *(*C.gint)(unsafe.Pointer(&_outs[1])))
+			_points = make([]gdk.Point, *(*C.gint)(unsafe.Pointer(&_outs[1])))
+			for i := 0; i < int(*(*C.gint)(unsafe.Pointer(&_outs[1]))); i++ {
+				_points[i] = *(*gdk.Point)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
 				runtime.SetFinalizer(
 					gextras.StructIntern(unsafe.Pointer(&_points[i])),
 					func(intern *struct{ C unsafe.Pointer }) {
@@ -373,7 +373,7 @@ func (iconInfo *IconInfo) BuiltinPixbuf() *gdkpixbuf.Pixbuf {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_pixbuf = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{
@@ -403,13 +403,13 @@ func (iconInfo *IconInfo) DisplayName() string {
 
 	_info := girepository.MustFind("Gtk", "IconInfo")
 	_gret := _info.InvokeClassMethod("get_display_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iconInfo)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -439,7 +439,7 @@ func (iconInfo *IconInfo) EmbeddedRect() (*gdk.Rectangle, bool) {
 	var _rectangle *gdk.Rectangle // out
 	var _ok bool                  // out
 
-	_rectangle = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_rectangle = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -465,14 +465,14 @@ func (iconInfo *IconInfo) Filename() string {
 
 	_info := girepository.MustFind("Gtk", "IconInfo")
 	_gret := _info.InvokeClassMethod("get_filename", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iconInfo)
 
 	var _filename string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_filename = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _filename
@@ -538,7 +538,7 @@ func (iconInfo *IconInfo) LoadIcon() (*gdkpixbuf.Pixbuf, error) {
 	var _goerr error              // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
 			LoadableIcon: gio.LoadableIcon{
@@ -549,7 +549,7 @@ func (iconInfo *IconInfo) LoadIcon() (*gdkpixbuf.Pixbuf, error) {
 		}
 	}
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _pixbuf, _goerr
@@ -618,7 +618,7 @@ func (iconInfo *IconInfo) LoadIconFinish(res gio.AsyncResulter) (*gdkpixbuf.Pixb
 	var _goerr error              // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
 			LoadableIcon: gio.LoadableIcon{
@@ -629,7 +629,7 @@ func (iconInfo *IconInfo) LoadIconFinish(res gio.AsyncResulter) (*gdkpixbuf.Pixb
 		}
 	}
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _pixbuf, _goerr
@@ -674,12 +674,12 @@ func (iconInfo *IconInfo) LoadSurface(forWindow gdk.Windower) (*cairo.Surface, e
 	var _surface *cairo.Surface // out
 	var _goerr error            // out
 
-	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
+	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 		C.cairo_surface_destroy((*C.void)(unsafe.Pointer(v.Native())))
 	})
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _surface, _goerr
@@ -749,13 +749,11 @@ func (iconInfo *IconInfo) LoadSymbolic(fg, successColor, warningColor, errorColo
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 	var _goerr error              // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		if **(**C.void)(unsafe.Pointer(&_outs[0])) != 0 {
-			_wasSymbolic = true
-		}
+	if *(*C.gboolean)(unsafe.Pointer(&_outs[0])) != 0 {
+		_wasSymbolic = true
 	}
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
 			LoadableIcon: gio.LoadableIcon{
@@ -766,7 +764,7 @@ func (iconInfo *IconInfo) LoadSymbolic(fg, successColor, warningColor, errorColo
 		}
 	}
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _wasSymbolic, _pixbuf, _goerr
@@ -859,13 +857,11 @@ func (iconInfo *IconInfo) LoadSymbolicFinish(res gio.AsyncResulter) (bool, *gdkp
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 	var _goerr error              // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		if **(**C.void)(unsafe.Pointer(&_outs[0])) != 0 {
-			_wasSymbolic = true
-		}
+	if *(*C.gboolean)(unsafe.Pointer(&_outs[0])) != 0 {
+		_wasSymbolic = true
 	}
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
 			LoadableIcon: gio.LoadableIcon{
@@ -876,7 +872,7 @@ func (iconInfo *IconInfo) LoadSymbolicFinish(res gio.AsyncResulter) (bool, *gdkp
 		}
 	}
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _wasSymbolic, _pixbuf, _goerr
@@ -921,13 +917,11 @@ func (iconInfo *IconInfo) LoadSymbolicForContext(context *StyleContext) (bool, *
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 	var _goerr error              // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		if **(**C.void)(unsafe.Pointer(&_outs[0])) != 0 {
-			_wasSymbolic = true
-		}
+	if *(*C.gboolean)(unsafe.Pointer(&_outs[0])) != 0 {
+		_wasSymbolic = true
 	}
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
 			LoadableIcon: gio.LoadableIcon{
@@ -938,7 +932,7 @@ func (iconInfo *IconInfo) LoadSymbolicForContext(context *StyleContext) (bool, *
 		}
 	}
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _wasSymbolic, _pixbuf, _goerr
@@ -1014,13 +1008,11 @@ func (iconInfo *IconInfo) LoadSymbolicForContextFinish(res gio.AsyncResulter) (b
 	var _pixbuf *gdkpixbuf.Pixbuf // out
 	var _goerr error              // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		if **(**C.void)(unsafe.Pointer(&_outs[0])) != 0 {
-			_wasSymbolic = true
-		}
+	if *(*C.gboolean)(unsafe.Pointer(&_outs[0])) != 0 {
+		_wasSymbolic = true
 	}
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
 			LoadableIcon: gio.LoadableIcon{
@@ -1031,7 +1023,7 @@ func (iconInfo *IconInfo) LoadSymbolicForContextFinish(res gio.AsyncResulter) (b
 		}
 	}
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _wasSymbolic, _pixbuf, _goerr
@@ -1220,7 +1212,7 @@ func NewIconTheme() *IconTheme {
 
 	var _iconTheme *IconTheme // out
 
-	_iconTheme = wrapIconTheme(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_iconTheme = wrapIconTheme(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _iconTheme
 }
@@ -1244,8 +1236,8 @@ func (iconTheme *IconTheme) AddResourcePath(path string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconTheme).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "IconTheme")
 	_info.InvokeClassMethod("add_resource_path", _args[:], nil)
@@ -1265,8 +1257,8 @@ func (iconTheme *IconTheme) AppendSearchPath(path string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconTheme).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "IconTheme")
 	_info.InvokeClassMethod("append_search_path", _args[:], nil)
@@ -1290,15 +1282,15 @@ func (iconTheme *IconTheme) ExampleIconName() string {
 
 	_info := girepository.MustFind("Gtk", "IconTheme")
 	_gret := _info.InvokeClassMethod("get_example_icon_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(iconTheme)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 	}
 
 	return _utf8
@@ -1322,8 +1314,8 @@ func (iconTheme *IconTheme) IconSizes(iconName string) []int32 {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconTheme).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "IconTheme")
 	_gret := _info.InvokeClassMethod("get_icon_sizes", _args[:], nil)
@@ -1334,15 +1326,15 @@ func (iconTheme *IconTheme) IconSizes(iconName string) []int32 {
 
 	var _gints []int32 // out
 
-	defer C.free(unsafe.Pointer(_cret))
+	defer C.free(unsafe.Pointer(*(**C.gint)(unsafe.Pointer(&_cret))))
 	{
 		var i int
 		var z C.gint
-		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		for p := *(**C.gint)(unsafe.Pointer(&_cret)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(_cret, i)
+		src := unsafe.Slice(*(**C.gint)(unsafe.Pointer(&_cret)), i)
 		_gints = make([]int32, i)
 		for i := range src {
 			_gints[i] = int32(*(*C.gint)(unsafe.Pointer(&src[i])))
@@ -1373,14 +1365,14 @@ func (iconTheme *IconTheme) SearchPath() []string {
 
 	var _path []string // out
 
-	if *(***C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		defer C.free(unsafe.Pointer(_outs[0]))
+	if *(***C.gchar)(unsafe.Pointer(&_outs[0])) != nil {
+		defer C.free(unsafe.Pointer(*(***C.gchar)(unsafe.Pointer(&_outs[0]))))
 		{
-			src := unsafe.Slice((**C.void)(_outs[0]), _outs[1])
-			_path = make([]string, _outs[1])
-			for i := 0; i < int(_outs[1]); i++ {
-				_path[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-				defer C.free(unsafe.Pointer(src[i]))
+			src := unsafe.Slice((**C.gchar)(*(***C.gchar)(unsafe.Pointer(&_outs[0]))), *(*C.gint)(unsafe.Pointer(&_outs[1])))
+			_path = make([]string, *(*C.gint)(unsafe.Pointer(&_outs[1])))
+			for i := 0; i < int(*(*C.gint)(unsafe.Pointer(&_outs[1]))); i++ {
+				_path[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i])))))
+				defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i]))))
 			}
 		}
 	}
@@ -1402,8 +1394,8 @@ func (iconTheme *IconTheme) HasIcon(iconName string) bool {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconTheme).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "IconTheme")
 	_gret := _info.InvokeClassMethod("has_icon", _args[:], nil)
@@ -1443,12 +1435,12 @@ func (iconTheme *IconTheme) ListContexts() []string {
 
 	var _list []string // out
 
-	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+		src := (*C.gchar)(v)
 		var dst string // out
-		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
-		defer C.free(unsafe.Pointer(src))
+		dst = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src)))))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src))))
 		_list = append(_list, dst)
 	})
 
@@ -1481,8 +1473,8 @@ func (iconTheme *IconTheme) ListIcons(context string) []string {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconTheme).Native()))
 	if context != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(context)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(context)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "IconTheme")
@@ -1494,12 +1486,12 @@ func (iconTheme *IconTheme) ListIcons(context string) []string {
 
 	var _list []string // out
 
-	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+		src := (*C.gchar)(v)
 		var dst string // out
-		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
-		defer C.free(unsafe.Pointer(src))
+		dst = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src)))))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src))))
 		_list = append(_list, dst)
 	})
 
@@ -1517,8 +1509,8 @@ func (iconTheme *IconTheme) PrependSearchPath(path string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconTheme).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "IconTheme")
 	_info.InvokeClassMethod("prepend_search_path", _args[:], nil)
@@ -1570,8 +1562,8 @@ func (iconTheme *IconTheme) SetCustomTheme(themeName string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconTheme).Native()))
 	if themeName != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(themeName)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(themeName)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "IconTheme")
@@ -1624,13 +1616,13 @@ func (iconTheme *IconTheme) SetSearchPath(path []string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(iconTheme).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = (C.gint)(len(path))
-	*(***C.void)(unsafe.Pointer(&_args[1])) = (**C.void)(C.calloc(C.size_t(len(path)), C.size_t(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(***C.gchar)(unsafe.Pointer(&_args[1])) = (**C.gchar)(C.calloc(C.size_t(len(path)), C.size_t(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(*(***C.gchar)(unsafe.Pointer(&_args[1]))))
 	{
-		out := unsafe.Slice((**C.void)(*(***C.void)(unsafe.Pointer(&_args[1]))), len(path))
+		out := unsafe.Slice((**C.gchar)(*(***C.gchar)(unsafe.Pointer(&_args[1]))), len(path))
 		for i := range path {
-			*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(path[i])))
-			defer C.free(unsafe.Pointer(out[i]))
+			*(**C.gchar)(unsafe.Pointer(&out[i])) = (*C.gchar)(unsafe.Pointer(C.CString(path[i])))
+			defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&out[i]))))
 		}
 	}
 
@@ -1666,13 +1658,13 @@ func (iconTheme *IconTheme) SetSearchPath(path []string) {
 func IconThemeAddBuiltinIcon(iconName string, size int32, pixbuf *gdkpixbuf.Pixbuf) {
 	var _args [3]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(iconName)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(size)
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
 
 	_info := girepository.MustFind("Gtk", "add_builtin_icon")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(iconName)
 	runtime.KeepAlive(size)
@@ -1690,12 +1682,12 @@ func IconThemeAddBuiltinIcon(iconName string, size int32, pixbuf *gdkpixbuf.Pixb
 //
 func IconThemeGetDefault() *IconTheme {
 	_info := girepository.MustFind("Gtk", "get_default")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _iconTheme *IconTheme // out
 
-	_iconTheme = wrapIconTheme(coreglib.Take(unsafe.Pointer(_cret)))
+	_iconTheme = wrapIconTheme(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _iconTheme
 }
@@ -1724,14 +1716,14 @@ func IconThemeGetForScreen(screen *gdk.Screen) *IconTheme {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
 	_info := girepository.MustFind("Gtk", "get_for_screen")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)
 
 	var _iconTheme *IconTheme // out
 
-	_iconTheme = wrapIconTheme(coreglib.Take(unsafe.Pointer(_cret)))
+	_iconTheme = wrapIconTheme(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _iconTheme
 }

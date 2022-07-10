@@ -43,7 +43,7 @@ func ContentDeserializeFinish(result gio.AsyncResulter, value *coreglib.Value) e
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gdk", "content_deserialize_finish")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(result)
 	runtime.KeepAlive(value)
@@ -51,7 +51,7 @@ func ContentDeserializeFinish(result gio.AsyncResulter, value *coreglib.Value) e
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -114,7 +114,7 @@ func (deserializer *ContentDeserializer) Cancellable() *gio.Cancellable {
 	var _cancellable *gio.Cancellable // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_cancellable = &gio.Cancellable{
 			Object: obj,
 		}
@@ -145,7 +145,7 @@ func (deserializer *ContentDeserializer) InputStream() gio.InputStreamer {
 	var _inputStream gio.InputStreamer // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gio.InputStreamer is nil")
 		}
@@ -178,13 +178,13 @@ func (deserializer *ContentDeserializer) MIMEType() string {
 
 	_info := girepository.MustFind("Gdk", "ContentDeserializer")
 	_gret := _info.InvokeClassMethod("get_mime_type", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(deserializer)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -236,7 +236,7 @@ func (deserializer *ContentDeserializer) TaskData() unsafe.Pointer {
 
 	var _gpointer unsafe.Pointer // out
 
-	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&_cret))))
 
 	return _gpointer
 }
@@ -261,7 +261,7 @@ func (deserializer *ContentDeserializer) UserData() unsafe.Pointer {
 
 	var _gpointer unsafe.Pointer // out
 
-	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&_cret))))
 
 	return _gpointer
 }
@@ -285,7 +285,7 @@ func (deserializer *ContentDeserializer) Value() *coreglib.Value {
 
 	var _value *coreglib.Value // out
 
-	_value = coreglib.ValueFromNative(unsafe.Pointer(_cret))
+	_value = coreglib.ValueFromNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 
 	return _value
 }

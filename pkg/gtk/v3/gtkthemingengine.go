@@ -664,13 +664,14 @@ func (engine *ThemingEngine) Path() *WidgetPath {
 
 	var _widgetPath *WidgetPath // out
 
-	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_widget_path_ref(_cret)
+	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.gtk_widget_path_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gtk", "WidgetPath").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -702,7 +703,7 @@ func (engine *ThemingEngine) Screen() *gdk.Screen {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_screen = &gdk.Screen{
 				Object: obj,
 			}
@@ -730,8 +731,8 @@ func (engine *ThemingEngine) StyleProperty(propertyName string) coreglib.Value {
 	var _outs [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "ThemingEngine")
 	_info.InvokeClassMethod("get_style_property", _args[:], _outs[:])
@@ -741,7 +742,7 @@ func (engine *ThemingEngine) StyleProperty(propertyName string) coreglib.Value {
 
 	var _value coreglib.Value // out
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(_outs[0]))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 
 	return _value
 }
@@ -763,8 +764,8 @@ func (engine *ThemingEngine) HasClass(styleClass string) bool {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(styleClass)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(styleClass)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "ThemingEngine")
 	_gret := _info.InvokeClassMethod("has_class", _args[:], nil)
@@ -802,8 +803,8 @@ func (engine *ThemingEngine) HasRegion(styleRegion string) (RegionFlags, bool) {
 	var _outs [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(styleRegion)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(styleRegion)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "ThemingEngine")
 	_gret := _info.InvokeClassMethod("has_region", _args[:], _outs[:])
@@ -816,7 +817,7 @@ func (engine *ThemingEngine) HasRegion(styleRegion string) (RegionFlags, bool) {
 	var _ok bool           // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_flags = *(*RegionFlags)(unsafe.Pointer(_outs[0]))
+		_flags = *(*RegionFlags)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 	}
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
@@ -844,8 +845,8 @@ func (engine *ThemingEngine) LookupColor(colorName string) (*gdk.RGBA, bool) {
 	var _outs [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(engine).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(colorName)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(colorName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "ThemingEngine")
 	_gret := _info.InvokeClassMethod("lookup_color", _args[:], _outs[:])
@@ -857,7 +858,7 @@ func (engine *ThemingEngine) LookupColor(colorName string) (*gdk.RGBA, bool) {
 	var _color *gdk.RGBA // out
 	var _ok bool         // out
 
-	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -882,11 +883,11 @@ func (engine *ThemingEngine) LookupColor(colorName string) (*gdk.RGBA, bool) {
 func ThemingEngineLoad(name string) *ThemingEngine {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "load")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(name)
@@ -894,7 +895,7 @@ func ThemingEngineLoad(name string) *ThemingEngine {
 	var _themingEngine *ThemingEngine // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_themingEngine = wrapThemingEngine(coreglib.Take(unsafe.Pointer(_cret)))
+		_themingEngine = wrapThemingEngine(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _themingEngine

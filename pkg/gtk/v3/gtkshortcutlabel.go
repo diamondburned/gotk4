@@ -82,8 +82,8 @@ func marshalShortcutLabel(p uintptr) (interface{}, error) {
 func NewShortcutLabel(accelerator string) *ShortcutLabel {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(accelerator)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(accelerator)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "ShortcutLabel")
 	_gret := _info.InvokeClassMethod("new_ShortcutLabel", _args[:], nil)
@@ -93,7 +93,7 @@ func NewShortcutLabel(accelerator string) *ShortcutLabel {
 
 	var _shortcutLabel *ShortcutLabel // out
 
-	_shortcutLabel = wrapShortcutLabel(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_shortcutLabel = wrapShortcutLabel(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _shortcutLabel
 }
@@ -111,14 +111,14 @@ func (self *ShortcutLabel) Accelerator() string {
 
 	_info := girepository.MustFind("Gtk", "ShortcutLabel")
 	_gret := _info.InvokeClassMethod("get_accelerator", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -137,14 +137,14 @@ func (self *ShortcutLabel) DisabledText() string {
 
 	_info := girepository.MustFind("Gtk", "ShortcutLabel")
 	_gret := _info.InvokeClassMethod("get_disabled_text", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -160,8 +160,8 @@ func (self *ShortcutLabel) SetAccelerator(accelerator string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(accelerator)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(accelerator)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "ShortcutLabel")
 	_info.InvokeClassMethod("set_accelerator", _args[:], nil)
@@ -181,8 +181,8 @@ func (self *ShortcutLabel) SetDisabledText(disabledText string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(disabledText)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(disabledText)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "ShortcutLabel")
 	_info.InvokeClassMethod("set_disabled_text", _args[:], nil)

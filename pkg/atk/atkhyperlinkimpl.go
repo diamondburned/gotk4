@@ -134,7 +134,7 @@ func (impl *HyperlinkImpl) Hyperlink() *Hyperlink {
 
 	var _hyperlink *Hyperlink // out
 
-	_hyperlink = wrapHyperlink(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_hyperlink = wrapHyperlink(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _hyperlink
 }

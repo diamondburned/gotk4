@@ -89,7 +89,7 @@ func NewMountOperation(parent *Window) *MountOperation {
 
 	var _mountOperation *MountOperation // out
 
-	_mountOperation = wrapMountOperation(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_mountOperation = wrapMountOperation(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _mountOperation
 }
@@ -113,7 +113,7 @@ func (op *MountOperation) Parent() *Window {
 
 	var _window *Window // out
 
-	_window = wrapWindow(coreglib.Take(unsafe.Pointer(_cret)))
+	_window = wrapWindow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _window
 }
@@ -138,7 +138,7 @@ func (op *MountOperation) Screen() *gdk.Screen {
 	var _screen *gdk.Screen // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_screen = &gdk.Screen{
 			Object: obj,
 		}

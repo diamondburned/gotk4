@@ -174,7 +174,7 @@ func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
 
 	var _gestureMultiPress *GestureMultiPress // out
 
-	_gestureMultiPress = wrapGestureMultiPress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_gestureMultiPress = wrapGestureMultiPress(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _gestureMultiPress
 }
@@ -204,7 +204,7 @@ func (gesture *GestureMultiPress) Area() (*gdk.Rectangle, bool) {
 	var _rect *gdk.Rectangle // out
 	var _ok bool             // out
 
-	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}

@@ -43,7 +43,7 @@ func NewSimpleIOStream(inputStream InputStreamer, outputStream OutputStreamer) *
 
 	var _simpleIOStream *SimpleIOStream // out
 
-	_simpleIOStream = wrapSimpleIOStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_simpleIOStream = wrapSimpleIOStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _simpleIOStream
 }

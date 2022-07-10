@@ -276,10 +276,10 @@ func (selection *TreeSelection) Selected() (*TreeModel, *TreeIter, bool) {
 	var _ok bool          // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_model = wrapTreeModel(coreglib.Take(unsafe.Pointer(_outs[0])))
+		_model = wrapTreeModel(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
+		_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
 	}
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
@@ -318,18 +318,19 @@ func (selection *TreeSelection) SelectedRows() (*TreeModel, []*TreePath) {
 	var _list []*TreePath // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_model = wrapTreeModel(coreglib.Take(unsafe.Pointer(_outs[0])))
+		_model = wrapTreeModel(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
-	_list = make([]*TreePath, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*TreePath, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *TreePath // out
-		dst = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(src)))
+		dst = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -359,7 +360,7 @@ func (selection *TreeSelection) TreeView() *TreeView {
 
 	var _treeView *TreeView // out
 
-	_treeView = wrapTreeView(coreglib.Take(unsafe.Pointer(_cret)))
+	_treeView = wrapTreeView(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _treeView
 }

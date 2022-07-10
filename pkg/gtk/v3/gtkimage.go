@@ -215,7 +215,7 @@ func NewImage() *Image {
 
 	var _image *Image // out
 
-	_image = wrapImage(coreglib.Take(unsafe.Pointer(_cret)))
+	_image = wrapImage(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _image
 }
@@ -251,7 +251,7 @@ func NewImageFromAnimation(animation *gdkpixbuf.PixbufAnimation) *Image {
 
 	var _image *Image // out
 
-	_image = wrapImage(coreglib.Take(unsafe.Pointer(_cret)))
+	_image = wrapImage(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _image
 }
@@ -282,8 +282,8 @@ func NewImageFromAnimation(animation *gdkpixbuf.PixbufAnimation) *Image {
 func NewImageFromFile(filename string) *Image {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "Image")
 	_gret := _info.InvokeClassMethod("new_Image_from_file", _args[:], nil)
@@ -293,7 +293,7 @@ func NewImageFromFile(filename string) *Image {
 
 	var _image *Image // out
 
-	_image = wrapImage(coreglib.Take(unsafe.Pointer(_cret)))
+	_image = wrapImage(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _image
 }
@@ -329,7 +329,7 @@ func NewImageFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Image {
 
 	var _image *Image // out
 
-	_image = wrapImage(coreglib.Take(unsafe.Pointer(_cret)))
+	_image = wrapImage(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _image
 }
@@ -360,8 +360,8 @@ func NewImageFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Image {
 func NewImageFromResource(resourcePath string) *Image {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "Image")
 	_gret := _info.InvokeClassMethod("new_Image_from_resource", _args[:], nil)
@@ -371,7 +371,7 @@ func NewImageFromResource(resourcePath string) *Image {
 
 	var _image *Image // out
 
-	_image = wrapImage(coreglib.Take(unsafe.Pointer(_cret)))
+	_image = wrapImage(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _image
 }
@@ -403,7 +403,7 @@ func NewImageFromSurface(surface *cairo.Surface) *Image {
 
 	var _image *Image // out
 
-	_image = wrapImage(coreglib.Take(unsafe.Pointer(_cret)))
+	_image = wrapImage(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _image
 }
@@ -445,7 +445,7 @@ func (image *Image) Animation() *gdkpixbuf.PixbufAnimation {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_pixbufAnimation = &gdkpixbuf.PixbufAnimation{
 				Object: obj,
 			}
@@ -481,14 +481,14 @@ func (image *Image) GIcon() (*gio.Icon, int32) {
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_outs[0]))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 			_gicon = &gio.Icon{
 				Object: obj,
 			}
 		}
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_size = *(*int32)(unsafe.Pointer(_outs[1]))
+		_size = *(*int32)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1]))))
 	}
 
 	return _gicon, _size
@@ -518,11 +518,11 @@ func (image *Image) IconName() (string, int32) {
 	var _iconName string // out
 	var _size int32      // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_iconName = C.GoString((*C.gchar)(unsafe.Pointer(_outs[0])))
+	if *(**C.gchar)(unsafe.Pointer(&_outs[0])) != nil {
+		_iconName = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[0])))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_size = *(*int32)(unsafe.Pointer(_outs[1]))
+		_size = *(*int32)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1]))))
 	}
 
 	return _iconName, _size
@@ -554,8 +554,8 @@ func (image *Image) IconSet() (*IconSet, int32) {
 	var _size int32       // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
-		C.gtk_icon_set_ref(_outs[0])
+		_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+		C.gtk_icon_set_ref(*(**C.void)(unsafe.Pointer(&_outs[0])))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_iconSet)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -564,7 +564,7 @@ func (image *Image) IconSet() (*IconSet, int32) {
 		)
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_size = *(*int32)(unsafe.Pointer(_outs[1]))
+		_size = *(*int32)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1]))))
 	}
 
 	return _iconSet, _size
@@ -594,7 +594,7 @@ func (image *Image) Pixbuf() *gdkpixbuf.Pixbuf {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_pixbuf = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{
@@ -659,11 +659,11 @@ func (image *Image) Stock() (string, int32) {
 	var _stockId string // out
 	var _size int32     // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_stockId = C.GoString((*C.gchar)(unsafe.Pointer(_outs[0])))
+	if *(**C.gchar)(unsafe.Pointer(&_outs[0])) != nil {
+		_stockId = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_outs[0])))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_size = *(*int32)(unsafe.Pointer(_outs[1]))
+		_size = *(*int32)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1]))))
 	}
 
 	return _stockId, _size
@@ -700,8 +700,8 @@ func (image *Image) SetFromFile(filename string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 	if filename != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "Image")
@@ -743,8 +743,8 @@ func (image *Image) SetFromResource(resourcePath string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(image).Native()))
 	if resourcePath != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "Image")

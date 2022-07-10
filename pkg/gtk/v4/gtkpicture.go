@@ -135,7 +135,7 @@ func NewPicture() *Picture {
 
 	var _picture *Picture // out
 
-	_picture = wrapPicture(coreglib.Take(unsafe.Pointer(_cret)))
+	_picture = wrapPicture(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _picture
 }
@@ -171,7 +171,7 @@ func NewPictureForFile(file gio.Filer) *Picture {
 
 	var _picture *Picture // out
 
-	_picture = wrapPicture(coreglib.Take(unsafe.Pointer(_cret)))
+	_picture = wrapPicture(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _picture
 }
@@ -193,8 +193,8 @@ func NewPictureForFilename(filename string) *Picture {
 	var _args [1]girepository.Argument
 
 	if filename != "" {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
-		defer C.free(unsafe.Pointer(_args[0]))
+		*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(filename)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "Picture")
@@ -205,7 +205,7 @@ func NewPictureForFilename(filename string) *Picture {
 
 	var _picture *Picture // out
 
-	_picture = wrapPicture(coreglib.Take(unsafe.Pointer(_cret)))
+	_picture = wrapPicture(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _picture
 }
@@ -238,7 +238,7 @@ func NewPictureForPaintable(paintable gdk.Paintabler) *Picture {
 
 	var _picture *Picture // out
 
-	_picture = wrapPicture(coreglib.Take(unsafe.Pointer(_cret)))
+	_picture = wrapPicture(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _picture
 }
@@ -273,7 +273,7 @@ func NewPictureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Picture {
 
 	var _picture *Picture // out
 
-	_picture = wrapPicture(coreglib.Take(unsafe.Pointer(_cret)))
+	_picture = wrapPicture(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _picture
 }
@@ -296,8 +296,8 @@ func NewPictureForResource(resourcePath string) *Picture {
 	var _args [1]girepository.Argument
 
 	if resourcePath != "" {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
-		defer C.free(unsafe.Pointer(_args[0]))
+		*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "Picture")
@@ -308,7 +308,7 @@ func NewPictureForResource(resourcePath string) *Picture {
 
 	var _picture *Picture // out
 
-	_picture = wrapPicture(coreglib.Take(unsafe.Pointer(_cret)))
+	_picture = wrapPicture(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _picture
 }
@@ -329,14 +329,14 @@ func (self *Picture) AlternativeText() string {
 
 	_info := girepository.MustFind("Gtk", "Picture")
 	_gret := _info.InvokeClassMethod("get_alternative_text", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -392,7 +392,7 @@ func (self *Picture) File() *gio.File {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_file = &gio.File{
 				Object: obj,
 			}
@@ -451,7 +451,7 @@ func (self *Picture) Paintable() *gdk.Paintable {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_paintable = &gdk.Paintable{
 				Object: obj,
 			}
@@ -479,8 +479,8 @@ func (self *Picture) SetAlternativeText(alternativeText string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if alternativeText != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(alternativeText)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(alternativeText)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "Picture")
@@ -556,8 +556,8 @@ func (self *Picture) SetFilename(filename string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if filename != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(filename)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "Picture")
@@ -659,8 +659,8 @@ func (self *Picture) SetResource(resourcePath string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if resourcePath != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "Picture")

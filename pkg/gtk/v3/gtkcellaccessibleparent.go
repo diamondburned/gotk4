@@ -23,7 +23,7 @@ import (
 // extern void _gotk4_gtk3_CellAccessibleParentIface_edit(void*, void*);
 // extern void _gotk4_gtk3_CellAccessibleParentIface_expand_collapse(void*, void*);
 // extern void _gotk4_gtk3_CellAccessibleParentIface_get_cell_area(void*, void*, void*);
-// extern void _gotk4_gtk3_CellAccessibleParentIface_get_cell_position(void*, void*, void*, void*);
+// extern void _gotk4_gtk3_CellAccessibleParentIface_get_cell_position(void*, void*, gint*, gint*);
 // extern void _gotk4_gtk3_CellAccessibleParentIface_update_relationset(void*, void*, void*);
 import "C"
 
@@ -171,7 +171,7 @@ func _gotk4_gtk3_CellAccessibleParentIface_get_cell_area(arg0 *C.void, arg1 *C.v
 }
 
 //export _gotk4_gtk3_CellAccessibleParentIface_get_cell_position
-func _gotk4_gtk3_CellAccessibleParentIface_get_cell_position(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.void) {
+func _gotk4_gtk3_CellAccessibleParentIface_get_cell_position(arg0 *C.void, arg1 *C.void, arg2 *C.gint, arg3 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(CellAccessibleParentOverrider)
 
@@ -181,8 +181,8 @@ func _gotk4_gtk3_CellAccessibleParentIface_get_cell_position(arg0 *C.void, arg1 
 
 	row, column := iface.CellPosition(_cell)
 
-	*arg2 = (*C.void)(unsafe.Pointer(row))
-	*arg3 = (*C.void)(unsafe.Pointer(column))
+	*arg2 = C.gint(row)
+	*arg3 = C.gint(column)
 }
 
 //export _gotk4_gtk3_CellAccessibleParentIface_get_child_index
@@ -312,7 +312,7 @@ func (parent *CellAccessibleParent) CellArea(cell *CellAccessible) *gdk.Rectangl
 
 	var _cellRect *gdk.Rectangle // out
 
-	_cellRect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_cellRect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _cellRect
 }
@@ -340,8 +340,8 @@ func (parent *CellAccessibleParent) CellPosition(cell *CellAccessible) (row, col
 	var _row int32    // out
 	var _column int32 // out
 
-	_row = *(*int32)(unsafe.Pointer(_outs[0]))
-	_column = *(*int32)(unsafe.Pointer(_outs[1]))
+	_row = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_column = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _row, _column
 }

@@ -159,7 +159,7 @@ func NewMapListModel(model gio.ListModeller, mapFunc MapListModelMapFunc) *MapLi
 
 	var _mapListModel *MapListModel // out
 
-	_mapListModel = wrapMapListModel(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_mapListModel = wrapMapListModel(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _mapListModel
 }
@@ -185,7 +185,7 @@ func (self *MapListModel) Model() *gio.ListModel {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_listModel = &gio.ListModel{
 				Object: obj,
 			}

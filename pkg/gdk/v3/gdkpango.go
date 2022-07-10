@@ -37,13 +37,13 @@ import "C"
 //
 func PangoContextGet() *pango.Context {
 	_info := girepository.MustFind("Gdk", "pango_context_get")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _context *pango.Context // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_context = &pango.Context{
 			Object: obj,
 		}
@@ -80,7 +80,7 @@ func PangoContextGetForDisplay(display *Display) *pango.Context {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_info := girepository.MustFind("Gdk", "pango_context_get_for_display")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)
@@ -88,7 +88,7 @@ func PangoContextGetForDisplay(display *Display) *pango.Context {
 	var _context *pango.Context // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_context = &pango.Context{
 			Object: obj,
 		}
@@ -125,7 +125,7 @@ func PangoContextGetForScreen(screen *Screen) *pango.Context {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
 	_info := girepository.MustFind("Gdk", "pango_context_get_for_screen")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)
@@ -133,7 +133,7 @@ func PangoContextGetForScreen(screen *Screen) *pango.Context {
 	var _context *pango.Context // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_context = &pango.Context{
 			Object: obj,
 		}

@@ -160,7 +160,7 @@ func (context *GLContext) Display() *Display {
 	var _display *Display // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
+		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _display
@@ -215,12 +215,8 @@ func (context *GLContext) RequiredVersion() (major, minor int32) {
 	var _major int32 // out
 	var _minor int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_major = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_minor = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_major = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_minor = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
 
 	return _major, _minor
 }
@@ -246,7 +242,7 @@ func (context *GLContext) SharedContext() GLContexter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -313,8 +309,8 @@ func (context *GLContext) Version() (major, minor int32) {
 	var _major int32 // out
 	var _minor int32 // out
 
-	_major = *(*int32)(unsafe.Pointer(_outs[0]))
-	_minor = *(*int32)(unsafe.Pointer(_outs[1]))
+	_major = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_minor = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
 
 	return _major, _minor
 }
@@ -340,7 +336,7 @@ func (context *GLContext) Window() Windower {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -427,7 +423,7 @@ func (context *GLContext) Realize() error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -551,7 +547,7 @@ func (context *GLContext) SetUseES(useEs int32) {
 // gdk_gl_context_make_current() is called.
 func GLContextClearCurrent() {
 	_info := girepository.MustFind("Gdk", "clear_current")
-	_info.Invoke(nil, nil)
+	_info.InvokeFunction(nil, nil)
 }
 
 // GLContextGetCurrent retrieves the current GLContext.
@@ -562,14 +558,14 @@ func GLContextClearCurrent() {
 //
 func GLContextGetCurrent() GLContexter {
 	_info := girepository.MustFind("Gdk", "get_current")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _glContext GLContexter // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

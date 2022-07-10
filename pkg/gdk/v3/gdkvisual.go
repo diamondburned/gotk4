@@ -108,16 +108,16 @@ func (v VisualType) String() string {
 //
 func ListVisuals() []*Visual {
 	_info := girepository.MustFind("Gdk", "list_visuals")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _list []*Visual // out
 
-	_list = make([]*Visual, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*Visual, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Visual // out
-		dst = wrapVisual(coreglib.Take(unsafe.Pointer(src)))
+		dst = wrapVisual(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 
@@ -141,15 +141,15 @@ func QueryDepths() []int32 {
 	var _outs [2]girepository.Argument
 
 	_info := girepository.MustFind("Gdk", "query_depths")
-	_info.Invoke(nil, _outs[:])
+	_info.InvokeFunction(nil, _outs[:])
 
 	var _depths []int32 // out
 
 	{
-		src := unsafe.Slice((**C.void)(_outs[0]), _outs[1])
-		_depths = make([]int32, _outs[1])
-		for i := 0; i < int(_outs[1]); i++ {
-			_depths[i] = *(*int32)(unsafe.Pointer(src[i]))
+		src := unsafe.Slice((*C.gint)(*(**C.gint)(unsafe.Pointer(&_outs[0]))), *(*C.gint)(unsafe.Pointer(&_outs[1])))
+		_depths = make([]int32, *(*C.gint)(unsafe.Pointer(&_outs[1])))
+		for i := 0; i < int(*(*C.gint)(unsafe.Pointer(&_outs[1]))); i++ {
+			_depths[i] = int32(*(*C.gint)(unsafe.Pointer(&src[i])))
 		}
 	}
 
@@ -173,12 +173,12 @@ func QueryVisualTypes() []VisualType {
 	var _outs [2]girepository.Argument
 
 	_info := girepository.MustFind("Gdk", "query_visual_types")
-	_info.Invoke(nil, _outs[:])
+	_info.InvokeFunction(nil, _outs[:])
 
 	var _visualTypes []VisualType // out
 
-	_visualTypes = make([]VisualType, _outs[1])
-	copy(_visualTypes, unsafe.Slice((*VisualType)(unsafe.Pointer(_outs[0])), _outs[1]))
+	_visualTypes = make([]VisualType, *(*C.gint)(unsafe.Pointer(&_outs[1])))
+	copy(_visualTypes, unsafe.Slice((*VisualType)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))), *(*C.gint)(unsafe.Pointer(&_outs[1]))))
 
 	return _visualTypes
 }
@@ -261,15 +261,9 @@ func (visual *Visual) BluePixelDetails() (mask uint32, shift, precision int32) {
 	var _shift int32     // out
 	var _precision int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_mask = *(*uint32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_shift = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_precision = *(*int32)(unsafe.Pointer(_outs[2]))
-	}
+	_mask = uint32(*(*C.guint32)(unsafe.Pointer(&_outs[0])))
+	_shift = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_precision = int32(*(*C.gint)(unsafe.Pointer(&_outs[2])))
 
 	return _mask, _shift, _precision
 }
@@ -355,15 +349,9 @@ func (visual *Visual) GreenPixelDetails() (mask uint32, shift, precision int32) 
 	var _shift int32     // out
 	var _precision int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_mask = *(*uint32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_shift = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_precision = *(*int32)(unsafe.Pointer(_outs[2]))
-	}
+	_mask = uint32(*(*C.guint32)(unsafe.Pointer(&_outs[0])))
+	_shift = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_precision = int32(*(*C.gint)(unsafe.Pointer(&_outs[2])))
 
 	return _mask, _shift, _precision
 }
@@ -395,15 +383,9 @@ func (visual *Visual) RedPixelDetails() (mask uint32, shift, precision int32) {
 	var _shift int32     // out
 	var _precision int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_mask = *(*uint32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_shift = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_precision = *(*int32)(unsafe.Pointer(_outs[2]))
-	}
+	_mask = uint32(*(*C.guint32)(unsafe.Pointer(&_outs[0])))
+	_shift = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_precision = int32(*(*C.gint)(unsafe.Pointer(&_outs[2])))
 
 	return _mask, _shift, _precision
 }
@@ -427,7 +409,7 @@ func (visual *Visual) Screen() *Screen {
 
 	var _screen *Screen // out
 
-	_screen = wrapScreen(coreglib.Take(unsafe.Pointer(_cret)))
+	_screen = wrapScreen(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _screen
 }
@@ -444,12 +426,12 @@ func (visual *Visual) Screen() *Screen {
 //
 func VisualGetBest() *Visual {
 	_info := girepository.MustFind("Gdk", "get_best")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _visual *Visual // out
 
-	_visual = wrapVisual(coreglib.Take(unsafe.Pointer(_cret)))
+	_visual = wrapVisual(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _visual
 }
@@ -467,7 +449,7 @@ func VisualGetBest() *Visual {
 //
 func VisualGetBestDepth() int32 {
 	_info := girepository.MustFind("Gdk", "get_best_depth")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	var _gint int32 // out
@@ -499,14 +481,14 @@ func VisualGetBestWithDepth(depth int32) *Visual {
 	*(*C.gint)(unsafe.Pointer(&_args[0])) = C.gint(depth)
 
 	_info := girepository.MustFind("Gdk", "get_best_with_depth")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(depth)
 
 	var _visual *Visual // out
 
-	_visual = wrapVisual(coreglib.Take(unsafe.Pointer(_cret)))
+	_visual = wrapVisual(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _visual
 }
@@ -523,12 +505,12 @@ func VisualGetBestWithDepth(depth int32) *Visual {
 //
 func VisualGetSystem() *Visual {
 	_info := girepository.MustFind("Gdk", "get_system")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _visual *Visual // out
 
-	_visual = wrapVisual(coreglib.Take(unsafe.Pointer(_cret)))
+	_visual = wrapVisual(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _visual
 }

@@ -18,8 +18,9 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gtk3_RecentChooserIface_select_uri(void*, void*, GError**);
-// extern gboolean _gotk4_gtk3_RecentChooserIface_set_current_uri(void*, void*, GError**);
+// extern gboolean _gotk4_gtk3_RecentChooserIface_select_uri(void*, gchar*, GError**);
+// extern gboolean _gotk4_gtk3_RecentChooserIface_set_current_uri(void*, gchar*, GError**);
+// extern gchar* _gotk4_gtk3_RecentChooserIface_get_current_uri(void*);
 // extern gint _gotk4_gtk3_RecentSortFunc(void*, void*, gpointer);
 // extern void _gotk4_gtk3_RecentChooserIface_add_filter(void*, void*);
 // extern void _gotk4_gtk3_RecentChooserIface_item_activated(void*);
@@ -27,11 +28,10 @@ import (
 // extern void _gotk4_gtk3_RecentChooserIface_select_all(void*);
 // extern void _gotk4_gtk3_RecentChooserIface_selection_changed(void*);
 // extern void _gotk4_gtk3_RecentChooserIface_unselect_all(void*);
-// extern void _gotk4_gtk3_RecentChooserIface_unselect_uri(void*, void*);
+// extern void _gotk4_gtk3_RecentChooserIface_unselect_uri(void*, gchar*);
 // extern void _gotk4_gtk3_RecentChooser_ConnectItemActivated(gpointer, guintptr);
 // extern void _gotk4_gtk3_RecentChooser_ConnectSelectionChanged(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
-// extern void* _gotk4_gtk3_RecentChooserIface_get_current_uri(void*);
 // extern void* _gotk4_gtk3_RecentChooserIface_get_items(void*);
 // extern void* _gotk4_gtk3_RecentChooserIface_list_filters(void*);
 import "C"
@@ -384,7 +384,7 @@ func (chooser *RecentChooser) CurrentItem() *RecentInfo {
 
 	var _recentInfo *RecentInfo // out
 
-	_recentInfo = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_recentInfo = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_recentInfo)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -408,14 +408,14 @@ func (chooser *RecentChooser) CurrentURI() string {
 
 	_info := girepository.MustFind("Gtk", "RecentChooser")
 	_gret := _info.InvokeIfaceMethod("get_current_uri", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(chooser)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }
@@ -440,7 +440,7 @@ func (chooser *RecentChooser) Filter() *RecentFilter {
 
 	var _recentFilter *RecentFilter // out
 
-	_recentFilter = wrapRecentFilter(coreglib.Take(unsafe.Pointer(_cret)))
+	_recentFilter = wrapRecentFilter(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _recentFilter
 }
@@ -469,11 +469,11 @@ func (chooser *RecentChooser) Items() []*RecentInfo {
 
 	var _list []*RecentInfo // out
 
-	_list = make([]*RecentInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*RecentInfo, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *RecentInfo // out
-		dst = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(src)))
+		dst = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -699,13 +699,13 @@ func (chooser *RecentChooser) URIs() []string {
 
 	var _utf8s []string // out
 
-	defer C.free(unsafe.Pointer(_cret))
+	defer C.free(unsafe.Pointer(*(***C.gchar)(unsafe.Pointer(&_cret))))
 	{
-		src := unsafe.Slice((**C.void)(_cret), _outs[0])
-		_utf8s = make([]string, _outs[0])
-		for i := 0; i < int(_outs[0]); i++ {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+		src := unsafe.Slice((**C.gchar)(*(***C.gchar)(unsafe.Pointer(&_cret))), *(*C.gsize)(unsafe.Pointer(&_outs[0])))
+		_utf8s = make([]string, *(*C.gsize)(unsafe.Pointer(&_outs[0])))
+		for i := 0; i < int(*(*C.gsize)(unsafe.Pointer(&_outs[0]))); i++ {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i])))))
+			defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i]))))
 		}
 	}
 
@@ -732,11 +732,11 @@ func (chooser *RecentChooser) ListFilters() []*RecentFilter {
 
 	var _sList []*RecentFilter // out
 
-	_sList = make([]*RecentFilter, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_sList = make([]*RecentFilter, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *RecentFilter // out
-		dst = wrapRecentFilter(coreglib.Take(unsafe.Pointer(src)))
+		dst = wrapRecentFilter(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_sList = append(_sList, dst)
 	})
 
@@ -786,8 +786,8 @@ func (chooser *RecentChooser) SelectURI(uri string) error {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "RecentChooser")
 	_info.InvokeIfaceMethod("select_uri", _args[:], nil)
@@ -798,7 +798,7 @@ func (chooser *RecentChooser) SelectURI(uri string) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -814,8 +814,8 @@ func (chooser *RecentChooser) SetCurrentURI(uri string) error {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "RecentChooser")
 	_info.InvokeIfaceMethod("set_current_uri", _args[:], nil)
@@ -826,7 +826,7 @@ func (chooser *RecentChooser) SetCurrentURI(uri string) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -1057,8 +1057,8 @@ func (chooser *RecentChooser) UnselectURI(uri string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "RecentChooser")
 	_info.InvokeIfaceMethod("unselect_uri", _args[:], nil)

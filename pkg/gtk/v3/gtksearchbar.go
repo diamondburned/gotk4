@@ -114,7 +114,7 @@ func NewSearchBar() *SearchBar {
 
 	var _searchBar *SearchBar // out
 
-	_searchBar = wrapSearchBar(coreglib.Take(unsafe.Pointer(_cret)))
+	_searchBar = wrapSearchBar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _searchBar
 }

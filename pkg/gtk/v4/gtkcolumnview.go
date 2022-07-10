@@ -192,7 +192,7 @@ func NewColumnView(model SelectionModeller) *ColumnView {
 
 	var _columnView *ColumnView // out
 
-	_columnView = wrapColumnView(coreglib.Take(unsafe.Pointer(_cret)))
+	_columnView = wrapColumnView(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _columnView
 }
@@ -240,7 +240,7 @@ func (self *ColumnView) Columns() *gio.ListModel {
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}
@@ -296,7 +296,7 @@ func (self *ColumnView) Model() *SelectionModel {
 	var _selectionModel *SelectionModel // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_selectionModel = wrapSelectionModel(coreglib.Take(unsafe.Pointer(_cret)))
+		_selectionModel = wrapSelectionModel(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _selectionModel
@@ -445,7 +445,7 @@ func (self *ColumnView) Sorter() *Sorter {
 	var _sorter *Sorter // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_sorter = wrapSorter(coreglib.Take(unsafe.Pointer(_cret)))
+		_sorter = wrapSorter(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _sorter

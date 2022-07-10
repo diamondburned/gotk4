@@ -94,7 +94,7 @@ func NewMultiSelection(model gio.ListModeller) *MultiSelection {
 
 	var _multiSelection *MultiSelection // out
 
-	_multiSelection = wrapMultiSelection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_multiSelection = wrapMultiSelection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _multiSelection
 }
@@ -119,7 +119,7 @@ func (self *MultiSelection) Model() *gio.ListModel {
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}

@@ -562,8 +562,8 @@ func marshalScriptIter(p uintptr) (interface{}, error) {
 func NewScriptIter(text string, length int32) *ScriptIter {
 	var _args [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(length)
 
 	_info := girepository.MustFind("Pango", "ScriptIter")
@@ -575,12 +575,13 @@ func NewScriptIter(text string, length int32) *ScriptIter {
 
 	var _scriptIter *ScriptIter // out
 
-	_scriptIter = (*ScriptIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_scriptIter = (*ScriptIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_scriptIter)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "ScriptIter").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -618,16 +619,16 @@ func (iter *ScriptIter) Range() (start string, end string, script Script) {
 	var _end string    // out
 	var _script Script // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_start = C.GoString((*C.gchar)(unsafe.Pointer(_outs[0])))
-		defer C.free(unsafe.Pointer(_outs[0]))
+	if *(**C.char)(unsafe.Pointer(&_outs[0])) != nil {
+		_start = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0])))))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0]))))
 	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_end = C.GoString((*C.gchar)(unsafe.Pointer(_outs[1])))
-		defer C.free(unsafe.Pointer(_outs[1]))
+	if *(**C.char)(unsafe.Pointer(&_outs[1])) != nil {
+		_end = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[1])))))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[1]))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_script = *(*Script)(unsafe.Pointer(_outs[2]))
+		_script = *(*Script)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[2]))))
 	}
 
 	return _start, _end, _script

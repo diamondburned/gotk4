@@ -22,8 +22,8 @@ import (
 // #include <glib.h>
 // #include <glib-object.h>
 // extern gboolean _gotk4_gdk3_WindowChildFunc(void*, gpointer);
-// extern void _gotk4_gdk3_WindowClass_from_embedder(void*, gdouble, gdouble, void*, void*);
-// extern void _gotk4_gdk3_WindowClass_to_embedder(void*, gdouble, gdouble, void*, void*);
+// extern void _gotk4_gdk3_WindowClass_from_embedder(void*, gdouble, gdouble, gdouble*, gdouble*);
+// extern void _gotk4_gdk3_WindowClass_to_embedder(void*, gdouble, gdouble, gdouble*, gdouble*);
 // extern void _gotk4_gdk3_Window_ConnectMovedToRect(gpointer, gpointer, gpointer, gboolean, gboolean, guintptr);
 // extern void* _gotk4_gdk3_WindowClass_create_surface(void*, gint, gint);
 // extern void* _gotk4_gdk3_Window_ConnectCreateSurface(gpointer, gint, gint, guintptr);
@@ -808,13 +808,13 @@ func _gotk4_gdk3_WindowChildFunc(arg1 *C.void, arg2 C.gpointer) (cret C.gboolean
 //
 func GetDefaultRootWindow() Windower {
 	_info := girepository.MustFind("Gdk", "get_default_root_window")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _window Windower // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -851,7 +851,7 @@ func OffscreenWindowGetEmbedder(window Windower) Windower {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
 	_info := girepository.MustFind("Gdk", "offscreen_window_get_embedder")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
@@ -860,7 +860,7 @@ func OffscreenWindowGetEmbedder(window Windower) Windower {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -896,7 +896,7 @@ func OffscreenWindowGetSurface(window Windower) *cairo.Surface {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
 	_info := girepository.MustFind("Gdk", "offscreen_window_get_surface")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
@@ -904,8 +904,8 @@ func OffscreenWindowGetSurface(window Windower) *cairo.Surface {
 	var _surface *cairo.Surface // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-		C.cairo_surface_reference(_cret)
+		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.cairo_surface_reference(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 			C.cairo_surface_destroy((*C.void)(unsafe.Pointer(v.Native())))
 		})
@@ -933,7 +933,7 @@ func OffscreenWindowSetEmbedder(window, embedder Windower) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(embedder).Native()))
 
 	_info := girepository.MustFind("Gdk", "offscreen_window_set_embedder")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(embedder)
@@ -1039,7 +1039,7 @@ func _gotk4_gdk3_WindowClass_create_surface(arg0 *C.void, arg1 C.gint, arg2 C.gi
 }
 
 //export _gotk4_gdk3_WindowClass_from_embedder
-func _gotk4_gdk3_WindowClass_from_embedder(arg0 *C.void, arg1 C.gdouble, arg2 C.gdouble, arg3 *C.void, arg4 *C.void) {
+func _gotk4_gdk3_WindowClass_from_embedder(arg0 *C.void, arg1 C.gdouble, arg2 C.gdouble, arg3 *C.gdouble, arg4 *C.gdouble) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		FromEmbedder(embedderX, embedderY float64, offscreenX, offscreenY *float64)
@@ -1059,7 +1059,7 @@ func _gotk4_gdk3_WindowClass_from_embedder(arg0 *C.void, arg1 C.gdouble, arg2 C.
 }
 
 //export _gotk4_gdk3_WindowClass_to_embedder
-func _gotk4_gdk3_WindowClass_to_embedder(arg0 *C.void, arg1 C.gdouble, arg2 C.gdouble, arg3 *C.void, arg4 *C.void) {
+func _gotk4_gdk3_WindowClass_to_embedder(arg0 *C.void, arg1 C.gdouble, arg2 C.gdouble, arg3 *C.gdouble, arg4 *C.gdouble) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		ToEmbedder(offscreenX, offscreenY float64, embedderX, embedderY *float64)
@@ -1249,7 +1249,7 @@ func NewWindow(parent Windower, attributes *WindowAttr, attributesMask WindowAtt
 
 	var _window *Window // out
 
-	_window = wrapWindow(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_window = wrapWindow(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _window
 }
@@ -1318,7 +1318,7 @@ func (window *Window) BeginDrawFrame(region *cairo.Region) *DrawingContext {
 
 	var _drawingContext *DrawingContext // out
 
-	_drawingContext = wrapDrawingContext(coreglib.Take(unsafe.Pointer(_cret)))
+	_drawingContext = wrapDrawingContext(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _drawingContext
 }
@@ -1527,12 +1527,8 @@ func (window *Window) CoordsFromParent(parentX, parentY float64) (x, y float64) 
 	var _x float64 // out
 	var _y float64 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_x = *(*float64)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_y = *(*float64)(unsafe.Pointer(_outs[1]))
-	}
+	_x = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
+	_y = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[1])))
 
 	return _x, _y
 }
@@ -1582,12 +1578,8 @@ func (window *Window) CoordsToParent(x, y float64) (parentX, parentY float64) {
 	var _parentX float64 // out
 	var _parentY float64 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_parentX = *(*float64)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_parentY = *(*float64)(unsafe.Pointer(_outs[1]))
-	}
+	_parentX = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
+	_parentY = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[1])))
 
 	return _parentX, _parentY
 }
@@ -1620,7 +1612,7 @@ func (window *Window) CreateGLContext() (GLContexter, error) {
 	var _goerr error           // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.GLContexter is nil")
 		}
@@ -1637,7 +1629,7 @@ func (window *Window) CreateGLContext() (GLContexter, error) {
 		_glContext = rv
 	}
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _glContext, _goerr
@@ -1948,10 +1940,10 @@ func (window *Window) BackgroundPattern() *cairo.Pattern {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+			_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))}
 			_pattern = (*cairo.Pattern)(unsafe.Pointer(_pp))
 		}
-		C.cairo_pattern_reference(_cret)
+		C.cairo_pattern_reference(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(_pattern, func(v *cairo.Pattern) {
 			C.cairo_pattern_destroy((*C.void)(unsafe.Pointer(v.Native())))
 		})
@@ -1983,12 +1975,12 @@ func (window *Window) Children() []Windower {
 
 	var _list []Windower // out
 
-	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Windower // out
 		{
-			objptr := unsafe.Pointer(src)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
 			if objptr == nil {
 				panic("object of type gdk.Windower is nil")
 			}
@@ -2041,12 +2033,12 @@ func (window *Window) ChildrenWithUserData(userData unsafe.Pointer) []Windower {
 
 	var _list []Windower // out
 
-	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Windower // out
 		{
-			objptr := unsafe.Pointer(src)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
 			if objptr == nil {
 				panic("object of type gdk.Windower is nil")
 			}
@@ -2091,7 +2083,7 @@ func (window *Window) ClipRegion() *cairo.Region {
 	var _region *cairo.Region // out
 
 	{
-		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))}
 		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
@@ -2158,7 +2150,7 @@ func (window *Window) Cursor() Cursorrer {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -2199,7 +2191,7 @@ func (window *Window) Decorations() (WMDecoration, bool) {
 	var _decorations WMDecoration // out
 	var _ok bool                  // out
 
-	_decorations = *(*WMDecoration)(unsafe.Pointer(_outs[0]))
+	_decorations = *(*WMDecoration)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -2239,7 +2231,7 @@ func (window *Window) DeviceCursor(device Devicer) Cursorrer {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -2294,18 +2286,14 @@ func (window *Window) DevicePosition(device Devicer) (x, y int32, mask ModifierT
 	var _mask ModifierType // out
 	var _ret Windower      // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_x = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_y = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_x = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_y = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_mask = *(*ModifierType)(unsafe.Pointer(_outs[2]))
+		_mask = *(*ModifierType)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[2]))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -2359,18 +2347,14 @@ func (window *Window) DevicePositionDouble(device Devicer) (x, y float64, mask M
 	var _mask ModifierType // out
 	var _ret Windower      // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_x = *(*float64)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_y = *(*float64)(unsafe.Pointer(_outs[1]))
-	}
+	_x = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
+	_y = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[1])))
 	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_mask = *(*ModifierType)(unsafe.Pointer(_outs[2]))
+		_mask = *(*ModifierType)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[2]))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -2407,7 +2391,7 @@ func (window *Window) Display() *Display {
 
 	var _display *Display // out
 
-	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
+	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _display
 }
@@ -2436,7 +2420,7 @@ func (window *Window) EffectiveParent() Windower {
 	var _ret Windower // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -2481,7 +2465,7 @@ func (window *Window) EffectiveToplevel() Windower {
 	var _ret Windower // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -2576,7 +2560,7 @@ func (window *Window) FrameClock() FrameClocker {
 	var _frameClock FrameClocker // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.FrameClocker is nil")
 		}
@@ -2618,7 +2602,7 @@ func (window *Window) FrameExtents() *Rectangle {
 
 	var _rect *Rectangle // out
 
-	_rect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_rect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _rect
 }
@@ -2668,18 +2652,10 @@ func (window *Window) Geometry() (x, y, width, height int32) {
 	var _width int32  // out
 	var _height int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_x = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_y = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_width = *(*int32)(unsafe.Pointer(_outs[2]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[3])) != nil {
-		_height = *(*int32)(unsafe.Pointer(_outs[3]))
-	}
+	_x = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_y = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_width = int32(*(*C.gint)(unsafe.Pointer(&_outs[2])))
+	_height = int32(*(*C.gint)(unsafe.Pointer(&_outs[3])))
 
 	return _x, _y, _width, _height
 }
@@ -2704,7 +2680,7 @@ func (window *Window) Group() Windower {
 	var _ret Windower // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -2805,12 +2781,8 @@ func (window *Window) Origin() (x, y, gint int32) {
 	var _y int32    // out
 	var _gint int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_x = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_y = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_x = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_y = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 	_gint = int32(*(*C.gint)(unsafe.Pointer(&_cret)))
 
 	return _x, _y, _gint
@@ -2845,7 +2817,7 @@ func (window *Window) Parent() Windower {
 	var _ret Windower // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -2926,18 +2898,14 @@ func (window *Window) Pointer() (x, y int32, mask ModifierType, ret Windower) {
 	var _mask ModifierType // out
 	var _ret Windower      // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_x = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_y = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_x = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_y = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_mask = *(*ModifierType)(unsafe.Pointer(_outs[2]))
+		_mask = *(*ModifierType)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[2]))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -2981,12 +2949,8 @@ func (window *Window) Position() (x, y int32) {
 	var _x int32 // out
 	var _y int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_x = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_y = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_x = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_y = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _x, _y
 }
@@ -3023,8 +2987,8 @@ func (window *Window) RootCoords(x, y int32) (rootX, rootY int32) {
 	var _rootX int32 // out
 	var _rootY int32 // out
 
-	_rootX = *(*int32)(unsafe.Pointer(_outs[0]))
-	_rootY = *(*int32)(unsafe.Pointer(_outs[1]))
+	_rootX = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_rootY = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _rootX, _rootY
 }
@@ -3051,8 +3015,8 @@ func (window *Window) RootOrigin() (x, y int32) {
 	var _x int32 // out
 	var _y int32 // out
 
-	_x = *(*int32)(unsafe.Pointer(_outs[0]))
-	_y = *(*int32)(unsafe.Pointer(_outs[1]))
+	_x = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_y = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _x, _y
 }
@@ -3110,7 +3074,7 @@ func (window *Window) Screen() *Screen {
 
 	var _screen *Screen // out
 
-	_screen = wrapScreen(coreglib.Take(unsafe.Pointer(_cret)))
+	_screen = wrapScreen(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _screen
 }
@@ -3170,7 +3134,7 @@ func (window *Window) Toplevel() Windower {
 	var _ret Windower // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -3215,7 +3179,7 @@ func (window *Window) UpdateArea() *cairo.Region {
 	var _region *cairo.Region // out
 
 	{
-		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))}
 		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
@@ -3246,7 +3210,7 @@ func (window *Window) UserData() unsafe.Pointer {
 	var _data unsafe.Pointer // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_data = (unsafe.Pointer)(unsafe.Pointer(_outs[0]))
+		_data = (unsafe.Pointer)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 	}
 
 	return _data
@@ -3274,7 +3238,7 @@ func (window *Window) VisibleRegion() *cairo.Region {
 	var _region *cairo.Region // out
 
 	{
-		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))}
 		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
@@ -3303,7 +3267,7 @@ func (window *Window) Visual() *Visual {
 
 	var _visual *Visual // out
 
-	_visual = wrapVisual(coreglib.Take(unsafe.Pointer(_cret)))
+	_visual = wrapVisual(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _visual
 }
@@ -3883,12 +3847,12 @@ func (window *Window) PeekChildren() []Windower {
 
 	var _list []Windower // out
 
-	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Windower // out
 		{
-			objptr := unsafe.Pointer(src)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
 			if objptr == nil {
 				panic("object of type gdk.Windower is nil")
 			}
@@ -4459,8 +4423,8 @@ func (window *Window) SetIconName(name string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 	if name != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gdk", "Window")
@@ -4705,8 +4669,8 @@ func (window *Window) SetRole(role string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(role)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(role)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gdk", "Window")
 	_info.InvokeClassMethod("set_role", _args[:], nil)
@@ -4813,8 +4777,8 @@ func (window *Window) SetStartupID(startupId string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(startupId)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(startupId)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gdk", "Window")
 	_info.InvokeClassMethod("set_startup_id", _args[:], nil)
@@ -4902,8 +4866,8 @@ func (window *Window) SetTitle(title string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gdk", "Window")
 	_info.InvokeClassMethod("set_title", _args[:], nil)
@@ -5232,21 +5196,17 @@ func WindowAtPointer() (winX, winY int32, window Windower) {
 	var _outs [2]girepository.Argument
 
 	_info := girepository.MustFind("Gdk", "at_pointer")
-	_gret := _info.Invoke(nil, _outs[:])
+	_gret := _info.InvokeFunction(nil, _outs[:])
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _winX int32      // out
 	var _winY int32      // out
 	var _window Windower // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_winX = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_winY = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_winX = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_winY = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -5272,7 +5232,7 @@ func WindowAtPointer() (winX, winY int32, window Windower) {
 // Deprecated: since version 3.22.
 func WindowProcessAllUpdates() {
 	_info := girepository.MustFind("Gdk", "process_all_updates")
-	_info.Invoke(nil, nil)
+	_info.InvokeFunction(nil, nil)
 }
 
 // WindowSetDebugUpdates: with update debugging enabled, calls to
@@ -5307,7 +5267,7 @@ func WindowSetDebugUpdates(setting bool) {
 	}
 
 	_info := girepository.MustFind("Gdk", "set_debug_updates")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(setting)
 }

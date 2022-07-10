@@ -137,8 +137,8 @@ func marshalToolItemGroup(p uintptr) (interface{}, error) {
 func NewToolItemGroup(label string) *ToolItemGroup {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "ToolItemGroup")
 	_gret := _info.InvokeClassMethod("new_ToolItemGroup", _args[:], nil)
@@ -148,7 +148,7 @@ func NewToolItemGroup(label string) *ToolItemGroup {
 
 	var _toolItemGroup *ToolItemGroup // out
 
-	_toolItemGroup = wrapToolItemGroup(coreglib.Take(unsafe.Pointer(_cret)))
+	_toolItemGroup = wrapToolItemGroup(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _toolItemGroup
 }
@@ -207,7 +207,7 @@ func (group *ToolItemGroup) DropItem(x, y int32) *ToolItem {
 
 	var _toolItem *ToolItem // out
 
-	_toolItem = wrapToolItem(coreglib.Take(unsafe.Pointer(_cret)))
+	_toolItem = wrapToolItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _toolItem
 }
@@ -257,13 +257,13 @@ func (group *ToolItemGroup) Label() string {
 
 	_info := girepository.MustFind("Gtk", "ToolItemGroup")
 	_gret := _info.InvokeClassMethod("get_label", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(group)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -289,7 +289,7 @@ func (group *ToolItemGroup) LabelWidget() Widgetter {
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -358,7 +358,7 @@ func (group *ToolItemGroup) NthItem(index uint32) *ToolItem {
 
 	var _toolItem *ToolItem // out
 
-	_toolItem = wrapToolItem(coreglib.Take(unsafe.Pointer(_cret)))
+	_toolItem = wrapToolItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _toolItem
 }
@@ -441,8 +441,8 @@ func (group *ToolItemGroup) SetLabel(label string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(group).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "ToolItemGroup")
 	_info.InvokeClassMethod("set_label", _args[:], nil)

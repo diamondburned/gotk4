@@ -156,7 +156,7 @@ func (context *DrawContext) Display() *Display {
 	var _display *Display // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
+		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _display
@@ -190,10 +190,10 @@ func (context *DrawContext) FrameRegion() *cairo.Region {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+			_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))}
 			_region = (*cairo.Region)(unsafe.Pointer(_pp))
 		}
-		C.cairo_region_reference(_cret)
+		C.cairo_region_reference(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(_region, func(v *cairo.Region) {
 			C.cairo_region_destroy((*C.void)(unsafe.Pointer(v.Native())))
 		})
@@ -223,7 +223,7 @@ func (context *DrawContext) Surface() Surfacer {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

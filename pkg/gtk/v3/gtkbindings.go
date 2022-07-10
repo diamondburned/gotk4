@@ -37,7 +37,7 @@ func BindingsActivateEvent(object *coreglib.Object, event *gdk.EventKey) bool {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(event)))
 
 	_info := girepository.MustFind("Gtk", "bindings_activate_event")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(object)
@@ -99,7 +99,7 @@ func (b *BindingSet) SetName() string {
 	offset := girepository.MustFind("Gtk", "BindingSet").StructFieldOffset("set_name")
 	valptr := (*uintptr)(unsafe.Add(b.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -117,7 +117,7 @@ func (b *BindingSet) Entries() *BindingEntry {
 	offset := girepository.MustFind("Gtk", "BindingSet").StructFieldOffset("entries")
 	valptr := (*uintptr)(unsafe.Add(b.native, offset))
 	var v *BindingEntry // out
-	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -126,7 +126,7 @@ func (b *BindingSet) Current() *BindingEntry {
 	offset := girepository.MustFind("Gtk", "BindingSet").StructFieldOffset("current")
 	valptr := (*uintptr)(unsafe.Add(b.native, offset))
 	var v *BindingEntry // out
-	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	v = (*BindingEntry)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -153,11 +153,11 @@ func (b *BindingSet) SetPriority(priority int32) {
 func BindingSetFind(setName string) *BindingSet {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(setName)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(setName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "find")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(setName)
@@ -165,7 +165,7 @@ func BindingSetFind(setName string) *BindingSet {
 	var _bindingSet *BindingSet // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_bindingSet = (*BindingSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_bindingSet = (*BindingSet)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _bindingSet

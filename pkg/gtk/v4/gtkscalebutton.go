@@ -219,15 +219,15 @@ func NewScaleButton(min, max, step float64, icons []string) *ScaleButton {
 	*(*C.double)(unsafe.Pointer(&_args[1])) = C.double(max)
 	*(*C.double)(unsafe.Pointer(&_args[2])) = C.double(step)
 	{
-		*(***C.void)(unsafe.Pointer(&_args[3])) = (**C.void)(C.calloc(C.size_t((len(icons) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_args[3]))
+		*(***C.char)(unsafe.Pointer(&_args[3])) = (**C.char)(C.calloc(C.size_t((len(icons) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_args[3]))))
 		{
 			out := unsafe.Slice(_args[3], len(icons)+1)
-			var zero *C.void
+			var zero *C.char
 			out[len(icons)] = zero
 			for i := range icons {
-				*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(icons[i])))
-				defer C.free(unsafe.Pointer(out[i]))
+				*(**C.char)(unsafe.Pointer(&out[i])) = (*C.char)(unsafe.Pointer(C.CString(icons[i])))
+				defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&out[i]))))
 			}
 		}
 	}
@@ -243,7 +243,7 @@ func NewScaleButton(min, max, step float64, icons []string) *ScaleButton {
 
 	var _scaleButton *ScaleButton // out
 
-	_scaleButton = wrapScaleButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_scaleButton = wrapScaleButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _scaleButton
 }
@@ -269,7 +269,7 @@ func (button *ScaleButton) Adjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _adjustment
 }
@@ -293,7 +293,7 @@ func (button *ScaleButton) MinusButton() *Button {
 
 	var _ret *Button // out
 
-	_ret = wrapButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_ret = wrapButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _ret
 }
@@ -317,7 +317,7 @@ func (button *ScaleButton) PlusButton() *Button {
 
 	var _ret *Button // out
 
-	_ret = wrapButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_ret = wrapButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _ret
 }
@@ -342,7 +342,7 @@ func (button *ScaleButton) Popup() Widgetter {
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -419,15 +419,15 @@ func (button *ScaleButton) SetIcons(icons []string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
 	{
-		*(***C.void)(unsafe.Pointer(&_args[1])) = (**C.void)(C.calloc(C.size_t((len(icons) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(***C.char)(unsafe.Pointer(&_args[1])) = (**C.char)(C.calloc(C.size_t((len(icons) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_args[1]))))
 		{
 			out := unsafe.Slice(_args[1], len(icons)+1)
-			var zero *C.void
+			var zero *C.char
 			out[len(icons)] = zero
 			for i := range icons {
-				*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(icons[i])))
-				defer C.free(unsafe.Pointer(out[i]))
+				*(**C.char)(unsafe.Pointer(&out[i])) = (*C.char)(unsafe.Pointer(C.CString(icons[i])))
+				defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&out[i]))))
 			}
 		}
 	}

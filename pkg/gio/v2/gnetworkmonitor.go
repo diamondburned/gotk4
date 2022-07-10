@@ -160,7 +160,7 @@ func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketC
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -227,7 +227,7 @@ func (monitor *NetworkMonitor) CanReachFinish(result AsyncResulter) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -298,12 +298,12 @@ func (monitor *NetworkMonitor) NetworkMetered() bool {
 //
 func NetworkMonitorGetDefault() *NetworkMonitor {
 	_info := girepository.MustFind("Gio", "get_default")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _networkMonitor *NetworkMonitor // out
 
-	_networkMonitor = wrapNetworkMonitor(coreglib.Take(unsafe.Pointer(_cret)))
+	_networkMonitor = wrapNetworkMonitor(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _networkMonitor
 }

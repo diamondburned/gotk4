@@ -197,7 +197,7 @@ func (shell *ToolShell) TextSizeGroup() *SizeGroup {
 
 	var _sizeGroup *SizeGroup // out
 
-	_sizeGroup = wrapSizeGroup(coreglib.Take(unsafe.Pointer(_cret)))
+	_sizeGroup = wrapSizeGroup(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _sizeGroup
 }

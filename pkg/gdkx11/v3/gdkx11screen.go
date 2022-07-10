@@ -39,7 +39,7 @@ func GTypeX11Screen() coreglib.Type {
 //
 func X11GetDefaultScreen() int32 {
 	_info := girepository.MustFind("GdkX11", "x11_get_default_screen")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.gint)(unsafe.Pointer(&_gret))
 
 	var _gint int32 // out
@@ -183,13 +183,13 @@ func (screen *X11Screen) WindowManagerName() string {
 
 	_info := girepository.MustFind("GdkX11", "X11Screen")
 	_gret := _info.InvokeClassMethod("get_window_manager_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }

@@ -129,7 +129,7 @@ func (self *DragIcon) Child() Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -192,7 +192,7 @@ func DragIconCreateWidgetForValue(value *coreglib.Value) Widgetter {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gtk", "create_widget_for_value")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(value)
@@ -201,7 +201,7 @@ func DragIconCreateWidgetForValue(value *coreglib.Value) Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -237,7 +237,7 @@ func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
 
 	_info := girepository.MustFind("Gtk", "get_for_drag")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(drag)
@@ -245,7 +245,7 @@ func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -287,7 +287,7 @@ func DragIconSetFromPaintable(drag gdk.Dragger, paintable gdk.Paintabler, hotX, 
 	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(hotY)
 
 	_info := girepository.MustFind("Gtk", "set_from_paintable")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(drag)
 	runtime.KeepAlive(paintable)

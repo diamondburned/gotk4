@@ -214,7 +214,7 @@ func (conn *TLSClientConnection) ServerIdentity() *SocketConnectable {
 	var _socketConnectable *SocketConnectable // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_socketConnectable = wrapSocketConnectable(coreglib.Take(unsafe.Pointer(_cret)))
+		_socketConnectable = wrapSocketConnectable(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _socketConnectable
@@ -328,7 +328,7 @@ func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnec
 	}
 
 	_info := girepository.MustFind("Gio", "new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseIoStream)
@@ -337,9 +337,9 @@ func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnec
 	var _tlsClientConnection *TLSClientConnection // out
 	var _goerr error                              // out
 
-	_tlsClientConnection = wrapTLSClientConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_tlsClientConnection = wrapTLSClientConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _tlsClientConnection, _goerr

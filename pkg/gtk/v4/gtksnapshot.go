@@ -80,7 +80,7 @@ func NewSnapshot() *Snapshot {
 
 	var _snapshot *Snapshot // out
 
-	_snapshot = wrapSnapshot(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_snapshot = wrapSnapshot(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _snapshot
 }
@@ -112,7 +112,7 @@ func (snapshot *Snapshot) AppendCairo(bounds *graphene.Rect) *cairo.Context {
 
 	var _context *cairo.Context // out
 
-	_context = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
+	_context = cairo.WrapContext(uintptr(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(_context, func(v *cairo.Context) {
 		C.cairo_destroy((*C.void)(unsafe.Pointer(v.Native())))
 	})
@@ -855,7 +855,7 @@ func (snapshot *Snapshot) ToNode() gsk.RenderNoder {
 	var _renderNode gsk.RenderNoder // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gsk.RenderNoder is nil")
 		}
@@ -909,7 +909,7 @@ func (snapshot *Snapshot) ToPaintable(size *graphene.Size) *gdk.Paintable {
 	var _paintable *gdk.Paintable // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_paintable = &gdk.Paintable{
 			Object: obj,
 		}

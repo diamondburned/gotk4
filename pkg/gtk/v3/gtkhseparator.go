@@ -101,7 +101,7 @@ func NewHSeparator() *HSeparator {
 
 	var _hSeparator *HSeparator // out
 
-	_hSeparator = wrapHSeparator(coreglib.Take(unsafe.Pointer(_cret)))
+	_hSeparator = wrapHSeparator(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _hSeparator
 }

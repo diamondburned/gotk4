@@ -95,7 +95,7 @@ func NewVButtonBox() *VButtonBox {
 
 	var _vButtonBox *VButtonBox // out
 
-	_vButtonBox = wrapVButtonBox(coreglib.Take(unsafe.Pointer(_cret)))
+	_vButtonBox = wrapVButtonBox(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _vButtonBox
 }

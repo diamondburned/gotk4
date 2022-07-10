@@ -21,10 +21,10 @@ import (
 // extern void _gotk4_gtk4_Text_ConnectBackspace(gpointer, guintptr);
 // extern void _gotk4_gtk4_Text_ConnectCopyClipboard(gpointer, guintptr);
 // extern void _gotk4_gtk4_Text_ConnectCutClipboard(gpointer, guintptr);
-// extern void _gotk4_gtk4_Text_ConnectInsertAtCursor(gpointer, void*, guintptr);
+// extern void _gotk4_gtk4_Text_ConnectInsertAtCursor(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk4_Text_ConnectInsertEmoji(gpointer, guintptr);
 // extern void _gotk4_gtk4_Text_ConnectPasteClipboard(gpointer, guintptr);
-// extern void _gotk4_gtk4_Text_ConnectPreeditChanged(gpointer, void*, guintptr);
+// extern void _gotk4_gtk4_Text_ConnectPreeditChanged(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk4_Text_ConnectToggleOverwrite(gpointer, guintptr);
 import "C"
 
@@ -258,7 +258,7 @@ func (self *Text) ConnectCutClipboard(f func()) coreglib.SignalHandle {
 }
 
 //export _gotk4_gtk4_Text_ConnectInsertAtCursor
-func _gotk4_gtk4_Text_ConnectInsertAtCursor(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk4_Text_ConnectInsertAtCursor(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
 	var f func(str string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -340,7 +340,7 @@ func (self *Text) ConnectPasteClipboard(f func()) coreglib.SignalHandle {
 }
 
 //export _gotk4_gtk4_Text_ConnectPreeditChanged
-func _gotk4_gtk4_Text_ConnectPreeditChanged(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk4_Text_ConnectPreeditChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
 	var f func(preedit string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -406,7 +406,7 @@ func NewText() *Text {
 
 	var _text *Text // out
 
-	_text = wrapText(coreglib.Take(unsafe.Pointer(_cret)))
+	_text = wrapText(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _text
 }
@@ -434,7 +434,7 @@ func NewTextWithBuffer(buffer *EntryBuffer) *Text {
 
 	var _text *Text // out
 
-	_text = wrapText(coreglib.Take(unsafe.Pointer(_cret)))
+	_text = wrapText(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _text
 }
@@ -486,8 +486,8 @@ func (self *Text) Attributes() *pango.AttrList {
 	var _attrList *pango.AttrList // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.pango_attr_list_ref(_cret)
+		_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.pango_attr_list_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -518,7 +518,7 @@ func (self *Text) Buffer() *EntryBuffer {
 
 	var _entryBuffer *EntryBuffer // out
 
-	_entryBuffer = wrapEntryBuffer(coreglib.Take(unsafe.Pointer(_cret)))
+	_entryBuffer = wrapEntryBuffer(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _entryBuffer
 }
@@ -571,7 +571,7 @@ func (self *Text) ExtraMenu() gio.MenuModeller {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -692,14 +692,14 @@ func (self *Text) PlaceholderText() string {
 
 	_info := girepository.MustFind("Gtk", "Text")
 	_gret := _info.InvokeClassMethod("get_placeholder_text", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -753,7 +753,7 @@ func (self *Text) Tabs() *pango.TabArray {
 	var _tabArray *pango.TabArray // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _tabArray
@@ -1070,8 +1070,8 @@ func (self *Text) SetPlaceholderText(text string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if text != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(text)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "Text")

@@ -130,7 +130,7 @@ func NewAlternativeTrigger(first, second ShortcutTriggerer) *AlternativeTrigger 
 
 	var _alternativeTrigger *AlternativeTrigger // out
 
-	_alternativeTrigger = wrapAlternativeTrigger(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_alternativeTrigger = wrapAlternativeTrigger(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _alternativeTrigger
 }
@@ -157,7 +157,7 @@ func (self *AlternativeTrigger) First() ShortcutTriggerer {
 	var _shortcutTrigger ShortcutTriggerer // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.ShortcutTriggerer is nil")
 		}
@@ -199,7 +199,7 @@ func (self *AlternativeTrigger) Second() ShortcutTriggerer {
 	var _shortcutTrigger ShortcutTriggerer // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.ShortcutTriggerer is nil")
 		}
@@ -319,7 +319,7 @@ func NewMnemonicTrigger(keyval uint32) *MnemonicTrigger {
 
 	var _mnemonicTrigger *MnemonicTrigger // out
 
-	_mnemonicTrigger = wrapMnemonicTrigger(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_mnemonicTrigger = wrapMnemonicTrigger(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _mnemonicTrigger
 }
@@ -381,12 +381,12 @@ func marshalNeverTrigger(p uintptr) (interface{}, error) {
 //
 func NeverTriggerGet() *NeverTrigger {
 	_info := girepository.MustFind("Gtk", "get")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _neverTrigger *NeverTrigger // out
 
-	_neverTrigger = wrapNeverTrigger(coreglib.Take(unsafe.Pointer(_cret)))
+	_neverTrigger = wrapNeverTrigger(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _neverTrigger
 }
@@ -470,8 +470,8 @@ func BaseShortcutTrigger(obj ShortcutTriggerer) *ShortcutTrigger {
 func NewShortcutTriggerParseString(str string) *ShortcutTrigger {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "ShortcutTrigger")
 	_gret := _info.InvokeClassMethod("new_ShortcutTrigger_parse_string", _args[:], nil)
@@ -482,7 +482,7 @@ func NewShortcutTriggerParseString(str string) *ShortcutTrigger {
 	var _shortcutTrigger *ShortcutTrigger // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_shortcutTrigger = wrapShortcutTrigger(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_shortcutTrigger = wrapShortcutTrigger(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _shortcutTrigger
@@ -506,8 +506,8 @@ func NewShortcutTriggerParseString(str string) *ShortcutTrigger {
 func (trigger1 *ShortcutTrigger) Compare(trigger2 ShortcutTriggerer) int32 {
 	var _args [2]girepository.Argument
 
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = C.gpointer(unsafe.Pointer(coreglib.InternObject(trigger1).Native()))
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = C.gpointer(unsafe.Pointer(coreglib.InternObject(trigger2).Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = *(*C.gpointer)(unsafe.Pointer(coreglib.InternObject(trigger1).Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = *(*C.gpointer)(unsafe.Pointer(coreglib.InternObject(trigger2).Native()))
 
 	_info := girepository.MustFind("Gtk", "ShortcutTrigger")
 	_gret := _info.InvokeClassMethod("compare", _args[:], nil)
@@ -539,8 +539,8 @@ func (trigger1 *ShortcutTrigger) Compare(trigger2 ShortcutTriggerer) int32 {
 func (trigger1 *ShortcutTrigger) Equal(trigger2 ShortcutTriggerer) bool {
 	var _args [2]girepository.Argument
 
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = C.gpointer(unsafe.Pointer(coreglib.InternObject(trigger1).Native()))
-	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = C.gpointer(unsafe.Pointer(coreglib.InternObject(trigger2).Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = *(*C.gpointer)(unsafe.Pointer(coreglib.InternObject(trigger1).Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = *(*C.gpointer)(unsafe.Pointer(coreglib.InternObject(trigger2).Native()))
 
 	_info := girepository.MustFind("Gtk", "ShortcutTrigger")
 	_gret := _info.InvokeClassMethod("equal", _args[:], nil)
@@ -575,7 +575,7 @@ func (trigger1 *ShortcutTrigger) Equal(trigger2 ShortcutTriggerer) bool {
 func (trigger *ShortcutTrigger) Hash() uint32 {
 	var _args [1]girepository.Argument
 
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = C.gpointer(unsafe.Pointer(coreglib.InternObject(trigger).Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = *(*C.gpointer)(unsafe.Pointer(coreglib.InternObject(trigger).Native()))
 
 	_info := girepository.MustFind("Gtk", "ShortcutTrigger")
 	_gret := _info.InvokeClassMethod("hash", _args[:], nil)
@@ -617,15 +617,15 @@ func (self *ShortcutTrigger) ToLabel(display *gdk.Display) string {
 
 	_info := girepository.MustFind("Gtk", "ShortcutTrigger")
 	_gret := _info.InvokeClassMethod("to_label", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(display)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }
@@ -646,14 +646,14 @@ func (self *ShortcutTrigger) String() string {
 
 	_info := girepository.MustFind("Gtk", "ShortcutTrigger")
 	_gret := _info.InvokeClassMethod("to_string", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }

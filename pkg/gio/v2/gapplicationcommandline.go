@@ -17,8 +17,8 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gio2_ApplicationCommandLineClass_print_literal(void*, void*);
-// extern void _gotk4_gio2_ApplicationCommandLineClass_printerr_literal(void*, void*);
+// extern void _gotk4_gio2_ApplicationCommandLineClass_print_literal(void*, gchar*);
+// extern void _gotk4_gio2_ApplicationCommandLineClass_printerr_literal(void*, gchar*);
 // extern void* _gotk4_gio2_ApplicationCommandLineClass_get_stdin(void*);
 import "C"
 
@@ -179,7 +179,7 @@ func _gotk4_gio2_ApplicationCommandLineClass_get_stdin(arg0 *C.void) (cret *C.vo
 }
 
 //export _gotk4_gio2_ApplicationCommandLineClass_print_literal
-func _gotk4_gio2_ApplicationCommandLineClass_print_literal(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gio2_ApplicationCommandLineClass_print_literal(arg0 *C.void, arg1 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PrintLiteral(message string) })
 
@@ -191,7 +191,7 @@ func _gotk4_gio2_ApplicationCommandLineClass_print_literal(arg0 *C.void, arg1 *C
 }
 
 //export _gotk4_gio2_ApplicationCommandLineClass_printerr_literal
-func _gotk4_gio2_ApplicationCommandLineClass_printerr_literal(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gio2_ApplicationCommandLineClass_printerr_literal(arg0 *C.void, arg1 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ PrinterrLiteral(message string) })
 
@@ -231,8 +231,8 @@ func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) *File {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(arg)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(arg)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "ApplicationCommandLine")
 	_gret := _info.InvokeClassMethod("create_file_for_arg", _args[:], nil)
@@ -243,7 +243,7 @@ func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) *File {
 
 	var _file *File // out
 
-	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _file
 }
@@ -277,13 +277,13 @@ func (cmdline *ApplicationCommandLine) Arguments() []string {
 
 	var _filenames []string // out
 
-	defer C.free(unsafe.Pointer(_cret))
+	defer C.free(unsafe.Pointer(*(***C.gchar)(unsafe.Pointer(&_cret))))
 	{
-		src := unsafe.Slice((**C.void)(_cret), _outs[0])
-		_filenames = make([]string, _outs[0])
-		for i := 0; i < int(_outs[0]); i++ {
-			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+		src := unsafe.Slice((**C.gchar)(*(***C.gchar)(unsafe.Pointer(&_cret))), *(*C.int)(unsafe.Pointer(&_outs[0])))
+		_filenames = make([]string, *(*C.int)(unsafe.Pointer(&_outs[0])))
+		for i := 0; i < int(*(*C.int)(unsafe.Pointer(&_outs[0]))); i++ {
+			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i])))))
+			defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i]))))
 		}
 	}
 
@@ -310,14 +310,14 @@ func (cmdline *ApplicationCommandLine) Cwd() string {
 
 	_info := girepository.MustFind("Gio", "ApplicationCommandLine")
 	_gret := _info.InvokeClassMethod("get_cwd", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cmdline)
 
 	var _filename string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_filename = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _filename
@@ -358,15 +358,15 @@ func (cmdline *ApplicationCommandLine) Environ() []string {
 
 	{
 		var i int
-		var z *C.void
-		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+		var z *C.gchar
+		for p := *(***C.gchar)(unsafe.Pointer(&_cret)); *p != z; p = &unsafe.Slice(p, 2)[1] {
 			i++
 		}
 
-		src := unsafe.Slice(_cret, i)
+		src := unsafe.Slice(*(***C.gchar)(unsafe.Pointer(&_cret)), i)
 		_filenames = make([]string, i)
 		for i := range src {
-			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			_filenames[i] = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src[i])))))
 		}
 	}
 
@@ -452,8 +452,8 @@ func (cmdline *ApplicationCommandLine) OptionsDict() *glib.VariantDict {
 
 	var _variantDict *glib.VariantDict // out
 
-	_variantDict = (*glib.VariantDict)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_variant_dict_ref(_cret)
+	_variantDict = (*glib.VariantDict)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.g_variant_dict_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variantDict)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -491,7 +491,7 @@ func (cmdline *ApplicationCommandLine) PlatformData() *glib.Variant {
 	var _variant *glib.Variant // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -532,7 +532,7 @@ func (cmdline *ApplicationCommandLine) Stdin() InputStreamer {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -574,20 +574,20 @@ func (cmdline *ApplicationCommandLine) env(name string) string {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cmdline).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "ApplicationCommandLine")
 	_gret := _info.InvokeClassMethod("getenv", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cmdline)
 	runtime.KeepAlive(name)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8

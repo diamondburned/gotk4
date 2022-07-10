@@ -20,7 +20,7 @@ import (
 // extern void _gotk4_pango1_RendererClass_begin(void*);
 // extern void _gotk4_pango1_RendererClass_draw_error_underline(void*, int, int, int, int);
 // extern void _gotk4_pango1_RendererClass_draw_glyph(void*, void*, guint32, double, double);
-// extern void _gotk4_pango1_RendererClass_draw_glyph_item(void*, void*, void*, int, int);
+// extern void _gotk4_pango1_RendererClass_draw_glyph_item(void*, char*, void*, int, int);
 // extern void _gotk4_pango1_RendererClass_draw_glyphs(void*, void*, void*, int, int);
 // extern void _gotk4_pango1_RendererClass_draw_shape(void*, void*, int, int);
 // extern void _gotk4_pango1_RendererClass_end(void*);
@@ -322,7 +322,7 @@ func _gotk4_pango1_RendererClass_draw_glyph(arg0 *C.void, arg1 *C.void, arg2 C.g
 }
 
 //export _gotk4_pango1_RendererClass_draw_glyph_item
-func _gotk4_pango1_RendererClass_draw_glyph_item(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 C.int, arg4 C.int) {
+func _gotk4_pango1_RendererClass_draw_glyph_item(arg0 *C.void, arg1 *C.char, arg2 *C.void, arg3 C.int, arg4 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int32)
@@ -558,8 +558,8 @@ func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x, y 
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	if text != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(text)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	}
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphItem)))
 	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(x)
@@ -685,7 +685,7 @@ func (renderer *Renderer) Layout() *Layout {
 	var _layout *Layout // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_layout = wrapLayout(coreglib.Take(unsafe.Pointer(_cret)))
+		_layout = wrapLayout(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _layout
@@ -717,8 +717,8 @@ func (renderer *Renderer) LayoutLine() *LayoutLine {
 	var _layoutLine *LayoutLine // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.pango_layout_line_ref(_cret)
+		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.pango_layout_line_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_layoutLine)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -754,7 +754,7 @@ func (renderer *Renderer) Matrix() *Matrix {
 	var _matrix *Matrix // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _matrix

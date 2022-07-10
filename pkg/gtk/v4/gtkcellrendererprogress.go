@@ -71,7 +71,7 @@ func NewCellRendererProgress() *CellRendererProgress {
 
 	var _cellRendererProgress *CellRendererProgress // out
 
-	_cellRendererProgress = wrapCellRendererProgress(coreglib.Take(unsafe.Pointer(_cret)))
+	_cellRendererProgress = wrapCellRendererProgress(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cellRendererProgress
 }

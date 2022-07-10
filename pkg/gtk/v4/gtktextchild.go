@@ -79,7 +79,7 @@ func NewTextChildAnchor() *TextChildAnchor {
 
 	var _textChildAnchor *TextChildAnchor // out
 
-	_textChildAnchor = wrapTextChildAnchor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_textChildAnchor = wrapTextChildAnchor(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _textChildAnchor
 }
@@ -137,13 +137,13 @@ func (anchor *TextChildAnchor) Widgets() []Widgetter {
 
 	var _widgets []Widgetter // out
 
-	defer C.free(unsafe.Pointer(_cret))
+	defer C.free(unsafe.Pointer(*(***C.void)(unsafe.Pointer(&_cret))))
 	{
-		src := unsafe.Slice((**C.void)(_cret), _outs[0])
-		_widgets = make([]Widgetter, _outs[0])
-		for i := 0; i < int(_outs[0]); i++ {
+		src := unsafe.Slice((**C.void)(*(***C.void)(unsafe.Pointer(&_cret))), *(*C.guint)(unsafe.Pointer(&_outs[0])))
+		_widgets = make([]Widgetter, *(*C.guint)(unsafe.Pointer(&_outs[0])))
+		for i := 0; i < int(*(*C.guint)(unsafe.Pointer(&_outs[0]))); i++ {
 			{
-				objptr := unsafe.Pointer(src[i])
+				objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))
 				if objptr == nil {
 					panic("object of type gtk.Widgetter is nil")
 				}

@@ -232,7 +232,7 @@ func NewListView(model SelectionModeller, factory *ListItemFactory) *ListView {
 
 	var _listView *ListView // out
 
-	_listView = wrapListView(coreglib.Take(unsafe.Pointer(_cret)))
+	_listView = wrapListView(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _listView
 }
@@ -284,7 +284,7 @@ func (self *ListView) Factory() *ListItemFactory {
 	var _listItemFactory *ListItemFactory // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_listItemFactory = wrapListItemFactory(coreglib.Take(unsafe.Pointer(_cret)))
+		_listItemFactory = wrapListItemFactory(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _listItemFactory
@@ -310,7 +310,7 @@ func (self *ListView) Model() *SelectionModel {
 	var _selectionModel *SelectionModel // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_selectionModel = wrapSelectionModel(coreglib.Take(unsafe.Pointer(_cret)))
+		_selectionModel = wrapSelectionModel(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _selectionModel

@@ -104,8 +104,8 @@ func NewDirectoryList(attributes string, file gio.Filer) *DirectoryList {
 	var _args [2]girepository.Argument
 
 	if attributes != "" {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(attributes)))
-		defer C.free(unsafe.Pointer(_args[0]))
+		*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	}
 	if file != nil {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(file).Native()))
@@ -120,7 +120,7 @@ func NewDirectoryList(attributes string, file gio.Filer) *DirectoryList {
 
 	var _directoryList *DirectoryList // out
 
-	_directoryList = wrapDirectoryList(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_directoryList = wrapDirectoryList(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _directoryList
 }
@@ -138,14 +138,14 @@ func (self *DirectoryList) Attributes() string {
 
 	_info := girepository.MustFind("Gtk", "DirectoryList")
 	_gret := _info.InvokeClassMethod("get_attributes", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -178,7 +178,7 @@ func (self *DirectoryList) Error() error {
 	var _err error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_err = gerror.Take(unsafe.Pointer(_cret))
+		_err = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 	}
 
 	return _err
@@ -205,7 +205,7 @@ func (self *DirectoryList) File() *gio.File {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_file = &gio.File{
 				Object: obj,
 			}
@@ -310,8 +310,8 @@ func (self *DirectoryList) SetAttributes(attributes string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if attributes != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(attributes)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "DirectoryList")

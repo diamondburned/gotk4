@@ -104,7 +104,7 @@ func (stream *FilterOutputStream) BaseStream() OutputStreamer {
 	var _outputStream OutputStreamer // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gio.OutputStreamer is nil")
 		}

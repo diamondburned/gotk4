@@ -21,5 +21,5 @@ import "C"
 // other libraries in your program might be making use of gioscheduler.
 func IOSchedulerCancelAllJobs() {
 	_info := girepository.MustFind("Gio", "io_scheduler_cancel_all_jobs")
-	_info.Invoke(nil, nil)
+	_info.InvokeFunction(nil, nil)
 }

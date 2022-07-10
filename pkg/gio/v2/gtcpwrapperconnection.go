@@ -95,7 +95,7 @@ func NewTCPWrapperConnection(baseIoStream IOStreamer, socket *Socket) *TCPWrappe
 
 	var _tcpWrapperConnection *TCPWrapperConnection // out
 
-	_tcpWrapperConnection = wrapTCPWrapperConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_tcpWrapperConnection = wrapTCPWrapperConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _tcpWrapperConnection
 }
@@ -120,7 +120,7 @@ func (conn *TCPWrapperConnection) BaseIOStream() IOStreamer {
 	var _ioStream IOStreamer // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gio.IOStreamer is nil")
 		}

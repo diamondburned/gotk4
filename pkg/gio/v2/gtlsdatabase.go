@@ -17,7 +17,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void* _gotk4_gio2_TlsDatabaseClass_create_certificate_handle(void*, void*);
+// extern gchar* _gotk4_gio2_TlsDatabaseClass_create_certificate_handle(void*, void*);
 // extern void* _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle_finish(void*, void*, GError**);
 // extern void* _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer_finish(void*, void*, GError**);
 // extern void* _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish(void*, void*, GError**);
@@ -179,7 +179,7 @@ func classInitTLSDatabaser(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_TlsDatabaseClass_create_certificate_handle
-func _gotk4_gio2_TlsDatabaseClass_create_certificate_handle(arg0 *C.void, arg1 *C.void) (cret *C.void) {
+func _gotk4_gio2_TlsDatabaseClass_create_certificate_handle(arg0 *C.void, arg1 *C.void) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		CreateCertificateHandle(certificate TLSCertificater) string
@@ -208,7 +208,7 @@ func _gotk4_gio2_TlsDatabaseClass_create_certificate_handle(arg0 *C.void, arg1 *
 	utf8 := iface.CreateCertificateHandle(_certificate)
 
 	if utf8 != "" {
-		cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 	}
 
 	return cret
@@ -377,16 +377,16 @@ func (self *TLSDatabase) CreateCertificateHandle(certificate TLSCertificater) st
 
 	_info := girepository.MustFind("Gio", "TlsDatabase")
 	_gret := _info.InvokeClassMethod("create_certificate_handle", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(certificate)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 	}
 
 	return _utf8
@@ -425,7 +425,7 @@ func (self *TLSDatabase) LookupCertificateForHandleFinish(result AsyncResulter) 
 	var _goerr error                    // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gio.TLSCertificater is nil")
 		}
@@ -442,7 +442,7 @@ func (self *TLSDatabase) LookupCertificateForHandleFinish(result AsyncResulter) 
 		_tlsCertificate = rv
 	}
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _tlsCertificate, _goerr
@@ -478,7 +478,7 @@ func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (TL
 	var _goerr error                    // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gio.TLSCertificater is nil")
 		}
@@ -495,7 +495,7 @@ func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (TL
 		_tlsCertificate = rv
 	}
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _tlsCertificate, _goerr
@@ -530,12 +530,12 @@ func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) 
 	var _list []TLSCertificater // out
 	var _goerr error            // out
 
-	_list = make([]TLSCertificater, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]TLSCertificater, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst TLSCertificater // out
 		{
-			objptr := unsafe.Pointer(src)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
 			if objptr == nil {
 				panic("object of type gio.TLSCertificater is nil")
 			}
@@ -554,7 +554,7 @@ func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) 
 		_list = append(_list, dst)
 	})
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _list, _goerr

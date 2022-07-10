@@ -153,7 +153,7 @@ func NewPasswordEntry() *PasswordEntry {
 
 	var _passwordEntry *PasswordEntry // out
 
-	_passwordEntry = wrapPasswordEntry(coreglib.Take(unsafe.Pointer(_cret)))
+	_passwordEntry = wrapPasswordEntry(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _passwordEntry
 }
@@ -178,7 +178,7 @@ func (entry *PasswordEntry) ExtraMenu() gio.MenuModeller {
 	var _menuModel gio.MenuModeller // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gio.MenuModeller is nil")
 		}

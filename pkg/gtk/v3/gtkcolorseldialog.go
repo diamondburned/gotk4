@@ -91,8 +91,8 @@ func marshalColorSelectionDialog(p uintptr) (interface{}, error) {
 func NewColorSelectionDialog(title string) *ColorSelectionDialog {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "ColorSelectionDialog")
 	_gret := _info.InvokeClassMethod("new_ColorSelectionDialog", _args[:], nil)
@@ -102,7 +102,7 @@ func NewColorSelectionDialog(title string) *ColorSelectionDialog {
 
 	var _colorSelectionDialog *ColorSelectionDialog // out
 
-	_colorSelectionDialog = wrapColorSelectionDialog(coreglib.Take(unsafe.Pointer(_cret)))
+	_colorSelectionDialog = wrapColorSelectionDialog(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _colorSelectionDialog
 }
@@ -127,7 +127,7 @@ func (colorsel *ColorSelectionDialog) ColorSelection() Widgetter {
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}

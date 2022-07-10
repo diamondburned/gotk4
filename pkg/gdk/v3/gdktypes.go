@@ -1125,7 +1125,7 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
 	var _ok bool         // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
@@ -1164,7 +1164,7 @@ func (src1 *Rectangle) Union(src2 *Rectangle) *Rectangle {
 
 	var _dest *Rectangle // out
 
-	_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _dest
 }

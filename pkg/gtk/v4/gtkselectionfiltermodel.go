@@ -92,7 +92,7 @@ func NewSelectionFilterModel(model SelectionModeller) *SelectionFilterModel {
 
 	var _selectionFilterModel *SelectionFilterModel // out
 
-	_selectionFilterModel = wrapSelectionFilterModel(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_selectionFilterModel = wrapSelectionFilterModel(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _selectionFilterModel
 }
@@ -117,7 +117,7 @@ func (self *SelectionFilterModel) Model() *SelectionModel {
 	var _selectionModel *SelectionModel // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_selectionModel = wrapSelectionModel(coreglib.Take(unsafe.Pointer(_cret)))
+		_selectionModel = wrapSelectionModel(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _selectionModel

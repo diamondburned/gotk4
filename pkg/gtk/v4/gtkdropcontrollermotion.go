@@ -149,7 +149,7 @@ func NewDropControllerMotion() *DropControllerMotion {
 
 	var _dropControllerMotion *DropControllerMotion // out
 
-	_dropControllerMotion = wrapDropControllerMotion(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dropControllerMotion = wrapDropControllerMotion(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _dropControllerMotion
 }
@@ -203,7 +203,7 @@ func (self *DropControllerMotion) Drop() gdk.Dropper {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

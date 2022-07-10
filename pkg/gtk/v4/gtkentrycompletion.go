@@ -16,9 +16,9 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gtk4_EntryCompletionMatchFunc(void*, void*, void*, gpointer);
+// extern gboolean _gotk4_gtk4_EntryCompletionMatchFunc(void*, char*, void*, gpointer);
 // extern gboolean _gotk4_gtk4_EntryCompletion_ConnectCursorOnMatch(gpointer, void*, void*, guintptr);
-// extern gboolean _gotk4_gtk4_EntryCompletion_ConnectInsertPrefix(gpointer, void*, guintptr);
+// extern gboolean _gotk4_gtk4_EntryCompletion_ConnectInsertPrefix(gpointer, gchar*, guintptr);
 // extern gboolean _gotk4_gtk4_EntryCompletion_ConnectMatchSelected(gpointer, void*, void*, guintptr);
 // extern void _gotk4_gtk4_EntryCompletion_ConnectNoMatches(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
@@ -46,7 +46,7 @@ func GTypeEntryCompletion() coreglib.Type {
 type EntryCompletionMatchFunc func(completion *EntryCompletion, key string, iter *TreeIter) (ok bool)
 
 //export _gotk4_gtk4_EntryCompletionMatchFunc
-func _gotk4_gtk4_EntryCompletionMatchFunc(arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 C.gpointer) (cret C.gboolean) {
+func _gotk4_gtk4_EntryCompletionMatchFunc(arg1 *C.void, arg2 *C.char, arg3 *C.void, arg4 C.gpointer) (cret C.gboolean) {
 	var fn EntryCompletionMatchFunc
 	{
 		v := gbox.Get(uintptr(arg4))
@@ -192,7 +192,7 @@ func (completion *EntryCompletion) ConnectCursorOnMatch(f func(model TreeModelle
 }
 
 //export _gotk4_gtk4_EntryCompletion_ConnectInsertPrefix
-func _gotk4_gtk4_EntryCompletion_ConnectInsertPrefix(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) (cret C.gboolean) {
+func _gotk4_gtk4_EntryCompletion_ConnectInsertPrefix(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) (cret C.gboolean) {
 	var f func(prefix string) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -321,7 +321,7 @@ func NewEntryCompletion() *EntryCompletion {
 
 	var _entryCompletion *EntryCompletion // out
 
-	_entryCompletion = wrapEntryCompletion(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_entryCompletion = wrapEntryCompletion(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _entryCompletion
 }
@@ -353,7 +353,7 @@ func NewEntryCompletionWithArea(area CellAreaer) *EntryCompletion {
 
 	var _entryCompletion *EntryCompletion // out
 
-	_entryCompletion = wrapEntryCompletion(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_entryCompletion = wrapEntryCompletion(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _entryCompletion
 }
@@ -393,21 +393,21 @@ func (completion *EntryCompletion) ComputePrefix(key string) string {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "EntryCompletion")
 	_gret := _info.InvokeClassMethod("compute_prefix", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(completion)
 	runtime.KeepAlive(key)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 	}
 
 	return _utf8
@@ -427,14 +427,14 @@ func (completion *EntryCompletion) CompletionPrefix() string {
 
 	_info := girepository.MustFind("Gtk", "EntryCompletion")
 	_gret := _info.InvokeClassMethod("get_completion_prefix", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(completion)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -460,7 +460,7 @@ func (completion *EntryCompletion) Entry() Widgetter {
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -579,7 +579,7 @@ func (completion *EntryCompletion) Model() *TreeModel {
 	var _treeModel *TreeModel // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_treeModel = wrapTreeModel(coreglib.Take(unsafe.Pointer(_cret)))
+		_treeModel = wrapTreeModel(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _treeModel

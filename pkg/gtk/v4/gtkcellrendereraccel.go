@@ -14,7 +14,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk4_CellRendererAccel_ConnectAccelCleared(gpointer, void*, guintptr);
+// extern void _gotk4_gtk4_CellRendererAccel_ConnectAccelCleared(gpointer, gchar*, guintptr);
 import "C"
 
 // GTypeCellRendererAccelMode returns the GType for the type CellRendererAccelMode.
@@ -99,7 +99,7 @@ func marshalCellRendererAccel(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk4_CellRendererAccel_ConnectAccelCleared
-func _gotk4_gtk4_CellRendererAccel_ConnectAccelCleared(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk4_CellRendererAccel_ConnectAccelCleared(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
 	var f func(pathString string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -136,7 +136,7 @@ func NewCellRendererAccel() *CellRendererAccel {
 
 	var _cellRendererAccel *CellRendererAccel // out
 
-	_cellRendererAccel = wrapCellRendererAccel(coreglib.Take(unsafe.Pointer(_cret)))
+	_cellRendererAccel = wrapCellRendererAccel(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cellRendererAccel
 }

@@ -169,7 +169,7 @@ func NewFontButton() *FontButton {
 
 	var _fontButton *FontButton // out
 
-	_fontButton = wrapFontButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_fontButton = wrapFontButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _fontButton
 }
@@ -187,8 +187,8 @@ func NewFontButton() *FontButton {
 func NewFontButtonWithFont(fontname string) *FontButton {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(fontname)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(fontname)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "FontButton")
 	_gret := _info.InvokeClassMethod("new_FontButton_with_font", _args[:], nil)
@@ -198,7 +198,7 @@ func NewFontButtonWithFont(fontname string) *FontButton {
 
 	var _fontButton *FontButton // out
 
-	_fontButton = wrapFontButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_fontButton = wrapFontButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _fontButton
 }
@@ -222,13 +222,13 @@ func (fontButton *FontButton) FontName() string {
 
 	_info := girepository.MustFind("Gtk", "FontButton")
 	_gret := _info.InvokeClassMethod("get_font_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(fontButton)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -299,13 +299,13 @@ func (fontButton *FontButton) Title() string {
 
 	_info := girepository.MustFind("Gtk", "FontButton")
 	_gret := _info.InvokeClassMethod("get_title", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(fontButton)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -379,8 +379,8 @@ func (fontButton *FontButton) SetFontName(fontname string) bool {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(fontname)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(fontname)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "FontButton")
 	_gret := _info.InvokeClassMethod("set_font_name", _args[:], nil)
@@ -452,8 +452,8 @@ func (fontButton *FontButton) SetTitle(title string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(fontButton).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "FontButton")
 	_info.InvokeClassMethod("set_title", _args[:], nil)

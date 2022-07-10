@@ -288,7 +288,7 @@ func NewPopoverMenuFromModel(model gio.MenuModeller) *PopoverMenu {
 
 	var _popoverMenu *PopoverMenu // out
 
-	_popoverMenu = wrapPopoverMenu(coreglib.Take(unsafe.Pointer(_cret)))
+	_popoverMenu = wrapPopoverMenu(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _popoverMenu
 }
@@ -312,8 +312,8 @@ func (popover *PopoverMenu) AddChild(child Widgetter, id string) bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(id)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(id)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
 
 	_info := girepository.MustFind("Gtk", "PopoverMenu")
 	_gret := _info.InvokeClassMethod("add_child", _args[:], nil)
@@ -352,7 +352,7 @@ func (popover *PopoverMenu) MenuModel() gio.MenuModeller {
 	var _menuModel gio.MenuModeller // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gio.MenuModeller is nil")
 		}

@@ -110,7 +110,7 @@ func NewTextureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Texture {
 
 	var _texture *Texture // out
 
-	_texture = wrapTexture(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_texture = wrapTexture(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _texture
 }
@@ -144,9 +144,9 @@ func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 	var _texture *Texture // out
 	var _goerr error      // out
 
-	_texture = wrapTexture(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_texture = wrapTexture(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _texture, _goerr
@@ -173,8 +173,8 @@ func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 func NewTextureFromResource(resourcePath string) *Texture {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gdk", "Texture")
 	_gret := _info.InvokeClassMethod("new_Texture_from_resource", _args[:], nil)
@@ -184,7 +184,7 @@ func NewTextureFromResource(resourcePath string) *Texture {
 
 	var _texture *Texture // out
 
-	_texture = wrapTexture(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_texture = wrapTexture(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _texture
 }
@@ -255,8 +255,8 @@ func (texture *Texture) SaveToPNG(filename string) bool {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gdk", "Texture")
 	_gret := _info.InvokeClassMethod("save_to_png", _args[:], nil)

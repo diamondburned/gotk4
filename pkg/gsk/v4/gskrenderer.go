@@ -111,7 +111,7 @@ func NewRendererForSurface(surface gdk.Surfacer) *Renderer {
 	var _renderer *Renderer // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_renderer = wrapRenderer(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_renderer = wrapRenderer(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _renderer
@@ -140,7 +140,7 @@ func (renderer *Renderer) Surface() gdk.Surfacer {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -206,7 +206,7 @@ func (renderer *Renderer) Realize(surface gdk.Surfacer) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -284,7 +284,7 @@ func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rec
 	var _texture gdk.Texturer // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Texturer is nil")
 		}

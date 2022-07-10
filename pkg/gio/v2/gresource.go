@@ -31,7 +31,7 @@ func ResourcesRegister(resource *Resource) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(resource)))
 
 	_info := girepository.MustFind("Gio", "resources_register")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(resource)
 }
@@ -49,7 +49,7 @@ func ResourcesUnregister(resource *Resource) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(resource)))
 
 	_info := girepository.MustFind("Gio", "resources_unregister")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(resource)
 }
@@ -75,11 +75,11 @@ func ResourcesUnregister(resource *Resource) {
 func ResourceLoad(filename string) (*Resource, error) {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gio", "load")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(filename)
@@ -87,7 +87,7 @@ func ResourceLoad(filename string) (*Resource, error) {
 	var _resource *Resource // out
 	var _goerr error        // out
 
-	_resource = (*Resource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_resource = (*Resource)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_resource)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -95,7 +95,7 @@ func ResourceLoad(filename string) (*Resource, error) {
 		},
 	)
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _resource, _goerr
@@ -154,8 +154,8 @@ func (staticResource *StaticResource) Resource() *Resource {
 
 	var _resource *Resource // out
 
-	_resource = (*Resource)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_resource_ref(_cret)
+	_resource = (*Resource)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.g_resource_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_resource)),
 		func(intern *struct{ C unsafe.Pointer }) {

@@ -16,9 +16,9 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk4_ActionableInterface_set_action_name(void*, void*);
+// extern char* _gotk4_gtk4_ActionableInterface_get_action_name(void*);
+// extern void _gotk4_gtk4_ActionableInterface_set_action_name(void*, char*);
 // extern void _gotk4_gtk4_ActionableInterface_set_action_target_value(void*, void*);
-// extern void* _gotk4_gtk4_ActionableInterface_get_action_name(void*);
 // extern void* _gotk4_gtk4_ActionableInterface_get_action_target_value(void*);
 import "C"
 
@@ -147,14 +147,14 @@ func ifaceInitActionabler(gifacePtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk4_ActionableInterface_get_action_name
-func _gotk4_gtk4_ActionableInterface_get_action_name(arg0 *C.void) (cret *C.void) {
+func _gotk4_gtk4_ActionableInterface_get_action_name(arg0 *C.void) (cret *C.char) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionableOverrider)
 
 	utf8 := iface.ActionName()
 
 	if utf8 != "" {
-		cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+		cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
 		defer C.free(unsafe.Pointer(cret))
 	}
 
@@ -176,7 +176,7 @@ func _gotk4_gtk4_ActionableInterface_get_action_target_value(arg0 *C.void) (cret
 }
 
 //export _gotk4_gtk4_ActionableInterface_set_action_name
-func _gotk4_gtk4_ActionableInterface_set_action_name(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gtk4_ActionableInterface_set_action_name(arg0 *C.void, arg1 *C.char) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionableOverrider)
 
@@ -247,14 +247,14 @@ func (actionable *Actionable) ActionName() string {
 
 	_info := girepository.MustFind("Gtk", "Actionable")
 	_gret := _info.InvokeIfaceMethod("get_action_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(actionable)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -280,8 +280,8 @@ func (actionable *Actionable) ActionTargetValue() *glib.Variant {
 	var _variant *glib.Variant // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_variant_ref(_cret)
+		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.g_variant_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -315,8 +315,8 @@ func (actionable *Actionable) SetActionName(actionName string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
 	if actionName != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(actionName)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "Actionable")
@@ -377,8 +377,8 @@ func (actionable *Actionable) SetDetailedActionName(detailedActionName string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(detailedActionName)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(detailedActionName)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "Actionable")
 	_info.InvokeIfaceMethod("set_detailed_action_name", _args[:], nil)

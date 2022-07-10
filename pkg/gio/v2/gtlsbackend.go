@@ -171,7 +171,7 @@ func (backend *TLSBackend) DefaultDatabase() TLSDatabaser {
 	var _tlsDatabase TLSDatabaser // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gio.TLSDatabaser is nil")
 		}
@@ -281,12 +281,12 @@ func (backend *TLSBackend) SupportsTLS() bool {
 //
 func TLSBackendGetDefault() *TLSBackend {
 	_info := girepository.MustFind("Gio", "get_default")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _tlsBackend *TLSBackend // out
 
-	_tlsBackend = wrapTLSBackend(coreglib.Take(unsafe.Pointer(_cret)))
+	_tlsBackend = wrapTLSBackend(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _tlsBackend
 }

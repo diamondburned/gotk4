@@ -221,7 +221,7 @@ func IsGpointer(ctype string) bool {
 
 // IsGpointer returns true if the given type is a gpointer type.
 func (typ *Resolved) IsGpointer() bool {
-	return isGpointer(typ.CType, typ.GType, int(typ.Ptr)-1)
+	return isGpointer(typ.CType, typ.GType, int(typ.Ptr))
 }
 
 func isGpointer(ctype, gtype string, ptr int) bool {
@@ -919,7 +919,7 @@ func resolveCopyType(gen FileGenerator, typ *gir.Type, array *gir.Array) *gir.Ty
 	// gpointer.
 	if array != nil && array.CType != "" && strings.Contains(array.CType, "*") {
 		ctyp = CleanCType(array.CType, false)
-		ctyp = strings.Replace(ctyp, "*", "", 1) // deref once
+		ctyp = DecPtr(ctyp)
 	}
 
 	if ctyp == "" {

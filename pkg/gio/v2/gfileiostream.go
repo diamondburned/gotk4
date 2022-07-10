@@ -18,11 +18,11 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern char* _gotk4_gio2_FileIOStreamClass_get_etag(void*);
 // extern gboolean _gotk4_gio2_FileIOStreamClass_can_seek(void*);
 // extern gboolean _gotk4_gio2_FileIOStreamClass_can_truncate(void*);
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
-// extern void* _gotk4_gio2_FileIOStreamClass_get_etag(void*);
-// extern void* _gotk4_gio2_FileIOStreamClass_query_info(void*, void*, void*, GError**);
+// extern void* _gotk4_gio2_FileIOStreamClass_query_info(void*, char*, void*, GError**);
 // extern void* _gotk4_gio2_FileIOStreamClass_query_info_finish(void*, void*, GError**);
 import "C"
 
@@ -193,21 +193,21 @@ func _gotk4_gio2_FileIOStreamClass_can_truncate(arg0 *C.void) (cret C.gboolean) 
 }
 
 //export _gotk4_gio2_FileIOStreamClass_get_etag
-func _gotk4_gio2_FileIOStreamClass_get_etag(arg0 *C.void) (cret *C.void) {
+func _gotk4_gio2_FileIOStreamClass_get_etag(arg0 *C.void) (cret *C.char) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ ETag() string })
 
 	utf8 := iface.ETag()
 
 	if utf8 != "" {
-		cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+		cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
 	}
 
 	return cret
 }
 
 //export _gotk4_gio2_FileIOStreamClass_query_info
-func _gotk4_gio2_FileIOStreamClass_query_info(arg0 *C.void, arg1 *C.void, arg2 *C.void, _cerr **C.GError) (cret *C.void) {
+func _gotk4_gio2_FileIOStreamClass_query_info(arg0 *C.void, arg1 *C.char, arg2 *C.void, _cerr **C.GError) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		QueryInfo(ctx context.Context, attributes string) (*FileInfo, error)
@@ -301,15 +301,15 @@ func (stream *FileIOStream) ETag() string {
 
 	_info := girepository.MustFind("Gio", "FileIOStream")
 	_gret := _info.InvokeClassMethod("get_etag", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(stream)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 	}
 
 	return _utf8
@@ -349,8 +349,8 @@ func (stream *FileIOStream) QueryInfo(ctx context.Context, attributes string) (*
 		defer runtime.KeepAlive(cancellable)
 		_args[2] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(attributes)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "FileIOStream")
 	_gret := _info.InvokeClassMethod("query_info", _args[:], nil)
@@ -363,9 +363,9 @@ func (stream *FileIOStream) QueryInfo(ctx context.Context, attributes string) (*
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out
 
-	_fileInfo = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_fileInfo = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _fileInfo, _goerr
@@ -394,8 +394,8 @@ func (stream *FileIOStream) QueryInfoAsync(ctx context.Context, attributes strin
 		defer runtime.KeepAlive(cancellable)
 		_args[3] = (*C.void)(unsafe.Pointer(cancellable.Native()))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(attributes)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(ioPriority)
 	if callback != nil {
 		*(*C.gpointer)(unsafe.Pointer(&_args[4])) = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
@@ -439,9 +439,9 @@ func (stream *FileIOStream) QueryInfoFinish(result AsyncResulter) (*FileInfo, er
 	var _fileInfo *FileInfo // out
 	var _goerr error        // out
 
-	_fileInfo = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_fileInfo = wrapFileInfo(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _fileInfo, _goerr

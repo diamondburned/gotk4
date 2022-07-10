@@ -16,13 +16,13 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern gchar* _gotk4_gtk3_TranslateFunc(gchar*, gpointer);
 // extern void _gotk4_gtk3_ActionGroup_ConnectConnectProxy(gpointer, void*, void*, guintptr);
 // extern void _gotk4_gtk3_ActionGroup_ConnectDisconnectProxy(gpointer, void*, void*, guintptr);
 // extern void _gotk4_gtk3_ActionGroup_ConnectPostActivate(gpointer, void*, guintptr);
 // extern void _gotk4_gtk3_ActionGroup_ConnectPreActivate(gpointer, void*, guintptr);
 // extern void callbackDelete(gpointer);
-// extern void* _gotk4_gtk3_ActionGroupClass_get_action(void*, void*);
-// extern void* _gotk4_gtk3_TranslateFunc(void*, gpointer);
+// extern void* _gotk4_gtk3_ActionGroupClass_get_action(void*, gchar*);
 import "C"
 
 // GTypeActionGroup returns the GType for the type ActionGroup.
@@ -131,7 +131,7 @@ func classInitActionGrouper(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_ActionGroupClass_get_action
-func _gotk4_gtk3_ActionGroupClass_get_action(arg0 *C.void, arg1 *C.void) (cret *C.void) {
+func _gotk4_gtk3_ActionGroupClass_get_action(arg0 *C.void, arg1 *C.gchar) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Action(actionName string) *Action
@@ -333,8 +333,8 @@ func (actionGroup *ActionGroup) ConnectPreActivate(f func(action *Action)) coreg
 func NewActionGroup(name string) *ActionGroup {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "ActionGroup")
 	_gret := _info.InvokeClassMethod("new_ActionGroup", _args[:], nil)
@@ -344,7 +344,7 @@ func NewActionGroup(name string) *ActionGroup {
 
 	var _actionGroup *ActionGroup // out
 
-	_actionGroup = wrapActionGroup(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_actionGroup = wrapActionGroup(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _actionGroup
 }
@@ -398,8 +398,8 @@ func (actionGroup *ActionGroup) AddActionWithAccel(action *Action, accelerator s
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	if accelerator != "" {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(accelerator)))
-		defer C.free(unsafe.Pointer(_args[2]))
+		*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(accelerator)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "ActionGroup")
@@ -432,7 +432,7 @@ func (actionGroup *ActionGroup) AccelGroup() *AccelGroup {
 
 	var _accelGroup *AccelGroup // out
 
-	_accelGroup = wrapAccelGroup(coreglib.Take(unsafe.Pointer(_cret)))
+	_accelGroup = wrapAccelGroup(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _accelGroup
 }
@@ -453,8 +453,8 @@ func (actionGroup *ActionGroup) Action(actionName string) *Action {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(actionName)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(actionName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "ActionGroup")
 	_gret := _info.InvokeClassMethod("get_action", _args[:], nil)
@@ -465,7 +465,7 @@ func (actionGroup *ActionGroup) Action(actionName string) *Action {
 
 	var _action *Action // out
 
-	_action = wrapAction(coreglib.Take(unsafe.Pointer(_cret)))
+	_action = wrapAction(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _action
 }
@@ -485,13 +485,13 @@ func (actionGroup *ActionGroup) Name() string {
 
 	_info := girepository.MustFind("Gtk", "ActionGroup")
 	_gret := _info.InvokeClassMethod("get_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(actionGroup)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -577,11 +577,11 @@ func (actionGroup *ActionGroup) ListActions() []*Action {
 
 	var _list []*Action // out
 
-	_list = make([]*Action, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*Action, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Action // out
-		dst = wrapAction(coreglib.Take(unsafe.Pointer(src)))
+		dst = wrapAction(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 
@@ -702,8 +702,8 @@ func (actionGroup *ActionGroup) SetTranslationDomain(domain string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
 	if domain != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(domain)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "ActionGroup")
@@ -754,19 +754,19 @@ func (actionGroup *ActionGroup) TranslateString(str string) string {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(actionGroup).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "ActionGroup")
 	_gret := _info.InvokeClassMethod("translate_string", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(actionGroup)
 	runtime.KeepAlive(str)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -791,7 +791,7 @@ func (a *ActionEntry) Name() string {
 	offset := girepository.MustFind("Gtk", "ActionEntry").StructFieldOffset("name")
 	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -800,7 +800,7 @@ func (a *ActionEntry) StockID() string {
 	offset := girepository.MustFind("Gtk", "ActionEntry").StructFieldOffset("stock_id")
 	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -811,7 +811,7 @@ func (a *ActionEntry) Label() string {
 	offset := girepository.MustFind("Gtk", "ActionEntry").StructFieldOffset("label")
 	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -821,7 +821,7 @@ func (a *ActionEntry) Accelerator() string {
 	offset := girepository.MustFind("Gtk", "ActionEntry").StructFieldOffset("accelerator")
 	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -831,7 +831,7 @@ func (a *ActionEntry) Tooltip() string {
 	offset := girepository.MustFind("Gtk", "ActionEntry").StructFieldOffset("tooltip")
 	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -855,7 +855,7 @@ func (r *RadioActionEntry) Name() string {
 	offset := girepository.MustFind("Gtk", "RadioActionEntry").StructFieldOffset("name")
 	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -864,7 +864,7 @@ func (r *RadioActionEntry) StockID() string {
 	offset := girepository.MustFind("Gtk", "RadioActionEntry").StructFieldOffset("stock_id")
 	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -874,7 +874,7 @@ func (r *RadioActionEntry) Label() string {
 	offset := girepository.MustFind("Gtk", "RadioActionEntry").StructFieldOffset("label")
 	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -884,7 +884,7 @@ func (r *RadioActionEntry) Accelerator() string {
 	offset := girepository.MustFind("Gtk", "RadioActionEntry").StructFieldOffset("accelerator")
 	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -894,7 +894,7 @@ func (r *RadioActionEntry) Tooltip() string {
 	offset := girepository.MustFind("Gtk", "RadioActionEntry").StructFieldOffset("tooltip")
 	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -936,7 +936,7 @@ func (t *ToggleActionEntry) Name() string {
 	offset := girepository.MustFind("Gtk", "ToggleActionEntry").StructFieldOffset("name")
 	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -945,7 +945,7 @@ func (t *ToggleActionEntry) StockID() string {
 	offset := girepository.MustFind("Gtk", "ToggleActionEntry").StructFieldOffset("stock_id")
 	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -955,7 +955,7 @@ func (t *ToggleActionEntry) Label() string {
 	offset := girepository.MustFind("Gtk", "ToggleActionEntry").StructFieldOffset("label")
 	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -965,7 +965,7 @@ func (t *ToggleActionEntry) Accelerator() string {
 	offset := girepository.MustFind("Gtk", "ToggleActionEntry").StructFieldOffset("accelerator")
 	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -975,7 +975,7 @@ func (t *ToggleActionEntry) Tooltip() string {
 	offset := girepository.MustFind("Gtk", "ToggleActionEntry").StructFieldOffset("tooltip")
 	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 

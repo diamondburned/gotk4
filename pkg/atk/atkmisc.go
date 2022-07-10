@@ -157,12 +157,12 @@ func (misc *Misc) ThreadsLeave() {
 //
 func MiscGetInstance() *Misc {
 	_info := girepository.MustFind("Atk", "get_instance")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _misc *Misc // out
 
-	_misc = wrapMisc(coreglib.Take(unsafe.Pointer(_cret)))
+	_misc = wrapMisc(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _misc
 }

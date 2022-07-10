@@ -14,8 +14,8 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk4_Statusbar_ConnectTextPopped(gpointer, guint, void*, guintptr);
-// extern void _gotk4_gtk4_Statusbar_ConnectTextPushed(gpointer, guint, void*, guintptr);
+// extern void _gotk4_gtk4_Statusbar_ConnectTextPopped(gpointer, guint, gchar*, guintptr);
+// extern void _gotk4_gtk4_Statusbar_ConnectTextPushed(gpointer, guint, gchar*, guintptr);
 import "C"
 
 // GTypeStatusbar returns the GType for the type Statusbar.
@@ -99,7 +99,7 @@ func marshalStatusbar(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk4_Statusbar_ConnectTextPopped
-func _gotk4_gtk4_Statusbar_ConnectTextPopped(arg0 C.gpointer, arg1 C.guint, arg2 *C.void, arg3 C.guintptr) {
+func _gotk4_gtk4_Statusbar_ConnectTextPopped(arg0 C.gpointer, arg1 C.guint, arg2 *C.gchar, arg3 C.guintptr) {
 	var f func(contextId uint32, text string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -127,7 +127,7 @@ func (statusbar *Statusbar) ConnectTextPopped(f func(contextId uint32, text stri
 }
 
 //export _gotk4_gtk4_Statusbar_ConnectTextPushed
-func _gotk4_gtk4_Statusbar_ConnectTextPushed(arg0 C.gpointer, arg1 C.guint, arg2 *C.void, arg3 C.guintptr) {
+func _gotk4_gtk4_Statusbar_ConnectTextPushed(arg0 C.gpointer, arg1 C.guint, arg2 *C.gchar, arg3 C.guintptr) {
 	var f func(contextId uint32, text string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -167,7 +167,7 @@ func NewStatusbar() *Statusbar {
 
 	var _statusbar *Statusbar // out
 
-	_statusbar = wrapStatusbar(coreglib.Take(unsafe.Pointer(_cret)))
+	_statusbar = wrapStatusbar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _statusbar
 }
@@ -190,8 +190,8 @@ func (statusbar *Statusbar) ContextID(contextDescription string) uint32 {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(contextDescription)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(contextDescription)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "Statusbar")
 	_gret := _info.InvokeClassMethod("get_context_id", _args[:], nil)
@@ -247,8 +247,8 @@ func (statusbar *Statusbar) Push(contextId uint32, text string) uint32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(contextId)
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
 
 	_info := girepository.MustFind("Gtk", "Statusbar")
 	_gret := _info.InvokeClassMethod("push", _args[:], nil)

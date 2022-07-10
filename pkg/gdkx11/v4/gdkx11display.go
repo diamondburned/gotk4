@@ -45,12 +45,12 @@ func X11SetSmClientID(smClientId string) {
 	var _args [1]girepository.Argument
 
 	if smClientId != "" {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(smClientId)))
-		defer C.free(unsafe.Pointer(_args[0]))
+		*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(smClientId)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	}
 
 	_info := girepository.MustFind("GdkX11", "x11_set_sm_client_id")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(smClientId)
 }
@@ -203,7 +203,7 @@ func (display *X11Display) DefaultGroup() gdk.Surfacer {
 	var _surface gdk.Surfacer // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Surfacer is nil")
 		}
@@ -252,7 +252,7 @@ func (display *X11Display) PrimaryMonitor() *gdk.Monitor {
 	var _monitor *gdk.Monitor // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_monitor = &gdk.Monitor{
 			Object: obj,
 		}
@@ -280,7 +280,7 @@ func (display *X11Display) Screen() *X11Screen {
 
 	var _x11Screen *X11Screen // out
 
-	_x11Screen = wrapX11Screen(coreglib.Take(unsafe.Pointer(_cret)))
+	_x11Screen = wrapX11Screen(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _x11Screen
 }
@@ -298,13 +298,13 @@ func (display *X11Display) StartupNotificationID() string {
 
 	_info := girepository.MustFind("GdkX11", "X11Display")
 	_gret := _info.InvokeClassMethod("get_startup_notification_id", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -370,8 +370,8 @@ func (display *X11Display) SetCursorTheme(theme string, size int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 	if theme != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(theme)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(theme)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	}
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(size)
 
@@ -405,8 +405,8 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(startupId)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(startupId)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("GdkX11", "X11Display")
 	_info.InvokeClassMethod("set_startup_notification_id", _args[:], nil)
@@ -468,12 +468,12 @@ func X11DisplayOpen(displayName string) *gdk.Display {
 	var _args [1]girepository.Argument
 
 	if displayName != "" {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(displayName)))
-		defer C.free(unsafe.Pointer(_args[0]))
+		*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(displayName)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	}
 
 	_info := girepository.MustFind("GdkX11", "open")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(displayName)
@@ -482,7 +482,7 @@ func X11DisplayOpen(displayName string) *gdk.Display {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_display = &gdk.Display{
 				Object: obj,
 			}
@@ -506,11 +506,11 @@ func X11DisplaySetProgramClass(display *gdk.Display, programClass string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(programClass)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(programClass)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("GdkX11", "set_program_class")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(programClass)

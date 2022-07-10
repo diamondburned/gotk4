@@ -261,7 +261,7 @@ func NewLayout(context *Context) *Layout {
 
 	var _layout *Layout // out
 
-	_layout = wrapLayout(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_layout = wrapLayout(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _layout
 }
@@ -305,7 +305,7 @@ func (src *Layout) Copy() *Layout {
 
 	var _layout *Layout // out
 
-	_layout = wrapLayout(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_layout = wrapLayout(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _layout
 }
@@ -330,8 +330,8 @@ func (layout *Layout) Attributes() *AttrList {
 	var _attrList *AttrList // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.pango_attr_list_ref(_cret)
+		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.pango_attr_list_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -443,7 +443,7 @@ func (layout *Layout) Context() *Context {
 
 	var _context *Context // out
 
-	_context = wrapContext(coreglib.Take(unsafe.Pointer(_cret)))
+	_context = wrapContext(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _context
 }
@@ -485,10 +485,10 @@ func (layout *Layout) CursorPos(index_ int32) (strongPos, weakPos *Rectangle) {
 	var _weakPos *Rectangle   // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_strongPos = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_strongPos = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_weakPos = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
+		_weakPos = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
 	}
 
 	return _strongPos, _weakPos
@@ -527,10 +527,10 @@ func (layout *Layout) Extents() (inkRect, logicalRect *Rectangle) {
 	var _logicalRect *Rectangle // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
+		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
 	}
 
 	return _inkRect, _logicalRect
@@ -558,7 +558,7 @@ func (layout *Layout) FontDescription() *FontDescription {
 	var _fontDescription *FontDescription // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _fontDescription
@@ -636,12 +636,13 @@ func (layout *Layout) Iter() *LayoutIter {
 
 	var _layoutIter *LayoutIter // out
 
-	_layoutIter = (*LayoutIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_layoutIter = (*LayoutIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_layoutIter)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "LayoutIter").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -709,8 +710,8 @@ func (layout *Layout) Line(line int32) *LayoutLine {
 	var _layoutLine *LayoutLine // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.pango_layout_line_ref(_cret)
+		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.pango_layout_line_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_layoutLine)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -779,8 +780,8 @@ func (layout *Layout) LineReadonly(line int32) *LayoutLine {
 	var _layoutLine *LayoutLine // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.pango_layout_line_ref(_cret)
+		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.pango_layout_line_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_layoutLine)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -840,12 +841,12 @@ func (layout *Layout) Lines() []*LayoutLine {
 
 	var _sList []*LayoutLine // out
 
-	_sList = make([]*LayoutLine, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+	_sList = make([]*LayoutLine, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *LayoutLine // out
-		dst = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(src)))
-		C.pango_layout_line_ref(src)
+		dst = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
+		C.pango_layout_line_ref(*(**C.void)(unsafe.Pointer(&src)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -883,12 +884,12 @@ func (layout *Layout) LinesReadonly() []*LayoutLine {
 
 	var _sList []*LayoutLine // out
 
-	_sList = make([]*LayoutLine, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+	_sList = make([]*LayoutLine, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *LayoutLine // out
-		dst = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(src)))
-		C.pango_layout_line_ref(src)
+		dst = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
+		C.pango_layout_line_ref(*(**C.void)(unsafe.Pointer(&src)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -922,12 +923,12 @@ func (layout *Layout) LogAttrs() []LogAttr {
 
 	var _attrs []LogAttr // out
 
-	defer C.free(unsafe.Pointer(_outs[0]))
+	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 	{
-		src := unsafe.Slice((**C.void)(_outs[0]), _outs[1])
-		_attrs = make([]LogAttr, _outs[1])
-		for i := 0; i < int(_outs[1]); i++ {
-			_attrs[i] = *(*LogAttr)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+		src := unsafe.Slice((**C.void)(*(**C.void)(unsafe.Pointer(&_outs[0]))), *(*C.gint)(unsafe.Pointer(&_outs[1])))
+		_attrs = make([]LogAttr, *(*C.gint)(unsafe.Pointer(&_outs[1])))
+		for i := 0; i < int(*(*C.gint)(unsafe.Pointer(&_outs[1]))); i++ {
+			_attrs[i] = *(*LogAttr)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
 		}
 	}
 
@@ -963,10 +964,10 @@ func (layout *Layout) PixelExtents() (inkRect, logicalRect *Rectangle) {
 	var _logicalRect *Rectangle // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
+		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
 	}
 
 	return _inkRect, _logicalRect
@@ -997,12 +998,8 @@ func (layout *Layout) PixelSize() (width, height int32) {
 	var _width int32  // out
 	var _height int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_width = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_height = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_width = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_height = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
 
 	return _width, _height
 }
@@ -1093,12 +1090,8 @@ func (layout *Layout) Size() (width, height int32) {
 	var _width int32  // out
 	var _height int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_width = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_height = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_width = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_height = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
 
 	return _width, _height
 }
@@ -1152,12 +1145,13 @@ func (layout *Layout) Tabs() *TabArray {
 	var _tabArray *TabArray // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_tabArray)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Pango", "TabArray").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -1181,13 +1175,13 @@ func (layout *Layout) Text() string {
 
 	_info := girepository.MustFind("Pango", "Layout")
 	_gret := _info.InvokeClassMethod("get_text", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(layout)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -1284,12 +1278,8 @@ func (layout *Layout) IndexToLineX(index_ int32, trailing bool) (line, xPos int3
 	var _line int32 // out
 	var _xPos int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_line = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_xPos = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_line = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_xPos = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
 
 	return _line, _xPos
 }
@@ -1325,7 +1315,7 @@ func (layout *Layout) IndexToPos(index_ int32) *Rectangle {
 
 	var _pos *Rectangle // out
 
-	_pos = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_pos = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _pos
 }
@@ -1452,8 +1442,8 @@ func (layout *Layout) MoveCursorVisually(strong bool, oldIndex, oldTrailing, dir
 	var _newIndex int32    // out
 	var _newTrailing int32 // out
 
-	_newIndex = *(*int32)(unsafe.Pointer(_outs[0]))
-	_newTrailing = *(*int32)(unsafe.Pointer(_outs[1]))
+	_newIndex = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_newTrailing = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
 
 	return _newIndex, _newTrailing
 }
@@ -1687,8 +1677,8 @@ func (layout *Layout) SetMarkup(markup string, length int32) {
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(markup)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(markup)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(length)
 
 	_info := girepository.MustFind("Pango", "Layout")
@@ -1728,8 +1718,8 @@ func (layout *Layout) SetMarkupWithAccel(markup string, length int32, accelMarke
 	var _outs [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(markup)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(markup)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(length)
 	*(*C.gunichar)(unsafe.Pointer(&_args[3])) = C.gunichar(accelMarker)
 
@@ -1743,9 +1733,7 @@ func (layout *Layout) SetMarkupWithAccel(markup string, length int32, accelMarke
 
 	var _accelChar uint32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_accelChar = *(*uint32)(unsafe.Pointer(_outs[0]))
-	}
+	_accelChar = uint32(*(*C.gunichar)(unsafe.Pointer(&_outs[0])))
 
 	return _accelChar
 }
@@ -1852,8 +1840,8 @@ func (layout *Layout) SetText(text string, length int32) {
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(length)
 
 	_info := girepository.MustFind("Pango", "Layout")
@@ -1930,8 +1918,8 @@ func (layout *Layout) XYToIndex(x, y int32) (index_, trailing int32, ok bool) {
 	var _trailing int32 // out
 	var _ok bool        // out
 
-	_index_ = *(*int32)(unsafe.Pointer(_outs[0]))
-	_trailing = *(*int32)(unsafe.Pointer(_outs[1]))
+	_index_ = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_trailing = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -2010,12 +1998,13 @@ func (iter *LayoutIter) Copy() *LayoutIter {
 	var _layoutIter *LayoutIter // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_layoutIter = (*LayoutIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_layoutIter = (*LayoutIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_layoutIter)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Pango", "LayoutIter").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -2072,7 +2061,7 @@ func (iter *LayoutIter) CharExtents() *Rectangle {
 
 	var _logicalRect *Rectangle // out
 
-	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _logicalRect
 }
@@ -2100,10 +2089,10 @@ func (iter *LayoutIter) ClusterExtents() (inkRect *Rectangle, logicalRect *Recta
 	var _logicalRect *Rectangle // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
+		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
 	}
 
 	return _inkRect, _logicalRect
@@ -2155,7 +2144,7 @@ func (iter *LayoutIter) Layout() *Layout {
 
 	var _layout *Layout // out
 
-	_layout = wrapLayout(coreglib.Take(unsafe.Pointer(_cret)))
+	_layout = wrapLayout(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _layout
 }
@@ -2183,10 +2172,10 @@ func (iter *LayoutIter) LayoutExtents() (inkRect *Rectangle, logicalRect *Rectan
 	var _logicalRect *Rectangle // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
+		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
 	}
 
 	return _inkRect, _logicalRect
@@ -2214,8 +2203,8 @@ func (iter *LayoutIter) Line() *LayoutLine {
 
 	var _layoutLine *LayoutLine // out
 
-	_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.pango_layout_line_ref(_cret)
+	_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.pango_layout_line_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_layoutLine)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -2252,10 +2241,10 @@ func (iter *LayoutIter) LineExtents() (inkRect *Rectangle, logicalRect *Rectangl
 	var _logicalRect *Rectangle // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
+		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
 	}
 
 	return _inkRect, _logicalRect
@@ -2283,8 +2272,8 @@ func (iter *LayoutIter) LineReadonly() *LayoutLine {
 
 	var _layoutLine *LayoutLine // out
 
-	_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.pango_layout_line_ref(_cret)
+	_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.pango_layout_line_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_layoutLine)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -2324,12 +2313,8 @@ func (iter *LayoutIter) LineYrange() (y0 int32, y1 int32) {
 	var _y0 int32 // out
 	var _y1 int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_y0 = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_y1 = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_y0 = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_y1 = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
 
 	return _y0, _y1
 }
@@ -2360,7 +2345,7 @@ func (iter *LayoutIter) Run() *LayoutRun {
 	var _layoutRun *LayoutRun // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_layoutRun = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_layoutRun = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&*(**C.void)(unsafe.Pointer(&_cret)))))))
 	}
 
 	return _layoutRun
@@ -2389,10 +2374,10 @@ func (iter *LayoutIter) RunExtents() (inkRect *Rectangle, logicalRect *Rectangle
 	var _logicalRect *Rectangle // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
+		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
 	}
 
 	return _inkRect, _logicalRect
@@ -2424,7 +2409,7 @@ func (iter *LayoutIter) RunReadonly() *LayoutRun {
 	var _layoutRun *LayoutRun // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_layoutRun = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_layoutRun = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&*(**C.void)(unsafe.Pointer(&_cret)))))))
 	}
 
 	return _layoutRun
@@ -2565,7 +2550,7 @@ func (l *LayoutLine) Layout() *Layout {
 	offset := girepository.MustFind("Pango", "LayoutLine").StructFieldOffset("layout")
 	valptr := (*uintptr)(unsafe.Add(l.native, offset))
 	var v *Layout // out
-	v = wrapLayout(coreglib.Take(unsafe.Pointer(*valptr)))
+	v = wrapLayout(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -2627,10 +2612,10 @@ func (line *LayoutLine) Extents() (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _logicalRect *Rectangle // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
+		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
 	}
 
 	return _inkRect, _logicalRect
@@ -2656,9 +2641,7 @@ func (line *LayoutLine) Height() int32 {
 
 	var _height int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_height = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
+	_height = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
 
 	return _height
 }
@@ -2693,10 +2676,10 @@ func (layoutLine *LayoutLine) PixelExtents() (inkRect *Rectangle, logicalRect *R
 	var _logicalRect *Rectangle // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_inkRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
+		_logicalRect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
 	}
 
 	return _inkRect, _logicalRect
@@ -2744,12 +2727,12 @@ func (line *LayoutLine) XRanges(startIndex int32, endIndex int32) []int32 {
 
 	var _ranges []int32 // out
 
-	defer C.free(unsafe.Pointer(_outs[0]))
+	defer C.free(unsafe.Pointer(*(**C.int)(unsafe.Pointer(&_outs[0]))))
 	{
-		src := unsafe.Slice((**C.void)(_outs[0]), _outs[1])
-		_ranges = make([]int32, _outs[1])
-		for i := 0; i < int(_outs[1]); i++ {
-			_ranges[i] = *(*int32)(unsafe.Pointer(src[i]))
+		src := unsafe.Slice((*C.int)(*(**C.int)(unsafe.Pointer(&_outs[0]))), *(*C.int)(unsafe.Pointer(&_outs[1])))
+		_ranges = make([]int32, *(*C.int)(unsafe.Pointer(&_outs[1])))
+		for i := 0; i < int(*(*C.int)(unsafe.Pointer(&_outs[1]))); i++ {
+			_ranges[i] = int32(*(*C.int)(unsafe.Pointer(&src[i])))
 		}
 	}
 
@@ -2788,7 +2771,7 @@ func (line *LayoutLine) IndexToX(index_ int32, trailing bool) int32 {
 
 	var _xPos int32 // out
 
-	_xPos = *(*int32)(unsafe.Pointer(_outs[0]))
+	_xPos = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
 
 	return _xPos
 }
@@ -2834,8 +2817,8 @@ func (line *LayoutLine) XToIndex(xPos int32) (index_ int32, trailing int32, ok b
 	var _trailing int32 // out
 	var _ok bool        // out
 
-	_index_ = *(*int32)(unsafe.Pointer(_outs[0]))
-	_trailing = *(*int32)(unsafe.Pointer(_outs[1]))
+	_index_ = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_trailing = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}

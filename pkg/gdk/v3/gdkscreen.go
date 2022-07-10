@@ -165,7 +165,7 @@ func (screen *Screen) ActiveWindow() Windower {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -202,7 +202,7 @@ func (screen *Screen) Display() *Display {
 
 	var _display *Display // out
 
-	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
+	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _display
 }
@@ -229,7 +229,7 @@ func (screen *Screen) FontOptions() *cairo.FontOptions {
 	var _fontOptions *cairo.FontOptions // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_fontOptions = (*cairo.FontOptions)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_fontOptions = (*cairo.FontOptions)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _fontOptions
@@ -401,7 +401,7 @@ func (screen *Screen) MonitorGeometry(monitorNum int32) *Rectangle {
 	var _dest *Rectangle // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
 
 	return _dest
@@ -464,16 +464,16 @@ func (screen *Screen) MonitorPlugName(monitorNum int32) string {
 
 	_info := girepository.MustFind("Gdk", "Screen")
 	_gret := _info.InvokeClassMethod("get_monitor_plug_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(monitorNum)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 	}
 
 	return _utf8
@@ -593,7 +593,7 @@ func (screen *Screen) MonitorWorkarea(monitorNum int32) *Rectangle {
 	var _dest *Rectangle // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_dest = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
 
 	return _dest
@@ -742,7 +742,7 @@ func (screen *Screen) RGBAVisual() *Visual {
 	var _visual *Visual // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_visual = wrapVisual(coreglib.Take(unsafe.Pointer(_cret)))
+		_visual = wrapVisual(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _visual
@@ -768,7 +768,7 @@ func (screen *Screen) RootWindow() Windower {
 	var _window Windower // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -807,8 +807,8 @@ func (screen *Screen) Setting(name string, value *coreglib.Value) bool {
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gdk", "Screen")
@@ -848,7 +848,7 @@ func (screen *Screen) SystemVisual() *Visual {
 
 	var _visual *Visual // out
 
-	_visual = wrapVisual(coreglib.Take(unsafe.Pointer(_cret)))
+	_visual = wrapVisual(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _visual
 }
@@ -877,12 +877,12 @@ func (screen *Screen) ToplevelWindows() []Windower {
 
 	var _list []Windower // out
 
-	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Windower // out
 		{
-			objptr := unsafe.Pointer(src)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
 			if objptr == nil {
 				panic("object of type gdk.Windower is nil")
 			}
@@ -995,12 +995,12 @@ func (screen *Screen) WindowStack() []Windower {
 	var _list []Windower // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-		gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 			src := (*C.void)(v)
 			var dst Windower // out
 			{
-				objptr := unsafe.Pointer(src)
+				objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
 				if objptr == nil {
 					panic("object of type gdk.Windower is nil")
 				}
@@ -1078,11 +1078,11 @@ func (screen *Screen) ListVisuals() []*Visual {
 
 	var _list []*Visual // out
 
-	_list = make([]*Visual, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*Visual, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Visual // out
-		dst = wrapVisual(coreglib.Take(unsafe.Pointer(src)))
+		dst = wrapVisual(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 
@@ -1105,14 +1105,14 @@ func (screen *Screen) MakeDisplayName() string {
 
 	_info := girepository.MustFind("Gdk", "Screen")
 	_gret := _info.InvokeClassMethod("make_display_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }
@@ -1174,13 +1174,13 @@ func (screen *Screen) SetResolution(dpi float64) {
 //
 func ScreenGetDefault() *Screen {
 	_info := girepository.MustFind("Gdk", "get_default")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _screen *Screen // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_screen = wrapScreen(coreglib.Take(unsafe.Pointer(_cret)))
+		_screen = wrapScreen(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _screen

@@ -219,7 +219,7 @@ func NewApplicationWindow(application *Application) *ApplicationWindow {
 
 	var _applicationWindow *ApplicationWindow // out
 
-	_applicationWindow = wrapApplicationWindow(coreglib.Take(unsafe.Pointer(_cret)))
+	_applicationWindow = wrapApplicationWindow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _applicationWindow
 }
@@ -245,7 +245,7 @@ func (window *ApplicationWindow) HelpOverlay() *ShortcutsWindow {
 	var _shortcutsWindow *ShortcutsWindow // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_shortcutsWindow = wrapShortcutsWindow(coreglib.Take(unsafe.Pointer(_cret)))
+		_shortcutsWindow = wrapShortcutsWindow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _shortcutsWindow

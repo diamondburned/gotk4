@@ -45,11 +45,11 @@ func AcceleratorParse(accelerator string) (uint32, gdk.ModifierType, bool) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(accelerator)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(accelerator)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "accelerator_parse")
-	_gret := _info.Invoke(_args[:], _outs[:])
+	_gret := _info.InvokeFunction(_args[:], _outs[:])
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(accelerator)
@@ -58,11 +58,9 @@ func AcceleratorParse(accelerator string) (uint32, gdk.ModifierType, bool) {
 	var _acceleratorMods gdk.ModifierType // out
 	var _ok bool                          // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_acceleratorKey = *(*uint32)(unsafe.Pointer(_outs[0]))
-	}
+	_acceleratorKey = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_acceleratorMods = *(*gdk.ModifierType)(unsafe.Pointer(_outs[1]))
+		_acceleratorMods = *(*gdk.ModifierType)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1]))))
 	}
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
@@ -105,14 +103,14 @@ func AcceleratorParseWithKeycode(accelerator string, display *gdk.Display) (uint
 	var _args [2]girepository.Argument
 	var _outs [3]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(accelerator)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(accelerator)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	if display != nil {
 		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 	}
 
 	_info := girepository.MustFind("Gtk", "accelerator_parse_with_keycode")
-	_gret := _info.Invoke(_args[:], _outs[:])
+	_gret := _info.InvokeFunction(_args[:], _outs[:])
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(accelerator)
@@ -123,27 +121,25 @@ func AcceleratorParseWithKeycode(accelerator string, display *gdk.Display) (uint
 	var _acceleratorMods gdk.ModifierType // out
 	var _ok bool                          // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_acceleratorKey = *(*uint32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		defer C.free(unsafe.Pointer(_outs[1]))
+	_acceleratorKey = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
+	if *(**C.guint)(unsafe.Pointer(&_outs[1])) != nil {
+		defer C.free(unsafe.Pointer(*(**C.guint)(unsafe.Pointer(&_outs[1]))))
 		{
 			var i int
-			var z *C.void
-			for p := _outs[1]; *p != z; p = &unsafe.Slice(p, 2)[1] {
+			var z C.guint
+			for p := *(**C.guint)(unsafe.Pointer(&_outs[1])); *p != z; p = &unsafe.Slice(p, 2)[1] {
 				i++
 			}
 
-			src := unsafe.Slice(_outs[1], i)
+			src := unsafe.Slice(*(**C.guint)(unsafe.Pointer(&_outs[1])), i)
 			_acceleratorCodes = make([]uint32, i)
 			for i := range src {
-				_acceleratorCodes[i] = *(*uint32)(unsafe.Pointer(src[i]))
+				_acceleratorCodes[i] = uint32(*(*C.guint)(unsafe.Pointer(&src[i])))
 			}
 		}
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_acceleratorMods = *(*gdk.ModifierType)(unsafe.Pointer(_outs[2]))
+		_acceleratorMods = *(*gdk.ModifierType)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[2]))))
 	}
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true

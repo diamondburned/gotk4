@@ -423,8 +423,8 @@ func (frameClock *FrameClock) CurrentTimings() *FrameTimings {
 	var _frameTimings *FrameTimings // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_frameTimings = (*FrameTimings)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.gdk_frame_timings_ref(_cret)
+		_frameTimings = (*FrameTimings)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.gdk_frame_timings_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_frameTimings)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -587,10 +587,8 @@ func (frameClock *FrameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn
 	var _refreshIntervalReturn int64  // out
 	var _presentationTimeReturn int64 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_refreshIntervalReturn = *(*int64)(unsafe.Pointer(_outs[0]))
-	}
-	_presentationTimeReturn = *(*int64)(unsafe.Pointer(_outs[1]))
+	_refreshIntervalReturn = int64(*(*C.gint64)(unsafe.Pointer(&_outs[0])))
+	_presentationTimeReturn = int64(*(*C.gint64)(unsafe.Pointer(&_outs[1])))
 
 	return _refreshIntervalReturn, _presentationTimeReturn
 }
@@ -626,8 +624,8 @@ func (frameClock *FrameClock) Timings(frameCounter int64) *FrameTimings {
 	var _frameTimings *FrameTimings // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_frameTimings = (*FrameTimings)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.gdk_frame_timings_ref(_cret)
+		_frameTimings = (*FrameTimings)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.gdk_frame_timings_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_frameTimings)),
 			func(intern *struct{ C unsafe.Pointer }) {

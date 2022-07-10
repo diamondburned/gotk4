@@ -255,7 +255,7 @@ func (res *AsyncResult) SourceObject() *coreglib.Object {
 	var _object *coreglib.Object // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_object = coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		_object = coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 	}
 
 	return _object
@@ -280,7 +280,7 @@ func (res *AsyncResult) UserData() unsafe.Pointer {
 
 	var _gpointer unsafe.Pointer // out
 
-	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&_cret))))
 
 	return _gpointer
 }
@@ -339,7 +339,7 @@ func (res *AsyncResult) LegacyPropagateError() error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

@@ -232,7 +232,7 @@ func NewOverlay() *Overlay {
 
 	var _overlay *Overlay // out
 
-	_overlay = wrapOverlay(coreglib.Take(unsafe.Pointer(_cret)))
+	_overlay = wrapOverlay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _overlay
 }

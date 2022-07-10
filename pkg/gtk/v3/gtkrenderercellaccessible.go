@@ -97,7 +97,7 @@ func NewRendererCellAccessible(renderer CellRendererer) *RendererCellAccessible 
 
 	var _rendererCellAccessible *RendererCellAccessible // out
 
-	_rendererCellAccessible = wrapRendererCellAccessible(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_rendererCellAccessible = wrapRendererCellAccessible(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _rendererCellAccessible
 }

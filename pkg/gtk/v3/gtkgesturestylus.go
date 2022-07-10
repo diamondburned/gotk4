@@ -186,7 +186,7 @@ func NewGestureStylus(widget Widgetter) *GestureStylus {
 
 	var _gestureStylus *GestureStylus // out
 
-	_gestureStylus = wrapGestureStylus(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_gestureStylus = wrapGestureStylus(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _gestureStylus
 }
@@ -215,7 +215,7 @@ func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_deviceTool = &gdk.DeviceTool{
 				Object: obj,
 			}

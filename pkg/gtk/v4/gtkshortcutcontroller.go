@@ -115,7 +115,7 @@ func NewShortcutController() *ShortcutController {
 
 	var _shortcutController *ShortcutController // out
 
-	_shortcutController = wrapShortcutController(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_shortcutController = wrapShortcutController(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _shortcutController
 }
@@ -148,7 +148,7 @@ func NewShortcutControllerForModel(model gio.ListModeller) *ShortcutController {
 
 	var _shortcutController *ShortcutController // out
 
-	_shortcutController = wrapShortcutController(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_shortcutController = wrapShortcutController(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _shortcutController
 }

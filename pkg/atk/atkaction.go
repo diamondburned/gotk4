@@ -15,12 +15,12 @@ import (
 // #include <glib.h>
 // #include <glib-object.h>
 // extern gboolean _gotk4_atk1_ActionIface_do_action(void*, gint);
-// extern gboolean _gotk4_atk1_ActionIface_set_description(void*, gint, void*);
+// extern gboolean _gotk4_atk1_ActionIface_set_description(void*, gint, gchar*);
+// extern gchar* _gotk4_atk1_ActionIface_get_description(void*, gint);
+// extern gchar* _gotk4_atk1_ActionIface_get_keybinding(void*, gint);
+// extern gchar* _gotk4_atk1_ActionIface_get_localized_name(void*, gint);
+// extern gchar* _gotk4_atk1_ActionIface_get_name(void*, gint);
 // extern gint _gotk4_atk1_ActionIface_get_n_actions(void*);
-// extern void* _gotk4_atk1_ActionIface_get_description(void*, gint);
-// extern void* _gotk4_atk1_ActionIface_get_keybinding(void*, gint);
-// extern void* _gotk4_atk1_ActionIface_get_localized_name(void*, gint);
-// extern void* _gotk4_atk1_ActionIface_get_name(void*, gint);
 import "C"
 
 // GTypeAction returns the GType for the type Action.
@@ -236,7 +236,7 @@ func _gotk4_atk1_ActionIface_do_action(arg0 *C.void, arg1 C.gint) (cret C.gboole
 }
 
 //export _gotk4_atk1_ActionIface_get_description
-func _gotk4_atk1_ActionIface_get_description(arg0 *C.void, arg1 C.gint) (cret *C.void) {
+func _gotk4_atk1_ActionIface_get_description(arg0 *C.void, arg1 C.gint) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -247,7 +247,7 @@ func _gotk4_atk1_ActionIface_get_description(arg0 *C.void, arg1 C.gint) (cret *C
 	utf8 := iface.Description(_i)
 
 	if utf8 != "" {
-		cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 		defer C.free(unsafe.Pointer(cret))
 	}
 
@@ -255,7 +255,7 @@ func _gotk4_atk1_ActionIface_get_description(arg0 *C.void, arg1 C.gint) (cret *C
 }
 
 //export _gotk4_atk1_ActionIface_get_keybinding
-func _gotk4_atk1_ActionIface_get_keybinding(arg0 *C.void, arg1 C.gint) (cret *C.void) {
+func _gotk4_atk1_ActionIface_get_keybinding(arg0 *C.void, arg1 C.gint) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -266,7 +266,7 @@ func _gotk4_atk1_ActionIface_get_keybinding(arg0 *C.void, arg1 C.gint) (cret *C.
 	utf8 := iface.Keybinding(_i)
 
 	if utf8 != "" {
-		cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 		defer C.free(unsafe.Pointer(cret))
 	}
 
@@ -274,7 +274,7 @@ func _gotk4_atk1_ActionIface_get_keybinding(arg0 *C.void, arg1 C.gint) (cret *C.
 }
 
 //export _gotk4_atk1_ActionIface_get_localized_name
-func _gotk4_atk1_ActionIface_get_localized_name(arg0 *C.void, arg1 C.gint) (cret *C.void) {
+func _gotk4_atk1_ActionIface_get_localized_name(arg0 *C.void, arg1 C.gint) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -285,7 +285,7 @@ func _gotk4_atk1_ActionIface_get_localized_name(arg0 *C.void, arg1 C.gint) (cret
 	utf8 := iface.LocalizedName(_i)
 
 	if utf8 != "" {
-		cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 		defer C.free(unsafe.Pointer(cret))
 	}
 
@@ -305,7 +305,7 @@ func _gotk4_atk1_ActionIface_get_n_actions(arg0 *C.void) (cret C.gint) {
 }
 
 //export _gotk4_atk1_ActionIface_get_name
-func _gotk4_atk1_ActionIface_get_name(arg0 *C.void, arg1 C.gint) (cret *C.void) {
+func _gotk4_atk1_ActionIface_get_name(arg0 *C.void, arg1 C.gint) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -316,7 +316,7 @@ func _gotk4_atk1_ActionIface_get_name(arg0 *C.void, arg1 C.gint) (cret *C.void) 
 	utf8 := iface.Name(_i)
 
 	if utf8 != "" {
-		cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 		defer C.free(unsafe.Pointer(cret))
 	}
 
@@ -324,7 +324,7 @@ func _gotk4_atk1_ActionIface_get_name(arg0 *C.void, arg1 C.gint) (cret *C.void) 
 }
 
 //export _gotk4_atk1_ActionIface_set_description
-func _gotk4_atk1_ActionIface_set_description(arg0 *C.void, arg1 C.gint, arg2 *C.void) (cret C.gboolean) {
+func _gotk4_atk1_ActionIface_set_description(arg0 *C.void, arg1 C.gint, arg2 *C.gchar) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActionOverrider)
 
@@ -404,15 +404,15 @@ func (action *Action) Description(i int32) string {
 
 	_info := girepository.MustFind("Atk", "Action")
 	_gret := _info.InvokeIfaceMethod("get_description", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(i)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -460,15 +460,15 @@ func (action *Action) Keybinding(i int32) string {
 
 	_info := girepository.MustFind("Atk", "Action")
 	_gret := _info.InvokeIfaceMethod("get_keybinding", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(i)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -494,15 +494,15 @@ func (action *Action) LocalizedName(i int32) string {
 
 	_info := girepository.MustFind("Atk", "Action")
 	_gret := _info.InvokeIfaceMethod("get_localized_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(i)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -565,15 +565,15 @@ func (action *Action) Name(i int32) string {
 
 	_info := girepository.MustFind("Atk", "Action")
 	_gret := _info.InvokeIfaceMethod("get_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(action)
 	runtime.KeepAlive(i)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -595,8 +595,8 @@ func (action *Action) SetDescription(i int32, desc string) bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(action).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(i)
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(desc)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(desc)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
 
 	_info := girepository.MustFind("Atk", "Action")
 	_gret := _info.InvokeIfaceMethod("set_description", _args[:], nil)

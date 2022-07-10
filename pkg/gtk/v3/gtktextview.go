@@ -23,7 +23,7 @@ import (
 // extern void _gotk4_gtk3_TextViewClass_backspace(void*);
 // extern void _gotk4_gtk3_TextViewClass_copy_clipboard(void*);
 // extern void _gotk4_gtk3_TextViewClass_cut_clipboard(void*);
-// extern void _gotk4_gtk3_TextViewClass_insert_at_cursor(void*, void*);
+// extern void _gotk4_gtk3_TextViewClass_insert_at_cursor(void*, gchar*);
 // extern void _gotk4_gtk3_TextViewClass_insert_emoji(void*);
 // extern void _gotk4_gtk3_TextViewClass_paste_clipboard(void*);
 // extern void _gotk4_gtk3_TextViewClass_populate_popup(void*, void*);
@@ -32,11 +32,11 @@ import (
 // extern void _gotk4_gtk3_TextView_ConnectBackspace(gpointer, guintptr);
 // extern void _gotk4_gtk3_TextView_ConnectCopyClipboard(gpointer, guintptr);
 // extern void _gotk4_gtk3_TextView_ConnectCutClipboard(gpointer, guintptr);
-// extern void _gotk4_gtk3_TextView_ConnectInsertAtCursor(gpointer, void*, guintptr);
+// extern void _gotk4_gtk3_TextView_ConnectInsertAtCursor(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk3_TextView_ConnectInsertEmoji(gpointer, guintptr);
 // extern void _gotk4_gtk3_TextView_ConnectPasteClipboard(gpointer, guintptr);
 // extern void _gotk4_gtk3_TextView_ConnectPopulatePopup(gpointer, void*, guintptr);
-// extern void _gotk4_gtk3_TextView_ConnectPreeditChanged(gpointer, void*, guintptr);
+// extern void _gotk4_gtk3_TextView_ConnectPreeditChanged(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk3_TextView_ConnectSelectAll(gpointer, gboolean, guintptr);
 // extern void _gotk4_gtk3_TextView_ConnectSetAnchor(gpointer, guintptr);
 // extern void _gotk4_gtk3_TextView_ConnectToggleCursorVisible(gpointer, guintptr);
@@ -338,7 +338,7 @@ func _gotk4_gtk3_TextViewClass_cut_clipboard(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_TextViewClass_insert_at_cursor
-func _gotk4_gtk3_TextViewClass_insert_at_cursor(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gtk3_TextViewClass_insert_at_cursor(arg0 *C.void, arg1 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ InsertAtCursor(str string) })
 
@@ -509,7 +509,7 @@ func (textView *TextView) ConnectCutClipboard(f func()) coreglib.SignalHandle {
 }
 
 //export _gotk4_gtk3_TextView_ConnectInsertAtCursor
-func _gotk4_gtk3_TextView_ConnectInsertAtCursor(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk3_TextView_ConnectInsertAtCursor(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
 	var f func(str string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -638,7 +638,7 @@ func (textView *TextView) ConnectPopulatePopup(f func(popup Widgetter)) coreglib
 }
 
 //export _gotk4_gtk3_TextView_ConnectPreeditChanged
-func _gotk4_gtk3_TextView_ConnectPreeditChanged(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk3_TextView_ConnectPreeditChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
 	var f func(preedit string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -788,7 +788,7 @@ func NewTextView() *TextView {
 
 	var _textView *TextView // out
 
-	_textView = wrapTextView(coreglib.Take(unsafe.Pointer(_cret)))
+	_textView = wrapTextView(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _textView
 }
@@ -820,7 +820,7 @@ func NewTextViewWithBuffer(buffer *TextBuffer) *TextView {
 
 	var _textView *TextView // out
 
-	_textView = wrapTextView(coreglib.Take(unsafe.Pointer(_cret)))
+	_textView = wrapTextView(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _textView
 }
@@ -1072,7 +1072,7 @@ func (textView *TextView) Buffer() *TextBuffer {
 
 	var _textBuffer *TextBuffer // out
 
-	_textBuffer = wrapTextBuffer(coreglib.Take(unsafe.Pointer(_cret)))
+	_textBuffer = wrapTextBuffer(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _textBuffer
 }
@@ -1126,10 +1126,10 @@ func (textView *TextView) CursorLocations(iter *TextIter) (strong, weak *gdk.Rec
 	var _weak *gdk.Rectangle   // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_strong = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_strong = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_weak = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
+		_weak = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
 	}
 
 	return _strong, _weak
@@ -1186,7 +1186,7 @@ func (textView *TextView) DefaultAttributes() *TextAttributes {
 
 	var _textAttributes *TextAttributes // out
 
-	_textAttributes = (*TextAttributes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_textAttributes = (*TextAttributes)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_textAttributes)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -1245,7 +1245,7 @@ func (textView *TextView) HAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _adjustment
 }
@@ -1310,7 +1310,7 @@ func (textView *TextView) IterAtLocation(x, y int32) (*TextIter, bool) {
 	var _iter *TextIter // out
 	var _ok bool        // out
 
-	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -1361,10 +1361,8 @@ func (textView *TextView) IterAtPosition(x, y int32) (*TextIter, int32, bool) {
 	var _trailing int32 // out
 	var _ok bool        // out
 
-	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_trailing = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_trailing = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -1400,7 +1398,7 @@ func (textView *TextView) IterLocation(iter *TextIter) *gdk.Rectangle {
 
 	var _location *gdk.Rectangle // out
 
-	_location = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_location = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _location
 }
@@ -1460,8 +1458,8 @@ func (textView *TextView) LineAtY(y int32) (*TextIter, int32) {
 	var _targetIter *TextIter // out
 	var _lineTop int32        // out
 
-	_targetIter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
-	_lineTop = *(*int32)(unsafe.Pointer(_outs[1]))
+	_targetIter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_lineTop = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _targetIter, _lineTop
 }
@@ -1495,8 +1493,8 @@ func (textView *TextView) LineYrange(iter *TextIter) (y, height int32) {
 	var _y int32      // out
 	var _height int32 // out
 
-	_y = *(*int32)(unsafe.Pointer(_outs[0]))
-	_height = *(*int32)(unsafe.Pointer(_outs[1]))
+	_y = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_height = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _y, _height
 }
@@ -1680,12 +1678,13 @@ func (textView *TextView) Tabs() *pango.TabArray {
 	var _tabArray *pango.TabArray // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_tabArray)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Pango", "TabArray").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -1740,7 +1739,7 @@ func (textView *TextView) VAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _adjustment
 }
@@ -1766,7 +1765,7 @@ func (textView *TextView) VisibleRect() *gdk.Rectangle {
 
 	var _visibleRect *gdk.Rectangle // out
 
-	_visibleRect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_visibleRect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _visibleRect
 }

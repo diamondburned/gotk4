@@ -220,7 +220,7 @@ func DragAbort(context *DragContext, time_ uint32) {
 	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(time_)
 
 	_info := girepository.MustFind("Gdk", "drag_abort")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(time_)
@@ -245,7 +245,7 @@ func DragDrop(context *DragContext, time_ uint32) {
 	*(*C.guint32)(unsafe.Pointer(&_args[1])) = C.guint32(time_)
 
 	_info := girepository.MustFind("Gdk", "drag_drop")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(time_)
@@ -275,7 +275,7 @@ func DragDropDone(context *DragContext, success bool) {
 	}
 
 	_info := girepository.MustFind("Gdk", "drag_drop_done")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(success)
@@ -299,7 +299,7 @@ func DragDropSucceeded(context *DragContext) bool {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_info := girepository.MustFind("Gdk", "drag_drop_succeeded")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
@@ -344,7 +344,7 @@ func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *
 	*(*C.gint)(unsafe.Pointer(&_args[4])) = C.gint(yRoot)
 
 	_info := girepository.MustFind("Gdk", "drag_find_window_for_screen")
-	_info.Invoke(_args[:], _outs[:])
+	_info.InvokeFunction(_args[:], _outs[:])
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(dragWindow)
@@ -356,7 +356,7 @@ func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *
 	var _protocol DragProtocol // out
 
 	{
-		objptr := unsafe.Pointer(_outs[0])
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -372,7 +372,7 @@ func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *
 		}
 		_destWindow = rv
 	}
-	_protocol = *(*DragProtocol)(unsafe.Pointer(_outs[1]))
+	_protocol = *(*DragProtocol)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1]))))
 
 	return _destWindow, _protocol
 }
@@ -397,7 +397,7 @@ func DropFinish(context *DragContext, success bool, time_ uint32) {
 	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(time_)
 
 	_info := girepository.MustFind("Gdk", "drop_finish")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(success)
@@ -425,7 +425,7 @@ func DropReply(context *DragContext, accepted bool, time_ uint32) {
 	*(*C.guint32)(unsafe.Pointer(&_args[2])) = C.guint32(time_)
 
 	_info := girepository.MustFind("Gdk", "drop_reply")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(accepted)
@@ -452,7 +452,7 @@ func (context *DragContext) DestWindow() Windower {
 	var _window Windower // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -492,7 +492,7 @@ func (context *DragContext) Device() Devicer {
 	var _device Devicer // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Devicer is nil")
 		}
@@ -537,7 +537,7 @@ func (context *DragContext) DragWindow() Windower {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -575,7 +575,7 @@ func (context *DragContext) SourceWindow() Windower {
 	var _window Windower // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}

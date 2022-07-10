@@ -99,7 +99,7 @@ func NewVideo() *Video {
 
 	var _video *Video // out
 
-	_video = wrapVideo(coreglib.Take(unsafe.Pointer(_cret)))
+	_video = wrapVideo(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _video
 }
@@ -129,7 +129,7 @@ func NewVideoForFile(file gio.Filer) *Video {
 
 	var _video *Video // out
 
-	_video = wrapVideo(coreglib.Take(unsafe.Pointer(_cret)))
+	_video = wrapVideo(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _video
 }
@@ -151,8 +151,8 @@ func NewVideoForFilename(filename string) *Video {
 	var _args [1]girepository.Argument
 
 	if filename != "" {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
-		defer C.free(unsafe.Pointer(_args[0]))
+		*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(filename)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "Video")
@@ -163,7 +163,7 @@ func NewVideoForFilename(filename string) *Video {
 
 	var _video *Video // out
 
-	_video = wrapVideo(coreglib.Take(unsafe.Pointer(_cret)))
+	_video = wrapVideo(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _video
 }
@@ -193,7 +193,7 @@ func NewVideoForMediaStream(stream MediaStreamer) *Video {
 
 	var _video *Video // out
 
-	_video = wrapVideo(coreglib.Take(unsafe.Pointer(_cret)))
+	_video = wrapVideo(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _video
 }
@@ -215,8 +215,8 @@ func NewVideoForResource(resourcePath string) *Video {
 	var _args [1]girepository.Argument
 
 	if resourcePath != "" {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
-		defer C.free(unsafe.Pointer(_args[0]))
+		*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "Video")
@@ -227,7 +227,7 @@ func NewVideoForResource(resourcePath string) *Video {
 
 	var _video *Video // out
 
-	_video = wrapVideo(coreglib.Take(unsafe.Pointer(_cret)))
+	_video = wrapVideo(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _video
 }
@@ -279,7 +279,7 @@ func (self *Video) File() *gio.File {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_file = &gio.File{
 				Object: obj,
 			}
@@ -336,7 +336,7 @@ func (self *Video) MediaStream() MediaStreamer {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -410,8 +410,8 @@ func (self *Video) SetFilename(filename string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if filename != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(filename)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "Video")
@@ -481,8 +481,8 @@ func (self *Video) SetResource(resourcePath string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if resourcePath != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "Video")

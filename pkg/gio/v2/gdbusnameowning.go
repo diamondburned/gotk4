@@ -22,7 +22,7 @@ import "C"
 type BusAcquiredCallback func(connection *DBusConnection, name string)
 
 //export _gotk4_gio2_BusAcquiredCallback
-func _gotk4_gio2_BusAcquiredCallback(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) {
+func _gotk4_gio2_BusAcquiredCallback(arg1 *C.void, arg2 *C.gchar, arg3 C.gpointer) {
 	var fn BusAcquiredCallback
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -45,7 +45,7 @@ func _gotk4_gio2_BusAcquiredCallback(arg1 *C.void, arg2 *C.void, arg3 C.gpointer
 type BusNameAcquiredCallback func(connection *DBusConnection, name string)
 
 //export _gotk4_gio2_BusNameAcquiredCallback
-func _gotk4_gio2_BusNameAcquiredCallback(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) {
+func _gotk4_gio2_BusNameAcquiredCallback(arg1 *C.void, arg2 *C.gchar, arg3 C.gpointer) {
 	var fn BusNameAcquiredCallback
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -69,7 +69,7 @@ func _gotk4_gio2_BusNameAcquiredCallback(arg1 *C.void, arg2 *C.void, arg3 C.gpoi
 type BusNameLostCallback func(connection *DBusConnection, name string)
 
 //export _gotk4_gio2_BusNameLostCallback
-func _gotk4_gio2_BusNameLostCallback(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) {
+func _gotk4_gio2_BusNameLostCallback(arg1 *C.void, arg2 *C.gchar, arg3 C.gpointer) {
 	var fn BusNameLostCallback
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -106,7 +106,7 @@ func BusUnownName(ownerId uint32) {
 	*(*C.guint)(unsafe.Pointer(&_args[0])) = C.guint(ownerId)
 
 	_info := girepository.MustFind("Gio", "bus_unown_name")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(ownerId)
 }

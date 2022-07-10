@@ -150,7 +150,7 @@ func (monitor *Monitor) Display() *Display {
 
 	var _display *Display // out
 
-	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
+	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _display
 }
@@ -176,7 +176,7 @@ func (monitor *Monitor) Geometry() *Rectangle {
 
 	var _geometry *Rectangle // out
 
-	_geometry = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_geometry = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _geometry
 }
@@ -223,14 +223,14 @@ func (monitor *Monitor) Manufacturer() string {
 
 	_info := girepository.MustFind("Gdk", "Monitor")
 	_gret := _info.InvokeClassMethod("get_manufacturer", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(monitor)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -249,14 +249,14 @@ func (monitor *Monitor) Model() string {
 
 	_info := girepository.MustFind("Gdk", "Monitor")
 	_gret := _info.InvokeClassMethod("get_model", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(monitor)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -370,7 +370,7 @@ func (monitor *Monitor) Workarea() *Rectangle {
 
 	var _workarea *Rectangle // out
 
-	_workarea = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_workarea = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _workarea
 }

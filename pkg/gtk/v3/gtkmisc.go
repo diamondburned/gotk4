@@ -129,12 +129,8 @@ func (misc *Misc) Alignment() (xalign, yalign float32) {
 	var _xalign float32 // out
 	var _yalign float32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_xalign = *(*float32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_yalign = *(*float32)(unsafe.Pointer(_outs[1]))
-	}
+	_xalign = float32(*(*C.gfloat)(unsafe.Pointer(&_outs[0])))
+	_yalign = float32(*(*C.gfloat)(unsafe.Pointer(&_outs[1])))
 
 	return _xalign, _yalign
 }
@@ -163,12 +159,8 @@ func (misc *Misc) Padding() (xpad, ypad int32) {
 	var _xpad int32 // out
 	var _ypad int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_xpad = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_ypad = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_xpad = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_ypad = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _xpad, _ypad
 }

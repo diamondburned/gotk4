@@ -29,7 +29,7 @@ func NewDBusAuthObserver() *DBusAuthObserver {
 
 	var _dBusAuthObserver *DBusAuthObserver // out
 
-	_dBusAuthObserver = wrapDBusAuthObserver(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusAuthObserver = wrapDBusAuthObserver(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _dBusAuthObserver
 }
@@ -49,8 +49,8 @@ func (observer *DBusAuthObserver) AllowMechanism(mechanism string) bool {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(observer).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(mechanism)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(mechanism)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "DBusAuthObserver")
 	_gret := _info.InvokeClassMethod("allow_mechanism", _args[:], nil)

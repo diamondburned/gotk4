@@ -608,7 +608,7 @@ func (g *Generator) renderRuntimeLinkedBlock() bool {
 
 	switch g.typ.Type.(type) {
 	case *gir.Function:
-		g.pen.Linef(secFnCall, "%s _info.Invoke(%s, %s)", decl, argsName, outsName)
+		g.pen.Linef(secFnCall, "%s _info.InvokeFunction(%s, %s)", decl, argsName, outsName)
 	case *gir.Class:
 		g.pen.Linef(secFnCall, "%s _info.InvokeClassMethod(%q, %s, %s)", decl, g.CallableAttrs.Name, argsName, outsName)
 	case *gir.Interface:

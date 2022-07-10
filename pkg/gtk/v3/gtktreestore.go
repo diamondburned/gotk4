@@ -132,7 +132,7 @@ func (treeStore *TreeStore) Append(parent *TreeIter) *TreeIter {
 
 	var _iter *TreeIter // out
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _iter
 }
@@ -185,7 +185,7 @@ func (treeStore *TreeStore) Insert(parent *TreeIter, position int32) *TreeIter {
 
 	var _iter *TreeIter // out
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _iter
 }
@@ -230,7 +230,7 @@ func (treeStore *TreeStore) InsertAfter(parent, sibling *TreeIter) *TreeIter {
 
 	var _iter *TreeIter // out
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _iter
 }
@@ -275,7 +275,7 @@ func (treeStore *TreeStore) InsertBefore(parent, sibling *TreeIter) *TreeIter {
 
 	var _iter *TreeIter // out
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _iter
 }
@@ -467,7 +467,7 @@ func (treeStore *TreeStore) Prepend(parent *TreeIter) *TreeIter {
 
 	var _iter *TreeIter // out
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _iter
 }

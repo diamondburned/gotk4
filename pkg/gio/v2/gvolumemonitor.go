@@ -41,9 +41,9 @@ import (
 // extern void _gotk4_gio2_VolumeMonitor_ConnectVolumeChanged(gpointer, void*, guintptr);
 // extern void _gotk4_gio2_VolumeMonitor_ConnectVolumeRemoved(gpointer, void*, guintptr);
 // extern void* _gotk4_gio2_VolumeMonitorClass_get_connected_drives(void*);
-// extern void* _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid(void*, void*);
+// extern void* _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid(void*, char*);
 // extern void* _gotk4_gio2_VolumeMonitorClass_get_mounts(void*);
-// extern void* _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid(void*, void*);
+// extern void* _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid(void*, char*);
 // extern void* _gotk4_gio2_VolumeMonitorClass_get_volumes(void*);
 import "C"
 
@@ -430,7 +430,7 @@ func _gotk4_gio2_VolumeMonitorClass_get_connected_drives(arg0 *C.void) (cret *C.
 }
 
 //export _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid
-func _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid(arg0 *C.void, arg1 *C.void) (cret *C.void) {
+func _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid(arg0 *C.void, arg1 *C.char) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ MountForUUID(uuid string) *Mount })
 
@@ -467,7 +467,7 @@ func _gotk4_gio2_VolumeMonitorClass_get_mounts(arg0 *C.void) (cret *C.void) {
 }
 
 //export _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid
-func _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid(arg0 *C.void, arg1 *C.void) (cret *C.void) {
+func _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid(arg0 *C.void, arg1 *C.char) (cret *C.void) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ VolumeForUUID(uuid string) *Volume })
 
@@ -1228,11 +1228,11 @@ func (volumeMonitor *VolumeMonitor) ConnectedDrives() []*Drive {
 
 	var _list []*Drive // out
 
-	_list = make([]*Drive, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*Drive, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Drive // out
-		dst = wrapDrive(coreglib.AssumeOwnership(unsafe.Pointer(src)))
+		dst = wrapDrive(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 
@@ -1254,8 +1254,8 @@ func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) *Mount {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(volumeMonitor).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uuid)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(uuid)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "VolumeMonitor")
 	_gret := _info.InvokeClassMethod("get_mount_for_uuid", _args[:], nil)
@@ -1267,7 +1267,7 @@ func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) *Mount {
 	var _mount *Mount // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_mount = wrapMount(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_mount = wrapMount(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _mount
@@ -1295,11 +1295,11 @@ func (volumeMonitor *VolumeMonitor) Mounts() []*Mount {
 
 	var _list []*Mount // out
 
-	_list = make([]*Mount, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*Mount, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Mount // out
-		dst = wrapMount(coreglib.AssumeOwnership(unsafe.Pointer(src)))
+		dst = wrapMount(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 
@@ -1321,8 +1321,8 @@ func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) *Volume {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(volumeMonitor).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(uuid)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(uuid)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "VolumeMonitor")
 	_gret := _info.InvokeClassMethod("get_volume_for_uuid", _args[:], nil)
@@ -1334,7 +1334,7 @@ func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) *Volume {
 	var _volume *Volume // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_volume = wrapVolume(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_volume = wrapVolume(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _volume
@@ -1362,11 +1362,11 @@ func (volumeMonitor *VolumeMonitor) Volumes() []*Volume {
 
 	var _list []*Volume // out
 
-	_list = make([]*Volume, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*Volume, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Volume // out
-		dst = wrapVolume(coreglib.AssumeOwnership(unsafe.Pointer(src)))
+		dst = wrapVolume(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 
@@ -1422,14 +1422,14 @@ func VolumeMonitorAdoptOrphanMount(mount Mounter) *Volume {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
 
 	_info := girepository.MustFind("Gio", "adopt_orphan_mount")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mount)
 
 	var _volume *Volume // out
 
-	_volume = wrapVolume(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_volume = wrapVolume(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _volume
 }
@@ -1443,12 +1443,12 @@ func VolumeMonitorAdoptOrphanMount(mount Mounter) *Volume {
 //
 func VolumeMonitorGet() *VolumeMonitor {
 	_info := girepository.MustFind("Gio", "get")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _volumeMonitor *VolumeMonitor // out
 
-	_volumeMonitor = wrapVolumeMonitor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_volumeMonitor = wrapVolumeMonitor(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _volumeMonitor
 }

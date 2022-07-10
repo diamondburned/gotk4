@@ -59,7 +59,7 @@ func NewToplevelLayout() *ToplevelLayout {
 
 	var _toplevelLayout *ToplevelLayout // out
 
-	_toplevelLayout = (*ToplevelLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_toplevelLayout = (*ToplevelLayout)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_toplevelLayout)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -89,7 +89,7 @@ func (layout *ToplevelLayout) Copy() *ToplevelLayout {
 
 	var _toplevelLayout *ToplevelLayout // out
 
-	_toplevelLayout = (*ToplevelLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_toplevelLayout = (*ToplevelLayout)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_toplevelLayout)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -157,7 +157,7 @@ func (layout *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
 	var _fullscreen bool // out
 	var _ok bool         // out
 
-	if **(**C.void)(unsafe.Pointer(&_outs[0])) != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_outs[0])) != 0 {
 		_fullscreen = true
 	}
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
@@ -188,7 +188,7 @@ func (layout *ToplevelLayout) FullscreenMonitor() *Monitor {
 	var _monitor *Monitor // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_monitor = wrapMonitor(coreglib.Take(unsafe.Pointer(_cret)))
+		_monitor = wrapMonitor(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _monitor
@@ -218,7 +218,7 @@ func (layout *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 	var _maximized bool // out
 	var _ok bool        // out
 
-	if **(**C.void)(unsafe.Pointer(&_outs[0])) != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_outs[0])) != 0 {
 		_maximized = true
 	}
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {

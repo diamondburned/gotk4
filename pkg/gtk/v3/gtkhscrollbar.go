@@ -112,7 +112,7 @@ func NewHScrollbar(adjustment *Adjustment) *HScrollbar {
 
 	var _hScrollbar *HScrollbar // out
 
-	_hScrollbar = wrapHScrollbar(coreglib.Take(unsafe.Pointer(_cret)))
+	_hScrollbar = wrapHScrollbar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _hScrollbar
 }

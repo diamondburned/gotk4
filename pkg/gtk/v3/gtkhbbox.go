@@ -95,7 +95,7 @@ func NewHButtonBox() *HButtonBox {
 
 	var _hButtonBox *HButtonBox // out
 
-	_hButtonBox = wrapHButtonBox(coreglib.Take(unsafe.Pointer(_cret)))
+	_hButtonBox = wrapHButtonBox(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _hButtonBox
 }

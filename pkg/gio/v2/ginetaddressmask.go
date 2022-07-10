@@ -96,9 +96,9 @@ func NewInetAddressMask(addr *InetAddress, length uint32) (*InetAddressMask, err
 	var _inetAddressMask *InetAddressMask // out
 	var _goerr error                      // out
 
-	_inetAddressMask = wrapInetAddressMask(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_inetAddressMask = wrapInetAddressMask(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _inetAddressMask, _goerr
@@ -121,8 +121,8 @@ func NewInetAddressMask(addr *InetAddress, length uint32) (*InetAddressMask, err
 func NewInetAddressMaskFromString(maskString string) (*InetAddressMask, error) {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(maskString)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(maskString)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gio", "InetAddressMask")
 	_gret := _info.InvokeClassMethod("new_InetAddressMask_from_string", _args[:], nil)
@@ -133,9 +133,9 @@ func NewInetAddressMaskFromString(maskString string) (*InetAddressMask, error) {
 	var _inetAddressMask *InetAddressMask // out
 	var _goerr error                      // out
 
-	_inetAddressMask = wrapInetAddressMask(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_inetAddressMask = wrapInetAddressMask(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _inetAddressMask, _goerr
@@ -192,7 +192,7 @@ func (mask *InetAddressMask) Address() *InetAddress {
 
 	var _inetAddress *InetAddress // out
 
-	_inetAddress = wrapInetAddress(coreglib.Take(unsafe.Pointer(_cret)))
+	_inetAddress = wrapInetAddress(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _inetAddress
 }
@@ -266,14 +266,14 @@ func (mask *InetAddressMask) String() string {
 
 	_info := girepository.MustFind("Gio", "InetAddressMask")
 	_gret := _info.InvokeClassMethod("to_string", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(mask)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }

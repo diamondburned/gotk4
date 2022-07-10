@@ -98,7 +98,7 @@ func NewEmblemedIcon(icon Iconner, emblem *Emblem) *EmblemedIcon {
 
 	var _emblemedIcon *EmblemedIcon // out
 
-	_emblemedIcon = wrapEmblemedIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_emblemedIcon = wrapEmblemedIcon(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _emblemedIcon
 }
@@ -153,11 +153,11 @@ func (emblemed *EmblemedIcon) Emblems() []*Emblem {
 
 	var _list []*Emblem // out
 
-	_list = make([]*Emblem, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), false, func(v unsafe.Pointer) {
+	_list = make([]*Emblem, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), false, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Emblem // out
-		dst = wrapEmblem(coreglib.Take(unsafe.Pointer(src)))
+		dst = wrapEmblem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 
@@ -183,7 +183,7 @@ func (emblemed *EmblemedIcon) GetIcon() *Icon {
 
 	var _icon *Icon // out
 
-	_icon = wrapIcon(coreglib.Take(unsafe.Pointer(_cret)))
+	_icon = wrapIcon(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _icon
 }

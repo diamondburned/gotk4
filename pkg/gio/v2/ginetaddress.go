@@ -15,7 +15,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void* _gotk4_gio2_InetAddressClass_to_string(void*);
+// extern gchar* _gotk4_gio2_InetAddressClass_to_string(void*);
 import "C"
 
 // GTypeInetAddress returns the GType for the type InetAddress.
@@ -73,13 +73,13 @@ func classInitInetAddresser(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gio2_InetAddressClass_to_string
-func _gotk4_gio2_InetAddressClass_to_string(arg0 *C.void) (cret *C.void) {
+func _gotk4_gio2_InetAddressClass_to_string(arg0 *C.void) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ String() string })
 
 	utf8 := iface.String()
 
-	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 
 	return cret
 }
@@ -110,8 +110,8 @@ func marshalInetAddress(p uintptr) (interface{}, error) {
 func NewInetAddressFromString(str string) *InetAddress {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gio", "InetAddress")
 	_gret := _info.InvokeClassMethod("new_InetAddress_from_string", _args[:], nil)
@@ -122,7 +122,7 @@ func NewInetAddressFromString(str string) *InetAddress {
 	var _inetAddress *InetAddress // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_inetAddress = wrapInetAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_inetAddress = wrapInetAddress(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _inetAddress
@@ -464,14 +464,14 @@ func (address *InetAddress) String() string {
 
 	_info := girepository.MustFind("Gio", "InetAddress")
 	_gret := _info.InvokeClassMethod("to_string", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(address)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }

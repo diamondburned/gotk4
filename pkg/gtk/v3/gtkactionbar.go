@@ -99,7 +99,7 @@ func NewActionBar() *ActionBar {
 
 	var _actionBar *ActionBar // out
 
-	_actionBar = wrapActionBar(coreglib.Take(unsafe.Pointer(_cret)))
+	_actionBar = wrapActionBar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _actionBar
 }
@@ -125,7 +125,7 @@ func (actionBar *ActionBar) CenterWidget() Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

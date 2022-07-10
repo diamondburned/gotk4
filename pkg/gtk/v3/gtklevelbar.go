@@ -16,8 +16,8 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk3_LevelBarClass_offset_changed(void*, void*);
-// extern void _gotk4_gtk3_LevelBar_ConnectOffsetChanged(gpointer, void*, guintptr);
+// extern void _gotk4_gtk3_LevelBarClass_offset_changed(void*, gchar*);
+// extern void _gotk4_gtk3_LevelBar_ConnectOffsetChanged(gpointer, gchar*, guintptr);
 import "C"
 
 // GTypeLevelBar returns the GType for the type LevelBar.
@@ -112,7 +112,7 @@ func classInitLevelBarrer(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_LevelBarClass_offset_changed
-func _gotk4_gtk3_LevelBarClass_offset_changed(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gtk3_LevelBarClass_offset_changed(arg0 *C.void, arg1 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ OffsetChanged(name string) })
 
@@ -149,7 +149,7 @@ func marshalLevelBar(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk3_LevelBar_ConnectOffsetChanged
-func _gotk4_gtk3_LevelBar_ConnectOffsetChanged(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk3_LevelBar_ConnectOffsetChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
 	var f func(name string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -191,7 +191,7 @@ func NewLevelBar() *LevelBar {
 
 	var _levelBar *LevelBar // out
 
-	_levelBar = wrapLevelBar(coreglib.Take(unsafe.Pointer(_cret)))
+	_levelBar = wrapLevelBar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _levelBar
 }
@@ -223,7 +223,7 @@ func NewLevelBarForInterval(minValue, maxValue float64) *LevelBar {
 
 	var _levelBar *LevelBar // out
 
-	_levelBar = wrapLevelBar(coreglib.Take(unsafe.Pointer(_cret)))
+	_levelBar = wrapLevelBar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _levelBar
 }
@@ -244,8 +244,8 @@ func (self *LevelBar) AddOffsetValue(name string, value float64) {
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	*(*C.gdouble)(unsafe.Pointer(&_args[2])) = C.gdouble(value)
 
 	_info := girepository.MustFind("Gtk", "LevelBar")
@@ -348,8 +348,8 @@ func (self *LevelBar) OffsetValue(name string) (float64, bool) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if name != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "LevelBar")
@@ -362,7 +362,7 @@ func (self *LevelBar) OffsetValue(name string) (float64, bool) {
 	var _value float64 // out
 	var _ok bool       // out
 
-	_value = *(*float64)(unsafe.Pointer(_outs[0]))
+	_value = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -407,8 +407,8 @@ func (self *LevelBar) RemoveOffsetValue(name string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if name != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "LevelBar")

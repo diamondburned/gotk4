@@ -18,6 +18,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern gchar* _gotk4_gtk3_ContainerClass_composite_name(void*, void*);
 // extern void _gotk4_gtk3_Callback(void*, gpointer);
 // extern void _gotk4_gtk3_ContainerClass_add(void*, void*);
 // extern void _gotk4_gtk3_ContainerClass_check_resize(void*);
@@ -27,7 +28,6 @@ import (
 // extern void _gotk4_gtk3_Container_ConnectCheckResize(gpointer, guintptr);
 // extern void _gotk4_gtk3_Container_ConnectRemove(gpointer, void*, guintptr);
 // extern void _gotk4_gtk3_Container_ConnectSetFocusChild(gpointer, void*, guintptr);
-// extern void* _gotk4_gtk3_ContainerClass_composite_name(void*, void*);
 // extern void* _gotk4_gtk3_ContainerClass_get_path_for_child(void*, void*);
 import "C"
 
@@ -382,7 +382,7 @@ func _gotk4_gtk3_ContainerClass_check_resize(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_ContainerClass_composite_name
-func _gotk4_gtk3_ContainerClass_composite_name(arg0 *C.void, arg1 *C.void) (cret *C.void) {
+func _gotk4_gtk3_ContainerClass_composite_name(arg0 *C.void, arg1 *C.void) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ CompositeName(child Widgetter) string })
 
@@ -408,7 +408,7 @@ func _gotk4_gtk3_ContainerClass_composite_name(arg0 *C.void, arg1 *C.void) (cret
 
 	utf8 := iface.CompositeName(_child)
 
-	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 
 	return cret
 }
@@ -724,8 +724,8 @@ func (container *Container) ChildGetProperty(child Widgetter, propertyName strin
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gtk", "Container")
@@ -755,8 +755,8 @@ func (container *Container) ChildNotify(child Widgetter, childProperty string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(childProperty)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(childProperty)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
 
 	_info := girepository.MustFind("Gtk", "Container")
 	_info.InvokeClassMethod("child_notify", _args[:], nil)
@@ -779,8 +779,8 @@ func (container *Container) ChildSetProperty(child Widgetter, propertyName strin
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(container).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
 	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gtk", "Container")
@@ -894,12 +894,12 @@ func (container *Container) Children() []Widgetter {
 
 	var _list []Widgetter // out
 
-	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Widgetter // out
 		{
-			objptr := unsafe.Pointer(src)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
 			if objptr == nil {
 				panic("object of type gtk.Widgetter is nil")
 			}
@@ -952,12 +952,12 @@ func (container *Container) FocusChain() ([]Widgetter, bool) {
 	var _focusableWidgets []Widgetter // out
 	var _ok bool                      // out
 
-	_focusableWidgets = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(_outs[0])))
-	gextras.MoveList(unsafe.Pointer(_outs[0]), true, func(v unsafe.Pointer) {
+	_focusableWidgets = make([]Widgetter, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Widgetter // out
 		{
-			objptr := unsafe.Pointer(src)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
 			if objptr == nil {
 				panic("object of type gtk.Widgetter is nil")
 			}
@@ -1006,7 +1006,7 @@ func (container *Container) FocusChild() Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -1046,7 +1046,7 @@ func (container *Container) FocusHAdjustment() *Adjustment {
 	var _adjustment *Adjustment // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
+		_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _adjustment
@@ -1074,7 +1074,7 @@ func (container *Container) FocusVAdjustment() *Adjustment {
 	var _adjustment *Adjustment // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
+		_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _adjustment
@@ -1106,12 +1106,13 @@ func (container *Container) PathForChild(child Widgetter) *WidgetPath {
 
 	var _widgetPath *WidgetPath // out
 
-	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gtk", "WidgetPath").InvokeRecordMethod("free", args[:], nil)
 			}
 		},

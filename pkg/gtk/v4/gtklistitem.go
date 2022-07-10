@@ -109,7 +109,7 @@ func (self *ListItem) Child() Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -148,7 +148,7 @@ func (self *ListItem) Item() *coreglib.Object {
 
 	var _object *coreglib.Object // out
 
-	_object = coreglib.Take(unsafe.Pointer(_cret))
+	_object = coreglib.Take(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&_cret))))
 
 	return _object
 }

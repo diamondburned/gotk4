@@ -171,7 +171,7 @@ func NewGridView(model SelectionModeller, factory *ListItemFactory) *GridView {
 
 	var _gridView *GridView // out
 
-	_gridView = wrapGridView(coreglib.Take(unsafe.Pointer(_cret)))
+	_gridView = wrapGridView(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _gridView
 }
@@ -223,7 +223,7 @@ func (self *GridView) Factory() *ListItemFactory {
 	var _listItemFactory *ListItemFactory // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_listItemFactory = wrapListItemFactory(coreglib.Take(unsafe.Pointer(_cret)))
+		_listItemFactory = wrapListItemFactory(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _listItemFactory
@@ -297,7 +297,7 @@ func (self *GridView) Model() *SelectionModel {
 	var _selectionModel *SelectionModel // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_selectionModel = wrapSelectionModel(coreglib.Take(unsafe.Pointer(_cret)))
+		_selectionModel = wrapSelectionModel(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _selectionModel

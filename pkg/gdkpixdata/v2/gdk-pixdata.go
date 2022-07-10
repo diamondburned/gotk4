@@ -215,7 +215,7 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, er
 	}
 
 	_info := girepository.MustFind("GdkPixdata", "pixbuf_from_pixdata")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pixdata)
@@ -225,7 +225,7 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, er
 	var _goerr error              // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_pixbuf = &gdkpixbuf.Pixbuf{
 			Object: obj,
 			LoadableIcon: gio.LoadableIcon{
@@ -236,7 +236,7 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, er
 		}
 	}
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _pixbuf, _goerr
@@ -290,7 +290,7 @@ func (pixdata *Pixdata) Deserialize(stream []byte) error {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(pixdata)))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = (C.guint)(len(stream))
 	if len(stream) > 0 {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(&stream[0]))
+		*(**C.guint8)(unsafe.Pointer(&_args[2])) = (*C.guint8)(unsafe.Pointer(&stream[0]))
 	}
 
 	_info := girepository.MustFind("GdkPixdata", "Pixdata")
@@ -302,7 +302,7 @@ func (pixdata *Pixdata) Deserialize(stream []byte) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -333,9 +333,9 @@ func (pixdata *Pixdata) Serialize() []byte {
 
 	var _guint8s []byte // out
 
-	defer C.free(unsafe.Pointer(_cret))
-	_guint8s = make([]byte, _outs[0])
-	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(_cret)), _outs[0]))
+	defer C.free(unsafe.Pointer(*(**C.guint8)(unsafe.Pointer(&_cret))))
+	_guint8s = make([]byte, *(*C.guint)(unsafe.Pointer(&_outs[0])))
+	copy(_guint8s, unsafe.Slice((*byte)(unsafe.Pointer(*(**C.guint8)(unsafe.Pointer(&_cret)))), *(*C.guint)(unsafe.Pointer(&_outs[0]))))
 
 	return _guint8s
 }

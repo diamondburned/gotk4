@@ -107,8 +107,8 @@ func BaseTLSCertificate(obj TLSCertificater) *TLSCertificate {
 func NewTLSCertificateFromFile(file string) (*TLSCertificate, error) {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(file)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(file)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gio", "TlsCertificate")
 	_gret := _info.InvokeClassMethod("new_TlsCertificate_from_file", _args[:], nil)
@@ -119,9 +119,9 @@ func NewTLSCertificateFromFile(file string) (*TLSCertificate, error) {
 	var _tlsCertificate *TLSCertificate // out
 	var _goerr error                    // out
 
-	_tlsCertificate = wrapTLSCertificate(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_tlsCertificate = wrapTLSCertificate(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _tlsCertificate, _goerr
@@ -151,10 +151,10 @@ func NewTLSCertificateFromFile(file string) (*TLSCertificate, error) {
 func NewTLSCertificateFromFiles(certFile, keyFile string) (*TLSCertificate, error) {
 	var _args [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(certFile)))
-	defer C.free(unsafe.Pointer(_args[0]))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(keyFile)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(certFile)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(keyFile)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "TlsCertificate")
 	_gret := _info.InvokeClassMethod("new_TlsCertificate_from_files", _args[:], nil)
@@ -166,9 +166,9 @@ func NewTLSCertificateFromFiles(certFile, keyFile string) (*TLSCertificate, erro
 	var _tlsCertificate *TLSCertificate // out
 	var _goerr error                    // out
 
-	_tlsCertificate = wrapTLSCertificate(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_tlsCertificate = wrapTLSCertificate(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _tlsCertificate, _goerr
@@ -200,8 +200,8 @@ func NewTLSCertificateFromFiles(certFile, keyFile string) (*TLSCertificate, erro
 func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) {
 	var _args [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(data)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(data)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	*(*C.gssize)(unsafe.Pointer(&_args[1])) = C.gssize(length)
 
 	_info := girepository.MustFind("Gio", "TlsCertificate")
@@ -214,9 +214,9 @@ func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) 
 	var _tlsCertificate *TLSCertificate // out
 	var _goerr error                    // out
 
-	_tlsCertificate = wrapTLSCertificate(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_tlsCertificate = wrapTLSCertificate(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _tlsCertificate, _goerr
@@ -260,11 +260,11 @@ func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) 
 func NewTLSCertificateFromPKCS11URIs(pkcs11Uri, privateKeyPkcs11Uri string) (*TLSCertificate, error) {
 	var _args [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(pkcs11Uri)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(pkcs11Uri)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	if privateKeyPkcs11Uri != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(privateKeyPkcs11Uri)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(privateKeyPkcs11Uri)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gio", "TlsCertificate")
@@ -277,9 +277,9 @@ func NewTLSCertificateFromPKCS11URIs(pkcs11Uri, privateKeyPkcs11Uri string) (*TL
 	var _tlsCertificate *TLSCertificate // out
 	var _goerr error                    // out
 
-	_tlsCertificate = wrapTLSCertificate(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_tlsCertificate = wrapTLSCertificate(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _tlsCertificate, _goerr
@@ -307,7 +307,7 @@ func (cert *TLSCertificate) Issuer() TLSCertificater {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -378,11 +378,11 @@ func (certOne *TLSCertificate) IsSame(certTwo TLSCertificater) bool {
 func TLSCertificateListNewFromFile(file string) ([]TLSCertificater, error) {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(file)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(file)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gio", "list_new_from_file")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(file)
@@ -390,12 +390,12 @@ func TLSCertificateListNewFromFile(file string) ([]TLSCertificater, error) {
 	var _list []TLSCertificater // out
 	var _goerr error            // out
 
-	_list = make([]TLSCertificater, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]TLSCertificater, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst TLSCertificater // out
 		{
-			objptr := unsafe.Pointer(src)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
 			if objptr == nil {
 				panic("object of type gio.TLSCertificater is nil")
 			}
@@ -414,7 +414,7 @@ func TLSCertificateListNewFromFile(file string) ([]TLSCertificater, error) {
 		_list = append(_list, dst)
 	})
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _list, _goerr

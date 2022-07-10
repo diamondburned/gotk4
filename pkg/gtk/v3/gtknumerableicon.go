@@ -96,7 +96,7 @@ func (self *NumerableIcon) BackgroundGIcon() *gio.Icon {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_icon = &gio.Icon{
 				Object: obj,
 			}
@@ -122,14 +122,14 @@ func (self *NumerableIcon) BackgroundIconName() string {
 
 	_info := girepository.MustFind("Gtk", "NumerableIcon")
 	_gret := _info.InvokeClassMethod("get_background_icon_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -176,14 +176,14 @@ func (self *NumerableIcon) Label() string {
 
 	_info := girepository.MustFind("Gtk", "NumerableIcon")
 	_gret := _info.InvokeClassMethod("get_label", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -213,7 +213,7 @@ func (self *NumerableIcon) StyleContext() *StyleContext {
 	var _styleContext *StyleContext // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_styleContext = wrapStyleContext(coreglib.Take(unsafe.Pointer(_cret)))
+		_styleContext = wrapStyleContext(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _styleContext
@@ -270,8 +270,8 @@ func (self *NumerableIcon) SetBackgroundIconName(iconName string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if iconName != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(iconName)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "NumerableIcon")
@@ -333,8 +333,8 @@ func (self *NumerableIcon) SetLabel(label string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if label != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "NumerableIcon")
@@ -384,7 +384,7 @@ func NewNumerableIcon(baseIcon gio.Iconner) *gio.Icon {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(baseIcon).Native()))
 
 	_info := girepository.MustFind("Gtk", "new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseIcon)
@@ -392,7 +392,7 @@ func NewNumerableIcon(baseIcon gio.Iconner) *gio.Icon {
 	var _icon *gio.Icon // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_icon = &gio.Icon{
 			Object: obj,
 		}
@@ -423,7 +423,7 @@ func NewNumerableIconWithStyleContext(baseIcon gio.Iconner, context *StyleContex
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
 
 	_info := girepository.MustFind("Gtk", "new_with_style_context")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(baseIcon)
@@ -432,7 +432,7 @@ func NewNumerableIconWithStyleContext(baseIcon gio.Iconner, context *StyleContex
 	var _icon *gio.Icon // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_icon = &gio.Icon{
 			Object: obj,
 		}

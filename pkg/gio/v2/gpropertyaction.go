@@ -38,11 +38,11 @@ import "C"
 func NewPropertyAction(name string, object *coreglib.Object, propertyName string) *PropertyAction {
 	var _args [3]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = C.gpointer(unsafe.Pointer(object.Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
 
 	_info := girepository.MustFind("Gio", "PropertyAction")
 	_gret := _info.InvokeClassMethod("new_PropertyAction", _args[:], nil)
@@ -54,7 +54,7 @@ func NewPropertyAction(name string, object *coreglib.Object, propertyName string
 
 	var _propertyAction *PropertyAction // out
 
-	_propertyAction = wrapPropertyAction(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_propertyAction = wrapPropertyAction(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _propertyAction
 }

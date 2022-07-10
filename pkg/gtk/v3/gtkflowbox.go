@@ -512,7 +512,7 @@ func NewFlowBox() *FlowBox {
 
 	var _flowBox *FlowBox // out
 
-	_flowBox = wrapFlowBox(coreglib.Take(unsafe.Pointer(_cret)))
+	_flowBox = wrapFlowBox(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _flowBox
 }
@@ -609,7 +609,7 @@ func (box *FlowBox) ChildAtIndex(idx int32) *FlowBoxChild {
 	var _flowBoxChild *FlowBoxChild // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_flowBoxChild = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(_cret)))
+		_flowBoxChild = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _flowBoxChild
@@ -646,7 +646,7 @@ func (box *FlowBox) ChildAtPos(x, y int32) *FlowBoxChild {
 	var _flowBoxChild *FlowBoxChild // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_flowBoxChild = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(_cret)))
+		_flowBoxChild = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _flowBoxChild
@@ -795,11 +795,11 @@ func (box *FlowBox) SelectedChildren() []*FlowBoxChild {
 
 	var _list []*FlowBoxChild // out
 
-	_list = make([]*FlowBoxChild, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*FlowBoxChild, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *FlowBoxChild // out
-		dst = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(src)))
+		dst = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 
@@ -1303,7 +1303,7 @@ func NewFlowBoxChild() *FlowBoxChild {
 
 	var _flowBoxChild *FlowBoxChild // out
 
-	_flowBoxChild = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(_cret)))
+	_flowBoxChild = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _flowBoxChild
 }

@@ -228,7 +228,7 @@ func NewSignalListItemFactory() *SignalListItemFactory {
 
 	var _signalListItemFactory *SignalListItemFactory // out
 
-	_signalListItemFactory = wrapSignalListItemFactory(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_signalListItemFactory = wrapSignalListItemFactory(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _signalListItemFactory
 }

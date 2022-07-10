@@ -49,12 +49,12 @@ func init() {
 //
 func BuilderErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gtk", "quark")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -63,12 +63,12 @@ func BuilderErrorQuark() glib.Quark {
 //
 func ConstraintVflParserErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gtk", "quark")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -121,12 +121,12 @@ func (e EditableProperties) String() string {
 //
 func IconThemeErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gtk", "quark")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -135,12 +135,12 @@ func IconThemeErrorQuark() glib.Quark {
 //
 func RecentManagerErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gtk", "quark")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }
@@ -244,12 +244,12 @@ func (d DebugFlags) Has(other DebugFlags) bool {
 //
 func CSSParserErrorQuark() glib.Quark {
 	_info := girepository.MustFind("Gtk", "css_parser_error_quark")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.guint32)(unsafe.Pointer(&_gret))
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&_cret)))
+	_quark = uint32(*(*C.guint32)(unsafe.Pointer(&*(*C.guint32)(unsafe.Pointer(&_cret)))))
 
 	return _quark
 }

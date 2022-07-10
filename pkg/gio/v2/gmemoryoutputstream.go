@@ -93,7 +93,7 @@ func NewMemoryOutputStreamResizable() *MemoryOutputStream {
 
 	var _memoryOutputStream *MemoryOutputStream // out
 
-	_memoryOutputStream = wrapMemoryOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_memoryOutputStream = wrapMemoryOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _memoryOutputStream
 }
@@ -121,7 +121,7 @@ func (ostream *MemoryOutputStream) Data() unsafe.Pointer {
 
 	var _gpointer unsafe.Pointer // out
 
-	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&_cret))))
 
 	return _gpointer
 }
@@ -208,7 +208,7 @@ func (ostream *MemoryOutputStream) StealAsBytes() *glib.Bytes {
 
 	var _bytes *glib.Bytes // out
 
-	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -243,7 +243,7 @@ func (ostream *MemoryOutputStream) StealData() unsafe.Pointer {
 
 	var _gpointer unsafe.Pointer // out
 
-	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&_cret))))
 
 	return _gpointer
 }

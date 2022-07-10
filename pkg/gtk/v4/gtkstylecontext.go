@@ -211,8 +211,8 @@ func (context *StyleContext) AddClass(className string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(className)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(className)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "StyleContext")
 	_info.InvokeClassMethod("add_class", _args[:], nil)
@@ -274,7 +274,7 @@ func (context *StyleContext) Border() *Border {
 
 	var _border *Border // out
 
-	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _border
 }
@@ -298,7 +298,7 @@ func (context *StyleContext) Color() *gdk.RGBA {
 
 	var _color *gdk.RGBA // out
 
-	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _color
 }
@@ -323,7 +323,7 @@ func (context *StyleContext) Display() *gdk.Display {
 	var _display *gdk.Display // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_display = &gdk.Display{
 			Object: obj,
 		}
@@ -351,7 +351,7 @@ func (context *StyleContext) Margin() *Border {
 
 	var _margin *Border // out
 
-	_margin = (*Border)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_margin = (*Border)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _margin
 }
@@ -375,7 +375,7 @@ func (context *StyleContext) Padding() *Border {
 
 	var _padding *Border // out
 
-	_padding = (*Border)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_padding = (*Border)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _padding
 }
@@ -418,8 +418,8 @@ func (context *StyleContext) HasClass(className string) bool {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(className)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(className)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "StyleContext")
 	_gret := _info.InvokeClassMethod("has_class", _args[:], nil)
@@ -453,8 +453,8 @@ func (context *StyleContext) LookupColor(colorName string) (*gdk.RGBA, bool) {
 	var _outs [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(colorName)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(colorName)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "StyleContext")
 	_gret := _info.InvokeClassMethod("lookup_color", _args[:], _outs[:])
@@ -466,7 +466,7 @@ func (context *StyleContext) LookupColor(colorName string) (*gdk.RGBA, bool) {
 	var _color *gdk.RGBA // out
 	var _ok bool         // out
 
-	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -484,8 +484,8 @@ func (context *StyleContext) RemoveClass(className string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(className)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(className)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "StyleContext")
 	_info.InvokeClassMethod("remove_class", _args[:], nil)
@@ -617,7 +617,7 @@ func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProvi
 	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(priority)
 
 	_info := girepository.MustFind("Gtk", "add_provider_for_display")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(provider)
@@ -639,7 +639,7 @@ func StyleContextRemoveProviderForDisplay(display *gdk.Display, provider StylePr
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
 
 	_info := girepository.MustFind("Gtk", "remove_provider_for_display")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(display)
 	runtime.KeepAlive(provider)

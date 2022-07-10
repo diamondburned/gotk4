@@ -151,7 +151,7 @@ func NewTreeModelSortWithModel(childModel TreeModeller) *TreeModelSort {
 
 	var _treeModelSort *TreeModelSort // out
 
-	_treeModelSort = wrapTreeModelSort(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_treeModelSort = wrapTreeModelSort(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _treeModelSort
 }
@@ -204,7 +204,7 @@ func (treeModelSort *TreeModelSort) ConvertChildIterToIter(childIter *TreeIter) 
 	var _sortIter *TreeIter // out
 	var _ok bool            // out
 
-	_sortIter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_sortIter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -241,12 +241,13 @@ func (treeModelSort *TreeModelSort) ConvertChildPathToPath(childPath *TreePath) 
 	var _treePath *TreePath // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_treePath)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -282,7 +283,7 @@ func (treeModelSort *TreeModelSort) ConvertIterToChildIter(sortedIter *TreeIter)
 
 	var _childIter *TreeIter // out
 
-	_childIter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_childIter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _childIter
 }
@@ -317,12 +318,13 @@ func (treeModelSort *TreeModelSort) ConvertPathToChildPath(sortedPath *TreePath)
 	var _treePath *TreePath // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_treePath)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -351,7 +353,7 @@ func (treeModel *TreeModelSort) Model() *TreeModel {
 
 	var _treeModel *TreeModel // out
 
-	_treeModel = wrapTreeModel(coreglib.Take(unsafe.Pointer(_cret)))
+	_treeModel = wrapTreeModel(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _treeModel
 }

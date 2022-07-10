@@ -115,7 +115,7 @@ func NewFontChooserWidget() *FontChooserWidget {
 
 	var _fontChooserWidget *FontChooserWidget // out
 
-	_fontChooserWidget = wrapFontChooserWidget(coreglib.Take(unsafe.Pointer(_cret)))
+	_fontChooserWidget = wrapFontChooserWidget(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _fontChooserWidget
 }

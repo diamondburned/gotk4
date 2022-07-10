@@ -89,7 +89,7 @@ func NewEventControllerKey() *EventControllerKey {
 
 	var _eventControllerKey *EventControllerKey // out
 
-	_eventControllerKey = wrapEventControllerKey(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_eventControllerKey = wrapEventControllerKey(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _eventControllerKey
 }
@@ -176,7 +176,7 @@ func (controller *EventControllerKey) IMContext() IMContexter {
 	var _imContext IMContexter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.IMContexter is nil")
 		}

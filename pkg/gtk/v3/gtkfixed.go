@@ -122,7 +122,7 @@ func NewFixed() *Fixed {
 
 	var _fixed *Fixed // out
 
-	_fixed = wrapFixed(coreglib.Take(unsafe.Pointer(_cret)))
+	_fixed = wrapFixed(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _fixed
 }
@@ -192,7 +192,7 @@ func (f *FixedChild) Widget() Widgetter {
 	valptr := (*uintptr)(unsafe.Add(f.native, offset))
 	var v Widgetter // out
 	{
-		objptr := unsafe.Pointer(*valptr)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&*valptr)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}

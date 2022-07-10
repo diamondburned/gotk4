@@ -14,6 +14,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern gchar* _gotk4_atk1_DocumentIface_get_document_type(void*);
 // extern gint _gotk4_atk1_DocumentIface_get_current_page_number(void*);
 // extern gint _gotk4_atk1_DocumentIface_get_page_count(void*);
 // extern gpointer _gotk4_atk1_DocumentIface_get_document(void*);
@@ -21,7 +22,6 @@ import (
 // extern void _gotk4_atk1_Document_ConnectLoadStopped(gpointer, guintptr);
 // extern void _gotk4_atk1_Document_ConnectPageChanged(gpointer, gint, guintptr);
 // extern void _gotk4_atk1_Document_ConnectReload(gpointer, guintptr);
-// extern void* _gotk4_atk1_DocumentIface_get_document_type(void*);
 import "C"
 
 // GTypeDocument returns the GType for the type Document.
@@ -222,20 +222,20 @@ func (document *Document) AttributeValue(attributeName string) string {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(document).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(attributeName)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(attributeName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Atk", "Document")
 	_gret := _info.InvokeIfaceMethod("get_attribute_value", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(document)
 	runtime.KeepAlive(attributeName)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -290,7 +290,7 @@ func (document *Document) Document() unsafe.Pointer {
 
 	var _gpointer unsafe.Pointer // out
 
-	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&_cret))))
 
 	return _gpointer
 }
@@ -311,13 +311,13 @@ func (document *Document) DocumentType() string {
 
 	_info := girepository.MustFind("Atk", "Document")
 	_gret := _info.InvokeIfaceMethod("get_document_type", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(document)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -342,13 +342,13 @@ func (document *Document) Locale() string {
 
 	_info := girepository.MustFind("Atk", "Document")
 	_gret := _info.InvokeIfaceMethod("get_locale", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(document)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -397,10 +397,10 @@ func (document *Document) SetAttributeValue(attributeName, attributeValue string
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(document).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(attributeName)))
-	defer C.free(unsafe.Pointer(_args[1]))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(attributeValue)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(attributeName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
+	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(attributeValue)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
 
 	_info := girepository.MustFind("Atk", "Document")
 	_gret := _info.InvokeIfaceMethod("set_attribute_value", _args[:], nil)

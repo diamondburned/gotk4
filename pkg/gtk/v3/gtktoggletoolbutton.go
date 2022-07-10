@@ -159,7 +159,7 @@ func NewToggleToolButton() *ToggleToolButton {
 
 	var _toggleToolButton *ToggleToolButton // out
 
-	_toggleToolButton = wrapToggleToolButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_toggleToolButton = wrapToggleToolButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _toggleToolButton
 }
@@ -183,8 +183,8 @@ func NewToggleToolButton() *ToggleToolButton {
 func NewToggleToolButtonFromStock(stockId string) *ToggleToolButton {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "ToggleToolButton")
 	_gret := _info.InvokeClassMethod("new_ToggleToolButton_from_stock", _args[:], nil)
@@ -194,7 +194,7 @@ func NewToggleToolButtonFromStock(stockId string) *ToggleToolButton {
 
 	var _toggleToolButton *ToggleToolButton // out
 
-	_toggleToolButton = wrapToggleToolButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_toggleToolButton = wrapToggleToolButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _toggleToolButton
 }

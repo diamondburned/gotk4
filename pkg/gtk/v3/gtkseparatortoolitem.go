@@ -108,7 +108,7 @@ func NewSeparatorToolItem() *SeparatorToolItem {
 
 	var _separatorToolItem *SeparatorToolItem // out
 
-	_separatorToolItem = wrapSeparatorToolItem(coreglib.Take(unsafe.Pointer(_cret)))
+	_separatorToolItem = wrapSeparatorToolItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _separatorToolItem
 }

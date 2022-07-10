@@ -17,14 +17,14 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern char* _gotk4_gtk4_ComboBoxClass_format_entry_text(void*, char*);
 // extern gboolean _gotk4_gtk4_ComboBox_ConnectPopdown(gpointer, guintptr);
 // extern gboolean _gotk4_gtk4_TreeViewRowSeparatorFunc(void*, void*, gpointer);
+// extern gchar* _gotk4_gtk4_ComboBox_ConnectFormatEntryText(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk4_ComboBoxClass_changed(void*);
 // extern void _gotk4_gtk4_ComboBox_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gtk4_ComboBox_ConnectPopup(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
-// extern void* _gotk4_gtk4_ComboBoxClass_format_entry_text(void*, void*);
-// extern void* _gotk4_gtk4_ComboBox_ConnectFormatEntryText(gpointer, void*, guintptr);
 import "C"
 
 // GTypeComboBox returns the GType for the type ComboBox.
@@ -148,7 +148,7 @@ func _gotk4_gtk4_ComboBoxClass_changed(arg0 *C.void) {
 }
 
 //export _gotk4_gtk4_ComboBoxClass_format_entry_text
-func _gotk4_gtk4_ComboBoxClass_format_entry_text(arg0 *C.void, arg1 *C.void) (cret *C.void) {
+func _gotk4_gtk4_ComboBoxClass_format_entry_text(arg0 *C.void, arg1 *C.char) (cret *C.char) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FormatEntryText(path string) string })
 
@@ -158,7 +158,7 @@ func _gotk4_gtk4_ComboBoxClass_format_entry_text(arg0 *C.void, arg1 *C.void) (cr
 
 	utf8 := iface.FormatEntryText(_path)
 
-	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+	cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
 
 	return cret
 }
@@ -234,7 +234,7 @@ func (comboBox *ComboBox) ConnectChanged(f func()) coreglib.SignalHandle {
 }
 
 //export _gotk4_gtk4_ComboBox_ConnectFormatEntryText
-func _gotk4_gtk4_ComboBox_ConnectFormatEntryText(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) (cret *C.void) {
+func _gotk4_gtk4_ComboBox_ConnectFormatEntryText(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) (cret *C.gchar) {
 	var f func(path string) (utf8 string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -252,7 +252,7 @@ func _gotk4_gtk4_ComboBox_ConnectFormatEntryText(arg0 C.gpointer, arg1 *C.void, 
 
 	utf8 := f(_path)
 
-	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 
 	return cret
 }
@@ -361,7 +361,7 @@ func NewComboBox() *ComboBox {
 
 	var _comboBox *ComboBox // out
 
-	_comboBox = wrapComboBox(coreglib.Take(unsafe.Pointer(_cret)))
+	_comboBox = wrapComboBox(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _comboBox
 }
@@ -379,7 +379,7 @@ func NewComboBoxWithEntry() *ComboBox {
 
 	var _comboBox *ComboBox // out
 
-	_comboBox = wrapComboBox(coreglib.Take(unsafe.Pointer(_cret)))
+	_comboBox = wrapComboBox(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _comboBox
 }
@@ -407,7 +407,7 @@ func NewComboBoxWithModel(model TreeModeller) *ComboBox {
 
 	var _comboBox *ComboBox // out
 
-	_comboBox = wrapComboBox(coreglib.Take(unsafe.Pointer(_cret)))
+	_comboBox = wrapComboBox(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _comboBox
 }
@@ -436,7 +436,7 @@ func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
 
 	var _comboBox *ComboBox // out
 
-	_comboBox = wrapComboBox(coreglib.Take(unsafe.Pointer(_cret)))
+	_comboBox = wrapComboBox(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _comboBox
 }
@@ -494,14 +494,14 @@ func (comboBox *ComboBox) ActiveID() string {
 
 	_info := girepository.MustFind("Gtk", "ComboBox")
 	_gret := _info.InvokeClassMethod("get_active_id", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(comboBox)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -531,7 +531,7 @@ func (comboBox *ComboBox) ActiveIter() (*TreeIter, bool) {
 	var _iter *TreeIter // out
 	var _ok bool        // out
 
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -560,7 +560,7 @@ func (comboBox *ComboBox) Child() Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -674,7 +674,7 @@ func (comboBox *ComboBox) Model() *TreeModel {
 	var _treeModel *TreeModel // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_treeModel = wrapTreeModel(coreglib.Take(unsafe.Pointer(_cret)))
+		_treeModel = wrapTreeModel(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _treeModel
@@ -804,8 +804,8 @@ func (comboBox *ComboBox) SetActiveID(activeId string) bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
 	if activeId != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(activeId)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(activeId)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "ComboBox")

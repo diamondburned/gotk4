@@ -125,7 +125,7 @@ func NewLayout(hadjustment, vadjustment *Adjustment) *Layout {
 
 	var _layout *Layout // out
 
-	_layout = wrapLayout(coreglib.Take(unsafe.Pointer(_cret)))
+	_layout = wrapLayout(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _layout
 }
@@ -150,7 +150,7 @@ func (layout *Layout) BinWindow() gdk.Windower {
 	var _window gdk.Windower // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Windower is nil")
 		}
@@ -196,7 +196,7 @@ func (layout *Layout) HAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _adjustment
 }
@@ -223,12 +223,8 @@ func (layout *Layout) Size() (width, height uint32) {
 	var _width uint32  // out
 	var _height uint32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_width = *(*uint32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_height = *(*uint32)(unsafe.Pointer(_outs[1]))
-	}
+	_width = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
+	_height = uint32(*(*C.guint)(unsafe.Pointer(&_outs[1])))
 
 	return _width, _height
 }
@@ -259,7 +255,7 @@ func (layout *Layout) VAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _adjustment
 }

@@ -20,25 +20,25 @@ import (
 // #include <glib-object.h>
 // extern gboolean _gotk4_gtk4_IMContextClass_delete_surrounding(void*, int, int);
 // extern gboolean _gotk4_gtk4_IMContextClass_filter_keypress(void*, void*);
-// extern gboolean _gotk4_gtk4_IMContextClass_get_surrounding(void*, void**, void*);
-// extern gboolean _gotk4_gtk4_IMContextClass_get_surrounding_with_selection(void*, void**, void*, void*);
+// extern gboolean _gotk4_gtk4_IMContextClass_get_surrounding(void*, char**, int*);
+// extern gboolean _gotk4_gtk4_IMContextClass_get_surrounding_with_selection(void*, char**, int*, int*);
 // extern gboolean _gotk4_gtk4_IMContextClass_retrieve_surrounding(void*);
 // extern gboolean _gotk4_gtk4_IMContext_ConnectDeleteSurrounding(gpointer, gint, gint, guintptr);
 // extern gboolean _gotk4_gtk4_IMContext_ConnectRetrieveSurrounding(gpointer, guintptr);
-// extern void _gotk4_gtk4_IMContextClass_commit(void*, void*);
+// extern void _gotk4_gtk4_IMContextClass_commit(void*, char*);
 // extern void _gotk4_gtk4_IMContextClass_focus_in(void*);
 // extern void _gotk4_gtk4_IMContextClass_focus_out(void*);
-// extern void _gotk4_gtk4_IMContextClass_get_preedit_string(void*, void**, void**, void*);
+// extern void _gotk4_gtk4_IMContextClass_get_preedit_string(void*, char**, void**, int*);
 // extern void _gotk4_gtk4_IMContextClass_preedit_changed(void*);
 // extern void _gotk4_gtk4_IMContextClass_preedit_end(void*);
 // extern void _gotk4_gtk4_IMContextClass_preedit_start(void*);
 // extern void _gotk4_gtk4_IMContextClass_reset(void*);
 // extern void _gotk4_gtk4_IMContextClass_set_client_widget(void*, void*);
 // extern void _gotk4_gtk4_IMContextClass_set_cursor_location(void*, void*);
-// extern void _gotk4_gtk4_IMContextClass_set_surrounding(void*, void*, int, int);
-// extern void _gotk4_gtk4_IMContextClass_set_surrounding_with_selection(void*, void*, int, int, int);
+// extern void _gotk4_gtk4_IMContextClass_set_surrounding(void*, char*, int, int);
+// extern void _gotk4_gtk4_IMContextClass_set_surrounding_with_selection(void*, char*, int, int, int);
 // extern void _gotk4_gtk4_IMContextClass_set_use_preedit(void*, gboolean);
-// extern void _gotk4_gtk4_IMContext_ConnectCommit(gpointer, void*, guintptr);
+// extern void _gotk4_gtk4_IMContext_ConnectCommit(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk4_IMContext_ConnectPreeditChanged(gpointer, guintptr);
 // extern void _gotk4_gtk4_IMContext_ConnectPreeditEnd(gpointer, guintptr);
 // extern void _gotk4_gtk4_IMContext_ConnectPreeditStart(gpointer, guintptr);
@@ -434,7 +434,7 @@ func classInitIMContexter(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk4_IMContextClass_commit
-func _gotk4_gtk4_IMContextClass_commit(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gtk4_IMContextClass_commit(arg0 *C.void, arg1 *C.char) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Commit(str string) })
 
@@ -518,7 +518,7 @@ func _gotk4_gtk4_IMContextClass_focus_out(arg0 *C.void) {
 }
 
 //export _gotk4_gtk4_IMContextClass_get_preedit_string
-func _gotk4_gtk4_IMContextClass_get_preedit_string(arg0 *C.void, arg1 **C.void, arg2 **C.void, arg3 *C.void) {
+func _gotk4_gtk4_IMContextClass_get_preedit_string(arg0 *C.void, arg1 **C.char, arg2 **C.void, arg3 *C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreeditString() (string, *pango.AttrList, int32)
@@ -526,20 +526,20 @@ func _gotk4_gtk4_IMContextClass_get_preedit_string(arg0 *C.void, arg1 **C.void, 
 
 	str, attrs, cursorPos := iface.PreeditString()
 
-	*arg1 = (*C.void)(unsafe.Pointer(C.CString(str)))
+	*arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
 	*arg2 = (*C.void)(gextras.StructNative(unsafe.Pointer(attrs)))
-	*arg3 = (*C.void)(unsafe.Pointer(cursorPos))
+	*arg3 = C.int(cursorPos)
 }
 
 //export _gotk4_gtk4_IMContextClass_get_surrounding
-func _gotk4_gtk4_IMContextClass_get_surrounding(arg0 *C.void, arg1 **C.void, arg2 *C.void) (cret C.gboolean) {
+func _gotk4_gtk4_IMContextClass_get_surrounding(arg0 *C.void, arg1 **C.char, arg2 *C.int) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Surrounding() (string, int32, bool) })
 
 	text, cursorIndex, ok := iface.Surrounding()
 
-	*arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
-	*arg2 = (*C.void)(unsafe.Pointer(cursorIndex))
+	*arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	*arg2 = C.int(cursorIndex)
 	if ok {
 		cret = C.TRUE
 	}
@@ -548,7 +548,7 @@ func _gotk4_gtk4_IMContextClass_get_surrounding(arg0 *C.void, arg1 **C.void, arg
 }
 
 //export _gotk4_gtk4_IMContextClass_get_surrounding_with_selection
-func _gotk4_gtk4_IMContextClass_get_surrounding_with_selection(arg0 *C.void, arg1 **C.void, arg2 *C.void, arg3 *C.void) (cret C.gboolean) {
+func _gotk4_gtk4_IMContextClass_get_surrounding_with_selection(arg0 *C.void, arg1 **C.char, arg2 *C.int, arg3 *C.int) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		SurroundingWithSelection() (text string, cursorIndex, anchorIndex int32, ok bool)
@@ -556,9 +556,9 @@ func _gotk4_gtk4_IMContextClass_get_surrounding_with_selection(arg0 *C.void, arg
 
 	text, cursorIndex, anchorIndex, ok := iface.SurroundingWithSelection()
 
-	*arg1 = (*C.void)(unsafe.Pointer(C.CString(text)))
-	*arg2 = (*C.void)(unsafe.Pointer(cursorIndex))
-	*arg3 = (*C.void)(unsafe.Pointer(anchorIndex))
+	*arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	*arg2 = C.int(cursorIndex)
+	*arg3 = C.int(anchorIndex)
 	if ok {
 		cret = C.TRUE
 	}
@@ -652,7 +652,7 @@ func _gotk4_gtk4_IMContextClass_set_cursor_location(arg0 *C.void, arg1 *C.void) 
 }
 
 //export _gotk4_gtk4_IMContextClass_set_surrounding
-func _gotk4_gtk4_IMContextClass_set_surrounding(arg0 *C.void, arg1 *C.void, arg2 C.int, arg3 C.int) {
+func _gotk4_gtk4_IMContextClass_set_surrounding(arg0 *C.void, arg1 *C.char, arg2 C.int, arg3 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		SetSurrounding(text string, len, cursorIndex int32)
@@ -670,7 +670,7 @@ func _gotk4_gtk4_IMContextClass_set_surrounding(arg0 *C.void, arg1 *C.void, arg2
 }
 
 //export _gotk4_gtk4_IMContextClass_set_surrounding_with_selection
-func _gotk4_gtk4_IMContextClass_set_surrounding_with_selection(arg0 *C.void, arg1 *C.void, arg2 C.int, arg3 C.int, arg4 C.int) {
+func _gotk4_gtk4_IMContextClass_set_surrounding_with_selection(arg0 *C.void, arg1 *C.char, arg2 C.int, arg3 C.int, arg4 C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		SetSurroundingWithSelection(text string, len, cursorIndex, anchorIndex int32)
@@ -723,7 +723,7 @@ func BaseIMContext(obj IMContexter) *IMContext {
 }
 
 //export _gotk4_gtk4_IMContext_ConnectCommit
-func _gotk4_gtk4_IMContext_ConnectCommit(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk4_IMContext_ConnectCommit(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
 	var f func(str string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -1028,16 +1028,16 @@ func (context *IMContext) PreeditString() (string, *pango.AttrList, int32) {
 	var _attrs *pango.AttrList // out
 	var _cursorPos int32       // out
 
-	_str = C.GoString((*C.gchar)(unsafe.Pointer(_outs[0])))
-	defer C.free(unsafe.Pointer(_outs[0]))
-	_attrs = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
+	_str = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0])))))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0]))))
+	_attrs = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attrs)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			C.free(intern.C)
 		},
 	)
-	_cursorPos = *(*int32)(unsafe.Pointer(_outs[2]))
+	_cursorPos = int32(*(*C.int)(unsafe.Pointer(&_outs[2])))
 
 	return _str, _attrs, _cursorPos
 }
@@ -1085,9 +1085,9 @@ func (context *IMContext) Surrounding() (string, int32, bool) {
 	var _cursorIndex int32 // out
 	var _ok bool           // out
 
-	_text = C.GoString((*C.gchar)(unsafe.Pointer(_outs[0])))
-	defer C.free(unsafe.Pointer(_outs[0]))
-	_cursorIndex = *(*int32)(unsafe.Pointer(_outs[1]))
+	_text = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0])))))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0]))))
+	_cursorIndex = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -1140,10 +1140,10 @@ func (context *IMContext) SurroundingWithSelection() (text string, cursorIndex, 
 	var _anchorIndex int32 // out
 	var _ok bool           // out
 
-	_text = C.GoString((*C.gchar)(unsafe.Pointer(_outs[0])))
-	defer C.free(unsafe.Pointer(_outs[0]))
-	_cursorIndex = *(*int32)(unsafe.Pointer(_outs[1]))
-	_anchorIndex = *(*int32)(unsafe.Pointer(_outs[2]))
+	_text = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0])))))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0]))))
+	_cursorIndex = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
+	_anchorIndex = int32(*(*C.int)(unsafe.Pointer(&_outs[2])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -1234,8 +1234,8 @@ func (context *IMContext) SetSurrounding(text string, len, cursorIndex int32) {
 	var _args [4]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(len)
 	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(cursorIndex)
 
@@ -1265,8 +1265,8 @@ func (context *IMContext) SetSurroundingWithSelection(text string, len, cursorIn
 	var _args [5]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(len)
 	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(cursorIndex)
 	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(anchorIndex)

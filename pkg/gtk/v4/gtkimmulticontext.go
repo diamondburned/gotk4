@@ -79,7 +79,7 @@ func NewIMMulticontext() *IMMulticontext {
 
 	var _imMulticontext *IMMulticontext // out
 
-	_imMulticontext = wrapIMMulticontext(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_imMulticontext = wrapIMMulticontext(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _imMulticontext
 }
@@ -97,13 +97,13 @@ func (context *IMMulticontext) ContextID() string {
 
 	_info := girepository.MustFind("Gtk", "IMMulticontext")
 	_gret := _info.InvokeClassMethod("get_context_id", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(context)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -121,8 +121,8 @@ func (context *IMMulticontext) SetContextID(contextId string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(contextId)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(contextId)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "IMMulticontext")
 	_info.InvokeClassMethod("set_context_id", _args[:], nil)

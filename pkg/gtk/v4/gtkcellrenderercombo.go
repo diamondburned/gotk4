@@ -14,7 +14,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk4_CellRendererCombo_ConnectChanged(gpointer, void*, void*, guintptr);
+// extern void _gotk4_gtk4_CellRendererCombo_ConnectChanged(gpointer, gchar*, void*, guintptr);
 import "C"
 
 // GTypeCellRendererCombo returns the GType for the type CellRendererCombo.
@@ -66,7 +66,7 @@ func marshalCellRendererCombo(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk4_CellRendererCombo_ConnectChanged
-func _gotk4_gtk4_CellRendererCombo_ConnectChanged(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.guintptr) {
+func _gotk4_gtk4_CellRendererCombo_ConnectChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.void, arg3 C.guintptr) {
 	var f func(pathString string, newIter *TreeIter)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -120,7 +120,7 @@ func NewCellRendererCombo() *CellRendererCombo {
 
 	var _cellRendererCombo *CellRendererCombo // out
 
-	_cellRendererCombo = wrapCellRendererCombo(coreglib.Take(unsafe.Pointer(_cret)))
+	_cellRendererCombo = wrapCellRendererCombo(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cellRendererCombo
 }

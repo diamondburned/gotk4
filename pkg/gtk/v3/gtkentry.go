@@ -24,9 +24,9 @@ import (
 // extern void _gotk4_gtk3_EntryClass_backspace(void*);
 // extern void _gotk4_gtk3_EntryClass_copy_clipboard(void*);
 // extern void _gotk4_gtk3_EntryClass_cut_clipboard(void*);
-// extern void _gotk4_gtk3_EntryClass_get_frame_size(void*, void*, void*, void*, void*);
-// extern void _gotk4_gtk3_EntryClass_get_text_area_size(void*, void*, void*, void*, void*);
-// extern void _gotk4_gtk3_EntryClass_insert_at_cursor(void*, void*);
+// extern void _gotk4_gtk3_EntryClass_get_frame_size(void*, gint*, gint*, gint*, gint*);
+// extern void _gotk4_gtk3_EntryClass_get_text_area_size(void*, gint*, gint*, gint*, gint*);
+// extern void _gotk4_gtk3_EntryClass_insert_at_cursor(void*, gchar*);
 // extern void _gotk4_gtk3_EntryClass_insert_emoji(void*);
 // extern void _gotk4_gtk3_EntryClass_paste_clipboard(void*);
 // extern void _gotk4_gtk3_EntryClass_populate_popup(void*, void*);
@@ -35,11 +35,11 @@ import (
 // extern void _gotk4_gtk3_Entry_ConnectBackspace(gpointer, guintptr);
 // extern void _gotk4_gtk3_Entry_ConnectCopyClipboard(gpointer, guintptr);
 // extern void _gotk4_gtk3_Entry_ConnectCutClipboard(gpointer, guintptr);
-// extern void _gotk4_gtk3_Entry_ConnectInsertAtCursor(gpointer, void*, guintptr);
+// extern void _gotk4_gtk3_Entry_ConnectInsertAtCursor(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk3_Entry_ConnectInsertEmoji(gpointer, guintptr);
 // extern void _gotk4_gtk3_Entry_ConnectPasteClipboard(gpointer, guintptr);
 // extern void _gotk4_gtk3_Entry_ConnectPopulatePopup(gpointer, void*, guintptr);
-// extern void _gotk4_gtk3_Entry_ConnectPreeditChanged(gpointer, void*, guintptr);
+// extern void _gotk4_gtk3_Entry_ConnectPreeditChanged(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk3_Entry_ConnectToggleOverwrite(gpointer, guintptr);
 import "C"
 
@@ -309,7 +309,7 @@ func _gotk4_gtk3_EntryClass_cut_clipboard(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_EntryClass_get_frame_size
-func _gotk4_gtk3_EntryClass_get_frame_size(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.void) {
+func _gotk4_gtk3_EntryClass_get_frame_size(arg0 *C.void, arg1 *C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		FrameSize(x, y, width, height *int32)
@@ -329,7 +329,7 @@ func _gotk4_gtk3_EntryClass_get_frame_size(arg0 *C.void, arg1 *C.void, arg2 *C.v
 }
 
 //export _gotk4_gtk3_EntryClass_get_text_area_size
-func _gotk4_gtk3_EntryClass_get_text_area_size(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.void) {
+func _gotk4_gtk3_EntryClass_get_text_area_size(arg0 *C.void, arg1 *C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		TextAreaSize(x, y, width, height *int32)
@@ -349,7 +349,7 @@ func _gotk4_gtk3_EntryClass_get_text_area_size(arg0 *C.void, arg1 *C.void, arg2 
 }
 
 //export _gotk4_gtk3_EntryClass_insert_at_cursor
-func _gotk4_gtk3_EntryClass_insert_at_cursor(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gtk3_EntryClass_insert_at_cursor(arg0 *C.void, arg1 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ InsertAtCursor(str string) })
 
@@ -550,7 +550,7 @@ func (entry *Entry) ConnectCutClipboard(f func()) coreglib.SignalHandle {
 }
 
 //export _gotk4_gtk3_Entry_ConnectInsertAtCursor
-func _gotk4_gtk3_Entry_ConnectInsertAtCursor(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk3_Entry_ConnectInsertAtCursor(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
 	var f func(str string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -677,7 +677,7 @@ func (entry *Entry) ConnectPopulatePopup(f func(widget Widgetter)) coreglib.Sign
 }
 
 //export _gotk4_gtk3_Entry_ConnectPreeditChanged
-func _gotk4_gtk3_Entry_ConnectPreeditChanged(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk3_Entry_ConnectPreeditChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
 	var f func(preedit string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -740,7 +740,7 @@ func NewEntry() *Entry {
 
 	var _entry *Entry // out
 
-	_entry = wrapEntry(coreglib.Take(unsafe.Pointer(_cret)))
+	_entry = wrapEntry(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _entry
 }
@@ -768,7 +768,7 @@ func NewEntryWithBuffer(buffer *EntryBuffer) *Entry {
 
 	var _entry *Entry // out
 
-	_entry = wrapEntry(coreglib.Take(unsafe.Pointer(_cret)))
+	_entry = wrapEntry(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _entry
 }
@@ -845,8 +845,8 @@ func (entry *Entry) Attributes() *pango.AttrList {
 	var _attrList *pango.AttrList // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.pango_attr_list_ref(_cret)
+		_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.pango_attr_list_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -877,7 +877,7 @@ func (entry *Entry) Buffer() *EntryBuffer {
 
 	var _entryBuffer *EntryBuffer // out
 
-	_entryBuffer = wrapEntryBuffer(coreglib.Take(unsafe.Pointer(_cret)))
+	_entryBuffer = wrapEntryBuffer(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _entryBuffer
 }
@@ -901,7 +901,7 @@ func (entry *Entry) Completion() *EntryCompletion {
 
 	var _entryCompletion *EntryCompletion // out
 
-	_entryCompletion = wrapEntryCompletion(coreglib.Take(unsafe.Pointer(_cret)))
+	_entryCompletion = wrapEntryCompletion(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _entryCompletion
 }
@@ -956,7 +956,7 @@ func (entry *Entry) CursorHAdjustment() *Adjustment {
 	var _adjustment *Adjustment // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
+		_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _adjustment
@@ -1049,7 +1049,7 @@ func (entry *Entry) InnerBorder() *Border {
 	var _border *Border // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _border
@@ -1110,7 +1110,7 @@ func (entry *Entry) Layout() *pango.Layout {
 	var _layout *pango.Layout // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_layout = &pango.Layout{
 			Object: obj,
 		}
@@ -1156,12 +1156,8 @@ func (entry *Entry) LayoutOffsets() (x, y int32) {
 	var _x int32 // out
 	var _y int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_x = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_y = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_x = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_y = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _x, _y
 }
@@ -1262,13 +1258,13 @@ func (entry *Entry) PlaceholderText() string {
 
 	_info := girepository.MustFind("Gtk", "Entry")
 	_gret := _info.InvokeClassMethod("get_placeholder_text", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -1344,7 +1340,7 @@ func (entry *Entry) Tabs() *pango.TabArray {
 	var _tabArray *pango.TabArray // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _tabArray
@@ -1369,13 +1365,13 @@ func (entry *Entry) Text() string {
 
 	_info := girepository.MustFind("Gtk", "Entry")
 	_gret := _info.InvokeClassMethod("get_text", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -1404,7 +1400,7 @@ func (entry *Entry) TextArea() *gdk.Rectangle {
 
 	var _textArea *gdk.Rectangle // out
 
-	_textArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_textArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _textArea
 }
@@ -1913,8 +1909,8 @@ func (entry *Entry) SetPlaceholderText(text string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	if text != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "Entry")
@@ -1998,8 +1994,8 @@ func (entry *Entry) SetText(text string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "Entry")
 	_info.InvokeClassMethod("set_text", _args[:], nil)

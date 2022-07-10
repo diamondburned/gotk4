@@ -114,7 +114,7 @@ func (self *ATContext) Accessible() *Accessible {
 
 	var _accessible *Accessible // out
 
-	_accessible = wrapAccessible(coreglib.Take(unsafe.Pointer(_cret)))
+	_accessible = wrapAccessible(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _accessible
 }

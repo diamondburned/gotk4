@@ -135,7 +135,7 @@ func NewColorSelection() *ColorSelection {
 
 	var _colorSelection *ColorSelection // out
 
-	_colorSelection = wrapColorSelection(coreglib.Take(unsafe.Pointer(_cret)))
+	_colorSelection = wrapColorSelection(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _colorSelection
 }
@@ -186,7 +186,7 @@ func (colorsel *ColorSelection) CurrentColor() *gdk.Color {
 
 	var _color *gdk.Color // out
 
-	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _color
 }
@@ -211,7 +211,7 @@ func (colorsel *ColorSelection) CurrentRGBA() *gdk.RGBA {
 
 	var _rgba *gdk.RGBA // out
 
-	_rgba = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_rgba = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _rgba
 }
@@ -313,7 +313,7 @@ func (colorsel *ColorSelection) PreviousColor() *gdk.Color {
 
 	var _color *gdk.Color // out
 
-	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _color
 }
@@ -337,7 +337,7 @@ func (colorsel *ColorSelection) PreviousRGBA() *gdk.RGBA {
 
 	var _rgba *gdk.RGBA // out
 
-	_rgba = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_rgba = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _rgba
 }
@@ -568,11 +568,11 @@ func ColorSelectionPaletteFromString(str string) ([]gdk.Color, bool) {
 	var _args [1]girepository.Argument
 	var _outs [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "palette_from_string")
-	_gret := _info.Invoke(_args[:], _outs[:])
+	_gret := _info.InvokeFunction(_args[:], _outs[:])
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(str)
@@ -580,17 +580,18 @@ func ColorSelectionPaletteFromString(str string) ([]gdk.Color, bool) {
 	var _colors []gdk.Color // out
 	var _ok bool            // out
 
-	defer C.free(unsafe.Pointer(_outs[0]))
+	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 	{
-		src := unsafe.Slice((**C.void)(_outs[0]), _outs[1])
-		_colors = make([]gdk.Color, _outs[1])
-		for i := 0; i < int(_outs[1]); i++ {
-			_colors[i] = *(*gdk.Color)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+		src := unsafe.Slice((**C.void)(*(**C.void)(unsafe.Pointer(&_outs[0]))), *(*C.gint)(unsafe.Pointer(&_outs[1])))
+		_colors = make([]gdk.Color, *(*C.gint)(unsafe.Pointer(&_outs[1])))
+		for i := 0; i < int(*(*C.gint)(unsafe.Pointer(&_outs[1]))); i++ {
+			_colors[i] = *(*gdk.Color)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(&_colors[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
 					{
-						args := [1]girepository.Argument{(*C.void)(intern.C)}
+						var args [1]girepository.Argument
+						*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 						girepository.MustFind("Gdk", "Color").InvokeRecordMethod("free", args[:], nil)
 					}
 				},

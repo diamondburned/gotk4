@@ -97,7 +97,7 @@ func NewNoSelection(model gio.ListModeller) *NoSelection {
 
 	var _noSelection *NoSelection // out
 
-	_noSelection = wrapNoSelection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_noSelection = wrapNoSelection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _noSelection
 }
@@ -122,7 +122,7 @@ func (self *NoSelection) Model() *gio.ListModel {
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}

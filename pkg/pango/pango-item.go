@@ -59,7 +59,7 @@ func (a *Analysis) ShapeEngine() unsafe.Pointer {
 	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("shape_engine")
 	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
+	v = (unsafe.Pointer)(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&*valptr))))
 	return v
 }
 
@@ -68,7 +68,7 @@ func (a *Analysis) LangEngine() unsafe.Pointer {
 	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("lang_engine")
 	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
+	v = (unsafe.Pointer)(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&*valptr))))
 	return v
 }
 
@@ -78,7 +78,7 @@ func (a *Analysis) Font() Fonter {
 	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v Fonter // out
 	{
-		objptr := unsafe.Pointer(*valptr)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&*valptr)))
 		if objptr == nil {
 			panic("object of type pango.Fonter is nil")
 		}
@@ -138,7 +138,7 @@ func (a *Analysis) Language() *Language {
 	offset := girepository.MustFind("Pango", "Analysis").StructFieldOffset("language")
 	valptr := (*uintptr)(unsafe.Add(a.native, offset))
 	var v *Language // out
-	v = (*Language)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	v = (*Language)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -197,12 +197,13 @@ func NewItem() *Item {
 
 	var _item *Item // out
 
-	_item = (*Item)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_item = (*Item)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_item)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Item").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -262,12 +263,13 @@ func (item *Item) Copy() *Item {
 	var _ret *Item // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_ret = (*Item)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_ret = (*Item)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_ret)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Pango", "Item").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -316,12 +318,13 @@ func (orig *Item) Split(splitIndex int32, splitOffset int32) *Item {
 
 	var _item *Item // out
 
-	_item = (*Item)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_item = (*Item)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_item)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Item").InvokeRecordMethod("free", args[:], nil)
 			}
 		},

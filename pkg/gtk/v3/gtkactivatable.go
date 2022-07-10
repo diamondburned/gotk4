@@ -15,7 +15,7 @@ import (
 // #include <glib.h>
 // #include <glib-object.h>
 // extern void _gotk4_gtk3_ActivatableIface_sync_action_properties(void*, void*);
-// extern void _gotk4_gtk3_ActivatableIface_update(void*, void*, void*);
+// extern void _gotk4_gtk3_ActivatableIface_update(void*, void*, gchar*);
 import "C"
 
 // GTypeActivatable returns the GType for the type Activatable.
@@ -346,7 +346,7 @@ func _gotk4_gtk3_ActivatableIface_sync_action_properties(arg0 *C.void, arg1 *C.v
 }
 
 //export _gotk4_gtk3_ActivatableIface_update
-func _gotk4_gtk3_ActivatableIface_update(arg0 *C.void, arg1 *C.void, arg2 *C.void) {
+func _gotk4_gtk3_ActivatableIface_update(arg0 *C.void, arg1 *C.void, arg2 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ActivatableOverrider)
 
@@ -423,7 +423,7 @@ func (activatable *Activatable) RelatedAction() *Action {
 
 	var _action *Action // out
 
-	_action = wrapAction(coreglib.Take(unsafe.Pointer(_cret)))
+	_action = wrapAction(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _action
 }

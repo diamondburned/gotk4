@@ -89,7 +89,7 @@ func NewInvisible() *Invisible {
 
 	var _invisible *Invisible // out
 
-	_invisible = wrapInvisible(coreglib.Take(unsafe.Pointer(_cret)))
+	_invisible = wrapInvisible(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _invisible
 }
@@ -117,7 +117,7 @@ func NewInvisibleForScreen(screen *gdk.Screen) *Invisible {
 
 	var _invisible *Invisible // out
 
-	_invisible = wrapInvisible(coreglib.Take(unsafe.Pointer(_cret)))
+	_invisible = wrapInvisible(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _invisible
 }
@@ -142,7 +142,7 @@ func (invisible *Invisible) Screen() *gdk.Screen {
 	var _screen *gdk.Screen // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_screen = &gdk.Screen{
 			Object: obj,
 		}

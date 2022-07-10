@@ -77,7 +77,7 @@ func NewFileIcon(file Filer) *FileIcon {
 
 	var _fileIcon *FileIcon // out
 
-	_fileIcon = wrapFileIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_fileIcon = wrapFileIcon(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _fileIcon
 }
@@ -101,7 +101,7 @@ func (icon *FileIcon) File() *File {
 
 	var _file *File // out
 
-	_file = wrapFile(coreglib.Take(unsafe.Pointer(_cret)))
+	_file = wrapFile(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _file
 }

@@ -51,14 +51,14 @@ func CairoCreate(window Windower) *cairo.Context {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
 	_info := girepository.MustFind("Gdk", "cairo_create")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(window)
 
 	var _context *cairo.Context // out
 
-	_context = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
+	_context = cairo.WrapContext(uintptr(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(_context, func(v *cairo.Context) {
 		C.cairo_destroy((*C.void)(unsafe.Pointer(v.Native())))
 	})
@@ -108,7 +108,7 @@ func CairoDrawFromGL(cr *cairo.Context, window Windower, source, sourceType, buf
 	*(*C.int)(unsafe.Pointer(&_args[8])) = C.int(height)
 
 	_info := girepository.MustFind("Gdk", "cairo_draw_from_gl")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(window)
@@ -142,7 +142,7 @@ func CairoGetClipRectangle(cr *cairo.Context) (*Rectangle, bool) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
 
 	_info := girepository.MustFind("Gdk", "cairo_get_clip_rectangle")
-	_gret := _info.Invoke(_args[:], _outs[:])
+	_gret := _info.InvokeFunction(_args[:], _outs[:])
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cr)
@@ -151,7 +151,7 @@ func CairoGetClipRectangle(cr *cairo.Context) (*Rectangle, bool) {
 	var _ok bool         // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_rect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_rect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
@@ -177,7 +177,7 @@ func CairoGetDrawingContext(cr *cairo.Context) *DrawingContext {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(cr.Native()))
 
 	_info := girepository.MustFind("Gdk", "cairo_get_drawing_context")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(cr)
@@ -185,7 +185,7 @@ func CairoGetDrawingContext(cr *cairo.Context) *DrawingContext {
 	var _drawingContext *DrawingContext // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_drawingContext = wrapDrawingContext(coreglib.Take(unsafe.Pointer(_cret)))
+		_drawingContext = wrapDrawingContext(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _drawingContext
@@ -205,7 +205,7 @@ func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rectangle)))
 
 	_info := girepository.MustFind("Gdk", "cairo_rectangle")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(rectangle)
@@ -225,7 +225,7 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(region.Native()))
 
 	_info := girepository.MustFind("Gdk", "cairo_region")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(region)
@@ -251,7 +251,7 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(surface.Native()))
 
 	_info := girepository.MustFind("Gdk", "cairo_region_create_from_surface")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
@@ -259,7 +259,7 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	var _region *cairo.Region // out
 
 	{
-		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))}
 		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
@@ -285,7 +285,7 @@ func CairoSetSourceColor(cr *cairo.Context, color *Color) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 
 	_info := girepository.MustFind("Gdk", "cairo_set_source_color")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(color)
@@ -312,7 +312,7 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX, 
 	*(*C.gdouble)(unsafe.Pointer(&_args[3])) = C.gdouble(pixbufY)
 
 	_info := girepository.MustFind("Gdk", "cairo_set_source_pixbuf")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(pixbuf)
@@ -334,7 +334,7 @@ func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	_info := girepository.MustFind("Gdk", "cairo_set_source_rgba")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(rgba)
@@ -365,7 +365,7 @@ func CairoSetSourceWindow(cr *cairo.Context, window Windower, x, y float64) {
 	*(*C.gdouble)(unsafe.Pointer(&_args[3])) = C.gdouble(y)
 
 	_info := girepository.MustFind("Gdk", "cairo_set_source_window")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(window)
@@ -396,7 +396,7 @@ func CairoSurfaceCreateFromPixbuf(pixbuf *gdkpixbuf.Pixbuf, scale int32, forWind
 	}
 
 	_info := girepository.MustFind("Gdk", "cairo_surface_create_from_pixbuf")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(pixbuf)
@@ -405,7 +405,7 @@ func CairoSurfaceCreateFromPixbuf(pixbuf *gdkpixbuf.Pixbuf, scale int32, forWind
 
 	var _surface *cairo.Surface // out
 
-	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
+	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 		C.cairo_surface_destroy((*C.void)(unsafe.Pointer(v.Native())))
 	})

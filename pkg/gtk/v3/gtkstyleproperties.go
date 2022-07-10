@@ -117,7 +117,7 @@ func NewStyleProperties() *StyleProperties {
 
 	var _styleProperties *StyleProperties // out
 
-	_styleProperties = wrapStyleProperties(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_styleProperties = wrapStyleProperties(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _styleProperties
 }
@@ -152,8 +152,8 @@ func (props *StyleProperties) LookupColor(name string) *SymbolicColor {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(props).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "StyleProperties")
 	_gret := _info.InvokeClassMethod("lookup_color", _args[:], nil)
@@ -164,8 +164,8 @@ func (props *StyleProperties) LookupColor(name string) *SymbolicColor {
 
 	var _symbolicColor *SymbolicColor // out
 
-	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_symbolic_color_ref(_cret)
+	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.gtk_symbolic_color_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_symbolicColor)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -190,8 +190,8 @@ func (props *StyleProperties) MapColor(name string, color *SymbolicColor) {
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(props).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 
 	_info := girepository.MustFind("Gtk", "StyleProperties")
@@ -280,7 +280,7 @@ func NewGradientLinear(x0 float64, y0 float64, x1 float64, y1 float64) *Gradient
 
 	var _gradient *Gradient // out
 
-	_gradient = (*Gradient)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_gradient = (*Gradient)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_gradient)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -315,7 +315,7 @@ func NewGradientRadial(x0 float64, y0 float64, radius0 float64, x1 float64, y1 f
 
 	var _gradient *Gradient // out
 
-	_gradient = (*Gradient)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_gradient = (*Gradient)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_gradient)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -384,7 +384,7 @@ func (gradient *Gradient) Resolve(props *StyleProperties) (*cairo.Pattern, bool)
 	var _ok bool                         // out
 
 	{
-		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_outs[0])}
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))}
 		_resolvedGradient = (*cairo.Pattern)(unsafe.Pointer(_pp))
 	}
 	runtime.SetFinalizer(_resolvedGradient, func(v *cairo.Pattern) {
@@ -417,7 +417,7 @@ func (gradient *Gradient) ResolveForContext(context *StyleContext) *cairo.Patter
 	var _pattern *cairo.Pattern // out
 
 	{
-		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))}
 		_pattern = (*cairo.Pattern)(unsafe.Pointer(_pp))
 	}
 	runtime.SetFinalizer(_pattern, func(v *cairo.Pattern) {
@@ -443,14 +443,14 @@ func (gradient *Gradient) String() string {
 
 	_info := girepository.MustFind("Gtk", "Gradient")
 	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(gradient)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }
@@ -499,7 +499,7 @@ func NewSymbolicColorAlpha(color *SymbolicColor, factor float64) *SymbolicColor 
 
 	var _symbolicColor *SymbolicColor // out
 
-	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_symbolicColor)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -524,7 +524,7 @@ func NewSymbolicColorLiteral(color *gdk.RGBA) *SymbolicColor {
 
 	var _symbolicColor *SymbolicColor // out
 
-	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_symbolicColor)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -553,7 +553,7 @@ func NewSymbolicColorMix(color1 *SymbolicColor, color2 *SymbolicColor, factor fl
 
 	var _symbolicColor *SymbolicColor // out
 
-	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_symbolicColor)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -568,8 +568,8 @@ func NewSymbolicColorMix(color1 *SymbolicColor, color2 *SymbolicColor, factor fl
 func NewSymbolicColorName(name string) *SymbolicColor {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "SymbolicColor")
 	_gret := _info.InvokeRecordMethod("new_name", _args[:], nil)
@@ -579,7 +579,7 @@ func NewSymbolicColorName(name string) *SymbolicColor {
 
 	var _symbolicColor *SymbolicColor // out
 
-	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_symbolicColor)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -606,7 +606,7 @@ func NewSymbolicColorShade(color *SymbolicColor, factor float64) *SymbolicColor 
 
 	var _symbolicColor *SymbolicColor // out
 
-	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_symbolicColor)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -621,8 +621,8 @@ func NewSymbolicColorShade(color *SymbolicColor, factor float64) *SymbolicColor 
 func NewSymbolicColorWin32(themeClass string, id int32) *SymbolicColor {
 	var _args [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(themeClass)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(themeClass)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = C.gint(id)
 
 	_info := girepository.MustFind("Gtk", "SymbolicColor")
@@ -634,7 +634,7 @@ func NewSymbolicColorWin32(themeClass string, id int32) *SymbolicColor {
 
 	var _symbolicColor *SymbolicColor // out
 
-	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_symbolicColor)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -683,7 +683,7 @@ func (color *SymbolicColor) Resolve(props *StyleProperties) (*gdk.RGBA, bool) {
 	var _resolvedColor *gdk.RGBA // out
 	var _ok bool                 // out
 
-	_resolvedColor = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_resolvedColor = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -710,14 +710,14 @@ func (color *SymbolicColor) String() string {
 
 	_info := girepository.MustFind("Gtk", "SymbolicColor")
 	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(color)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }

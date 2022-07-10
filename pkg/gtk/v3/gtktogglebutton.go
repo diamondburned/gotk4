@@ -211,7 +211,7 @@ func NewToggleButton() *ToggleButton {
 
 	var _toggleButton *ToggleButton // out
 
-	_toggleButton = wrapToggleButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_toggleButton = wrapToggleButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _toggleButton
 }
@@ -229,8 +229,8 @@ func NewToggleButton() *ToggleButton {
 func NewToggleButtonWithLabel(label string) *ToggleButton {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "ToggleButton")
 	_gret := _info.InvokeClassMethod("new_ToggleButton_with_label", _args[:], nil)
@@ -240,7 +240,7 @@ func NewToggleButtonWithLabel(label string) *ToggleButton {
 
 	var _toggleButton *ToggleButton // out
 
-	_toggleButton = wrapToggleButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_toggleButton = wrapToggleButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _toggleButton
 }
@@ -261,8 +261,8 @@ func NewToggleButtonWithLabel(label string) *ToggleButton {
 func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "ToggleButton")
 	_gret := _info.InvokeClassMethod("new_ToggleButton_with_mnemonic", _args[:], nil)
@@ -272,7 +272,7 @@ func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 
 	var _toggleButton *ToggleButton // out
 
-	_toggleButton = wrapToggleButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_toggleButton = wrapToggleButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _toggleButton
 }

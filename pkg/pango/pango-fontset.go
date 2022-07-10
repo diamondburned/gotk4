@@ -299,7 +299,7 @@ func (fontset *Fontset) Font(wc uint32) Fonter {
 	var _font Fonter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type pango.Fonter is nil")
 		}
@@ -339,7 +339,7 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 
 	var _fontMetrics *FontMetrics // out
 
-	_fontMetrics = (*FontMetrics)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_fontMetrics = (*FontMetrics)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fontMetrics)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -400,7 +400,7 @@ func NewFontsetSimple(language *Language) *FontsetSimple {
 
 	var _fontsetSimple *FontsetSimple // out
 
-	_fontsetSimple = wrapFontsetSimple(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_fontsetSimple = wrapFontsetSimple(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _fontsetSimple
 }

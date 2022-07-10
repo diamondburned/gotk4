@@ -52,7 +52,7 @@ func (socket *Socket) ConnectionFactoryCreateConnection() *SocketConnection {
 
 	var _socketConnection *SocketConnection // out
 
-	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _socketConnection
 }
@@ -133,7 +133,7 @@ func (connection *SocketConnection) ConnectSocketConnection(ctx context.Context,
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -198,7 +198,7 @@ func (connection *SocketConnection) ConnectFinish(result AsyncResulter) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -226,7 +226,7 @@ func (connection *SocketConnection) LocalAddress() (SocketAddresser, error) {
 	var _goerr error                   // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gio.SocketAddresser is nil")
 		}
@@ -243,7 +243,7 @@ func (connection *SocketConnection) LocalAddress() (SocketAddresser, error) {
 		_socketAddress = rv
 	}
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _socketAddress, _goerr
@@ -277,7 +277,7 @@ func (connection *SocketConnection) RemoteAddress() (SocketAddresser, error) {
 	var _goerr error                   // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gio.SocketAddresser is nil")
 		}
@@ -294,7 +294,7 @@ func (connection *SocketConnection) RemoteAddress() (SocketAddresser, error) {
 		_socketAddress = rv
 	}
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _socketAddress, _goerr
@@ -321,7 +321,7 @@ func (connection *SocketConnection) Socket() *Socket {
 
 	var _socket *Socket // out
 
-	_socket = wrapSocket(coreglib.Take(unsafe.Pointer(_cret)))
+	_socket = wrapSocket(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _socket
 }

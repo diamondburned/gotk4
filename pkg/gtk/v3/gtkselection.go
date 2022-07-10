@@ -125,7 +125,7 @@ func SelectionRemoveAll(widget Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_info := girepository.MustFind("Gtk", "selection_remove_all")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(widget)
 }
@@ -152,8 +152,8 @@ func marshalTargetEntry(p uintptr) (interface{}, error) {
 func NewTargetEntry(target string, flags uint32, info uint32) *TargetEntry {
 	var _args [3]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(target)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(target)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(flags)
 	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(info)
 
@@ -167,12 +167,13 @@ func NewTargetEntry(target string, flags uint32, info uint32) *TargetEntry {
 
 	var _targetEntry *TargetEntry // out
 
-	_targetEntry = (*TargetEntry)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_targetEntry = (*TargetEntry)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_targetEntry)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gtk", "TargetEntry").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -186,7 +187,7 @@ func (t *TargetEntry) Target() string {
 	offset := girepository.MustFind("Gtk", "TargetEntry").StructFieldOffset("target")
 	valptr := (*uintptr)(unsafe.Add(t.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -246,12 +247,13 @@ func (data *TargetEntry) Copy() *TargetEntry {
 
 	var _targetEntry *TargetEntry // out
 
-	_targetEntry = (*TargetEntry)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_targetEntry = (*TargetEntry)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_targetEntry)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gtk", "TargetEntry").InvokeRecordMethod("free", args[:], nil)
 			}
 		},

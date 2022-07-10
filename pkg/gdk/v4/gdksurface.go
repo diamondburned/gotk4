@@ -124,7 +124,7 @@ func _gotk4_gdk4_Surface_ConnectEvent(arg0 C.gpointer, arg1 *C.void, arg2 C.guin
 	var _event Eventer // out
 
 	{
-		objptr := unsafe.Pointer(*arg1)
+		objptr := unsafe.Pointer(arg1)
 		if objptr == nil {
 			panic("object of type gdk.Eventer is nil")
 		}
@@ -281,7 +281,7 @@ func NewSurfacePopup(parent Surfacer, autohide bool) *Surface {
 
 	var _surface *Surface // out
 
-	_surface = wrapSurface(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_surface = wrapSurface(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _surface
 }
@@ -309,7 +309,7 @@ func NewSurfaceToplevel(display *Display) *Surface {
 
 	var _surface *Surface // out
 
-	_surface = wrapSurface(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_surface = wrapSurface(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _surface
 }
@@ -349,7 +349,7 @@ func (surface *Surface) CreateCairoContext() CairoContexter {
 	var _cairoContext CairoContexter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.CairoContexter is nil")
 		}
@@ -395,7 +395,7 @@ func (surface *Surface) CreateGLContext() (GLContexter, error) {
 	var _goerr error           // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.GLContexter is nil")
 		}
@@ -412,7 +412,7 @@ func (surface *Surface) CreateGLContext() (GLContexter, error) {
 		_glContext = rv
 	}
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _glContext, _goerr
@@ -441,7 +441,7 @@ func (surface *Surface) CreateVulkanContext() (VulkanContexter, error) {
 	var _goerr error                   // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.VulkanContexter is nil")
 		}
@@ -458,7 +458,7 @@ func (surface *Surface) CreateVulkanContext() (VulkanContexter, error) {
 		_vulkanContext = rv
 	}
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _vulkanContext, _goerr
@@ -509,7 +509,7 @@ func (surface *Surface) Cursor() *Cursor {
 	var _cursor *Cursor // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_cursor = wrapCursor(coreglib.Take(unsafe.Pointer(_cret)))
+		_cursor = wrapCursor(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _cursor
@@ -547,7 +547,7 @@ func (surface *Surface) DeviceCursor(device Devicer) *Cursor {
 	var _cursor *Cursor // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_cursor = wrapCursor(coreglib.Take(unsafe.Pointer(_cret)))
+		_cursor = wrapCursor(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _cursor
@@ -588,14 +588,10 @@ func (surface *Surface) DevicePosition(device Devicer) (x, y float64, mask Modif
 	var _mask ModifierType // out
 	var _ok bool           // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_x = *(*float64)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_y = *(*float64)(unsafe.Pointer(_outs[1]))
-	}
+	_x = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
+	_y = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
 	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_mask = *(*ModifierType)(unsafe.Pointer(_outs[2]))
+		_mask = *(*ModifierType)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[2]))))
 	}
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
@@ -623,7 +619,7 @@ func (surface *Surface) Display() *Display {
 
 	var _display *Display // out
 
-	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
+	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _display
 }
@@ -651,7 +647,7 @@ func (surface *Surface) FrameClock() FrameClocker {
 	var _frameClock FrameClocker // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.FrameClocker is nil")
 		}

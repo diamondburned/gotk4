@@ -115,7 +115,7 @@ func NewFixedLayout() *FixedLayout {
 
 	var _fixedLayout *FixedLayout // out
 
-	_fixedLayout = wrapFixedLayout(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_fixedLayout = wrapFixedLayout(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _fixedLayout
 }
@@ -174,8 +174,8 @@ func (child *FixedLayoutChild) Transform() *gsk.Transform {
 	var _transform *gsk.Transform // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_transform = (*gsk.Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.gsk_transform_ref(_cret)
+		_transform = (*gsk.Transform)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.gsk_transform_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_transform)),
 			func(intern *struct{ C unsafe.Pointer }) {

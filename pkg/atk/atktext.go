@@ -19,6 +19,8 @@ import (
 // extern gboolean _gotk4_atk1_TextIface_remove_selection(void*, gint);
 // extern gboolean _gotk4_atk1_TextIface_set_caret_offset(void*, gint);
 // extern gboolean _gotk4_atk1_TextIface_set_selection(void*, gint, gint, gint);
+// extern gchar* _gotk4_atk1_TextIface_get_selection(void*, gint, gint*, gint*);
+// extern gchar* _gotk4_atk1_TextIface_get_text(void*, gint, gint);
 // extern gint _gotk4_atk1_TextIface_get_caret_offset(void*);
 // extern gint _gotk4_atk1_TextIface_get_character_count(void*);
 // extern gint _gotk4_atk1_TextIface_get_n_selections(void*);
@@ -30,11 +32,9 @@ import (
 // extern void _gotk4_atk1_Text_ConnectTextAttributesChanged(gpointer, guintptr);
 // extern void _gotk4_atk1_Text_ConnectTextCaretMoved(gpointer, gint, guintptr);
 // extern void _gotk4_atk1_Text_ConnectTextChanged(gpointer, gint, gint, guintptr);
-// extern void _gotk4_atk1_Text_ConnectTextInsert(gpointer, gint, gint, void*, guintptr);
-// extern void _gotk4_atk1_Text_ConnectTextRemove(gpointer, gint, gint, void*, guintptr);
+// extern void _gotk4_atk1_Text_ConnectTextInsert(gpointer, gint, gint, gchar*, guintptr);
+// extern void _gotk4_atk1_Text_ConnectTextRemove(gpointer, gint, gint, gchar*, guintptr);
 // extern void _gotk4_atk1_Text_ConnectTextSelectionChanged(gpointer, guintptr);
-// extern void* _gotk4_atk1_TextIface_get_selection(void*, gint, void*, void*);
-// extern void* _gotk4_atk1_TextIface_get_text(void*, gint, gint);
 import "C"
 
 // GTypeTextAttribute returns the GType for the type TextAttribute.
@@ -729,7 +729,7 @@ func _gotk4_atk1_TextIface_get_n_selections(arg0 *C.void) (cret C.gint) {
 }
 
 //export _gotk4_atk1_TextIface_get_selection
-func _gotk4_atk1_TextIface_get_selection(arg0 *C.void, arg1 C.gint, arg2 *C.void, arg3 *C.void) (cret *C.void) {
+func _gotk4_atk1_TextIface_get_selection(arg0 *C.void, arg1 C.gint, arg2 *C.gint, arg3 *C.gint) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -739,15 +739,15 @@ func _gotk4_atk1_TextIface_get_selection(arg0 *C.void, arg1 C.gint, arg2 *C.void
 
 	startOffset, endOffset, utf8 := iface.Selection(_selectionNum)
 
-	*arg2 = (*C.void)(unsafe.Pointer(startOffset))
-	*arg3 = (*C.void)(unsafe.Pointer(endOffset))
-	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+	*arg2 = C.gint(startOffset)
+	*arg3 = C.gint(endOffset)
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 
 	return cret
 }
 
 //export _gotk4_atk1_TextIface_get_text
-func _gotk4_atk1_TextIface_get_text(arg0 *C.void, arg1 C.gint, arg2 C.gint) (cret *C.void) {
+func _gotk4_atk1_TextIface_get_text(arg0 *C.void, arg1 C.gint, arg2 C.gint) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(TextOverrider)
 
@@ -759,7 +759,7 @@ func _gotk4_atk1_TextIface_get_text(arg0 *C.void, arg1 C.gint, arg2 C.gint) (cre
 
 	utf8 := iface.Text(_startOffset, _endOffset)
 
-	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 
 	return cret
 }
@@ -954,7 +954,7 @@ func (text *Text) ConnectTextChanged(f func(arg1, arg2 int32)) coreglib.SignalHa
 }
 
 //export _gotk4_atk1_Text_ConnectTextInsert
-func _gotk4_atk1_Text_ConnectTextInsert(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 *C.void, arg4 C.guintptr) {
+func _gotk4_atk1_Text_ConnectTextInsert(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 *C.gchar, arg4 C.guintptr) {
 	var f func(arg1, arg2 int32, arg3 string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
@@ -985,7 +985,7 @@ func (text *Text) ConnectTextInsert(f func(arg1, arg2 int32, arg3 string)) coreg
 }
 
 //export _gotk4_atk1_Text_ConnectTextRemove
-func _gotk4_atk1_Text_ConnectTextRemove(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 *C.void, arg4 C.guintptr) {
+func _gotk4_atk1_Text_ConnectTextRemove(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 *C.gchar, arg4 C.guintptr) {
 	var f func(arg1, arg2 int32, arg3 string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
@@ -1203,7 +1203,7 @@ func (text *Text) Selection(selectionNum int32) (startOffset, endOffset int32, u
 
 	_info := girepository.MustFind("Atk", "Text")
 	_gret := _info.InvokeIfaceMethod("get_selection", _args[:], _outs[:])
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(selectionNum)
@@ -1212,10 +1212,10 @@ func (text *Text) Selection(selectionNum int32) (startOffset, endOffset int32, u
 	var _endOffset int32   // out
 	var _utf8 string       // out
 
-	_startOffset = *(*int32)(unsafe.Pointer(_outs[0]))
-	_endOffset = *(*int32)(unsafe.Pointer(_outs[1]))
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_startOffset = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_endOffset = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 
 	return _startOffset, _endOffset, _utf8
 }
@@ -1242,7 +1242,7 @@ func (text *Text) Text(startOffset, endOffset int32) string {
 
 	_info := girepository.MustFind("Atk", "Text")
 	_gret := _info.InvokeIfaceMethod("get_text", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(startOffset)
@@ -1250,8 +1250,8 @@ func (text *Text) Text(startOffset, endOffset int32) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }

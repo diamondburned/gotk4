@@ -476,7 +476,7 @@ func NewDialog() *Dialog {
 
 	var _dialog *Dialog // out
 
-	_dialog = wrapDialog(coreglib.Take(unsafe.Pointer(_cret)))
+	_dialog = wrapDialog(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _dialog
 }
@@ -530,8 +530,8 @@ func (dialog *Dialog) AddButton(buttonText string, responseId int32) Widgetter {
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(buttonText)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(buttonText)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(responseId)
 
 	_info := girepository.MustFind("Gtk", "Dialog")
@@ -545,7 +545,7 @@ func (dialog *Dialog) AddButton(buttonText string, responseId int32) Widgetter {
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -584,7 +584,7 @@ func (dialog *Dialog) ContentArea() *Box {
 
 	var _box *Box // out
 
-	_box = wrapBox(coreglib.Take(unsafe.Pointer(_cret)))
+	_box = wrapBox(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _box
 }
@@ -611,7 +611,7 @@ func (dialog *Dialog) HeaderBar() *HeaderBar {
 
 	var _headerBar *HeaderBar // out
 
-	_headerBar = wrapHeaderBar(coreglib.Take(unsafe.Pointer(_cret)))
+	_headerBar = wrapHeaderBar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _headerBar
 }
@@ -676,7 +676,7 @@ func (dialog *Dialog) WidgetForResponse(responseId int32) Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

@@ -266,7 +266,7 @@ func NewPopover() *Popover {
 
 	var _popover *Popover // out
 
-	_popover = wrapPopover(coreglib.Take(unsafe.Pointer(_cret)))
+	_popover = wrapPopover(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _popover
 }
@@ -347,7 +347,7 @@ func (popover *Popover) Child() Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -439,12 +439,8 @@ func (popover *Popover) Offset() (xOffset, yOffset int32) {
 	var _xOffset int32 // out
 	var _yOffset int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_xOffset = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_yOffset = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_xOffset = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_yOffset = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
 
 	return _xOffset, _yOffset
 }
@@ -475,7 +471,7 @@ func (popover *Popover) PointingTo() (*gdk.Rectangle, bool) {
 	var _rect *gdk.Rectangle // out
 	var _ok bool             // out
 
-	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}

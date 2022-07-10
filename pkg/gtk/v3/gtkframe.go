@@ -154,8 +154,8 @@ func NewFrame(label string) *Frame {
 	var _args [1]girepository.Argument
 
 	if label != "" {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_args[0]))
+		*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "Frame")
@@ -166,7 +166,7 @@ func NewFrame(label string) *Frame {
 
 	var _frame *Frame // out
 
-	_frame = wrapFrame(coreglib.Take(unsafe.Pointer(_cret)))
+	_frame = wrapFrame(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _frame
 }
@@ -188,14 +188,14 @@ func (frame *Frame) Label() string {
 
 	_info := girepository.MustFind("Gtk", "Frame")
 	_gret := _info.InvokeClassMethod("get_label", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(frame)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -225,12 +225,8 @@ func (frame *Frame) LabelAlign() (xalign, yalign float32) {
 	var _xalign float32 // out
 	var _yalign float32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_xalign = *(*float32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_yalign = *(*float32)(unsafe.Pointer(_outs[1]))
-	}
+	_xalign = float32(*(*C.gfloat)(unsafe.Pointer(&_outs[0])))
+	_yalign = float32(*(*C.gfloat)(unsafe.Pointer(&_outs[1])))
 
 	return _xalign, _yalign
 }
@@ -257,7 +253,7 @@ func (frame *Frame) LabelWidget() Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -287,8 +283,8 @@ func (frame *Frame) SetLabel(label string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
 	if label != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "Frame")

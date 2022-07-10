@@ -196,7 +196,7 @@ func NewTextTagTable() *TextTagTable {
 
 	var _textTagTable *TextTagTable // out
 
-	_textTagTable = wrapTextTagTable(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_textTagTable = wrapTextTagTable(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _textTagTable
 }
@@ -300,8 +300,8 @@ func (table *TextTagTable) Lookup(name string) *TextTag {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(table).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "TextTagTable")
 	_gret := _info.InvokeClassMethod("lookup", _args[:], nil)
@@ -313,7 +313,7 @@ func (table *TextTagTable) Lookup(name string) *TextTag {
 	var _textTag *TextTag // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_textTag = wrapTextTag(coreglib.Take(unsafe.Pointer(_cret)))
+		_textTag = wrapTextTag(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _textTag

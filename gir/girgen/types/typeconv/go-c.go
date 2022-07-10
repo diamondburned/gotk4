@@ -54,10 +54,10 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		}
 
 		// Length has no input, as it's from the slice.
-		value.p.Linef("%s = (%s)(len(%s))", length.Out.Set, length.Out.Type, value.InName)
+		value.p.Linef("%s = (%s)(len(%s))", length.Out.Set, length.Out.Type, value.In.Name)
 	}
 
-	inner := conv.convertInner(value, value.InName+"[i]", "out[i]")
+	inner := conv.convertInner(value, value.In.Name+"[i]", "out[i]")
 	if inner == nil {
 		return false
 	}
@@ -85,7 +85,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		}
 
 		value.inDecl.Reset()
-		value.inDecl.Linef("var %s %s", value.InName, value.In.Type)
+		value.inDecl.Linef("var %s %s", value.In.Name, value.In.Type)
 
 		// This is super unsafe. I'm not too sure why, but GTK sometimes
 		// randomly crashes at this function.
@@ -94,14 +94,14 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 				value.header.Import("unsafe")
 
 				if value.IsOptional() {
-					value.p.Linef("if len(%s) > 0 {", value.InName)
+					value.p.Linef("if len(%s) > 0 {", value.In.Name)
 					defer value.p.Linef("}")
 				}
 
 				if !isString {
 					value.p.Linef(
 						"%s = (%s)(unsafe.Pointer(&%s[0]))",
-						value.Out.Set, value.Out.Type, value.InName,
+						value.Out.Set, value.Out.Type, value.In.Name,
 					)
 				} else {
 					value.header.Import("reflect")
@@ -112,7 +112,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 						// will have a null pointer.
 						// TextBuffer, for example, will complain with an "assertion
 						// 'text != NULL' failed."
-						value.p.Linef(`if %s == "" {`, value.InName)
+						value.p.Linef(`if %s == "" {`, value.In.Name)
 						// Length 0, so this shouldn't read.
 						value.p.Linef(`  %s = (%s)(gextras.ZeroString)`, value.Out.Set, value.Out.Type)
 						value.p.Linef(`} else {`)
@@ -121,7 +121,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 
 					value.p.Linef(
 						"%s = (%s)(unsafe.Pointer((*reflect.StringHeader)(unsafe.Pointer(&%s)).Data))",
-						value.Out.Set, value.Out.Type, value.InName,
+						value.Out.Set, value.Out.Type, value.In.Name,
 					)
 				}
 
@@ -140,17 +140,17 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		if !array.IsZeroTerminated() && !isString {
 			value.p.Linef(
 				"%s = (%s)(C.CBytes(%s))",
-				value.Out.Set, value.Out.Type, value.InName,
+				value.Out.Set, value.Out.Type, value.In.Name,
 			)
 			return true
 		}
 
 		// Over-malloc once to have the zero terminator.
 		value.header.Import("unsafe")
-		value.writeMalloc(inner, value.InName, true)
+		value.writeMalloc(inner, value.In.Name, true)
 		value.p.Linef(
 			"copy(unsafe.Slice((*byte)(unsafe.Pointer(%s)), len(%s)), %[2]s)",
-			value.Out.Set, value.InName,
+			value.Out.Set, value.In.Name,
 		)
 
 		return true
@@ -168,7 +168,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 			// properly.
 			value.p.Linef(
 				"%s = (%s)(unsafe.Pointer(&%s))",
-				value.Out.Set, value.Out.Type, value.InName)
+				value.Out.Set, value.Out.Type, value.In.Name)
 
 			return true
 		}
@@ -183,7 +183,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 			value.p.Linef("var out [%d]%s", array.FixedSize, inner.Out.Type)
 			value.p.Linef("%s = &out[0]", value.Out.Set)
 		} else {
-			value.writeMalloc(inner, value.InName, false)
+			value.writeMalloc(inner, value.In.Name, false)
 			if value.ShouldFree() {
 				value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.Out.Set)
 			}
@@ -201,10 +201,10 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		// for primitive types; see type_c_go.go.
 		if !value.MustRealloc() && inner.Resolved.CanCast(conv.fgen) {
 			value.header.Import("unsafe")
-			value.p.Linef("if len(%s) > 0 {", value.InName)
+			value.p.Linef("if len(%s) > 0 {", value.In.Name)
 			value.p.Linef(
 				"%s = (%s)(unsafe.Pointer(&%s[0]))",
-				value.Out.Set, value.Out.Type, value.InName)
+				value.Out.Set, value.Out.Type, value.In.Name)
 			value.p.Linef("}")
 
 			return true
@@ -212,9 +212,9 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 
 		value.header.Import("unsafe")
 
-		value.writeMalloc(inner, value.InName, false)
+		value.writeMalloc(inner, value.In.Name, false)
 		if value.ShouldFree() {
-			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.OutName)
+			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.Out.Set)
 
 		} else if inner.Resolved.CanCast(conv.fgen) {
 			// Edge case: we can use the optimized copy() built-in if the type
@@ -222,7 +222,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 			// because we're still using Go memory.
 			value.p.Linef(
 				"copy(unsafe.Slice((*%s)(%s), len(%[3]s)), %[3]s)",
-				inner.In.Type, value.OutName, value.InName,
+				inner.In.Type, value.OutName, value.In.Name,
 			)
 			return true
 		}
@@ -235,10 +235,10 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 			// void pointer. GIR should use equivalent types, so this should be
 			// fine.
 			"out := unsafe.Slice((*%s)(%s), len(%s))",
-			inner.Out.Type, value.Out.Set, value.InName,
+			inner.Out.Type, value.Out.Set, value.In.Name,
 		)
 
-		value.p.Linef("for i := range %s {", value.InName)
+		value.p.Linef("for i := range %s {", value.In.Name)
 
 		// TODO: this generates *out because of value's inheritance, which is bad.
 		// Do something. We can maybe use a hack and trim the star off.
@@ -256,10 +256,10 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		// https://developer.gnome.org/glib/stable/glib-Arrays.html#g-array-sized-new
 		value.p.Linef(
 			"%s = C.g_array_sized_new(%t, false, C.guint(%s), C.guint(len(%s)))",
-			value.Out.Set, array.IsZeroTerminated(), inner.csizeof(), value.InName)
+			value.Out.Set, array.IsZeroTerminated(), inner.csizeof(), value.In.Name)
 		value.p.Linef(
 			"%s = C.g_array_set_size(%s, C.guint(len(%s)))",
-			value.Out.Set, value.OutName, value.InName)
+			value.Out.Set, value.OutName, value.In.Name)
 
 		if value.ShouldFree() {
 			value.p.Linef("defer C.g_array_unref(%s)", value.OutName)
@@ -268,8 +268,8 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		value.header.ApplyFrom(inner.Header())
 		value.p.Descend()
 
-		value.p.Linef("out := unsafe.Slice(%s.data, len(%s))", value.OutName, value.InName)
-		value.p.Linef("for i := range %s {", value.InName)
+		value.p.Linef("out := unsafe.Slice(%s.data, len(%s))", value.OutName, value.In.Name)
+		value.p.Linef("for i := range %s {", value.In.Name)
 		value.p.Linef(inner.Conversion)
 		value.p.Linef("}")
 
@@ -284,12 +284,12 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		// https://developer.gnome.org/glib/stable/glib-Byte-Arrays.html#g-byte-array-new
 		value.p.Linef(
 			"%s = C.g_byte_array_sized_new(C.guint(len(%s)))",
-			value.Out.Set, value.InName)
+			value.Out.Set, value.In.Name)
 
-		value.p.Linef("if len(%s) > 0 {", value.InName)
+		value.p.Linef("if len(%s) > 0 {", value.In.Name)
 		value.p.Linef(
 			"%s = C.g_byte_array_append(%s, (*C.guint8)(&%s[0]), C.guint(len(%s)))",
-			value.Out.Set, value.OutName, value.InName, value.InName)
+			value.Out.Set, value.OutName, value.In.Name, value.In.Name)
 		value.p.Linef("}")
 
 		// unref will free the underlying array as well.
@@ -305,28 +305,28 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		// See if we can possibly reuse the Go slice in a shorter way.
 		if !value.MustRealloc() && inner.Resolved.CanCast(conv.fgen) {
 			value.p.Linef("var zero %s", inner.In.Type)
-			value.p.Linef("%s = append(%[1]s, zero)", value.InName)
+			value.p.Linef("%s = append(%[1]s, zero)", value.In.Name)
 			value.p.Linef(
 				"%s = (%s)(unsafe.Pointer(&%s[0]))",
-				value.Out.Set, value.Out.Type, value.InName,
+				value.Out.Set, value.Out.Type, value.In.Name,
 			)
 			return true
 		}
 
-		value.writeMalloc(inner, value.InName, true)
+		value.writeMalloc(inner, value.In.Name, true)
 		if value.ShouldFree() {
-			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.OutName)
+			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.Out.Set)
 		}
 
 		value.header.ApplyFrom(inner.Header())
 		value.p.Descend()
 
-		value.p.Linef("out := unsafe.Slice(%s, len(%s)+1)", value.OutName, value.InName)
+		value.p.Linef("out := unsafe.Slice(%s, len(%s)+1)", value.OutName, value.In.Name)
 		// malloc does not zero out the memory, so we have to zero it out
 		// ourselves.
 		value.p.Linef("var zero %s", inner.Out.Type)
-		value.p.Linef("out[len(%s)] = zero", value.InName)
-		value.p.Linef("for i := range %s {", value.InName)
+		value.p.Linef("out[len(%s)] = zero", value.In.Name)
+		value.p.Linef("for i := range %s {", value.In.Name)
 		value.p.Linef(inner.Conversion)
 		value.p.Linef("}")
 
@@ -499,7 +499,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		value.header.Import("unsafe")
 		// unsafe.Pointer is needed for pointer to pointers, so we're playing it
 		// safe.
-		value.p.Linef("%s = (%s)(unsafe.Pointer(%s))", value.Out.Set, value.Out.Type, value.InName)
+		value.p.Linef("%s = (%s)(unsafe.Pointer(%s))", value.Out.Set, value.Out.Type, value.In.Name)
 		return true
 
 	case value.Resolved.IsBuiltin("string"):
@@ -514,18 +514,18 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 		// Handle optional/nullable cases.
 		if value.Optional || value.Nullable {
-			value.p.Linef(`if %s != "" {`, value.InName)
+			value.p.Linef(`if %s != "" {`, value.In.Name)
 			defer value.p.Ascend()
 		}
 
 		value.p.Linef(
 			"%s = (%s)(unsafe.Pointer(C.CString(%s)))",
-			value.Out.Set, value.Out.Type, value.InName,
+			value.Out.Set, value.Out.Type, value.In.Name,
 		)
 		// If we're not giving ownership this mallocated string, then we
 		// can free it once done.
 		if value.ShouldFree() {
-			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.OutName)
+			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.Out.Set)
 		}
 
 		return true
@@ -716,7 +716,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		value.outDecl.Linef("var %s %s", closure.OutName, userDataType)
 		value.p.Linef(
 			"%s = %s(gbox.%s(%s))",
-			closure.Out.Set, userDataType, assign, value.InName,
+			closure.Out.Set, userDataType, assign, value.In.Name,
 		)
 
 		switch scope {
@@ -762,7 +762,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 	case *gir.Alias:
 		typ := types.MoveTypePtr(*value.Type, v.Type)
 
-		result := conv.convertType(value, value.InName, value.OutName, typ)
+		result := conv.convertType(value, value.In.Name, value.OutName, typ)
 		if result == nil {
 			return false
 		}

@@ -516,8 +516,8 @@ func NewCursorFromName(display *Display, name string) *Cursor {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gdk", "Cursor")
 	_gret := _info.InvokeClassMethod("new_Cursor_from_name", _args[:], nil)
@@ -529,7 +529,7 @@ func NewCursorFromName(display *Display, name string) *Cursor {
 	var _cursor *Cursor // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_cursor = wrapCursor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_cursor = wrapCursor(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _cursor
@@ -581,7 +581,7 @@ func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x, y int32)
 
 	var _cursor *Cursor // out
 
-	_cursor = wrapCursor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cursor = wrapCursor(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cursor
 }
@@ -628,7 +628,7 @@ func NewCursorFromSurface(display *Display, surface *cairo.Surface, x, y float64
 
 	var _cursor *Cursor // out
 
-	_cursor = wrapCursor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cursor = wrapCursor(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cursor
 }
@@ -652,7 +652,7 @@ func (cursor *Cursor) Display() *Display {
 
 	var _display *Display // out
 
-	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
+	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _display
 }
@@ -682,7 +682,7 @@ func (cursor *Cursor) Image() *gdkpixbuf.Pixbuf {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_pixbuf = &gdkpixbuf.Pixbuf{
 				Object: obj,
 				LoadableIcon: gio.LoadableIcon{
@@ -726,14 +726,10 @@ func (cursor *Cursor) Surface() (xHot, yHot float64, surface *cairo.Surface) {
 	var _yHot float64           // out
 	var _surface *cairo.Surface // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_xHot = *(*float64)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_yHot = *(*float64)(unsafe.Pointer(_outs[1]))
-	}
+	_xHot = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
+	_yHot = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[1])))
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
+		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 			C.cairo_surface_destroy((*C.void)(unsafe.Pointer(v.Native())))
 		})

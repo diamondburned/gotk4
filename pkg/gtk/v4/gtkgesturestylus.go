@@ -182,7 +182,7 @@ func NewGestureStylus() *GestureStylus {
 
 	var _gestureStylus *GestureStylus // out
 
-	_gestureStylus = wrapGestureStylus(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_gestureStylus = wrapGestureStylus(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _gestureStylus
 }
@@ -221,12 +221,12 @@ func (gesture *GestureStylus) Backlog() ([]gdk.TimeCoord, bool) {
 	var _backlog []gdk.TimeCoord // out
 	var _ok bool                 // out
 
-	defer C.free(unsafe.Pointer(_outs[0]))
+	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 	{
-		src := unsafe.Slice((**C.void)(_outs[0]), _outs[1])
-		_backlog = make([]gdk.TimeCoord, _outs[1])
-		for i := 0; i < int(_outs[1]); i++ {
-			_backlog[i] = *(*gdk.TimeCoord)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+		src := unsafe.Slice((**C.void)(*(**C.void)(unsafe.Pointer(&_outs[0]))), *(*C.guint)(unsafe.Pointer(&_outs[1])))
+		_backlog = make([]gdk.TimeCoord, *(*C.guint)(unsafe.Pointer(&_outs[1])))
+		for i := 0; i < int(*(*C.guint)(unsafe.Pointer(&_outs[1]))); i++ {
+			_backlog[i] = *(*gdk.TimeCoord)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(&_backlog[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -268,7 +268,7 @@ func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_deviceTool = &gdk.DeviceTool{
 				Object: obj,
 			}

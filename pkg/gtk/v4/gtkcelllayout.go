@@ -17,7 +17,7 @@ import (
 // #include <glib.h>
 // #include <glib-object.h>
 // extern void _gotk4_gtk4_CellLayoutDataFunc(void*, void*, void*, void*, gpointer);
-// extern void _gotk4_gtk4_CellLayoutIface_add_attribute(void*, void*, void*, int);
+// extern void _gotk4_gtk4_CellLayoutIface_add_attribute(void*, void*, char*, int);
 // extern void _gotk4_gtk4_CellLayoutIface_clear(void*);
 // extern void _gotk4_gtk4_CellLayoutIface_clear_attributes(void*, void*);
 // extern void _gotk4_gtk4_CellLayoutIface_pack_end(void*, void*, gboolean);
@@ -272,8 +272,8 @@ func (cellLayout *CellLayout) AddAttribute(cell CellRendererer, attribute string
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
 	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(column)
 
 	_info := girepository.MustFind("Gtk", "CellLayout")
@@ -341,7 +341,7 @@ func (cellLayout *CellLayout) Area() CellAreaer {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -380,12 +380,12 @@ func (cellLayout *CellLayout) Cells() []CellRendererer {
 
 	var _list []CellRendererer // out
 
-	_list = make([]CellRendererer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]CellRendererer, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst CellRendererer // out
 		{
-			objptr := unsafe.Pointer(src)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
 			if objptr == nil {
 				panic("object of type gtk.CellRendererer is nil")
 			}

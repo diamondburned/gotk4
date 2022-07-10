@@ -96,7 +96,7 @@ func NewVSeparator() *VSeparator {
 
 	var _vSeparator *VSeparator // out
 
-	_vSeparator = wrapVSeparator(coreglib.Take(unsafe.Pointer(_cret)))
+	_vSeparator = wrapVSeparator(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _vSeparator
 }

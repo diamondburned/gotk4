@@ -206,7 +206,7 @@ func NewModelButton() *ModelButton {
 
 	var _modelButton *ModelButton // out
 
-	_modelButton = wrapModelButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_modelButton = wrapModelButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _modelButton
 }

@@ -132,7 +132,7 @@ func ValueDupExpression(value *coreglib.Value) Expressioner {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gtk", "value_dup_expression")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(value)
@@ -141,7 +141,7 @@ func ValueDupExpression(value *coreglib.Value) Expressioner {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.AssumeOwnership(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -175,7 +175,7 @@ func ValueGetExpression(value *coreglib.Value) Expressioner {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gtk", "value_get_expression")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(value)
@@ -184,7 +184,7 @@ func ValueGetExpression(value *coreglib.Value) Expressioner {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -218,7 +218,7 @@ func ValueSetExpression(value *coreglib.Value, expression Expressioner) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(expression).Native()))
 
 	_info := girepository.MustFind("Gtk", "value_set_expression")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(value)
 	runtime.KeepAlive(expression)
@@ -243,7 +243,7 @@ func ValueTakeExpression(value *coreglib.Value, expression Expressioner) {
 	}
 
 	_info := girepository.MustFind("Gtk", "value_take_expression")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(value)
 	runtime.KeepAlive(expression)
@@ -340,7 +340,7 @@ func NewConstantExpressionForValue(value *coreglib.Value) *ConstantExpression {
 
 	var _constantExpression *ConstantExpression // out
 
-	_constantExpression = wrapConstantExpression(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_constantExpression = wrapConstantExpression(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _constantExpression
 }
@@ -364,7 +364,7 @@ func (expression *ConstantExpression) Value() *coreglib.Value {
 
 	var _value *coreglib.Value // out
 
-	_value = coreglib.ValueFromNative(unsafe.Pointer(_cret))
+	_value = coreglib.ValueFromNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 
 	return _value
 }
@@ -557,8 +557,8 @@ func (self *Expression) Bind(target *coreglib.Object, property string, this_ *co
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(self).Native()))
 	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = C.gpointer(unsafe.Pointer(target.Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(property)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
 	*(*C.gpointer)(unsafe.Pointer(&_args[3])) = C.gpointer(unsafe.Pointer(this_.Native()))
 
 	_info := girepository.MustFind("Gtk", "Expression")
@@ -572,8 +572,8 @@ func (self *Expression) Bind(target *coreglib.Object, property string, this_ *co
 
 	var _expressionWatch *ExpressionWatch // out
 
-	_expressionWatch = (*ExpressionWatch)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_expression_watch_ref(_cret)
+	_expressionWatch = (*ExpressionWatch)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.gtk_expression_watch_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_expressionWatch)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -697,8 +697,8 @@ func (self *Expression) Watch(this_ *coreglib.Object, notify ExpressionNotify) *
 
 	var _expressionWatch *ExpressionWatch // out
 
-	_expressionWatch = (*ExpressionWatch)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_expression_watch_ref(_cret)
+	_expressionWatch = (*ExpressionWatch)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.gtk_expression_watch_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_expressionWatch)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -761,7 +761,7 @@ func NewObjectExpression(object *coreglib.Object) *ObjectExpression {
 
 	var _objectExpression *ObjectExpression // out
 
-	_objectExpression = wrapObjectExpression(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_objectExpression = wrapObjectExpression(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _objectExpression
 }
@@ -786,7 +786,7 @@ func (expression *ObjectExpression) Object() *coreglib.Object {
 	var _object *coreglib.Object // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_object = coreglib.Take(unsafe.Pointer(_cret))
+		_object = coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 	}
 
 	return _object
@@ -835,7 +835,7 @@ func (expression *PropertyExpression) GetExpression() Expressioner {
 	var _ret Expressioner // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.Expressioner is nil")
 		}

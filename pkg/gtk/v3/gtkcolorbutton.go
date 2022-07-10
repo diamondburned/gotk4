@@ -177,7 +177,7 @@ func NewColorButton() *ColorButton {
 
 	var _colorButton *ColorButton // out
 
-	_colorButton = wrapColorButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_colorButton = wrapColorButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _colorButton
 }
@@ -207,7 +207,7 @@ func NewColorButtonWithColor(color *gdk.Color) *ColorButton {
 
 	var _colorButton *ColorButton // out
 
-	_colorButton = wrapColorButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_colorButton = wrapColorButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _colorButton
 }
@@ -235,7 +235,7 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 
 	var _colorButton *ColorButton // out
 
-	_colorButton = wrapColorButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_colorButton = wrapColorButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _colorButton
 }
@@ -287,7 +287,7 @@ func (button *ColorButton) Color() *gdk.Color {
 
 	var _color *gdk.Color // out
 
-	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _color
 }
@@ -305,13 +305,13 @@ func (button *ColorButton) Title() string {
 
 	_info := girepository.MustFind("Gtk", "ColorButton")
 	_gret := _info.InvokeClassMethod("get_title", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(button)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -396,8 +396,8 @@ func (button *ColorButton) SetTitle(title string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(title)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "ColorButton")
 	_info.InvokeClassMethod("set_title", _args[:], nil)

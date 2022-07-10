@@ -66,7 +66,7 @@ func NewFileAttributeInfoList() *FileAttributeInfoList {
 
 	var _fileAttributeInfoList *FileAttributeInfoList // out
 
-	_fileAttributeInfoList = (*FileAttributeInfoList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_fileAttributeInfoList = (*FileAttributeInfoList)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fileAttributeInfoList)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -82,7 +82,7 @@ func (f *FileAttributeInfoList) Infos() *FileAttributeInfo {
 	offset := girepository.MustFind("Gio", "FileAttributeInfoList").StructFieldOffset("infos")
 	valptr := (*uintptr)(unsafe.Add(f.native, offset))
 	var v *FileAttributeInfo // out
-	v = (*FileAttributeInfo)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	v = (*FileAttributeInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -121,7 +121,7 @@ func (list *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 
 	var _fileAttributeInfoList *FileAttributeInfoList // out
 
-	_fileAttributeInfoList = (*FileAttributeInfoList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_fileAttributeInfoList = (*FileAttributeInfoList)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_fileAttributeInfoList)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -146,8 +146,8 @@ func (list *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "FileAttributeInfoList")
 	_gret := _info.InvokeRecordMethod("lookup", _args[:], nil)
@@ -158,7 +158,7 @@ func (list *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
 
 	var _fileAttributeInfo *FileAttributeInfo // out
 
-	_fileAttributeInfo = (*FileAttributeInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_fileAttributeInfo = (*FileAttributeInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _fileAttributeInfo
 }

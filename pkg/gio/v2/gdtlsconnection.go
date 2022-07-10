@@ -22,9 +22,9 @@ import (
 // extern gboolean _gotk4_gio2_DtlsConnectionInterface_handshake_finish(void*, void*, GError**);
 // extern gboolean _gotk4_gio2_DtlsConnectionInterface_shutdown(void*, gboolean, gboolean, void*, GError**);
 // extern gboolean _gotk4_gio2_DtlsConnectionInterface_shutdown_finish(void*, void*, GError**);
+// extern gchar* _gotk4_gio2_DtlsConnectionInterface_get_negotiated_protocol(void*);
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
-// extern void _gotk4_gio2_DtlsConnectionInterface_set_advertised_protocols(void*, void**);
-// extern void* _gotk4_gio2_DtlsConnectionInterface_get_negotiated_protocol(void*);
+// extern void _gotk4_gio2_DtlsConnectionInterface_set_advertised_protocols(void*, gchar**);
 import "C"
 
 // GTypeDTLSConnection returns the GType for the type DTLSConnection.
@@ -178,7 +178,7 @@ func (conn *DTLSConnection) Close(ctx context.Context) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -239,7 +239,7 @@ func (conn *DTLSConnection) CloseFinish(result AsyncResulter) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -267,7 +267,7 @@ func (conn *DTLSConnection) Certificate() TLSCertificater {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -307,7 +307,7 @@ func (conn *DTLSConnection) Database() TLSDatabaser {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -347,7 +347,7 @@ func (conn *DTLSConnection) Interaction() *TLSInteraction {
 	var _tlsInteraction *TLSInteraction // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_tlsInteraction = wrapTLSInteraction(coreglib.Take(unsafe.Pointer(_cret)))
+		_tlsInteraction = wrapTLSInteraction(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _tlsInteraction
@@ -372,14 +372,14 @@ func (conn *DTLSConnection) NegotiatedProtocol() string {
 
 	_info := girepository.MustFind("Gio", "DtlsConnection")
 	_gret := _info.InvokeIfaceMethod("get_negotiated_protocol", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(conn)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -408,7 +408,7 @@ func (conn *DTLSConnection) PeerCertificate() TLSCertificater {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -502,7 +502,7 @@ func (conn *DTLSConnection) Handshake(ctx context.Context) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -563,7 +563,7 @@ func (conn *DTLSConnection) HandshakeFinish(result AsyncResulter) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -591,15 +591,15 @@ func (conn *DTLSConnection) SetAdvertisedProtocols(protocols []string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
 	{
-		*(***C.void)(unsafe.Pointer(&_args[1])) = (**C.void)(C.calloc(C.size_t((len(protocols) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(***C.gchar)(unsafe.Pointer(&_args[1])) = (**C.gchar)(C.calloc(C.size_t((len(protocols) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(*(***C.gchar)(unsafe.Pointer(&_args[1]))))
 		{
 			out := unsafe.Slice(_args[1], len(protocols)+1)
-			var zero *C.void
+			var zero *C.gchar
 			out[len(protocols)] = zero
 			for i := range protocols {
-				*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(protocols[i])))
-				defer C.free(unsafe.Pointer(out[i]))
+				*(**C.gchar)(unsafe.Pointer(&out[i])) = (*C.gchar)(unsafe.Pointer(C.CString(protocols[i])))
+				defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&out[i]))))
 			}
 		}
 	}
@@ -788,7 +788,7 @@ func (conn *DTLSConnection) Shutdown(ctx context.Context, shutdownRead, shutdown
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -859,7 +859,7 @@ func (conn *DTLSConnection) ShutdownFinish(result AsyncResulter) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr

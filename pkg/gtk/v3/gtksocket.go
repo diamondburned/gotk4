@@ -226,7 +226,7 @@ func NewSocket() *Socket {
 
 	var _socket *Socket // out
 
-	_socket = wrapSocket(coreglib.Take(unsafe.Pointer(_cret)))
+	_socket = wrapSocket(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _socket
 }
@@ -253,7 +253,7 @@ func (socket_ *Socket) PlugWindow() gdk.Windower {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

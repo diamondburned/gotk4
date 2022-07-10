@@ -63,7 +63,7 @@ func CairoDrawFromGL(cr *cairo.Context, surface Surfacer, source, sourceType, bu
 	*(*C.int)(unsafe.Pointer(&_args[8])) = C.int(height)
 
 	_info := girepository.MustFind("Gdk", "cairo_draw_from_gl")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(surface)
@@ -90,7 +90,7 @@ func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rectangle)))
 
 	_info := girepository.MustFind("Gdk", "cairo_rectangle")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(rectangle)
@@ -110,7 +110,7 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(region.Native()))
 
 	_info := girepository.MustFind("Gdk", "cairo_region")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(region)
@@ -136,7 +136,7 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(surface.Native()))
 
 	_info := girepository.MustFind("Gdk", "cairo_region_create_from_surface")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
@@ -144,7 +144,7 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	var _region *cairo.Region // out
 
 	{
-		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))}
 		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
 	runtime.SetFinalizer(_region, func(v *cairo.Region) {
@@ -175,7 +175,7 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX, 
 	*(*C.double)(unsafe.Pointer(&_args[3])) = C.double(pixbufY)
 
 	_info := girepository.MustFind("Gdk", "cairo_set_source_pixbuf")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(pixbuf)
@@ -197,7 +197,7 @@ func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(rgba)))
 
 	_info := girepository.MustFind("Gdk", "cairo_set_source_rgba")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(cr)
 	runtime.KeepAlive(rgba)

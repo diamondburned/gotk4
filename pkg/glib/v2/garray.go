@@ -173,8 +173,8 @@ func (bytes1 *Bytes) Compare(bytes2 *Bytes) int32 {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gint          // in
 
-	_arg0 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(bytes1)))
-	_arg1 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(bytes2)))
+	_arg0 = *(*C.gconstpointer)(gextras.StructNative(unsafe.Pointer(bytes1)))
+	_arg1 = *(*C.gconstpointer)(gextras.StructNative(unsafe.Pointer(bytes2)))
 
 	_cret = C.g_bytes_compare(_arg0, _arg1)
 	runtime.KeepAlive(bytes1)
@@ -206,8 +206,8 @@ func (bytes1 *Bytes) Equal(bytes2 *Bytes) bool {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(bytes1)))
-	_arg1 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(bytes2)))
+	_arg0 = *(*C.gconstpointer)(gextras.StructNative(unsafe.Pointer(bytes1)))
+	_arg1 = *(*C.gconstpointer)(gextras.StructNative(unsafe.Pointer(bytes2)))
 
 	_cret = C.g_bytes_equal(_arg0, _arg1)
 	runtime.KeepAlive(bytes1)
@@ -289,7 +289,7 @@ func (bytes *Bytes) Hash() uint32 {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg0 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(bytes)))
+	_arg0 = *(*C.gconstpointer)(gextras.StructNative(unsafe.Pointer(bytes)))
 
 	_cret = C.g_bytes_hash(_arg0)
 	runtime.KeepAlive(bytes)

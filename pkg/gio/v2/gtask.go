@@ -267,7 +267,7 @@ func NewTask(ctx context.Context, sourceObject *coreglib.Object, callback AsyncR
 
 	var _task *Task // out
 
-	_task = wrapTask(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_task = wrapTask(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _task
 }
@@ -291,7 +291,7 @@ func (task *Task) Cancellable() *Cancellable {
 
 	var _cancellable *Cancellable // out
 
-	_cancellable = wrapCancellable(coreglib.Take(unsafe.Pointer(_cret)))
+	_cancellable = wrapCancellable(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cancellable
 }
@@ -374,8 +374,8 @@ func (task *Task) Context() *glib.MainContext {
 
 	var _mainContext *glib.MainContext // out
 
-	_mainContext = (*glib.MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_main_context_ref(_cret)
+	_mainContext = (*glib.MainContext)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.g_main_context_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_mainContext)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -399,14 +399,14 @@ func (task *Task) Name() string {
 
 	_info := girepository.MustFind("Gio", "Task")
 	_gret := _info.InvokeClassMethod("get_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(task)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -481,7 +481,7 @@ func (task *Task) SourceObject() *coreglib.Object {
 
 	var _object *coreglib.Object // out
 
-	_object = coreglib.Take(unsafe.Pointer(_cret))
+	_object = coreglib.Take(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&_cret))))
 
 	return _object
 }
@@ -505,7 +505,7 @@ func (task *Task) SourceTag() unsafe.Pointer {
 
 	var _gpointer unsafe.Pointer // out
 
-	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&_cret))))
 
 	return _gpointer
 }
@@ -529,7 +529,7 @@ func (task *Task) TaskData() unsafe.Pointer {
 
 	var _gpointer unsafe.Pointer // out
 
-	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&_cret))))
 
 	return _gpointer
 }
@@ -580,7 +580,7 @@ func (task *Task) PropagateBoolean() error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -614,7 +614,7 @@ func (task *Task) PropagateInt() (int, error) {
 
 	_gssize = int(*(*C.gssize)(unsafe.Pointer(&_cret)))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _gssize, _goerr
@@ -647,9 +647,9 @@ func (task *Task) PropagatePointer() (unsafe.Pointer, error) {
 	var _gpointer unsafe.Pointer // out
 	var _goerr error             // out
 
-	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&_cret))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _gpointer, _goerr
@@ -684,9 +684,9 @@ func (task *Task) PropagateValue() (coreglib.Value, error) {
 	var _value coreglib.Value // out
 	var _goerr error          // out
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(_outs[0]))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _value, _goerr
@@ -874,8 +874,8 @@ func (task *Task) SetName(name string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(task).Native()))
 	if name != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gio", "Task")
@@ -1009,11 +1009,11 @@ func (task *Task) SetSourceTag(sourceTag unsafe.Pointer) {
 func TaskIsValid(result AsyncResulter, sourceObject *coreglib.Object) bool {
 	var _args [2]girepository.Argument
 
-	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = C.gpointer(unsafe.Pointer(coreglib.InternObject(result).Native()))
+	*(*C.gpointer)(unsafe.Pointer(&_args[0])) = *(*C.gpointer)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = C.gpointer(unsafe.Pointer(sourceObject.Native()))
 
 	_info := girepository.MustFind("Gio", "is_valid")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(result)
@@ -1058,7 +1058,7 @@ func TaskReportError(sourceObject *coreglib.Object, callback AsyncReadyCallback,
 	}
 
 	_info := girepository.MustFind("Gio", "report_error")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(sourceObject)
 	runtime.KeepAlive(callback)

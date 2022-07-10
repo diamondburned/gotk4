@@ -93,7 +93,7 @@ func NewIMContextSimple() *IMContextSimple {
 
 	var _imContextSimple *IMContextSimple // out
 
-	_imContextSimple = wrapIMContextSimple(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_imContextSimple = wrapIMContextSimple(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _imContextSimple
 }
@@ -108,8 +108,8 @@ func (contextSimple *IMContextSimple) AddComposeFile(composeFile string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(contextSimple).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(composeFile)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(composeFile)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "IMContextSimple")
 	_info.InvokeClassMethod("add_compose_file", _args[:], nil)

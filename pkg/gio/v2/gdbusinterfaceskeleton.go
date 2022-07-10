@@ -276,8 +276,8 @@ func (interface_ *DBusInterfaceSkeleton) Export(connection *DBusConnection, obje
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
 
 	_info := girepository.MustFind("Gio", "DBusInterfaceSkeleton")
 	_info.InvokeClassMethod("export", _args[:], nil)
@@ -289,7 +289,7 @@ func (interface_ *DBusInterfaceSkeleton) Export(connection *DBusConnection, obje
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -334,7 +334,7 @@ func (interface_ *DBusInterfaceSkeleton) Connection() *DBusConnection {
 	var _dBusConnection *DBusConnection // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_dBusConnection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(_cret)))
+		_dBusConnection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _dBusConnection
@@ -361,11 +361,11 @@ func (interface_ *DBusInterfaceSkeleton) Connections() []*DBusConnection {
 
 	var _list []*DBusConnection // out
 
-	_list = make([]*DBusConnection, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*DBusConnection, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *DBusConnection // out
-		dst = wrapDBusConnection(coreglib.AssumeOwnership(unsafe.Pointer(src)))
+		dst = wrapDBusConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 
@@ -392,8 +392,8 @@ func (interface_ *DBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 
 	var _dBusInterfaceInfo *DBusInterfaceInfo // out
 
-	_dBusInterfaceInfo = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_dbus_interface_info_ref(_cret)
+	_dBusInterfaceInfo = (*DBusInterfaceInfo)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.g_dbus_interface_info_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_dBusInterfaceInfo)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -418,14 +418,14 @@ func (interface_ *DBusInterfaceSkeleton) ObjectPath() string {
 
 	_info := girepository.MustFind("Gio", "DBusInterfaceSkeleton")
 	_gret := _info.InvokeClassMethod("get_object_path", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(interface_)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -451,7 +451,7 @@ func (interface_ *DBusInterfaceSkeleton) Properties() *glib.Variant {
 
 	var _variant *glib.Variant // out
 
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
 		func(intern *struct{ C unsafe.Pointer }) {

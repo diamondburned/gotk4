@@ -146,7 +146,7 @@ func (box *Box) CenterWidget() Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -332,14 +332,14 @@ func (box *Box) QueryChildPacking(child Widgetter) (expand, fill bool, padding u
 	var _padding uint32    // out
 	var _packType PackType // out
 
-	if **(**C.void)(unsafe.Pointer(&_outs[0])) != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_outs[0])) != 0 {
 		_expand = true
 	}
-	if **(**C.void)(unsafe.Pointer(&_outs[1])) != 0 {
+	if *(*C.gboolean)(unsafe.Pointer(&_outs[1])) != 0 {
 		_fill = true
 	}
-	_padding = *(*uint32)(unsafe.Pointer(_outs[2]))
-	_packType = *(*PackType)(unsafe.Pointer(_outs[3]))
+	_padding = uint32(*(*C.guint)(unsafe.Pointer(&_outs[2])))
+	_packType = *(*PackType)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[3]))))
 
 	return _expand, _fill, _padding, _packType
 }

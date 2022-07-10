@@ -108,7 +108,7 @@ func NewWidgetPaintable(widget Widgetter) *WidgetPaintable {
 
 	var _widgetPaintable *WidgetPaintable // out
 
-	_widgetPaintable = wrapWidgetPaintable(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_widgetPaintable = wrapWidgetPaintable(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _widgetPaintable
 }
@@ -134,7 +134,7 @@ func (self *WidgetPaintable) Widget() Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

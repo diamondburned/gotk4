@@ -20,7 +20,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gio2_ApplicationClass_dbus_register(void*, void*, void*, GError**);
+// extern gboolean _gotk4_gio2_ApplicationClass_dbus_register(void*, void*, gchar*, GError**);
 // extern gboolean _gotk4_gio2_ApplicationClass_name_lost(void*);
 // extern gboolean _gotk4_gio2_Application_ConnectNameLost(gpointer, guintptr);
 // extern gint _gotk4_gio2_ApplicationClass_handle_local_options(void*, void*);
@@ -31,14 +31,14 @@ import (
 // extern void _gotk4_gio2_ApplicationClass_add_platform_data(void*, void*);
 // extern void _gotk4_gio2_ApplicationClass_after_emit(void*, void*);
 // extern void _gotk4_gio2_ApplicationClass_before_emit(void*, void*);
-// extern void _gotk4_gio2_ApplicationClass_dbus_unregister(void*, void*, void*);
-// extern void _gotk4_gio2_ApplicationClass_open(void*, void**, gint, void*);
+// extern void _gotk4_gio2_ApplicationClass_dbus_unregister(void*, void*, gchar*);
+// extern void _gotk4_gio2_ApplicationClass_open(void*, void**, gint, gchar*);
 // extern void _gotk4_gio2_ApplicationClass_quit_mainloop(void*);
 // extern void _gotk4_gio2_ApplicationClass_run_mainloop(void*);
 // extern void _gotk4_gio2_ApplicationClass_shutdown(void*);
 // extern void _gotk4_gio2_ApplicationClass_startup(void*);
 // extern void _gotk4_gio2_Application_ConnectActivate(gpointer, guintptr);
-// extern void _gotk4_gio2_Application_ConnectOpen(gpointer, void**, gint, void*, guintptr);
+// extern void _gotk4_gio2_Application_ConnectOpen(gpointer, void**, gint, gchar*, guintptr);
 // extern void _gotk4_gio2_Application_ConnectShutdown(gpointer, guintptr);
 // extern void _gotk4_gio2_Application_ConnectStartup(gpointer, guintptr);
 import "C"
@@ -430,7 +430,7 @@ func _gotk4_gio2_ApplicationClass_command_line(arg0 *C.void, arg1 *C.void) (cret
 }
 
 //export _gotk4_gio2_ApplicationClass_dbus_register
-func _gotk4_gio2_ApplicationClass_dbus_register(arg0 *C.void, arg1 *C.void, arg2 *C.void, _cerr **C.GError) (cret C.gboolean) {
+func _gotk4_gio2_ApplicationClass_dbus_register(arg0 *C.void, arg1 *C.void, arg2 *C.gchar, _cerr **C.GError) (cret C.gboolean) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DBusRegister(connection *DBusConnection, objectPath string) error
@@ -452,7 +452,7 @@ func _gotk4_gio2_ApplicationClass_dbus_register(arg0 *C.void, arg1 *C.void, arg2
 }
 
 //export _gotk4_gio2_ApplicationClass_dbus_unregister
-func _gotk4_gio2_ApplicationClass_dbus_unregister(arg0 *C.void, arg1 *C.void, arg2 *C.void) {
+func _gotk4_gio2_ApplicationClass_dbus_unregister(arg0 *C.void, arg1 *C.void, arg2 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		DBusUnregister(connection *DBusConnection, objectPath string)
@@ -507,7 +507,7 @@ func _gotk4_gio2_ApplicationClass_name_lost(arg0 *C.void) (cret C.gboolean) {
 }
 
 //export _gotk4_gio2_ApplicationClass_open
-func _gotk4_gio2_ApplicationClass_open(arg0 *C.void, arg1 **C.void, arg2 C.gint, arg3 *C.void) {
+func _gotk4_gio2_ApplicationClass_open(arg0 *C.void, arg1 **C.void, arg2 C.gint, arg3 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Open(files []Filer, hint string)
@@ -749,7 +749,7 @@ func (application *Application) ConnectNameLost(f func() (ok bool)) coreglib.Sig
 }
 
 //export _gotk4_gio2_Application_ConnectOpen
-func _gotk4_gio2_Application_ConnectOpen(arg0 C.gpointer, arg1 **C.void, arg2 C.gint, arg3 *C.void, arg4 C.guintptr) {
+func _gotk4_gio2_Application_ConnectOpen(arg0 C.gpointer, arg1 **C.void, arg2 C.gint, arg3 *C.gchar, arg4 C.guintptr) {
 	var f func(files []Filer, hint string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
@@ -916,8 +916,8 @@ func (application *Application) BindBusyProperty(object *coreglib.Object, proper
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = C.gpointer(unsafe.Pointer(object.Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(property)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
 
 	_info := girepository.MustFind("Gio", "Application")
 	_info.InvokeClassMethod("bind_busy_property", _args[:], nil)
@@ -940,14 +940,14 @@ func (application *Application) ApplicationID() string {
 
 	_info := girepository.MustFind("Gio", "Application")
 	_gret := _info.InvokeClassMethod("get_application_id", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -984,7 +984,7 @@ func (application *Application) DBusConnection() *DBusConnection {
 	var _dBusConnection *DBusConnection // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_dBusConnection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(_cret)))
+		_dBusConnection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _dBusConnection
@@ -1017,14 +1017,14 @@ func (application *Application) DBusObjectPath() string {
 
 	_info := girepository.MustFind("Gio", "Application")
 	_gret := _info.InvokeClassMethod("get_dbus_object_path", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -1162,14 +1162,14 @@ func (application *Application) ResourceBasePath() string {
 
 	_info := girepository.MustFind("Gio", "Application")
 	_gret := _info.InvokeClassMethod("get_resource_base_path", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(application)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -1239,15 +1239,15 @@ func (application *Application) Open(files []Filer, hint string) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = (C.gint)(len(files))
 	*(***C.void)(unsafe.Pointer(&_args[1])) = (**C.void)(C.calloc(C.size_t(len(files)), C.size_t(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_args[1]))
+	defer C.free(unsafe.Pointer(*(***C.void)(unsafe.Pointer(&_args[1]))))
 	{
 		out := unsafe.Slice((**C.void)(*(***C.void)(unsafe.Pointer(&_args[1]))), len(files))
 		for i := range files {
 			*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(files[i]).Native()))
 		}
 	}
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(C.CString(hint)))
-	defer C.free(unsafe.Pointer(_args[3]))
+	*(**C.gchar)(unsafe.Pointer(&_args[3])) = (*C.gchar)(unsafe.Pointer(C.CString(hint)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[3]))))
 
 	_info := girepository.MustFind("Gio", "Application")
 	_info.InvokeClassMethod("open", _args[:], nil)
@@ -1332,7 +1332,7 @@ func (application *Application) Register(ctx context.Context) error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -1439,13 +1439,13 @@ func (application *Application) Run(argv []string) int32 {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = (C.int)(len(argv))
-	*(***C.void)(unsafe.Pointer(&_args[2])) = (**C.void)(C.calloc(C.size_t(len(argv)), C.size_t(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(***C.char)(unsafe.Pointer(&_args[2])) = (**C.char)(C.calloc(C.size_t(len(argv)), C.size_t(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_args[2]))))
 	{
-		out := unsafe.Slice((**C.void)(*(***C.void)(unsafe.Pointer(&_args[2]))), len(argv))
+		out := unsafe.Slice((**C.char)(*(***C.char)(unsafe.Pointer(&_args[2]))), len(argv))
 		for i := range argv {
-			*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(argv[i])))
-			defer C.free(unsafe.Pointer(out[i]))
+			*(**C.char)(unsafe.Pointer(&out[i])) = (*C.char)(unsafe.Pointer(C.CString(argv[i])))
+			defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&out[i]))))
 		}
 	}
 
@@ -1498,8 +1498,8 @@ func (application *Application) SendNotification(id string, notification *Notifi
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	if id != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(id)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(id)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(notification).Native()))
 
@@ -1555,8 +1555,8 @@ func (application *Application) SetApplicationID(applicationId string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	if applicationId != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(applicationId)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(applicationId)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gio", "Application")
@@ -1625,8 +1625,8 @@ func (application *Application) SetOptionContextDescription(description string) 
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	if description != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(description)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gio", "Application")
@@ -1654,8 +1654,8 @@ func (application *Application) SetOptionContextParameterString(parameterString 
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	if parameterString != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(parameterString)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(parameterString)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gio", "Application")
@@ -1679,8 +1679,8 @@ func (application *Application) SetOptionContextSummary(summary string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	if summary != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(summary)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(summary)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gio", "Application")
@@ -1731,8 +1731,8 @@ func (application *Application) SetResourceBasePath(resourcePath string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	if resourcePath != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gio", "Application")
@@ -1756,8 +1756,8 @@ func (application *Application) UnbindBusyProperty(object *coreglib.Object, prop
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
 	*(*C.gpointer)(unsafe.Pointer(&_args[1])) = C.gpointer(unsafe.Pointer(object.Native()))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(property)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
 
 	_info := girepository.MustFind("Gio", "Application")
 	_info.InvokeClassMethod("unbind_busy_property", _args[:], nil)
@@ -1806,8 +1806,8 @@ func (application *Application) WithdrawNotification(id string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(id)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(id)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "Application")
 	_info.InvokeClassMethod("withdraw_notification", _args[:], nil)
@@ -1831,13 +1831,13 @@ func (application *Application) WithdrawNotification(id string) {
 //
 func ApplicationGetDefault() *Application {
 	_info := girepository.MustFind("Gio", "get_default")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _application *Application // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_application = wrapApplication(coreglib.Take(unsafe.Pointer(_cret)))
+		_application = wrapApplication(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _application
@@ -1901,11 +1901,11 @@ func ApplicationGetDefault() *Application {
 func ApplicationIDIsValid(applicationId string) bool {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(applicationId)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(applicationId)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gio", "id_is_valid")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(applicationId)

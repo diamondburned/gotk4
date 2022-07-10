@@ -105,7 +105,7 @@ func NewBufferedOutputStream(baseStream OutputStreamer) *BufferedOutputStream {
 
 	var _bufferedOutputStream *BufferedOutputStream // out
 
-	_bufferedOutputStream = wrapBufferedOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_bufferedOutputStream = wrapBufferedOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _bufferedOutputStream
 }
@@ -137,7 +137,7 @@ func NewBufferedOutputStreamSized(baseStream OutputStreamer, size uint) *Buffere
 
 	var _bufferedOutputStream *BufferedOutputStream // out
 
-	_bufferedOutputStream = wrapBufferedOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_bufferedOutputStream = wrapBufferedOutputStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _bufferedOutputStream
 }

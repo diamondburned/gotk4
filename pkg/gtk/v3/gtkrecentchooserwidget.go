@@ -109,7 +109,7 @@ func NewRecentChooserWidget() *RecentChooserWidget {
 
 	var _recentChooserWidget *RecentChooserWidget // out
 
-	_recentChooserWidget = wrapRecentChooserWidget(coreglib.Take(unsafe.Pointer(_cret)))
+	_recentChooserWidget = wrapRecentChooserWidget(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _recentChooserWidget
 }
@@ -141,7 +141,7 @@ func NewRecentChooserWidgetForManager(manager *RecentManager) *RecentChooserWidg
 
 	var _recentChooserWidget *RecentChooserWidget // out
 
-	_recentChooserWidget = wrapRecentChooserWidget(coreglib.Take(unsafe.Pointer(_cret)))
+	_recentChooserWidget = wrapRecentChooserWidget(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _recentChooserWidget
 }

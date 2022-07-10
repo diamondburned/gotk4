@@ -253,7 +253,7 @@ func NewConstraintLayout() *ConstraintLayout {
 
 	var _constraintLayout *ConstraintLayout // out
 
-	_constraintLayout = wrapConstraintLayout(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_constraintLayout = wrapConstraintLayout(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _constraintLayout
 }
@@ -385,23 +385,23 @@ func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hs
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
 	*(*C.gsize)(unsafe.Pointer(&_args[2])) = (C.gsize)(len(lines))
-	*(***C.void)(unsafe.Pointer(&_args[1])) = (**C.void)(C.calloc(C.size_t(len(lines)), C.size_t(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(***C.char)(unsafe.Pointer(&_args[1])) = (**C.char)(C.calloc(C.size_t(len(lines)), C.size_t(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_args[1]))))
 	{
-		out := unsafe.Slice((**C.void)(*(***C.void)(unsafe.Pointer(&_args[1]))), len(lines))
+		out := unsafe.Slice((**C.char)(*(***C.char)(unsafe.Pointer(&_args[1]))), len(lines))
 		for i := range lines {
-			*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(lines[i])))
-			defer C.free(unsafe.Pointer(out[i]))
+			*(**C.char)(unsafe.Pointer(&out[i])) = (*C.char)(unsafe.Pointer(C.CString(lines[i])))
+			defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&out[i]))))
 		}
 	}
 	*(*C.int)(unsafe.Pointer(&_args[3])) = C.int(hspacing)
 	*(*C.int)(unsafe.Pointer(&_args[4])) = C.int(vspacing)
 	*(**C.void)(unsafe.Pointer(&_args[5])) = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
 	for ksrc, vsrc := range views {
-		var kdst *C.void // out
-		var vdst *C.void // out
-		*(**C.void)(unsafe.Pointer(&kdst)) = (*C.void)(unsafe.Pointer(C.CString(ksrc)))
-		defer C.free(unsafe.Pointer(kdst))
+		var kdst *C.gchar // out
+		var vdst *C.void  // out
+		*(**C.gchar)(unsafe.Pointer(&kdst)) = (*C.gchar)(unsafe.Pointer(C.CString(ksrc)))
+		defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&kdst))))
 		*(**C.void)(unsafe.Pointer(&vdst)) = (*C.void)(unsafe.Pointer(coreglib.InternObject(vsrc).Native()))
 		C.g_hash_table_insert(*(**C.void)(unsafe.Pointer(&_args[5])), C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
 	}
@@ -420,15 +420,15 @@ func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hs
 	var _list []*Constraint // out
 	var _goerr error        // out
 
-	_list = make([]*Constraint, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]*Constraint, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Constraint // out
-		dst = wrapConstraint(coreglib.Take(unsafe.Pointer(src)))
+		dst = wrapConstraint(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _list, _goerr
@@ -487,7 +487,7 @@ func (layout *ConstraintLayout) ObserveConstraints() *gio.ListModel {
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}
@@ -524,7 +524,7 @@ func (layout *ConstraintLayout) ObserveGuides() *gio.ListModel {
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}

@@ -197,7 +197,7 @@ func NewGestureClick() *GestureClick {
 
 	var _gestureClick *GestureClick // out
 
-	_gestureClick = wrapGestureClick(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_gestureClick = wrapGestureClick(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _gestureClick
 }

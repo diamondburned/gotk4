@@ -122,7 +122,7 @@ func NewCoverage() *Coverage {
 
 	var _coverage *Coverage // out
 
-	_coverage = wrapCoverage(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_coverage = wrapCoverage(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _coverage
 }
@@ -147,7 +147,7 @@ func (coverage *Coverage) Copy() *Coverage {
 
 	var _ret *Coverage // out
 
-	_ret = wrapCoverage(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_ret = wrapCoverage(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _ret
 }
@@ -196,9 +196,9 @@ func (coverage *Coverage) ToBytes() []byte {
 
 	var _bytes []byte // out
 
-	defer C.free(unsafe.Pointer(_outs[0]))
-	_bytes = make([]byte, _outs[1])
-	copy(_bytes, unsafe.Slice((*byte)(unsafe.Pointer(_outs[0])), _outs[1]))
+	defer C.free(unsafe.Pointer(*(**C.guchar)(unsafe.Pointer(&_outs[0]))))
+	_bytes = make([]byte, *(*C.int)(unsafe.Pointer(&_outs[1])))
+	copy(_bytes, unsafe.Slice((*byte)(unsafe.Pointer(*(**C.guchar)(unsafe.Pointer(&_outs[0])))), *(*C.int)(unsafe.Pointer(&_outs[1]))))
 
 	return _bytes
 }
@@ -222,11 +222,11 @@ func CoverageFromBytes(bytes []byte) *Coverage {
 
 	*(*C.int)(unsafe.Pointer(&_args[1])) = (C.int)(len(bytes))
 	if len(bytes) > 0 {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(&bytes[0]))
+		*(**C.guchar)(unsafe.Pointer(&_args[0])) = (*C.guchar)(unsafe.Pointer(&bytes[0]))
 	}
 
 	_info := girepository.MustFind("Pango", "from_bytes")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(bytes)
@@ -234,7 +234,7 @@ func CoverageFromBytes(bytes []byte) *Coverage {
 	var _coverage *Coverage // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_coverage = wrapCoverage(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_coverage = wrapCoverage(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _coverage

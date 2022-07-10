@@ -243,7 +243,7 @@ func NewCheckButton() *CheckButton {
 
 	var _checkButton *CheckButton // out
 
-	_checkButton = wrapCheckButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_checkButton = wrapCheckButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _checkButton
 }
@@ -262,8 +262,8 @@ func NewCheckButtonWithLabel(label string) *CheckButton {
 	var _args [1]girepository.Argument
 
 	if label != "" {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_args[0]))
+		*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "CheckButton")
@@ -274,7 +274,7 @@ func NewCheckButtonWithLabel(label string) *CheckButton {
 
 	var _checkButton *CheckButton // out
 
-	_checkButton = wrapCheckButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_checkButton = wrapCheckButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _checkButton
 }
@@ -295,8 +295,8 @@ func NewCheckButtonWithMnemonic(label string) *CheckButton {
 	var _args [1]girepository.Argument
 
 	if label != "" {
-		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_args[0]))
+		*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "CheckButton")
@@ -307,7 +307,7 @@ func NewCheckButtonWithMnemonic(label string) *CheckButton {
 
 	var _checkButton *CheckButton // out
 
-	_checkButton = wrapCheckButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_checkButton = wrapCheckButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _checkButton
 }
@@ -378,14 +378,14 @@ func (self *CheckButton) Label() string {
 
 	_info := girepository.MustFind("Gtk", "CheckButton")
 	_gret := _info.InvokeClassMethod("get_label", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -513,8 +513,8 @@ func (self *CheckButton) SetLabel(label string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if label != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(label)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "CheckButton")

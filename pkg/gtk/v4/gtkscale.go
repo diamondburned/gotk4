@@ -16,9 +16,9 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk4_ScaleClass_get_layout_offsets(void*, void*, void*);
+// extern char* _gotk4_gtk4_ScaleFormatValueFunc(void*, double, gpointer);
+// extern void _gotk4_gtk4_ScaleClass_get_layout_offsets(void*, int*, int*);
 // extern void callbackDelete(gpointer);
-// extern void* _gotk4_gtk4_ScaleFormatValueFunc(void*, double, gpointer);
 import "C"
 
 // GTypeScale returns the GType for the type Scale.
@@ -35,7 +35,7 @@ func GTypeScale() coreglib.Type {
 type ScaleFormatValueFunc func(scale *Scale, value float64) (utf8 string)
 
 //export _gotk4_gtk4_ScaleFormatValueFunc
-func _gotk4_gtk4_ScaleFormatValueFunc(arg1 *C.void, arg2 C.double, arg3 C.gpointer) (cret *C.void) {
+func _gotk4_gtk4_ScaleFormatValueFunc(arg1 *C.void, arg2 C.double, arg3 C.gpointer) (cret *C.char) {
 	var fn ScaleFormatValueFunc
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -53,7 +53,7 @@ func _gotk4_gtk4_ScaleFormatValueFunc(arg1 *C.void, arg2 C.double, arg3 C.gpoint
 
 	utf8 := fn(_scale, _value)
 
-	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+	cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
 
 	return cret
 }
@@ -182,14 +182,14 @@ func classInitScaler(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk4_ScaleClass_get_layout_offsets
-func _gotk4_gtk4_ScaleClass_get_layout_offsets(arg0 *C.void, arg1 *C.void, arg2 *C.void) {
+func _gotk4_gtk4_ScaleClass_get_layout_offsets(arg0 *C.void, arg1 *C.int, arg2 *C.int) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ LayoutOffsets() (x, y int32) })
 
 	x, y := iface.LayoutOffsets()
 
-	*arg1 = (*C.void)(unsafe.Pointer(x))
-	*arg2 = (*C.void)(unsafe.Pointer(y))
+	*arg1 = C.int(x)
+	*arg2 = C.int(y)
 }
 
 func wrapScale(obj *coreglib.Object) *Scale {
@@ -336,7 +336,7 @@ func (scale *Scale) Layout() *pango.Layout {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_layout = &pango.Layout{
 				Object: obj,
 			}
@@ -374,12 +374,8 @@ func (scale *Scale) LayoutOffsets() (x, y int32) {
 	var _x int32 // out
 	var _y int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_x = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_y = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_x = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_y = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
 
 	return _x, _y
 }

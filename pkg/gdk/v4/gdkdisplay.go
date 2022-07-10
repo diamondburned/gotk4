@@ -20,7 +20,7 @@ import (
 // extern void _gotk4_gdk4_Display_ConnectOpened(gpointer, guintptr);
 // extern void _gotk4_gdk4_Display_ConnectSeatAdded(gpointer, void*, guintptr);
 // extern void _gotk4_gdk4_Display_ConnectSeatRemoved(gpointer, void*, guintptr);
-// extern void _gotk4_gdk4_Display_ConnectSettingChanged(gpointer, void*, guintptr);
+// extern void _gotk4_gdk4_Display_ConnectSettingChanged(gpointer, gchar*, guintptr);
 import "C"
 
 // GTypeDisplay returns the GType for the type Display.
@@ -204,7 +204,7 @@ func (display *Display) ConnectSeatRemoved(f func(seat Seater)) coreglib.SignalH
 }
 
 //export _gotk4_gdk4_Display_ConnectSettingChanged
-func _gotk4_gdk4_Display_ConnectSettingChanged(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gdk4_Display_ConnectSettingChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
 	var f func(setting string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -329,7 +329,7 @@ func (display *Display) AppLaunchContext() *AppLaunchContext {
 
 	var _appLaunchContext *AppLaunchContext // out
 
-	_appLaunchContext = wrapAppLaunchContext(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_appLaunchContext = wrapAppLaunchContext(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _appLaunchContext
 }
@@ -353,7 +353,7 @@ func (display *Display) Clipboard() *Clipboard {
 
 	var _clipboard *Clipboard // out
 
-	_clipboard = wrapClipboard(coreglib.Take(unsafe.Pointer(_cret)))
+	_clipboard = wrapClipboard(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _clipboard
 }
@@ -382,7 +382,7 @@ func (display *Display) DefaultSeat() Seater {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -428,7 +428,7 @@ func (display *Display) MonitorAtSurface(surface Surfacer) *Monitor {
 
 	var _monitor *Monitor // out
 
-	_monitor = wrapMonitor(coreglib.Take(unsafe.Pointer(_cret)))
+	_monitor = wrapMonitor(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _monitor
 }
@@ -459,7 +459,7 @@ func (self *Display) Monitors() *gio.ListModel {
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}
@@ -482,13 +482,13 @@ func (display *Display) Name() string {
 
 	_info := girepository.MustFind("Gdk", "Display")
 	_gret := _info.InvokeClassMethod("get_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -515,7 +515,7 @@ func (display *Display) PrimaryClipboard() *Clipboard {
 
 	var _clipboard *Clipboard // out
 
-	_clipboard = wrapClipboard(coreglib.Take(unsafe.Pointer(_cret)))
+	_clipboard = wrapClipboard(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _clipboard
 }
@@ -537,8 +537,8 @@ func (display *Display) Setting(name string, value *coreglib.Value) bool {
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(value.Native()))
 
 	_info := girepository.MustFind("Gdk", "Display")
@@ -572,14 +572,14 @@ func (display *Display) StartupNotificationID() string {
 
 	_info := girepository.MustFind("Gdk", "Display")
 	_gret := _info.InvokeClassMethod("get_startup_notification_id", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(display)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -701,12 +701,12 @@ func (display *Display) ListSeats() []Seater {
 
 	var _list []Seater // out
 
-	_list = make([]Seater, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_list = make([]Seater, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst Seater // out
 		{
-			objptr := unsafe.Pointer(src)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))
 			if objptr == nil {
 				panic("object of type gdk.Seater is nil")
 			}
@@ -766,12 +766,12 @@ func (display *Display) MapKeycode(keycode uint32) ([]KeymapKey, []uint32, bool)
 	var _ok bool          // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		defer C.free(unsafe.Pointer(_outs[0]))
+		defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 		{
-			src := unsafe.Slice((**C.void)(_outs[0]), _outs[2])
-			_keys = make([]KeymapKey, _outs[2])
-			for i := 0; i < int(_outs[2]); i++ {
-				_keys[i] = *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			src := unsafe.Slice((**C.void)(*(**C.void)(unsafe.Pointer(&_outs[0]))), *(*C.int)(unsafe.Pointer(&_outs[2])))
+			_keys = make([]KeymapKey, *(*C.int)(unsafe.Pointer(&_outs[2])))
+			for i := 0; i < int(*(*C.int)(unsafe.Pointer(&_outs[2]))); i++ {
+				_keys[i] = *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
 				runtime.SetFinalizer(
 					gextras.StructIntern(unsafe.Pointer(&_keys[i])),
 					func(intern *struct{ C unsafe.Pointer }) {
@@ -781,13 +781,13 @@ func (display *Display) MapKeycode(keycode uint32) ([]KeymapKey, []uint32, bool)
 			}
 		}
 	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		defer C.free(unsafe.Pointer(_outs[1]))
+	if *(**C.guint)(unsafe.Pointer(&_outs[1])) != nil {
+		defer C.free(unsafe.Pointer(*(**C.guint)(unsafe.Pointer(&_outs[1]))))
 		{
-			src := unsafe.Slice((**C.void)(_outs[1]), _outs[2])
-			_keyvals = make([]uint32, _outs[2])
-			for i := 0; i < int(_outs[2]); i++ {
-				_keyvals[i] = *(*uint32)(unsafe.Pointer(src[i]))
+			src := unsafe.Slice((*C.guint)(*(**C.guint)(unsafe.Pointer(&_outs[1]))), *(*C.int)(unsafe.Pointer(&_outs[2])))
+			_keyvals = make([]uint32, *(*C.int)(unsafe.Pointer(&_outs[2])))
+			for i := 0; i < int(*(*C.int)(unsafe.Pointer(&_outs[2]))); i++ {
+				_keyvals[i] = uint32(*(*C.guint)(unsafe.Pointer(&src[i])))
 			}
 		}
 	}
@@ -840,12 +840,12 @@ func (display *Display) MapKeyval(keyval uint32) ([]KeymapKey, bool) {
 	var _keys []KeymapKey // out
 	var _ok bool          // out
 
-	defer C.free(unsafe.Pointer(_outs[0]))
+	defer C.free(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 	{
-		src := unsafe.Slice((**C.void)(_outs[0]), _outs[1])
-		_keys = make([]KeymapKey, _outs[1])
-		for i := 0; i < int(_outs[1]); i++ {
-			_keys[i] = *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+		src := unsafe.Slice((**C.void)(*(**C.void)(unsafe.Pointer(&_outs[0]))), *(*C.int)(unsafe.Pointer(&_outs[1])))
+		_keys = make([]KeymapKey, *(*C.int)(unsafe.Pointer(&_outs[1])))
+		for i := 0; i < int(*(*C.int)(unsafe.Pointer(&_outs[1]))); i++ {
+			_keys[i] = *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src[i])))))
 			runtime.SetFinalizer(
 				gextras.StructIntern(unsafe.Pointer(&_keys[i])),
 				func(intern *struct{ C unsafe.Pointer }) {
@@ -877,8 +877,8 @@ func (display *Display) NotifyStartupComplete(startupId string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(display).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(startupId)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(startupId)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gdk", "Display")
 	_info.InvokeClassMethod("notify_startup_complete", _args[:], nil)
@@ -973,13 +973,13 @@ func (display *Display) Sync() {
 //
 func DisplayGetDefault() *Display {
 	_info := girepository.MustFind("Gdk", "get_default")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _display *Display // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
+		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _display
@@ -999,11 +999,11 @@ func DisplayGetDefault() *Display {
 func DisplayOpen(displayName string) *Display {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(displayName)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(displayName)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gdk", "open")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(displayName)
@@ -1011,7 +1011,7 @@ func DisplayOpen(displayName string) *Display {
 	var _display *Display // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
+		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _display

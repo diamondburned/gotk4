@@ -112,7 +112,7 @@ func NewStackSwitcher() *StackSwitcher {
 
 	var _stackSwitcher *StackSwitcher // out
 
-	_stackSwitcher = wrapStackSwitcher(coreglib.Take(unsafe.Pointer(_cret)))
+	_stackSwitcher = wrapStackSwitcher(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _stackSwitcher
 }
@@ -137,7 +137,7 @@ func (switcher *StackSwitcher) Stack() *Stack {
 	var _stack *Stack // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_stack = wrapStack(coreglib.Take(unsafe.Pointer(_cret)))
+		_stack = wrapStack(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _stack

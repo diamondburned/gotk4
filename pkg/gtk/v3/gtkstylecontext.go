@@ -780,7 +780,7 @@ func NewStyleContext() *StyleContext {
 
 	var _styleContext *StyleContext // out
 
-	_styleContext = wrapStyleContext(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_styleContext = wrapStyleContext(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _styleContext
 }
@@ -805,8 +805,8 @@ func (context *StyleContext) AddClass(className string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(className)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(className)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "StyleContext")
 	_info.InvokeClassMethod("add_class", _args[:], nil)
@@ -898,7 +898,7 @@ func (context *StyleContext) FrameClock() gdk.FrameClocker {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -937,7 +937,7 @@ func (context *StyleContext) Parent() *StyleContext {
 	var _styleContext *StyleContext // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_styleContext = wrapStyleContext(coreglib.Take(unsafe.Pointer(_cret)))
+		_styleContext = wrapStyleContext(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _styleContext
@@ -962,13 +962,14 @@ func (context *StyleContext) Path() *WidgetPath {
 
 	var _widgetPath *WidgetPath // out
 
-	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.gtk_widget_path_ref(_cret)
+	_widgetPath = (*WidgetPath)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.gtk_widget_path_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_widgetPath)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gtk", "WidgetPath").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1021,7 +1022,7 @@ func (context *StyleContext) Screen() *gdk.Screen {
 	var _screen *gdk.Screen // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_screen = &gdk.Screen{
 			Object: obj,
 		}
@@ -1055,8 +1056,8 @@ func (context *StyleContext) Section(property string) *CSSSection {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(property)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "StyleContext")
 	_gret := _info.InvokeClassMethod("get_section", _args[:], nil)
@@ -1068,8 +1069,8 @@ func (context *StyleContext) Section(property string) *CSSSection {
 	var _cssSection *CSSSection // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.gtk_css_section_ref(_cret)
+		_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.gtk_css_section_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_cssSection)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -1099,8 +1100,8 @@ func (context *StyleContext) StyleProperty(propertyName string) coreglib.Value {
 	var _outs [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(propertyName)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "StyleContext")
 	_info.InvokeClassMethod("get_style_property", _args[:], _outs[:])
@@ -1110,7 +1111,7 @@ func (context *StyleContext) StyleProperty(propertyName string) coreglib.Value {
 
 	var _value coreglib.Value // out
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer(_outs[0]))
+	_value = *coreglib.ValueFromNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 
 	return _value
 }
@@ -1129,8 +1130,8 @@ func (context *StyleContext) HasClass(className string) bool {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(className)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(className)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "StyleContext")
 	_gret := _info.InvokeClassMethod("has_class", _args[:], nil)
@@ -1167,8 +1168,8 @@ func (context *StyleContext) HasRegion(regionName string) (RegionFlags, bool) {
 	var _outs [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(regionName)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(regionName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "StyleContext")
 	_gret := _info.InvokeClassMethod("has_region", _args[:], _outs[:])
@@ -1181,7 +1182,7 @@ func (context *StyleContext) HasRegion(regionName string) (RegionFlags, bool) {
 	var _ok bool                 // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_flagsReturn = *(*RegionFlags)(unsafe.Pointer(_outs[0]))
+		_flagsReturn = *(*RegionFlags)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 	}
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
@@ -1227,11 +1228,11 @@ func (context *StyleContext) ListClasses() []string {
 
 	var _list []string // out
 
-	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+		src := (*C.gchar)(v)
 		var dst string // out
-		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+		dst = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 
@@ -1261,11 +1262,11 @@ func (context *StyleContext) ListRegions() []string {
 
 	var _list []string // out
 
-	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.void)(v)
+	_list = make([]string, 0, gextras.ListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
+		src := (*C.gchar)(v)
 		var dst string // out
-		dst = C.GoString((*C.gchar)(unsafe.Pointer(src)))
+		dst = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&src)))))
 		_list = append(_list, dst)
 	})
 
@@ -1288,8 +1289,8 @@ func (context *StyleContext) LookupColor(colorName string) (*gdk.RGBA, bool) {
 	var _outs [1]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(colorName)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(colorName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "StyleContext")
 	_gret := _info.InvokeClassMethod("lookup_color", _args[:], _outs[:])
@@ -1301,7 +1302,7 @@ func (context *StyleContext) LookupColor(colorName string) (*gdk.RGBA, bool) {
 	var _color *gdk.RGBA // out
 	var _ok bool         // out
 
-	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -1326,8 +1327,8 @@ func (context *StyleContext) LookupIconSet(stockId string) *IconSet {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "StyleContext")
 	_gret := _info.InvokeClassMethod("lookup_icon_set", _args[:], nil)
@@ -1339,8 +1340,8 @@ func (context *StyleContext) LookupIconSet(stockId string) *IconSet {
 	var _iconSet *IconSet // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.gtk_icon_set_ref(_cret)
+		_iconSet = (*IconSet)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.gtk_icon_set_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_iconSet)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -1406,8 +1407,8 @@ func (context *StyleContext) RemoveClass(className string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(className)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(className)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "StyleContext")
 	_info.InvokeClassMethod("remove_class", _args[:], nil)
@@ -1447,8 +1448,8 @@ func (context *StyleContext) RemoveRegion(regionName string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(regionName)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(regionName)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gtk", "StyleContext")
 	_info.InvokeClassMethod("remove_region", _args[:], nil)
@@ -1684,7 +1685,7 @@ func StyleContextAddProviderForScreen(screen *gdk.Screen, provider StyleProvider
 	*(*C.guint)(unsafe.Pointer(&_args[2])) = C.guint(priority)
 
 	_info := girepository.MustFind("Gtk", "add_provider_for_screen")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(provider)
@@ -1706,7 +1707,7 @@ func StyleContextRemoveProviderForScreen(screen *gdk.Screen, provider StyleProvi
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
 
 	_info := girepository.MustFind("Gtk", "remove_provider_for_screen")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(screen)
 	runtime.KeepAlive(provider)
@@ -1729,7 +1730,7 @@ func StyleContextResetWidgets(screen *gdk.Screen) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
 
 	_info := girepository.MustFind("Gtk", "reset_widgets")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(screen)
 }

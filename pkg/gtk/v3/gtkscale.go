@@ -17,10 +17,10 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern gchar* _gotk4_gtk3_ScaleClass_format_value(void*, gdouble);
+// extern gchar* _gotk4_gtk3_Scale_ConnectFormatValue(gpointer, gdouble, guintptr);
 // extern void _gotk4_gtk3_ScaleClass_draw_value(void*);
-// extern void _gotk4_gtk3_ScaleClass_get_layout_offsets(void*, void*, void*);
-// extern void* _gotk4_gtk3_ScaleClass_format_value(void*, gdouble);
-// extern void* _gotk4_gtk3_Scale_ConnectFormatValue(gpointer, gdouble, guintptr);
+// extern void _gotk4_gtk3_ScaleClass_get_layout_offsets(void*, gint*, gint*);
 import "C"
 
 // GTypeScale returns the GType for the type Scale.
@@ -170,7 +170,7 @@ func _gotk4_gtk3_ScaleClass_draw_value(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_ScaleClass_format_value
-func _gotk4_gtk3_ScaleClass_format_value(arg0 *C.void, arg1 C.gdouble) (cret *C.void) {
+func _gotk4_gtk3_ScaleClass_format_value(arg0 *C.void, arg1 C.gdouble) (cret *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ FormatValue(value float64) string })
 
@@ -180,20 +180,20 @@ func _gotk4_gtk3_ScaleClass_format_value(arg0 *C.void, arg1 C.gdouble) (cret *C.
 
 	utf8 := iface.FormatValue(_value)
 
-	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 
 	return cret
 }
 
 //export _gotk4_gtk3_ScaleClass_get_layout_offsets
-func _gotk4_gtk3_ScaleClass_get_layout_offsets(arg0 *C.void, arg1 *C.void, arg2 *C.void) {
+func _gotk4_gtk3_ScaleClass_get_layout_offsets(arg0 *C.void, arg1 *C.gint, arg2 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ LayoutOffsets() (x, y int32) })
 
 	x, y := iface.LayoutOffsets()
 
-	*arg1 = (*C.void)(unsafe.Pointer(x))
-	*arg2 = (*C.void)(unsafe.Pointer(y))
+	*arg1 = C.gint(x)
+	*arg2 = C.gint(y)
 }
 
 func wrapScale(obj *coreglib.Object) *Scale {
@@ -224,7 +224,7 @@ func marshalScale(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk3_Scale_ConnectFormatValue
-func _gotk4_gtk3_Scale_ConnectFormatValue(arg0 C.gpointer, arg1 C.gdouble, arg2 C.guintptr) (cret *C.void) {
+func _gotk4_gtk3_Scale_ConnectFormatValue(arg0 C.gpointer, arg1 C.gdouble, arg2 C.guintptr) (cret *C.gchar) {
 	var f func(value float64) (utf8 string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -242,7 +242,7 @@ func _gotk4_gtk3_Scale_ConnectFormatValue(arg0 C.gpointer, arg1 C.gdouble, arg2 
 
 	utf8 := f(_value)
 
-	cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 
 	return cret
 }
@@ -381,7 +381,7 @@ func (scale *Scale) Layout() *pango.Layout {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_layout = &pango.Layout{
 				Object: obj,
 			}
@@ -416,12 +416,8 @@ func (scale *Scale) LayoutOffsets() (x, y int32) {
 	var _x int32 // out
 	var _y int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_x = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_y = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_x = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_y = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _x, _y
 }

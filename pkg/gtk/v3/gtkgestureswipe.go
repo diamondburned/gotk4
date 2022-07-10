@@ -114,7 +114,7 @@ func NewGestureSwipe(widget Widgetter) *GestureSwipe {
 
 	var _gestureSwipe *GestureSwipe // out
 
-	_gestureSwipe = wrapGestureSwipe(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_gestureSwipe = wrapGestureSwipe(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _gestureSwipe
 }
@@ -145,8 +145,8 @@ func (gesture *GestureSwipe) Velocity() (velocityX, velocityY float64, ok bool) 
 	var _velocityY float64 // out
 	var _ok bool           // out
 
-	_velocityX = *(*float64)(unsafe.Pointer(_outs[0]))
-	_velocityY = *(*float64)(unsafe.Pointer(_outs[1]))
+	_velocityX = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
+	_velocityY = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[1])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}

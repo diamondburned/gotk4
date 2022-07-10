@@ -69,7 +69,7 @@ func NewCairoRenderer() *CairoRenderer {
 
 	var _cairoRenderer *CairoRenderer // out
 
-	_cairoRenderer = wrapCairoRenderer(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cairoRenderer = wrapCairoRenderer(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cairoRenderer
 }

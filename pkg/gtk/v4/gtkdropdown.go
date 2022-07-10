@@ -137,7 +137,7 @@ func NewDropDown(model gio.ListModeller, expression Expressioner) *DropDown {
 
 	var _dropDown *DropDown // out
 
-	_dropDown = wrapDropDown(coreglib.Take(unsafe.Pointer(_cret)))
+	_dropDown = wrapDropDown(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _dropDown
 }
@@ -157,15 +157,15 @@ func NewDropDownFromStrings(strings []string) *DropDown {
 	var _args [1]girepository.Argument
 
 	{
-		*(***C.void)(unsafe.Pointer(&_args[0])) = (**C.void)(C.calloc(C.size_t((len(strings) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_args[0]))
+		*(***C.char)(unsafe.Pointer(&_args[0])) = (**C.char)(C.calloc(C.size_t((len(strings) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(*(***C.char)(unsafe.Pointer(&_args[0]))))
 		{
 			out := unsafe.Slice(_args[0], len(strings)+1)
-			var zero *C.void
+			var zero *C.char
 			out[len(strings)] = zero
 			for i := range strings {
-				*(**C.void)(unsafe.Pointer(&out[i])) = (*C.void)(unsafe.Pointer(C.CString(strings[i])))
-				defer C.free(unsafe.Pointer(out[i]))
+				*(**C.char)(unsafe.Pointer(&out[i])) = (*C.char)(unsafe.Pointer(C.CString(strings[i])))
+				defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&out[i]))))
 			}
 		}
 	}
@@ -178,7 +178,7 @@ func NewDropDownFromStrings(strings []string) *DropDown {
 
 	var _dropDown *DropDown // out
 
-	_dropDown = wrapDropDown(coreglib.Take(unsafe.Pointer(_cret)))
+	_dropDown = wrapDropDown(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _dropDown
 }
@@ -232,7 +232,7 @@ func (self *DropDown) Expression() Expressioner {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -274,7 +274,7 @@ func (self *DropDown) Factory() *ListItemFactory {
 	var _listItemFactory *ListItemFactory // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_listItemFactory = wrapListItemFactory(coreglib.Take(unsafe.Pointer(_cret)))
+		_listItemFactory = wrapListItemFactory(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _listItemFactory
@@ -301,7 +301,7 @@ func (self *DropDown) ListFactory() *ListItemFactory {
 	var _listItemFactory *ListItemFactory // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_listItemFactory = wrapListItemFactory(coreglib.Take(unsafe.Pointer(_cret)))
+		_listItemFactory = wrapListItemFactory(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _listItemFactory
@@ -328,7 +328,7 @@ func (self *DropDown) Model() *gio.ListModel {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_listModel = &gio.ListModel{
 				Object: obj,
 			}
@@ -383,7 +383,7 @@ func (self *DropDown) SelectedItem() *coreglib.Object {
 
 	var _object *coreglib.Object // out
 
-	_object = coreglib.Take(unsafe.Pointer(_cret))
+	_object = coreglib.Take(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&_cret))))
 
 	return _object
 }

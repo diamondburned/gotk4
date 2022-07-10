@@ -101,12 +101,13 @@ func NewTabArray(initialSize int32, positionsInPixels bool) *TabArray {
 
 	var _tabArray *TabArray // out
 
-	_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_tabArray)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "TabArray").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -135,12 +136,13 @@ func (src *TabArray) Copy() *TabArray {
 
 	var _tabArray *TabArray // out
 
-	_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_tabArray)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "TabArray").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -228,11 +230,9 @@ func (tabArray *TabArray) Tab(tabIndex int32) (TabAlign, int32) {
 	var _location int32     // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_alignment = *(*TabAlign)(unsafe.Pointer(_outs[0]))
+		_alignment = *(*TabAlign)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_location = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_location = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _alignment, _location
 }

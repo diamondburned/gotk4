@@ -17,9 +17,9 @@ import (
 // extern void _gotk4_atk1_EditableTextIface_copy_text(void*, gint, gint);
 // extern void _gotk4_atk1_EditableTextIface_cut_text(void*, gint, gint);
 // extern void _gotk4_atk1_EditableTextIface_delete_text(void*, gint, gint);
-// extern void _gotk4_atk1_EditableTextIface_insert_text(void*, void*, gint, void*);
+// extern void _gotk4_atk1_EditableTextIface_insert_text(void*, gchar*, gint, gint*);
 // extern void _gotk4_atk1_EditableTextIface_paste_text(void*, gint);
-// extern void _gotk4_atk1_EditableTextIface_set_text_contents(void*, void*);
+// extern void _gotk4_atk1_EditableTextIface_set_text_contents(void*, gchar*);
 import "C"
 
 // GTypeEditableText returns the GType for the type EditableText.
@@ -183,7 +183,7 @@ func _gotk4_atk1_EditableTextIface_delete_text(arg0 *C.void, arg1 C.gint, arg2 C
 }
 
 //export _gotk4_atk1_EditableTextIface_insert_text
-func _gotk4_atk1_EditableTextIface_insert_text(arg0 *C.void, arg1 *C.void, arg2 C.gint, arg3 *C.void) {
+func _gotk4_atk1_EditableTextIface_insert_text(arg0 *C.void, arg1 *C.gchar, arg2 C.gint, arg3 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(EditableTextOverrider)
 
@@ -211,7 +211,7 @@ func _gotk4_atk1_EditableTextIface_paste_text(arg0 *C.void, arg1 C.gint) {
 }
 
 //export _gotk4_atk1_EditableTextIface_set_text_contents
-func _gotk4_atk1_EditableTextIface_set_text_contents(arg0 *C.void, arg1 *C.void) {
+func _gotk4_atk1_EditableTextIface_set_text_contents(arg0 *C.void, arg1 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(EditableTextOverrider)
 
@@ -314,10 +314,10 @@ func (text *EditableText) InsertText(str string, length int32, position *int32) 
 	var _args [4]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(length)
-	*(**C.void)(unsafe.Pointer(&_args[3])) = (*C.void)(unsafe.Pointer(position))
+	*(**C.gint)(unsafe.Pointer(&_args[3])) = (*C.gint)(unsafe.Pointer(position))
 
 	_info := girepository.MustFind("Atk", "EditableText")
 	_info.InvokeIfaceMethod("insert_text", _args[:], nil)
@@ -357,8 +357,8 @@ func (text *EditableText) SetTextContents(str string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Atk", "EditableText")
 	_info.InvokeIfaceMethod("set_text_contents", _args[:], nil)

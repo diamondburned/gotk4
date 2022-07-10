@@ -16,7 +16,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gtk3_TreeSortableIface_get_sort_column_id(void*, void*, void*);
+// extern gboolean _gotk4_gtk3_TreeSortableIface_get_sort_column_id(void*, gint*, void*);
 // extern gboolean _gotk4_gtk3_TreeSortableIface_has_default_sort_func(void*);
 // extern gint _gotk4_gtk3_TreeIterCompareFunc(void*, void*, void*, gpointer);
 // extern void _gotk4_gtk3_TreeSortableIface_sort_column_changed(void*);
@@ -202,8 +202,8 @@ func (sortable *TreeSortable) SortColumnID() (int32, SortType, bool) {
 	var _order SortType     // out
 	var _ok bool            // out
 
-	_sortColumnId = *(*int32)(unsafe.Pointer(_outs[0]))
-	_order = *(*SortType)(unsafe.Pointer(_outs[1]))
+	_sortColumnId = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_order = *(*SortType)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1]))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}

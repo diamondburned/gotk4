@@ -111,9 +111,7 @@ func (iter *BitsetIter) Next() (uint32, bool) {
 	var _value uint32 // out
 	var _ok bool      // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_value = *(*uint32)(unsafe.Pointer(_outs[0]))
-	}
+	_value = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -146,9 +144,7 @@ func (iter *BitsetIter) Previous() (uint32, bool) {
 	var _value uint32 // out
 	var _ok bool      // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_value = *(*uint32)(unsafe.Pointer(_outs[0]))
-	}
+	_value = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -180,7 +176,7 @@ func BitsetIterInitAt(set *Bitset, target uint32) (*BitsetIter, uint32, bool) {
 	*(*C.guint)(unsafe.Pointer(&_args[1])) = C.guint(target)
 
 	_info := girepository.MustFind("Gtk", "init_at")
-	_gret := _info.Invoke(_args[:], _outs[:])
+	_gret := _info.InvokeFunction(_args[:], _outs[:])
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(set)
@@ -190,10 +186,8 @@ func BitsetIterInitAt(set *Bitset, target uint32) (*BitsetIter, uint32, bool) {
 	var _value uint32     // out
 	var _ok bool          // out
 
-	_iter = (*BitsetIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_value = *(*uint32)(unsafe.Pointer(_outs[1]))
-	}
+	_iter = (*BitsetIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_value = uint32(*(*C.guint)(unsafe.Pointer(&_outs[1])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -223,7 +217,7 @@ func BitsetIterInitFirst(set *Bitset) (*BitsetIter, uint32, bool) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(set)))
 
 	_info := girepository.MustFind("Gtk", "init_first")
-	_gret := _info.Invoke(_args[:], _outs[:])
+	_gret := _info.InvokeFunction(_args[:], _outs[:])
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(set)
@@ -232,10 +226,8 @@ func BitsetIterInitFirst(set *Bitset) (*BitsetIter, uint32, bool) {
 	var _value uint32     // out
 	var _ok bool          // out
 
-	_iter = (*BitsetIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_value = *(*uint32)(unsafe.Pointer(_outs[1]))
-	}
+	_iter = (*BitsetIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_value = uint32(*(*C.guint)(unsafe.Pointer(&_outs[1])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -265,7 +257,7 @@ func BitsetIterInitLast(set *Bitset) (*BitsetIter, uint32, bool) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(set)))
 
 	_info := girepository.MustFind("Gtk", "init_last")
-	_gret := _info.Invoke(_args[:], _outs[:])
+	_gret := _info.InvokeFunction(_args[:], _outs[:])
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(set)
@@ -274,10 +266,8 @@ func BitsetIterInitLast(set *Bitset) (*BitsetIter, uint32, bool) {
 	var _value uint32     // out
 	var _ok bool          // out
 
-	_iter = (*BitsetIter)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_value = *(*uint32)(unsafe.Pointer(_outs[1]))
-	}
+	_iter = (*BitsetIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
+	_value = uint32(*(*C.guint)(unsafe.Pointer(&_outs[1])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}

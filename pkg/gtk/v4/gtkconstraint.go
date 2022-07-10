@@ -200,7 +200,7 @@ func (constraint *Constraint) Source() *ConstraintTarget {
 	var _constraintTarget *ConstraintTarget // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_constraintTarget = wrapConstraintTarget(coreglib.Take(unsafe.Pointer(_cret)))
+		_constraintTarget = wrapConstraintTarget(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _constraintTarget
@@ -254,7 +254,7 @@ func (constraint *Constraint) Target() *ConstraintTarget {
 	var _constraintTarget *ConstraintTarget // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_constraintTarget = wrapConstraintTarget(coreglib.Take(unsafe.Pointer(_cret)))
+		_constraintTarget = wrapConstraintTarget(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _constraintTarget

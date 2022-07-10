@@ -133,7 +133,7 @@ func (context *PrintContext) CreatePangoContext() *pango.Context {
 	var _ret *pango.Context // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_ret = &pango.Context{
 			Object: obj,
 		}
@@ -163,7 +163,7 @@ func (context *PrintContext) CreatePangoLayout() *pango.Layout {
 	var _layout *pango.Layout // out
 
 	{
-		obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+		obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_layout = &pango.Layout{
 			Object: obj,
 		}
@@ -192,8 +192,8 @@ func (context *PrintContext) CairoContext() *cairo.Context {
 
 	var _ret *cairo.Context // out
 
-	_ret = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
-	C.cairo_reference(_cret)
+	_ret = cairo.WrapContext(uintptr(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.cairo_reference(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(_ret, func(v *cairo.Context) {
 		C.cairo_destroy((*C.void)(unsafe.Pointer(v.Native())))
 	})
@@ -278,10 +278,10 @@ func (context *PrintContext) HardMargins() (top, bottom, left, right float64, ok
 	var _right float64  // out
 	var _ok bool        // out
 
-	_top = *(*float64)(unsafe.Pointer(_outs[0]))
-	_bottom = *(*float64)(unsafe.Pointer(_outs[1]))
-	_left = *(*float64)(unsafe.Pointer(_outs[2]))
-	_right = *(*float64)(unsafe.Pointer(_outs[3]))
+	_top = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
+	_bottom = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[1])))
+	_left = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[2])))
+	_right = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[3])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -333,7 +333,7 @@ func (context *PrintContext) PageSetup() *PageSetup {
 
 	var _pageSetup *PageSetup // out
 
-	_pageSetup = wrapPageSetup(coreglib.Take(unsafe.Pointer(_cret)))
+	_pageSetup = wrapPageSetup(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _pageSetup
 }
@@ -359,7 +359,7 @@ func (context *PrintContext) PangoFontmap() pango.FontMapper {
 	var _fontMap pango.FontMapper // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type pango.FontMapper is nil")
 		}

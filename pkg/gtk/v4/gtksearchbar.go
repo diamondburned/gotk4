@@ -120,7 +120,7 @@ func NewSearchBar() *SearchBar {
 
 	var _searchBar *SearchBar // out
 
-	_searchBar = wrapSearchBar(coreglib.Take(unsafe.Pointer(_cret)))
+	_searchBar = wrapSearchBar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _searchBar
 }
@@ -170,7 +170,7 @@ func (bar *SearchBar) Child() Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -208,7 +208,7 @@ func (bar *SearchBar) KeyCaptureWidget() Widgetter {
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}

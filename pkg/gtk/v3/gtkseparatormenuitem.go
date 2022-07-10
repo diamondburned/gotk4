@@ -115,7 +115,7 @@ func NewSeparatorMenuItem() *SeparatorMenuItem {
 
 	var _separatorMenuItem *SeparatorMenuItem // out
 
-	_separatorMenuItem = wrapSeparatorMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
+	_separatorMenuItem = wrapSeparatorMenuItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _separatorMenuItem
 }

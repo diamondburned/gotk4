@@ -97,7 +97,7 @@ func NewCustomSorter(sortFunc glib.CompareDataFunc) *CustomSorter {
 
 	var _customSorter *CustomSorter // out
 
-	_customSorter = wrapCustomSorter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_customSorter = wrapCustomSorter(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _customSorter
 }

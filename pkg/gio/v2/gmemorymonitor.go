@@ -137,12 +137,12 @@ func BaseMemoryMonitor(obj MemoryMonitorrer) *MemoryMonitor {
 //
 func MemoryMonitorDupDefault() *MemoryMonitor {
 	_info := girepository.MustFind("Gio", "dup_default")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _memoryMonitor *MemoryMonitor // out
 
-	_memoryMonitor = wrapMemoryMonitor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_memoryMonitor = wrapMemoryMonitor(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _memoryMonitor
 }

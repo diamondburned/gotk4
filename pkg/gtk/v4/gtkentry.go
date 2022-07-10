@@ -309,7 +309,7 @@ func NewEntry() *Entry {
 
 	var _entry *Entry // out
 
-	_entry = wrapEntry(coreglib.Take(unsafe.Pointer(_cret)))
+	_entry = wrapEntry(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _entry
 }
@@ -337,7 +337,7 @@ func NewEntryWithBuffer(buffer *EntryBuffer) *Entry {
 
 	var _entry *Entry // out
 
-	_entry = wrapEntry(coreglib.Take(unsafe.Pointer(_cret)))
+	_entry = wrapEntry(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _entry
 }
@@ -417,8 +417,8 @@ func (entry *Entry) Attributes() *pango.AttrList {
 	var _attrList *pango.AttrList // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.pango_attr_list_ref(_cret)
+		_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.pango_attr_list_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -449,7 +449,7 @@ func (entry *Entry) Buffer() *EntryBuffer {
 
 	var _entryBuffer *EntryBuffer // out
 
-	_entryBuffer = wrapEntryBuffer(coreglib.Take(unsafe.Pointer(_cret)))
+	_entryBuffer = wrapEntryBuffer(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _entryBuffer
 }
@@ -475,7 +475,7 @@ func (entry *Entry) Completion() *EntryCompletion {
 	var _entryCompletion *EntryCompletion // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_entryCompletion = wrapEntryCompletion(coreglib.Take(unsafe.Pointer(_cret)))
+		_entryCompletion = wrapEntryCompletion(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _entryCompletion
@@ -528,7 +528,7 @@ func (entry *Entry) ExtraMenu() gio.MenuModeller {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -705,14 +705,14 @@ func (entry *Entry) PlaceholderText() string {
 
 	_info := girepository.MustFind("Gtk", "Entry")
 	_gret := _info.InvokeClassMethod("get_placeholder_text", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(entry)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -792,7 +792,7 @@ func (entry *Entry) Tabs() *pango.TabArray {
 	var _tabArray *pango.TabArray // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _tabArray
@@ -1171,8 +1171,8 @@ func (entry *Entry) SetPlaceholderText(text string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
 	if text != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(text)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "Entry")

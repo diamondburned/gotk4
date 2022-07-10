@@ -99,7 +99,7 @@ func NewSingleSelection(model gio.ListModeller) *SingleSelection {
 
 	var _singleSelection *SingleSelection // out
 
-	_singleSelection = wrapSingleSelection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_singleSelection = wrapSingleSelection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _singleSelection
 }
@@ -178,7 +178,7 @@ func (self *SingleSelection) Model() *gio.ListModel {
 	var _listModel *gio.ListModel // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_listModel = &gio.ListModel{
 			Object: obj,
 		}
@@ -234,7 +234,7 @@ func (self *SingleSelection) SelectedItem() *coreglib.Object {
 
 	var _object *coreglib.Object // out
 
-	_object = coreglib.Take(unsafe.Pointer(_cret))
+	_object = coreglib.Take(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&_cret))))
 
 	return _object
 }

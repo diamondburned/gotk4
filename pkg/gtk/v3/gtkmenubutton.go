@@ -194,7 +194,7 @@ func NewMenuButton() *MenuButton {
 
 	var _menuButton *MenuButton // out
 
-	_menuButton = wrapMenuButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_menuButton = wrapMenuButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _menuButton
 }
@@ -220,7 +220,7 @@ func (menuButton *MenuButton) AlignWidget() Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -259,7 +259,7 @@ func (menuButton *MenuButton) MenuModel() gio.MenuModeller {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -298,7 +298,7 @@ func (menuButton *MenuButton) Popover() *Popover {
 	var _popover *Popover // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_popover = wrapPopover(coreglib.Take(unsafe.Pointer(_cret)))
+		_popover = wrapPopover(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _popover
@@ -325,7 +325,7 @@ func (menuButton *MenuButton) Popup() *Menu {
 	var _menu *Menu // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_menu = wrapMenu(coreglib.Take(unsafe.Pointer(_cret)))
+		_menu = wrapMenu(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _menu

@@ -102,8 +102,8 @@ func marshalDBusObjectManagerServer(p uintptr) (interface{}, error) {
 func NewDBusObjectManagerServer(objectPath string) *DBusObjectManagerServer {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gio", "DBusObjectManagerServer")
 	_gret := _info.InvokeClassMethod("new_DBusObjectManagerServer", _args[:], nil)
@@ -113,7 +113,7 @@ func NewDBusObjectManagerServer(objectPath string) *DBusObjectManagerServer {
 
 	var _dBusObjectManagerServer *DBusObjectManagerServer // out
 
-	_dBusObjectManagerServer = wrapDBusObjectManagerServer(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusObjectManagerServer = wrapDBusObjectManagerServer(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _dBusObjectManagerServer
 }
@@ -188,7 +188,7 @@ func (manager *DBusObjectManagerServer) Connection() *DBusConnection {
 
 	var _dBusConnection *DBusConnection // out
 
-	_dBusConnection = wrapDBusConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusConnection = wrapDBusConnection(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _dBusConnection
 }
@@ -265,8 +265,8 @@ func (manager *DBusObjectManagerServer) Unexport(objectPath string) bool {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "DBusObjectManagerServer")
 	_gret := _info.InvokeClassMethod("unexport", _args[:], nil)

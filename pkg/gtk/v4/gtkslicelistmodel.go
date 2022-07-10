@@ -104,7 +104,7 @@ func NewSliceListModel(model gio.ListModeller, offset, size uint32) *SliceListMo
 
 	var _sliceListModel *SliceListModel // out
 
-	_sliceListModel = wrapSliceListModel(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_sliceListModel = wrapSliceListModel(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _sliceListModel
 }
@@ -130,7 +130,7 @@ func (self *SliceListModel) Model() *gio.ListModel {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_listModel = &gio.ListModel{
 				Object: obj,
 			}

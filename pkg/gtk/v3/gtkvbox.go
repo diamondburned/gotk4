@@ -135,7 +135,7 @@ func NewVBox(homogeneous bool, spacing int32) *VBox {
 
 	var _vBox *VBox // out
 
-	_vBox = wrapVBox(coreglib.Take(unsafe.Pointer(_cret)))
+	_vBox = wrapVBox(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _vBox
 }

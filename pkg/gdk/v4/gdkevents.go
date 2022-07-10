@@ -673,7 +673,7 @@ func EventsGetAngle(event1, event2 Eventer) (float64, bool) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event2).Native()))
 
 	_info := girepository.MustFind("Gdk", "events_get_angle")
-	_gret := _info.Invoke(_args[:], _outs[:])
+	_gret := _info.InvokeFunction(_args[:], _outs[:])
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event1)
@@ -682,7 +682,7 @@ func EventsGetAngle(event1, event2 Eventer) (float64, bool) {
 	var _angle float64 // out
 	var _ok bool       // out
 
-	_angle = *(*float64)(unsafe.Pointer(_outs[0]))
+	_angle = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -714,7 +714,7 @@ func EventsGetCenter(event1, event2 Eventer) (x, y float64, ok bool) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event2).Native()))
 
 	_info := girepository.MustFind("Gdk", "events_get_center")
-	_gret := _info.Invoke(_args[:], _outs[:])
+	_gret := _info.InvokeFunction(_args[:], _outs[:])
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event1)
@@ -724,8 +724,8 @@ func EventsGetCenter(event1, event2 Eventer) (x, y float64, ok bool) {
 	var _y float64 // out
 	var _ok bool   // out
 
-	_x = *(*float64)(unsafe.Pointer(_outs[0]))
-	_y = *(*float64)(unsafe.Pointer(_outs[1]))
+	_x = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
+	_y = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -756,7 +756,7 @@ func EventsGetDistance(event1, event2 Eventer) (float64, bool) {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(event2).Native()))
 
 	_info := girepository.MustFind("Gdk", "events_get_distance")
-	_gret := _info.Invoke(_args[:], _outs[:])
+	_gret := _info.InvokeFunction(_args[:], _outs[:])
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(event1)
@@ -765,7 +765,7 @@ func EventsGetDistance(event1, event2 Eventer) (float64, bool) {
 	var _distance float64 // out
 	var _ok bool          // out
 
-	_distance = *(*float64)(unsafe.Pointer(_outs[0]))
+	_distance = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -910,7 +910,7 @@ func (event *DNDEvent) Drop() Dropper {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -1017,8 +1017,8 @@ func (event *Event) Axes() ([]float64, bool) {
 	var _axes []float64 // out
 	var _ok bool        // out
 
-	_axes = make([]float64, _outs[1])
-	copy(_axes, unsafe.Slice((*float64)(unsafe.Pointer(_outs[0])), _outs[1]))
+	_axes = make([]float64, *(*C.guint)(unsafe.Pointer(&_outs[1])))
+	copy(_axes, unsafe.Slice((*float64)(unsafe.Pointer(*(**C.double)(unsafe.Pointer(&_outs[0])))), *(*C.guint)(unsafe.Pointer(&_outs[1]))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -1047,7 +1047,7 @@ func (event *Event) Device() Devicer {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -1093,7 +1093,7 @@ func (event *Event) DeviceTool() *DeviceTool {
 	var _deviceTool *DeviceTool // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_deviceTool = wrapDeviceTool(coreglib.Take(unsafe.Pointer(_cret)))
+		_deviceTool = wrapDeviceTool(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _deviceTool
@@ -1119,7 +1119,7 @@ func (event *Event) Display() *Display {
 	var _display *Display // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
+		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _display
@@ -1147,7 +1147,7 @@ func (event *Event) EventSequence() *EventSequence {
 
 	var _eventSequence *EventSequence // out
 
-	_eventSequence = (*EventSequence)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_eventSequence = (*EventSequence)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _eventSequence
 }
@@ -1204,8 +1204,8 @@ func (event *Event) Position() (x, y float64, ok bool) {
 	var _y float64 // out
 	var _ok bool   // out
 
-	_x = *(*float64)(unsafe.Pointer(_outs[0]))
-	_y = *(*float64)(unsafe.Pointer(_outs[1]))
+	_x = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
+	_y = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -1234,7 +1234,7 @@ func (event *Event) Seat() Seater {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -1272,7 +1272,7 @@ func (event *Event) Surface() Surfacer {
 	var _surface Surfacer // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Surfacer is nil")
 		}
@@ -1442,7 +1442,7 @@ func (event *GrabBrokenEvent) GrabSurface() Surfacer {
 	var _surface Surfacer // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Surfacer is nil")
 		}
@@ -1632,8 +1632,8 @@ func (event *KeyEvent) Match() (uint32, ModifierType, bool) {
 	var _modifiers ModifierType // out
 	var _ok bool                // out
 
-	_keyval = *(*uint32)(unsafe.Pointer(_outs[0]))
-	_modifiers = *(*ModifierType)(unsafe.Pointer(_outs[1]))
+	_keyval = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
+	_modifiers = *(*ModifierType)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1]))))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -1732,8 +1732,8 @@ func (event *PadEvent) AxisValue() (uint32, float64) {
 	var _index uint32  // out
 	var _value float64 // out
 
-	_index = *(*uint32)(unsafe.Pointer(_outs[0]))
-	_value = *(*float64)(unsafe.Pointer(_outs[1]))
+	_index = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
+	_value = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
 
 	return _index, _value
 }
@@ -1783,8 +1783,8 @@ func (event *PadEvent) GroupMode() (group, mode uint32) {
 	var _group uint32 // out
 	var _mode uint32  // out
 
-	_group = *(*uint32)(unsafe.Pointer(_outs[0]))
-	_mode = *(*uint32)(unsafe.Pointer(_outs[1]))
+	_group = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
+	_mode = uint32(*(*C.guint)(unsafe.Pointer(&_outs[1])))
 
 	return _group, _mode
 }
@@ -1856,8 +1856,8 @@ func (event *ScrollEvent) Deltas() (deltaX, deltaY float64) {
 	var _deltaX float64 // out
 	var _deltaY float64 // out
 
-	_deltaX = *(*float64)(unsafe.Pointer(_outs[0]))
-	_deltaY = *(*float64)(unsafe.Pointer(_outs[1]))
+	_deltaX = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
+	_deltaY = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
 
 	return _deltaX, _deltaY
 }
@@ -1991,8 +1991,8 @@ func (event *TouchpadEvent) Deltas() (dx, dy float64) {
 	var _dx float64 // out
 	var _dy float64 // out
 
-	_dx = *(*float64)(unsafe.Pointer(_outs[0]))
-	_dy = *(*float64)(unsafe.Pointer(_outs[1]))
+	_dx = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
+	_dy = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
 
 	return _dx, _dy
 }

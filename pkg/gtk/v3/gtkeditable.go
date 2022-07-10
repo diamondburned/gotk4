@@ -14,14 +14,14 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern gboolean _gotk4_gtk3_EditableInterface_get_selection_bounds(void*, void*, void*);
+// extern gboolean _gotk4_gtk3_EditableInterface_get_selection_bounds(void*, gint*, gint*);
+// extern gchar* _gotk4_gtk3_EditableInterface_get_chars(void*, gint, gint);
 // extern gint _gotk4_gtk3_EditableInterface_get_position(void*);
 // extern void _gotk4_gtk3_EditableInterface_changed(void*);
 // extern void _gotk4_gtk3_EditableInterface_delete_text(void*, gint, gint);
 // extern void _gotk4_gtk3_EditableInterface_set_position(void*, gint);
 // extern void _gotk4_gtk3_Editable_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gtk3_Editable_ConnectDeleteText(gpointer, gint, gint, guintptr);
-// extern void* _gotk4_gtk3_EditableInterface_get_chars(void*, gint, gint);
 import "C"
 
 // GTypeEditable returns the GType for the type Editable.
@@ -287,7 +287,7 @@ func (editable *Editable) Chars(startPos, endPos int32) string {
 
 	_info := girepository.MustFind("Gtk", "Editable")
 	_gret := _info.InvokeIfaceMethod("get_chars", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(startPos)
@@ -295,8 +295,8 @@ func (editable *Editable) Chars(startPos, endPos int32) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }
@@ -383,12 +383,8 @@ func (editable *Editable) SelectionBounds() (startPos, endPos int32, ok bool) {
 	var _endPos int32   // out
 	var _ok bool        // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_startPos = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_endPos = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_startPos = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_endPos = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}

@@ -20,14 +20,14 @@ import (
 // #include <glib.h>
 // #include <glib-object.h>
 // extern void _gotk4_gtk3_CellRendererClass_editing_canceled(void*);
-// extern void _gotk4_gtk3_CellRendererClass_editing_started(void*, void*, void*);
-// extern void _gotk4_gtk3_CellRendererClass_get_preferred_height(void*, void*, void*, void*);
-// extern void _gotk4_gtk3_CellRendererClass_get_preferred_height_for_width(void*, void*, gint, void*, void*);
-// extern void _gotk4_gtk3_CellRendererClass_get_preferred_width(void*, void*, void*, void*);
-// extern void _gotk4_gtk3_CellRendererClass_get_preferred_width_for_height(void*, void*, gint, void*, void*);
-// extern void _gotk4_gtk3_CellRendererClass_get_size(void*, void*, void*, void*, void*, void*, void*);
+// extern void _gotk4_gtk3_CellRendererClass_editing_started(void*, void*, gchar*);
+// extern void _gotk4_gtk3_CellRendererClass_get_preferred_height(void*, void*, gint*, gint*);
+// extern void _gotk4_gtk3_CellRendererClass_get_preferred_height_for_width(void*, void*, gint, gint*, gint*);
+// extern void _gotk4_gtk3_CellRendererClass_get_preferred_width(void*, void*, gint*, gint*);
+// extern void _gotk4_gtk3_CellRendererClass_get_preferred_width_for_height(void*, void*, gint, gint*, gint*);
+// extern void _gotk4_gtk3_CellRendererClass_get_size(void*, void*, void*, gint*, gint*, gint*, gint*);
 // extern void _gotk4_gtk3_CellRenderer_ConnectEditingCanceled(gpointer, guintptr);
-// extern void _gotk4_gtk3_CellRenderer_ConnectEditingStarted(gpointer, void*, void*, guintptr);
+// extern void _gotk4_gtk3_CellRenderer_ConnectEditingStarted(gpointer, void*, gchar*, guintptr);
 import "C"
 
 // GTypeCellRendererMode returns the GType for the type CellRendererMode.
@@ -376,7 +376,7 @@ func _gotk4_gtk3_CellRendererClass_editing_canceled(arg0 *C.void) {
 }
 
 //export _gotk4_gtk3_CellRendererClass_editing_started
-func _gotk4_gtk3_CellRendererClass_editing_started(arg0 *C.void, arg1 *C.void, arg2 *C.void) {
+func _gotk4_gtk3_CellRendererClass_editing_started(arg0 *C.void, arg1 *C.void, arg2 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		EditingStarted(editable CellEditabler, path string)
@@ -408,7 +408,7 @@ func _gotk4_gtk3_CellRendererClass_editing_started(arg0 *C.void, arg1 *C.void, a
 }
 
 //export _gotk4_gtk3_CellRendererClass_get_preferred_height
-func _gotk4_gtk3_CellRendererClass_get_preferred_height(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.void) {
+func _gotk4_gtk3_CellRendererClass_get_preferred_height(arg0 *C.void, arg1 *C.void, arg2 *C.gint, arg3 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreferredHeight(widget Widgetter) (minimumSize, naturalSize int32)
@@ -436,12 +436,12 @@ func _gotk4_gtk3_CellRendererClass_get_preferred_height(arg0 *C.void, arg1 *C.vo
 
 	minimumSize, naturalSize := iface.PreferredHeight(_widget)
 
-	*arg2 = (*C.void)(unsafe.Pointer(minimumSize))
-	*arg3 = (*C.void)(unsafe.Pointer(naturalSize))
+	*arg2 = C.gint(minimumSize)
+	*arg3 = C.gint(naturalSize)
 }
 
 //export _gotk4_gtk3_CellRendererClass_get_preferred_height_for_width
-func _gotk4_gtk3_CellRendererClass_get_preferred_height_for_width(arg0 *C.void, arg1 *C.void, arg2 C.gint, arg3 *C.void, arg4 *C.void) {
+func _gotk4_gtk3_CellRendererClass_get_preferred_height_for_width(arg0 *C.void, arg1 *C.void, arg2 C.gint, arg3 *C.gint, arg4 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreferredHeightForWidth(widget Widgetter, width int32) (minimumHeight, naturalHeight int32)
@@ -471,12 +471,12 @@ func _gotk4_gtk3_CellRendererClass_get_preferred_height_for_width(arg0 *C.void, 
 
 	minimumHeight, naturalHeight := iface.PreferredHeightForWidth(_widget, _width)
 
-	*arg3 = (*C.void)(unsafe.Pointer(minimumHeight))
-	*arg4 = (*C.void)(unsafe.Pointer(naturalHeight))
+	*arg3 = C.gint(minimumHeight)
+	*arg4 = C.gint(naturalHeight)
 }
 
 //export _gotk4_gtk3_CellRendererClass_get_preferred_width
-func _gotk4_gtk3_CellRendererClass_get_preferred_width(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.void) {
+func _gotk4_gtk3_CellRendererClass_get_preferred_width(arg0 *C.void, arg1 *C.void, arg2 *C.gint, arg3 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreferredWidth(widget Widgetter) (minimumSize, naturalSize int32)
@@ -504,12 +504,12 @@ func _gotk4_gtk3_CellRendererClass_get_preferred_width(arg0 *C.void, arg1 *C.voi
 
 	minimumSize, naturalSize := iface.PreferredWidth(_widget)
 
-	*arg2 = (*C.void)(unsafe.Pointer(minimumSize))
-	*arg3 = (*C.void)(unsafe.Pointer(naturalSize))
+	*arg2 = C.gint(minimumSize)
+	*arg3 = C.gint(naturalSize)
 }
 
 //export _gotk4_gtk3_CellRendererClass_get_preferred_width_for_height
-func _gotk4_gtk3_CellRendererClass_get_preferred_width_for_height(arg0 *C.void, arg1 *C.void, arg2 C.gint, arg3 *C.void, arg4 *C.void) {
+func _gotk4_gtk3_CellRendererClass_get_preferred_width_for_height(arg0 *C.void, arg1 *C.void, arg2 C.gint, arg3 *C.gint, arg4 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreferredWidthForHeight(widget Widgetter, height int32) (minimumWidth, naturalWidth int32)
@@ -539,12 +539,12 @@ func _gotk4_gtk3_CellRendererClass_get_preferred_width_for_height(arg0 *C.void, 
 
 	minimumWidth, naturalWidth := iface.PreferredWidthForHeight(_widget, _height)
 
-	*arg3 = (*C.void)(unsafe.Pointer(minimumWidth))
-	*arg4 = (*C.void)(unsafe.Pointer(naturalWidth))
+	*arg3 = C.gint(minimumWidth)
+	*arg4 = C.gint(naturalWidth)
 }
 
 //export _gotk4_gtk3_CellRendererClass_get_size
-func _gotk4_gtk3_CellRendererClass_get_size(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.void, arg4 *C.void, arg5 *C.void, arg6 *C.void) {
+func _gotk4_gtk3_CellRendererClass_get_size(arg0 *C.void, arg1 *C.void, arg2 *C.void, arg3 *C.gint, arg4 *C.gint, arg5 *C.gint, arg6 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		Size(widget Widgetter, cellArea *gdk.Rectangle) (xOffset, yOffset, width, height int32)
@@ -576,10 +576,10 @@ func _gotk4_gtk3_CellRendererClass_get_size(arg0 *C.void, arg1 *C.void, arg2 *C.
 
 	xOffset, yOffset, width, height := iface.Size(_widget, _cellArea)
 
-	*arg3 = (*C.void)(unsafe.Pointer(xOffset))
-	*arg4 = (*C.void)(unsafe.Pointer(yOffset))
-	*arg5 = (*C.void)(unsafe.Pointer(width))
-	*arg6 = (*C.void)(unsafe.Pointer(height))
+	*arg3 = C.gint(xOffset)
+	*arg4 = C.gint(yOffset)
+	*arg5 = C.gint(width)
+	*arg6 = C.gint(height)
 }
 
 func wrapCellRenderer(obj *coreglib.Object) *CellRenderer {
@@ -629,7 +629,7 @@ func (cell *CellRenderer) ConnectEditingCanceled(f func()) coreglib.SignalHandle
 }
 
 //export _gotk4_gtk3_CellRenderer_ConnectEditingStarted
-func _gotk4_gtk3_CellRenderer_ConnectEditingStarted(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.guintptr) {
+func _gotk4_gtk3_CellRenderer_ConnectEditingStarted(arg0 C.gpointer, arg1 *C.void, arg2 *C.gchar, arg3 C.guintptr) {
 	var f func(editable CellEditabler, path string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -720,12 +720,8 @@ func (cell *CellRenderer) Alignment() (xalign, yalign float32) {
 	var _xalign float32 // out
 	var _yalign float32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_xalign = *(*float32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_yalign = *(*float32)(unsafe.Pointer(_outs[1]))
-	}
+	_xalign = float32(*(*C.gfloat)(unsafe.Pointer(&_outs[0])))
+	_yalign = float32(*(*C.gfloat)(unsafe.Pointer(&_outs[1])))
 
 	return _xalign, _yalign
 }
@@ -753,12 +749,8 @@ func (cell *CellRenderer) FixedSize() (width, height int32) {
 	var _width int32  // out
 	var _height int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_width = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_height = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_width = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_height = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _width, _height
 }
@@ -786,12 +778,8 @@ func (cell *CellRenderer) Padding() (xpad, ypad int32) {
 	var _xpad int32 // out
 	var _ypad int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_xpad = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_ypad = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_xpad = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_ypad = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _xpad, _ypad
 }
@@ -823,12 +811,8 @@ func (cell *CellRenderer) PreferredHeight(widget Widgetter) (minimumSize, natura
 	var _minimumSize int32 // out
 	var _naturalSize int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_minimumSize = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_naturalSize = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_minimumSize = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_naturalSize = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _minimumSize, _naturalSize
 }
@@ -865,12 +849,8 @@ func (cell *CellRenderer) PreferredHeightForWidth(widget Widgetter, width int32)
 	var _minimumHeight int32 // out
 	var _naturalHeight int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_minimumHeight = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_naturalHeight = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_minimumHeight = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_naturalHeight = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _minimumHeight, _naturalHeight
 }
@@ -904,10 +884,10 @@ func (cell *CellRenderer) PreferredSize(widget Widgetter) (minimumSize, naturalS
 	var _naturalSize *Requisition // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_minimumSize = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_minimumSize = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_naturalSize = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(_outs[1])))
+		_naturalSize = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1])))))
 	}
 
 	return _minimumSize, _naturalSize
@@ -940,12 +920,8 @@ func (cell *CellRenderer) PreferredWidth(widget Widgetter) (minimumSize, natural
 	var _minimumSize int32 // out
 	var _naturalSize int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_minimumSize = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_naturalSize = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_minimumSize = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_naturalSize = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _minimumSize, _naturalSize
 }
@@ -982,12 +958,8 @@ func (cell *CellRenderer) PreferredWidthForHeight(widget Widgetter, height int32
 	var _minimumWidth int32 // out
 	var _naturalWidth int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_minimumWidth = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_naturalWidth = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_minimumWidth = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_naturalWidth = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _minimumWidth, _naturalWidth
 }
@@ -1066,18 +1038,10 @@ func (cell *CellRenderer) Size(widget Widgetter, cellArea *gdk.Rectangle) (xOffs
 	var _width int32   // out
 	var _height int32  // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_xOffset = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_yOffset = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_width = *(*int32)(unsafe.Pointer(_outs[2]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[3])) != nil {
-		_height = *(*int32)(unsafe.Pointer(_outs[3]))
-	}
+	_xOffset = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_yOffset = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
+	_width = int32(*(*C.gint)(unsafe.Pointer(&_outs[2])))
+	_height = int32(*(*C.gint)(unsafe.Pointer(&_outs[3])))
 
 	return _xOffset, _yOffset, _width, _height
 }

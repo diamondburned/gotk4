@@ -119,7 +119,7 @@ func (self *NativeSurface) Renderer() gsk.Rendererer {
 	var _renderer gsk.Rendererer // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gsk.Rendererer is nil")
 		}
@@ -159,7 +159,7 @@ func (self *NativeSurface) Surface() gdk.Surfacer {
 	var _surface gdk.Surfacer // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.Surfacer is nil")
 		}
@@ -203,8 +203,8 @@ func (self *NativeSurface) SurfaceTransform() (x, y float64) {
 	var _x float64 // out
 	var _y float64 // out
 
-	_x = *(*float64)(unsafe.Pointer(_outs[0]))
-	_y = *(*float64)(unsafe.Pointer(_outs[1]))
+	_x = float64(*(*C.double)(unsafe.Pointer(&_outs[0])))
+	_y = float64(*(*C.double)(unsafe.Pointer(&_outs[1])))
 
 	return _x, _y
 }
@@ -253,14 +253,14 @@ func NativeSurfaceGetForSurface(surface gdk.Surfacer) *NativeSurface {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
 
 	_info := girepository.MustFind("Gtk", "get_for_surface")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(surface)
 
 	var _native *NativeSurface // out
 
-	_native = wrapNativeSurface(coreglib.Take(unsafe.Pointer(_cret)))
+	_native = wrapNativeSurface(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _native
 }

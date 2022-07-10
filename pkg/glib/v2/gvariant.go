@@ -1281,8 +1281,8 @@ func (one *Variant) Compare(two *Variant) int32 {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gint          // in
 
-	_arg0 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(one)))
-	_arg1 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(two)))
+	_arg0 = *(*C.gconstpointer)(gextras.StructNative(unsafe.Pointer(one)))
+	_arg1 = *(*C.gconstpointer)(gextras.StructNative(unsafe.Pointer(two)))
 
 	_cret = C.g_variant_compare(_arg0, _arg1)
 	runtime.KeepAlive(one)
@@ -1488,8 +1488,8 @@ func (one *Variant) Equal(two *Variant) bool {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(one)))
-	_arg1 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(two)))
+	_arg0 = *(*C.gconstpointer)(gextras.StructNative(unsafe.Pointer(one)))
+	_arg1 = *(*C.gconstpointer)(gextras.StructNative(unsafe.Pointer(two)))
 
 	_cret = C.g_variant_equal(_arg0, _arg1)
 	runtime.KeepAlive(one)
@@ -2306,7 +2306,7 @@ func (value *Variant) Hash() uint32 {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg0 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(value)))
+	_arg0 = *(*C.gconstpointer)(gextras.StructNative(unsafe.Pointer(value)))
 
 	_cret = C.g_variant_hash(_arg0)
 	runtime.KeepAlive(value)

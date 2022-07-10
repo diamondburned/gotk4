@@ -206,7 +206,7 @@ func NewToolPalette() *ToolPalette {
 
 	var _toolPalette *ToolPalette // out
 
-	_toolPalette = wrapToolPalette(coreglib.Take(unsafe.Pointer(_cret)))
+	_toolPalette = wrapToolPalette(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _toolPalette
 }
@@ -238,7 +238,7 @@ func (palette *ToolPalette) DragItem(selection *SelectionData) Widgetter {
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -287,7 +287,7 @@ func (palette *ToolPalette) DropGroup(x, y int32) *ToolItemGroup {
 	var _toolItemGroup *ToolItemGroup // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_toolItemGroup = wrapToolItemGroup(coreglib.Take(unsafe.Pointer(_cret)))
+		_toolItemGroup = wrapToolItemGroup(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _toolItemGroup
@@ -323,7 +323,7 @@ func (palette *ToolPalette) DropItem(x, y int32) *ToolItem {
 	var _toolItem *ToolItem // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_toolItem = wrapToolItem(coreglib.Take(unsafe.Pointer(_cret)))
+		_toolItem = wrapToolItem(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _toolItem
@@ -447,7 +447,7 @@ func (palette *ToolPalette) HAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _adjustment
 }
@@ -473,7 +473,7 @@ func (palette *ToolPalette) VAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _adjustment
 }
@@ -587,12 +587,12 @@ func (palette *ToolPalette) UnsetStyle() {
 //
 func ToolPaletteGetDragTargetGroup() *TargetEntry {
 	_info := girepository.MustFind("Gtk", "get_drag_target_group")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _targetEntry *TargetEntry // out
 
-	_targetEntry = (*TargetEntry)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_targetEntry = (*TargetEntry)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _targetEntry
 }
@@ -605,12 +605,12 @@ func ToolPaletteGetDragTargetGroup() *TargetEntry {
 //
 func ToolPaletteGetDragTargetItem() *TargetEntry {
 	_info := girepository.MustFind("Gtk", "get_drag_target_item")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _targetEntry *TargetEntry // out
 
-	_targetEntry = (*TargetEntry)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_targetEntry = (*TargetEntry)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _targetEntry
 }

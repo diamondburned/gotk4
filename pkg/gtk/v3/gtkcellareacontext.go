@@ -16,8 +16,8 @@ import (
 // #include <glib.h>
 // #include <glib-object.h>
 // extern void _gotk4_gtk3_CellAreaContextClass_allocate(void*, gint, gint);
-// extern void _gotk4_gtk3_CellAreaContextClass_get_preferred_height_for_width(void*, gint, void*, void*);
-// extern void _gotk4_gtk3_CellAreaContextClass_get_preferred_width_for_height(void*, gint, void*, void*);
+// extern void _gotk4_gtk3_CellAreaContextClass_get_preferred_height_for_width(void*, gint, gint*, gint*);
+// extern void _gotk4_gtk3_CellAreaContextClass_get_preferred_width_for_height(void*, gint, gint*, gint*);
 // extern void _gotk4_gtk3_CellAreaContextClass_reset(void*);
 import "C"
 
@@ -182,7 +182,7 @@ func _gotk4_gtk3_CellAreaContextClass_allocate(arg0 *C.void, arg1 C.gint, arg2 C
 }
 
 //export _gotk4_gtk3_CellAreaContextClass_get_preferred_height_for_width
-func _gotk4_gtk3_CellAreaContextClass_get_preferred_height_for_width(arg0 *C.void, arg1 C.gint, arg2 *C.void, arg3 *C.void) {
+func _gotk4_gtk3_CellAreaContextClass_get_preferred_height_for_width(arg0 *C.void, arg1 C.gint, arg2 *C.gint, arg3 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreferredHeightForWidth(width int32) (minimumHeight, naturalHeight int32)
@@ -194,12 +194,12 @@ func _gotk4_gtk3_CellAreaContextClass_get_preferred_height_for_width(arg0 *C.voi
 
 	minimumHeight, naturalHeight := iface.PreferredHeightForWidth(_width)
 
-	*arg2 = (*C.void)(unsafe.Pointer(minimumHeight))
-	*arg3 = (*C.void)(unsafe.Pointer(naturalHeight))
+	*arg2 = C.gint(minimumHeight)
+	*arg3 = C.gint(naturalHeight)
 }
 
 //export _gotk4_gtk3_CellAreaContextClass_get_preferred_width_for_height
-func _gotk4_gtk3_CellAreaContextClass_get_preferred_width_for_height(arg0 *C.void, arg1 C.gint, arg2 *C.void, arg3 *C.void) {
+func _gotk4_gtk3_CellAreaContextClass_get_preferred_width_for_height(arg0 *C.void, arg1 C.gint, arg2 *C.gint, arg3 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface {
 		PreferredWidthForHeight(height int32) (minimumWidth, naturalWidth int32)
@@ -211,8 +211,8 @@ func _gotk4_gtk3_CellAreaContextClass_get_preferred_width_for_height(arg0 *C.voi
 
 	minimumWidth, naturalWidth := iface.PreferredWidthForHeight(_height)
 
-	*arg2 = (*C.void)(unsafe.Pointer(minimumWidth))
-	*arg3 = (*C.void)(unsafe.Pointer(naturalWidth))
+	*arg2 = C.gint(minimumWidth)
+	*arg3 = C.gint(naturalWidth)
 }
 
 //export _gotk4_gtk3_CellAreaContextClass_reset
@@ -292,12 +292,8 @@ func (context *CellAreaContext) Allocation() (width, height int32) {
 	var _width int32  // out
 	var _height int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_width = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_height = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_width = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_height = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _width, _height
 }
@@ -330,7 +326,7 @@ func (context *CellAreaContext) Area() CellAreaer {
 	var _cellArea CellAreaer // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.CellAreaer is nil")
 		}
@@ -375,12 +371,8 @@ func (context *CellAreaContext) PreferredHeight() (minimumHeight, naturalHeight 
 	var _minimumHeight int32 // out
 	var _naturalHeight int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_minimumHeight = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_naturalHeight = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_minimumHeight = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_naturalHeight = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _minimumHeight, _naturalHeight
 }
@@ -416,12 +408,8 @@ func (context *CellAreaContext) PreferredHeightForWidth(width int32) (minimumHei
 	var _minimumHeight int32 // out
 	var _naturalHeight int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_minimumHeight = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_naturalHeight = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_minimumHeight = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_naturalHeight = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _minimumHeight, _naturalHeight
 }
@@ -451,12 +439,8 @@ func (context *CellAreaContext) PreferredWidth() (minimumWidth, naturalWidth int
 	var _minimumWidth int32 // out
 	var _naturalWidth int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_minimumWidth = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_naturalWidth = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_minimumWidth = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_naturalWidth = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _minimumWidth, _naturalWidth
 }
@@ -493,12 +477,8 @@ func (context *CellAreaContext) PreferredWidthForHeight(height int32) (minimumWi
 	var _minimumWidth int32 // out
 	var _naturalWidth int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_minimumWidth = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_naturalWidth = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_minimumWidth = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_naturalWidth = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _minimumWidth, _naturalWidth
 }

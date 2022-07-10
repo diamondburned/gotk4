@@ -231,7 +231,7 @@ func NewCalendar() *Calendar {
 
 	var _calendar *Calendar // out
 
-	_calendar = wrapCalendar(coreglib.Take(unsafe.Pointer(_cret)))
+	_calendar = wrapCalendar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _calendar
 }
@@ -269,7 +269,7 @@ func (self *Calendar) Date() *glib.DateTime {
 
 	var _dateTime *glib.DateTime // out
 
-	_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_dateTime)),
 		func(intern *struct{ C unsafe.Pointer }) {

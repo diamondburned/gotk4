@@ -54,8 +54,8 @@ func NewRange(lowerLimit float64, upperLimit float64, description string) *Range
 
 	*(*C.gdouble)(unsafe.Pointer(&_args[0])) = C.gdouble(lowerLimit)
 	*(*C.gdouble)(unsafe.Pointer(&_args[1])) = C.gdouble(upperLimit)
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(description)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.gchar)(unsafe.Pointer(&_args[2])) = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[2]))))
 
 	_info := girepository.MustFind("Atk", "Range")
 	_gret := _info.InvokeRecordMethod("new", _args[:], nil)
@@ -67,12 +67,13 @@ func NewRange(lowerLimit float64, upperLimit float64, description string) *Range
 
 	var __range *Range // out
 
-	__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(__range)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Atk", "Range").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -100,12 +101,13 @@ func (src *Range) Copy() *Range {
 
 	var __range *Range // out
 
-	__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(__range)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Atk", "Range").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -127,13 +129,13 @@ func (_range *Range) Description() string {
 
 	_info := girepository.MustFind("Atk", "Range")
 	_gret := _info.InvokeRecordMethod("get_description", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(_range)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }

@@ -93,7 +93,7 @@ func NewMemoryInputStream() *MemoryInputStream {
 
 	var _memoryInputStream *MemoryInputStream // out
 
-	_memoryInputStream = wrapMemoryInputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_memoryInputStream = wrapMemoryInputStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _memoryInputStream
 }
@@ -122,7 +122,7 @@ func NewMemoryInputStreamFromBytes(bytes *glib.Bytes) *MemoryInputStream {
 
 	var _memoryInputStream *MemoryInputStream // out
 
-	_memoryInputStream = wrapMemoryInputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_memoryInputStream = wrapMemoryInputStream(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _memoryInputStream
 }

@@ -127,7 +127,7 @@ func NewEventControllerFocus() *EventControllerFocus {
 
 	var _eventControllerFocus *EventControllerFocus // out
 
-	_eventControllerFocus = wrapEventControllerFocus(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_eventControllerFocus = wrapEventControllerFocus(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _eventControllerFocus
 }

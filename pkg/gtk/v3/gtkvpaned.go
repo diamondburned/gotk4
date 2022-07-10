@@ -98,7 +98,7 @@ func NewVPaned() *VPaned {
 
 	var _vPaned *VPaned // out
 
-	_vPaned = wrapVPaned(coreglib.Take(unsafe.Pointer(_cret)))
+	_vPaned = wrapVPaned(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _vPaned
 }

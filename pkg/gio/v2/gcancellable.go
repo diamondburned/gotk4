@@ -168,7 +168,7 @@ func NewCancellable() *Cancellable {
 
 	var _cancellable *Cancellable // out
 
-	_cancellable = wrapCancellable(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_cancellable = wrapCancellable(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cancellable
 }
@@ -399,7 +399,7 @@ func (cancellable *Cancellable) SetErrorIfCancelled() error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -434,12 +434,13 @@ func (cancellable *Cancellable) NewSource() *glib.Source {
 
 	var _source *glib.Source // out
 
-	_source = (*glib.Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_source = (*glib.Source)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_source)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("GLib", "Source").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -457,13 +458,13 @@ func (cancellable *Cancellable) NewSource() *glib.Source {
 //
 func CancellableGetCurrent() *Cancellable {
 	_info := girepository.MustFind("Gio", "get_current")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	var _cancellable *Cancellable // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_cancellable = wrapCancellable(coreglib.Take(unsafe.Pointer(_cret)))
+		_cancellable = wrapCancellable(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _cancellable

@@ -207,7 +207,7 @@ func (section *CSSSection) File() *gio.File {
 	var _file *gio.File // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_file = &gio.File{
 			Object: obj,
 		}
@@ -241,8 +241,8 @@ func (section *CSSSection) Parent() *CSSSection {
 	var _cssSection *CSSSection // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.gtk_css_section_ref(_cret)
+		_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.gtk_css_section_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_cssSection)),
 			func(intern *struct{ C unsafe.Pointer }) {

@@ -205,7 +205,7 @@ func AlternativeDialogButtonOrder(screen *gdk.Screen) bool {
 	}
 
 	_info := girepository.MustFind("Gtk", "alternative_dialog_button_order")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(screen)
@@ -490,7 +490,7 @@ func NewDialog() *Dialog {
 
 	var _dialog *Dialog // out
 
-	_dialog = wrapDialog(coreglib.Take(unsafe.Pointer(_cret)))
+	_dialog = wrapDialog(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _dialog
 }
@@ -539,8 +539,8 @@ func (dialog *Dialog) AddButton(buttonText string, responseId int32) Widgetter {
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(buttonText)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(buttonText)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(responseId)
 
 	_info := girepository.MustFind("Gtk", "Dialog")
@@ -554,7 +554,7 @@ func (dialog *Dialog) AddButton(buttonText string, responseId int32) Widgetter {
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -596,7 +596,7 @@ func (dialog *Dialog) ActionArea() *Box {
 
 	var _box *Box // out
 
-	_box = wrapBox(coreglib.Take(unsafe.Pointer(_cret)))
+	_box = wrapBox(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _box
 }
@@ -620,7 +620,7 @@ func (dialog *Dialog) ContentArea() *Box {
 
 	var _box *Box // out
 
-	_box = wrapBox(coreglib.Take(unsafe.Pointer(_cret)))
+	_box = wrapBox(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _box
 }
@@ -645,7 +645,7 @@ func (dialog *Dialog) HeaderBar() *HeaderBar {
 
 	var _headerBar *HeaderBar // out
 
-	_headerBar = wrapHeaderBar(coreglib.Take(unsafe.Pointer(_cret)))
+	_headerBar = wrapHeaderBar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _headerBar
 }
@@ -710,7 +710,7 @@ func (dialog *Dialog) WidgetForResponse(responseId int32) Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -835,10 +835,10 @@ func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
 	*(*C.gint)(unsafe.Pointer(&_args[1])) = (C.gint)(len(newOrder))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(C.calloc(C.size_t(len(newOrder)), C.size_t(C.sizeof_gint)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.gint)(unsafe.Pointer(&_args[2])) = (*C.gint)(C.calloc(C.size_t(len(newOrder)), C.size_t(C.sizeof_gint)))
+	defer C.free(unsafe.Pointer(*(**C.gint)(unsafe.Pointer(&_args[2]))))
 	{
-		out := unsafe.Slice((*C.gint)(*(**C.void)(unsafe.Pointer(&_args[2]))), len(newOrder))
+		out := unsafe.Slice((*C.gint)(*(**C.gint)(unsafe.Pointer(&_args[2]))), len(newOrder))
 		for i := range newOrder {
 			*(*C.gint)(unsafe.Pointer(&out[i])) = C.gint(newOrder[i])
 		}

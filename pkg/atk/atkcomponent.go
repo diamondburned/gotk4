@@ -21,7 +21,7 @@ import (
 // extern gdouble _gotk4_atk1_ComponentIface_get_alpha(void*);
 // extern gint _gotk4_atk1_ComponentIface_get_mdi_zorder(void*);
 // extern void _gotk4_atk1_ComponentIface_bounds_changed(void*, void*);
-// extern void _gotk4_atk1_ComponentIface_get_size(void*, void*, void*);
+// extern void _gotk4_atk1_ComponentIface_get_size(void*, gint*, gint*);
 // extern void _gotk4_atk1_ComponentIface_remove_focus_handler(void*, guint);
 // extern void _gotk4_atk1_Component_ConnectBoundsChanged(gpointer, void*, guintptr);
 import "C"
@@ -281,14 +281,14 @@ func _gotk4_atk1_ComponentIface_get_mdi_zorder(arg0 *C.void) (cret C.gint) {
 }
 
 //export _gotk4_atk1_ComponentIface_get_size
-func _gotk4_atk1_ComponentIface_get_size(arg0 *C.void, arg1 *C.void, arg2 *C.void) {
+func _gotk4_atk1_ComponentIface_get_size(arg0 *C.void, arg1 *C.gint, arg2 *C.gint) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(ComponentOverrider)
 
 	width, height := iface.Size()
 
-	*arg1 = (*C.void)(unsafe.Pointer(width))
-	*arg2 = (*C.void)(unsafe.Pointer(height))
+	*arg1 = C.gint(width)
+	*arg2 = C.gint(height)
 }
 
 //export _gotk4_atk1_ComponentIface_grab_focus
@@ -451,12 +451,8 @@ func (component *Component) Size() (width, height int32) {
 	var _width int32  // out
 	var _height int32 // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_width = *(*int32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_height = *(*int32)(unsafe.Pointer(_outs[1]))
-	}
+	_width = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_height = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _width, _height
 }

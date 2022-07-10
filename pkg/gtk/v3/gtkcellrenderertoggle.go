@@ -15,8 +15,8 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk3_CellRendererToggleClass_toggled(void*, void*);
-// extern void _gotk4_gtk3_CellRendererToggle_ConnectToggled(gpointer, void*, guintptr);
+// extern void _gotk4_gtk3_CellRendererToggleClass_toggled(void*, gchar*);
+// extern void _gotk4_gtk3_CellRendererToggle_ConnectToggled(gpointer, gchar*, guintptr);
 import "C"
 
 // GTypeCellRendererToggle returns the GType for the type CellRendererToggle.
@@ -65,7 +65,7 @@ func classInitCellRendererToggler(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_CellRendererToggleClass_toggled
-func _gotk4_gtk3_CellRendererToggleClass_toggled(arg0 *C.void, arg1 *C.void) {
+func _gotk4_gtk3_CellRendererToggleClass_toggled(arg0 *C.void, arg1 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Toggled(path string) })
 
@@ -91,7 +91,7 @@ func marshalCellRendererToggle(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk3_CellRendererToggle_ConnectToggled
-func _gotk4_gtk3_CellRendererToggle_ConnectToggled(arg0 C.gpointer, arg1 *C.void, arg2 C.guintptr) {
+func _gotk4_gtk3_CellRendererToggle_ConnectToggled(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
 	var f func(path string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
@@ -137,7 +137,7 @@ func NewCellRendererToggle() *CellRendererToggle {
 
 	var _cellRendererToggle *CellRendererToggle // out
 
-	_cellRendererToggle = wrapCellRendererToggle(coreglib.Take(unsafe.Pointer(_cret)))
+	_cellRendererToggle = wrapCellRendererToggle(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cellRendererToggle
 }

@@ -195,7 +195,7 @@ func (chooser *ColorChooser) RGBA() *gdk.RGBA {
 
 	var _color *gdk.RGBA // out
 
-	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 
 	return _color
 }

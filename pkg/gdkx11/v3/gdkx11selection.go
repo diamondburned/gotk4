@@ -26,10 +26,10 @@ import "C"
 func X11FreeCompoundText(ctext *byte) {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(ctext))
+	*(**C.guchar)(unsafe.Pointer(&_args[0])) = (*C.guchar)(unsafe.Pointer(ctext))
 
 	_info := girepository.MustFind("GdkX11", "x11_free_compound_text")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(ctext)
 }

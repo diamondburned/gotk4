@@ -106,7 +106,7 @@ func NewCellView() *CellView {
 
 	var _cellView *CellView // out
 
-	_cellView = wrapCellView(coreglib.Take(unsafe.Pointer(_cret)))
+	_cellView = wrapCellView(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cellView
 }
@@ -142,7 +142,7 @@ func NewCellViewWithContext(area CellAreaer, context *CellAreaContext) *CellView
 
 	var _cellView *CellView // out
 
-	_cellView = wrapCellView(coreglib.Take(unsafe.Pointer(_cret)))
+	_cellView = wrapCellView(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cellView
 }
@@ -162,8 +162,8 @@ func NewCellViewWithContext(area CellAreaer, context *CellAreaContext) *CellView
 func NewCellViewWithMarkup(markup string) *CellView {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(markup)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(markup)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "CellView")
 	_gret := _info.InvokeClassMethod("new_CellView_with_markup", _args[:], nil)
@@ -173,7 +173,7 @@ func NewCellViewWithMarkup(markup string) *CellView {
 
 	var _cellView *CellView // out
 
-	_cellView = wrapCellView(coreglib.Take(unsafe.Pointer(_cret)))
+	_cellView = wrapCellView(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cellView
 }
@@ -192,8 +192,8 @@ func NewCellViewWithMarkup(markup string) *CellView {
 func NewCellViewWithText(text string) *CellView {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "CellView")
 	_gret := _info.InvokeClassMethod("new_CellView_with_text", _args[:], nil)
@@ -203,7 +203,7 @@ func NewCellViewWithText(text string) *CellView {
 
 	var _cellView *CellView // out
 
-	_cellView = wrapCellView(coreglib.Take(unsafe.Pointer(_cret)))
+	_cellView = wrapCellView(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cellView
 }
@@ -232,7 +232,7 @@ func NewCellViewWithTexture(texture gdk.Texturer) *CellView {
 
 	var _cellView *CellView // out
 
-	_cellView = wrapCellView(coreglib.Take(unsafe.Pointer(_cret)))
+	_cellView = wrapCellView(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cellView
 }
@@ -258,12 +258,13 @@ func (cellView *CellView) DisplayedRow() *TreePath {
 	var _treePath *TreePath // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_treePath)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Gtk", "TreePath").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -347,7 +348,7 @@ func (cellView *CellView) Model() *TreeModel {
 	var _treeModel *TreeModel // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_treeModel = wrapTreeModel(coreglib.Take(unsafe.Pointer(_cret)))
+		_treeModel = wrapTreeModel(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _treeModel

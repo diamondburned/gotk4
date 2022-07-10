@@ -18,6 +18,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
+// extern gchar* _gotk4_gtk3_CalendarDetailFunc(void*, guint, guint, guint, gpointer);
 // extern void _gotk4_gtk3_CalendarClass_day_selected(void*);
 // extern void _gotk4_gtk3_CalendarClass_day_selected_double_click(void*);
 // extern void _gotk4_gtk3_CalendarClass_month_changed(void*);
@@ -33,7 +34,6 @@ import (
 // extern void _gotk4_gtk3_Calendar_ConnectPrevMonth(gpointer, guintptr);
 // extern void _gotk4_gtk3_Calendar_ConnectPrevYear(gpointer, guintptr);
 // extern void callbackDelete(gpointer);
-// extern void* _gotk4_gtk3_CalendarDetailFunc(void*, guint, guint, guint, gpointer);
 import "C"
 
 // GTypeCalendarDisplayOptions returns the GType for the type CalendarDisplayOptions.
@@ -129,7 +129,7 @@ func (c CalendarDisplayOptions) Has(other CalendarDisplayOptions) bool {
 type CalendarDetailFunc func(calendar *Calendar, year, month, day uint32) (utf8 string)
 
 //export _gotk4_gtk3_CalendarDetailFunc
-func _gotk4_gtk3_CalendarDetailFunc(arg1 *C.void, arg2 C.guint, arg3 C.guint, arg4 C.guint, arg5 C.gpointer) (cret *C.void) {
+func _gotk4_gtk3_CalendarDetailFunc(arg1 *C.void, arg2 C.guint, arg3 C.guint, arg4 C.guint, arg5 C.gpointer) (cret *C.gchar) {
 	var fn CalendarDetailFunc
 	{
 		v := gbox.Get(uintptr(arg5))
@@ -152,7 +152,7 @@ func _gotk4_gtk3_CalendarDetailFunc(arg1 *C.void, arg2 C.guint, arg3 C.guint, ar
 	utf8 := fn(_calendar, _year, _month, _day)
 
 	if utf8 != "" {
-		cret = (*C.void)(unsafe.Pointer(C.CString(utf8)))
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 	}
 
 	return cret
@@ -481,7 +481,7 @@ func NewCalendar() *Calendar {
 
 	var _calendar *Calendar // out
 
-	_calendar = wrapCalendar(coreglib.Take(unsafe.Pointer(_cret)))
+	_calendar = wrapCalendar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _calendar
 }
@@ -524,15 +524,9 @@ func (calendar *Calendar) Date() (year, month, day uint32) {
 	var _month uint32 // out
 	var _day uint32   // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_year = *(*uint32)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_month = *(*uint32)(unsafe.Pointer(_outs[1]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_day = *(*uint32)(unsafe.Pointer(_outs[2]))
-	}
+	_year = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
+	_month = uint32(*(*C.guint)(unsafe.Pointer(&_outs[1])))
+	_day = uint32(*(*C.guint)(unsafe.Pointer(&_outs[2])))
 
 	return _year, _month, _day
 }

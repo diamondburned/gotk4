@@ -120,8 +120,8 @@ func marshalAccelLabel(p uintptr) (interface{}, error) {
 func NewAccelLabel(str string) *AccelLabel {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "AccelLabel")
 	_gret := _info.InvokeClassMethod("new_AccelLabel", _args[:], nil)
@@ -131,7 +131,7 @@ func NewAccelLabel(str string) *AccelLabel {
 
 	var _accelLabel *AccelLabel // out
 
-	_accelLabel = wrapAccelLabel(coreglib.Take(unsafe.Pointer(_cret)))
+	_accelLabel = wrapAccelLabel(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _accelLabel
 }
@@ -157,8 +157,8 @@ func (accelLabel *AccelLabel) Accel() (uint32, gdk.ModifierType) {
 	var _acceleratorKey uint32            // out
 	var _acceleratorMods gdk.ModifierType // out
 
-	_acceleratorKey = *(*uint32)(unsafe.Pointer(_outs[0]))
-	_acceleratorMods = *(*gdk.ModifierType)(unsafe.Pointer(_outs[1]))
+	_acceleratorKey = uint32(*(*C.guint)(unsafe.Pointer(&_outs[0])))
+	_acceleratorMods = *(*gdk.ModifierType)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1]))))
 
 	return _acceleratorKey, _acceleratorMods
 }
@@ -185,7 +185,7 @@ func (accelLabel *AccelLabel) AccelWidget() Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

@@ -15,8 +15,8 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gtk3_CellRendererTextClass_edited(void*, void*, void*);
-// extern void _gotk4_gtk3_CellRendererText_ConnectEdited(gpointer, void*, void*, guintptr);
+// extern void _gotk4_gtk3_CellRendererTextClass_edited(void*, gchar*, gchar*);
+// extern void _gotk4_gtk3_CellRendererText_ConnectEdited(gpointer, gchar*, gchar*, guintptr);
 import "C"
 
 // GTypeCellRendererText returns the GType for the type CellRendererText.
@@ -71,7 +71,7 @@ func classInitCellRendererTexter(gclassPtr, data C.gpointer) {
 }
 
 //export _gotk4_gtk3_CellRendererTextClass_edited
-func _gotk4_gtk3_CellRendererTextClass_edited(arg0 *C.void, arg1 *C.void, arg2 *C.void) {
+func _gotk4_gtk3_CellRendererTextClass_edited(arg0 *C.void, arg1 *C.gchar, arg2 *C.gchar) {
 	goval := coreglib.GoPrivateFromObject(unsafe.Pointer(arg0))
 	iface := goval.(interface{ Edited(path, newText string) })
 
@@ -99,7 +99,7 @@ func marshalCellRendererText(p uintptr) (interface{}, error) {
 }
 
 //export _gotk4_gtk3_CellRendererText_ConnectEdited
-func _gotk4_gtk3_CellRendererText_ConnectEdited(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.guintptr) {
+func _gotk4_gtk3_CellRendererText_ConnectEdited(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.gchar, arg3 C.guintptr) {
 	var f func(path, newText string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -146,7 +146,7 @@ func NewCellRendererText() *CellRendererText {
 
 	var _cellRendererText *CellRendererText // out
 
-	_cellRendererText = wrapCellRendererText(coreglib.Take(unsafe.Pointer(_cret)))
+	_cellRendererText = wrapCellRendererText(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cellRendererText
 }

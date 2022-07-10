@@ -84,7 +84,7 @@ func NewCellRendererSpinner() *CellRendererSpinner {
 
 	var _cellRendererSpinner *CellRendererSpinner // out
 
-	_cellRendererSpinner = wrapCellRendererSpinner(coreglib.Take(unsafe.Pointer(_cret)))
+	_cellRendererSpinner = wrapCellRendererSpinner(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cellRendererSpinner
 }

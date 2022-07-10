@@ -87,7 +87,7 @@ func NewConstraintGuide() *ConstraintGuide {
 
 	var _constraintGuide *ConstraintGuide // out
 
-	_constraintGuide = wrapConstraintGuide(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_constraintGuide = wrapConstraintGuide(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _constraintGuide
 }
@@ -104,10 +104,10 @@ func (guide *ConstraintGuide) MaxSize(width, height *int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
 	if width != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(width))
+		*(**C.int)(unsafe.Pointer(&_args[1])) = (*C.int)(unsafe.Pointer(width))
 	}
 	if height != nil {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(height))
+		*(**C.int)(unsafe.Pointer(&_args[2])) = (*C.int)(unsafe.Pointer(height))
 	}
 
 	_info := girepository.MustFind("Gtk", "ConstraintGuide")
@@ -130,10 +130,10 @@ func (guide *ConstraintGuide) MinSize(width, height *int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
 	if width != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(width))
+		*(**C.int)(unsafe.Pointer(&_args[1])) = (*C.int)(unsafe.Pointer(width))
 	}
 	if height != nil {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(height))
+		*(**C.int)(unsafe.Pointer(&_args[2])) = (*C.int)(unsafe.Pointer(height))
 	}
 
 	_info := girepository.MustFind("Gtk", "ConstraintGuide")
@@ -157,14 +157,14 @@ func (guide *ConstraintGuide) Name() string {
 
 	_info := girepository.MustFind("Gtk", "ConstraintGuide")
 	_gret := _info.InvokeClassMethod("get_name", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(guide)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.char)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -182,10 +182,10 @@ func (guide *ConstraintGuide) NatSize(width, height *int32) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
 	if width != nil {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(width))
+		*(**C.int)(unsafe.Pointer(&_args[1])) = (*C.int)(unsafe.Pointer(width))
 	}
 	if height != nil {
-		*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(height))
+		*(**C.int)(unsafe.Pointer(&_args[2])) = (*C.int)(unsafe.Pointer(height))
 	}
 
 	_info := girepository.MustFind("Gtk", "ConstraintGuide")
@@ -259,8 +259,8 @@ func (guide *ConstraintGuide) SetName(name string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(guide).Native()))
 	if name != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "ConstraintGuide")

@@ -269,7 +269,7 @@ func NewDragSource() *DragSource {
 
 	var _dragSource *DragSource // out
 
-	_dragSource = wrapDragSource(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dragSource = wrapDragSource(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _dragSource
 }
@@ -307,7 +307,7 @@ func (source *DragSource) Content() *gdk.ContentProvider {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_contentProvider = &gdk.ContentProvider{
 				Object: obj,
 			}
@@ -338,7 +338,7 @@ func (source *DragSource) Drag() gdk.Dragger {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

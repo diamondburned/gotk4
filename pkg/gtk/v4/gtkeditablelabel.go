@@ -132,8 +132,8 @@ func marshalEditableLabel(p uintptr) (interface{}, error) {
 func NewEditableLabel(str string) *EditableLabel {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "EditableLabel")
 	_gret := _info.InvokeClassMethod("new_EditableLabel", _args[:], nil)
@@ -143,7 +143,7 @@ func NewEditableLabel(str string) *EditableLabel {
 
 	var _editableLabel *EditableLabel // out
 
-	_editableLabel = wrapEditableLabel(coreglib.Take(unsafe.Pointer(_cret)))
+	_editableLabel = wrapEditableLabel(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _editableLabel
 }

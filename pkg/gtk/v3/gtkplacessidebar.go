@@ -25,7 +25,7 @@ import (
 // extern void _gotk4_gtk3_PlacesSidebar_ConnectPopulatePopup(gpointer, void*, void*, void*, guintptr);
 // extern void _gotk4_gtk3_PlacesSidebar_ConnectShowConnectToServer(gpointer, guintptr);
 // extern void _gotk4_gtk3_PlacesSidebar_ConnectShowEnterLocation(gpointer, guintptr);
-// extern void _gotk4_gtk3_PlacesSidebar_ConnectShowErrorMessage(gpointer, void*, void*, guintptr);
+// extern void _gotk4_gtk3_PlacesSidebar_ConnectShowErrorMessage(gpointer, gchar*, gchar*, guintptr);
 // extern void _gotk4_gtk3_PlacesSidebar_ConnectShowOtherLocations(gpointer, guintptr);
 // extern void _gotk4_gtk3_PlacesSidebar_ConnectUnmount(gpointer, void*, guintptr);
 import "C"
@@ -413,7 +413,7 @@ func (sidebar *PlacesSidebar) ConnectShowEnterLocation(f func()) coreglib.Signal
 }
 
 //export _gotk4_gtk3_PlacesSidebar_ConnectShowErrorMessage
-func _gotk4_gtk3_PlacesSidebar_ConnectShowErrorMessage(arg0 C.gpointer, arg1 *C.void, arg2 *C.void, arg3 C.guintptr) {
+func _gotk4_gtk3_PlacesSidebar_ConnectShowErrorMessage(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.gchar, arg3 C.guintptr) {
 	var f func(primary, secondary string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -515,7 +515,7 @@ func NewPlacesSidebar() *PlacesSidebar {
 
 	var _placesSidebar *PlacesSidebar // out
 
-	_placesSidebar = wrapPlacesSidebar(coreglib.Take(unsafe.Pointer(_cret)))
+	_placesSidebar = wrapPlacesSidebar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _placesSidebar
 }
@@ -605,7 +605,7 @@ func (sidebar *PlacesSidebar) Location() *gio.File {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_file = &gio.File{
 				Object: obj,
 			}
@@ -647,7 +647,7 @@ func (sidebar *PlacesSidebar) NthBookmark(n int32) *gio.File {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_file = &gio.File{
 				Object: obj,
 			}
@@ -873,12 +873,12 @@ func (sidebar *PlacesSidebar) ListShortcuts() []*gio.File {
 
 	var _sList []*gio.File // out
 
-	_sList = make([]*gio.File, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_sList = make([]*gio.File, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *gio.File // out
 		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(src))
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src))))
 			dst = &gio.File{
 				Object: obj,
 			}

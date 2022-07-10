@@ -15,7 +15,7 @@ import (
 // #include <stdlib.h>
 // #include <glib.h>
 // #include <glib-object.h>
-// extern void _gotk4_gdkwayland4_WaylandToplevelExported(void*, void*, gpointer);
+// extern void _gotk4_gdkwayland4_WaylandToplevelExported(void*, char*, gpointer);
 // extern void callbackDelete(gpointer);
 import "C"
 
@@ -29,7 +29,7 @@ import "C"
 type WaylandToplevelExported func(toplevel *WaylandToplevel, handle string)
 
 //export _gotk4_gdkwayland4_WaylandToplevelExported
-func _gotk4_gdkwayland4_WaylandToplevelExported(arg1 *C.void, arg2 *C.void, arg3 C.gpointer) {
+func _gotk4_gdkwayland4_WaylandToplevelExported(arg1 *C.void, arg2 *C.char, arg3 C.gpointer) {
 	var fn WaylandToplevelExported
 	{
 		v := gbox.Get(uintptr(arg3))
@@ -108,8 +108,8 @@ func (toplevel *WaylandToplevel) SetApplicationID(applicationId string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(applicationId)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(applicationId)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("GdkWayland", "WaylandToplevel")
 	_info.InvokeClassMethod("set_application_id", _args[:], nil)
@@ -140,8 +140,8 @@ func (toplevel *WaylandToplevel) SetTransientForExported(parentHandleStr string)
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(parentHandleStr)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(parentHandleStr)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("GdkWayland", "WaylandToplevel")
 	_gret := _info.InvokeClassMethod("set_transient_for_exported", _args[:], nil)

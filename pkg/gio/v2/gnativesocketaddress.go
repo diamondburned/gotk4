@@ -90,7 +90,7 @@ func NewNativeSocketAddress(native unsafe.Pointer, len uint) *NativeSocketAddres
 
 	var _nativeSocketAddress *NativeSocketAddress // out
 
-	_nativeSocketAddress = wrapNativeSocketAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_nativeSocketAddress = wrapNativeSocketAddress(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _nativeSocketAddress
 }

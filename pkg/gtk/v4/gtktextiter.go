@@ -891,12 +891,13 @@ func (iter *TextIter) Copy() *TextIter {
 
 	var _textIter *TextIter // out
 
-	_textIter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_textIter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_textIter)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Gtk", "TextIter").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1812,7 +1813,7 @@ func (iter *TextIter) Buffer() *TextBuffer {
 
 	var _textBuffer *TextBuffer // out
 
-	_textBuffer = wrapTextBuffer(coreglib.Take(unsafe.Pointer(_cret)))
+	_textBuffer = wrapTextBuffer(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _textBuffer
 }
@@ -1920,7 +1921,7 @@ func (iter *TextIter) ChildAnchor() *TextChildAnchor {
 
 	var _textChildAnchor *TextChildAnchor // out
 
-	_textChildAnchor = wrapTextChildAnchor(coreglib.Take(unsafe.Pointer(_cret)))
+	_textChildAnchor = wrapTextChildAnchor(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _textChildAnchor
 }
@@ -1947,7 +1948,7 @@ func (iter *TextIter) Language() *pango.Language {
 
 	var _language *pango.Language // out
 
-	_language = (*pango.Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_language = (*pango.Language)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_language)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -2065,11 +2066,11 @@ func (iter *TextIter) Marks() []*TextMark {
 
 	var _sList []*TextMark // out
 
-	_sList = make([]*TextMark, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_sList = make([]*TextMark, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *TextMark // out
-		dst = wrapTextMark(coreglib.Take(unsafe.Pointer(src)))
+		dst = wrapTextMark(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_sList = append(_sList, dst)
 	})
 
@@ -2126,7 +2127,7 @@ func (iter *TextIter) Paintable() *gdk.Paintable {
 	var _paintable *gdk.Paintable // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_paintable = &gdk.Paintable{
 			Object: obj,
 		}
@@ -2160,15 +2161,15 @@ func (start *TextIter) Slice(end *TextIter) string {
 
 	_info := girepository.MustFind("Gtk", "TextIter")
 	_gret := _info.InvokeRecordMethod("get_slice", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(end)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }
@@ -2198,11 +2199,11 @@ func (iter *TextIter) Tags() []*TextTag {
 
 	var _sList []*TextTag // out
 
-	_sList = make([]*TextTag, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_sList = make([]*TextTag, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *TextTag // out
-		dst = wrapTextTag(coreglib.Take(unsafe.Pointer(src)))
+		dst = wrapTextTag(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_sList = append(_sList, dst)
 	})
 
@@ -2232,15 +2233,15 @@ func (start *TextIter) Text(end *TextIter) string {
 
 	_info := girepository.MustFind("Gtk", "TextIter")
 	_gret := _info.InvokeRecordMethod("get_text", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(end)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }
@@ -2278,11 +2279,11 @@ func (iter *TextIter) ToggledTags(toggledOn bool) []*TextTag {
 
 	var _sList []*TextTag // out
 
-	_sList = make([]*TextTag, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_sList = make([]*TextTag, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *TextTag // out
-		dst = wrapTextTag(coreglib.Take(unsafe.Pointer(src)))
+		dst = wrapTextTag(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		_sList = append(_sList, dst)
 	})
 
@@ -2363,15 +2364,15 @@ func (start *TextIter) VisibleSlice(end *TextIter) string {
 
 	_info := girepository.MustFind("Gtk", "TextIter")
 	_gret := _info.InvokeRecordMethod("get_visible_slice", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(end)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }
@@ -2398,15 +2399,15 @@ func (start *TextIter) VisibleText(end *TextIter) string {
 
 	_info := girepository.MustFind("Gtk", "TextIter")
 	_gret := _info.InvokeRecordMethod("get_visible_text", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(end)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }

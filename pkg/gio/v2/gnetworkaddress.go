@@ -92,8 +92,8 @@ func marshalNetworkAddress(p uintptr) (interface{}, error) {
 func NewNetworkAddress(hostname string, port uint16) *NetworkAddress {
 	var _args [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(hostname)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	*(*C.guint16)(unsafe.Pointer(&_args[1])) = C.guint16(port)
 
 	_info := girepository.MustFind("Gio", "NetworkAddress")
@@ -105,7 +105,7 @@ func NewNetworkAddress(hostname string, port uint16) *NetworkAddress {
 
 	var _networkAddress *NetworkAddress // out
 
-	_networkAddress = wrapNetworkAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_networkAddress = wrapNetworkAddress(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _networkAddress
 }
@@ -143,7 +143,7 @@ func NewNetworkAddressLoopback(port uint16) *NetworkAddress {
 
 	var _networkAddress *NetworkAddress // out
 
-	_networkAddress = wrapNetworkAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_networkAddress = wrapNetworkAddress(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _networkAddress
 }
@@ -162,13 +162,13 @@ func (addr *NetworkAddress) Hostname() string {
 
 	_info := girepository.MustFind("Gio", "NetworkAddress")
 	_gret := _info.InvokeClassMethod("get_hostname", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(addr)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 
 	return _utf8
 }
@@ -210,14 +210,14 @@ func (addr *NetworkAddress) Scheme() string {
 
 	_info := girepository.MustFind("Gio", "NetworkAddress")
 	_gret := _info.InvokeClassMethod("get_scheme", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(addr)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -256,12 +256,12 @@ func (addr *NetworkAddress) Scheme() string {
 func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddress, error) {
 	var _args [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(hostAndPort)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(hostAndPort)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	*(*C.guint16)(unsafe.Pointer(&_args[1])) = C.guint16(defaultPort)
 
 	_info := girepository.MustFind("Gio", "parse")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(hostAndPort)
@@ -270,9 +270,9 @@ func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddres
 	var _networkAddress *NetworkAddress // out
 	var _goerr error                    // out
 
-	_networkAddress = wrapNetworkAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_networkAddress = wrapNetworkAddress(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _networkAddress, _goerr
@@ -296,12 +296,12 @@ func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddres
 func NetworkAddressParseURI(uri string, defaultPort uint16) (*NetworkAddress, error) {
 	var _args [2]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(uri)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 	*(*C.guint16)(unsafe.Pointer(&_args[1])) = C.guint16(defaultPort)
 
 	_info := girepository.MustFind("Gio", "parse_uri")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(uri)
@@ -310,9 +310,9 @@ func NetworkAddressParseURI(uri string, defaultPort uint16) (*NetworkAddress, er
 	var _networkAddress *NetworkAddress // out
 	var _goerr error                    // out
 
-	_networkAddress = wrapNetworkAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_networkAddress = wrapNetworkAddress(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _networkAddress, _goerr

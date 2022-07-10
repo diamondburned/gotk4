@@ -276,7 +276,7 @@ func (self *DropTargetAsync) Formats() *gdk.ContentFormats {
 	var _contentFormats *gdk.ContentFormats // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_contentFormats = (*gdk.ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_contentFormats = (*gdk.ContentFormats)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_contentFormats)),
 			func(intern *struct{ C unsafe.Pointer }) {

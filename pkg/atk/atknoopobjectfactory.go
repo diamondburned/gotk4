@@ -76,7 +76,7 @@ func NewNoOpObjectFactory() *NoOpObjectFactory {
 
 	var _noOpObjectFactory *NoOpObjectFactory // out
 
-	_noOpObjectFactory = wrapNoOpObjectFactory(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_noOpObjectFactory = wrapNoOpObjectFactory(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _noOpObjectFactory
 }

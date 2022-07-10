@@ -107,7 +107,7 @@ func NewSortListModel(model gio.ListModeller, sorter *Sorter) *SortListModel {
 
 	var _sortListModel *SortListModel // out
 
-	_sortListModel = wrapSortListModel(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_sortListModel = wrapSortListModel(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _sortListModel
 }
@@ -161,7 +161,7 @@ func (self *SortListModel) Model() *gio.ListModel {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_listModel = &gio.ListModel{
 				Object: obj,
 			}
@@ -229,7 +229,7 @@ func (self *SortListModel) Sorter() *Sorter {
 	var _sorter *Sorter // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_sorter = wrapSorter(coreglib.Take(unsafe.Pointer(_cret)))
+		_sorter = wrapSorter(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _sorter

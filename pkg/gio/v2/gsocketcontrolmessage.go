@@ -327,7 +327,7 @@ func SocketControlMessageDeserialize(level, typ int32, data []byte) SocketContro
 	}
 
 	_info := girepository.MustFind("Gio", "deserialize")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(level)
@@ -337,7 +337,7 @@ func SocketControlMessageDeserialize(level, typ int32, data []byte) SocketContro
 	var _socketControlMessage SocketControlMessager // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gio.SocketControlMessager is nil")
 		}

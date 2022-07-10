@@ -61,7 +61,7 @@ const VERSION_MIN_REQUIRED = 2
 //
 func GetBinaryAge() uint32 {
 	_info := girepository.MustFind("Atk", "get_binary_age")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
@@ -80,7 +80,7 @@ func GetBinaryAge() uint32 {
 //
 func GetInterfaceAge() uint32 {
 	_info := girepository.MustFind("Atk", "get_interface_age")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
@@ -103,7 +103,7 @@ func GetInterfaceAge() uint32 {
 //
 func GetMajorVersion() uint32 {
 	_info := girepository.MustFind("Atk", "get_major_version")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
@@ -126,7 +126,7 @@ func GetMajorVersion() uint32 {
 //
 func GetMicroVersion() uint32 {
 	_info := girepository.MustFind("Atk", "get_micro_version")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out
@@ -149,7 +149,7 @@ func GetMicroVersion() uint32 {
 //
 func GetMinorVersion() uint32 {
 	_info := girepository.MustFind("Atk", "get_minor_version")
-	_gret := _info.Invoke(nil, nil)
+	_gret := _info.InvokeFunction(nil, nil)
 	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	var _guint uint32 // out

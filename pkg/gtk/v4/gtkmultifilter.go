@@ -103,7 +103,7 @@ func NewAnyFilter() *AnyFilter {
 
 	var _anyFilter *AnyFilter // out
 
-	_anyFilter = wrapAnyFilter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_anyFilter = wrapAnyFilter(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _anyFilter
 }
@@ -160,7 +160,7 @@ func NewEveryFilter() *EveryFilter {
 
 	var _everyFilter *EveryFilter // out
 
-	_everyFilter = wrapEveryFilter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_everyFilter = wrapEveryFilter(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _everyFilter
 }

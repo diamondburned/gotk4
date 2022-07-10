@@ -141,7 +141,7 @@ func NewMediaFile() *MediaFile {
 
 	var _mediaFile *MediaFile // out
 
-	_mediaFile = wrapMediaFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_mediaFile = wrapMediaFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _mediaFile
 }
@@ -169,7 +169,7 @@ func NewMediaFileForFile(file gio.Filer) *MediaFile {
 
 	var _mediaFile *MediaFile // out
 
-	_mediaFile = wrapMediaFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_mediaFile = wrapMediaFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _mediaFile
 }
@@ -190,8 +190,8 @@ func NewMediaFileForFile(file gio.Filer) *MediaFile {
 func NewMediaFileForFilename(filename string) *MediaFile {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "MediaFile")
 	_gret := _info.InvokeClassMethod("new_MediaFile_for_filename", _args[:], nil)
@@ -201,7 +201,7 @@ func NewMediaFileForFilename(filename string) *MediaFile {
 
 	var _mediaFile *MediaFile // out
 
-	_mediaFile = wrapMediaFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_mediaFile = wrapMediaFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _mediaFile
 }
@@ -232,7 +232,7 @@ func NewMediaFileForInputStream(stream gio.InputStreamer) *MediaFile {
 
 	var _mediaFile *MediaFile // out
 
-	_mediaFile = wrapMediaFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_mediaFile = wrapMediaFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _mediaFile
 }
@@ -253,8 +253,8 @@ func NewMediaFileForInputStream(stream gio.InputStreamer) *MediaFile {
 func NewMediaFileForResource(resourcePath string) *MediaFile {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Gtk", "MediaFile")
 	_gret := _info.InvokeClassMethod("new_MediaFile_for_resource", _args[:], nil)
@@ -264,7 +264,7 @@ func NewMediaFileForResource(resourcePath string) *MediaFile {
 
 	var _mediaFile *MediaFile // out
 
-	_mediaFile = wrapMediaFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_mediaFile = wrapMediaFile(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _mediaFile
 }
@@ -305,7 +305,7 @@ func (self *MediaFile) File() *gio.File {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			obj := coreglib.Take(unsafe.Pointer(_cret))
+			obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 			_file = &gio.File{
 				Object: obj,
 			}
@@ -339,7 +339,7 @@ func (self *MediaFile) InputStream() gio.InputStreamer {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -394,8 +394,8 @@ func (self *MediaFile) SetFilename(filename string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if filename != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(filename)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(filename)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "MediaFile")
@@ -445,8 +445,8 @@ func (self *MediaFile) SetResource(resourcePath string) {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 	if resourcePath != "" {
-		*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(resourcePath)))
-		defer C.free(unsafe.Pointer(_args[1]))
+		*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	}
 
 	_info := girepository.MustFind("Gtk", "MediaFile")

@@ -19,8 +19,8 @@ import (
 // #include <glib.h>
 // #include <glib-object.h>
 // extern void _gotk4_gio2_AsyncReadyCallback(void*, void*, gpointer);
-// extern void* _gotk4_gio2_LoadableIconIface_load(void*, int, void**, void*, GError**);
-// extern void* _gotk4_gio2_LoadableIconIface_load_finish(void*, void*, void**, GError**);
+// extern void* _gotk4_gio2_LoadableIconIface_load(void*, int, char**, void*, GError**);
+// extern void* _gotk4_gio2_LoadableIconIface_load_finish(void*, void*, char**, GError**);
 import "C"
 
 // GTypeLoadableIcon returns the GType for the type LoadableIcon.
@@ -111,12 +111,12 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int32) (string, InputSt
 	var _inputStream InputStreamer // out
 	var _goerr error               // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_typ = C.GoString((*C.gchar)(unsafe.Pointer(_outs[0])))
-		defer C.free(unsafe.Pointer(_outs[0]))
+	if *(**C.char)(unsafe.Pointer(&_outs[0])) != nil {
+		_typ = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0])))))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0]))))
 	}
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gio.InputStreamer is nil")
 		}
@@ -133,7 +133,7 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int32) (string, InputSt
 		_inputStream = rv
 	}
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _typ, _inputStream, _goerr
@@ -204,12 +204,12 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 	var _inputStream InputStreamer // out
 	var _goerr error               // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_typ = C.GoString((*C.gchar)(unsafe.Pointer(_outs[0])))
-		defer C.free(unsafe.Pointer(_outs[0]))
+	if *(**C.char)(unsafe.Pointer(&_outs[0])) != nil {
+		_typ = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0])))))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[0]))))
 	}
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gio.InputStreamer is nil")
 		}
@@ -226,7 +226,7 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 		_inputStream = rv
 	}
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _typ, _inputStream, _goerr

@@ -438,8 +438,8 @@ func (type1 *VariantType) Equal(type2 *VariantType) bool {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(type1)))
-	_arg1 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(type2)))
+	_arg0 = *(*C.gconstpointer)(gextras.StructNative(unsafe.Pointer(type1)))
+	_arg1 = *(*C.gconstpointer)(gextras.StructNative(unsafe.Pointer(type2)))
 
 	_cret = C.g_variant_type_equal(_arg0, _arg1)
 	runtime.KeepAlive(type1)
@@ -529,7 +529,7 @@ func (typ *VariantType) Hash() uint32 {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg0 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(typ)))
+	_arg0 = *(*C.gconstpointer)(gextras.StructNative(unsafe.Pointer(typ)))
 
 	_cret = C.g_variant_type_hash(_arg0)
 	runtime.KeepAlive(typ)

@@ -129,7 +129,7 @@ func NewCustomFilter(matchFunc CustomFilterFunc) *CustomFilter {
 
 	var _customFilter *CustomFilter // out
 
-	_customFilter = wrapCustomFilter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_customFilter = wrapCustomFilter(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _customFilter
 }

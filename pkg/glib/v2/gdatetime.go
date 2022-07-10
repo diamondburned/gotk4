@@ -778,8 +778,8 @@ func (dt1 *DateTime) Compare(dt2 *DateTime) int32 {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gint          // in
 
-	_arg0 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(dt1)))
-	_arg1 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(dt2)))
+	_arg0 = *(*C.gconstpointer)(gextras.StructNative(unsafe.Pointer(dt1)))
+	_arg1 = *(*C.gconstpointer)(gextras.StructNative(unsafe.Pointer(dt2)))
 
 	_cret = C.g_date_time_compare(_arg0, _arg1)
 	runtime.KeepAlive(dt1)
@@ -842,8 +842,8 @@ func (dt1 *DateTime) Equal(dt2 *DateTime) bool {
 	var _arg1 C.gconstpointer // out
 	var _cret C.gboolean      // in
 
-	_arg0 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(dt1)))
-	_arg1 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(dt2)))
+	_arg0 = *(*C.gconstpointer)(gextras.StructNative(unsafe.Pointer(dt1)))
+	_arg1 = *(*C.gconstpointer)(gextras.StructNative(unsafe.Pointer(dt2)))
 
 	_cret = C.g_date_time_equal(_arg0, _arg1)
 	runtime.KeepAlive(dt1)
@@ -1501,7 +1501,7 @@ func (datetime *DateTime) Hash() uint32 {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
 
-	_arg0 = C.gconstpointer(gextras.StructNative(unsafe.Pointer(datetime)))
+	_arg0 = *(*C.gconstpointer)(gextras.StructNative(unsafe.Pointer(datetime)))
 
 	_cret = C.g_date_time_hash(_arg0)
 	runtime.KeepAlive(datetime)

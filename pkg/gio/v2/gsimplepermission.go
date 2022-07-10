@@ -42,7 +42,7 @@ func NewSimplePermission(allowed bool) *SimplePermission {
 
 	var _simplePermission *SimplePermission // out
 
-	_simplePermission = wrapSimplePermission(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_simplePermission = wrapSimplePermission(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _simplePermission
 }

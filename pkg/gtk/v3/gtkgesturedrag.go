@@ -164,7 +164,7 @@ func NewGestureDrag(widget Widgetter) *GestureDrag {
 
 	var _gestureDrag *GestureDrag // out
 
-	_gestureDrag = wrapGestureDrag(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_gestureDrag = wrapGestureDrag(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _gestureDrag
 }
@@ -195,12 +195,8 @@ func (gesture *GestureDrag) Offset() (x, y float64, ok bool) {
 	var _y float64 // out
 	var _ok bool   // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_x = *(*float64)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_y = *(*float64)(unsafe.Pointer(_outs[1]))
-	}
+	_x = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
+	_y = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[1])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -233,12 +229,8 @@ func (gesture *GestureDrag) StartPoint() (x, y float64, ok bool) {
 	var _y float64 // out
 	var _ok bool   // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_x = *(*float64)(unsafe.Pointer(_outs[0]))
-	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_y = *(*float64)(unsafe.Pointer(_outs[1]))
-	}
+	_x = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[0])))
+	_y = float64(*(*C.gdouble)(unsafe.Pointer(&_outs[1])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}

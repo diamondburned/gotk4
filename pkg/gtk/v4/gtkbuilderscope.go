@@ -228,7 +228,7 @@ func NewBuilderCScope() *BuilderCScope {
 
 	var _builderCScope *BuilderCScope // out
 
-	_builderCScope = wrapBuilderCScope(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_builderCScope = wrapBuilderCScope(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _builderCScope
 }

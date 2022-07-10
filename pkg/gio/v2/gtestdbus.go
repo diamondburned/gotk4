@@ -27,8 +27,8 @@ func (self *TestDBus) AddServiceDir(path string) {
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "TestDBus")
 	_info.InvokeClassMethod("add_service_dir", _args[:], nil)
@@ -68,14 +68,14 @@ func (self *TestDBus) BusAddress() string {
 
 	_info := girepository.MustFind("Gio", "TestDBus")
 	_gret := _info.InvokeClassMethod("get_bus_address", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(self)
 
 	var _utf8 string // out
 
-	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if *(**C.gchar)(unsafe.Pointer(&_cret)) != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _utf8
@@ -125,5 +125,5 @@ func (self *TestDBus) Up() {
 // g_test_dbus_up() before acquiring the session bus.
 func TestDBusUnset() {
 	_info := girepository.MustFind("Gio", "unset")
-	_info.Invoke(nil, nil)
+	_info.InvokeFunction(nil, nil)
 }

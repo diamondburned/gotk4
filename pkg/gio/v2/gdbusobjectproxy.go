@@ -82,8 +82,8 @@ func NewDBusObjectProxy(connection *DBusConnection, objectPath string) *DBusObje
 	var _args [2]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(objectPath)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Gio", "DBusObjectProxy")
 	_gret := _info.InvokeClassMethod("new_DBusObjectProxy", _args[:], nil)
@@ -94,7 +94,7 @@ func NewDBusObjectProxy(connection *DBusConnection, objectPath string) *DBusObje
 
 	var _dBusObjectProxy *DBusObjectProxy // out
 
-	_dBusObjectProxy = wrapDBusObjectProxy(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_dBusObjectProxy = wrapDBusObjectProxy(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _dBusObjectProxy
 }
@@ -118,7 +118,7 @@ func (proxy *DBusObjectProxy) Connection() *DBusConnection {
 
 	var _dBusConnection *DBusConnection // out
 
-	_dBusConnection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(_cret)))
+	_dBusConnection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _dBusConnection
 }

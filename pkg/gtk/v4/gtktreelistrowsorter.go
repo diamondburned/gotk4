@@ -101,7 +101,7 @@ func NewTreeListRowSorter(sorter *Sorter) *TreeListRowSorter {
 
 	var _treeListRowSorter *TreeListRowSorter // out
 
-	_treeListRowSorter = wrapTreeListRowSorter(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_treeListRowSorter = wrapTreeListRowSorter(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _treeListRowSorter
 }
@@ -126,7 +126,7 @@ func (self *TreeListRowSorter) GetSorter() *Sorter {
 	var _sorter *Sorter // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_sorter = wrapSorter(coreglib.Take(unsafe.Pointer(_cret)))
+		_sorter = wrapSorter(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _sorter

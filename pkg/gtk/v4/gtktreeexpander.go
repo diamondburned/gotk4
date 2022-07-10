@@ -124,7 +124,7 @@ func NewTreeExpander() *TreeExpander {
 
 	var _treeExpander *TreeExpander // out
 
-	_treeExpander = wrapTreeExpander(coreglib.Take(unsafe.Pointer(_cret)))
+	_treeExpander = wrapTreeExpander(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _treeExpander
 }
@@ -150,7 +150,7 @@ func (self *TreeExpander) Child() Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -191,7 +191,7 @@ func (self *TreeExpander) Item() *coreglib.Object {
 
 	var _object *coreglib.Object // out
 
-	_object = coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+	_object = coreglib.AssumeOwnership(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&_cret))))
 
 	return _object
 }
@@ -216,7 +216,7 @@ func (self *TreeExpander) ListRow() *TreeListRow {
 	var _treeListRow *TreeListRow // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_treeListRow = wrapTreeListRow(coreglib.Take(unsafe.Pointer(_cret)))
+		_treeListRow = wrapTreeListRow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _treeListRow

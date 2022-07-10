@@ -261,7 +261,7 @@ func NewScrolledWindow() *ScrolledWindow {
 
 	var _scrolledWindow *ScrolledWindow // out
 
-	_scrolledWindow = wrapScrolledWindow(coreglib.Take(unsafe.Pointer(_cret)))
+	_scrolledWindow = wrapScrolledWindow(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _scrolledWindow
 }
@@ -287,7 +287,7 @@ func (scrolledWindow *ScrolledWindow) Child() Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
@@ -327,7 +327,7 @@ func (scrolledWindow *ScrolledWindow) HAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _adjustment
 }
@@ -378,7 +378,7 @@ func (scrolledWindow *ScrolledWindow) HScrollbar() Widgetter {
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}
@@ -574,10 +574,10 @@ func (scrolledWindow *ScrolledWindow) Policy() (hscrollbarPolicy, vscrollbarPoli
 	var _vscrollbarPolicy PolicyType // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_hscrollbarPolicy = *(*PolicyType)(unsafe.Pointer(_outs[0]))
+		_hscrollbarPolicy = *(*PolicyType)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0]))))
 	}
 	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_vscrollbarPolicy = *(*PolicyType)(unsafe.Pointer(_outs[1]))
+		_vscrollbarPolicy = *(*PolicyType)(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[1]))))
 	}
 
 	return _hscrollbarPolicy, _vscrollbarPolicy
@@ -661,7 +661,7 @@ func (scrolledWindow *ScrolledWindow) VAdjustment() *Adjustment {
 
 	var _adjustment *Adjustment // out
 
-	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _adjustment
 }
@@ -686,7 +686,7 @@ func (scrolledWindow *ScrolledWindow) VScrollbar() Widgetter {
 	var _widget Widgetter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gtk.Widgetter is nil")
 		}

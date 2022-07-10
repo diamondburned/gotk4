@@ -98,7 +98,7 @@ func NewGridLayout() *GridLayout {
 
 	var _gridLayout *GridLayout // out
 
-	_gridLayout = wrapGridLayout(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_gridLayout = wrapGridLayout(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _gridLayout
 }

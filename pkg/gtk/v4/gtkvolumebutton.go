@@ -86,7 +86,7 @@ func NewVolumeButton() *VolumeButton {
 
 	var _volumeButton *VolumeButton // out
 
-	_volumeButton = wrapVolumeButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_volumeButton = wrapVolumeButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _volumeButton
 }

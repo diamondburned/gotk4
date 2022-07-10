@@ -167,7 +167,7 @@ func NewRevealer() *Revealer {
 
 	var _revealer *Revealer // out
 
-	_revealer = wrapRevealer(coreglib.Take(unsafe.Pointer(_cret)))
+	_revealer = wrapRevealer(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _revealer
 }
@@ -193,7 +193,7 @@ func (revealer *Revealer) Child() Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

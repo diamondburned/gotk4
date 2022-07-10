@@ -191,8 +191,8 @@ func (i *Info) InvokeFunction(in, out []Argument) Argument {
 	return invokeFunc(i, in, out)
 }
 
-// InvokeMethod invokes the method of this ClassInfo with the given name.
-func (i *Info) InvokeMethod(name string, in, out []Argument) Argument {
+// InvokeClassMethod invokes the method of this ClassInfo with the given name.
+func (i *Info) InvokeClassMethod(name string, in, out []Argument) Argument {
 	k := i.keys
 	k[2] = name
 

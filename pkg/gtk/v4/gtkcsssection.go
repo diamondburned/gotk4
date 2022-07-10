@@ -69,7 +69,7 @@ func NewCSSSection(file gio.Filer, start *CSSLocation, end *CSSLocation) *CSSSec
 
 	var _cssSection *CSSSection // out
 
-	_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_cssSection)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -99,7 +99,7 @@ func (section *CSSSection) EndLocation() *CSSLocation {
 
 	var _cssLocation *CSSLocation // out
 
-	_cssLocation = (*CSSLocation)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_cssLocation = (*CSSLocation)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cssLocation
 }
@@ -127,7 +127,7 @@ func (section *CSSSection) File() *gio.File {
 	var _file *gio.File // out
 
 	{
-		obj := coreglib.Take(unsafe.Pointer(_cret))
+		obj := coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 		_file = &gio.File{
 			Object: obj,
 		}
@@ -162,8 +162,8 @@ func (section *CSSSection) Parent() *CSSSection {
 	var _cssSection *CSSSection // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.gtk_css_section_ref(_cret)
+		_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+		C.gtk_css_section_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_cssSection)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -195,7 +195,7 @@ func (section *CSSSection) StartLocation() *CSSLocation {
 
 	var _cssLocation *CSSLocation // out
 
-	_cssLocation = (*CSSLocation)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_cssLocation = (*CSSLocation)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _cssLocation
 }
@@ -214,14 +214,14 @@ func (section *CSSSection) String() string {
 
 	_info := girepository.MustFind("Gtk", "CssSection")
 	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.char)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(section)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }

@@ -22,7 +22,7 @@ import "C"
 // after calling this function.
 func TestRegisterAllTypes() {
 	_info := girepository.MustFind("Gtk", "test_register_all_types")
-	_info.Invoke(nil, nil)
+	_info.InvokeFunction(nil, nil)
 }
 
 // TestWidgetWaitForDraw enters the main loop and waits for widget to be
@@ -44,7 +44,7 @@ func TestWidgetWaitForDraw(widget Widgetter) {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 
 	_info := girepository.MustFind("Gtk", "test_widget_wait_for_draw")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(widget)
 }

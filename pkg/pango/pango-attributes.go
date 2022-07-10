@@ -491,19 +491,20 @@ func NewAttrAllowBreaks(allowBreaks bool) *Attribute {
 	}
 
 	_info := girepository.MustFind("Pango", "attr_allow_breaks_new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(allowBreaks)
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -529,19 +530,20 @@ func NewAttrBackgroundAlpha(alpha uint16) *Attribute {
 	*(*C.guint16)(unsafe.Pointer(&_args[0])) = C.guint16(alpha)
 
 	_info := girepository.MustFind("Pango", "attr_background_alpha_new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(alpha)
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -571,7 +573,7 @@ func NewAttrBackground(red, green, blue uint16) *Attribute {
 	*(*C.guint16)(unsafe.Pointer(&_args[2])) = C.guint16(blue)
 
 	_info := girepository.MustFind("Pango", "attr_background_new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(red)
@@ -580,12 +582,13 @@ func NewAttrBackground(red, green, blue uint16) *Attribute {
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -618,19 +621,20 @@ func NewAttrFallback(enableFallback bool) *Attribute {
 	}
 
 	_info := girepository.MustFind("Pango", "attr_fallback_new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(enableFallback)
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -653,23 +657,24 @@ func NewAttrFallback(enableFallback bool) *Attribute {
 func NewAttrFamily(family string) *Attribute {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(family)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(family)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Pango", "attr_family_new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(family)
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -695,19 +700,20 @@ func NewAttrForegroundAlpha(alpha uint16) *Attribute {
 	*(*C.guint16)(unsafe.Pointer(&_args[0])) = C.guint16(alpha)
 
 	_info := girepository.MustFind("Pango", "attr_foreground_alpha_new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(alpha)
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -737,7 +743,7 @@ func NewAttrForeground(red, green, blue uint16) *Attribute {
 	*(*C.guint16)(unsafe.Pointer(&_args[2])) = C.guint16(blue)
 
 	_info := girepository.MustFind("Pango", "attr_foreground_new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(red)
@@ -746,12 +752,13 @@ func NewAttrForeground(red, green, blue uint16) *Attribute {
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -782,19 +789,20 @@ func NewAttrInsertHyphens(insertHyphens bool) *Attribute {
 	}
 
 	_info := girepository.MustFind("Pango", "attr_insert_hyphens_new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(insertHyphens)
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -821,19 +829,20 @@ func NewAttrLetterSpacing(letterSpacing int32) *Attribute {
 	*(*C.int)(unsafe.Pointer(&_args[0])) = C.int(letterSpacing)
 
 	_info := girepository.MustFind("Pango", "attr_letter_spacing_new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(letterSpacing)
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -866,7 +875,7 @@ func NewAttrOverlineColor(red, green, blue uint16) *Attribute {
 	*(*C.guint16)(unsafe.Pointer(&_args[2])) = C.guint16(blue)
 
 	_info := girepository.MustFind("Pango", "attr_overline_color_new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(red)
@@ -875,12 +884,13 @@ func NewAttrOverlineColor(red, green, blue uint16) *Attribute {
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -907,19 +917,20 @@ func NewAttrRise(rise int32) *Attribute {
 	*(*C.int)(unsafe.Pointer(&_args[0])) = C.int(rise)
 
 	_info := girepository.MustFind("Pango", "attr_rise_new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(rise)
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -948,19 +959,20 @@ func NewAttrScale(scaleFactor float64) *Attribute {
 	*(*C.double)(unsafe.Pointer(&_args[0])) = C.double(scaleFactor)
 
 	_info := girepository.MustFind("Pango", "attr_scale_new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(scaleFactor)
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -993,7 +1005,7 @@ func NewAttrStrikethroughColor(red, green, blue uint16) *Attribute {
 	*(*C.guint16)(unsafe.Pointer(&_args[2])) = C.guint16(blue)
 
 	_info := girepository.MustFind("Pango", "attr_strikethrough_color_new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(red)
@@ -1002,12 +1014,13 @@ func NewAttrStrikethroughColor(red, green, blue uint16) *Attribute {
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1035,19 +1048,20 @@ func NewAttrStrikethrough(strikethrough bool) *Attribute {
 	}
 
 	_info := girepository.MustFind("Pango", "attr_strikethrough_new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(strikethrough)
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1080,7 +1094,7 @@ func NewAttrUnderlineColor(red, green, blue uint16) *Attribute {
 	*(*C.guint16)(unsafe.Pointer(&_args[2])) = C.guint16(blue)
 
 	_info := girepository.MustFind("Pango", "attr_underline_color_new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(red)
@@ -1089,12 +1103,13 @@ func NewAttrUnderlineColor(red, green, blue uint16) *Attribute {
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1130,7 +1145,7 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, ui
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(context)))
 
 	_info := girepository.MustFind("Pango", "markup_parser_finish")
-	_info.Invoke(_args[:], _outs[:])
+	_info.InvokeFunction(_args[:], _outs[:])
 
 	runtime.KeepAlive(context)
 
@@ -1140,7 +1155,7 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, ui
 	var _goerr error        // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -1148,15 +1163,13 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, ui
 			},
 		)
 	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_text = C.GoString((*C.gchar)(unsafe.Pointer(_outs[1])))
-		defer C.free(unsafe.Pointer(_outs[1]))
+	if *(**C.char)(unsafe.Pointer(&_outs[1])) != nil {
+		_text = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[1])))))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[1]))))
 	}
-	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_accelChar = *(*uint32)(unsafe.Pointer(_outs[2]))
-	}
+	_accelChar = uint32(*(*C.gunichar)(unsafe.Pointer(&_outs[2])))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _attrList, _text, _accelChar, _goerr
@@ -1200,20 +1213,21 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 	*(*C.gunichar)(unsafe.Pointer(&_args[0])) = C.gunichar(accelMarker)
 
 	_info := girepository.MustFind("Pango", "markup_parser_new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(accelMarker)
 
 	var _markupParseContext *glib.MarkupParseContext // out
 
-	_markupParseContext = (*glib.MarkupParseContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_markup_parse_context_ref(_cret)
+	_markupParseContext = (*glib.MarkupParseContext)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	C.g_markup_parse_context_ref(*(**C.void)(unsafe.Pointer(&_cret)))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_markupParseContext)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("GLib", "MarkupParseContext").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1259,13 +1273,13 @@ func ParseMarkup(markupText string, length int32, accelMarker uint32) (*AttrList
 	var _args [3]girepository.Argument
 	var _outs [3]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(markupText)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.char)(unsafe.Pointer(&_args[0])) = (*C.char)(unsafe.Pointer(C.CString(markupText)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[0]))))
 	*(*C.int)(unsafe.Pointer(&_args[1])) = C.int(length)
 	*(*C.gunichar)(unsafe.Pointer(&_args[2])) = C.gunichar(accelMarker)
 
 	_info := girepository.MustFind("Pango", "parse_markup")
-	_info.Invoke(_args[:], _outs[:])
+	_info.InvokeFunction(_args[:], _outs[:])
 
 	runtime.KeepAlive(markupText)
 	runtime.KeepAlive(length)
@@ -1277,7 +1291,7 @@ func ParseMarkup(markupText string, length int32, accelMarker uint32) (*AttrList
 	var _goerr error        // out
 
 	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_outs[0])))
+		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_outs[0])))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -1285,15 +1299,13 @@ func ParseMarkup(markupText string, length int32, accelMarker uint32) (*AttrList
 			},
 		)
 	}
-	if *(**C.void)(unsafe.Pointer(&_outs[1])) != nil {
-		_text = C.GoString((*C.gchar)(unsafe.Pointer(_outs[1])))
-		defer C.free(unsafe.Pointer(_outs[1]))
+	if *(**C.char)(unsafe.Pointer(&_outs[1])) != nil {
+		_text = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[1])))))
+		defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_outs[1]))))
 	}
-	if *(**C.void)(unsafe.Pointer(&_outs[2])) != nil {
-		_accelChar = *(*uint32)(unsafe.Pointer(_outs[2]))
-	}
+	_accelChar = uint32(*(*C.gunichar)(unsafe.Pointer(&_outs[2])))
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _attrList, _text, _accelChar, _goerr
@@ -1358,19 +1370,20 @@ func NewAttrFontDesc(desc *FontDescription) *Attribute {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(desc)))
 
 	_info := girepository.MustFind("Pango", "new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(desc)
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1406,23 +1419,24 @@ type attrFontFeatures struct {
 func NewAttrFontFeatures(features string) *Attribute {
 	var _args [1]girepository.Argument
 
-	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(C.CString(features)))
-	defer C.free(unsafe.Pointer(_args[0]))
+	*(**C.gchar)(unsafe.Pointer(&_args[0])) = (*C.gchar)(unsafe.Pointer(C.CString(features)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[0]))))
 
 	_info := girepository.MustFind("Pango", "new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(features)
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1486,12 +1500,13 @@ func (iterator *AttrIterator) Copy() *AttrIterator {
 
 	var _attrIterator *AttrIterator // out
 
-	_attrIterator = (*AttrIterator)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attrIterator = (*AttrIterator)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attrIterator)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "AttrIterator").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1533,16 +1548,17 @@ func (iterator *AttrIterator) Attrs() []*Attribute {
 
 	var _sList []*Attribute // out
 
-	_sList = make([]*Attribute, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_sList = make([]*Attribute, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Attribute // out
-		dst = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(src)))
+		dst = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -1603,8 +1619,8 @@ func (iterator *AttrIterator) Range() (start int32, end int32) {
 	var _start int32 // out
 	var _end int32   // out
 
-	_start = *(*int32)(unsafe.Pointer(_outs[0]))
-	_end = *(*int32)(unsafe.Pointer(_outs[1]))
+	_start = int32(*(*C.gint)(unsafe.Pointer(&_outs[0])))
+	_end = int32(*(*C.gint)(unsafe.Pointer(&_outs[1])))
 
 	return _start, _end
 }
@@ -1639,19 +1655,20 @@ func NewAttrLanguage(language *Language) *Attribute {
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(language)))
 
 	_info := girepository.MustFind("Pango", "new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(language)
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -1695,7 +1712,7 @@ func NewAttrList() *AttrList {
 
 	var _attrList *AttrList // out
 
-	_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attrList)),
 		func(intern *struct{ C unsafe.Pointer }) {
@@ -1759,7 +1776,7 @@ func (list *AttrList) Copy() *AttrList {
 	var _attrList *AttrList // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -1836,7 +1853,7 @@ func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 	var _attrList *AttrList // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
 			func(intern *struct{ C unsafe.Pointer }) {
@@ -1868,16 +1885,17 @@ func (list *AttrList) Attributes() []*Attribute {
 
 	var _sList []*Attribute // out
 
-	_sList = make([]*Attribute, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_sList = make([]*Attribute, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *Attribute // out
-		dst = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(src)))
+		dst = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -1909,12 +1927,13 @@ func (list *AttrList) Iterator() *AttrIterator {
 
 	var _attrIterator *AttrIterator // out
 
-	_attrIterator = (*AttrIterator)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attrIterator = (*AttrIterator)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attrIterator)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "AttrIterator").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -2077,7 +2096,7 @@ func NewAttrShape(inkRect, logicalRect *Rectangle) *Attribute {
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(logicalRect)))
 
 	_info := girepository.MustFind("Pango", "new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(inkRect)
@@ -2085,12 +2104,13 @@ func NewAttrShape(inkRect, logicalRect *Rectangle) *Attribute {
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -2129,19 +2149,20 @@ func NewAttrSize(size int32) *Attribute {
 	*(*C.int)(unsafe.Pointer(&_args[0])) = C.int(size)
 
 	_info := girepository.MustFind("Pango", "new")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(size)
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -2167,19 +2188,20 @@ func NewAttrSizeAbsolute(size int32) *Attribute {
 	*(*C.int)(unsafe.Pointer(&_args[0])) = C.int(size)
 
 	_info := girepository.MustFind("Pango", "new_absolute")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(**C.void)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(size)
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -2245,12 +2267,13 @@ func (attr *Attribute) Copy() *Attribute {
 
 	var _attribute *Attribute // out
 
-	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "Attribute").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -2397,12 +2420,13 @@ func (src *Color) Copy() *Color {
 	var _color *Color // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_color = (*Color)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_color = (*Color)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_color)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Pango", "Color").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -2435,8 +2459,8 @@ func (color *Color) Parse(spec string) bool {
 	if color != nil {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(spec)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(spec)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Pango", "Color")
 	_gret := _info.InvokeRecordMethod("parse", _args[:], nil)
@@ -2484,8 +2508,8 @@ func (color *Color) ParseWithAlpha(spec string) (uint16, bool) {
 	if color != nil {
 		*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(color)))
 	}
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(spec)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(spec)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 
 	_info := girepository.MustFind("Pango", "Color")
 	_gret := _info.InvokeRecordMethod("parse_with_alpha", _args[:], _outs[:])
@@ -2497,9 +2521,7 @@ func (color *Color) ParseWithAlpha(spec string) (uint16, bool) {
 	var _alpha uint16 // out
 	var _ok bool      // out
 
-	if *(**C.void)(unsafe.Pointer(&_outs[0])) != nil {
-		_alpha = *(*uint16)(unsafe.Pointer(_outs[0]))
-	}
+	_alpha = uint16(*(*C.guint16)(unsafe.Pointer(&_outs[0])))
 	if *(*C.gboolean)(unsafe.Pointer(&_cret)) != 0 {
 		_ok = true
 	}
@@ -2523,14 +2545,14 @@ func (color *Color) String() string {
 
 	_info := girepository.MustFind("Pango", "Color")
 	_gret := _info.InvokeRecordMethod("to_string", _args[:], nil)
-	_cret := *(**C.void)(unsafe.Pointer(&_gret))
+	_cret := *(**C.gchar)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(color)
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret)))))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_cret))))
 
 	return _utf8
 }

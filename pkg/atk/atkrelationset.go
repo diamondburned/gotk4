@@ -77,7 +77,7 @@ func NewRelationSet() *RelationSet {
 
 	var _relationSet *RelationSet // out
 
-	_relationSet = wrapRelationSet(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_relationSet = wrapRelationSet(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _relationSet
 }
@@ -154,7 +154,7 @@ func (set *RelationSet) Relation(i int32) *Relation {
 
 	var _relation *Relation // out
 
-	_relation = wrapRelation(coreglib.Take(unsafe.Pointer(_cret)))
+	_relation = wrapRelation(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _relation
 }

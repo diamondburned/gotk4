@@ -78,7 +78,7 @@ func ThreadsAddIdle(priority int32, function glib.SourceFunc) uint32 {
 	_args[3] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	_info := girepository.MustFind("Gdk", "threads_add_idle_full")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(priority)
@@ -155,7 +155,7 @@ func ThreadsAddTimeout(priority int32, interval uint32, function glib.SourceFunc
 	_args[4] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	_info := girepository.MustFind("Gdk", "threads_add_timeout_full")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(priority)
@@ -194,7 +194,7 @@ func ThreadsAddTimeoutSeconds(priority int32, interval uint32, function glib.Sou
 	_args[4] = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	_info := girepository.MustFind("Gdk", "threads_add_timeout_seconds_full")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(*C.guint)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(priority)
@@ -215,7 +215,7 @@ func ThreadsAddTimeoutSeconds(priority int32, interval uint32, function glib.Sou
 // Deprecated: All GDK and GTK+ calls should be made from the main thread.
 func ThreadsEnter() {
 	_info := girepository.MustFind("Gdk", "threads_enter")
-	_info.Invoke(nil, nil)
+	_info.InvokeFunction(nil, nil)
 }
 
 // ThreadsInit initializes GDK so that it can be used from multiple threads in
@@ -227,7 +227,7 @@ func ThreadsEnter() {
 // Deprecated: All GDK and GTK+ calls should be made from the main thread.
 func ThreadsInit() {
 	_info := girepository.MustFind("Gdk", "threads_init")
-	_info.Invoke(nil, nil)
+	_info.InvokeFunction(nil, nil)
 }
 
 // ThreadsLeave leaves a critical region begun with gdk_threads_enter().
@@ -235,5 +235,5 @@ func ThreadsInit() {
 // Deprecated: All GDK and GTK+ calls should be made from the main thread.
 func ThreadsLeave() {
 	_info := girepository.MustFind("Gdk", "threads_leave")
-	_info.Invoke(nil, nil)
+	_info.InvokeFunction(nil, nil)
 }

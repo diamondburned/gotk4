@@ -390,7 +390,7 @@ func NewGLArea() *GLArea {
 
 	var _glArea *GLArea // out
 
-	_glArea = wrapGLArea(coreglib.Take(unsafe.Pointer(_cret)))
+	_glArea = wrapGLArea(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _glArea
 }
@@ -460,7 +460,7 @@ func (area *GLArea) Context() gdk.GLContexter {
 	var _glContext gdk.GLContexter // out
 
 	{
-		objptr := unsafe.Pointer(_cret)
+		objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 		if objptr == nil {
 			panic("object of type gdk.GLContexter is nil")
 		}
@@ -500,7 +500,7 @@ func (area *GLArea) Error() error {
 	var _err error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_err = gerror.Take(unsafe.Pointer(_cret))
+		_err = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))))
 	}
 
 	return _err
@@ -581,8 +581,8 @@ func (area *GLArea) RequiredVersion() (major, minor int32) {
 	var _major int32 // out
 	var _minor int32 // out
 
-	_major = *(*int32)(unsafe.Pointer(_outs[0]))
-	_minor = *(*int32)(unsafe.Pointer(_outs[1]))
+	_major = int32(*(*C.int)(unsafe.Pointer(&_outs[0])))
+	_minor = int32(*(*C.int)(unsafe.Pointer(&_outs[1])))
 
 	return _major, _minor
 }

@@ -110,7 +110,7 @@ func NewVScale(adjustment *Adjustment) *VScale {
 
 	var _vScale *VScale // out
 
-	_vScale = wrapVScale(coreglib.Take(unsafe.Pointer(_cret)))
+	_vScale = wrapVScale(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _vScale
 }
@@ -154,7 +154,7 @@ func NewVScaleWithRange(min, max, step float64) *VScale {
 
 	var _vScale *VScale // out
 
-	_vScale = wrapVScale(coreglib.Take(unsafe.Pointer(_cret)))
+	_vScale = wrapVScale(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _vScale
 }

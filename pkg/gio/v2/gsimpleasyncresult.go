@@ -59,7 +59,7 @@ func SimpleAsyncReportGErrorInIdle(object *coreglib.Object, callback AsyncReadyC
 	}
 
 	_info := girepository.MustFind("Gio", "simple_async_report_gerror_in_idle")
-	_info.Invoke(_args[:], nil)
+	_info.InvokeFunction(_args[:], nil)
 
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(callback)
@@ -292,7 +292,7 @@ func NewSimpleAsyncResult(sourceObject *coreglib.Object, callback AsyncReadyCall
 
 	var _simpleAsyncResult *SimpleAsyncResult // out
 
-	_simpleAsyncResult = wrapSimpleAsyncResult(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_simpleAsyncResult = wrapSimpleAsyncResult(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _simpleAsyncResult
 }
@@ -335,7 +335,7 @@ func NewSimpleAsyncResultFromError(sourceObject *coreglib.Object, callback Async
 
 	var _simpleAsyncResult *SimpleAsyncResult // out
 
-	_simpleAsyncResult = wrapSimpleAsyncResult(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_simpleAsyncResult = wrapSimpleAsyncResult(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _simpleAsyncResult
 }
@@ -457,7 +457,7 @@ func (simple *SimpleAsyncResult) PropagateError() error {
 	var _goerr error // out
 
 	if *(**C.void)(unsafe.Pointer(&_cerr)) != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+		_goerr = gerror.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cerr))))
 	}
 
 	return _goerr
@@ -632,7 +632,7 @@ func SimpleAsyncResultIsValid(result AsyncResulter, source *coreglib.Object, sou
 	*(*C.gpointer)(unsafe.Pointer(&_args[2])) = (C.gpointer)(unsafe.Pointer(sourceTag))
 
 	_info := girepository.MustFind("Gio", "is_valid")
-	_gret := _info.Invoke(_args[:], nil)
+	_gret := _info.InvokeFunction(_args[:], nil)
 	_cret := *(*C.gboolean)(unsafe.Pointer(&_gret))
 
 	runtime.KeepAlive(result)

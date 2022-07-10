@@ -88,7 +88,7 @@ func NewSpinner() *Spinner {
 
 	var _spinner *Spinner // out
 
-	_spinner = wrapSpinner(coreglib.Take(unsafe.Pointer(_cret)))
+	_spinner = wrapSpinner(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _spinner
 }

@@ -33,7 +33,7 @@ func (r *RequestedSize) Data() unsafe.Pointer {
 	offset := girepository.MustFind("Gtk", "RequestedSize").StructFieldOffset("data")
 	valptr := (*uintptr)(unsafe.Add(r.native, offset))
 	var v unsafe.Pointer // out
-	v = (unsafe.Pointer)(unsafe.Pointer(*valptr))
+	v = (unsafe.Pointer)(unsafe.Pointer(*(*C.gpointer)(unsafe.Pointer(&*valptr))))
 	return v
 }
 

@@ -110,7 +110,7 @@ func NewGrid() *Grid {
 
 	var _grid *Grid // out
 
-	_grid = wrapGrid(coreglib.Take(unsafe.Pointer(_cret)))
+	_grid = wrapGrid(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _grid
 }
@@ -204,7 +204,7 @@ func (grid *Grid) ChildAt(left, top int32) Widgetter {
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
 		{
-			objptr := unsafe.Pointer(_cret)
+			objptr := unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {

@@ -66,7 +66,7 @@ func (g *GlyphItem) Item() *Item {
 	offset := girepository.MustFind("Pango", "GlyphItem").StructFieldOffset("item")
 	valptr := (*uintptr)(unsafe.Add(g.native, offset))
 	var v *Item // out
-	v = (*Item)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	v = (*Item)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -75,7 +75,7 @@ func (g *GlyphItem) Glyphs() *GlyphString {
 	offset := girepository.MustFind("Pango", "GlyphItem").StructFieldOffset("glyphs")
 	valptr := (*uintptr)(unsafe.Add(g.native, offset))
 	var v *GlyphString // out
-	v = (*GlyphString)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	v = (*GlyphString)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -111,8 +111,8 @@ func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) []*GlyphItem
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphItem)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(gextras.StructNative(unsafe.Pointer(list)))
 
 	_info := girepository.MustFind("Pango", "GlyphItem")
@@ -125,16 +125,17 @@ func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) []*GlyphItem
 
 	var _sList []*GlyphItem // out
 
-	_sList = make([]*GlyphItem, 0, gextras.SListSize(unsafe.Pointer(_cret)))
-	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+	_sList = make([]*GlyphItem, 0, gextras.SListSize(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
+	gextras.MoveSList(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret))), true, func(v unsafe.Pointer) {
 		src := (*C.void)(v)
 		var dst *GlyphItem // out
-		dst = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(src)))
+		dst = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&src)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(dst)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Pango", "GlyphItem").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -168,12 +169,13 @@ func (orig *GlyphItem) Copy() *GlyphItem {
 	var _glyphItem *GlyphItem // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_glyphItem = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_glyphItem = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_glyphItem)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Pango", "GlyphItem").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -209,8 +211,8 @@ func (orig *GlyphItem) Split(text string, splitIndex int32) *GlyphItem {
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(orig)))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.char)(unsafe.Pointer(&_args[1])) = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[1]))))
 	*(*C.int)(unsafe.Pointer(&_args[2])) = C.int(splitIndex)
 
 	_info := girepository.MustFind("Pango", "GlyphItem")
@@ -223,12 +225,13 @@ func (orig *GlyphItem) Split(text string, splitIndex int32) *GlyphItem {
 
 	var _glyphItem *GlyphItem // out
 
-	_glyphItem = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	_glyphItem = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	runtime.SetFinalizer(
 		gextras.StructIntern(unsafe.Pointer(_glyphItem)),
 		func(intern *struct{ C unsafe.Pointer }) {
 			{
-				args := [1]girepository.Argument{(*C.void)(intern.C)}
+				var args [1]girepository.Argument
+				*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 				girepository.MustFind("Pango", "GlyphItem").InvokeRecordMethod("free", args[:], nil)
 			}
 		},
@@ -294,7 +297,7 @@ func (g *GlyphItemIter) GlyphItem() *GlyphItem {
 	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("glyph_item")
 	valptr := (*uintptr)(unsafe.Add(g.native, offset))
 	var v *GlyphItem // out
-	v = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(*valptr)))
+	v = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -302,7 +305,7 @@ func (g *GlyphItemIter) Text() string {
 	offset := girepository.MustFind("Pango", "GlyphItemIter").StructFieldOffset("text")
 	valptr := (*uintptr)(unsafe.Add(g.native, offset))
 	var v string // out
-	v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	v = C.GoString((*C.gchar)(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&*valptr)))))
 	return v
 }
 
@@ -414,12 +417,13 @@ func (orig *GlyphItemIter) Copy() *GlyphItemIter {
 	var _glyphItemIter *GlyphItemIter // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_glyphItemIter = (*GlyphItemIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		_glyphItemIter = (*GlyphItemIter)(gextras.NewStructNative(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 		runtime.SetFinalizer(
 			gextras.StructIntern(unsafe.Pointer(_glyphItemIter)),
 			func(intern *struct{ C unsafe.Pointer }) {
 				{
-					args := [1]girepository.Argument{(*C.void)(intern.C)}
+					var args [1]girepository.Argument
+					*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(intern.C)
 					girepository.MustFind("Pango", "GlyphItemIter").InvokeRecordMethod("free", args[:], nil)
 				}
 			},
@@ -448,8 +452,8 @@ func (iter *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphItem)))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
 
 	_info := girepository.MustFind("Pango", "GlyphItemIter")
 	_gret := _info.InvokeRecordMethod("init_end", _args[:], nil)
@@ -487,8 +491,8 @@ func (iter *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(gextras.StructNative(unsafe.Pointer(iter)))
 	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(gextras.StructNative(unsafe.Pointer(glyphItem)))
-	*(**C.void)(unsafe.Pointer(&_args[2])) = (*C.void)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_args[2]))
+	*(**C.char)(unsafe.Pointer(&_args[2])) = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(*(**C.char)(unsafe.Pointer(&_args[2]))))
 
 	_info := girepository.MustFind("Pango", "GlyphItemIter")
 	_gret := _info.InvokeRecordMethod("init_start", _args[:], nil)

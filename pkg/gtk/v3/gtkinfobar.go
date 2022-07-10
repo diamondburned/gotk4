@@ -258,7 +258,7 @@ func NewInfoBar() *InfoBar {
 
 	var _infoBar *InfoBar // out
 
-	_infoBar = wrapInfoBar(coreglib.Take(unsafe.Pointer(_cret)))
+	_infoBar = wrapInfoBar(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _infoBar
 }
@@ -306,8 +306,8 @@ func (infoBar *InfoBar) AddButton(buttonText string, responseId int32) *Button {
 	var _args [3]girepository.Argument
 
 	*(**C.void)(unsafe.Pointer(&_args[0])) = (*C.void)(unsafe.Pointer(coreglib.InternObject(infoBar).Native()))
-	*(**C.void)(unsafe.Pointer(&_args[1])) = (*C.void)(unsafe.Pointer(C.CString(buttonText)))
-	defer C.free(unsafe.Pointer(_args[1]))
+	*(**C.gchar)(unsafe.Pointer(&_args[1])) = (*C.gchar)(unsafe.Pointer(C.CString(buttonText)))
+	defer C.free(unsafe.Pointer(*(**C.gchar)(unsafe.Pointer(&_args[1]))))
 	*(*C.gint)(unsafe.Pointer(&_args[2])) = C.gint(responseId)
 
 	_info := girepository.MustFind("Gtk", "InfoBar")
@@ -320,7 +320,7 @@ func (infoBar *InfoBar) AddButton(buttonText string, responseId int32) *Button {
 
 	var _button *Button // out
 
-	_button = wrapButton(coreglib.Take(unsafe.Pointer(_cret)))
+	_button = wrapButton(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _button
 }
@@ -344,7 +344,7 @@ func (infoBar *InfoBar) ActionArea() *Box {
 
 	var _box *Box // out
 
-	_box = wrapBox(coreglib.Take(unsafe.Pointer(_cret)))
+	_box = wrapBox(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _box
 }
@@ -368,7 +368,7 @@ func (infoBar *InfoBar) ContentArea() *Box {
 
 	var _box *Box // out
 
-	_box = wrapBox(coreglib.Take(unsafe.Pointer(_cret)))
+	_box = wrapBox(coreglib.Take(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _box
 }

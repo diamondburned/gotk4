@@ -95,7 +95,7 @@ func NewGestureZoom() *GestureZoom {
 
 	var _gestureZoom *GestureZoom // out
 
-	_gestureZoom = wrapGestureZoom(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	_gestureZoom = wrapGestureZoom(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 
 	return _gestureZoom
 }

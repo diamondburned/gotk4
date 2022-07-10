@@ -506,7 +506,7 @@ func (selection *Selection) RefSelection(i int32) *ObjectClass {
 	var _object *ObjectClass // out
 
 	if *(**C.void)(unsafe.Pointer(&_cret)) != nil {
-		_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+		_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(*(**C.void)(unsafe.Pointer(&_cret)))))
 	}
 
 	return _object

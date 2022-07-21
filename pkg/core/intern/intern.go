@@ -16,23 +16,70 @@ import (
 	"runtime/pprof"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/closure"
 
 	// Require a non-moving GC for heap pointers. Current GC is moving only by
 	// the stack. See https://github.com/go4org/intern.
 	_ "go4.org/unsafe/assume-no-moving-gc"
 )
 
-// Box contains possible interned values for each GObject.
+const maxTypesAllowed = 3
+
+var knownTypes uint32
+
+type BoxedType[T any] struct {
+	ctor func(*Box) *T
+	id   uint32
+}
+
+func RegisterType[T any](ctor func(*Box) *T) BoxedType[T] {
+	t := BoxedType[T]{
+		ctor: ctor,
+		id:   atomic.AddUint32(&knownTypes, 1),
+	}
+	if t.id > maxTypesAllowed {
+		panic("BoxedType ID overflow")
+	}
+	return t
+}
+
+func (t *BoxedType[T]) Get(box *Box) *T {
+	if t.ctor == nil {
+		ptr := atomic.LoadPointer(&box.data[t.id])
+		return (*T)(ptr)
+	}
+
+	old := atomic.LoadPointer(&box.data[t.id])
+	if old != nil {
+		return (*T)(old)
+	}
+
+	new := t.ctor(box)
+
+	if atomic.CompareAndSwapPointer(&box.data[t.id], nil, unsafe.Pointer(new)) {
+		return new
+	}
+
+	ptr := atomic.LoadPointer(&box.data[t.id])
+	if ptr != nil {
+		return (*T)(ptr)
+	}
+
+	panic("Load returned nil after CompareAndSwap(old = nil) failed")
+}
+
+func (t *BoxedType[T]) Set(box *Box, v *T) {
+	atomic.StorePointer(&box.data[t.id], unsafe.Pointer(v))
+}
+
+// Box is an opaque type holding extra data.
 type Box struct {
-	Closures closure.Registry
-	obj      unsafe.Pointer
+	data [maxTypesAllowed]unsafe.Pointer
 }
 
 // Object returns Box's C GObject pointer.
-func (b *Box) Object() unsafe.Pointer { return b.obj }
+func (b *Box) GObject() unsafe.Pointer { return b.data[0] }
 
 // Hack to force an object on the heap.
 var never bool
@@ -67,10 +114,11 @@ func init() {
 
 // newBox creates a zero-value instance of Box.
 func newBox(obj unsafe.Pointer) *Box {
-	box := &Box{obj: obj}
+	box := &Box{}
+	box.data[0] = obj
 
 	if objectProfile != nil {
-		objectProfile.Add(box.obj, 3)
+		objectProfile.Add(obj, 3)
 	}
 
 	if traceObjectFile != nil {
@@ -103,34 +151,13 @@ var shared = struct {
 	strong: make(map[unsafe.Pointer]*Box, 1024),
 }
 
-// ObjectClosure gets the FuncStack instance from the given GObject and GClosure
-// pointers. The given unsafe.Pointers MUST be C pointers.
-func ObjectClosure(gobject, gclosure unsafe.Pointer) *closure.FuncStack {
+// TryGet gets the Box associated with the GObject or nil if it's gone. The
+// caller must not retain the Box pointer anywhere.
+func TryGet(gobject unsafe.Pointer) *Box {
 	shared.mu.RLock()
 	box, _ := gets(gobject)
 	shared.mu.RUnlock()
-
-	if box == nil {
-		return nil
-	}
-
-	return box.Closures.Load(gclosure)
-}
-
-// RemoveClosure removes the given GClosure callback.
-func RemoveClosure(gobject, gclosure unsafe.Pointer) {
-	shared.mu.RLock()
-	box, _ := gets(gobject)
-	shared.mu.RUnlock()
-
-	if box != nil {
-		box.Closures.Delete(gclosure)
-	}
-
-	// The closure missing here isn't very important. It can happen when the
-	// function is called not because the user explicitly wanted to detach a
-	// signal handler, but because the object is destroyed. In that case, Go
-	// will have already handled it.
+	return box
 }
 
 // Get gets the interned box for the given GObject C pointer. If the object is
@@ -210,12 +237,12 @@ func finalizeBox(box *Box) {
 		// Unreference the object. This will potentially free the object as
 		// well. The closures are definitely gone at this point.
 		C.g_object_remove_toggle_ref(
-			(*C.GObject)(unsafe.Pointer(box.obj)),
+			(*C.GObject)(unsafe.Pointer(box.GObject())),
 			(*[0]byte)(C.goToggleNotify), nil,
 		)
 
 		if objectProfile != nil {
-			objectProfile.Remove(box.obj)
+			objectProfile.Remove(box.GObject())
 		}
 	}
 }
@@ -226,7 +253,7 @@ func finalizeBox(box *Box) {
 //
 //go:nocheckptr
 func freeBox(box *Box) bool {
-	_, ok := shared.strong[box.obj]
+	_, ok := shared.strong[box.GObject()]
 	if ok {
 		// If the closures are strong-referenced, then they might still be
 		// referenced from the C side, and those closures might access this
@@ -234,17 +261,19 @@ func freeBox(box *Box) bool {
 		return false
 	}
 
-	_, ok = shared.weak[box.obj]
+	_, ok = shared.weak[box.GObject()]
 	if ok {
 		// If the closures are weak-referenced, then the object reference hasn't
 		// been toggled yet. Since the object is going away and we're still
 		// weakly referenced, we can wipe the closures away.
-		delete(shared.weak, box.obj)
+		delete(shared.weak, box.GObject())
 
 		// By setting *box to a zero-value of closures, we're nilling out the
 		// maps, which will signal to Go that these cyclical objects can be
 		// freed altogether.
-		*box = Box{obj: box.obj}
+		var zero Box
+		zero.data[0] = box.GObject()
+		*box = zero
 	}
 
 	// We can proceed to free the object.

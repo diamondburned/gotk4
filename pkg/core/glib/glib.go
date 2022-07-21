@@ -193,11 +193,20 @@ func _gotk4_goMarshal(
 	gobject *C.GObject) {
 
 	// Get the function value associated with this callback closure.
-	fs := intern.ObjectClosure(unsafe.Pointer(gobject), unsafe.Pointer(gclosure))
-	if fs == nil {
-		// Possible data race, bail.
+	box := intern.TryGet(unsafe.Pointer(gobject))
+	if box == nil {
 		log.Printf(
-			"warning: object %s %v closure %v not found",
+			"warning: object %s %v cannot be resurrected",
+			typeFromObject(unsafe.Pointer(gobject)),
+			unsafe.Pointer(gobject),
+		)
+		return
+	}
+
+	fs := closure.RegistryType.Get(box).Load(unsafe.Pointer(gclosure))
+	if fs == nil {
+		log.Printf(
+			"warning: object %s %v missing closure %v",
 			typeFromObject(unsafe.Pointer(gobject)),
 			unsafe.Pointer(gobject),
 			unsafe.Pointer(gclosure),
@@ -460,7 +469,8 @@ func ConnectGeneratedClosure(
 	data.GClosure = uintptr(unsafe.Pointer(gclosure))
 
 	// Hold a strong reference mapping the Go closure to the object.
-	v.box.Closures.Register(unsafe.Pointer(gclosure), fs)
+	closures := closure.RegistryType.Get(v.box)
+	closures.Register(unsafe.Pointer(gclosure), fs)
 
 	// Just in case.
 	C.g_object_watch_closure(v.native(), gclosure)
@@ -482,12 +492,41 @@ func ConnectedGeneratedClosure(closureData uintptr) *closure.FuncStack {
 	if data == nil {
 		return nil
 	}
-	return intern.ObjectClosure(unsafe.Pointer(data.GObject), unsafe.Pointer(data.GClosure))
+
+	// Get the function value associated with this callback closure.
+	box := intern.TryGet(unsafe.Pointer(data.GObject))
+	if box == nil {
+		log.Printf(
+			"gotk4: warning: object %s %v cannot be resurrected",
+			typeFromObject(unsafe.Pointer(data.GObject)),
+			unsafe.Pointer(data.GObject),
+		)
+		return nil
+	}
+
+	fs := closure.RegistryType.Get(box).Load(unsafe.Pointer(data.GClosure))
+	if fs == nil {
+		log.Printf(
+			"gotk4: warning: object %s %v missing closure %v",
+			typeFromObject(unsafe.Pointer(data.GObject)),
+			unsafe.Pointer(data.GObject),
+			unsafe.Pointer(data.GClosure),
+		)
+		return nil
+	}
+
+	return fs
 }
 
 //export _gotk4_removeClosure
 func _gotk4_removeClosure(obj *C.GObject, gclosure *C.GClosure) {
-	intern.RemoveClosure(unsafe.Pointer(obj), unsafe.Pointer(gclosure))
+	box := intern.TryGet(unsafe.Pointer(obj))
+	if box == nil {
+		return
+	}
+
+	closures := closure.RegistryType.Get(box)
+	closures.Delete(unsafe.Pointer(gclosure))
 }
 
 //export _gotk4_removeGeneratedClosure
@@ -650,7 +689,7 @@ func (v *Object) native() *C.GObject {
 	if v == nil || v.box == nil {
 		return nil
 	}
-	return (*C.GObject)(v.box.Object())
+	return (*C.GObject)(v.box.GObject())
 }
 
 // Native returns a pointer to the underlying GObject.
